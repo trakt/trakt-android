@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.home.sections.activity.views
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -33,6 +31,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Red500
@@ -55,6 +54,7 @@ internal fun ActivityEpisodeItemView(
     onRemoveClick: () -> Unit = {},
     onShowClick: () -> Unit = {},
     onUserClick: (user: User) -> Unit = { _ -> },
+    onRateClick: ((Int?) -> Unit)? = null,
 ) {
     HorizontalMediaCard(
         title = "",
@@ -161,24 +161,18 @@ internal fun ActivityEpisodeItemView(
                     )
                 }
 
-                itemRating?.let {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = spacedBy(2.dp),
+                when {
+                    onRateClick != null -> ActivityRateButton(
+                        rating = itemRating,
+                        title = item.show.title,
+                        onRateClick = onRateClick,
                         modifier = Modifier.padding(start = 12.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_star_trakt_on),
-                            contentDescription = null,
-                            modifier = Modifier.size(13.dp),
-                            tint = TraktTheme.colors.textPrimary,
-                        )
-                        Text(
-                            text = it.rating5Scale,
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                        )
-                    }
+                    )
+
+                    itemRating != null -> ActivityItemRating(
+                        rating = itemRating,
+                        modifier = Modifier.padding(start = 16.dp),
+                    )
                 }
             }
         },
@@ -186,24 +180,43 @@ internal fun ActivityEpisodeItemView(
     )
 }
 
+private val PreviewEpisodeItem = HomeActivityItem.EpisodeItem(
+    id = 1,
+    activity = "watch",
+    activityAt = Instant.now(),
+    user = PreviewData.user1,
+    userRating = null,
+    show = PreviewData.show1,
+    episode = PreviewData.episode1,
+)
+
+private val PreviewEpisodeRating = UserRating(
+    mediaId = PreviewData.episode1.ids.trakt,
+    mediaType = MediaType.Episode,
+    rating = 7,
+)
+
 @Preview
 @Composable
-private fun EpisodeSocialItemViewPreview() {
+private fun EpisodeItemViewPreview() {
     TraktTheme {
-        ActivityEpisodeItemView(
-            item = HomeActivityItem.EpisodeItem(
-                id = 1,
-                activity = "watch",
-                activityAt = Instant.now(),
-                user = PreviewData.user1,
-                userRating = UserRating(
-                    mediaId = PreviewData.episode1.ids.trakt,
-                    mediaType = tv.trakt.trakt.common.model.MediaType.Episode,
-                    rating = 8,
-                ),
-                show = PreviewData.show1,
-                episode = PreviewData.episode1,
-            ),
-        )
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            ActivityEpisodeItemView(
+                item = PreviewEpisodeItem,
+            )
+            ActivityEpisodeItemView(
+                item = PreviewEpisodeItem,
+                itemRating = PreviewEpisodeRating,
+            )
+            ActivityEpisodeItemView(
+                item = PreviewEpisodeItem,
+                onRateClick = {},
+            )
+            ActivityEpisodeItemView(
+                item = PreviewEpisodeItem,
+                itemRating = PreviewEpisodeRating,
+                onRateClick = {},
+            )
+        }
     }
 }

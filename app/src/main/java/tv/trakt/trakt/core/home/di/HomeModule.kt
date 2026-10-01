@@ -34,6 +34,7 @@ import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryVi
 import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialViewModel
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedViewModel
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksViewModel
@@ -87,6 +88,7 @@ internal val homeModule = module {
     factoryOf(::AddHomeHistoryUseCase)
     factoryOf(::GetSocialActivityUseCase)
     factoryOf(::GetPersonalActivityUseCase)
+    factoryOf(::RateActivityItemUseCase)
     factoryOf(::GetUpcomingUseCase)
     factoryOf(::GetUserUsageUseCase)
 

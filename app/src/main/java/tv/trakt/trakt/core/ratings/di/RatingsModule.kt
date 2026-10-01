@@ -101,6 +101,7 @@ internal val ratingsModule = module {
             deleteRatingUseCase = get(),
             loadUserRatingUseCase = get(),
             ratingsUpdates = get(),
+            errorsManager = get(),
             analytics = get(),
         )
     }

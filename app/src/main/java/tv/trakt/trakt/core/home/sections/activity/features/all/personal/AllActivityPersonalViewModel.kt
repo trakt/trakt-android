@@ -53,8 +53,8 @@ import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.AllPersonalActivityDestination
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
+import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -69,6 +69,7 @@ internal class AllActivityPersonalViewModel(
     filterManager: GlobalFilterManager,
     analytics: Analytics,
     private val getActivityUseCase: GetPersonalActivityUseCase,
+    private val rateActivityItemUseCase: RateActivityItemUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
@@ -106,6 +107,7 @@ internal class AllActivityPersonalViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+    private var ratingJob: Job? = null
 
     init {
         loadUser()
@@ -140,7 +142,7 @@ internal class AllActivityPersonalViewModel(
 
     private fun observeRatings() {
         merge(
-            ratingsUpdates.observeUpdates(POST_RATING),
+            ratingsUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)
@@ -351,6 +353,21 @@ internal class AllActivityPersonalViewModel(
             }
                 ?.filterNot { entry -> entry.value.isEmpty() }
                 ?.toImmutableMap()
+        }
+    }
+
+    fun rateItem(
+        item: HomeActivityItem,
+        rating: Int?,
+    ) {
+        ratingJob?.cancel()
+        ratingJob = viewModelScope.launch {
+            val updated = rateActivityItemUseCase.rateItem(
+                item = item,
+                rating = rating,
+                ratings = itemsRatingsState.value,
+            ) ?: return@launch
+            itemsRatingsState.update { updated }
         }
     }
 

@@ -66,6 +66,7 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.MovieDetails
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
@@ -105,6 +106,7 @@ internal class MovieDetailsViewModel(
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val movieDetailsUpdates: MovieDetailsUpdates,
+    private val ratingsUpdates: RatingsUpdates,
     private val favoritesUpdates: FavoritesUpdates,
     private val watchlistUpdates: WatchlistUpdates,
     private val checkInUpdates: CheckInUpdates,
@@ -145,6 +147,7 @@ internal class MovieDetailsViewModel(
         observeHistory()
         observeCheckIn()
         observeLists()
+        observeRatings()
 
         analytics.logScreenView(
             screenName = "movie_details",
@@ -168,6 +171,17 @@ internal class MovieDetailsViewModel(
             .debounce(200.milliseconds)
             .onEach {
                 loadUserProgressData(force = true)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeRatings() {
+        ratingsUpdates.observeUpdates()
+            .filterNot { it.first == RatingsUpdates.Source.MediaDetails }
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach {
+                refreshUserRating()
             }
             .launchIn(viewModelScope)
     }
@@ -366,6 +380,30 @@ internal class MovieDetailsViewModel(
                     UserRatingsState(
                         rating = userRating,
                         loading = Done,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun refreshUserRating() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val rating = loadRatingUseCase.loadLocalMovies()[movieId]?.rating ?: 0
+                movieUserRatingsState.update { state ->
+                    state?.copy(
+                        rating = state.rating?.copy(rating = rating) ?: UserRating(
+                            mediaId = movieId,
+                            mediaType = Movie,
+                            rating = rating,
+                        ),
                     )
                 }
             } catch (error: Exception) {
@@ -855,6 +893,7 @@ internal class MovieDetailsViewModel(
                 mediaId = movieId,
                 mediaType = Movie,
                 rating = newRating,
+                source = RatingsUpdates.Source.MediaDetails,
             )
         }
     }
@@ -888,6 +927,7 @@ internal class MovieDetailsViewModel(
                 mediaId = movieId,
                 mediaType = Movie,
                 rating = 0, // A rating of 0 indicates removal of rating
+                source = RatingsUpdates.Source.MediaDetails,
             )
         }
     }

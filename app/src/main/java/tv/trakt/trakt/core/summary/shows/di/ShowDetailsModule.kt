@@ -138,6 +138,7 @@ internal val showDetailsModule = module {
             userFavoritesLocalSource = get(),
             episodeLocalDataSource = get(),
             showDetailsUpdates = get(),
+            ratingsUpdates = get(),
             episodeDetailsUpdates = get(),
             favoritesUpdates = get(),
             watchlistUpdates = get(),

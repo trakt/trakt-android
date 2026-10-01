@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
@@ -94,6 +95,7 @@ internal class RatePromptViewModel(
                 mediaId = media.id,
                 mediaType = media.mediaType,
                 rating = newRating,
+                source = RatingsUpdates.Source.Default,
             )
         }
     }
@@ -118,6 +120,7 @@ internal class RatePromptViewModel(
                 mediaId = media.id,
                 mediaType = media.mediaType,
                 rating = 0, // A rating of 0 indicates removal of rating
+                source = RatingsUpdates.Source.Default,
             )
         }
     }

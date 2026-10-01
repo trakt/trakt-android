@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.home.sections.activity.views
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -24,13 +22,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
@@ -39,6 +39,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 
 @Composable
 internal fun ActivityMovieItemView(
@@ -49,6 +50,7 @@ internal fun ActivityMovieItemView(
     onClick: (TraktId) -> Unit = { },
     onLongClick: (() -> Unit)? = null,
     onUserClick: (user: User) -> Unit = { _ -> },
+    onRateClick: ((Int?) -> Unit)? = null,
 ) {
     HorizontalMediaCard(
         modifier = modifier,
@@ -141,26 +143,60 @@ internal fun ActivityMovieItemView(
                     )
                 }
 
-                itemRating?.let {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = spacedBy(2.dp),
+                when {
+                    onRateClick != null -> ActivityRateButton(
+                        rating = itemRating,
+                        title = item.movie.title,
+                        onRateClick = onRateClick,
+                        modifier = Modifier.padding(start = 8.dp),
+                    )
+
+                    itemRating != null -> ActivityItemRating(
+                        rating = itemRating,
                         modifier = Modifier.padding(start = 12.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_star_trakt_on),
-                            contentDescription = null,
-                            modifier = Modifier.size(13.dp),
-                            tint = TraktTheme.colors.textPrimary,
-                        )
-                        Text(
-                            text = it.rating5Scale,
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                        )
-                    }
+                    )
                 }
             }
         },
     )
+}
+
+private val PreviewMovieItem = HomeActivityItem.MovieItem(
+    id = 1,
+    activity = "watch",
+    activityAt = Instant.now(),
+    user = PreviewData.user1,
+    userRating = null,
+    movie = PreviewData.movie1,
+)
+
+private val PreviewMovieRating = UserRating(
+    mediaId = PreviewData.movie1.ids.trakt,
+    mediaType = MediaType.Movie,
+    rating = 9,
+)
+
+@Preview
+@Composable
+private fun MovieItemViewPreview() {
+    TraktTheme {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            ActivityMovieItemView(
+                item = PreviewMovieItem,
+            )
+            ActivityMovieItemView(
+                item = PreviewMovieItem,
+                itemRating = PreviewMovieRating,
+            )
+            ActivityMovieItemView(
+                item = PreviewMovieItem,
+                onRateClick = {},
+            )
+            ActivityMovieItemView(
+                item = PreviewMovieItem,
+                itemRating = PreviewMovieRating,
+                onRateClick = {},
+            )
+        }
+    }
 }

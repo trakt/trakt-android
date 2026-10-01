@@ -105,6 +105,7 @@ import tv.trakt.trakt.core.main.ui.checkin.MainCheckInView
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.main.ui.rateprompt.MainRatePromptView
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
+import tv.trakt.trakt.core.ratings.data.work.PostRatingException
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.ShowMedia
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
@@ -212,6 +213,10 @@ internal fun MainScreen(
         when {
             error is AuthorizationException -> localSnackbar.showSnackbar(
                 message = localRes.getString(R.string.error_text_unexpected_error_short),
+            )
+            error is PostRatingException -> localSnackbar.showSnackbar(
+                message = localRes.getString(R.string.error_text_rating_not_saved),
+                duration = SnackbarDuration.Long,
             )
             error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT -> navController.navigateToBilling()
         }

@@ -87,7 +87,7 @@ internal fun ProfileRatingEpisodeItemView(
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = spacedBy(3.dp),
+                    horizontalArrangement = spacedBy(2.dp),
                     modifier = Modifier.padding(start = 12.dp, end = 1.dp),
                 ) {
                     Icon(
@@ -99,7 +99,7 @@ internal fun ProfileRatingEpisodeItemView(
                     Text(
                         text = ratingText,
                         color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                        style = TraktTheme.typography.meta.copy(fontSize = 13.sp),
                     )
                 }
             }

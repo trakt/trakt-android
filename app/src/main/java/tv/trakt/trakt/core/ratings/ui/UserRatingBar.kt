@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -72,6 +73,7 @@ internal fun UserRatingBar(
     size: Dp = 23.dp,
     spacing: Dp = 8.dp,
     textSpacing: Dp = 44.dp,
+    topPadding: Dp = 22.dp,
     onRatingDrag: (Boolean) -> Unit = {},
     onRatingClick: (Int) -> Unit = {},
     onRatingRemoveClick: () -> Unit = {},
@@ -174,7 +176,7 @@ internal fun UserRatingBar(
     }
 
     Box(
-        modifier = modifier.padding(top = 22.dp),
+        modifier = modifier.padding(top = topPadding),
     ) {
         if (ratingAlphaMaskActive) {
             val ratingText = if (dragStars == 0f) {
@@ -193,7 +195,8 @@ internal fun UserRatingBar(
                     fontSize = 13.sp,
                 ),
                 modifier = Modifier
-                    .align(Alignment.Center)
+                    .matchParentSize()
+                    .wrapContentSize(unbounded = true)
                     .graphicsLayer {
                         if (favoriteVisible) {
                             translationX = -16.dp.toPx()

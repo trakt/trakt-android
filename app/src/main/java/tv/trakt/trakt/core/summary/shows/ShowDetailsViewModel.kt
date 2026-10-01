@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -64,6 +65,7 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
@@ -107,6 +109,7 @@ internal class ShowDetailsViewModel(
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val showDetailsUpdates: ShowDetailsUpdates,
+    private val ratingsUpdates: RatingsUpdates,
     private val episodeDetailsUpdates: EpisodeDetailsUpdates,
     private val favoritesUpdates: FavoritesUpdates,
     private val watchlistUpdates: WatchlistUpdates,
@@ -144,10 +147,22 @@ internal class ShowDetailsViewModel(
         loadUserRatingData()
         observeData()
         observeLists()
+        observeRatings()
 
         analytics.logScreenView(
             screenName = "show_details",
         )
+    }
+
+    private fun observeRatings() {
+        ratingsUpdates.observeUpdates()
+            .filterNot { it.first == RatingsUpdates.Source.MediaDetails }
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach {
+                refreshUserRating()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeData() {
@@ -344,6 +359,30 @@ internal class ShowDetailsViewModel(
             try {
                 showSocialsState.update {
                     getShowSocialsUseCase.getSocials(showId)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun refreshUserRating() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val rating = loadRatingUseCase.loadLocalShows()[showId]?.rating ?: 0
+                showUserRatingsState.update { state ->
+                    state?.copy(
+                        rating = state.rating?.copy(rating = rating) ?: UserRating(
+                            mediaId = showId,
+                            mediaType = Show,
+                            rating = rating,
+                        ),
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -801,6 +840,7 @@ internal class ShowDetailsViewModel(
                 mediaId = showId,
                 mediaType = Show,
                 rating = newRating,
+                source = RatingsUpdates.Source.MediaDetails,
             )
         }
     }
@@ -834,6 +874,7 @@ internal class ShowDetailsViewModel(
                 mediaId = showId,
                 mediaType = Show,
                 rating = 0, // A rating of 0 indicates removal of rating
+                source = RatingsUpdates.Source.MediaDetails,
             )
         }
     }

@@ -68,6 +68,7 @@ internal val episodeDetailsModule = module {
             updateHistoryUseCase = get(),
             showUpdatesSource = get(),
             episodeUpdatesSource = get(),
+            ratingsUpdates = get(),
             episodeLocalDataSource = get(),
             sessionManager = get(),
             checkInManager = get(),

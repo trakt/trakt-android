@@ -144,6 +144,7 @@ internal fun AllActivityPersonalScreen(
             }
         },
         onFiltersClick = { filtersSheet = true },
+        onRateClick = viewModel::rateItem,
     )
 
     HomeActivityItemSheet(
@@ -199,6 +200,7 @@ internal fun AllActivityPersonalContent(
     onMovieClick: (Movie) -> Unit = {},
     onModeClick: (MediaMode) -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onRateClick: (HomeActivityItem, Int?) -> Unit = { _, _ -> },
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -251,6 +253,7 @@ internal fun AllActivityPersonalContent(
             onMovieClick = onMovieClick,
             onModeClick = onModeClick,
             onFiltersClick = onFiltersClick,
+            onRateClick = onRateClick,
         )
     }
 }
@@ -273,6 +276,7 @@ private fun ContentList(
     onShowClick: (EpisodeItem) -> Unit,
     onEpisodeClick: (EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
+    onRateClick: (HomeActivityItem, Int?) -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -358,6 +362,7 @@ private fun ContentList(
                                 onMovieClick(item.movie)
                             },
                             onLongClick = { onLongClick(item) },
+                            onRateClick = { onRateClick(item, it) },
                             moreButton = true,
                             dateFormat = dateFormat,
                             modifier = Modifier
@@ -377,6 +382,7 @@ private fun ContentList(
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
                             onLongClick = { onLongClick(item) },
+                            onRateClick = { onRateClick(item, it) },
                             moreButton = true,
                             dateFormat = dateFormat,
                             modifier = Modifier

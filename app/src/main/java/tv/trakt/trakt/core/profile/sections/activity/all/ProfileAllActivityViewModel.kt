@@ -55,7 +55,6 @@ import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileComments
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileAllActivityViewModel(
@@ -98,7 +97,7 @@ internal class ProfileAllActivityViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeRatings() {
-        ratingsUpdates.observeUpdates(POST_RATING)
+        ratingsUpdates.observeUpdates()
             .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach {

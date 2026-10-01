@@ -6,9 +6,11 @@ import java.time.Instant
 internal interface RatingsUpdates {
     fun notifyUpdate(source: Source)
 
-    fun observeUpdates(source: Source): Flow<Instant?>
+    fun observeUpdates(): Flow<Pair<Source, Instant?>>
 
     enum class Source {
-        POST_RATING,
+        Default,
+        MediaDetails,
+        SeasonDetails,
     }
 }
