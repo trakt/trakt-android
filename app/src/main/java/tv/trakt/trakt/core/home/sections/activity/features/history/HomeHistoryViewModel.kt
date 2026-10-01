@@ -2,7 +2,6 @@
 
 package tv.trakt.trakt.core.home.sections.activity.features.history
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -40,7 +39,6 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -52,10 +50,10 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
+import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
-import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
@@ -70,8 +68,8 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class HomeHistoryViewModel(
-    private val appContext: Context,
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
+    private val rateActivityItemUseCase: RateActivityItemUseCase,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -318,40 +316,12 @@ internal class HomeHistoryViewModel(
     ) {
         ratingJob?.cancel()
         ratingJob = viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-
-            val currentRating = itemsRatingsState.value?.get(item.key)?.rating
-            if (currentRating == rating) {
-                return@launch
-            }
-
-            val (mediaId, mediaType) = when (item) {
-                is HomeActivityItem.MovieItem -> item.movie.ids.trakt to MediaType.Movie
-                is HomeActivityItem.EpisodeItem -> item.episode.ids.trakt to MediaType.Episode
-            }
-
-            itemsRatingsState.update { ratings ->
-                val current = ratings ?: emptyMap()
-                when (rating) {
-                    null -> current - item.key
-                    else -> current + (
-                        item.key to UserRating(
-                            mediaId = mediaId,
-                            mediaType = mediaType,
-                            rating = rating,
-                        )
-                    )
-                }.toImmutableMap()
-            }
-
-            PostRatingWorker.scheduleOneTime(
-                appContext = appContext,
-                mediaId = mediaId,
-                mediaType = mediaType,
-                rating = rating ?: 0, // A rating of 0 indicates removal of rating
-            )
+            val updated = rateActivityItemUseCase.rateItem(
+                item = item,
+                rating = rating,
+                ratings = itemsRatingsState.value,
+            ) ?: return@launch
+            itemsRatingsState.update { updated }
         }
     }
 
