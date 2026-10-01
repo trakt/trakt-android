@@ -53,7 +53,6 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUs
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
@@ -168,7 +167,7 @@ internal class HomeHistoryViewModel(
 
     private fun observeRatings() {
         merge(
-            ratingsUpdates.observeUpdates(POST_RATING),
+            ratingsUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)

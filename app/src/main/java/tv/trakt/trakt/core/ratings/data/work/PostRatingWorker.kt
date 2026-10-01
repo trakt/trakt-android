@@ -22,7 +22,6 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
 import kotlin.time.Duration.Companion.milliseconds
@@ -47,6 +46,7 @@ internal class PostRatingWorker(
             mediaId: TraktId,
             mediaType: MediaType,
             rating: Int,
+            source: RatingsUpdates.Source,
         ) {
             val workRequest = OneTimeWorkRequestBuilder<PostRatingWorker>()
                 .setInputData(
@@ -54,6 +54,7 @@ internal class PostRatingWorker(
                         .putInt("mediaId", mediaId.value)
                         .putString("mediaType", mediaType.name)
                         .putInt("rating", rating)
+                        .putString("source", source.name)
                         .build(),
                 )
                 .setInitialDelay(1.seconds.toJavaDuration())
@@ -87,6 +88,9 @@ internal class PostRatingWorker(
                 MediaType.valueOf(it)
             }
             val ratingValue = inputData.getInt("rating", -1)
+            val source = RatingsUpdates.Source.entries
+                .find { it.name == inputData.getString("source") }
+                ?: RatingsUpdates.Source.Default
 
             if (mediaId == -1) {
                 Timber.d("Invalid media ID, cannot post rating")
@@ -124,7 +128,8 @@ internal class PostRatingWorker(
                     )
                 }
 
-                delay(500.milliseconds)
+                delay(200.milliseconds)
+
                 when (mediaType) {
                     MediaType.Show -> loadUserRatingUseCase.loadShows()
                     MediaType.Movie -> loadUserRatingUseCase.loadMovies()
@@ -132,7 +137,7 @@ internal class PostRatingWorker(
                     MediaType.Season -> loadUserRatingUseCase.loadSeasons()
                 }
 
-                ratingsUpdates.notifyUpdate(POST_RATING)
+                ratingsUpdates.notifyUpdate(source)
             }
         } catch (error: Exception) {
             if (error is CancellationException) {

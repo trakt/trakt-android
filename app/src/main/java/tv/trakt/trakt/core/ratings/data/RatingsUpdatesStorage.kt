@@ -9,18 +9,16 @@ import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source
 import java.time.Instant
 
 internal class RatingsUpdatesStorage : RatingsUpdates {
-    private val updatesMaps = Source.entries.associateWith {
-        MutableSharedFlow<Instant?>(
-            extraBufferCapacity = 1,
-            onBufferOverflow = BufferOverflow.DROP_OLDEST,
-        )
-    }
+    private val updatedAt = MutableSharedFlow<Pair<Source, Instant?>>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
 
     override fun notifyUpdate(source: Source) {
-        updatesMaps[source]?.tryEmit(nowUtcInstant())
+        updatedAt.tryEmit(source to nowUtcInstant())
     }
 
-    override fun observeUpdates(source: Source): Flow<Instant?> {
-        return updatesMaps[source]?.asSharedFlow()!!
+    override fun observeUpdates(): Flow<Pair<Source, Instant?>> {
+        return updatedAt.asSharedFlow()
     }
 }

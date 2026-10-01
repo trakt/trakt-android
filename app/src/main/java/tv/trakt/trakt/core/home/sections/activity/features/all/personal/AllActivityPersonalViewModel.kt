@@ -55,7 +55,6 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -143,7 +142,7 @@ internal class AllActivityPersonalViewModel(
 
     private fun observeRatings() {
         merge(
-            ratingsUpdates.observeUpdates(POST_RATING),
+            ratingsUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)

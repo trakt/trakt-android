@@ -36,7 +36,6 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates.Source.History
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates.Source.Progress
@@ -105,7 +104,7 @@ internal class MovieHistoryViewModel(
 
     private fun observeRatings() {
         merge(
-            ratingsUpdates.observeUpdates(POST_RATING),
+            ratingsUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)

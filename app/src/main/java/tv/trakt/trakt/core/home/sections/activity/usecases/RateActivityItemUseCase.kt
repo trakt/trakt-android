@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 
 internal class RateActivityItemUseCase(
@@ -37,6 +38,7 @@ internal class RateActivityItemUseCase(
             mediaId = mediaId,
             mediaType = mediaType,
             rating = rating ?: 0, // A rating of 0 indicates removal of rating
+            source = RatingsUpdates.Source.Default,
         )
 
         return when (rating) {

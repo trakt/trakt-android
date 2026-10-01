@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -23,7 +24,6 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsState
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
@@ -53,7 +53,8 @@ internal class SeasonRatingController(
     private var ratingJob: Job? = null
 
     init {
-        ratingsUpdates.observeUpdates(POST_RATING)
+        ratingsUpdates.observeUpdates()
+            .filterNot { it.first == RatingsUpdates.Source.SeasonDetails }
             .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach {
@@ -136,6 +137,7 @@ internal class SeasonRatingController(
                 mediaId = season.ids.trakt,
                 mediaType = MediaType.Season,
                 rating = newRating,
+                source = RatingsUpdates.Source.SeasonDetails,
             )
         }
     }
@@ -168,6 +170,7 @@ internal class SeasonRatingController(
                 mediaId = season.ids.trakt,
                 mediaType = MediaType.Season,
                 rating = 0, // A rating of 0 indicates removal of rating
+                source = RatingsUpdates.Source.SeasonDetails,
             )
         }
     }

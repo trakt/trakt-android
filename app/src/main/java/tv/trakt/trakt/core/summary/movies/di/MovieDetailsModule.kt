@@ -86,6 +86,7 @@ internal val movieDetailsModule = module {
             userWatchlistMinLocalSource = get(),
             userFavoritesLocalSource = get(),
             movieDetailsUpdates = get(),
+            ratingsUpdates = get(),
             favoritesUpdates = get(),
             checkInUpdates = get(),
             watchlistUpdates = get(),

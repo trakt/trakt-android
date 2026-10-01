@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.EpisodeDetails
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
@@ -86,6 +87,7 @@ internal class EpisodeDetailsViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val showUpdatesSource: ShowDetailsUpdates,
     private val episodeUpdatesSource: EpisodeDetailsUpdates,
+    private val ratingsUpdates: RatingsUpdates,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
@@ -129,10 +131,22 @@ internal class EpisodeDetailsViewModel(
 
         observeData()
         observeCheckIn()
+        observeRatings()
 
         analytics.logScreenView(
             screenName = "episode_details",
         )
+    }
+
+    private fun observeRatings() {
+        ratingsUpdates.observeUpdates()
+            .filterNot { it.first == RatingsUpdates.Source.MediaDetails }
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach {
+                refreshUserRating()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeData() {
@@ -357,6 +371,24 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    private fun refreshUserRating() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val userRating = loadRatingUseCase.loadLocalEpisodes()[episodeId]
+                episodeUserRatingsState.update { state ->
+                    state?.copy(rating = userRating)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     private fun loadCreator() {
         viewModelScope.launch {
             try {
@@ -551,6 +583,7 @@ internal class EpisodeDetailsViewModel(
                 mediaId = episodeId,
                 mediaType = Episode,
                 rating = newRating,
+                source = RatingsUpdates.Source.MediaDetails,
             )
         }
     }
@@ -584,6 +617,7 @@ internal class EpisodeDetailsViewModel(
                 mediaId = episodeId,
                 mediaType = Episode,
                 rating = 0, // A rating of 0 indicates removal of rating
+                source = RatingsUpdates.Source.MediaDetails,
             )
         }
     }
