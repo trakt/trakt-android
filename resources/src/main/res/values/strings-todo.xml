@@ -3,14 +3,4 @@
   <string name="error_text_imdb_link_not_found">We couldn\'t find this IMDb title on Trakt.</string>
   <string name="text_settings_open_imdb_links">Open IMDb links in Trakt</string>
   <string name="text_settings_open_imdb_links_description">Turn on \"Open supported links\" and add the IMDb links.</string>
-  <string name="button_label_format_bold">Bold</string>
-  <string name="button_label_format_bullet_list">Bullet list</string>
-  <string name="button_label_format_italic">Italic</string>
-  <string name="button_label_format_mention">Mention cast</string>
-  <string name="button_label_format_quote">Quote</string>
-  <string name="button_label_format_remove_mention">Remove mention</string>
-  <string name="button_label_format_spoiler">Hide as spoiler</string>
-  <string name="input_placeholder_mention_search">Search cast</string>
-  <string name="text_no_matching_cast">No matching cast</string>
-  <string name="toolbar_label_text_formatting">Text formatting</string>
 </resources>
