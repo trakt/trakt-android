@@ -181,21 +181,17 @@ private val PreviewMovieRating = UserRating(
 private fun MovieItemViewPreview() {
     TraktTheme {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            // No rating, rating button disabled.
             ActivityMovieItemView(
                 item = PreviewMovieItem,
             )
-            // Rated, rating button disabled.
             ActivityMovieItemView(
                 item = PreviewMovieItem,
                 itemRating = PreviewMovieRating,
             )
-            // Unrated, rating button enabled.
             ActivityMovieItemView(
                 item = PreviewMovieItem,
                 onRateClick = {},
             )
-            // Rated, rating button enabled.
             ActivityMovieItemView(
                 item = PreviewMovieItem,
                 itemRating = PreviewMovieRating,

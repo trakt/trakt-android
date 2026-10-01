@@ -54,14 +54,12 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-// Keeps the popup open long enough for the star bounce, or for the full delight animation.
 private val DismissDelay = 600.milliseconds
 private val DismissDelightDelay = 2100.milliseconds
 
 private val PopupShape = RoundedCornerShape(16.dp)
 
-// The drag label sits above the stars, so the popup background grows upwards while dragging.
-// The popup window itself always reserves the drag height, so it never resizes mid-gesture.
+// The popup window always reserves the drag label height, so it never resizes mid-gesture.
 private val PopupIdleTopPadding = 16.dp
 private val PopupDragTopPadding = 50.dp
 private val PopupLabelSpacing = 40.dp
@@ -71,10 +69,6 @@ private data class RatingCommit(
     val rating: Int?,
 )
 
-/**
- * Shows the user's rating for an item, or an empty star for unrated items. Tapping either opens a
- * [UserRatingBar] popup above the button. [onRateClick] receives a 1-10 rating, or null on removal.
- */
 @Composable
 internal fun ActivityRateButton(
     rating: UserRating?,
@@ -244,8 +238,7 @@ private fun RatingPopupContent(
             ),
         )
 
-        // The reserved area above the visible popup behaves like the outside of the popup.
-        // Sized from the parent, as fillMaxWidth would stretch the popup to the window width.
+        // fillMaxWidth would stretch the popup to the window width.
         Box(
             modifier = Modifier
                 .matchParentSize()
@@ -256,14 +249,11 @@ private fun RatingPopupContent(
     }
 }
 
-/**
- * Places the popup centered above its anchor, kept inside the window bounds. The anchor is locked
- * at first placement, so the popup stays put when the anchor content changes after rating.
- */
 private class AboveAnchorPositionProvider(
     private val gap: Int,
     private val margin: Int,
 ) : PopupPositionProvider {
+    // Keeps the popup in place when the anchor content changes width after rating.
     private var lockedAnchor: IntRect? = null
 
     override fun calculatePosition(

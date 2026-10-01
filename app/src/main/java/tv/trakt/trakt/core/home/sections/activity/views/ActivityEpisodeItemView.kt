@@ -201,21 +201,17 @@ private val PreviewEpisodeRating = UserRating(
 private fun EpisodeItemViewPreview() {
     TraktTheme {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            // No rating, rating button disabled.
             ActivityEpisodeItemView(
                 item = PreviewEpisodeItem,
             )
-            // Rated, rating button disabled.
             ActivityEpisodeItemView(
                 item = PreviewEpisodeItem,
                 itemRating = PreviewEpisodeRating,
             )
-            // Unrated, rating button enabled.
             ActivityEpisodeItemView(
                 item = PreviewEpisodeItem,
                 onRateClick = {},
             )
-            // Rated, rating button enabled.
             ActivityEpisodeItemView(
                 item = PreviewEpisodeItem,
                 itemRating = PreviewEpisodeRating,

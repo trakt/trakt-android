@@ -139,8 +139,7 @@ internal fun RatingDelightOverlay(
     val kernels = remember(key) { kernels() }
     val leaf = remember { PathParser().parsePathString(TOMATO_LEAF_PATH).toPath() }
 
-    // Screen coordinates, as the anchor and the overlay can live in different windows
-    // (e.g. when the rating bar is itself hosted in a popup).
+    // The anchor and the overlay can live in different windows, e.g. inside a popup.
     var anchorOnScreen by remember { mutableStateOf(Offset.Unspecified) }
     var overlayOnScreen by remember { mutableStateOf(Offset.Unspecified) }
     Spacer(

@@ -194,7 +194,6 @@ internal fun UserRatingBar(
                 style = TraktTheme.typography.meta.copy(
                     fontSize = 13.sp,
                 ),
-                // Sized by the stars and drawn unbounded, so a long label never resizes the bar.
                 modifier = Modifier
                     .matchParentSize()
                     .wrapContentSize(unbounded = true)

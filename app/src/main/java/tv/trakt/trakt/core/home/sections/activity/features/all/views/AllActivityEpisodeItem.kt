@@ -116,12 +116,10 @@ internal fun AllActivityEpisodeItem(
                 ) {
                     when {
                         onRateClick != null -> ActivityRateButton(
-                            // The local ratings are the source of truth here, so removals show.
                             rating = itemRating,
                             title = item.show.title,
                             starSize = 15.dp,
                             onRateClick = onRateClick,
-                            // Offsets the button touch padding to keep the content edges aligned.
                             modifier = Modifier.offset(x = 4.dp, y = 4.dp),
                         )
 
@@ -169,19 +167,16 @@ private val PreviewEpisodeRating = UserRating(
 private fun AllActivityEpisodeItemPreview() {
     TraktTheme {
         Column(verticalArrangement = spacedBy(16.dp)) {
-            // Rated, rating button disabled.
             AllActivityEpisodeItem(
                 item = PreviewEpisodeItem,
                 itemRating = PreviewEpisodeRating,
                 modifier = Modifier.fillMaxWidth(),
             )
-            // Unrated, rating button enabled.
             AllActivityEpisodeItem(
                 item = PreviewEpisodeItem,
                 onRateClick = {},
                 modifier = Modifier.fillMaxWidth(),
             )
-            // Rated, rating button enabled.
             AllActivityEpisodeItem(
                 item = PreviewEpisodeItem,
                 itemRating = PreviewEpisodeRating,

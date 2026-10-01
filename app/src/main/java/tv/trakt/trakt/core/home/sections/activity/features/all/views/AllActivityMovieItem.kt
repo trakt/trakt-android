@@ -115,12 +115,10 @@ internal fun AllActivityMovieItem(
                 ) {
                     when {
                         onRateClick != null -> ActivityRateButton(
-                            // The local ratings are the source of truth here, so removals show.
                             rating = itemRating,
                             title = item.movie.title,
                             starSize = 15.dp,
                             onRateClick = onRateClick,
-                            // Offsets the button touch padding to keep the content edges aligned.
                             modifier = Modifier.offset(x = 4.dp, y = 4.dp),
                         )
 
@@ -167,19 +165,16 @@ private val PreviewMovieRating = UserRating(
 private fun AllActivityMovieItemPreview() {
     TraktTheme {
         Column(verticalArrangement = spacedBy(16.dp)) {
-            // Rated, rating button disabled.
             AllActivityMovieItem(
                 item = PreviewMovieItem,
                 itemRating = PreviewMovieRating,
                 modifier = Modifier.fillMaxWidth(),
             )
-            // Unrated, rating button enabled.
             AllActivityMovieItem(
                 item = PreviewMovieItem,
                 onRateClick = {},
                 modifier = Modifier.fillMaxWidth(),
             )
-            // Rated, rating button enabled.
             AllActivityMovieItem(
                 item = PreviewMovieItem,
                 itemRating = PreviewMovieRating,

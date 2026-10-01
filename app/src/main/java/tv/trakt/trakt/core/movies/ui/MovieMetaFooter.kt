@@ -157,13 +157,13 @@ fun MovieMetaFooter(
                 Icon(
                     painter = painterResource(R.drawable.ic_star_trakt_on),
                     contentDescription = null,
-                    modifier = Modifier.size(14.dp),
+                    modifier = Modifier.size(15.dp),
                     tint = TraktTheme.colors.textPrimary,
                 )
                 Text(
                     text = userRating.rating5Scale,
                     color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                    style = TraktTheme.typography.meta.copy(fontSize = 13.sp),
                 )
             }
         }
