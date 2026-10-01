@@ -182,8 +182,8 @@ internal fun ReorderContent(
                             contentImageUrl = item.posterUrl,
                             containerImageUrl = item.backdropUrl,
                             shadow = when {
-                                isDragging -> 4.dp
-                                else -> 0.dp
+                                isDragging -> 0.dp
+                                else -> TraktTheme.colors.shadowDynamicDefault
                             },
                             handleModifier = Modifier.dragHandle(
                                 state = dragDropState,

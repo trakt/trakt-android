@@ -29,14 +29,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -57,7 +56,7 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
-import tv.trakt.trakt.common.ui.theme.colors.Shade940
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
@@ -85,16 +84,13 @@ internal fun ListReorderMediaCard(
         modifier = modifier
             .ifOrElse(
                 condition = onClick != null,
-                isTrue = Modifier.onClick(indication = true) { onClick?.invoke() },
+                isTrue = Modifier.onClick(indication = false) {
+                    onClick?.invoke()
+                },
             )
-            .dropShadow(
+            .shadow(
+                elevation = shadow,
                 shape = RoundedCornerShape(corner),
-                shadow = Shadow(
-                    radius = shadow,
-                    color = Shade940,
-                    spread = 2.dp,
-                    alpha = if (shadow > 0.dp) 0.33F else 0F,
-                ),
             )
             .graphicsLayer {
                 clip = false
@@ -284,7 +280,7 @@ internal fun ListReorderMediaCard(
 @DevicePreview
 @Composable
 private fun PosterPreview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }
@@ -295,6 +291,7 @@ private fun PosterPreview() {
                 subtitle = "2026",
                 contentImageUrl = null,
                 containerImageUrl = null,
+                modifier = Modifier.padding(16.dp),
             )
         }
     }
