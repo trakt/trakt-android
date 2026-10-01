@@ -10132,6 +10132,9 @@
                     "user": {
                       "type": "object",
                       "properties": {
+                        "email": {
+                          "type": "string"
+                        },
                         "username": {
                           "type": "string"
                         },
@@ -10139,10 +10142,6 @@
                           "type": "boolean"
                         },
                         "name": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "email": {
                           "type": "string",
                           "nullable": true
                         },
@@ -10228,6 +10227,7 @@
                         }
                       },
                       "required": [
+                        "email",
                         "username",
                         "private",
                         "vip",
@@ -11334,6 +11334,26 @@
                               "vip_cover_image": {
                                 "type": "string",
                                 "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
+                                "type": "string",
+                                "nullable": true
                               }
                             },
                             "required": [
@@ -11618,6 +11638,26 @@
                                         "nullable": true
                                       },
                                       "vip_cover_image": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "vip_veteran_since": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "vip_veteran_years": {
+                                        "type": "integer",
+                                        "nullable": true
+                                      },
+                                      "vip_veteran_tier": {
+                                        "type": "integer",
+                                        "nullable": true
+                                      },
+                                      "vip_veteran_title": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "vip_grace_ends_at": {
                                         "type": "string",
                                         "nullable": true
                                       }
@@ -12875,6 +12915,26 @@
                                       "vip_cover_image": {
                                         "type": "string",
                                         "nullable": true
+                                      },
+                                      "vip_veteran_since": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "vip_veteran_years": {
+                                        "type": "integer",
+                                        "nullable": true
+                                      },
+                                      "vip_veteran_tier": {
+                                        "type": "integer",
+                                        "nullable": true
+                                      },
+                                      "vip_veteran_title": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "vip_grace_ends_at": {
+                                        "type": "string",
+                                        "nullable": true
                                       }
                                     },
                                     "required": [
@@ -13180,6 +13240,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -15740,6 +15820,26 @@
                     "vip_cover_image": {
                       "type": "string",
                       "nullable": true
+                    },
+                    "vip_veteran_since": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "vip_veteran_years": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "vip_veteran_tier": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "vip_veteran_title": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "vip_grace_ends_at": {
+                      "type": "string",
+                      "nullable": true
                     }
                   },
                   "required": [
@@ -16053,6 +16153,26 @@
                                 "nullable": true
                               },
                               "vip_cover_image": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
                                 "type": "string",
                                 "nullable": true
                               }
@@ -16603,6 +16723,26 @@
                               "vip_cover_image": {
                                 "type": "string",
                                 "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
+                                "type": "string",
+                                "nullable": true
                               }
                             },
                             "required": [
@@ -16888,7 +17028,7 @@
     },
     "/users/{id}/stats": {
       "get": {
-        "description": "#### 🔓 OAuth Optional\nReturns stats about the movies, shows, and episodes a user has watched, collected, and rated.",
+        "description": "#### 🔥 VIP Only 🔓 OAuth Optional\nReturns stats about the movies, shows, and episodes a user has watched, collected, and rated.\n\nStats are precomputed for VIP users only. Returns `204 No Content` when no precomputed stats are available.",
         "summary": "Get stats",
         "tags": [
           "users"
@@ -17142,6 +17282,14 @@
                     "total_plays"
                   ]
                 }
+              }
+            }
+          },
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
               }
             }
           }
@@ -17432,6 +17580,26 @@
                                 "nullable": true
                               },
                               "vip_cover_image": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
                                 "type": "string",
                                 "nullable": true
                               }
@@ -19410,6 +19578,26 @@
                         "vip_cover_image": {
                           "type": "string",
                           "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -19798,6 +19986,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -19963,6 +20171,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -20126,6 +20354,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -31952,6 +32200,24 @@
               "type": "boolean",
               "nullable": true
             }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -32435,6 +32701,24 @@
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
             "schema": {
               "type": "boolean",
               "nullable": true
@@ -32953,6 +33237,24 @@
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
             "schema": {
               "type": "boolean",
               "nullable": true
@@ -33760,6 +34062,24 @@
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
             "schema": {
               "type": "boolean",
               "nullable": true
@@ -34585,6 +34905,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -44018,6 +44358,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -44290,6 +44650,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -44572,6 +44952,26 @@
                         "vip_cover_image": {
                           "type": "string",
                           "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -44822,6 +45222,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -45162,6 +45582,26 @@
                         "vip_cover_image": {
                           "type": "string",
                           "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -45457,6 +45897,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -54438,6 +54898,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -54813,6 +55293,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -64080,6 +64580,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -64239,6 +64759,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -64411,6 +64951,26 @@
                           "nullable": true
                         },
                         "vip_cover_image": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
                           "type": "string",
                           "nullable": true
                         }
@@ -89434,6 +89994,26 @@
                               "type": "string",
                               "nullable": true
                             },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
+                              "type": "string",
+                              "nullable": true
+                            },
                             "notes": {
                               "type": "string"
                             }
@@ -89542,6 +90122,26 @@
                               "nullable": true
                             },
                             "vip_cover_image": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
                               "type": "string",
                               "nullable": true
                             },
@@ -90136,6 +90736,26 @@
                               "type": "string",
                               "nullable": true
                             },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
+                              "type": "string",
+                              "nullable": true
+                            },
                             "notes": {
                               "type": "string"
                             }
@@ -90244,6 +90864,26 @@
                               "nullable": true
                             },
                             "vip_cover_image": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
                               "type": "string",
                               "nullable": true
                             },
@@ -90717,6 +91357,26 @@
                               "type": "string",
                               "nullable": true
                             },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
+                              "type": "string",
+                              "nullable": true
+                            },
                             "notes": {
                               "type": "string"
                             }
@@ -90825,6 +91485,26 @@
                               "nullable": true
                             },
                             "vip_cover_image": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
                               "type": "string",
                               "nullable": true
                             },
@@ -91294,6 +91974,26 @@
                               "type": "string",
                               "nullable": true
                             },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
+                              "type": "string",
+                              "nullable": true
+                            },
                             "notes": {
                               "type": "string"
                             }
@@ -91402,6 +92102,26 @@
                               "nullable": true
                             },
                             "vip_cover_image": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
                               "type": "string",
                               "nullable": true
                             },
@@ -94926,6 +95646,26 @@
                       "vip_cover_image": {
                         "type": "string",
                         "nullable": true
+                      },
+                      "vip_veteran_since": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "vip_veteran_years": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vip_veteran_tier": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vip_veteran_title": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "vip_grace_ends_at": {
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
@@ -95714,6 +96454,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "death": {
                                 "type": "string",
                                 "nullable": true
@@ -95728,11 +96473,6 @@
                               },
                               "gender": {
                                 "type": "string",
-                                "nullable": true
-                              },
-                              "height": {
-                                "type": "number",
-                                "format": "float",
                                 "nullable": true
                               },
                               "known_for_department": {
@@ -95874,6 +96614,11 @@
                                   "type": "string",
                                   "nullable": true
                                 },
+                                "height": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
                                 "death": {
                                   "type": "string",
                                   "nullable": true
@@ -95888,11 +96633,6 @@
                                 },
                                 "gender": {
                                   "type": "string",
-                                  "nullable": true
-                                },
-                                "height": {
-                                  "type": "number",
-                                  "format": "float",
                                   "nullable": true
                                 },
                                 "known_for_department": {
@@ -96313,6 +97053,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -96620,6 +97380,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -104072,6 +104852,26 @@
                       "vip_cover_image": {
                         "type": "string",
                         "nullable": true
+                      },
+                      "vip_veteran_since": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "vip_veteran_years": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vip_veteran_tier": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vip_veteran_title": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "vip_grace_ends_at": {
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
@@ -105260,6 +106060,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "death": {
                                 "type": "string",
                                 "nullable": true
@@ -105274,11 +106079,6 @@
                               },
                               "gender": {
                                 "type": "string",
-                                "nullable": true
-                              },
-                              "height": {
-                                "type": "number",
-                                "format": "float",
                                 "nullable": true
                               },
                               "known_for_department": {
@@ -105420,6 +106220,11 @@
                                   "type": "string",
                                   "nullable": true
                                 },
+                                "height": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
                                 "death": {
                                   "type": "string",
                                   "nullable": true
@@ -105434,11 +106239,6 @@
                                 },
                                 "gender": {
                                   "type": "string",
-                                  "nullable": true
-                                },
-                                "height": {
-                                  "type": "number",
-                                  "format": "float",
                                   "nullable": true
                                 },
                                 "known_for_department": {
@@ -106384,6 +107184,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -106677,6 +107497,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -106854,6 +107694,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "death": {
                                 "type": "string",
                                 "nullable": true
@@ -106868,11 +107713,6 @@
                               },
                               "gender": {
                                 "type": "string",
-                                "nullable": true
-                              },
-                              "height": {
-                                "type": "number",
-                                "format": "float",
                                 "nullable": true
                               },
                               "known_for_department": {
@@ -107014,6 +107854,11 @@
                                   "type": "string",
                                   "nullable": true
                                 },
+                                "height": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
                                 "death": {
                                   "type": "string",
                                   "nullable": true
@@ -107028,11 +107873,6 @@
                                 },
                                 "gender": {
                                   "type": "string",
-                                  "nullable": true
-                                },
-                                "height": {
-                                  "type": "number",
-                                  "format": "float",
                                   "nullable": true
                                 },
                                 "known_for_department": {
@@ -107697,6 +108537,26 @@
                       "vip_cover_image": {
                         "type": "string",
                         "nullable": true
+                      },
+                      "vip_veteran_since": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "vip_veteran_years": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vip_veteran_tier": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vip_veteran_title": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "vip_grace_ends_at": {
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
@@ -108310,6 +109170,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -108617,6 +109497,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -109814,6 +110714,26 @@
                       "vip_cover_image": {
                         "type": "string",
                         "nullable": true
+                      },
+                      "vip_veteran_since": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "vip_veteran_years": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vip_veteran_tier": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "vip_veteran_title": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "vip_grace_ends_at": {
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
@@ -110110,6 +111030,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -110278,6 +111218,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "death": {
                                 "type": "string",
                                 "nullable": true
@@ -110292,11 +111237,6 @@
                               },
                               "gender": {
                                 "type": "string",
-                                "nullable": true
-                              },
-                              "height": {
-                                "type": "number",
-                                "format": "float",
                                 "nullable": true
                               },
                               "known_for_department": {
@@ -110438,6 +111378,11 @@
                                   "type": "string",
                                   "nullable": true
                                 },
+                                "height": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
                                 "death": {
                                   "type": "string",
                                   "nullable": true
@@ -110452,11 +111397,6 @@
                                 },
                                 "gender": {
                                   "type": "string",
-                                  "nullable": true
-                                },
-                                "height": {
-                                  "type": "number",
-                                  "format": "float",
                                   "nullable": true
                                 },
                                 "known_for_department": {
@@ -110811,6 +111751,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -116980,6 +117940,11 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "height": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
                           "death": {
                             "type": "string",
                             "nullable": true
@@ -117190,6 +118155,26 @@
                                 "nullable": true
                               },
                               "vip_cover_image": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
                                 "type": "string",
                                 "nullable": true
                               }
@@ -118052,6 +119037,11 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "height": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
                           "death": {
                             "type": "string",
                             "nullable": true
@@ -118262,6 +119252,26 @@
                                 "nullable": true
                               },
                               "vip_cover_image": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
                                 "type": "string",
                                 "nullable": true
                               }
@@ -119128,6 +120138,11 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "height": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
                           "death": {
                             "type": "string",
                             "nullable": true
@@ -119338,6 +120353,26 @@
                                 "nullable": true
                               },
                               "vip_cover_image": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
                                 "type": "string",
                                 "nullable": true
                               }
@@ -120102,6 +121137,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "death": {
                                 "type": "string",
                                 "nullable": true
@@ -120427,6 +121467,11 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "height": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
                           "death": {
                             "type": "string",
                             "nullable": true
@@ -120441,11 +121486,6 @@
                           },
                           "gender": {
                             "type": "string",
-                            "nullable": true
-                          },
-                          "height": {
-                            "type": "number",
-                            "format": "float",
                             "nullable": true
                           },
                           "known_for_department": {
@@ -120664,6 +121704,11 @@
                       "type": "string",
                       "nullable": true
                     },
+                    "height": {
+                      "type": "number",
+                      "format": "float",
+                      "nullable": true
+                    },
                     "death": {
                       "type": "string",
                       "nullable": true
@@ -120678,11 +121723,6 @@
                     },
                     "gender": {
                       "type": "string",
-                      "nullable": true
-                    },
-                    "height": {
-                      "type": "number",
-                      "format": "float",
                       "nullable": true
                     },
                     "known_for_department": {
@@ -122194,6 +123234,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -123551,6 +124611,26 @@
                               "vip_cover_image": {
                                 "type": "string",
                                 "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
+                                "type": "string",
+                                "nullable": true
                               }
                             },
                             "required": [
@@ -123927,6 +125007,26 @@
                               "vip_cover_image": {
                                 "type": "string",
                                 "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
+                                "type": "string",
+                                "nullable": true
                               }
                             },
                             "required": [
@@ -124292,6 +125392,26 @@
                                 "nullable": true
                               },
                               "vip_cover_image": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
                                 "type": "string",
                                 "nullable": true
                               }
@@ -124670,6 +125790,26 @@
                               "vip_cover_image": {
                                 "type": "string",
                                 "nullable": true
+                              },
+                              "vip_veteran_since": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_veteran_years": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_tier": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "vip_veteran_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "vip_grace_ends_at": {
+                                "type": "string",
+                                "nullable": true
                               }
                             },
                             "required": [
@@ -125042,6 +126182,26 @@
                           "nullable": true
                         },
                         "vip_cover_image": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
                           "type": "string",
                           "nullable": true
                         }
@@ -130313,6 +131473,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -130503,6 +131683,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -131847,6 +133047,26 @@
                         "vip_cover_image": {
                           "type": "string",
                           "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -132725,6 +133945,26 @@
                             "vip_cover_image": {
                               "type": "string",
                               "nullable": true
+                            },
+                            "vip_veteran_since": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_veteran_years": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_tier": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "vip_veteran_title": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "vip_grace_ends_at": {
+                              "type": "string",
+                              "nullable": true
                             }
                           },
                           "required": [
@@ -132927,6 +134167,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -133361,6 +134621,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -133634,6 +134914,26 @@
                           "nullable": true
                         },
                         "vip_cover_image": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
                           "type": "string",
                           "nullable": true
                         }
@@ -133910,6 +135210,26 @@
                           "nullable": true
                         },
                         "vip_cover_image": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
                           "type": "string",
                           "nullable": true
                         }
@@ -134220,6 +135540,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -134614,6 +135954,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -134894,6 +136254,26 @@
                           "vip_cover_image": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -135172,6 +136552,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
@@ -135572,6 +136972,26 @@
                           "nullable": true
                         },
                         "vip_cover_image": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_since": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_veteran_years": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_tier": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "vip_veteran_title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "vip_grace_ends_at": {
                           "type": "string",
                           "nullable": true
                         }
@@ -138992,6 +140412,26 @@
                             "nullable": true
                           },
                           "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_since": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_veteran_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_tier": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_veteran_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip_grace_ends_at": {
                             "type": "string",
                             "nullable": true
                           }
