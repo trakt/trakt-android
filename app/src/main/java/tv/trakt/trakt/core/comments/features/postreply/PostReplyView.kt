@@ -164,8 +164,7 @@ private fun ViewContent(
                             contentDescription = stringResource(R.string.button_label_add_gif),
                             tint = TraktTheme.colors.textPrimary,
                             modifier = Modifier
-                                .size(36.dp)
-                                .padding(8.dp)
+                                .size(22.dp)
                                 .onClick(enabled = !isLoading) {
                                     isGifPickerVisible = true
                                 },
