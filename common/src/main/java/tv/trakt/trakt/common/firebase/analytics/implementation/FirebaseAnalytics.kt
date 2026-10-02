@@ -61,10 +61,10 @@ internal class FirebaseAnalytics(
         )
     }
 
-    override fun logUserLogin() {
+    override fun logUserLogin(source: String) {
         firebaseAnalytics.logEvent(
             eventName(LOGIN),
-            null,
+            bundleOf(PARAMETER_SOURCE to source.lowercase()),
         )
     }
 

@@ -354,7 +354,7 @@ internal class MainViewModel(
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
                     analytics.setUserProperty("vip", it.isAnyVip.toString().lowercase())
-                    analytics.logUserLogin()
+                    analytics.logUserLogin(source = ConfigAuth.redirectSource(redirectUri))
                     dismissPaywall(it)
                 }
             } catch (error: Exception) {

@@ -31,8 +31,9 @@ interface Analytics {
 
     /**
      * Logs a user login event.
+     * @param source The redirect that delivered the authorization code.
      */
-    fun logUserLogin()
+    fun logUserLogin(source: String)
 
     /**
      * Logs a user logout event.

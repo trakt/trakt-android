@@ -26,8 +26,8 @@ internal class DebugAnalytics(
         Timber.d("logScreenView: screenName=$screenName")
     }
 
-    override fun logUserLogin() {
-        Timber.d("logUserLogin")
+    override fun logUserLogin(source: String) {
+        Timber.d("logUserLogin: source=${source.lowercase()}")
     }
 
     override fun logUserLogout() {

@@ -19,6 +19,12 @@ internal object ConfigAuth {
             uri.host == OAUTH_HTTPS_REDIRECT_HOST &&
             uri.path == OAUTH_HTTPS_REDIRECT_PATH
 
+    fun redirectSource(redirectUri: String): String =
+        when (redirectUri) {
+            OAUTH_HTTPS_REDIRECT_URI -> "https"
+            else -> OAUTH_REDIRECT_SCHEME
+        }
+
     /**
      * Builds the OAuth authorization URL for the given PKCE [codeVerifier] (RFC 7636). The
      * verifier is generated and persisted by the caller so it survives process death while the
