@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -25,11 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -49,8 +51,11 @@ import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.PosterImage
+import tv.trakt.trakt.app.core.people.model.PersonHistoryItem
+import tv.trakt.trakt.app.core.people.views.HistoryCreditsView
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -64,6 +69,7 @@ import kotlin.math.roundToInt
 private val sections = listOf(
     "poster",
     "overview",
+    "history",
     "shows",
     "movies",
 )
@@ -147,6 +153,7 @@ private fun PersonDetailsScreenContent(
                 )
                 if (state.error == null) {
                     MainContent(
+                        historyCredits = state.personHistoryCredits,
                         showCredits = state.personShowCredits,
                         movieCredits = state.personMovieCredits,
                         onFocused = { focusedSection = it },
@@ -262,6 +269,7 @@ private fun HeaderContent(
 
 @Composable
 private fun MainContent(
+    historyCredits: ImmutableList<PersonHistoryItem>?,
     showCredits: ImmutableList<Show>?,
     movieCredits: ImmutableList<Movie>?,
     onFocused: (String) -> Unit,
@@ -273,6 +281,23 @@ private fun MainContent(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier.fillMaxWidth(),
     ) {
+        AnimatedVisibility(
+            visible = historyCredits?.isNotEmpty() == true,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            HistoryCreditsView(
+                header = stringResource(R.string.list_title_from_my_history),
+                items = historyCredits ?: EmptyImmutableList,
+                onFocused = { onFocused("history") },
+                onShowClick = onShowClick,
+                onMovieClick = onMovieClick,
+                modifier = Modifier
+                    .padding(bottom = 36.dp)
+                    .focusRequester(focusRequesters.getValue("history")),
+            )
+        }
+
         AnimatedVisibility(
             visible = showCredits?.isNotEmpty() == true,
             enter = fadeIn(),
@@ -306,6 +331,7 @@ private fun MainContent(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ShowCreditsList(
     header: String,
@@ -314,6 +340,8 @@ private fun ShowCreditsList(
     onClicked: (Show) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val firstItem = remember { FocusRequester() }
+
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -329,15 +357,16 @@ private fun ShowCreditsList(
         )
 
         PositionFocusLazyRow(
+            modifier = Modifier.focusRestorer(firstItem),
             contentPadding = PaddingValues(
                 start = TraktTheme.spacing.mainContentStartSpace,
                 end = TraktTheme.spacing.mainContentEndSpace,
             ),
         ) {
-            items(
+            itemsIndexed(
                 items = shows,
-                key = { it.ids.trakt.value },
-            ) { show ->
+                key = { _, item -> item.ids.trakt.value },
+            ) { index, show ->
                 VerticalMediaCard(
                     title = show.title,
                     imageUrl = show.images?.getPosterUrl(),
@@ -364,6 +393,9 @@ private fun ShowCreditsList(
                         }
                     },
                     modifier = Modifier
+                        .then(
+                            if (index == 0) Modifier.focusRequester(firstItem) else Modifier,
+                        )
                         .onFocusChanged {
                             if (it.hasFocus) {
                                 onFocused()
@@ -377,6 +409,7 @@ private fun ShowCreditsList(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun MovieCreditsList(
     header: String,
@@ -385,6 +418,8 @@ private fun MovieCreditsList(
     onClicked: (Movie) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val firstItem = remember { FocusRequester() }
+
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -400,15 +435,16 @@ private fun MovieCreditsList(
         )
 
         PositionFocusLazyRow(
+            modifier = Modifier.focusRestorer(firstItem),
             contentPadding = PaddingValues(
                 start = TraktTheme.spacing.mainContentStartSpace,
                 end = TraktTheme.spacing.mainContentEndSpace,
             ),
         ) {
-            items(
+            itemsIndexed(
                 items = movies,
-                key = { it.ids.trakt.value },
-            ) { movie ->
+                key = { _, item -> item.ids.trakt.value },
+            ) { index, movie ->
                 VerticalMediaCard(
                     title = movie.title,
                     imageUrl = movie.images?.getPosterUrl(),
@@ -433,6 +469,9 @@ private fun MovieCreditsList(
                         }
                     },
                     modifier = Modifier
+                        .then(
+                            if (index == 0) Modifier.focusRequester(firstItem) else Modifier,
+                        )
                         .onFocusChanged {
                             if (it.hasFocus) {
                                 onFocused()
@@ -461,6 +500,10 @@ private fun ScreenPreview() {
                 personDetails = PreviewData.person1,
                 personShowCredits = listOf(PreviewData.show1).toImmutableList(),
                 personMovieCredits = listOf(PreviewData.movie1, PreviewData.movie2).toImmutableList(),
+                personHistoryCredits = listOf(
+                    PersonHistoryItem.ShowItem(PreviewData.show1),
+                    PersonHistoryItem.MovieItem(PreviewData.movie1),
+                ).toImmutableList(),
             ),
             onShowClick = {},
             onMovieClick = {},

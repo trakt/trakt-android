@@ -9,25 +9,29 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.app.core.people.helpers.buildHistoryCredits
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.app.core.people.usecases.GetPersonUseCase
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 
+@Suppress("UNCHECKED_CAST")
 internal class PersonDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getPersonUseCase: GetPersonUseCase,
     private val getPersonCreditsUseCase: GetPersonCreditsUseCase,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = PersonDetailsState()
 
@@ -43,6 +47,12 @@ internal class PersonDetailsViewModel(
     init {
         personBackdropState.value = destination.backdropUrl
         loadData(TraktId(destination.personId))
+        observeCollection()
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadData(personId: TraktId) {
@@ -97,22 +107,30 @@ internal class PersonDetailsViewModel(
         return destination.sourceId != targetId.value
     }
 
-    val state: StateFlow<PersonDetailsState> = combine(
+    val state = combine(
         loadingState,
         personDetailsState,
         personBackdropState,
         personShowCreditsState,
         personMovieCreditsState,
         errorState,
-    ) { states ->
-        @Suppress("UNCHECKED_CAST")
+        collectionStateProvider.stateFlow,
+    ) { state ->
+        val showCredits = state[3] as ImmutableList<Show>?
+        val movieCredits = state[4] as ImmutableList<Movie>?
+
         PersonDetailsState(
-            isLoading = states[0] as Boolean,
-            personDetails = states[1] as Person?,
-            personBackdropUrl = states[2] as String?,
-            personShowCredits = states[3] as ImmutableList<Show>?,
-            personMovieCredits = states[4] as ImmutableList<Movie>?,
-            error = states[5] as Exception?,
+            isLoading = state[0] as Boolean,
+            personDetails = state[1] as Person?,
+            personBackdropUrl = state[2] as String?,
+            personShowCredits = showCredits,
+            personMovieCredits = movieCredits,
+            personHistoryCredits = buildHistoryCredits(
+                shows = showCredits,
+                movies = movieCredits,
+                collection = state[6] as UserCollectionState,
+            ),
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

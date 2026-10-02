@@ -51,6 +51,7 @@ internal val personDetailsModule = module {
             savedStateHandle = get(),
             getPersonUseCase = get(),
             getPersonCreditsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 }
