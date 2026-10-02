@@ -5,10 +5,10 @@ import androidx.annotation.StringRes
 import tv.trakt.trakt.resources.R
 
 enum class SortType(
-    @param:StringRes val displayStringRes: Int,
-    @param:DrawableRes val displayIconRes: Int?,
-    val value: String,
-) {
+    @param:StringRes override val displayStringRes: Int,
+    @param:DrawableRes override val displayIconRes: Int?,
+    override val value: String,
+) : SortOption {
     Default(R.string.button_text_sort_default, null, "rank"),
     Added(R.string.button_text_sort_added_date, R.drawable.ic_calendar_check, "added"),
     Runtime(R.string.button_text_sort_runtime, R.drawable.ic_clock, "runtime"),

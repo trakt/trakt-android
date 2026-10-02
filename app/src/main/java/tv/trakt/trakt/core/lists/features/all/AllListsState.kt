@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.ListsItem
+import tv.trakt.trakt.common.model.sorting.ListsSorting
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 
 @Immutable
@@ -13,6 +14,7 @@ internal data class AllListsState(
     val user: User? = null,
     val items: ImmutableList<ListsItem>? = null,
     val filter: PersonalListType? = null,
+    val sorting: ListsSorting = ListsSorting.Default,
     val loading: LoadingState = LoadingState.Idle,
     val loadingMore: LoadingState = LoadingState.Idle,
     val info: DynamicStringResource? = null,

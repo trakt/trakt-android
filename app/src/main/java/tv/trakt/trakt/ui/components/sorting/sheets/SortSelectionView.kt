@@ -22,6 +22,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.sorting.ListsSortType
+import tv.trakt.trakt.common.model.sorting.SortOption
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -30,12 +32,12 @@ import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun SortSelectionView(
+internal fun <T : SortOption> SortSelectionView(
+    typeOptions: ImmutableList<T>,
     modifier: Modifier = Modifier,
-    typeOptions: ImmutableList<SortType> = SortType.entries.toImmutableList(),
-    selectedType: SortType? = null,
+    selectedType: T? = null,
     selectedOrder: SortOrder? = null,
-    onSortClick: (SortType) -> Unit = {},
+    onSortClick: (T) -> Unit = {},
     onOrderClick: (SortOrder) -> Unit = {},
 ) {
     Column(
@@ -53,12 +55,12 @@ internal fun SortSelectionView(
 }
 
 @Composable
-private fun ActionButtons(
+private fun <T : SortOption> ActionButtons(
     modifier: Modifier = Modifier,
-    selectedType: SortType?,
+    selectedType: T?,
     selectedOrder: SortOrder?,
-    options: ImmutableList<SortType>,
-    onSortClick: (SortType) -> Unit = {},
+    options: ImmutableList<T>,
+    onSortClick: (T) -> Unit = {},
     onOrderClick: (SortOrder) -> Unit = {},
 ) {
     Column(
@@ -78,8 +80,7 @@ private fun ActionButtons(
                     },
                     icon = when {
                         sort == selectedType -> painterResource(R.drawable.ic_check_google)
-                        sort.displayIconRes != null -> painterResource(sort.displayIconRes!!)
-                        else -> null
+                        else -> sort.displayIconRes?.let { painterResource(it) }
                     },
                     iconSize = 22.dp,
                     iconSpace = 10.dp,
@@ -137,7 +138,20 @@ private fun ActionButtons(
 private fun Preview() {
     TraktThemeLightDark {
         SortSelectionView(
+            typeOptions = SortType.entries.toImmutableList(),
             selectedType = SortType.Runtime,
+            selectedOrder = SortOrder.Desc,
+        )
+    }
+}
+
+@DeviceSheetPreview
+@Composable
+private fun ListsPreview() {
+    TraktThemeLightDark {
+        SortSelectionView(
+            typeOptions = ListsSortType.entries.toImmutableList(),
+            selectedType = ListsSortType.Updated,
             selectedOrder = SortOrder.Desc,
         )
     }
