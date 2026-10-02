@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.core.user.data.remote.personallists
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.sorting.ListsSorting
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
@@ -14,7 +15,7 @@ interface UserPersonalListsRemoteDataSource {
     suspend fun getPersonalLists(
         pagination: Pagination,
         userId: String = "me",
-        sorting: Sorting? = null,
+        sorting: ListsSorting? = null,
     ): List<ListDto>
 
     suspend fun getPersonalListsMinimal(): List<V3MinimalList>

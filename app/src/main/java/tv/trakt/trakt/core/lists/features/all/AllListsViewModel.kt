@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.sorting.ListsSorting
 import tv.trakt.trakt.core.lists.ListsConfig
 import tv.trakt.trakt.core.lists.features.all.navigation.AllListsDestination
 import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
@@ -78,6 +79,7 @@ internal class AllListsViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(destination.initialFilter)
+    private val sortingState = MutableStateFlow(initialState.sorting)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val infoState = MutableStateFlow(initialState.info)
@@ -159,7 +161,7 @@ internal class AllListsViewModel(
                         Smart -> getSmartListsUseCase.getLocalSmartLists()
                             .sortedByDescending { it.updatedAt }
                             .map(ListsItem::Smart)
-                        Personal -> getPersonalListsUseCase.getLocalLists(pagination)
+                        Personal -> getPersonalListsUseCase.getLocalLists(pagination, sortingState.value)
                             .map(ListsItem::Custom)
                         Collaborations -> getCollaborationsListsUseCase.getLocalLists()
                             .sortedByDescending { it.updatedAt }
@@ -199,7 +201,11 @@ internal class AllListsViewModel(
                         Smart -> getSmartListsUseCase.getSmartLists()
                             .sortedByDescending { it.updatedAt }
                             .map(ListsItem::Smart)
-                        Personal -> getPersonalListsUseCase.getLists(pagination, notify = reload)
+                        Personal -> getPersonalListsUseCase.getLists(
+                            pagination = pagination,
+                            sorting = sortingState.value,
+                            notify = reload,
+                        )
                             .map(ListsItem::Custom)
                         Collaborations -> getCollaborationsListsUseCase.getLists()
                             .sortedByDescending { it.updatedAt }
@@ -243,7 +249,10 @@ internal class AllListsViewModel(
                 val pagination = Pagination(page, ListsConfig.LISTS_ALL_PAGE_LIMIT)
 
                 val newItems = when (filterState.value) {
-                    Personal -> getPersonalListsUseCase.getLists(pagination)
+                    Personal -> getPersonalListsUseCase.getLists(
+                        pagination = pagination,
+                        sorting = sortingState.value,
+                    )
                         .map(ListsItem::Custom)
                     Liked -> getLikedListsUseCase.getLists(pagination)
                         .map(ListsItem::Custom)
@@ -321,6 +330,18 @@ internal class AllListsViewModel(
         loadData()
     }
 
+    fun setSorting(sorting: ListsSorting) {
+        if (sorting == sortingState.value ||
+            loadingState.value.isLoading ||
+            loadingMoreState.value.isLoading
+        ) {
+            return
+        }
+
+        sortingState.update { sorting }
+        loadData()
+    }
+
     override fun onCleared() {
         dataJob?.cancel()
         super.onCleared()
@@ -335,6 +356,7 @@ internal class AllListsViewModel(
         userState,
         errorState,
         infoState,
+        sortingState,
     ) { state ->
         AllListsState(
             items = state[0] as ImmutableList<ListsItem>?,
@@ -344,6 +366,7 @@ internal class AllListsViewModel(
             user = state[4] as User?,
             error = state[5] as Exception?,
             info = state[6] as DynamicStringResource?,
+            sorting = state[7] as ListsSorting,
         )
     }.stateIn(
         scope = viewModelScope,

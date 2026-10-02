@@ -4,6 +4,7 @@ import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.sorting.ListsSorting
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ListDto
@@ -20,7 +21,7 @@ class UserPersonalListsApiClient(
     override suspend fun getPersonalLists(
         pagination: Pagination,
         userId: String,
-        sorting: Sorting?,
+        sorting: ListsSorting?,
     ): List<ListDto> {
         val response = usersApi.getUsersListsPersonal(
             id = userId,

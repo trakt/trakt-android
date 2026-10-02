@@ -45,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -59,6 +60,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.lists.SmartList
+import tv.trakt.trakt.common.model.sorting.ListsSortType
+import tv.trakt.trakt.common.model.sorting.ListsSorting
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
@@ -75,6 +78,7 @@ import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
 import tv.trakt.trakt.ui.components.mediacards.list.SmartListCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -96,6 +100,7 @@ internal fun AllListsScreen(
     var createListSheet by remember { mutableStateOf(false) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
     var smartListToDelete by remember { mutableStateOf<SmartList?>(null) }
+    var sortSheet by remember { mutableStateOf<ListsSorting?>(null) }
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -121,6 +126,11 @@ internal fun AllListsScreen(
         onListEditClick = { editListSheet = it },
         onSmartListDeleteClick = { smartListToDelete = it },
         onFilterClick = viewModel::setFilter,
+        onSortClick = {
+            if (!state.loading.isLoading && !state.loadingMore.isLoading) {
+                sortSheet = state.sorting
+            }
+        },
         onEndOfList = viewModel::loadMoreData,
         onBackClick = onNavigateBack,
         onUserClick = onNavigateUser,
@@ -160,6 +170,17 @@ internal fun AllListsScreen(
         },
         onNo = { smartListToDelete = null },
     )
+
+    SortSelectionSheet(
+        active = sortSheet != null,
+        selectedType = sortSheet?.type,
+        selectedOrder = sortSheet?.order,
+        typeOptions = remember { ListsSortType.entries.toImmutableList() },
+        onResult = { type, order ->
+            viewModel.setSorting(ListsSorting(type = type, order = order))
+        },
+        onDismiss = { sortSheet = null },
+    )
 }
 
 @Composable
@@ -174,6 +195,7 @@ private fun AllListsScreen(
     onListEditClick: (CustomList) -> Unit = {},
     onSmartListDeleteClick: (SmartList) -> Unit = {},
     onFilterClick: (PersonalListType) -> Unit = {},
+    onSortClick: () -> Unit = {},
     onEndOfList: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onUserClick: (User) -> Unit = {},
@@ -238,11 +260,12 @@ private fun AllListsScreen(
         ) {
             item {
                 TitleBar(
-                    reorderVisible = state.filter == Personal &&
+                    actionsVisible = state.filter == Personal &&
                         state.user != null &&
                         state.loading == Done &&
                         (state.items?.size ?: 0) > 1,
                     onCreateClick = onCreateClick,
+                    onSortClick = onSortClick,
                     onReorderClick = onReorderClick,
                     modifier = Modifier
                         .padding(contentHorizontalPadding)
@@ -378,8 +401,9 @@ private fun AllListsScreen(
 
 @Composable
 private fun TitleBar(
-    reorderVisible: Boolean,
+    actionsVisible: Boolean,
     onCreateClick: () -> Unit,
+    onSortClick: () -> Unit,
     onReorderClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -411,7 +435,16 @@ private fun TitleBar(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(20.dp),
         ) {
-            if (reorderVisible) {
+            if (actionsVisible) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_sort),
+                    contentDescription = stringResource(R.string.button_label_sort_list),
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .onClick(onClick = onSortClick),
+                )
+
                 Icon(
                     painter = painterResource(R.drawable.ic_reorder),
                     contentDescription = stringResource(R.string.button_text_reorder_lists),

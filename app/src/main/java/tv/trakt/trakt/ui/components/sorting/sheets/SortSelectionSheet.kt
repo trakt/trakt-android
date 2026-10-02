@@ -16,6 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.sorting.SortOption
+import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.ui.components.TraktBottomSheet
@@ -32,29 +34,63 @@ internal fun SortSelectionSheet(
     onResult: (sorting: Sorting) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    var currentSorting by remember(selectedSorting) {
-        mutableStateOf(selectedSorting)
+    SortSelectionSheet(
+        state = state,
+        active = active,
+        selectedType = selectedSorting?.type,
+        selectedOrder = selectedSorting?.order,
+        typeOptions = typeOptions,
+        onResult = { type, order ->
+            onResult(Sorting(type = type, order = order))
+        },
+        onDismiss = onDismiss,
+    )
+}
+
+@Composable
+internal fun <T : SortOption> SortSelectionSheet(
+    state: SheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    ),
+    active: Boolean = false,
+    selectedType: T?,
+    selectedOrder: SortOrder?,
+    typeOptions: ImmutableList<T>,
+    onResult: (type: T, order: SortOrder) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var currentType by remember(selectedType) {
+        mutableStateOf(selectedType)
+    }
+    var currentOrder by remember(selectedOrder) {
+        mutableStateOf(selectedOrder)
     }
 
     if (active) {
         TraktBottomSheet(
             sheetState = state,
             onDismiss = {
-                currentSorting?.let { onResult(it) }
+                val type = currentType
+                val order = currentOrder
+                if (type != null && order != null) {
+                    onResult(type, order)
+                }
                 onDismiss()
             },
         ) {
             SortSelectionView(
-                selectedType = currentSorting?.type,
-                selectedOrder = currentSorting?.order,
+                selectedType = currentType,
+                selectedOrder = currentOrder,
                 typeOptions = typeOptions,
                 onSortClick = { type ->
-                    currentSorting = currentSorting
-                        ?.copy(type = type)
+                    if (currentType != null) {
+                        currentType = type
+                    }
                 },
                 onOrderClick = { order ->
-                    currentSorting = currentSorting
-                        ?.copy(order = order)
+                    if (currentOrder != null) {
+                        currentOrder = order
+                    }
                 },
                 modifier = Modifier
                     .padding(bottom = 24.dp)
