@@ -7,6 +7,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -211,29 +212,32 @@ internal fun ProfileActivityContent(
                 onFilterClick = onFilterClick,
             )
 
-            Crossfade(
-                targetState = state.loading,
+            updateTransition(
+                targetState = state,
+                label = "activityContent",
+            ).Crossfade(
+                contentKey = { it.loading },
                 animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
+            ) { current ->
+                when (current.loading) {
                     Idle, Loading -> {
                         ContentLoadingList(
-                            visible = loading.isLoading,
-                            filter = state.filter,
+                            visible = current.loading.isLoading,
+                            filter = current.filter,
                             contentPadding = contentPadding,
                         )
                     }
 
                     Done -> {
                         when {
-                            state.error != null -> {
+                            current.error != null -> {
                                 Text(
                                     text =
                                         "${
                                             stringResource(
                                                 R.string.error_text_unexpected_error_short,
                                             )
-                                        }\n\n${state.error}",
+                                        }\n\n${current.error}",
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.meta,
                                     maxLines = 10,
@@ -241,11 +245,11 @@ internal fun ProfileActivityContent(
                                 )
                             }
 
-                            (state.filter == Ratings && state.ratingItems?.isEmpty() == true) ||
-                                (state.filter == Comments && state.commentItems?.isEmpty() == true) -> {
+                            (current.filter == Ratings && current.ratingItems?.isEmpty() == true) ||
+                                (current.filter == Comments && current.commentItems?.isEmpty() == true) -> {
                                 EmptyListCard(
                                     height = when {
-                                        state.filter == Ratings -> EmptyHorizontalDoubleHeight
+                                        current.filter == Ratings -> EmptyHorizontalDoubleHeight
                                         else -> TraktTheme.size.commentCardSize
                                     },
                                     modifier = Modifier
@@ -255,10 +259,10 @@ internal fun ProfileActivityContent(
                             }
 
                             else -> {
-                                when (state.filter) {
+                                when (current.filter) {
                                     Ratings -> {
                                         RatingsContentList(
-                                            listItems = (state.ratingItems ?: emptyList()).toImmutableList(),
+                                            listItems = (current.ratingItems ?: emptyList()).toImmutableList(),
                                             contentPadding = contentPadding,
                                             onMovieClick = onMovieClick,
                                             onShowClick = onShowClick,
@@ -267,8 +271,8 @@ internal fun ProfileActivityContent(
                                     }
                                     Comments -> {
                                         CommentsContentList(
-                                            listItems = (state.commentItems ?: emptyList()).toImmutableList(),
-                                            listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
+                                            listItems = (current.commentItems ?: emptyList()).toImmutableList(),
+                                            listReactions = (current.reactions ?: emptyMap()).toImmutableMap(),
                                             contentPadding = contentPadding,
                                             gifPaused = gifPaused,
                                             onRequestReactions = onRequestReactions,
