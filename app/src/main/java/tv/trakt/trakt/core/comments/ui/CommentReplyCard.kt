@@ -39,7 +39,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -55,10 +54,8 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.capitalize
-import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -397,7 +394,7 @@ private fun CommentFooter(
     onReactionClick: ((Reaction) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
 ) {
-    val context = LocalContext.current
+    val onTranslateClick = rememberTranslateCommentAction()
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
 
@@ -450,13 +447,7 @@ private fun CommentFooter(
                     modifier = Modifier
                         .size(18.dp)
                         .onClick {
-                            val activityInfo = context.googleTranslateActivityInfo()
-                            activityInfo?.let {
-                                context.openGoogleTranslate(
-                                    activity = activityInfo,
-                                    text = comment.comment.trim(),
-                                )
-                            }
+                            onTranslateClick(comment)
                         },
                 )
             }

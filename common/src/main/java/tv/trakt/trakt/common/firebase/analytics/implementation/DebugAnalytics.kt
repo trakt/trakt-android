@@ -96,6 +96,10 @@ internal class DebugAnalyticsComments : Analytics.Comments {
     override fun logReplyRemove() {
         Timber.d("logReplyRemove")
     }
+
+    override fun logCommentTranslate(characters: Int) {
+        Timber.d("logCommentTranslate: characters=%d", characters)
+    }
 }
 
 internal class DebugAnalyticsProgress : Analytics.Progress {

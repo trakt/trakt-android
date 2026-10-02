@@ -19,6 +19,7 @@ private const val PARAMETER_SOURCE = "source"
 private const val PARAMETER_DATE = "date"
 private const val PARAMETER_REACTION = "reaction"
 private const val PARAMETER_RATING = "rating_value"
+private const val PARAMETER_COUNT = "count"
 
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
@@ -198,11 +199,13 @@ internal class FirebaseAnalyticsComments(
     companion object Event {
         const val COMMENTS_ADD = "comments_add"
         const val COMMENTS_REMOVE = "comments_remove"
+        const val COMMENTS_TRANSLATE = "comments_translate"
     }
 
     init {
         require(eventName(COMMENTS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(COMMENTS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(COMMENTS_TRANSLATE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
     override fun logCommentAdd(mediaType: String) {
@@ -232,6 +235,15 @@ internal class FirebaseAnalyticsComments(
         firebase.logEvent(
             eventName(COMMENTS_REMOVE),
             null,
+        )
+    }
+
+    override fun logCommentTranslate(characters: Int) {
+        firebase.logEvent(
+            eventName(COMMENTS_TRANSLATE),
+            bundleOf(
+                PARAMETER_COUNT to characters.toLong(),
+            ),
         )
     }
 }

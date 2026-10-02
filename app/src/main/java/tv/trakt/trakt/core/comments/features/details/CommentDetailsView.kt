@@ -36,7 +36,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,10 +56,8 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.capitalize
-import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -82,6 +79,7 @@ import tv.trakt.trakt.core.comments.ui.CommentGifView
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.comments.ui.CommentUserChips
+import tv.trakt.trakt.core.comments.ui.rememberTranslateCommentAction
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
@@ -451,7 +449,7 @@ private fun CommentFooter(
     onReplyClick: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
-    val context = LocalContext.current
+    val onTranslateClick = rememberTranslateCommentAction()
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
 
@@ -500,13 +498,7 @@ private fun CommentFooter(
                     modifier = Modifier
                         .size(18.dp)
                         .onClick {
-                            val activityInfo = context.googleTranslateActivityInfo()
-                            activityInfo?.let {
-                                context.openGoogleTranslate(
-                                    activity = activityInfo,
-                                    text = comment.comment.trim(),
-                                )
-                            }
+                            onTranslateClick(comment)
                         },
                 )
             }

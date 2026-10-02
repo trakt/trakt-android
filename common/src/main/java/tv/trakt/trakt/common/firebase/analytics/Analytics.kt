@@ -120,6 +120,12 @@ interface Analytics {
          * Logs the removal of a reply to a comment.
          */
         fun logReplyRemove()
+
+        /**
+         * Logs a comment or reply being sent to Google Translate.
+         * @param characters The number of characters sent for translation.
+         */
+        fun logCommentTranslate(characters: Int)
     }
 
     interface Progress {
