@@ -195,10 +195,6 @@ class V3Api(
         return response.body()
     }
 
-    /**
-     * Returns every reaction the user holds on the item after the write, including
-     * the row ids [deleteMediaReactions] takes. Fails with 409 above 3 reactions per item.
-     */
     suspend fun putMediaReactions(
         type: MediaType,
         mediaId: TraktId,
