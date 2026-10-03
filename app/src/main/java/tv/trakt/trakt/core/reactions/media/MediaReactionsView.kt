@@ -35,6 +35,7 @@ import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 internal fun MediaReactionsView(
     viewModel: MediaReactionsViewModel,
     modifier: Modifier = Modifier,
+    visible: Boolean = true,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -47,7 +48,7 @@ internal fun MediaReactionsView(
     var pickerSheet by remember { mutableStateOf(false) }
 
     val isSignedIn = state.user != null
-    val visible = state.loading.isDone && (isSignedIn || state.summary.reactionsCount > 0)
+    val isShown = visible && state.loading.isDone && (isSignedIn || state.summary.reactionsCount > 0)
 
     fun onReactionClick(reaction: MediaReaction) {
         haptic.performHapticFeedback(Confirm)
@@ -55,9 +56,9 @@ internal fun MediaReactionsView(
     }
 
     AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn(tween(200)),
-        exit = fadeOut(tween(200)),
+        visible = isShown,
+        enter = fadeIn(tween(200, delayMillis = 350)),
+        exit = fadeOut(tween(200, delayMillis = 350)),
         modifier = modifier,
     ) {
         MediaReactionsQuickBarDropdown(

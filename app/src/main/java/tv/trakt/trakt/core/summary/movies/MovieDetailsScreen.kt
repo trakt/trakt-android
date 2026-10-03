@@ -77,7 +77,6 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
-import tv.trakt.trakt.core.reactions.media.MediaReactionsView
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
@@ -94,9 +93,9 @@ import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
-import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
+import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -558,29 +557,17 @@ internal fun MovieDetailsContent(
                 }
 
                 item {
-                    MediaSocialView(
-                        visible = !state.movieSocials.isNullOrEmpty(),
-                        activity = state.movieSocials,
+                    DetailsSocialRow(
+                        target = MediaReactionsTarget(
+                            type = MediaType.Movie,
+                            id = movie.ids.trakt,
+                        ),
+                        socials = state.movieSocials,
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
                         },
-                        leadingContent = if (previewMode) {
-                            null
-                        } else {
-                            {
-                                MediaReactionsView(
-                                    viewModel = koinViewModel(
-                                        parameters = {
-                                            parametersOf(MediaReactionsTarget(MediaType.Movie, movie.ids.trakt))
-                                        },
-                                    ),
-                                    modifier = Modifier.padding(top = 20.dp),
-                                )
-                            }
-                        },
                         modifier = Modifier
                             .alpha(ratingAlphaMask)
-                            .fillMaxWidth()
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }
