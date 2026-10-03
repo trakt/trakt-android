@@ -142,7 +142,7 @@ Wrap primitive identifiers in `@JvmInline value class` at domain boundary:
 @JvmInline value class Slug(val raw: String)
 ```
 
-- Mappers in `common/.../networking/` only place that produces them from DTOs (`MovieDto.ids.trakt.let(::MovieId)`).
+- `fromDto` companions on domain models only place that produces them from DTOs (`TraktId(dto.ids.trakt)`).
 - Repository / use-case / ViewModel signatures take typed form — `MovieId` cannot pass where `EpisodeId` expected.
 - Compose Navigation typed routes accept wrapped form via custom `NavType` for `@Serializable` data classes.
 

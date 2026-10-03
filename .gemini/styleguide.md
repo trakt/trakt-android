@@ -43,7 +43,7 @@ Gemini uses when reviewing pull requests.
     - ViewModels → `*ViewModel.kt`
     - Sealed UI state → `*State.kt`
     - Koin modules → `*Module.kt` under `di/`
-    - Mappers → `*Mapper.kt` or `mapTo*.kt`
+    - DTO mapping → `companion object { fun fromDto }` on the domain model, no mapper files
 
 ## Commit standards
 
@@ -131,9 +131,9 @@ plain hyphens.
 ## Networking
 
 - **OpenAPI client is generated.** Never edited by hand.
-- **Mappers are pure**, named `…ToDomain` / `mapTo<Domain>`. Live in
-  `common/.../<entity>/` or `common/.../networking/mappers/`.
-- **Status 204 is success.** Mappers handle 204 by returning
+- **DTO mapping via `fromDto` companion** on the domain model. Flag new
+  `*Mapper.kt` / `mapTo*` files and `Dto.toDomain()` extensions. Pure.
+- **Status 204 is success.** Repositories handle 204 by returning
   empty/default values.
 - **Typed errors** at the boundary via an `ApiError` sealed type.
   Raw `IOException` / `HttpException` don't escape into ViewModels.

@@ -14,7 +14,7 @@ applyTo: 'common/src/main/**/*.kt'
 | OpenAPI spec                  | `openapi/openapi.json`                                     |
 | Generated API client (DTOs)   | `build/generate-resources/.../main/src/main/kotlin/`       |
 | Ktor client + interceptors    | `common/.../networking/`                                   |
-| Hand-written domain mappers   | `common/.../<entity>/` or `common/.../networking/mappers/` |
+| DTO → domain mapping          | `fromDto` companion on the domain model in `common/.../model/` |
 | Repositories                  | feature-local `core/<feature>/data/` or `common/.../<entity>/` |
 
 ## OpenAPI client (generated)
@@ -42,26 +42,43 @@ Rules:
 - File-based response cache under app's cache dir.
 - Use `ContentNegotiation` + `json()` for kotlinx.serialization where existing endpoints need it.
 
-## Domain mappers
+## DTO → domain mapping
 
-Hand-written, pure, deterministic. One mapper per endpoint or entity.
+The domain model owns its mapping through a `companion object { fun fromDto(...) }`. No separate
+mapper files (`*Mapper.kt`, `mapTo*.kt`) and no `Dto.toDomain()` extension functions. See
+`Comment.fromDto`, `Images.fromDto`, `Ids.fromDto`.
 
 ```kotlin
-// common/.../movie/MovieMapper.kt
+// common/.../model/Movie.kt
 
-internal fun MovieDto.toDomain(): Movie = Movie(
-    id = ids.trakt,
-    slug = ids.slug.orEmpty(),
-    title = title.orEmpty(),
-    overview = overview,
-    releasedAt = released?.toLocalDate(),
-)
+@Immutable
+data class Movie(
+    val id: TraktId,
+    val slug: String,
+    val title: String,
+) {
+    companion object {
+        fun fromDto(dto: MovieDto): Movie {
+            return Movie(
+                id = TraktId(dto.ids.trakt),
+                slug = dto.ids.slug.orEmpty(),
+                title = dto.title.orEmpty(),
+            )
+        }
+    }
+}
+
+// call sites
+val movie = Movie.fromDto(dto)
+val movies = dtos.map(Movie::fromDto)
 ```
 
-- Mappers `internal`, named `…ToDomain` or `mapTo<Domain>`.
-- No I/O, no logging, no `runBlocking`.
-- Mappers handle nullability, provide sensible domain defaults (empty strings, empty lists) — domain types non-nullable where possible.
-- Status `204` (no content) = **success**, not failure. Mappers and repositories return empty/default values. Recent bug: credits endpoints returned `204`, treated as errors.
+- One `fromDto` overload per source DTO (see `Ids.fromDto` for show / movie / episode ids).
+- Return `T?` when an unknown value must be dropped (unknown enum from a newer API), and call with
+  `mapNotNull(T::fromDto)`.
+- Pure: no I/O, no logging, no `runBlocking`.
+- Handle nullability, provide sensible domain defaults (empty strings, empty lists) — domain types non-nullable where possible.
+- Status `204` (no content) = **success**, not failure. Repositories return empty/default values. Recent bug: credits endpoints returned `204`, treated as errors.
 
 ## Domain models
 
@@ -103,7 +120,7 @@ internal class MovieRepositoryImpl(
 
     override suspend fun refresh(id: Long): Result<Unit> = runCatching {
         val dto = remote.getMovie(id = id, extended = "full")
-        local.put(dto.toDomain())
+        local.put(Movie.fromDto(dto))
     }
 }
 ```
@@ -160,7 +177,7 @@ Never cache for `Duration.INFINITE`.
 ## Quick checklist
 
 - [ ] DTO from generated OpenAPI client (or documented exception)
-- [ ] Mapper pure, named `…ToDomain` / `mapTo<Domain>`
+- [ ] DTO mapped via `companion object { fun fromDto }` on the domain model, pure, no mapper files
 - [ ] Repository exposes `Flow<…>` reads and `suspend` writes
 - [ ] Errors mapped to typed `ApiError` before ViewModel
 - [ ] Status `204` handled explicitly where applicable
