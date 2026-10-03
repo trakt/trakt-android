@@ -1,9 +1,5 @@
 package tv.trakt.trakt.common.model.reactions
 
-/**
- * Reactions available for movies, shows, seasons and episodes, in picker order.
- * Separate from comment [Reaction]s, which use a smaller set.
- */
 enum class MediaReaction(
     val value: String,
     val emoji: String,
