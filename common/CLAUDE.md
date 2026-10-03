@@ -14,8 +14,8 @@ Part of the `trakt-android` monorepo. Root rules apply — see
   here, it must compile in isolation against external deps and
   `:resources`.
 - **Active areas (new code preferred here)**:
-  - `common/.../networking/` — `KtorClientFactory`, interceptors,
-    mappers (`<entity>Mapper.kt`).
+  - `common/.../networking/` — `KtorClientFactory`, interceptors.
+    DTO mapping lives on domain models as `fromDto` companions.
   - `common/.../model/` — domain types. `@Immutable` data classes,
     `Sendable`-friendly (listed in `compose-stability.conf`).
   - `common/.../<entity>/` — repositories, use-cases, entity caches.

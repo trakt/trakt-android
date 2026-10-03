@@ -111,7 +111,7 @@ Avoid one-line `UseCase` wrappers around repository calls.
 - **Repository** is public boundary. Located in `core/<feature>/data/` or `common/.../<entity>/`.
 - **Reads return `Flow<T>`.** Local + remote sources flow through repository unified by `data` layer; ViewModel sees only unified stream.
 - **Writes are `suspend fun` returning `Result<…>`** (or domain-specific sealed result type).
-- **Mappers** are pure functions named `mapTo<Domain>(...)` or `<Source>Mapper.kt`. Live next to repository. No I/O.
+- **Mapping** lives on the domain model as `companion object { fun fromDto(...) }`. No separate mapper files. Pure, no I/O. See `networking.md`.
 
 ## Navigation
 
