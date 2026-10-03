@@ -74,8 +74,10 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.reactions.media.MediaReactionsView
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
@@ -561,6 +563,20 @@ internal fun MovieDetailsContent(
                         activity = state.movieSocials,
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
+                        },
+                        leadingContent = if (previewMode) {
+                            null
+                        } else {
+                            {
+                                MediaReactionsView(
+                                    viewModel = koinViewModel(
+                                        parameters = {
+                                            parametersOf(MediaReactionsTarget(MediaType.Movie, movie.ids.trakt))
+                                        },
+                                    ),
+                                    modifier = Modifier.padding(top = 20.dp),
+                                )
+                            }
                         },
                         modifier = Modifier
                             .alpha(ratingAlphaMask)
