@@ -79,6 +79,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
@@ -98,9 +99,9 @@ import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaView
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
-import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
+import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -631,15 +632,17 @@ internal fun ShowDetailsContent(
                 }
 
                 item {
-                    MediaSocialView(
-                        visible = !state.showSocials.isNullOrEmpty(),
-                        activity = state.showSocials,
+                    DetailsSocialRow(
+                        target = MediaReactionsTarget(
+                            type = MediaType.Show,
+                            id = show.ids.trakt,
+                        ),
+                        socials = state.showSocials,
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
                         },
                         modifier = Modifier
                             .alpha(ratingAlphaMask)
-                            .fillMaxWidth()
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }

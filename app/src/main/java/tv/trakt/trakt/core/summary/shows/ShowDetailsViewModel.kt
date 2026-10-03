@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -362,6 +363,8 @@ internal class ShowDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    // Empty marks the load as finished, so the social row does not wait forever.
+                    showSocialsState.update { EmptyImmutableList }
                     Timber.recordError(error)
                 }
             }
