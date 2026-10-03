@@ -101,11 +101,15 @@ internal class FirebaseAnalyticsReactions(
     companion object Event {
         const val REACTIONS_ADD = "reactions_comment_add"
         const val REACTIONS_REMOVE = "reactions_comment_remove"
+        const val MEDIA_REACTIONS_ADD = "reactions_media_add"
+        const val MEDIA_REACTIONS_REMOVE = "reactions_media_remove"
     }
 
     init {
         require(eventName(REACTIONS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(REACTIONS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(MEDIA_REACTIONS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(MEDIA_REACTIONS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
     override fun logReactionAdd(
@@ -126,6 +130,32 @@ internal class FirebaseAnalyticsReactions(
             eventName(REACTIONS_REMOVE),
             bundleOf(
                 PARAMETER_SOURCE to source.lowercase(),
+            ),
+        )
+    }
+
+    override fun logMediaReactionAdd(
+        reaction: String,
+        mediaType: String,
+    ) {
+        firebase.logEvent(
+            eventName(MEDIA_REACTIONS_ADD),
+            bundleOf(
+                PARAMETER_REACTION to reaction.lowercase(),
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+            ),
+        )
+    }
+
+    override fun logMediaReactionRemove(
+        reaction: String,
+        mediaType: String,
+    ) {
+        firebase.logEvent(
+            eventName(MEDIA_REACTIONS_REMOVE),
+            bundleOf(
+                PARAMETER_REACTION to reaction.lowercase(),
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
             ),
         )
     }

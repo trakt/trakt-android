@@ -16,6 +16,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -38,6 +39,7 @@ internal class MediaReactionsViewModel(
     private val loadUserReactionsUseCase: LoadUserMediaReactionsUseCase,
     private val postReactionUseCase: PostMediaReactionUseCase,
     private val deleteReactionUseCase: DeleteMediaReactionUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MediaReactionsState()
 
@@ -117,9 +119,17 @@ internal class MediaReactionsViewModel(
                     when {
                         isRemoving -> {
                             deleteReactionUseCase.deleteReaction(target, reaction)
+                            analytics.reactions.logMediaReactionRemove(
+                                reaction = reaction.value,
+                                mediaType = target.type.value,
+                            )
                         }
                         else -> {
                             postReactionUseCase.postReaction(target, reaction)
+                            analytics.reactions.logMediaReactionAdd(
+                                reaction = reaction.value,
+                                mediaType = target.type.value,
+                            )
                         }
                     }
                 } catch (error: Exception) {

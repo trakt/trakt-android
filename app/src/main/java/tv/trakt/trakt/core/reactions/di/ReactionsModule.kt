@@ -47,6 +47,7 @@ internal val reactionsModule = module {
             loadUserReactionsUseCase = get(),
             postReactionUseCase = get(),
             deleteReactionUseCase = get(),
+            analytics = get(),
         )
     }
 
