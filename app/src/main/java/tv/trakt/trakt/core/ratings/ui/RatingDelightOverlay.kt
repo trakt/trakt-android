@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.ratings.ui
 
-import android.provider.Settings
 import android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
 import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -30,7 +29,6 @@ import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionOnScreen
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
@@ -44,6 +42,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Green500
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade10
 import tv.trakt.trakt.common.ui.theme.colors.Yellow500
+import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -109,14 +108,7 @@ internal fun RatingDelightOverlay(
     key: Any,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val animationsOff = remember {
-        Settings.Global.getFloat(
-            context.contentResolver,
-            Settings.Global.ANIMATOR_DURATION_SCALE,
-            1f,
-        ) == 0f
-    }
+    val animationsOff = rememberAnimationsDisabled()
     if (animationsOff) return
 
     val direction = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f
