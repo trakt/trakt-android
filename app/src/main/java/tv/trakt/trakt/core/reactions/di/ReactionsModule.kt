@@ -12,17 +12,29 @@ import tv.trakt.trakt.core.reactions.data.remote.ReactionsApiClient
 import tv.trakt.trakt.core.reactions.data.remote.ReactionsRemoteDataSource
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
+import tv.trakt.trakt.core.reactions.media.data.remote.MediaReactionsApiClient
+import tv.trakt.trakt.core.reactions.media.data.remote.MediaReactionsRemoteDataSource
+import tv.trakt.trakt.core.reactions.media.usecases.DeleteMediaReactionUseCase
+import tv.trakt.trakt.core.reactions.media.usecases.GetMediaReactionsSummaryUseCase
+import tv.trakt.trakt.core.reactions.media.usecases.LoadUserMediaReactionsUseCase
+import tv.trakt.trakt.core.reactions.media.usecases.PostMediaReactionUseCase
 import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
 import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
 
 internal val reactionsDataModule = module {
     singleOf(::ReactionsApiClient) { bind<ReactionsRemoteDataSource>() }
     singleOf(::ReactionsUpdatesStorage) { bind<ReactionsUpdates>() }
+    singleOf(::MediaReactionsApiClient) { bind<MediaReactionsRemoteDataSource>() }
 }
 
 internal val reactionsModule = module {
     factoryOf(::PostCommentReactionUseCase)
     factoryOf(::DeleteCommentReactionUseCase)
+
+    factoryOf(::GetMediaReactionsSummaryUseCase)
+    factoryOf(::LoadUserMediaReactionsUseCase)
+    factoryOf(::PostMediaReactionUseCase)
+    factoryOf(::DeleteMediaReactionUseCase)
 
     worker {
         PostReactionWorker(
