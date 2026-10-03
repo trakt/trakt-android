@@ -12,10 +12,6 @@ internal class PostMediaReactionUseCase(
     private val remoteSource: MediaReactionsRemoteDataSource,
     private val localSource: UserMediaReactionsLocalDataSource,
 ) {
-    /**
-     * Returns every reaction the user holds on [target] after the write.
-     * The API rejects the write with 409 above [MediaReaction.MAX_PER_MEDIA].
-     */
     suspend fun postReaction(
         target: MediaReactionsTarget,
         reaction: MediaReaction,

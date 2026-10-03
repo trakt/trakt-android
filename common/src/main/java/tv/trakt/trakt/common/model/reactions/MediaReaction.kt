@@ -43,7 +43,6 @@ enum class MediaReaction(
     ;
 
     companion object {
-        /** Server-side cap of reactions one user can hold on one item. */
         const val MAX_PER_MEDIA = 3
 
         fun fromValue(value: String): MediaReaction? {

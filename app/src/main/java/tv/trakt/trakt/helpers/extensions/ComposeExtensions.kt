@@ -38,9 +38,6 @@ internal fun TraktThemeLightDark(content: @Composable () -> Unit) {
     }
 }
 
-/**
- * True when the user turned animations off in system settings (reduced motion).
- */
 @Composable
 internal fun rememberAnimationsDisabled(): Boolean {
     val context = LocalContext.current
