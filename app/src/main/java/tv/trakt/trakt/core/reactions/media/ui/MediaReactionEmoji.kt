@@ -4,17 +4,16 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
@@ -36,6 +35,8 @@ import tv.trakt.trakt.common.model.reactions.MediaReaction
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+private val HighlightInset = 3.dp
+
 internal val QuickMediaReactions: ImmutableList<MediaReaction> = persistentListOf(
     MediaReaction.HeartEyes,
     MediaReaction.Rofl,
@@ -45,7 +46,6 @@ internal val QuickMediaReactions: ImmutableList<MediaReaction> = persistentListO
     MediaReaction.Yawning,
 )
 
-// English-only until the reaction names are localised.
 internal val MediaReaction.displayName: String
     get() = value
         .replace('_', ' ')
@@ -81,13 +81,6 @@ internal fun MediaReactionEmoji(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(size)
-            .background(
-                color = when {
-                    selected -> highlightColor
-                    else -> Color.Transparent
-                },
-                shape = CircleShape,
-            )
             .alpha(animatedAlpha)
             .semantics {
                 contentDescription = reaction.displayName
@@ -100,7 +93,16 @@ internal fun MediaReactionEmoji(
                     throttle = false,
                     onClick = onClick ?: {},
                 ),
-            ),
+            )
+            // Drawn rather than padded, so the inset does not shrink the emoji's space.
+            .drawBehind {
+                if (selected) {
+                    drawCircle(
+                        color = highlightColor,
+                        radius = this.size.minDimension / 2 - HighlightInset.toPx(),
+                    )
+                }
+            },
     ) {
         Text(
             text = reaction.emoji,

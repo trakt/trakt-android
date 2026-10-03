@@ -46,12 +46,11 @@ import kotlin.time.Duration.Companion.seconds
 
 private val RotationInterval = 5.seconds
 private const val TOP_REACTIONS_LIMIT = 3
+
+private val BadgeEmojiSize = 24.dp
+private val BadgeEmojiFontSize = 18.sp
 private const val PICK_DRIFT_FRACTION = 12
 
-/**
- * The user's picks on the left, rotating when there are several, and the most used reactions
- * with the total on the right.
- */
 @Composable
 internal fun MediaReactionsBadge(
     summary: MediaReactionsSummary,
@@ -71,7 +70,6 @@ internal fun MediaReactionsBadge(
             UserPicks(userReactions = userReactions)
         }
 
-        // The pick dots already divide both sides.
         if (enabled && hasRoom && userReactions.size < 2) {
             Box(
                 modifier = Modifier
@@ -89,15 +87,14 @@ internal fun MediaReactionsBadge(
                 for (reaction in topReactions) {
                     MediaReactionEmoji(
                         reaction = reaction,
-                        size = 22.dp,
-                        fontSize = 16.sp,
+                        size = BadgeEmojiSize,
+                        fontSize = BadgeEmojiFontSize,
                     )
                 }
             }
 
             Text(
                 text = rememberThousandsFormat(summary.reactionsCount),
-                // Matches the social activity chip it sits next to.
                 style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                 color = TraktTheme.colors.textPrimary,
                 modifier = Modifier
@@ -114,7 +111,6 @@ private fun UserPicks(userReactions: ImmutableList<MediaReaction>) {
     val animationsDisabled = rememberAnimationsDisabled()
     var shownIndex by remember { mutableIntStateOf(0) }
 
-    // Show the newest pick first, then rotate through the rest.
     LaunchedEffect(userReactions, animationsDisabled) {
         shownIndex = userReactions.lastIndex.coerceAtLeast(0)
         if (userReactions.size < 2 || animationsDisabled) return@LaunchedEffect
@@ -144,7 +140,6 @@ private fun UserPicks(userReactions: ImmutableList<MediaReaction>) {
     ) {
         AnimatedContent(
             targetState = current,
-            // Mostly a crossfade, with a small drift to hint at the direction.
             transitionSpec = {
                 (fadeIn(tween(500)) + slideInVertically(tween(500)) { it / PICK_DRIFT_FRACTION })
                     .togetherWith(fadeOut(tween(500)) + slideOutVertically(tween(500)) { -it / PICK_DRIFT_FRACTION })
@@ -154,8 +149,8 @@ private fun UserPicks(userReactions: ImmutableList<MediaReaction>) {
         ) { reaction ->
             MediaReactionEmoji(
                 reaction = reaction,
-                size = 22.dp,
-                fontSize = 16.sp,
+                size = BadgeEmojiSize,
+                fontSize = BadgeEmojiFontSize,
             )
         }
 

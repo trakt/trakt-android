@@ -29,9 +29,6 @@ private val EmojiFontSize = 28.sp
 // Emoji glyphs are narrower than their cell, so the header is inset to start where the glyphs do.
 private val HeaderInset = 10.dp
 
-/**
- * Full media reactions picker: the quick reactions first, then every reaction.
- */
 @Composable
 internal fun MediaReactionsPickerView(
     userReactions: ImmutableList<MediaReaction>,

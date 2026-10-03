@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupPositionProvider
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -39,9 +40,6 @@ import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-/**
- * Dropdown above [anchor] with the quick reactions and a button that opens the full picker.
- */
 @Composable
 internal fun MediaReactionsQuickBarDropdown(
     state: TooltipState,
@@ -69,12 +67,10 @@ internal fun MediaReactionsQuickBarDropdown(
 }
 
 private val ScreenMargin = 16.dp
+private val QuickEmojiFontSize = 22.sp
 private val AnchorSpacing = 4.dp
 
-/**
- * Centers the popup above the anchor (below when there is no room) and keeps it inside the
- * window, since the anchor can sit near the screen edge.
- */
+// The default tooltip provider does not keep the popup inside the window.
 @Composable
 private fun rememberInBoundsAbovePositionProvider(): PopupPositionProvider {
     val density = LocalDensity.current
@@ -111,7 +107,7 @@ internal fun MediaReactionsQuickBar(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        horizontalArrangement = spacedBy(1.dp),
+        horizontalArrangement = spacedBy(0.dp),
         verticalAlignment = CenterVertically,
         modifier = modifier
             .dropShadow(
@@ -134,6 +130,7 @@ internal fun MediaReactionsQuickBar(
                 reaction = reaction,
                 selected = reaction in userReactions,
                 enabled = !isLimitReached,
+                fontSize = QuickEmojiFontSize,
                 // The default highlight matches this container, so step one shade up.
                 highlightColor = TraktTheme.colors.reactionsSummaryContainer,
                 onClick = { onReactionClick(reaction) },
@@ -143,7 +140,7 @@ internal fun MediaReactionsQuickBar(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(32.dp)
+                .size(30.dp)
                 .onClick(onClick = onMoreClick),
         ) {
             Icon(
