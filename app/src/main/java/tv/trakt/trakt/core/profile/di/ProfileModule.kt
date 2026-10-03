@@ -32,6 +32,8 @@ import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataS
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsStorage
 import tv.trakt.trakt.common.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.ratings.UserRatingsStorage
+import tv.trakt.trakt.common.core.user.data.local.reactions.UserMediaReactionsLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.reactions.UserMediaReactionsStorage
 import tv.trakt.trakt.common.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.reactions.UserReactionsStorage
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
@@ -133,6 +135,7 @@ internal val profileDataModule = module {
     singleOf(::UserListsStorage) { bind<UserListsLocalDataSource>() }
     singleOf(::UserLikedListsStorage) { bind<UserLikedListsLocalDataSource>() }
     singleOf(::UserReactionsStorage) { bind<UserReactionsLocalDataSource>() }
+    singleOf(::UserMediaReactionsStorage) { bind<UserMediaReactionsLocalDataSource>() }
     singleOf(::UserFavoritesStorage) { bind<UserFavoritesLocalDataSource>() }
     singleOf(::UserLibraryStorage) { bind<UserLibraryLocalDataSource>() }
     singleOf(::UserRatingsStorage) { bind<UserRatingsLocalDataSource>() }
@@ -231,6 +234,7 @@ internal val profileModule = module {
             localUserFavorites = get(),
             localUserLibrary = get(),
             localUserReactions = get(),
+            localUserMediaReactions = get(),
             localUserRatings = get(),
             localProfileDropped = get(),
             localScreenTime = get(),
