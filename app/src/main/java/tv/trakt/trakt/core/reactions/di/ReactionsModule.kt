@@ -5,13 +5,16 @@ import org.koin.androidx.workmanager.dsl.worker
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdatesStorage
 import tv.trakt.trakt.core.reactions.data.remote.ReactionsApiClient
 import tv.trakt.trakt.core.reactions.data.remote.ReactionsRemoteDataSource
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
+import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
 import tv.trakt.trakt.core.reactions.media.data.remote.MediaReactionsApiClient
 import tv.trakt.trakt.core.reactions.media.data.remote.MediaReactionsRemoteDataSource
 import tv.trakt.trakt.core.reactions.media.usecases.DeleteMediaReactionUseCase
@@ -35,6 +38,17 @@ internal val reactionsModule = module {
     factoryOf(::LoadUserMediaReactionsUseCase)
     factoryOf(::PostMediaReactionUseCase)
     factoryOf(::DeleteMediaReactionUseCase)
+
+    viewModel { (target: MediaReactionsTarget) ->
+        MediaReactionsViewModel(
+            target = target,
+            sessionManager = get(),
+            getSummaryUseCase = get(),
+            loadUserReactionsUseCase = get(),
+            postReactionUseCase = get(),
+            deleteReactionUseCase = get(),
+        )
+    }
 
     worker {
         PostReactionWorker(
