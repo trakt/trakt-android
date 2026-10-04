@@ -107,10 +107,10 @@ private fun ReactionsToolTipContent(
             .dropShadow(
                 shape = RoundedCornerShape(20.dp),
                 shadow = Shadow(
-                    radius = 4.dp,
+                    radius = 3.dp,
                     color = if (summaryVisible) Color.Black else Color.Transparent,
-                    spread = 4.dp,
-                    alpha = 0.1f,
+                    spread = 1.dp,
+                    alpha = 0.06f,
                 ),
             )
             .background(
@@ -157,10 +157,10 @@ private fun ReactionsToolTipContent(
                     .dropShadow(
                         shape = RoundedCornerShape(20.dp),
                         shadow = Shadow(
-                            radius = 4.dp,
+                            radius = 3.dp,
                             color = if (summaryVisible) Color.Transparent else Color.Black,
-                            spread = 4.dp,
-                            alpha = 0.1f,
+                            spread = 1.dp,
+                            alpha = 0.06f,
                         ),
                     )
                     .background(TraktTheme.colors.reactionsContainer, RoundedCornerShape(20.dp))
