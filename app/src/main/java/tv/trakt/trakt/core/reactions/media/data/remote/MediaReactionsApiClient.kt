@@ -24,14 +24,14 @@ internal class MediaReactionsApiClient(
         )
     }
 
-    override suspend fun postUserReaction(
+    override suspend fun postUserReactions(
         target: MediaReactionsTarget,
-        reaction: String,
+        reactions: List<String>,
     ): List<V3UserMediaReaction> {
         return v3Api.putMediaReactions(
             type = target.type,
             mediaId = target.id,
-            reactions = listOf(reaction),
+            reactions = reactions,
         ).also {
             cacheMarker.invalidate()
         }

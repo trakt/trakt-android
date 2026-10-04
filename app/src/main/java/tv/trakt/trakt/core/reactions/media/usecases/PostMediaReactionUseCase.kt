@@ -12,13 +12,13 @@ internal class PostMediaReactionUseCase(
     private val remoteSource: MediaReactionsRemoteDataSource,
     private val localSource: UserMediaReactionsLocalDataSource,
 ) {
-    suspend fun postReaction(
+    suspend fun postReactions(
         target: MediaReactionsTarget,
-        reaction: MediaReaction,
+        reactions: List<MediaReaction>,
     ): ImmutableList<UserMediaReaction> {
-        return remoteSource.postUserReaction(
+        return remoteSource.postUserReactions(
             target = target,
-            reaction = reaction.value,
+            reactions = reactions.map { it.value },
         )
             .mapNotNull(UserMediaReaction::fromDto)
             .toImmutableList()

@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -30,6 +32,9 @@ import tv.trakt.trakt.core.reactions.media.usecases.DeleteMediaReactionUseCase
 import tv.trakt.trakt.core.reactions.media.usecases.GetMediaReactionsSummaryUseCase
 import tv.trakt.trakt.core.reactions.media.usecases.LoadUserMediaReactionsUseCase
 import tv.trakt.trakt.core.reactions.media.usecases.PostMediaReactionUseCase
+import kotlin.time.Duration.Companion.milliseconds
+
+private val SyncDebounce = 750.milliseconds
 
 @Suppress("UNCHECKED_CAST")
 internal class MediaReactionsViewModel(
@@ -50,6 +55,7 @@ internal class MediaReactionsViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private val writeMutex = Mutex()
+    private var syncDebounceJob: Job? = null
 
     init {
         loadData()
@@ -113,33 +119,56 @@ internal class MediaReactionsViewModel(
             )
         }
 
-        viewModelScope.launch {
-            writeMutex.withLock {
-                try {
-                    when {
-                        isRemoving -> {
-                            deleteReactionUseCase.deleteReaction(target, reaction)
-                            analytics.reactions.logMediaReactionRemove(
-                                reaction = reaction.value,
-                                mediaType = target.type.value,
-                            )
-                        }
-                        else -> {
-                            postReactionUseCase.postReaction(target, reaction)
-                            analytics.reactions.logMediaReactionAdd(
-                                reaction = reaction.value,
-                                mediaType = target.type.value,
-                            )
-                        }
-                    }
-                } catch (error: Exception) {
-                    error.rethrowCancellation {
-                        errorState.update { error }
-                        Timber.recordError(error)
-                    }
-                    restoreFromRemote()
+        syncDebounceJob?.cancel()
+        syncDebounceJob = viewModelScope.launch {
+            delay(SyncDebounce)
+            // Launched apart from the debounce job, so a later tap cannot cancel a request in flight.
+            viewModelScope.launch {
+                writeMutex.withLock { syncWithRemote() }
+            }
+        }
+    }
+
+    /**
+     * Sends only the difference between what the user now picks and what the server holds,
+     * so rapid toggles collapse into at most one removal and one addition.
+     */
+    private suspend fun syncWithRemote() {
+        try {
+            val held = when {
+                loadUserReactionsUseCase.isLoaded(target) -> loadUserReactionsUseCase.loadLocalReactions(target)
+                else -> loadUserReactionsUseCase.loadReactions(target)
+            }.map { it.reaction }.toSet()
+            val picked = userReactionsState.value
+
+            // Removals go first, so a swap never trips the per-item cap.
+            val removed = held - picked.toSet()
+            if (removed.isNotEmpty()) {
+                deleteReactionUseCase.deleteReactions(target, removed)
+                removed.forEach {
+                    analytics.reactions.logMediaReactionRemove(
+                        reaction = it.value,
+                        mediaType = target.type.value,
+                    )
                 }
             }
+
+            val added = picked.filter { it !in held }
+            if (added.isNotEmpty()) {
+                postReactionUseCase.postReactions(target, added)
+                added.forEach {
+                    analytics.reactions.logMediaReactionAdd(
+                        reaction = it.value,
+                        mediaType = target.type.value,
+                    )
+                }
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                errorState.update { error }
+                Timber.recordError(error)
+            }
+            restoreFromRemote()
         }
     }
 

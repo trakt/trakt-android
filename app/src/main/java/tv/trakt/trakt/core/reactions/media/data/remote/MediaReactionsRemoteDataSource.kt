@@ -9,9 +9,9 @@ internal interface MediaReactionsRemoteDataSource {
 
     suspend fun getUserReactions(target: MediaReactionsTarget): List<V3UserMediaReaction>
 
-    suspend fun postUserReaction(
+    suspend fun postUserReactions(
         target: MediaReactionsTarget,
-        reaction: String,
+        reactions: List<String>,
     ): List<V3UserMediaReaction>
 
     suspend fun deleteUserReactions(

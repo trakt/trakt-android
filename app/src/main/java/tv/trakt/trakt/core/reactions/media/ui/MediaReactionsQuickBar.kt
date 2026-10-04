@@ -123,7 +123,7 @@ internal fun MediaReactionsQuickBar(
                     summary = summary,
                     userReactions = userReactions,
                     modifier = Modifier
-                        .padding(bottom = 2.dp),
+                        .padding(bottom = 3.dp),
                 )
             }
 

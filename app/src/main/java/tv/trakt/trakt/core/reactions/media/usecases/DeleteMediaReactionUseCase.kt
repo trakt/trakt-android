@@ -10,9 +10,9 @@ internal class DeleteMediaReactionUseCase(
     private val localSource: UserMediaReactionsLocalDataSource,
     private val loadUserReactionsUseCase: LoadUserMediaReactionsUseCase,
 ) {
-    suspend fun deleteReaction(
+    suspend fun deleteReactions(
         target: MediaReactionsTarget,
-        reaction: MediaReaction,
+        reactions: Set<MediaReaction>,
     ) {
         // The API removes by row id, so the held rows must be known first.
         val held = when {
@@ -20,7 +20,7 @@ internal class DeleteMediaReactionUseCase(
             else -> loadUserReactionsUseCase.loadReactions(target)
         }
 
-        val (removed, kept) = held.partition { it.reaction == reaction }
+        val (removed, kept) = held.partition { it.reaction in reactions }
         if (removed.isEmpty()) return
 
         remoteSource.deleteUserReactions(
