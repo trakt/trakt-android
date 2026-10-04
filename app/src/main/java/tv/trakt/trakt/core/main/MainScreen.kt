@@ -511,7 +511,7 @@ private fun AppLinkLoadingMask() {
             ),
     ) {
         FilmProgressIndicator(
-            color = Color.White,
+            color = TraktTheme.colors.textPrimary,
         )
     }
 }
