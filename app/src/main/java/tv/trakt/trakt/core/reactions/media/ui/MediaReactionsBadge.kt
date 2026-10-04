@@ -99,7 +99,7 @@ internal fun MediaReactionsBadge(
                 color = TraktTheme.colors.textPrimary,
                 modifier = Modifier
                     .graphicsLayer {
-                        translationX = -2.dp.toPx()
+                        translationX = -1.5.dp.toPx()
                     },
             )
         }
@@ -159,7 +159,7 @@ private fun UserPicks(userReactions: ImmutableList<MediaReaction>) {
                 userReactions.indices.forEach { index ->
                     Box(
                         modifier = Modifier
-                            .size(3.dp)
+                            .size(3.25.dp)
                             .background(
                                 color = when (index) {
                                     shownIndex -> TraktTheme.colors.textPrimary

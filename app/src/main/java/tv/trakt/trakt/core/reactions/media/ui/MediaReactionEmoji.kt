@@ -59,7 +59,7 @@ internal fun MediaReactionEmoji(
     enabled: Boolean = true,
     size: Dp = 40.dp,
     fontSize: TextUnit = 24.sp,
-    highlightColor: Color = TraktTheme.colors.reactionsSummaryHighlight,
+    highlightColor: Color = TraktTheme.colors.reactionsSummaryHighlight2,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
@@ -102,7 +102,7 @@ internal fun MediaReactionEmoji(
                 if (selected) {
                     drawCircle(
                         color = highlightColor,
-                        radius = this.size.minDimension / 2 - HighlightInset.toPx(),
+                        radius = this.size.minDimension / 1.85F - HighlightInset.toPx(),
                     )
                 }
             },

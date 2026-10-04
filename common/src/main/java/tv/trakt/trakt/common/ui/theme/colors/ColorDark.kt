@@ -80,6 +80,7 @@ val DarkColors: TraktColors = TraktColors(
     reactionsContainer = Shade800,
     reactionsSummaryContainer = Shade700,
     reactionsSummaryHighlight = Shade800,
+    reactionsSummaryHighlight2 = Shade800,
     // Shadows
     shadowSmall = 1.dp,
     shadowDefault = 2.dp,

@@ -3,7 +3,6 @@
 package tv.trakt.trakt.core.reactions.media.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -21,10 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -36,6 +37,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.reactions.MediaReaction
+import tv.trakt.trakt.common.model.reactions.MediaReactionsSummary
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -43,6 +45,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun MediaReactionsQuickBarDropdown(
     state: TooltipState,
+    summary: MediaReactionsSummary,
     userReactions: ImmutableList<MediaReaction>,
     isLimitReached: Boolean,
     onReactionClick: (MediaReaction) -> Unit,
@@ -58,6 +61,7 @@ internal fun MediaReactionsQuickBarDropdown(
         enableUserInput = false,
         tooltip = {
             MediaReactionsQuickBar(
+                summary = summary,
                 userReactions = userReactions,
                 isLimitReached = isLimitReached,
                 onReactionClick = onReactionClick,
@@ -71,6 +75,7 @@ internal fun MediaReactionsQuickBarDropdown(
 private val ScreenMargin = 16.dp
 private val QuickEmojiFontSize = 22.sp
 private val AnchorSpacing = 4.dp
+private val SummarySpacing = 4.dp
 
 // The default tooltip provider does not keep the popup inside the window.
 @Composable
@@ -102,15 +107,33 @@ private fun rememberInBoundsAbovePositionProvider(): PopupPositionProvider {
 
 @Composable
 internal fun MediaReactionsQuickBar(
+    summary: MediaReactionsSummary,
     userReactions: ImmutableList<MediaReaction>,
     isLimitReached: Boolean,
     onReactionClick: (MediaReaction) -> Unit,
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        horizontalArrangement = spacedBy(0.dp),
-        verticalAlignment = CenterVertically,
+    val hasSummary = summary.reactionsCount > 0
+
+    Layout(
+        content = {
+            if (hasSummary) {
+                MediaReactionsSummaryCard(
+                    summary = summary,
+                    userReactions = userReactions,
+                    modifier = Modifier
+                        .padding(bottom = 2.dp),
+                )
+            }
+
+            QuickRow(
+                userReactions = userReactions,
+                isLimitReached = isLimitReached,
+                onReactionClick = onReactionClick,
+                onMoreClick = onMoreClick,
+            )
+        },
         modifier = modifier
             .dropShadow(
                 shape = RoundedCornerShape(24.dp),
@@ -126,7 +149,30 @@ internal fun MediaReactionsQuickBar(
                 shape = RoundedCornerShape(24.dp),
             )
             .padding(horizontal = 6.dp, vertical = 4.dp),
-    ) {
+    ) { measurables, constraints ->
+        // The summary takes the quick row's width, since its pager cannot size itself to content.
+        val row = measurables.last().measure(constraints.copy(minWidth = 0, minHeight = 0))
+        val card = measurables
+            .takeIf { it.size > 1 }
+            ?.first()
+            ?.measure(Constraints.fixedWidth(row.width))
+        val cardSpace = card?.let { it.height + SummarySpacing.roundToPx() } ?: 0
+
+        layout(row.width, cardSpace + row.height) {
+            card?.place(0, SummarySpacing.roundToPx() / 2)
+            row.place(0, cardSpace)
+        }
+    }
+}
+
+@Composable
+private fun QuickRow(
+    userReactions: ImmutableList<MediaReaction>,
+    isLimitReached: Boolean,
+    onReactionClick: (MediaReaction) -> Unit,
+    onMoreClick: () -> Unit,
+) {
+    Row(verticalAlignment = CenterVertically) {
         for (reaction in QuickMediaReactions) {
             MediaReactionEmoji(
                 reaction = reaction,
@@ -160,6 +206,7 @@ internal fun MediaReactionsQuickBar(
 private fun PreviewEmpty() {
     TraktThemeLightDark {
         MediaReactionsQuickBar(
+            summary = MediaReactionsSummary(),
             userReactions = persistentListOf(),
             isLimitReached = false,
             onReactionClick = {},
@@ -173,6 +220,7 @@ private fun PreviewEmpty() {
 private fun PreviewLimitReached() {
     TraktThemeLightDark {
         MediaReactionsQuickBar(
+            summary = MediaReactionsSummary(),
             userReactions = persistentListOf(
                 MediaReaction.HeartEyes,
                 MediaReaction.Shocked,

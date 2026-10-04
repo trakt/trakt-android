@@ -84,6 +84,7 @@ data class TraktColors(
     val reactionsContainer: Color = Color.Unspecified,
     val reactionsSummaryContainer: Color = Color.Unspecified,
     val reactionsSummaryHighlight: Color = Color.Unspecified,
+    val reactionsSummaryHighlight2: Color = Color.Unspecified,
     // Shadows
     val shadowDefault: Dp = 0.dp,
     val shadowSmall: Dp = 0.dp,

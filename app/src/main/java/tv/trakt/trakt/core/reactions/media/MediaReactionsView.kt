@@ -64,6 +64,7 @@ internal fun MediaReactionsView(
     ) {
         MediaReactionsQuickBarDropdown(
             state = tooltipState,
+            summary = state.summary,
             userReactions = state.userReactions,
             isLimitReached = state.isLimitReached,
             onReactionClick = ::onReactionClick,
