@@ -17,13 +17,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.LongPress
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
-import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.model.reactions.MediaReaction
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsBadge
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsQuickBarDropdown
@@ -75,14 +76,23 @@ internal fun MediaReactionsView(
                 summary = state.summary,
                 userReactions = state.userReactions,
                 enabled = isSignedIn,
-                modifier = Modifier.onClick(enabled = isSignedIn) {
-                    scope.launch {
-                        when {
-                            tooltipState.isVisible -> tooltipState.dismiss()
-                            else -> tooltipState.show()
+                modifier = Modifier.onClickCombined(
+                    enabled = isSignedIn,
+                    indication = false,
+                    onClick = {
+                        scope.launch {
+                            when {
+                                tooltipState.isVisible -> tooltipState.dismiss()
+                                else -> tooltipState.show()
+                            }
                         }
-                    }
-                },
+                    },
+                    onLongClick = {
+                        haptic.performHapticFeedback(LongPress)
+                        tooltipState.dismiss()
+                        pickerSheet = true
+                    },
+                ),
             )
         }
     }

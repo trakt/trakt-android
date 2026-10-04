@@ -73,7 +73,7 @@ internal fun MediaReactionsBadge(
         if (enabled && hasRoom && userReactions.size < 2) {
             Box(
                 modifier = Modifier
-                    .padding(start = 2.dp)
+                    .padding(start = 3.dp)
                     .size(width = 1.dp, height = 14.dp)
                     .background(TraktTheme.colors.separator),
             )
@@ -159,7 +159,7 @@ private fun UserPicks(userReactions: ImmutableList<MediaReaction>) {
                 userReactions.indices.forEach { index ->
                     Box(
                         modifier = Modifier
-                            .size(4.dp)
+                            .size(3.dp)
                             .background(
                                 color = when (index) {
                                     shownIndex -> TraktTheme.colors.textPrimary

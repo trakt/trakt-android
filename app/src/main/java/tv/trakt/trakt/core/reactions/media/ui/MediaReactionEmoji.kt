@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
-import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.model.reactions.MediaReaction
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -61,6 +61,7 @@ internal fun MediaReactionEmoji(
     fontSize: TextUnit = 24.sp,
     highlightColor: Color = TraktTheme.colors.reactionsSummaryHighlight,
     onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
 ) {
     val animatedAlpha by animateFloatAsState(
         targetValue = if (enabled || selected) 1F else 0.3F,
@@ -87,11 +88,13 @@ internal fun MediaReactionEmoji(
                 this.selected = selected
             }
             .ifOrElse(
-                condition = onClick != null,
-                isTrue = Modifier.onClick(
-                    enabled = enabled || selected,
+                condition = onClick != null || onLongClick != null,
+                // Long press stays available on dimmed emoji, only the click is blocked.
+                isTrue = Modifier.onClickCombined(
                     throttle = false,
-                    onClick = onClick ?: {},
+                    indication = false,
+                    onClick = { if (enabled || selected) onClick?.invoke() },
+                    onLongClick = onLongClick,
                 ),
             )
             // Drawn rather than padded, so the inset does not shrink the emoji's space.

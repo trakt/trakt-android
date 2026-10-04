@@ -54,6 +54,8 @@ internal fun MediaReactionsQuickBarDropdown(
         state = state,
         content = anchor,
         positionProvider = rememberInBoundsAbovePositionProvider(),
+        // The anchor handles its own taps; long press opens the full picker instead.
+        enableUserInput = false,
         tooltip = {
             MediaReactionsQuickBar(
                 userReactions = userReactions,
@@ -113,10 +115,10 @@ internal fun MediaReactionsQuickBar(
             .dropShadow(
                 shape = RoundedCornerShape(24.dp),
                 shadow = Shadow(
-                    radius = 4.dp,
+                    radius = 3.dp,
                     color = Color.Black,
-                    spread = 4.dp,
-                    alpha = 0.1F,
+                    spread = 1.dp,
+                    alpha = 0.06F,
                 ),
             )
             .background(
@@ -140,7 +142,7 @@ internal fun MediaReactionsQuickBar(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(30.dp)
+                .size(32.dp)
                 .onClick(onClick = onMoreClick),
         ) {
             Icon(
