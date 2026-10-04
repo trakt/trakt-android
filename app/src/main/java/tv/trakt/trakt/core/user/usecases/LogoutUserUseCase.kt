@@ -123,6 +123,7 @@ internal class LogoutUserUseCase(
 
         analytics.setUserId(null)
         analytics.setUserProperty("vip", null)
+        analytics.setUserProperty("director", null)
 
         ScheduleNotificationsWorker.clear(appContext)
         WorkManager.getInstance(appContext).cancelAllWork()

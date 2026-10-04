@@ -14,7 +14,7 @@ import tv.trakt.trakt.common.model.User
 
 // Token storage versioning.
 // Can be used to force clearing old data when the structure changes.
-private const val KEY_VERSION = 3
+private const val KEY_VERSION = 4
 
 private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile_$KEY_VERSION")
 private val KEY_USER_PROFILE_IMAGE = stringPreferencesKey("key_user_profile_image_$KEY_VERSION")

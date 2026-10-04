@@ -127,6 +127,7 @@ object PreviewData {
         isVip = false,
         isVipEp = false,
         isVipOg = false,
+        isDirector = false,
         isPrivate = false,
         images = null,
         streamings = null,

@@ -219,6 +219,7 @@ internal class MainViewModel(
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
                     analytics.setUserProperty("vip", it.isAnyVip.toString().lowercase())
+                    analytics.setUserProperty("director", it.isDirector.toString().lowercase())
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -354,6 +355,7 @@ internal class MainViewModel(
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
                     analytics.setUserProperty("vip", it.isAnyVip.toString().lowercase())
+                    analytics.setUserProperty("director", it.isDirector.toString().lowercase())
                     analytics.logUserLogin(source = ConfigAuth.redirectSource(redirectUri))
                     dismissPaywall(it)
                 }

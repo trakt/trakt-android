@@ -20,6 +20,7 @@ data class User(
     val isVip: Boolean,
     val isVipEp: Boolean,
     val isVipOg: Boolean,
+    val isDirector: Boolean,
     val images: Images?,
     val streamings: Streamings?,
     val settings: Settings?,
@@ -79,6 +80,7 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
         isVip = dto.user.vip,
         isVipEp = dto.user.vipEp,
         isVipOg = dto.user.vipOg,
+        isDirector = dto.user.director,
         images = User.Images(
             avatar = dto.user.images.avatar.let {
                 User.Image(it.full)
@@ -114,6 +116,7 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
         isVip = dto.vip ?: false,
         isVipEp = dto.vipEp ?: false,
         isVipOg = dto.vipOg ?: false,
+        isDirector = dto.director ?: false,
         images = User.Images(
             avatar = dto.images?.avatar?.let {
                 User.Image(it.full)

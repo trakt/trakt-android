@@ -100,6 +100,7 @@ internal class AuthViewModel(
                         user?.let {
                             analytics.setUserId(user.ids.trakt.value.toString())
                             analytics.setUserProperty("vip", user.isAnyVip.toString().lowercase())
+                            analytics.setUserProperty("director", user.isDirector.toString().lowercase())
                         }
                         deviceCodeState.update { null }
                         loadingState.update { SUCCESS }

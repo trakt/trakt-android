@@ -81,6 +81,7 @@ internal class MainViewModel(
                 user?.let {
                     analytics.setUserId(user.ids.trakt.value.toString())
                     analytics.setUserProperty("vip", user.isAnyVip.toString().lowercase())
+                    analytics.setUserProperty("director", user.isDirector.toString().lowercase())
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation()
