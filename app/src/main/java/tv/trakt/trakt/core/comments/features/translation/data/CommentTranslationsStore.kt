@@ -5,10 +5,9 @@ import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
@@ -22,20 +21,23 @@ import java.util.Locale
  * In-memory cache of on-device comment translations, shared by every comments screen
  * so a comment translated in a list stays translated in its details sheet.
  * Lives for the process lifetime only.
+ *
+ * [translators] are tried in order; the next one runs when a translator is unavailable or fails.
+ * When every translator fails, the caller falls back to an external translator.
  */
 internal class CommentTranslationsStore(
-    private val translator: CommentTranslator,
+    private val translators: List<CommentTranslator>,
 ) {
     private val itemsState = MutableStateFlow<PersistentMap<Int, CommentTranslation>>(persistentMapOf())
-    private val pendingDownloadState = MutableStateFlow<Comment?>(null)
+    private val pendingDownloadState = MutableStateFlow<PendingDownload?>(null)
 
     /**
-     * Comment waiting for the user to allow a language download over a metered network.
+     * Comment waiting for the user to allow a download over a metered network.
      */
-    val pendingDownload: StateFlow<Comment?> = pendingDownloadState.asStateFlow()
+    val pendingDownload: Flow<Comment?> = pendingDownloadState.map { it?.comment }
 
     val translations: Flow<CommentTranslations> = combine(
-        flow { emit(translator.isAvailable()) },
+        flow { emit(translators.any { it.isAvailable() }) },
         itemsState,
     ) { onDevice, items ->
         CommentTranslations(
@@ -52,30 +54,6 @@ internal class CommentTranslationsStore(
      * to an external translator.
      */
     suspend fun toggle(comment: Comment): Boolean {
-        return toggle(
-            comment = comment,
-            allowMeteredDownload = false,
-        )
-    }
-
-    suspend fun confirmDownload() {
-        val comment = pendingDownloadState.value ?: return
-        pendingDownloadState.update { null }
-
-        toggle(
-            comment = comment,
-            allowMeteredDownload = true,
-        )
-    }
-
-    fun cancelDownload() {
-        pendingDownloadState.update { null }
-    }
-
-    private suspend fun toggle(
-        comment: Comment,
-        allowMeteredDownload: Boolean,
-    ): Boolean {
         val current = itemsState.value[comment.id]
         if (current == Downloading || current == Translating) {
             return true
@@ -85,39 +63,80 @@ internal class CommentTranslationsStore(
             return true
         }
 
-        val source = comment.language
-        if (source == null || !translator.isAvailable()) {
-            return false
-        }
+        return translate(
+            comment = comment,
+            firstTranslator = 0,
+            allowMeteredDownload = false,
+        )
+    }
 
-        val downloaded = translator.isDownloaded(source)
-        if (!downloaded && !allowMeteredDownload && translator.isOnMeteredNetwork()) {
-            pendingDownloadState.update { comment }
-            return true
-        }
+    /**
+     * Continues the parked translation, downloading over a metered network.
+     * Returns false when it failed and the caller should fall back to an external translator.
+     */
+    suspend fun confirmDownload(): Boolean {
+        val pending = pendingDownloadState.value ?: return true
+        pendingDownloadState.update { null }
 
-        val result = try {
-            translate(
-                comment = comment,
-                source = source,
-                downloaded = downloaded,
-            )
+        return translate(
+            comment = pending.comment,
+            firstTranslator = pending.translator,
+            allowMeteredDownload = true,
+        )
+    }
+
+    fun cancelDownload() {
+        pendingDownloadState.update { null }
+    }
+
+    private suspend fun translate(
+        comment: Comment,
+        firstTranslator: Int,
+        allowMeteredDownload: Boolean,
+    ): Boolean {
+        val source = comment.language ?: return false
+
+        try {
+            for (index in firstTranslator until translators.size) {
+                val translator = translators[index]
+                if (!translator.isAvailable()) {
+                    continue
+                }
+
+                val downloaded = translator.isDownloaded(source)
+                if (!downloaded && !allowMeteredDownload && translator.isOnMeteredNetwork()) {
+                    itemsState.update { it.remove(comment.id) }
+                    pendingDownloadState.update {
+                        PendingDownload(
+                            comment = comment,
+                            translator = index,
+                        )
+                    }
+                    return true
+                }
+
+                val result = translate(
+                    translator = translator,
+                    comment = comment,
+                    source = source,
+                    downloaded = downloaded,
+                )
+                if (result.isSuccess) {
+                    itemsState.update { it.put(comment.id, Translated(result.getOrThrow())) }
+                    return true
+                }
+            }
         } catch (error: CancellationException) {
             itemsState.update { it.remove(comment.id) }
             throw error
         }
 
-        itemsState.update { items ->
-            result.fold(
-                onSuccess = { items.put(comment.id, Translated(it)) },
-                onFailure = { items.remove(comment.id) },
-            )
-        }
-
-        return result.isSuccess
+        itemsState.update { it.remove(comment.id) }
+        return false
     }
 
     private suspend fun translate(
+        translator: CommentTranslator,
         comment: Comment,
         source: Locale,
         downloaded: Boolean,
@@ -138,3 +157,8 @@ internal class CommentTranslationsStore(
         )
     }
 }
+
+private data class PendingDownload(
+    val comment: Comment,
+    val translator: Int,
+)

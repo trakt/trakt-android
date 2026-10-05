@@ -2,6 +2,6 @@
 <resources>
   <string name="text_comment_translation_downloading">Downloading language…</string>
   <string name="header_comment_translation_download">Download language?</string>
-  <string name="text_comment_translation_download_metered">Translating this comment needs a language download of ~30 MB. You are on mobile data, so this may use your data allowance.</string>
+  <string name="text_comment_translation_download_metered">Translating this comment needs a one-time language download. You are on mobile data, so this may use your data allowance.</string>
   <string name="button_text_comment_show_original">Translated\u00A0\u00A0%1$s</string>
 </resources>
