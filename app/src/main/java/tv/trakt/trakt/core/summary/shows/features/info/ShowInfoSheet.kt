@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.summary.shows.features.info
 
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -22,6 +24,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
+
+private const val SHEET_MAX_HEIGHT_FRACTION = 0.8F
 
 @Composable
 internal fun ShowInfoSheet(
@@ -34,6 +38,7 @@ internal fun ShowInfoSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
+    val maxHeight = LocalWindowInfo.current.containerDpSize.height * SHEET_MAX_HEIGHT_FRACTION
     val viewModelKey = remember(show) { nextInt().toString() }
 
     if (show != null) {
@@ -54,6 +59,7 @@ internal fun ShowInfoSheet(
                     )
                 },
                 modifier = Modifier
+                    .heightIn(max = maxHeight)
                     .padding(bottom = 24.dp),
             )
         }
