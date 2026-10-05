@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">映画を閲覧</string>
   <string name="button_label_browse_shows">番組を閲覧</string>
   <string name="button_label_calendar">カレンダー</string>
+  <string name="button_label_calendar_feed">このカレンダーを購読</string>
   <string name="button_label_cancel">キャンセル</string>
   <string name="button_label_cancel_follow_request">%sへのフォローリクエストをキャンセル</string>
   <string name="button_label_cancel_vip">サブスクリプションをキャンセル</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">%sを接続</string>
   <string name="button_label_copied">コピーしました</string>
   <string name="button_label_copy">コピー</string>
+  <string name="button_label_copy_calendar_feed">このカレンダーのiCalフィードリンクをコピー</string>
   <string name="button_label_cover_image_selected">「%s」があなたのカバー画像です。</string>
   <string name="button_label_create_list">リストを作成</string>
   <string name="button_label_delete_account">Traktアカウントを削除</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">次の期間</string>
   <string name="button_label_next_episode">次のエピソード</string>
   <string name="button_label_next_story">次のストーリー</string>
+  <string name="button_label_open_calendar_feed">カレンダーアプリでこのカレンダーを購読</string>
   <string name="button_label_open_comment">コメントを開く</string>
   <string name="button_label_open_leaderboard">フォロー中のランキングを開く</string>
   <string name="button_label_open_today_stories">今日のストーリーを開く</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">メモのアクション</string>
   <string name="button_label_popup_reactions">リアクション</string>
   <string name="button_label_post_reply">返信を投稿</string>
+  <string name="button_label_poster_details">ポスターの詳細</string>
   <string name="button_label_preview_gif">GIFをフルサイズで表示</string>
   <string name="button_label_preview_list">リスト %s をプレビュー</string>
   <string name="button_label_preview_watchlist">ウォッチリストをプレビュー</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d件の返信</string>
   <string name="button_text_connect">接続</string>
   <string name="button_text_continue">続ける</string>
+  <string name="button_text_copy_calendar_feed">iCalリンクをコピー</string>
   <string name="button_text_create">作成</string>
   <string name="button_text_create_list">リスト</string>
   <string name="button_text_cta_create_list">リストを作成</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">一番上に移動</string>
   <string name="button_text_movies">映画</string>
   <string name="button_text_no_services">サービスなし</string>
+  <string name="button_text_open_calendar_feed">カレンダーアプリに追加</string>
   <string name="button_text_open_in_service">%sで開く</string>
   <string name="button_text_personal">個人的なアクティビティ</string>
   <string name="button_text_play_all_stories">すべて再生</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">報告</string>
   <string name="dialog_title_younify_data_sync">既存データを同期</string>
   <string name="drawer_meta_info_cast">キャスト</string>
-  <string name="drawer_meta_info_cast_and_crew">キャスト＆クルー</string>
   <string name="drawer_meta_info_crew">クルー</string>
   <string name="drawer_title_add_gif">GIFを追加</string>
   <string name="drawer_title_add_note">ノート</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">動作設定</string>
   <string name="header_birthday">誕生日</string>
   <string name="header_calendar">カレンダー</string>
+  <string name="header_calendar_feed">カレンダーフィード</string>
   <string name="header_certification">認証</string>
   <string name="header_clear_data">データクリア</string>
   <string name="header_comment_reactions">レビューリアクション</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">データのエクスポート中</string>
   <string name="header_favorite_genres">お気に入りのジャンル</string>
   <string name="header_filters">フィルター</string>
+  <string name="header_follows_leaderboard">ランキング</string>
   <string name="header_genre">ジャンル</string>
   <string name="header_genres_loved">お気に入りのジャンル</string>
   <string name="header_get_notified">通知を受け取る！</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">記録</string>
   <string name="header_landing_trending_now">今トレンド</string>
   <string name="header_language">言語</string>
-  <string name="header_leaderboard">パンテオン</string>
   <string name="header_list_description">説明</string>
   <string name="header_main_cast">メインキャスト</string>
   <string name="header_manage_lists">リストを管理</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">人別</string>
   <string name="option_text_today_by_time">時間別</string>
   <string name="option_text_today_by_title">タイトル別</string>
+  <string name="option_text_today_day_today">今日</string>
+  <string name="option_text_today_day_week">週</string>
+  <string name="option_text_today_day_yesterday">昨日</string>
   <string name="option_text_trivia_category_all">全て</string>
   <string name="option_text_trivia_category_bts">メイキング</string>
   <string name="option_text_trivia_category_cast_n_crew">キャスト＆クルー</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_genre_picker">タグのリストではなく、ビジュアルグリッドからお気に入りのジャンルを選びましょう。</string>
   <string name="preview_feature_description_large_screen_cards">大画面では、すべてのリストでアプリの他の部分と同じカードを使用します。いずれかを選択すると、リストを離れることなくクイック概要が開きます。</string>
-  <string name="preview_feature_description_leaderboard">フォローしている人の視聴時間でランキングを作成し、その中で自分がどこに位置するかを確認できます。</string>
-  <string name="preview_feature_description_list_counts">リストが保持するアイテム数と、セクションが持つリスト数を示します。</string>
-  <string name="preview_feature_description_parental_guide">映画や番組の詳細ドロワーにコンテンツのリスクレベルを表示し、詳細フィルターで深刻度別に絞り込みます。</string>
   <string name="preview_feature_description_reactions">映画や番組にリアクションして、他の人がどう感じたかを見てみましょう。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
-  <string name="preview_feature_description_split_cast">番組、シーズン、エピソードの人物パネルで、メインキャストと脇役キャストを別々に表示します。</string>
   <string name="preview_feature_description_today_story">フォローしている人が今日何を視聴し、評価したか、そしてあなたにとっての新しい情報を、ホームページのストーリーとして確認できます。</string>
-  <string name="preview_feature_description_up_next_smart_sort">続きを視聴のよりスマートな並べ替えをお試しください。</string>
   <string name="preview_feature_description_vip_veteran">VIPを途切れることなく継続した期間を表示します。ベテランまたはレジェンドバッジ、色付きのアバターリング、そしてプロフィールでのささやかなお祝いが贈られます。</string>
   <string name="preview_feature_description_year_in_review_2026">視聴者ペルソナに基づいたスクロールリール形式の2026年、そしてそれに合わせたスタイルの統計ページです。</string>
-  <string name="preview_feature_description_youtube_specials">映画ページの「視聴場所」に、スタンドアップスペシャルの無料YouTubeアップロードを追加します。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_genre_picker">ジャンルピッカー</string>
   <string name="preview_feature_title_large_screen_cards">大画面カード</string>
-  <string name="preview_feature_title_leaderboard">パンテオン</string>
-  <string name="preview_feature_title_list_counts">リスト数</string>
   <string name="preview_feature_title_reactions">リアクション</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_scoped_favorites">範囲指定されたお気に入り</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
-  <string name="preview_feature_title_split_cast">メインキャストと脇役キャスト</string>
   <string name="preview_feature_title_today_story">今日</string>
-  <string name="preview_feature_title_up_next_smart_sort">続きを視聴 スマートソート</string>
   <string name="preview_feature_title_vip_veteran">VIPベテランステータス</string>
   <string name="preview_feature_title_year_in_review_2026">年間レビュー 2026</string>
-  <string name="preview_feature_title_youtube_specials">YouTubeスペシャル</string>
   <string name="reactions_search_empty">一致するリアクションはありません</string>
   <string name="reset_status_cleared">ウォッチリストをクリアしました。</string>
   <string name="row_label_loading_title">名前を読み込み中</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">ここで提供されている承認済みのロゴバージョンのみを使用し、再作成または変更しないでください。</string>
   <string name="text_buy">購入</string>
   <string name="text_by">作成者</string>
+  <string name="text_calendar_feed_filtered">フィルター済み</string>
   <string name="text_calendar_placeholder_1">この日には何もありません。一日休みを取り、天気を楽しんでください。</string>
   <string name="text_calendar_placeholder_10">全てクリア。何か違うものを探求する時間です。</string>
   <string name="text_calendar_placeholder_2">この日付のアイテムは見つかりませんでした。別の日を試してみますか？</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">同期ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d時間</string>
   <string name="text_info_blocked">%sをブロックしました。</string>
+  <string name="text_info_calendar_feed_copied">iCalリンクがコピーされました。購読するにはカレンダーアプリに貼り付けてください。</string>
   <string name="text_info_cover_removed">カバー画像がクリアされました。</string>
   <string name="text_info_cover_set">カバー画像が設定されました。</string>
   <string name="text_info_favorites_added">お気に入りに追加されました。</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">コメント済み · %s</string>
   <string name="text_today_commented_item_at">%1$sにコメント済み · %2$s</string>
   <string name="text_today_day_time">%1$s、%2$s</string>
-  <string name="text_today_day_with_count">%1$s、%2$d</string>
   <string name="text_today_empty">過去24時間に新しいアクティビティはありません。後でご確認ください。</string>
   <string name="text_today_empty_day">この日は、フォロー中のユーザーからのアクティビティはありません。</string>
   <string name="text_today_for_you">あなたへ</string>

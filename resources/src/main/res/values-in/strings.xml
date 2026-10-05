@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Jelajahi Film</string>
   <string name="button_label_browse_shows">Jelajahi Acara</string>
   <string name="button_label_calendar">Kalender</string>
+  <string name="button_label_calendar_feed">Berlangganan kalender ini</string>
   <string name="button_label_cancel">Batal</string>
   <string name="button_label_cancel_follow_request">Batalkan permintaan ikuti ke %s</string>
   <string name="button_label_cancel_vip">Batalkan Langganan</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Hubungkan %s</string>
   <string name="button_label_copied">Tersalin</string>
   <string name="button_label_copy">Salin</string>
+  <string name="button_label_copy_calendar_feed">Salin tautan umpan iCal untuk kalender ini</string>
   <string name="button_label_cover_image_selected">\"%s\" adalah gambar sampul Anda.</string>
   <string name="button_label_create_list">Buat daftar</string>
   <string name="button_label_delete_account">Hapus akun Trakt Anda</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Periode berikutnya</string>
   <string name="button_label_next_episode">Episode berikutnya</string>
   <string name="button_label_next_story">Cerita berikutnya</string>
+  <string name="button_label_open_calendar_feed">Berlangganan kalender ini di aplikasi kalender Anda</string>
   <string name="button_label_open_comment">Buka komentar</string>
   <string name="button_label_open_leaderboard">Buka papan peringkat ikutan</string>
   <string name="button_label_open_today_stories">Buka cerita hari ini</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Tindakan catatan</string>
   <string name="button_label_popup_reactions">Reaksi</string>
   <string name="button_label_post_reply">Kirim balasan</string>
+  <string name="button_label_poster_details">Detail Poster</string>
   <string name="button_label_preview_gif">Lihat GIF dalam ukuran penuh</string>
   <string name="button_label_preview_list">Pratinjau daftar %s</string>
   <string name="button_label_preview_watchlist">Pratinjau daftar tontonan</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d balasan</string>
   <string name="button_text_connect">Hubungkan</string>
   <string name="button_text_continue">Lanjutkan</string>
+  <string name="button_text_copy_calendar_feed">Salin tautan iCal</string>
   <string name="button_text_create">Buat</string>
   <string name="button_text_create_list">Daftar</string>
   <string name="button_text_cta_create_list">Buat daftar</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Pindahkan ke Atas</string>
   <string name="button_text_movies">Film</string>
   <string name="button_text_no_services">Tidak ada layanan</string>
+  <string name="button_text_open_calendar_feed">Tambahkan ke aplikasi kalender</string>
   <string name="button_text_open_in_service">Buka di %s</string>
   <string name="button_text_personal">Pribadi</string>
   <string name="button_text_play_all_stories">Putar semua</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Laporkan</string>
   <string name="dialog_title_younify_data_sync">Sinkronkan Data yang Ada</string>
   <string name="drawer_meta_info_cast">Pemeran</string>
-  <string name="drawer_meta_info_cast_and_crew">Pemeran &amp; Kru</string>
   <string name="drawer_meta_info_crew">Kru</string>
   <string name="drawer_title_add_gif">Tambah GIF</string>
   <string name="drawer_title_add_note">Catatan</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Perilaku</string>
   <string name="header_birthday">Ulang Tahun</string>
   <string name="header_calendar">Kalender</string>
+  <string name="header_calendar_feed">Umpan Kalender</string>
   <string name="header_certification">Sertifikasi</string>
   <string name="header_clear_data">Hapus Data</string>
   <string name="header_comment_reactions">Reaksi ulasan</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Mengekspor data Anda</string>
   <string name="header_favorite_genres">Genre Favorit</string>
   <string name="header_filters">Filter</string>
+  <string name="header_follows_leaderboard">Papan Peringkat</string>
   <string name="header_genre">Genre</string>
   <string name="header_genres_loved">Genre yang Anda Suka</string>
   <string name="header_get_notified">Dapatkan Notifikasi!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Lacak</string>
   <string name="header_landing_trending_now">Sedang Tren</string>
   <string name="header_language">Bahasa</string>
-  <string name="header_leaderboard">Pantheon</string>
   <string name="header_list_description">Deskripsi</string>
   <string name="header_main_cast">Pemeran Utama</string>
   <string name="header_manage_lists">Kelola daftar</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">Berdasarkan orang</string>
   <string name="option_text_today_by_time">Berdasarkan waktu</string>
   <string name="option_text_today_by_title">Berdasarkan judul</string>
+  <string name="option_text_today_day_today">Hari Ini</string>
+  <string name="option_text_today_day_week">Minggu</string>
+  <string name="option_text_today_day_yesterday">Kemarin</string>
   <string name="option_text_trivia_category_all">Semua</string>
   <string name="option_text_trivia_category_bts">Di Balik Layar</string>
   <string name="option_text_trivia_category_cast_n_crew">Pemeran &amp; Kru</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_genre_picker">Pilih genre favorit Anda dari kisi visual, bukan daftar tag.</string>
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
-  <string name="preview_feature_description_leaderboard">Peringkat orang yang Anda ikuti berdasarkan waktu tonton dan lihat posisi Anda di antara mereka.</string>
-  <string name="preview_feature_description_list_counts">Menampilkan berapa banyak item yang dimiliki sebuah daftar, dan berapa banyak daftar yang dimiliki sebuah bagian.</string>
-  <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film dan acara, serta saring berdasarkan tingkat keparahan di filter lanjutan.</string>
   <string name="preview_feature_description_reactions">Bereaksi terhadap film atau acara, dan lihat bagaimana perasaan orang lain.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
-  <string name="preview_feature_description_split_cast">Lihat pemeran utama dan pendukung secara terpisah di panel orang acara, musim, dan episode.</string>
   <string name="preview_feature_description_today_story">Lihat apa yang ditonton dan diberi peringkat oleh orang yang Anda ikuti hari ini, dan apa yang baru untuk Anda, sebagai cerita di halaman beranda.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Coba cara yang lebih cerdas untuk mengurutkan Lanjutkan Menonton Anda.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
-  <string name="preview_feature_description_youtube_specials">Menambahkan unggahan YouTube gratis dari spesial stand-up ke Di mana untuk menonton di halaman film.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_genre_picker">Pemilih Genre</string>
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
-  <string name="preview_feature_title_leaderboard">Pantheon</string>
-  <string name="preview_feature_title_list_counts">Hitungan Daftar</string>
   <string name="preview_feature_title_reactions">Reaksi</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_scoped_favorites">Favorit Terbatas</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_split_cast">Pemeran Utama dan Pendukung</string>
   <string name="preview_feature_title_today_story">Hari Ini</string>
-  <string name="preview_feature_title_up_next_smart_sort">Lanjutkan Menonton Urutan Cerdas</string>
   <string name="preview_feature_title_vip_veteran">Status veteran VIP</string>
   <string name="preview_feature_title_year_in_review_2026">Kilas Balik Tahunan 2026</string>
-  <string name="preview_feature_title_youtube_specials">Spesial YouTube</string>
   <string name="reactions_search_empty">Tidak ada reaksi yang cocok</string>
   <string name="reset_status_cleared">Daftar tontonan dibersihkan.</string>
   <string name="row_label_loading_title">Memuat nama</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Gunakan hanya versi logo yang disetujui yang disediakan di sini; jangan membuat ulang atau memodifikasinya.</string>
   <string name="text_buy">Beli</string>
   <string name="text_by">oleh</string>
+  <string name="text_calendar_feed_filtered">Terfilter</string>
   <string name="text_calendar_placeholder_1">Tidak ada apa-apa untuk Anda hari ini. Ambil cuti, nikmati cuaca.</string>
   <string name="text_calendar_placeholder_10">Semua jelas. Saatnya menjelajahi sesuatu yang berbeda.</string>
   <string name="text_calendar_placeholder_2">Tidak ada item ditemukan untuk tanggal ini. Mungkin coba hari lain?</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">ID Sinkronisasi %1$d (%2$s)</string>
   <string name="text_hours_watched">%d jam</string>
   <string name="text_info_blocked">%s telah diblokir.</string>
+  <string name="text_info_calendar_feed_copied">Tautan iCal disalin. Tempelkan ke aplikasi kalender Anda untuk berlangganan.</string>
   <string name="text_info_cover_removed">Gambar sampul telah dihapus.</string>
   <string name="text_info_cover_set">Gambar sampul telah diatur.</string>
   <string name="text_info_favorites_added">Ditambahkan ke favorit.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Dikomentari \n· %s</string>
   <string name="text_today_commented_item_at">Dikomentari tentang %1$s \n· %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Tidak ada yang baru dalam 24 jam terakhir. Cek lagi nanti.</string>
   <string name="text_today_empty_day">Tidak ada dari orang yang Anda ikuti pada hari ini.</string>
   <string name="text_today_for_you">Untuk Anda</string>

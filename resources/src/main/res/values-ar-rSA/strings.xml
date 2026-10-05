@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">تصفح الأفلام</string>
   <string name="button_label_browse_shows">تصفح العروض</string>
   <string name="button_label_calendar">التقويم</string>
+  <string name="button_label_calendar_feed">اشترك في هذا التقويم</string>
   <string name="button_label_cancel">إلغاء</string>
   <string name="button_label_cancel_follow_request">إلغاء طلب المتابعة إلى %s</string>
   <string name="button_label_cancel_vip">إلغاء الاشتراك</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">ربط %s</string>
   <string name="button_label_copied">تم النسخ</string>
   <string name="button_label_copy">نسخ</string>
+  <string name="button_label_copy_calendar_feed">انسخ رابط موجز iCal لهذا التقويم</string>
   <string name="button_label_cover_image_selected">\"%s\" هي صورة غلافك.</string>
   <string name="button_label_create_list">إنشاء قائمة</string>
   <string name="button_label_delete_account">حذف حساب Trakt الخاص بك</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">الفترة القادمة</string>
   <string name="button_label_next_episode">الحلقة القادمة</string>
   <string name="button_label_next_story">القصة التالية</string>
+  <string name="button_label_open_calendar_feed">اشترك في هذا التقويم في تطبيق التقويم الخاص بك</string>
   <string name="button_label_open_comment">افتح التعليق</string>
   <string name="button_label_open_leaderboard">فتح لوحة صدارة المتابَعين</string>
   <string name="button_label_open_today_stories">افتح قصص اليوم</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">إجراءات الملاحظة</string>
   <string name="button_label_popup_reactions">ردود الفعل</string>
   <string name="button_label_post_reply">الرد</string>
+  <string name="button_label_poster_details">تفاصيل الملصق</string>
   <string name="button_label_preview_gif">عرض GIF بالحجم الكامل</string>
   <string name="button_label_preview_list">معاينة قائمة %s</string>
   <string name="button_label_preview_watchlist">معاينة قائمة المشاهدة</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d رد</string>
   <string name="button_text_connect">تواصل</string>
   <string name="button_text_continue">متابعة</string>
+  <string name="button_text_copy_calendar_feed">نسخ رابط iCal</string>
   <string name="button_text_create">إنشاء</string>
   <string name="button_text_create_list">قائمة</string>
   <string name="button_text_cta_create_list">إنشاء قائمة</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">انتقل إلى الأعلى</string>
   <string name="button_text_movies">أفلام</string>
   <string name="button_text_no_services">لا توجد خدمات</string>
+  <string name="button_text_open_calendar_feed">إضافة إلى تطبيق التقويم</string>
   <string name="button_text_open_in_service">فتح في %s</string>
   <string name="button_text_personal">شخصي</string>
   <string name="button_text_play_all_stories">تشغيل الكل</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">تقرير</string>
   <string name="dialog_title_younify_data_sync">مزامنة البيانات الموجودة</string>
   <string name="drawer_meta_info_cast">طاقم</string>
-  <string name="drawer_meta_info_cast_and_crew">الممثلون وطاقم العمل</string>
   <string name="drawer_meta_info_crew">الطاقم</string>
   <string name="drawer_title_add_gif">إضافة صورة GIF</string>
   <string name="drawer_title_add_note">ملاحظة</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">السلوك</string>
   <string name="header_birthday">تاريخ الميلاد</string>
   <string name="header_calendar">التقويم</string>
+  <string name="header_calendar_feed">موجز التقويم</string>
   <string name="header_certification">التصنيف العمري</string>
   <string name="header_clear_data">مسح البيانات</string>
   <string name="header_comment_reactions">ردود الفعل المراجعة</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">تصدير بياناتك</string>
   <string name="header_favorite_genres">الأنواع المفضلة</string>
   <string name="header_filters">مرشحات</string>
+  <string name="header_follows_leaderboard">لوحة الصدارة</string>
   <string name="header_genre">التّصنيف</string>
   <string name="header_genres_loved">الأنواع التي تفضلها</string>
   <string name="header_get_notified">الحصول على إخطار!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">تتبع</string>
   <string name="header_landing_trending_now">رائج الآن</string>
   <string name="header_language">اللغة</string>
-  <string name="header_leaderboard">البانثيون</string>
   <string name="header_list_description">الوصف</string>
   <string name="header_main_cast">طاقم التمثيل الرئيسي</string>
   <string name="header_manage_lists">إدارة القوائم</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">حسب الشخص</string>
   <string name="option_text_today_by_time">حسب الوقت</string>
   <string name="option_text_today_by_title">حسب العنوان</string>
+  <string name="option_text_today_day_today">اليوم</string>
+  <string name="option_text_today_day_week">أسبوع</string>
+  <string name="option_text_today_day_yesterday">الأمس</string>
   <string name="option_text_trivia_category_all">الكل</string>
   <string name="option_text_trivia_category_bts">خلف الكواليس</string>
   <string name="option_text_trivia_category_cast_n_crew">الممثلون وطاقم العمل</string>
@@ -1332,33 +1341,22 @@
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_genre_picker">اختر أنواعك المفضلة من شبكة مرئية بدلاً من قائمة بالعلامات.</string>
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
-  <string name="preview_feature_description_leaderboard">قم بتصنيف الأشخاص الذين تتابعهم حسب وقت المشاهدة وانظر إلى أين ستصل بينهم.</string>
-  <string name="preview_feature_description_list_counts">يعرض عدد العناصر التي تحتويها القائمة، وعدد القوائم التي يملكها القسم.</string>
-  <string name="preview_feature_description_parental_guide">اعرض مستويات خطورة المحتوى في درج التفاصيل للأفلام والعروض، وفلتر حسب الخطورة في الفلاتر المتقدمة.</string>
   <string name="preview_feature_description_reactions">تفاعل مع فيلم أو عرض، وشاهد كيف شعر الآخرون.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_scoped_favorites">قوائم المفضلة في المربع الزمني من خلال إظهار مفضلات العام الحالي في الملفات الشخصية وتجميع قائمة المفضلة الكاملة حسب السنة.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
-  <string name="preview_feature_description_split_cast">شاهد طاقم التمثيل الرئيسي والمساعد بشكل منفصل في لوحات الأشخاص الخاصة بالمسلسل والموسم والحلقة.</string>
   <string name="preview_feature_description_today_story">شاهد ما شاهده الأشخاص الذين تتابعهم وقيموه اليوم، وما هو جديد لك، كقصص على الصفحة الرئيسية.</string>
-  <string name="preview_feature_description_up_next_smart_sort">اختبر طريقة أكثر ذكاءً لفرز متابعة المشاهدة.</string>
   <string name="preview_feature_description_vip_veteran">تُظهر المدة التي احتفظ فيها الأعضاء بخدمة VIP دون انقطاع، مع شارة مخضرم أو أسطورة، وحلقة ملونة للصورة الرمزية، وبعض الاحتفالات على ملفك الشخصي.</string>
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
-  <string name="preview_feature_description_youtube_specials">أين تشاهد</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_genre_picker">منتقي النوع</string>
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
-  <string name="preview_feature_title_leaderboard">البانثيون</string>
-  <string name="preview_feature_title_list_counts">عدادات القوائم</string>
   <string name="preview_feature_title_reactions">ردود الفعل</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_scoped_favorites">نطاق المفضلة</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
-  <string name="preview_feature_title_split_cast">طاقم التمثيل الرئيسي والمساعد</string>
   <string name="preview_feature_title_today_story">اليوم</string>
-  <string name="preview_feature_title_up_next_smart_sort">متابعة مشاهدة الفرز الذكي</string>
   <string name="preview_feature_title_vip_veteran">حالة VIP المخضرم</string>
-  <string name="preview_feature_title_youtube_specials">عروض يوتيوب الخاصة</string>
   <string name="reactions_search_empty">لا توجد ردود فعل مطابقة</string>
   <string name="reset_status_cleared">تم مسح قائمة المشاهدة.</string>
   <string name="row_label_loading_title">جاري تحميل الاسم</string>
@@ -1483,6 +1481,7 @@
   <string name="text_branding_req_6">استخدم فقط إصدارات الشعار المعتمدة المتوفرة هنا؛ لا تقم بإعادة إنشائها أو تعديلها.</string>
   <string name="text_buy">شراء</string>
   <string name="text_by">بواسطة</string>
+  <string name="text_calendar_feed_filtered">مُصفى</string>
   <string name="text_calendar_placeholder_1">لا شيء لك في هذا اليوم. خذ يوم عطلة واستمتع بالطقس.</string>
   <string name="text_calendar_placeholder_10">كل شيء واضح. حان الوقت لاستكشاف شيء مختلف.</string>
   <string name="text_calendar_placeholder_2">لم يتم العثور على عناصر لهذا التاريخ. ربما حاول في يوم آخر؟</string>
@@ -1581,6 +1580,7 @@
   <string name="text_history_sync_filter_with_source">معرف المزامنة %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ساعة</string>
   <string name="text_info_blocked">تم حظر %s.</string>
+  <string name="text_info_calendar_feed_copied">تم نسخ رابط iCal. الصقه في تطبيق التقويم الخاص بك للاشتراك.</string>
   <string name="text_info_cover_removed">تم مسح صورة الغلاف.</string>
   <string name="text_info_cover_set">تم ضبط صورة الغلاف.</string>
   <string name="text_info_favorites_added">تمت إضافتها إلى المفضلة.</string>
@@ -1843,7 +1843,6 @@
   <string name="text_today_commented_at">تم التعليق · %s</string>
   <string name="text_today_commented_item_at">تم التعليق على %1$s · %2$s</string>
   <string name="text_today_day_time">%1$s، %2$s</string>
-  <string name="text_today_day_with_count">%1$s، %2$d</string>
   <string name="text_today_empty">لا يوجد شيء جديد خلال الـ 24 ساعة الماضية. تحقق لاحقًا.</string>
   <string name="text_today_empty_day">لا يوجد شيء من الأشخاص الذين تتابعهم في هذا اليوم.</string>
   <string name="text_today_for_you">لك</string>

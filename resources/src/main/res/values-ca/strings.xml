@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Explora pel·lícules</string>
   <string name="button_label_browse_shows">Explora sèries</string>
   <string name="button_label_calendar">Calendari</string>
+  <string name="button_label_calendar_feed">Subscriu-te a aquest calendari</string>
   <string name="button_label_cancel">Cancel·la</string>
   <string name="button_label_cancel_follow_request">Cancel·la la sol·licitud de seguiment a %s</string>
   <string name="button_label_cancel_vip">Cancel·la la subscripció</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Connecta %s</string>
   <string name="button_label_copied">Copiat</string>
   <string name="button_label_copy">Copia</string>
+  <string name="button_label_copy_calendar_feed">Copia l\'enllaç de la font iCal per a aquest calendari</string>
   <string name="button_label_cover_image_selected">\"%s\" és la teva imatge de portada.</string>
   <string name="button_label_create_list">Crea llista</string>
   <string name="button_label_delete_account">Suprimeix el teu compte de Trakt</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Pròxim període</string>
   <string name="button_label_next_episode">Següent episodi</string>
   <string name="button_label_next_story">Següent història</string>
+  <string name="button_label_open_calendar_feed">Subscriu-te a aquest calendari a la teva aplicació de calendari</string>
   <string name="button_label_open_comment">Obre el comentari</string>
   <string name="button_label_open_leaderboard">Obrir la classificació de seguidors</string>
   <string name="button_label_open_today_stories">Obre les històries d\'avui</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Accions de la nota</string>
   <string name="button_label_popup_reactions">Reaccions</string>
   <string name="button_label_post_reply">Publica resposta</string>
+  <string name="button_label_poster_details">Detalls del pòster</string>
   <string name="button_label_preview_gif">Veure GIF a mida completa</string>
   <string name="button_label_preview_list">Previsualitzar la llista %s</string>
   <string name="button_label_preview_watchlist">Previsualitzar la llista de seguiment</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d respostes</string>
   <string name="button_text_connect">Connecta</string>
   <string name="button_text_continue">Continua</string>
+  <string name="button_text_copy_calendar_feed">Copia l\'enllaç iCal</string>
   <string name="button_text_create">Crea</string>
   <string name="button_text_create_list">Llista</string>
   <string name="button_text_cta_create_list">Crea llista</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Moure a dalt</string>
   <string name="button_text_movies">Pel·lícules</string>
   <string name="button_text_no_services">Sense serveis</string>
+  <string name="button_text_open_calendar_feed">Afegeix a l\'aplicació de calendari</string>
   <string name="button_text_open_in_service">Obre a %s</string>
   <string name="button_text_personal">Personal</string>
   <string name="button_text_play_all_stories">Reprodueix-ho tot</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Informar</string>
   <string name="dialog_title_younify_data_sync">Sincronitza dades existents</string>
   <string name="drawer_meta_info_cast">Repartiment</string>
-  <string name="drawer_meta_info_cast_and_crew">Repartiment i Equip</string>
   <string name="drawer_meta_info_crew">Equip</string>
   <string name="drawer_title_add_gif">Afegir un GIF</string>
   <string name="drawer_title_add_note">Nota</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Comportament</string>
   <string name="header_birthday">Aniversari</string>
   <string name="header_calendar">Calendari</string>
+  <string name="header_calendar_feed">Font de calendari</string>
   <string name="header_certification">Certificació</string>
   <string name="header_clear_data">Esborra dades</string>
   <string name="header_comment_reactions">Reaccions a la ressenya</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Exportant les teves dades</string>
   <string name="header_favorite_genres">Gèneres preferits</string>
   <string name="header_filters">Filtres</string>
+  <string name="header_follows_leaderboard">Classificació</string>
   <string name="header_genre">Gènere</string>
   <string name="header_genres_loved">Gèneres que t\'agraden</string>
   <string name="header_get_notified">Rep notificacions!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Segueix</string>
   <string name="header_landing_trending_now">En tendència ara</string>
   <string name="header_language">Idioma</string>
-  <string name="header_leaderboard">Pantheon</string>
   <string name="header_list_description">Descripció</string>
   <string name="header_main_cast">Repartiment principal</string>
   <string name="header_manage_lists">Gestiona llistes</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">Per persona</string>
   <string name="option_text_today_by_time">Per hora</string>
   <string name="option_text_today_by_title">Per títol</string>
+  <string name="option_text_today_day_today">Avui</string>
+  <string name="option_text_today_day_week">Setmana</string>
+  <string name="option_text_today_day_yesterday">Ahir</string>
   <string name="option_text_trivia_category_all">Tots</string>
   <string name="option_text_trivia_category_bts">Darrere les càmeres</string>
   <string name="option_text_trivia_category_cast_n_crew">Repartiment i Equip</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_genre_picker">Tria els teus gèneres preferits d\'una graella visual en lloc d\'una llista d\'etiquetes.</string>
   <string name="preview_feature_description_large_screen_cards">A pantalles més grans, totes les llistes utilitzen les mateixes targetes que la resta de l\'aplicació. Si en seleccioneu una, s\'obre una vista ràpida en lloc de sortir de la llista.</string>
-  <string name="preview_feature_description_leaderboard">Classifica les persones que segueixes per temps de visionat i mira on quedes entre elles.</string>
-  <string name="preview_feature_description_list_counts">Mostra quants elements conté una llista i quantes llistes té una secció.</string>
-  <string name="preview_feature_description_parental_guide">Mostrar els nivells de risc de contingut al calaix de detalls per a pel·lícules i sèries, i filtrar per gravetat als filtres avançats.</string>
   <string name="preview_feature_description_reactions">Reacciona a una pel·lícula o sèrie, i mira què en pensen els altres.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
-  <string name="preview_feature_description_split_cast">Consulta el repartiment principal i de suport per separat als panells de persones de sèries, temporades i episodis.</string>
   <string name="preview_feature_description_today_story">Mira què han vist i valorat avui les persones que segueixes, i què hi ha de nou per a tu, com a històries a la pàgina d\'inici.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Prova una manera més intel·ligent d\'ordenar el teu \'Continua veient\'.</string>
   <string name="preview_feature_description_vip_veteran">Mostra quant de temps els membres han mantingut el VIP sense interrupcions, amb una insígnia de Veterà o Llegenda, un anell d\'avatar de color i algunes celebracions al teu propi perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">El teu 2026 en un carrusel desplaçable amb una personalitat d\'espectador, i després una pàgina d\'estadístiques amb el mateix estil.</string>
-  <string name="preview_feature_description_youtube_specials">Afegeix pujades gratuïtes de YouTube d\'especials de monòlegs a \"On mirar\" a les pàgines de pel·lícules.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_genre_picker">Selector de gènere</string>
   <string name="preview_feature_title_large_screen_cards">Targetes per a pantalles grans</string>
-  <string name="preview_feature_title_leaderboard">Pantheon</string>
-  <string name="preview_feature_title_list_counts">Recomptes de llista</string>
   <string name="preview_feature_title_reactions">Reaccions</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_scoped_favorites">Preferits per àmbit</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
-  <string name="preview_feature_title_split_cast">Repartiment principal i de suport</string>
   <string name="preview_feature_title_today_story">Avui</string>
-  <string name="preview_feature_title_up_next_smart_sort">Continua veient: Ordre intel·ligent</string>
   <string name="preview_feature_title_vip_veteran">Estat VIP de veterà</string>
   <string name="preview_feature_title_year_in_review_2026">Resum de l\'Any 2026</string>
-  <string name="preview_feature_title_youtube_specials">Especials de YouTube</string>
   <string name="reactions_search_empty">Cap reacció coincideix</string>
   <string name="reset_status_cleared">Llista de seguiment esborrada.</string>
   <string name="row_label_loading_title">Carregant el nom</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Utilitza només les versions de logotip aprovades que es proporcionen aquí; no les recreïs ni les modifiquis.</string>
   <string name="text_buy">Compra</string>
   <string name="text_by">per</string>
+  <string name="text_calendar_feed_filtered">Filtrat</string>
   <string name="text_calendar_placeholder_1">Res per a tu aquest dia. Agafa un dia lliure, gaudeix del temps.</string>
   <string name="text_calendar_placeholder_10">Tot clar. És hora d\'explorar alguna cosa diferent.</string>
   <string name="text_calendar_placeholder_2">No s\'han trobat elements per a aquesta data. Potser prova un altre dia?</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">ID de sincronització %1$d (%2$s)</string>
   <string name="text_hours_watched">%d hores</string>
   <string name="text_info_blocked">%s ha estat bloquejat.</string>
+  <string name="text_info_calendar_feed_copied">Enllaç iCal copiat. Enganxa\'l a la teva aplicació de calendari per subscriure\'t.</string>
   <string name="text_info_cover_removed">La imatge de portada s\'ha esborrat.</string>
   <string name="text_info_cover_set">La imatge de portada s\'ha establert.</string>
   <string name="text_info_favorites_added">Afegit a preferits.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Comentat · %s</string>
   <string name="text_today_commented_item_at">Comentat a %1$s · %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Res de nou en les darreres 24 hores. Torna-hi més tard.</string>
   <string name="text_today_empty_day">Res de les persones que segueixes en aquest dia.</string>
   <string name="text_today_for_you">Per a tu</string>

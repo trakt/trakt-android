@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Browse Movies</string>
   <string name="button_label_browse_shows">Browse Shows</string>
   <string name="button_label_calendar">Calendar</string>
+  <string name="button_label_calendar_feed">Subscribe to this calendar</string>
   <string name="button_label_cancel">Cancel</string>
   <string name="button_label_cancel_follow_request">Cancel follow request to %s</string>
   <string name="button_label_cancel_vip">Cancel Subscription</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Connect %s</string>
   <string name="button_label_copied">Copied</string>
   <string name="button_label_copy">Copy</string>
+  <string name="button_label_copy_calendar_feed">Copy the iCal feed link for this calendar</string>
   <string name="button_label_cover_image_selected">\"%s\" is your cover image.</string>
   <string name="button_label_create_list">Create list</string>
   <string name="button_label_delete_account">Delete your Trakt account</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Next period</string>
   <string name="button_label_next_episode">Next episode</string>
   <string name="button_label_next_story">Next story</string>
+  <string name="button_label_open_calendar_feed">Subscribe to this calendar in your calendar app</string>
   <string name="button_label_open_comment">Open the comment</string>
   <string name="button_label_open_leaderboard">Open follows leaderboard</string>
   <string name="button_label_open_today_stories">Open today\'s stories</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Note actions</string>
   <string name="button_label_popup_reactions">Reactions</string>
   <string name="button_label_post_reply">Post reply</string>
+  <string name="button_label_poster_details">Poster details</string>
   <string name="button_label_preview_gif">View GIF at full size</string>
   <string name="button_label_preview_list">Preview list %s</string>
   <string name="button_label_preview_watchlist">Preview watchlist</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d replies</string>
   <string name="button_text_connect">Connect</string>
   <string name="button_text_continue">Continue</string>
+  <string name="button_text_copy_calendar_feed">Copy iCal link</string>
   <string name="button_text_create">Create</string>
   <string name="button_text_create_list">List</string>
   <string name="button_text_cta_create_list">Create list</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Move to Top</string>
   <string name="button_text_movies">Movies</string>
   <string name="button_text_no_services">No services</string>
+  <string name="button_text_open_calendar_feed">Add to calendar app</string>
   <string name="button_text_open_in_service">Open in %s</string>
   <string name="button_text_personal">Personal</string>
   <string name="button_text_play_all_stories">Play all</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Report</string>
   <string name="dialog_title_younify_data_sync">Sync Existing Data</string>
   <string name="drawer_meta_info_cast">Cast</string>
-  <string name="drawer_meta_info_cast_and_crew">Cast &amp; Crew</string>
   <string name="drawer_meta_info_crew">Crew</string>
   <string name="drawer_title_add_gif">Add a GIF</string>
   <string name="drawer_title_add_note">Note</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Behaviour</string>
   <string name="header_birthday">Birthday</string>
   <string name="header_calendar">Calendar</string>
+  <string name="header_calendar_feed">Calendar feed</string>
   <string name="header_certification">Certification</string>
   <string name="header_clear_data">Clear Data</string>
   <string name="header_comment_reactions">Review reactions</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Exporting your data</string>
   <string name="header_favorite_genres">Favourite Genres</string>
   <string name="header_filters">Filters</string>
+  <string name="header_follows_leaderboard">Leaderboard</string>
   <string name="header_genre">Genre</string>
   <string name="header_genres_loved">Genres you Like</string>
   <string name="header_get_notified">Get Notified!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Track</string>
   <string name="header_landing_trending_now">Trending now</string>
   <string name="header_language">Language</string>
-  <string name="header_leaderboard">Pantheon</string>
   <string name="header_list_description">Description</string>
   <string name="header_main_cast">Main Cast</string>
   <string name="header_manage_lists">Manage lists</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">By person</string>
   <string name="option_text_today_by_time">By time</string>
   <string name="option_text_today_by_title">By title</string>
+  <string name="option_text_today_day_today">Today</string>
+  <string name="option_text_today_day_week">Week</string>
+  <string name="option_text_today_day_yesterday">Yesterday</string>
   <string name="option_text_trivia_category_all">All</string>
   <string name="option_text_trivia_category_bts">Behind the scenes</string>
   <string name="option_text_trivia_category_cast_n_crew">Cast &amp; crew</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_genre_picker">Pick your favourite genres from a visual grid instead of a list of tags.</string>
   <string name="preview_feature_description_large_screen_cards">On bigger screens, all lists use the same cards as the rest of the app. Selecting one opens a quick glance instead of leaving the list.</string>
-  <string name="preview_feature_description_leaderboard">Rank the people you follow by watch time and see where you land among them.</string>
-  <string name="preview_feature_description_list_counts">Shows how many items a list holds, and how many lists a section has.</string>
-  <string name="preview_feature_description_parental_guide">Show content risk levels in the details drawer for movies and shows, and filter by severity in advanced filters.</string>
   <string name="preview_feature_description_reactions">React to a movie or show, and see how everyone else felt.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_scoped_favorites">Time-box favourite lists by showing current-year favourites on profiles and grouping the full favourites list by year.</string>
   <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
-  <string name="preview_feature_description_split_cast">See main and supporting cast separately in show, season, and episode people panels.</string>
   <string name="preview_feature_description_today_story">See what the people you follow watched and rated today, and what\'s new for you, as stories on the homepage.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Test a smarter way to sort your Continue Watching.</string>
   <string name="preview_feature_description_vip_veteran">Shows how long members have kept VIP without a break, with a Veteran or Legend badge, a coloured avatar ring and a few celebrations on your own profile.</string>
   <string name="preview_feature_description_year_in_review_2026">Your 2026 as a scroll-driven reel with a viewer persona, then a stats page styled to match it.</string>
-  <string name="preview_feature_description_youtube_specials">Adds free YouTube uploads of stand-up specials to Where to watch on movie pages.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_genre_picker">Genre Picker</string>
   <string name="preview_feature_title_large_screen_cards">Large Screen Cards</string>
-  <string name="preview_feature_title_leaderboard">Pantheon</string>
-  <string name="preview_feature_title_list_counts">List Counts</string>
   <string name="preview_feature_title_reactions">Reactions</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_scoped_favorites">Scoped Favourites</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_split_cast">Main and Supporting Cast</string>
   <string name="preview_feature_title_today_story">Today</string>
-  <string name="preview_feature_title_up_next_smart_sort">Continue Watching Smart Sort</string>
   <string name="preview_feature_title_vip_veteran">VIP veteran status</string>
   <string name="preview_feature_title_year_in_review_2026">Year in Review 2026</string>
-  <string name="preview_feature_title_youtube_specials">YouTube specials</string>
   <string name="reactions_search_empty">No reactions match that</string>
   <string name="reset_status_cleared">Watchlist cleared.</string>
   <string name="row_label_loading_title">Loading name</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Use only the approved logo versions provided here; do not recreate or modify them.</string>
   <string name="text_buy">Buy</string>
   <string name="text_by">by</string>
+  <string name="text_calendar_feed_filtered">Filtered</string>
   <string name="text_calendar_placeholder_1">Nothing for you on this day. Take a day off, enjoy the weather.</string>
   <string name="text_calendar_placeholder_10">All clear. Time to explore something different.</string>
   <string name="text_calendar_placeholder_2">No items found for this date. Maybe try another day?</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d hours</string>
   <string name="text_info_blocked">%s has been blocked.</string>
+  <string name="text_info_calendar_feed_copied">iCal link copied. Paste it into your calendar app to subscribe.</string>
   <string name="text_info_cover_removed">Cover image has been cleared.</string>
   <string name="text_info_cover_set">Cover image has been set.</string>
   <string name="text_info_favorites_added">Added to favourites.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Commented · %s</string>
   <string name="text_today_commented_item_at">Commented on %1$s · %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Nothing new in the last 24 hours. Check back later.</string>
   <string name="text_today_empty_day">Nothing from the people you follow on this day.</string>
   <string name="text_today_for_you">For you</string>
