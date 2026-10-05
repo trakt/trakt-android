@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDa
 import tv.trakt.trakt.common.core.user.data.local.library.UserLibraryLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.ratings.UserRatingsLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.reactions.UserMediaReactionsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
@@ -67,6 +68,7 @@ internal class LogoutUserUseCase(
     private val localUserLists: UserListsLocalDataSource,
     private val localUserLikedLists: UserLikedListsLocalDataSource,
     private val localUserReactions: UserReactionsLocalDataSource,
+    private val localUserMediaReactions: UserMediaReactionsLocalDataSource,
     private val localProfileCompleted: ProgressCompletedLocalDataSource,
     private val localProfileWatching: ProgressWatchingLocalDataSource,
     private val localProfileDropped: ProgressDroppedLocalDataSource,
@@ -108,6 +110,7 @@ internal class LogoutUserUseCase(
         localUserFavorites.clear()
         localUserLibrary.clear()
         localUserReactions.clear()
+        localUserMediaReactions.clear()
         localUserRatings.clear()
         localProfileCompleted.clear()
         localProfileWatching.clear()

@@ -60,6 +60,7 @@ fun Modifier.onClick(
 fun Modifier.onClickCombined(
     enabled: Boolean = true,
     throttle: Boolean = true,
+    indication: Boolean = true,
     onLongClick: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
 ): Modifier {
@@ -87,7 +88,7 @@ fun Modifier.onClickCombined(
                 }
             },
             interactionSource = remember { MutableInteractionSource() },
-            indication = ripple(),
+            indication = if (indication) ripple() else null,
         )
     }
 }

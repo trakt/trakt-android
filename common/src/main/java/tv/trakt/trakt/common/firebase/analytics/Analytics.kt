@@ -70,6 +70,22 @@ interface Analytics {
          * Logs the removal of a reaction.
          */
         fun logReactionRemove(source: String)
+
+        /**
+         * Logs the addition of a reaction to a movie, show, season or episode.
+         */
+        fun logMediaReactionAdd(
+            reaction: String,
+            mediaType: String,
+        )
+
+        /**
+         * Logs the removal of a reaction from a movie, show, season or episode.
+         */
+        fun logMediaReactionRemove(
+            reaction: String,
+            mediaType: String,
+        )
     }
 
     interface Ratings {

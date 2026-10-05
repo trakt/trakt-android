@@ -78,7 +78,7 @@ Skeleton (if/when):
     ├── NotesScreen.kt
     ├── NotesViewModel.kt
     ├── NotesState.kt
-    ├── data/                        # repository, mappers, cache
+    ├── data/                        # repository, remote source, cache
     └── di/NotesModule.kt
 ```
 

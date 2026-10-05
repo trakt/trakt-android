@@ -49,7 +49,7 @@ applyTo: '**/*.kt'
 | Koin module                              | `MovieSummaryModule.kt` (in `di/`)      |
 | Use-case                                 | `GetMovieSummaryUseCase.kt`             |
 | Repository                               | `MovieRepository.kt`                    |
-| Mapper                                   | `MovieMapper.kt` or `mapToMovie.kt`     |
+| DTO → domain mapping                     | `Movie.fromDto` companion in `Movie.kt` |
 | Domain model                             | `Movie.kt`                              |
 
 ### Package Naming
@@ -64,7 +64,7 @@ core/<feature>/
 ├── <Feature>State.kt
 ├── <Feature>ViewModel.kt
 ├── components/        # composables specific to this feature
-├── data/              # local stores, mappers, DTO→domain
+├── data/              # local stores, remote sources
 ├── domain/            # use cases, domain models (if needed)
 └── di/<Feature>Module.kt
 ```
@@ -121,7 +121,7 @@ composable<MovieSummaryRoute> { backStackEntry ->
 
 Before authoring:
 
-- New mapper — search `mapTo*` and `*Mapper` for existing one.
+- New DTO mapping — add `companion object { fun fromDto }` to the domain model; search `fun fromDto` for an existing one first.
 - New colour or spacing token — check `TraktTheme.colors` and `TraktTheme.spacing` first.
 - New HTTP call — check if OpenAPI client exposes endpoint, or if `KtorClientFactory` wraps it.
 - New date / number formatter — check `common/.../helpers/formatting/`.

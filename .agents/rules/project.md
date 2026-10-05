@@ -96,7 +96,7 @@ colours go through `TraktTheme.colors`; raw `Color(…)` allowed only for brand,
 or computed values (see `theming.md`). No magic-number paddings in feature code.
 
 ### OpenAPI-driven data layer
-API DTOs generated from `openapi/openapi.json`. **Not** hand-edited. Hand-written mappers in `common/.../networking/` translate generated DTOs into domain models defined in `common/.../model/`.
+API DTOs generated from `openapi/openapi.json`. **Not** hand-edited. Domain models in `common/.../model/` translate generated DTOs via `companion object { fun fromDto(...) }`. No separate mapper files.
 
 ## Commit Standards
 

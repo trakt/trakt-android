@@ -60,7 +60,7 @@ internal fun MediaSocialItemCard(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .shadow(
-                elevation = TraktTheme.colors.shadowDefault,
+                elevation = TraktTheme.colors.shadowSmall,
                 shape = RoundedCornerShape(corner),
             )
             .graphicsLayer {

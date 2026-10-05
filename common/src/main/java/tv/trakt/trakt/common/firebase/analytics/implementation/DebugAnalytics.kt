@@ -54,6 +54,20 @@ internal class DebugAnalyticsReactions : Analytics.Reactions {
     override fun logReactionRemove(source: String) {
         Timber.d("logReactionRemove: source=${source.lowercase()}")
     }
+
+    override fun logMediaReactionAdd(
+        reaction: String,
+        mediaType: String,
+    ) {
+        Timber.d("logMediaReactionAdd: reaction=${reaction.lowercase()}, mediaType=${mediaType.lowercase()}")
+    }
+
+    override fun logMediaReactionRemove(
+        reaction: String,
+        mediaType: String,
+    ) {
+        Timber.d("logMediaReactionRemove: reaction=${reaction.lowercase()}, mediaType=${mediaType.lowercase()}")
+    }
 }
 
 internal class DebugAnalyticsRatings : Analytics.Ratings {

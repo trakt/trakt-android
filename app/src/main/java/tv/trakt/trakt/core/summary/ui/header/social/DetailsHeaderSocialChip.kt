@@ -30,7 +30,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val USERS_LIMIT = 5
+private const val USERS_LIMIT = 3
 
 @Composable
 internal fun DetailsHeaderSocialHorizontalChip(
