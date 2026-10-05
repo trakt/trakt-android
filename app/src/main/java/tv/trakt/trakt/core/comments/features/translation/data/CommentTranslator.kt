@@ -1,9 +1,12 @@
 package tv.trakt.trakt.core.comments.features.translation.data
 
 import androidx.appcompat.app.AppCompatDelegate
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
 import java.util.Locale
 
 internal interface CommentTranslator {
+    val downloadType: CommentTranslationDownload
+
     suspend fun isAvailable(): Boolean
 
     /**

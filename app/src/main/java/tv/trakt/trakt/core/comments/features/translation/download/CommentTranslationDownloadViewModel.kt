@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownloadRequest
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent.OpenExternalTranslation
 
@@ -41,7 +42,7 @@ internal class CommentTranslationDownloadViewModel(
         translationsStore.pendingDownload,
     ) { state ->
         CommentTranslationDownloadState(
-            comment = state[0] as Comment?,
+            request = state[0] as CommentTranslationDownloadRequest?,
         )
     }.stateIn(
         scope = viewModelScope,

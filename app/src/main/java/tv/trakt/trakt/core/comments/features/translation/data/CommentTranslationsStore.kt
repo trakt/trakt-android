@@ -14,6 +14,7 @@ import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslatio
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Downloading
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Translated
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Translating
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownloadRequest
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import java.util.Locale
 
@@ -32,9 +33,9 @@ internal class CommentTranslationsStore(
     private val pendingDownloadState = MutableStateFlow<PendingDownload?>(null)
 
     /**
-     * Comment waiting for the user to allow a download over a metered network.
+     * Translation waiting for the user to allow a download over a metered network.
      */
-    val pendingDownload: Flow<Comment?> = pendingDownloadState.map { it?.comment }
+    val pendingDownload: Flow<CommentTranslationDownloadRequest?> = pendingDownloadState.map { it?.request }
 
     val translations: Flow<CommentTranslations> = combine(
         flow { emit(translators.any { it.isAvailable() }) },
@@ -79,7 +80,7 @@ internal class CommentTranslationsStore(
         pendingDownloadState.update { null }
 
         return translate(
-            comment = pending.comment,
+            comment = pending.request.comment,
             firstTranslator = pending.translator,
             allowMeteredDownload = true,
         )
@@ -108,7 +109,10 @@ internal class CommentTranslationsStore(
                     itemsState.update { it.remove(comment.id) }
                     pendingDownloadState.update {
                         PendingDownload(
-                            comment = comment,
+                            request = CommentTranslationDownloadRequest(
+                                comment = comment,
+                                type = translator.downloadType,
+                            ),
                             translator = index,
                         )
                     }
@@ -142,10 +146,10 @@ internal class CommentTranslationsStore(
         downloaded: Boolean,
     ): Result<String> {
         if (!downloaded) {
-            itemsState.update { it.put(comment.id, Downloading()) }
+            itemsState.update { it.put(comment.id, Downloading(translator.downloadType)) }
 
             translator.download(source) { progress ->
-                itemsState.update { it.put(comment.id, Downloading(progress)) }
+                itemsState.update { it.put(comment.id, Downloading(translator.downloadType, progress)) }
             }.onFailure {
                 return Result.failure(it)
             }
@@ -161,6 +165,6 @@ internal class CommentTranslationsStore(
 }
 
 private data class PendingDownload(
-    val comment: Comment,
+    val request: CommentTranslationDownloadRequest,
     val translator: Int,
 )

@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Downloading
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Translated
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Translating
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.model.languageFlag
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -85,10 +86,7 @@ internal fun CommentTranslateButton(
         when (translation) {
             is Downloading -> {
                 Text(
-                    text = when (val progress = translation.progress) {
-                        null -> stringResource(R.string.text_comment_translation_downloading)
-                        else -> stringResource(R.string.text_comment_translation_downloading_progress, progress)
-                    },
+                    text = downloadingLabel(translation),
                     style = TraktTheme.typography.meta,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,
@@ -108,6 +106,18 @@ internal fun CommentTranslateButton(
             Translating, null -> {
                 Unit
             }
+        }
+    }
+}
+
+@Composable
+private fun downloadingLabel(translation: Downloading): String {
+    val progress = translation.progress
+    return when (translation.type) {
+        CommentTranslationDownload.Language -> stringResource(R.string.text_comment_translation_downloading)
+        CommentTranslationDownload.AiModel -> when (progress) {
+            null -> stringResource(R.string.text_comment_translation_downloading_ai)
+            else -> stringResource(R.string.text_comment_translation_downloading_ai_progress, progress)
         }
     }
 }
@@ -141,7 +151,7 @@ private fun Preview() {
                 comment = comment,
                 translations = CommentTranslations(
                     onDevice = true,
-                    items = persistentMapOf(comment.id to Downloading()),
+                    items = persistentMapOf(comment.id to Downloading(CommentTranslationDownload.Language)),
                 ),
                 onTranslateClick = {},
             )
@@ -149,7 +159,9 @@ private fun Preview() {
                 comment = comment,
                 translations = CommentTranslations(
                     onDevice = true,
-                    items = persistentMapOf(comment.id to Downloading(progress = 42)),
+                    items = persistentMapOf(
+                        comment.id to Downloading(CommentTranslationDownload.AiModel, progress = 42),
+                    ),
                 ),
                 onTranslateClick = {},
             )

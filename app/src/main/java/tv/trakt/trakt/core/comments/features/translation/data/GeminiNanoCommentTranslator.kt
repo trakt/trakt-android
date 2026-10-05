@@ -18,6 +18,7 @@ import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.isOnMeteredNetwork
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
 import java.util.Locale
 
 private const val MAX_OUTPUT_TOKENS = 2048
@@ -29,6 +30,8 @@ private const val MAX_OUTPUT_TOKENS = 2048
 internal class GeminiNanoCommentTranslator(
     private val context: Context,
 ) : CommentTranslator {
+    override val downloadType = CommentTranslationDownload.AiModel
+
     private val model by lazy { Generation.getClient() }
 
     // Gemini Nano runs one inference at a time; parallel requests fail with BUSY.

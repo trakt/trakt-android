@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.ui.openExternalTranslation
 import tv.trakt.trakt.resources.R
@@ -29,6 +30,7 @@ internal fun CommentTranslationDownloadSheet(
 ) {
     val context = LocalContext.current
     val downloadState by viewModel.state.collectAsStateWithLifecycle()
+    val request = downloadState.request
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -42,12 +44,22 @@ internal fun CommentTranslationDownloadSheet(
 
     ConfirmationSheet(
         state = state,
-        active = downloadState.comment != null,
-        title = stringResource(R.string.header_comment_translation_download),
-        message = stringResource(R.string.text_comment_translation_download_metered),
+        active = request != null,
+        title = stringResource(
+            when (request?.type) {
+                CommentTranslationDownload.AiModel -> R.string.header_comment_translation_download_ai
+                CommentTranslationDownload.Language, null -> R.string.header_comment_translation_download
+            },
+        ),
+        message = stringResource(
+            when (request?.type) {
+                CommentTranslationDownload.AiModel -> R.string.text_comment_translation_download_ai_metered
+                CommentTranslationDownload.Language, null -> R.string.text_comment_translation_download_metered
+            },
+        ),
         yesText = stringResource(R.string.button_text_continue),
         onYes = {
-            downloadState.comment?.let(viewModel::confirmDownload)
+            request?.comment?.let(viewModel::confirmDownload)
         },
         onNo = viewModel::cancelDownload,
     )

@@ -11,6 +11,7 @@ internal sealed interface CommentTranslation {
      * [progress] is a percentage, or null when the translator cannot report download progress.
      */
     data class Downloading(
+        val type: CommentTranslationDownload,
         val progress: Int? = null,
     ) : CommentTranslation
 
@@ -20,6 +21,23 @@ internal sealed interface CommentTranslation {
         val text: String,
     ) : CommentTranslation
 }
+
+/**
+ * What an on-device translator downloads before it can translate.
+ */
+internal enum class CommentTranslationDownload {
+    Language,
+    AiModel,
+}
+
+/**
+ * A translation waiting for the user to allow a download over a metered network.
+ */
+@Immutable
+internal data class CommentTranslationDownloadRequest(
+    val comment: Comment,
+    val type: CommentTranslationDownload,
+)
 
 /**
  * On-device translations for the comments currently on screen, keyed by comment id.

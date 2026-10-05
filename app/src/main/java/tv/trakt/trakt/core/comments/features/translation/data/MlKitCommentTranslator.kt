@@ -14,11 +14,14 @@ import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.isOnMeteredNetwork
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
 import java.util.Locale
 
 internal class MlKitCommentTranslator(
     private val context: Context,
 ) : CommentTranslator {
+    override val downloadType = CommentTranslationDownload.Language
+
     private val modelManager by lazy { RemoteModelManager.getInstance() }
 
     private val downloadConditions = DownloadConditions.Builder().build()
