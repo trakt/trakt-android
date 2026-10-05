@@ -129,17 +129,13 @@ internal class MediaReactionsViewModel(
         }
     }
 
-    /**
-     * Sends only the difference between what the user now picks and what the server holds,
-     * so rapid toggles collapse into at most one removal and one addition.
-     */
     private suspend fun syncWithRemote() {
+        val picked = userReactionsState.value
         try {
             val held = when {
                 loadUserReactionsUseCase.isLoaded(target) -> loadUserReactionsUseCase.loadLocalReactions(target)
                 else -> loadUserReactionsUseCase.loadReactions(target)
             }.map { it.reaction }.toSet()
-            val picked = userReactionsState.value
 
             // Removals go first, so a swap never trips the per-item cap.
             val removed = held - picked.toSet()
@@ -168,7 +164,9 @@ internal class MediaReactionsViewModel(
                 errorState.update { error }
                 Timber.recordError(error)
             }
-            restoreFromRemote()
+            if (userReactionsState.value.toSet() == picked.toSet()) {
+                restoreFromRemote()
+            }
         }
     }
 
