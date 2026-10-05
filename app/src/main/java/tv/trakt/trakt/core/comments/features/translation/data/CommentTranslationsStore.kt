@@ -55,7 +55,7 @@ internal class CommentTranslationsStore(
      */
     suspend fun toggle(comment: Comment): Boolean {
         val current = itemsState.value[comment.id]
-        if (current == Downloading || current == Translating) {
+        if (current is Downloading || current == Translating) {
             return true
         }
         if (current is Translated) {
@@ -142,9 +142,11 @@ internal class CommentTranslationsStore(
         downloaded: Boolean,
     ): Result<String> {
         if (!downloaded) {
-            itemsState.update { it.put(comment.id, Downloading) }
+            itemsState.update { it.put(comment.id, Downloading()) }
 
-            translator.download(source).onFailure {
+            translator.download(source) { progress ->
+                itemsState.update { it.put(comment.id, Downloading(progress)) }
+            }.onFailure {
                 return Result.failure(it)
             }
         }

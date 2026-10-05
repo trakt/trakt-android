@@ -7,7 +7,12 @@ import tv.trakt.trakt.common.model.Comment
 
 @Immutable
 internal sealed interface CommentTranslation {
-    data object Downloading : CommentTranslation
+    /**
+     * [progress] is a percentage, or null when the translator cannot report download progress.
+     */
+    data class Downloading(
+        val progress: Int? = null,
+    ) : CommentTranslation
 
     data object Translating : CommentTranslation
 

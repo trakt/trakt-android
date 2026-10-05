@@ -16,11 +16,6 @@ import tv.trakt.trakt.common.helpers.extensions.isOnMeteredNetwork
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.util.Locale
 
-/**
- * Translates comments on device with the ML Kit Translation API.
- * Language models (~30MB each) are downloaded on demand. Asking before a metered download
- * is left to the caller, so downloads run on any network.
- */
 internal class MlKitCommentTranslator(
     private val context: Context,
 ) : CommentTranslator {
@@ -56,7 +51,11 @@ internal class MlKitCommentTranslator(
         return context.isOnMeteredNetwork()
     }
 
-    override suspend fun download(source: Locale): Result<Unit> {
+    // ML Kit Translation does not report download progress.
+    override suspend fun download(
+        source: Locale,
+        onProgress: (Int) -> Unit,
+    ): Result<Unit> {
         val languages = languagePair(source)
             ?: return Result.failure(IllegalArgumentException("Unsupported language ${source.language}"))
 

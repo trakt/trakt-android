@@ -47,7 +47,7 @@ internal fun CommentTranslateButton(
     val context = LocalContext.current
     val translation = translations.items[comment.id]
 
-    val inProgress = translation == Downloading || translation == Translating
+    val inProgress = translation is Downloading || translation == Translating
     val originalLanguageLabel = remember(comment.language) {
         comment.language?.let { it.languageFlag() ?: it.language.uppercase(Locale.ROOT) }.orEmpty()
     }
@@ -64,7 +64,7 @@ internal fun CommentTranslateButton(
                 }
             },
     ) {
-        if (translation == Downloading) {
+        if (translation is Downloading) {
             FilmProgressIndicator(
                 size = 16.dp,
                 color = TraktTheme.colors.textPrimary.copy(alpha = 0.4F),
@@ -75,7 +75,7 @@ internal fun CommentTranslateButton(
                 contentDescription = null,
                 tint = when (translation) {
                     is Translated -> TraktTheme.colors.textPrimary
-                    Downloading, Translating -> TraktTheme.colors.textPrimary.copy(alpha = 0.4F)
+                    is Downloading, Translating -> TraktTheme.colors.textPrimary.copy(alpha = 0.4F)
                     null -> TraktTheme.colors.textPrimary
                 },
                 modifier = Modifier.size(18.dp),
@@ -83,9 +83,12 @@ internal fun CommentTranslateButton(
         }
 
         when (translation) {
-            Downloading -> {
+            is Downloading -> {
                 Text(
-                    text = stringResource(R.string.text_comment_translation_downloading),
+                    text = when (val progress = translation.progress) {
+                        null -> stringResource(R.string.text_comment_translation_downloading)
+                        else -> stringResource(R.string.text_comment_translation_downloading_progress, progress)
+                    },
                     style = TraktTheme.typography.meta,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,
@@ -138,7 +141,15 @@ private fun Preview() {
                 comment = comment,
                 translations = CommentTranslations(
                     onDevice = true,
-                    items = persistentMapOf(comment.id to Downloading),
+                    items = persistentMapOf(comment.id to Downloading()),
+                ),
+                onTranslateClick = {},
+            )
+            CommentTranslateButton(
+                comment = comment,
+                translations = CommentTranslations(
+                    onDevice = true,
+                    items = persistentMapOf(comment.id to Downloading(progress = 42)),
                 ),
                 onTranslateClick = {},
             )

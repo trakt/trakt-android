@@ -18,8 +18,12 @@ internal interface CommentTranslator {
 
     /**
      * Downloads what is needed to translate from [source] into the app language.
+     * [onProgress] receives a percentage when the translator can report download progress.
      */
-    suspend fun download(source: Locale): Result<Unit>
+    suspend fun download(
+        source: Locale,
+        onProgress: (Int) -> Unit,
+    ): Result<Unit>
 
     /**
      * Translates [text] written in [source] into the app language.

@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.comments.features.translation.data
 import android.content.Context
 import com.google.mlkit.genai.common.DownloadStatus.DownloadCompleted
 import com.google.mlkit.genai.common.DownloadStatus.DownloadFailed
+import com.google.mlkit.genai.common.DownloadStatus.DownloadProgress
+import com.google.mlkit.genai.common.DownloadStatus.DownloadStarted
 import com.google.mlkit.genai.common.FeatureStatus
 import com.google.mlkit.genai.prompt.Candidate
 import com.google.mlkit.genai.prompt.GenerateContentRequest
@@ -53,9 +55,21 @@ internal class GeminiNanoCommentTranslator(
         return context.isOnMeteredNetwork()
     }
 
-    override suspend fun download(source: Locale): Result<Unit> {
+    override suspend fun download(
+        source: Locale,
+        onProgress: (Int) -> Unit,
+    ): Result<Unit> {
         return try {
-            val status = model.download().first { it is DownloadCompleted || it is DownloadFailed }
+            var bytesToDownload = 0L
+            val status = model.download().first { status ->
+                if (status is DownloadStarted) {
+                    bytesToDownload = status.bytesToDownload
+                }
+                if (status is DownloadProgress && bytesToDownload > 0) {
+                    onProgress((status.totalBytesDownloaded * 100 / bytesToDownload).toInt().coerceIn(0, 100))
+                }
+                status is DownloadCompleted || status is DownloadFailed
+            }
             if (status is DownloadFailed) {
                 Timber.d(status.e, "Gemini Nano download failed")
                 return Result.failure(status.e)
