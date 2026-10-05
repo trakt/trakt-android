@@ -19,9 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.EmojiSupportMatch
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -113,8 +115,10 @@ internal fun MediaReactionsSummaryCard(
                                 contentAlignment = Alignment.Center,
                                 modifier = Modifier.weight(1F),
                             ) {
-                                row.getOrNull(slot)?.let { reaction ->
-                                    SummaryItem(
+                                val reaction = row.getOrNull(slot)
+                                when (reaction) {
+                                    null -> SummaryItemPlaceholder()
+                                    else -> SummaryItem(
                                         reaction = reaction,
                                         share = shareOf(
                                             count = summary.distribution[reaction] ?: 0,
@@ -162,16 +166,30 @@ private fun shareOf(
     return (count * 100f / total).roundToInt()
 }
 
+// Keeps empty slots at item height, so a partly filled last page matches the others.
+@Composable
+private fun SummaryItemPlaceholder() {
+    SummaryItem(
+        reaction = MediaReaction.entries.first(),
+        share = 0,
+        highlight = false,
+        modifier = Modifier
+            .alpha(0F)
+            .clearAndSetSemantics { },
+    )
+}
+
 @Composable
 private fun SummaryItem(
     reaction: MediaReaction,
     share: Int,
     highlight: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = spacedBy(3.dp),
         verticalAlignment = CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = if (highlight) TraktTheme.colors.reactionsSummaryHighlight else Color.Transparent,
                 shape = RoundedCornerShape(12.dp),
