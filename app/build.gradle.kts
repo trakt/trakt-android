@@ -159,7 +159,8 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.phoenix)
     implementation(libs.younify)
-    implementation(libs.mlkit.genai.prompt)
+    implementation(libs.mlkit.translate)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // Testing
 

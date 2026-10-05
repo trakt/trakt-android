@@ -94,6 +94,7 @@ import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
+import tv.trakt.trakt.core.comments.features.translation.download.CommentTranslationDownloadSheet
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
@@ -436,6 +437,8 @@ private fun MainScreenContent(
                             }
                         }
                     }
+
+                    CommentTranslationDownloadSheet()
 
                     MainSnackbarHost(
                         snackbarHostState = localSnackbar,

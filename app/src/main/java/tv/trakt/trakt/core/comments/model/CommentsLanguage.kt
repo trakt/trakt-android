@@ -99,6 +99,18 @@ internal fun commentsLanguageDisplayName(code: String?): String? {
 }
 
 /**
+ * Emoji flag representing this locale's language, picked the same way as the comments language filter.
+ */
+internal fun Locale.languageFlag(): String? {
+    return countryFlag(
+        flagCountry(
+            appLocale = activeAppLocale(),
+            supportedLocales = BuildConfig.SUPPORTED_LOCALES.map { Locale.forLanguageTag(it) },
+        ),
+    )
+}
+
+/**
  * Returns the active locale selected for the application. When no per-app language has been
  * selected, the application follows the system locale.
  */

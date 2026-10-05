@@ -17,3 +17,11 @@ fun Context.isOnline(): Boolean {
     return capabilities.hasCapability(NET_CAPABILITY_INTERNET) &&
         capabilities.hasCapability(NET_CAPABILITY_VALIDATED)
 }
+
+/**
+ * Checks if the active network is metered (usually mobile data), where large downloads may cost the user.
+ */
+fun Context.isOnMeteredNetwork(): Boolean {
+    val connectivityManager = getSystemService(ConnectivityManager::class.java) ?: return false
+    return connectivityManager.isActiveNetworkMetered
+}

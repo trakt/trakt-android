@@ -7,6 +7,8 @@ import tv.trakt.trakt.common.model.Comment
 
 @Immutable
 internal sealed interface CommentTranslation {
+    data object Downloading : CommentTranslation
+
     data object Translating : CommentTranslation
 
     data class Translated(
@@ -27,7 +29,7 @@ internal data class CommentTranslations(
     fun displayText(comment: Comment): String {
         return when (val translation = items[comment.id]) {
             is CommentTranslation.Translated -> translation.text
-            is CommentTranslation.Translating, null -> comment.commentNoSpoilers
+            is CommentTranslation.Downloading, is CommentTranslation.Translating, null -> comment.commentNoSpoilers
         }
     }
 }
