@@ -20,8 +20,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.parentalguide.ParentalGuide
 import tv.trakt.trakt.common.networking.MovieStatsDto
+import tv.trakt.trakt.core.parentalguide.data.remote.ParentalGuideRemoteDataSource
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieCrewUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStudiosUseCase
@@ -31,6 +34,7 @@ internal class MovieInfoViewModel(
     private val getStatsUseCase: GetMovieStatsUseCase,
     private val getStudiosUseCase: GetMovieStudiosUseCase,
     private val getCrewUseCase: GetMovieCrewUseCase,
+    private val parentalGuideSource: ParentalGuideRemoteDataSource,
 ) : ViewModel() {
     private val initialState = MovieInfoState()
 
@@ -38,6 +42,8 @@ internal class MovieInfoViewModel(
     private val movieStatsState = MutableStateFlow(initialState.movieStats)
     private val movieStudiosState = MutableStateFlow(initialState.movieStudios)
     private val movieCrewState = MutableStateFlow(initialState.movieCrew)
+    private val parentalGuideState = MutableStateFlow(initialState.parentalGuide)
+    private val parentalGuideErrorState = MutableStateFlow(initialState.parentalGuideError)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -55,6 +61,7 @@ internal class MovieInfoViewModel(
                         async { loadStats() },
                         async { loadStudios() },
                         async { loadCrew() },
+                        async { loadParentalGuide() },
                     )
                 }
 
@@ -106,6 +113,22 @@ internal class MovieInfoViewModel(
         }
     }
 
+    private suspend fun loadParentalGuide() {
+        try {
+            parentalGuideState.update {
+                parentalGuideSource.getParentalGuide(
+                    type = MediaType.Movie,
+                    mediaId = movie.ids.trakt,
+                )
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                parentalGuideErrorState.update { error }
+                Timber.recordError(error)
+            }
+        }
+    }
+
     val state = combine(
         movieState,
         movieStatsState,
@@ -113,6 +136,8 @@ internal class MovieInfoViewModel(
         movieCrewState,
         loadingState,
         errorState,
+        parentalGuideState,
+        parentalGuideErrorState,
     ) { state ->
         MovieInfoState(
             movie = state[0] as Movie?,
@@ -121,6 +146,8 @@ internal class MovieInfoViewModel(
             movieCrew = state[3] as GetMovieCrewUseCase.Result?,
             loading = state[4] as LoadingState,
             error = state[5] as Exception?,
+            parentalGuide = state[6] as ParentalGuide?,
+            parentalGuideError = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
