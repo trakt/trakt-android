@@ -17,17 +17,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentMapOf
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SocialIds
+import tv.trakt.trakt.common.model.parentalguide.ParentalGuide
+import tv.trakt.trakt.common.model.parentalguide.ParentalGuideCategory
+import tv.trakt.trakt.common.model.parentalguide.ParentalGuideSeverity
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.views.info.MediaLink
 import tv.trakt.trakt.core.summary.ui.views.info.MediaLinksView
 import tv.trakt.trakt.core.summary.ui.views.info.MetaView
+import tv.trakt.trakt.core.summary.ui.views.info.ParentalGuideView
 import tv.trakt.trakt.core.summary.ui.views.info.toMediaLinks
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -109,6 +114,15 @@ private fun MovieInfoView(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
                 )
+
+                ParentalGuideView(
+                    guide = state.parentalGuide,
+                    loading = !state.loading.isDone,
+                    error = state.parentalGuideError != null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                )
             }
         }
     }
@@ -158,6 +172,12 @@ private fun Preview() {
                         facebook = "trakt",
                         instagram = "trakt",
                         wikipedia = "Trakt",
+                    ),
+                ),
+                parentalGuide = ParentalGuide(
+                    severities = persistentMapOf(
+                        ParentalGuideCategory.Nudity to ParentalGuideSeverity.Mild,
+                        ParentalGuideCategory.Violence to ParentalGuideSeverity.Moderate,
                     ),
                 ),
                 loading = LoadingState.Done,

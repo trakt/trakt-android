@@ -103,6 +103,7 @@ internal val movieDetailsModule = module {
             getStatsUseCase = get(),
             getStudiosUseCase = get(),
             getCrewUseCase = get(),
+            parentalGuideSource = get(),
         )
     }
 

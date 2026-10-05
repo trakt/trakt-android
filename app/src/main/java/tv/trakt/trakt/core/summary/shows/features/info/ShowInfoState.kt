@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.parentalguide.ParentalGuide
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowCrewUseCase
 
@@ -15,6 +16,8 @@ internal data class ShowInfoState(
     val showStudios: ImmutableList<String>? = null,
     val showNetworks: ImmutableList<String>? = null,
     val showCrew: GetShowCrewUseCase.Result? = null,
+    val parentalGuide: ParentalGuide? = null,
+    val parentalGuideError: Exception? = null,
     val loading: LoadingState = Idle,
     val error: Exception? = null,
 )

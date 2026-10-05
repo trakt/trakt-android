@@ -50,6 +50,11 @@ data class TraktColors(
     val detailsStatus2: Color = Color.Unspecified,
     val vipAccent: Color = Color.Unspecified,
     val separator: Color = Color.Unspecified,
+    // Parental guide
+    val parentalGuideNone: Color = Color.Unspecified,
+    val parentalGuideMild: Color = Color.Unspecified,
+    val parentalGuideModerate: Color = Color.Unspecified,
+    val parentalGuideSevere: Color = Color.Unspecified,
     // Streaks
     val streakTileEmpty: Color = Color.Unspecified,
     val streakTileToday: Color = Color.Unspecified,

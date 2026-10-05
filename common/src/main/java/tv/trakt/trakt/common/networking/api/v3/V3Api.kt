@@ -8,6 +8,7 @@ import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.put
+import io.ktor.http.HttpStatusCode
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -17,6 +18,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3ParentalGuideResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
@@ -97,6 +99,19 @@ class V3Api(
         return body.copy(
             items = body.items?.map { it.copy(id = Uuid.random().toHexString()) },
         )
+    }
+
+    // Parental Guide
+
+    suspend fun getParentalGuide(
+        type: MediaType,
+        mediaId: TraktId,
+    ): V3ParentalGuideResponse? {
+        val response = client.get("${baseV3Url}media/${type.value}/${mediaId.value}/info/16/version/1")
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
+        }
+        return response.body()
     }
 
     // Recommendations

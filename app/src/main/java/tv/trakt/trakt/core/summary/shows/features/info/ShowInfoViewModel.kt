@@ -20,8 +20,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.parentalguide.ParentalGuide
 import tv.trakt.trakt.common.networking.ShowStatsDto
+import tv.trakt.trakt.core.parentalguide.data.remote.ParentalGuideRemoteDataSource
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowCrewUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowNetworksUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStatsUseCase
@@ -33,6 +36,7 @@ internal class ShowInfoViewModel(
     private val getStudiosUseCase: GetShowStudiosUseCase,
     private val getNetworksUseCase: GetShowNetworksUseCase,
     private val getCrewUseCase: GetShowCrewUseCase,
+    private val parentalGuideSource: ParentalGuideRemoteDataSource,
 ) : ViewModel() {
     private val initialState = ShowInfoState()
 
@@ -41,6 +45,8 @@ internal class ShowInfoViewModel(
     private val showStudiosState = MutableStateFlow(initialState.showStudios)
     private val showNetworksState = MutableStateFlow(initialState.showNetworks)
     private val showCrewState = MutableStateFlow(initialState.showCrew)
+    private val parentalGuideState = MutableStateFlow(initialState.parentalGuide)
+    private val parentalGuideErrorState = MutableStateFlow(initialState.parentalGuideError)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -59,6 +65,7 @@ internal class ShowInfoViewModel(
                         async { loadStudios() },
                         async { loadNetworks() },
                         async { loadCrew() },
+                        async { loadParentalGuide() },
                     )
                 }
 
@@ -119,6 +126,22 @@ internal class ShowInfoViewModel(
         }
     }
 
+    private suspend fun loadParentalGuide() {
+        try {
+            parentalGuideState.update {
+                parentalGuideSource.getParentalGuide(
+                    type = MediaType.Show,
+                    mediaId = show.ids.trakt,
+                )
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                parentalGuideErrorState.update { error }
+                Timber.recordError(error)
+            }
+        }
+    }
+
     val state = combine(
         showState,
         showStatsState,
@@ -127,6 +150,8 @@ internal class ShowInfoViewModel(
         loadingState,
         errorState,
         showNetworksState,
+        parentalGuideState,
+        parentalGuideErrorState,
     ) { state ->
         ShowInfoState(
             show = state[0] as Show?,
@@ -136,6 +161,8 @@ internal class ShowInfoViewModel(
             loading = state[4] as LoadingState,
             error = state[5] as Exception?,
             showNetworks = state[6] as ImmutableList<String>?,
+            parentalGuide = state[7] as ParentalGuide?,
+            parentalGuideError = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

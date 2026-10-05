@@ -52,6 +52,11 @@ val LightColors: TraktColors = TraktColors(
     detailsStatus2 = Purple800,
     vipAccent = Purple500,
     separator = Shade80,
+    // Parental guide
+    parentalGuideNone = Shade300,
+    parentalGuideMild = Green500,
+    parentalGuideModerate = Yellow500,
+    parentalGuideSevere = Red500,
     // Streaks
     streakTileEmpty = Shade80,
     streakTileToday = Shade920,
