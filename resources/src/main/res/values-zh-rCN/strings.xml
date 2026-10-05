@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">浏览电影</string>
   <string name="button_label_browse_shows">浏览剧集</string>
   <string name="button_label_calendar">日历</string>
+  <string name="button_label_calendar_feed">订阅此日历</string>
   <string name="button_label_cancel">取消</string>
   <string name="button_label_cancel_follow_request">取消对 %s 的关注请求</string>
   <string name="button_label_cancel_vip">取消订阅</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">连接 %s</string>
   <string name="button_label_copied">已复制</string>
   <string name="button_label_copy">复制</string>
+  <string name="button_label_copy_calendar_feed">复制此日历的 iCal 源链接</string>
   <string name="button_label_cover_image_selected">“%s”是你的封面图片。</string>
   <string name="button_label_create_list">创建列表</string>
   <string name="button_label_delete_account">删除您的Trakt帐户</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">下一周期</string>
   <string name="button_label_next_episode">下一集</string>
   <string name="button_label_next_story">下一个故事</string>
+  <string name="button_label_open_calendar_feed">在您的日历应用中订阅此日历</string>
   <string name="button_label_open_comment">打开评论</string>
   <string name="button_label_open_leaderboard">打开关注排行榜</string>
   <string name="button_label_open_today_stories">打开今日故事</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">笔记操作</string>
   <string name="button_label_popup_reactions">反应</string>
   <string name="button_label_post_reply">发布回复</string>
+  <string name="button_label_poster_details">海报详情</string>
   <string name="button_label_preview_gif">查看完整尺寸的 GIF</string>
   <string name="button_label_preview_list">预览列表 %s</string>
   <string name="button_label_preview_watchlist">预览待看列表</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d 条回复</string>
   <string name="button_text_connect">连接</string>
   <string name="button_text_continue">继续</string>
+  <string name="button_text_copy_calendar_feed">复制 iCal 链接</string>
   <string name="button_text_create">创建</string>
   <string name="button_text_create_list">列表</string>
   <string name="button_text_cta_create_list">创建列表</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">移至顶部</string>
   <string name="button_text_movies">电影</string>
   <string name="button_text_no_services">无服务</string>
+  <string name="button_text_open_calendar_feed">添加到日历应用</string>
   <string name="button_text_open_in_service">在 %s 中打开</string>
   <string name="button_text_personal">个人</string>
   <string name="button_text_play_all_stories">播放全部</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">举报</string>
   <string name="dialog_title_younify_data_sync">同步现有数据</string>
   <string name="drawer_meta_info_cast">演员</string>
-  <string name="drawer_meta_info_cast_and_crew">演职人员</string>
   <string name="drawer_meta_info_crew">工作人员</string>
   <string name="drawer_title_add_gif">添加GIF</string>
   <string name="drawer_title_add_note">笔记</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">行为</string>
   <string name="header_birthday">生日</string>
   <string name="header_calendar">日历</string>
+  <string name="header_calendar_feed">日历源</string>
   <string name="header_certification">分级</string>
   <string name="header_clear_data">清除数据</string>
   <string name="header_comment_reactions">评论反应</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">正在导出您的数据</string>
   <string name="header_favorite_genres">最喜欢的类型</string>
   <string name="header_filters">筛选器</string>
+  <string name="header_follows_leaderboard">排行榜</string>
   <string name="header_genre">类型</string>
   <string name="header_genres_loved">您喜欢的类型</string>
   <string name="header_get_notified">获取通知！</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">标记为已观看</string>
   <string name="header_landing_trending_now">当前热门</string>
   <string name="header_language">语言</string>
-  <string name="header_leaderboard">万神殿</string>
   <string name="header_list_description">描述</string>
   <string name="header_main_cast">主演</string>
   <string name="header_manage_lists">管理列表</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">按人物</string>
   <string name="option_text_today_by_time">按时间</string>
   <string name="option_text_today_by_title">按标题</string>
+  <string name="option_text_today_day_today">今天</string>
+  <string name="option_text_today_day_week">一周</string>
+  <string name="option_text_today_day_yesterday">昨日</string>
   <string name="option_text_trivia_category_all">全部</string>
   <string name="option_text_trivia_category_bts">幕后花絮</string>
   <string name="option_text_trivia_category_cast_n_crew">演职人员</string>
@@ -1332,33 +1341,22 @@
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_genre_picker">从可视化网格中选择您喜欢的类型，而非标签列表。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
-  <string name="preview_feature_description_leaderboard">根据观看时长对您关注的人进行排名，查看您在他们中的位置。</string>
-  <string name="preview_feature_description_list_counts">显示列表包含的项目数量，以及版块拥有的列表数量。</string>
-  <string name="preview_feature_description_parental_guide">在电影和节目详情抽屉中显示内容风险等级，并在高级筛选中按严重程度筛选。</string>
   <string name="preview_feature_description_reactions">对电影或节目发表反应，看看别人的感受。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
-  <string name="preview_feature_description_split_cast">在节目、季和剧集的人员面板中单独查看主演和配角。</string>
   <string name="preview_feature_description_today_story">在主页上以故事形式查看您关注的人今天观看了什么、评价了什么，以及对您来说有什么新鲜内容。</string>
-  <string name="preview_feature_description_up_next_smart_sort">试用一种更智能的方式来对您的“继续观看”进行排序。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
-  <string name="preview_feature_description_youtube_specials">将免费的 YouTube 单口喜剧特辑添加到电影页面的“观看地点”中。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_genre_picker">类型选择器</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
-  <string name="preview_feature_title_leaderboard">万神殿</string>
-  <string name="preview_feature_title_list_counts">列表计数</string>
   <string name="preview_feature_title_reactions">反应</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_scoped_favorites">限定范围的收藏</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
-  <string name="preview_feature_title_split_cast">主演与配角</string>
   <string name="preview_feature_title_today_story">今天</string>
-  <string name="preview_feature_title_up_next_smart_sort">继续观看智能排序</string>
   <string name="preview_feature_title_vip_veteran">VIP 资深会员身份</string>
   <string name="preview_feature_title_year_in_review_2026">2026 年度回顾</string>
-  <string name="preview_feature_title_youtube_specials">YouTube 特辑</string>
   <string name="reactions_search_empty">没有匹配的反应</string>
   <string name="reset_status_cleared">待看列表已清除。</string>
   <string name="row_label_loading_title">正在加载名称</string>
@@ -1483,6 +1481,7 @@
   <string name="text_branding_req_6">仅使用此处提供的经批准的徽标版本；请勿重新创建或修改它们。</string>
   <string name="text_buy">购买</string>
   <string name="text_by">作者</string>
+  <string name="text_calendar_feed_filtered">已筛选</string>
   <string name="text_calendar_placeholder_1">今天没什么。休息一天，享受天气吧。</string>
   <string name="text_calendar_placeholder_10">一切就绪。是时候探索一些不同的东西了。</string>
   <string name="text_calendar_placeholder_2">此日期未找到项目。也许试试另一天？</string>
@@ -1581,6 +1580,7 @@
   <string name="text_history_sync_filter_with_source">同步 ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d 小时</string>
   <string name="text_info_blocked">%s 已被屏蔽。</string>
+  <string name="text_info_calendar_feed_copied">iCal 链接已复制。粘贴到您的日历应用即可订阅。</string>
   <string name="text_info_cover_removed">封面图片已清除。</string>
   <string name="text_info_cover_set">封面图片已设置。</string>
   <string name="text_info_favorites_added">已添加到我的最爱。</string>
@@ -1843,7 +1843,6 @@
   <string name="text_today_commented_at">已评论 · %s</string>
   <string name="text_today_commented_item_at">已评论 %1$s · %2$s</string>
   <string name="text_today_day_time">%1$s %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">过去24小时内没有新内容。请稍后查看。</string>
   <string name="text_today_empty_day">您关注的人今天没有任何动态。</string>
   <string name="text_today_for_you">为您推荐</string>

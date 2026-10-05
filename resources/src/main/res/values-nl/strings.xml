@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Door films bladeren</string>
   <string name="button_label_browse_shows">Door series bladeren</string>
   <string name="button_label_calendar">Kalender</string>
+  <string name="button_label_calendar_feed">Abonneren op deze kalender</string>
   <string name="button_label_cancel">Annuleren</string>
   <string name="button_label_cancel_follow_request">Volgverzoek aan %s annuleren</string>
   <string name="button_label_cancel_vip">Abonnement opzeggen</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Verbind %s</string>
   <string name="button_label_copied">Gekopieerd</string>
   <string name="button_label_copy">Kopiëren</string>
+  <string name="button_label_copy_calendar_feed">Kopieer de iCal-feedlink voor deze kalender</string>
   <string name="button_label_cover_image_selected">\"%s\" is je omslagafbeelding</string>
   <string name="button_label_create_list">Lijst maken</string>
   <string name="button_label_delete_account">Je Trakt-account verwijderen</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Volgende periode</string>
   <string name="button_label_next_episode">Volgende aflevering</string>
   <string name="button_label_next_story">Volgend verhaal</string>
+  <string name="button_label_open_calendar_feed">Abonneren op deze kalender in je kalenderapp</string>
   <string name="button_label_open_comment">Open de reactie</string>
   <string name="button_label_open_leaderboard">Open volgersklassement</string>
   <string name="button_label_open_today_stories">Open de verhalen van vandaag</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Notitieacties</string>
   <string name="button_label_popup_reactions">Reacties</string>
   <string name="button_label_post_reply">Plaats reactie</string>
+  <string name="button_label_poster_details">Posterdetails</string>
   <string name="button_label_preview_gif">Bekijk GIF op volledig formaat</string>
   <string name="button_label_preview_list">Voorbeeld van lijst %s</string>
   <string name="button_label_preview_watchlist">Voorbeeld van kijklijst</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d reacties</string>
   <string name="button_text_connect">Verbinden</string>
   <string name="button_text_continue">Verder</string>
+  <string name="button_text_copy_calendar_feed">iCal-link kopiëren</string>
   <string name="button_text_create">Maken</string>
   <string name="button_text_create_list">Lijst</string>
   <string name="button_text_cta_create_list">Lijst maken</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Naar boven verplaatsen</string>
   <string name="button_text_movies">Films</string>
   <string name="button_text_no_services">Geen services</string>
+  <string name="button_text_open_calendar_feed">Toevoegen aan kalenderapp</string>
   <string name="button_text_open_in_service">Openen in %s</string>
   <string name="button_text_personal">Persoonlijk</string>
   <string name="button_text_play_all_stories">Alles afspelen</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Melden</string>
   <string name="dialog_title_younify_data_sync">Bestaande gegevens synchroniseren</string>
   <string name="drawer_meta_info_cast">Rolverdeling</string>
-  <string name="drawer_meta_info_cast_and_crew">Rolverdeling &amp; Crew</string>
   <string name="drawer_meta_info_crew">Crew</string>
   <string name="drawer_title_add_gif">Voeg een GIF toe</string>
   <string name="drawer_title_add_note">Notitie</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Gedrag</string>
   <string name="header_birthday">Geboortedatum</string>
   <string name="header_calendar">Kalender</string>
+  <string name="header_calendar_feed">Kalenderfeed</string>
   <string name="header_certification">Classificatie</string>
   <string name="header_clear_data">Gegevens wissen</string>
   <string name="header_comment_reactions">Recensie reacties</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Je gegevens exporteren</string>
   <string name="header_favorite_genres">Favoriete genres</string>
   <string name="header_filters">Filters</string>
+  <string name="header_follows_leaderboard">Klassement</string>
   <string name="header_genre">Genre</string>
   <string name="header_genres_loved">Genres die je leuk vindt</string>
   <string name="header_get_notified">Ontvang meldingen!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Volgen</string>
   <string name="header_landing_trending_now">Nu trending</string>
   <string name="header_language">Taal</string>
-  <string name="header_leaderboard">Pantheon</string>
   <string name="header_list_description">Beschrijving</string>
   <string name="header_main_cast">Hoofdrolspelers</string>
   <string name="header_manage_lists">Lijsten beheren</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">Op persoon</string>
   <string name="option_text_today_by_time">Op tijd</string>
   <string name="option_text_today_by_title">Op titel</string>
+  <string name="option_text_today_day_today">Vandaag</string>
+  <string name="option_text_today_day_week">Week</string>
+  <string name="option_text_today_day_yesterday">Gisteren</string>
   <string name="option_text_trivia_category_all">Alles</string>
   <string name="option_text_trivia_category_bts">Achter de schermen</string>
   <string name="option_text_trivia_category_cast_n_crew">Rolverdeling &amp; Crew</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_genre_picker">Kies je favoriete genres uit een visueel raster in plaats van een lijst met tags.</string>
   <string name="preview_feature_description_large_screen_cards">Op grotere schermen gebruiken alle lijsten dezelfde kaarten als de rest van de app. Het selecteren van een item opent een snel overzicht in plaats van de lijst te verlaten.</string>
-  <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
-  <string name="preview_feature_description_list_counts">Toont hoeveel items een lijst bevat en hoeveel lijsten een sectie heeft.</string>
-  <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films en series, en filter op ernst in geavanceerde filters.</string>
   <string name="preview_feature_description_reactions">Reageer op een film of serie en zie hoe anderen erover dachten.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
-  <string name="preview_feature_description_split_cast">Bekijk de hoofd- en bijrollen afzonderlijk in de panelen voor personen van series, seizoenen en afleveringen.</string>
   <string name="preview_feature_description_today_story">Zie wat de mensen die je volgt vandaag hebben bekeken en beoordeeld, en wat nieuw is voor jou, als verhalen op de startpagina.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
   <string name="preview_feature_description_vip_veteran">Toont hoe lang leden ononderbroken VIP zijn, met een Veteraan- of Legende-badge, een gekleurde avatarring en enkele vieringen op je eigen profiel.</string>
   <string name="preview_feature_description_year_in_review_2026">Jouw 2026 als een scroll-gedreven reel met een kijkerspersoonlijkheid, gevolgd door een statistiekenpagina die daarbij past.</string>
-  <string name="preview_feature_description_youtube_specials">Voegt gratis YouTube-uploads van stand-up specials toe aan \'Waar te bekijken\' op filmpagina\'s.</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_genre_picker">Genrekiezer</string>
   <string name="preview_feature_title_large_screen_cards">Grote Scherm Kaarten</string>
-  <string name="preview_feature_title_leaderboard">Pantheon</string>
-  <string name="preview_feature_title_list_counts">Lijstaantallen</string>
   <string name="preview_feature_title_reactions">Reacties</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_scoped_favorites">Gerichte favorieten</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_split_cast">Hoofd- en bijrollen</string>
   <string name="preview_feature_title_today_story">Vandaag</string>
-  <string name="preview_feature_title_up_next_smart_sort">Verder kijken slim sorteren</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteraanstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Jaaroverzicht 2026</string>
-  <string name="preview_feature_title_youtube_specials">YouTube specials</string>
   <string name="reactions_search_empty">Geen reacties gevonden</string>
   <string name="reset_status_cleared">Kijklijst gewist.</string>
   <string name="row_label_loading_title">Naam laden</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Gebruik alleen de hier verstrekte goedgekeurde logoversies; maak ze niet opnieuw of wijzig ze niet.</string>
   <string name="text_buy">Kopen</string>
   <string name="text_by">door</string>
+  <string name="text_calendar_feed_filtered">Gefilterd</string>
   <string name="text_calendar_placeholder_1">Niets voor jou op deze dag. Neem een vrije dag, geniet van het weer.</string>
   <string name="text_calendar_placeholder_10">Alles vrij. Tijd om iets anders te verkennen.</string>
   <string name="text_calendar_placeholder_2">Geen items gevonden voor deze datum. Misschien een andere dag proberen?</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d uur</string>
   <string name="text_info_blocked">%s is geblokkeerd.</string>
+  <string name="text_info_calendar_feed_copied">iCal-link gekopieerd. Plak het in je kalenderapp om je te abonneren.</string>
   <string name="text_info_cover_removed">Omslagafbeelding is gewist.</string>
   <string name="text_info_cover_set">Omslagafbeelding is ingesteld.</string>
   <string name="text_info_favorites_added">Toegevoegd aan favorieten.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Gereageerd \n %s</string>
   <string name="text_today_commented_item_at">Gereageerd op %1$s \n %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Niets nieuws in de afgelopen 24 uur. Kom later terug.</string>
   <string name="text_today_empty_day">Geen activiteit van de mensen die je volgt op deze dag.</string>
   <string name="text_today_for_you">Voor jou</string>

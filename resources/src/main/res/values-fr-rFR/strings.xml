@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Parcourir les films</string>
   <string name="button_label_browse_shows">Parcourir les séries</string>
   <string name="button_label_calendar">Calendrier</string>
+  <string name="button_label_calendar_feed">S\'abonner à ce calendrier</string>
   <string name="button_label_cancel">Annuler</string>
   <string name="button_label_cancel_follow_request">Annuler la demande de suivi à %s</string>
   <string name="button_label_cancel_vip">Annuler l\'abonnement</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Connecter %s</string>
   <string name="button_label_copied">Copié</string>
   <string name="button_label_copy">Copier</string>
+  <string name="button_label_copy_calendar_feed">Copier le lien du flux iCal pour ce calendrier</string>
   <string name="button_label_cover_image_selected">\"%s\" est votre image de couverture.</string>
   <string name="button_label_create_list">Créer une liste</string>
   <string name="button_label_delete_account">Supprimer votre compte Trakt</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Période suivante</string>
   <string name="button_label_next_episode">Épisode suivant</string>
   <string name="button_label_next_story">Histoire suivante</string>
+  <string name="button_label_open_calendar_feed">S\'abonner à ce calendrier dans votre application Calendrier</string>
   <string name="button_label_open_comment">Ouvrir le commentaire</string>
   <string name="button_label_open_leaderboard">Ouvrir le classement des abonnements</string>
   <string name="button_label_open_today_stories">Ouvrir les actualités du jour</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Actions de la note</string>
   <string name="button_label_popup_reactions">Réactions</string>
   <string name="button_label_post_reply">Poster la réponse</string>
+  <string name="button_label_poster_details">Détails de l\'affiche</string>
   <string name="button_label_preview_gif">Afficher le GIF en taille réelle</string>
   <string name="button_label_preview_list">Aperçu de la liste %s</string>
   <string name="button_label_preview_watchlist">Aperçu de la liste de suivi</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d réponses</string>
   <string name="button_text_connect">Connecter</string>
   <string name="button_text_continue">Continuer</string>
+  <string name="button_text_copy_calendar_feed">Copier le lien iCal</string>
   <string name="button_text_create">Créer</string>
   <string name="button_text_create_list">Liste</string>
   <string name="button_text_cta_create_list">Créer une liste</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Déplacer en haut</string>
   <string name="button_text_movies">Films</string>
   <string name="button_text_no_services">Aucun service</string>
+  <string name="button_text_open_calendar_feed">Ajouter à l\'application Calendrier</string>
   <string name="button_text_open_in_service">Ouvrir dans %s</string>
   <string name="button_text_personal">Personnel</string>
   <string name="button_text_play_all_stories">Tout lire</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Signaler</string>
   <string name="dialog_title_younify_data_sync">Synchroniser les données existantes</string>
   <string name="drawer_meta_info_cast">Acteurs</string>
-  <string name="drawer_meta_info_cast_and_crew">Acteurs et équipe technique</string>
   <string name="drawer_meta_info_crew">Équipe technique</string>
   <string name="drawer_title_add_gif">Ajouter un GIF</string>
   <string name="drawer_title_add_note">Note</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Comportement</string>
   <string name="header_birthday">Anniversaire</string>
   <string name="header_calendar">Calendrier</string>
+  <string name="header_calendar_feed">Flux de calendrier</string>
   <string name="header_certification">Certification</string>
   <string name="header_clear_data">Vider les données</string>
   <string name="header_comment_reactions">Réactions aux avis</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Exportation de vos données</string>
   <string name="header_favorite_genres">Genres favoris</string>
   <string name="header_filters">Filtres</string>
+  <string name="header_follows_leaderboard">Classement</string>
   <string name="header_genre">Genre</string>
   <string name="header_genres_loved">Genres que vous aimez</string>
   <string name="header_get_notified">Recevez des notifications !</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Suivre</string>
   <string name="header_landing_trending_now">Tendances du moment</string>
   <string name="header_language">Langue</string>
-  <string name="header_leaderboard">Panthéon</string>
   <string name="header_list_description">Description</string>
   <string name="header_main_cast">Distribution principale</string>
   <string name="header_manage_lists">Gérer les listes</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">Par personne</string>
   <string name="option_text_today_by_time">Par heure</string>
   <string name="option_text_today_by_title">Par titre</string>
+  <string name="option_text_today_day_today">Aujourd\'hui</string>
+  <string name="option_text_today_day_week">Semaine</string>
+  <string name="option_text_today_day_yesterday">Hier</string>
   <string name="option_text_trivia_category_all">Tous</string>
   <string name="option_text_trivia_category_bts">Coulisses</string>
   <string name="option_text_trivia_category_cast_n_crew">Acteurs et équipe technique</string>
@@ -1332,33 +1341,22 @@
   <string name="preview_feature_description_edit_mode">Activez les commandes pour masquer ou afficher les sections configurables dans toute l\'application.</string>
   <string name="preview_feature_description_genre_picker">Choisissez vos genres préférés à partir d\'une grille visuelle plutôt que d\'une liste de tags.</string>
   <string name="preview_feature_description_large_screen_cards">Sur les grands écrans, toutes les listes utilisent les mêmes cartes que le reste de l\'application. Sélectionner l\'une d\'elles ouvre un aperçu rapide au lieu de quitter la liste.</string>
-  <string name="preview_feature_description_leaderboard">Classez les personnes que vous suivez par temps de visionnage et découvrez votre place parmi elles.</string>
-  <string name="preview_feature_description_list_counts">Affiche le nombre d\'éléments que contient une liste, ainsi que le nombre de listes d\'une section.</string>
-  <string name="preview_feature_description_parental_guide">Afficher les niveaux de risque de contenu dans le tiroir de détails pour les films et les séries, et filtrer par gravité dans les filtres avancés.</string>
   <string name="preview_feature_description_reactions">Réagissez à un film ou une série, et découvrez les avis des autres.</string>
   <string name="preview_feature_description_rewatch">Démarrez des sessions de revisionnage pour les séries que vous avez déjà vues, enregistrez-vous ou marquez les épisodes comme vus directement depuis le tiroir de session.</string>
   <string name="preview_feature_description_scoped_favorites">Délimitez les listes de favoris en affichant les favoris de l\'année en cours sur les profils et en regroupant la liste complète des favoris par année.</string>
   <string name="preview_feature_description_soundtrack">Ajoute une section bande-son aux pages de films et d\'émissions, avec lecture si une piste peut être associée.</string>
-  <string name="preview_feature_description_split_cast">Voir la distribution principale et secondaire séparément dans les panneaux de personnes des séries, saisons et épisodes.</string>
   <string name="preview_feature_description_today_story">Découvrez ce que les personnes que vous suivez ont regardé et noté aujourd\'hui, et les nouveautés pour vous, sous forme d\'histoires sur la page d\'accueil.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Découvrez une façon plus intelligente de trier votre liste Continuer à regarder.</string>
   <string name="preview_feature_description_vip_veteran">Indique la durée pendant laquelle les membres ont conservé le statut VIP sans interruption, avec un badge Vétéran ou Légende, un anneau d\'avatar coloré et quelques célébrations sur votre propre profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Votre année 2026 sous forme de bobine interactive avec une persona de spectateur, puis une page de statistiques stylisée en conséquence.</string>
-  <string name="preview_feature_description_youtube_specials">Ajoute les mises en ligne gratuites de spectacles d\'humour sur YouTube à la section Où regarder sur les pages de films.</string>
   <string name="preview_feature_title_edit_mode">Mode édition</string>
   <string name="preview_feature_title_genre_picker">Sélecteur de genre</string>
   <string name="preview_feature_title_large_screen_cards">Cartes grand écran</string>
-  <string name="preview_feature_title_leaderboard">Panthéon</string>
-  <string name="preview_feature_title_list_counts">Comptes de listes</string>
   <string name="preview_feature_title_reactions">Réactions</string>
   <string name="preview_feature_title_rewatch">Revisionnage</string>
   <string name="preview_feature_title_scoped_favorites">Favoris délimités</string>
   <string name="preview_feature_title_soundtrack">Bande-son</string>
-  <string name="preview_feature_title_split_cast">Distribution principale et secondaire</string>
   <string name="preview_feature_title_today_story">Aujourd\'hui</string>
-  <string name="preview_feature_title_up_next_smart_sort">Continuer à regarder : Tri intelligent</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP vétéran</string>
-  <string name="preview_feature_title_youtube_specials">Spéciaux YouTube</string>
   <string name="reactions_search_empty">Aucune réaction correspondante</string>
   <string name="reset_status_cleared">Liste de suivi vidée.</string>
   <string name="row_label_loading_title">Chargement du nom</string>
@@ -1483,6 +1481,7 @@
   <string name="text_branding_req_6">N\'utilisez que les versions de logo approuvées fournies ici ; ne les recréez ni ne les modifiez.</string>
   <string name="text_buy">Acheter</string>
   <string name="text_by">par</string>
+  <string name="text_calendar_feed_filtered">Filtré</string>
   <string name="text_calendar_placeholder_1">Rien pour vous aujourd\'hui. Prenez un jour de congé, profitez du temps.</string>
   <string name="text_calendar_placeholder_10">Tout est clair. Il est temps d\'explorer quelque chose de différent.</string>
   <string name="text_calendar_placeholder_2">Aucun élément trouvé pour cette date. Essayez un autre jour ?</string>
@@ -1581,6 +1580,7 @@
   <string name="text_history_sync_filter_with_source">ID de synchronisation %1$d (%2$s)</string>
   <string name="text_hours_watched">%d heures</string>
   <string name="text_info_blocked">%s a été bloqué.</string>
+  <string name="text_info_calendar_feed_copied">Lien iCal copié. Collez-le dans votre application Calendrier pour vous abonner.</string>
   <string name="text_info_cover_removed">L\'image de couverture a été supprimée.</string>
   <string name="text_info_cover_set">L\'image de couverture a été définie.</string>
   <string name="text_info_favorites_added">Ajouté aux favoris.</string>
@@ -1843,7 +1843,6 @@
   <string name="text_today_commented_at">Commenté · %s</string>
   <string name="text_today_commented_item_at">Commenté sur %1$s · %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Aucune nouveauté au cours des dernières 24 heures. Revenez plus tard.</string>
   <string name="text_today_empty_day">Rien des personnes que vous suivez ce jour-là.</string>
   <string name="text_today_for_you">Pour vous</string>

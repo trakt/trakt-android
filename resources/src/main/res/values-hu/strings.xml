@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Filmek böngészése</string>
   <string name="button_label_browse_shows">Sorozatok böngészése</string>
   <string name="button_label_calendar">Naptár</string>
+  <string name="button_label_calendar_feed">Feliratkozás erre a naptárra</string>
   <string name="button_label_cancel">Mégse</string>
   <string name="button_label_cancel_follow_request">Követési kérelem visszavonása %s felhasználótól</string>
   <string name="button_label_cancel_vip">Előfizetés lemondása</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Csatlakozás a(z) %s szolgáltatáshoz</string>
   <string name="button_label_copied">Másolva</string>
   <string name="button_label_copy">Másolás</string>
+  <string name="button_label_copy_calendar_feed">Másolja az iCal hírfolyam linkjét ehhez a naptárhoz</string>
   <string name="button_label_cover_image_selected">A(z) \"%s\" a borítóképed.</string>
   <string name="button_label_create_list">Lista létrehozása</string>
   <string name="button_label_delete_account">Trakt fiókod törlése</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Következő időszak</string>
   <string name="button_label_next_episode">Következő epizód</string>
   <string name="button_label_next_story">Következő történet</string>
+  <string name="button_label_open_calendar_feed">Feliratkozás erre a naptárra a naptáralkalmazásban</string>
   <string name="button_label_open_comment">Hozzászólás megnyitása</string>
   <string name="button_label_open_leaderboard">Követések ranglistájának megnyitása</string>
   <string name="button_label_open_today_stories">Mai történetek megnyitása</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Jegyzetműveletek</string>
   <string name="button_label_popup_reactions">Reakciók</string>
   <string name="button_label_post_reply">Válasz küldése</string>
+  <string name="button_label_poster_details">Plakát részletei</string>
   <string name="button_label_preview_gif">GIF megtekintése teljes méretben</string>
   <string name="button_label_preview_list">Lista előnézete: %s</string>
   <string name="button_label_preview_watchlist">Figyelőlista előnézete</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d válasz</string>
   <string name="button_text_connect">Csatlakozás</string>
   <string name="button_text_continue">Folytatás</string>
+  <string name="button_text_copy_calendar_feed">iCal link másolása</string>
   <string name="button_text_create">Létrehozás</string>
   <string name="button_text_create_list">Lista</string>
   <string name="button_text_cta_create_list">Lista létrehozása</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Mozgatás felülre</string>
   <string name="button_text_movies">Filmek</string>
   <string name="button_text_no_services">Nincsenek szolgáltatások</string>
+  <string name="button_text_open_calendar_feed">Hozzáadás naptáralkalmazáshoz</string>
   <string name="button_text_open_in_service">Megnyitás ezzel: %s</string>
   <string name="button_text_personal">Személyes</string>
   <string name="button_text_play_all_stories">Összes lejátszása</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Jelentés</string>
   <string name="dialog_title_younify_data_sync">Meglévő adatok szinkronizálása</string>
   <string name="drawer_meta_info_cast">Szereplők</string>
-  <string name="drawer_meta_info_cast_and_crew">Szereplők és Stáb</string>
   <string name="drawer_meta_info_crew">Stáb</string>
   <string name="drawer_title_add_gif">GIF hozzáadása</string>
   <string name="drawer_title_add_note">Jegyzet</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Viselkedés</string>
   <string name="header_birthday">Születésnap</string>
   <string name="header_calendar">Naptár</string>
+  <string name="header_calendar_feed">Naptár hírfolyam</string>
   <string name="header_certification">Besorolás</string>
   <string name="header_clear_data">Adatok törlése</string>
   <string name="header_comment_reactions">Reakciók az értékelésre</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Adataid exportálása</string>
   <string name="header_favorite_genres">Kedvenc műfajok</string>
   <string name="header_filters">Szűrők</string>
+  <string name="header_follows_leaderboard">Ranglista</string>
   <string name="header_genre">Műfaj</string>
   <string name="header_genres_loved">Kedvelt műfajok</string>
   <string name="header_get_notified">Értesítést kérek!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Láttam</string>
   <string name="header_landing_trending_now">Éppen most felkapott</string>
   <string name="header_language">Nyelv</string>
-  <string name="header_leaderboard">Pantheon</string>
   <string name="header_list_description">Leírás</string>
   <string name="header_main_cast">Főszereplők</string>
   <string name="header_manage_lists">Listák kezelése</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">Személy szerint</string>
   <string name="option_text_today_by_time">Idő szerint</string>
   <string name="option_text_today_by_title">Cím szerint</string>
+  <string name="option_text_today_day_today">Ma</string>
+  <string name="option_text_today_day_week">Hét</string>
+  <string name="option_text_today_day_yesterday">Tegnap</string>
   <string name="option_text_trivia_category_all">Összes</string>
   <string name="option_text_trivia_category_bts">Kulisszák mögött</string>
   <string name="option_text_trivia_category_cast_n_crew">Szereplők és Stáb</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_genre_picker">Válassza ki kedvenc műfajait egy vizuális rácsból, címkék listája helyett.</string>
   <string name="preview_feature_description_large_screen_cards">Nagyobb képernyőkön minden lista ugyanazokat a kártyákat használja, mint az alkalmazás többi része. Egy elem kiválasztása gyors áttekintést nyit meg ahelyett, hogy elhagyná a listát.</string>
-  <string name="preview_feature_description_leaderboard">Rangsorold a követett embereket a nézési idő alapján, és nézd meg, hol helyezkedsz el közöttük.</string>
-  <string name="preview_feature_description_list_counts">Megmutatja, hány elemet tartalmaz egy lista, és hány lista van egy szekcióban.</string>
-  <string name="preview_feature_description_parental_guide">Tartalomkockázati szintek megjelenítése a részletek panelen filmek és műsorok esetén, és súlyosság szerinti szűrés a speciális szűrőkben.</string>
   <string name="preview_feature_description_reactions">Reagálj egy filmre vagy műsorra, és nézd meg, mások mit éreztek.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
   <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
-  <string name="preview_feature_description_split_cast">Tekintse meg a fő- és mellékszereplőket külön-külön a sorozat, évad és epizód szereplői paneljein.</string>
   <string name="preview_feature_description_today_story">Nézd meg, mit néztek és értékelték ma a követett személyek, és mi az újdonság számodra, történetek formájában a kezdőlapon.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Próbálja ki a Megtekintés folytatása rendezésének egy okosabb módját.</string>
   <string name="preview_feature_description_vip_veteran">Megmutatja, mennyi ideig tartották a tagok szünet nélkül a VIP státuszt, Veterán vagy Legenda jelvénnyel, színes avatargyűrűvel és néhány ünnepséggel a saját profilodon.</string>
   <string name="preview_feature_description_year_in_review_2026">A 2026-os éved egy görgethető videóként, egy nézői személyiséggel, majd egy hozzá illeszkedő statisztikai oldallal.</string>
-  <string name="preview_feature_description_youtube_specials">Hozzáadja a stand-up különkiadások ingyenes YouTube feltöltéseit a filmoldalakon található „Hol nézhető” részhez.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_genre_picker">Műfajválasztó</string>
   <string name="preview_feature_title_large_screen_cards">Nagyképernyős kártyák</string>
-  <string name="preview_feature_title_leaderboard">Pantheon</string>
-  <string name="preview_feature_title_list_counts">Listaszámok</string>
   <string name="preview_feature_title_reactions">Reakciók</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_scoped_favorites">Korlátozott Kedvencek</string>
   <string name="preview_feature_title_soundtrack">Filmzene</string>
-  <string name="preview_feature_title_split_cast">Fő- és mellékszereplők</string>
   <string name="preview_feature_title_today_story">Ma</string>
-  <string name="preview_feature_title_up_next_smart_sort">Megtekintés folytatása - Okos Rendezés</string>
   <string name="preview_feature_title_vip_veteran">VIP veterán státusz</string>
   <string name="preview_feature_title_year_in_review_2026">Éves összefoglaló 2026</string>
-  <string name="preview_feature_title_youtube_specials">YouTube különkiadások</string>
   <string name="reactions_search_empty">Nincs egyező reakció</string>
   <string name="reset_status_cleared">Megnézendők listája kiürítve.</string>
   <string name="row_label_loading_title">Név betöltése</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Csak az itt megadott jóváhagyott logóverziókat használja; ne hozza létre újra vagy módosítsa őket.</string>
   <string name="text_buy">Megvásárolható</string>
   <string name="text_by">Készítette:</string>
+  <string name="text_calendar_feed_filtered">Szűrve</string>
   <string name="text_calendar_placeholder_1">Mára nincs semmi dolgod. Tarts egy szabadnapot, élvezd a jó időt!</string>
   <string name="text_calendar_placeholder_10">Minden tiszta. Itt az idő, hogy felfedezz valami újat!</string>
   <string name="text_calendar_placeholder_2">Erre a dátumra nincsenek elemek. Esetleg próbálj meg egy másik napot.</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
   <string name="text_hours_watched">%d óra</string>
   <string name="text_info_blocked">%s blokkolva lett.</string>
+  <string name="text_info_calendar_feed_copied">iCal link másolva. Illessze be a naptáralkalmazásába a feliratkozáshoz.</string>
   <string name="text_info_cover_removed">Borítókép törölve.</string>
   <string name="text_info_cover_set">Borítókép beállítva.</string>
   <string name="text_info_favorites_added">Hozzáadva a kedvencekhez.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Hozzászólt · %s</string>
   <string name="text_today_commented_item_at">%1$s kommentálva · %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Nincs semmi új az elmúlt 24 órában. Nézz vissza később.</string>
   <string name="text_today_empty_day">Nincs semmi az általad követettektől ezen a napon.</string>
   <string name="text_today_for_you">Neked</string>

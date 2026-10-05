@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Περιήγηση σε Ταινίες</string>
   <string name="button_label_browse_shows">Περιήγηση σε Σειρές</string>
   <string name="button_label_calendar">Ημερολόγιο</string>
+  <string name="button_label_calendar_feed">Εγγραφή σε αυτό το ημερολόγιο</string>
   <string name="button_label_cancel">Ακύρωση</string>
   <string name="button_label_cancel_follow_request">Ακύρωση αίτησης παρακολούθησης προς %s</string>
   <string name="button_label_cancel_vip">Ακύρωση Συνδρομής</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Σύνδεση %s</string>
   <string name="button_label_copied">Αντιγράφηκε</string>
   <string name="button_label_copy">Αντιγραφή</string>
+  <string name="button_label_copy_calendar_feed">Αντιγραφή του συνδέσμου ροής iCal για αυτό το ημερολόγιο</string>
   <string name="button_label_cover_image_selected">Το \"%s\" είναι η εικόνα εξωφύλλου σας.</string>
   <string name="button_label_create_list">Δημιουργία λίστας</string>
   <string name="button_label_delete_account">Διαγραφή του λογαριασμού σας Trakt</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Επόμενη περίοδος</string>
   <string name="button_label_next_episode">Επόμενο επεισόδιο</string>
   <string name="button_label_next_story">Επόμενη ιστορία</string>
+  <string name="button_label_open_calendar_feed">Εγγραφή σε αυτό το ημερολόγιο στην εφαρμογή ημερολογίου σας</string>
   <string name="button_label_open_comment">Άνοιγμα σχολίου</string>
   <string name="button_label_open_leaderboard">Άνοιγμα πίνακα κατάταξης ακολούθων</string>
   <string name="button_label_open_today_stories">Άνοιγμα σημερινών ιστοριών</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Ενέργειες σημείωσης</string>
   <string name="button_label_popup_reactions">Αντιδράσεις</string>
   <string name="button_label_post_reply">Δημοσίευση απάντησης</string>
+  <string name="button_label_poster_details">Λεπτομέρειες αφίσας</string>
   <string name="button_label_preview_gif">Προβολή GIF σε πλήρες μέγεθος</string>
   <string name="button_label_preview_list">Προεπισκόπηση λίστας %s</string>
   <string name="button_label_preview_watchlist">Προεπισκόπηση λίστας παρακολούθησης</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d απαντήσεις</string>
   <string name="button_text_connect">Σύνδεση</string>
   <string name="button_text_continue">Συνέχεια</string>
+  <string name="button_text_copy_calendar_feed">Αντιγραφή συνδέσμου iCal</string>
   <string name="button_text_create">Δημιουργία</string>
   <string name="button_text_create_list">Λίστα</string>
   <string name="button_text_cta_create_list">Δημιουργία λίστας</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Μετακίνηση στην Κορυφή</string>
   <string name="button_text_movies">Ταινίες</string>
   <string name="button_text_no_services">Καμία υπηρεσία</string>
+  <string name="button_text_open_calendar_feed">Προσθήκη στην εφαρμογή ημερολογίου</string>
   <string name="button_text_open_in_service">Άνοιγμα σε %s</string>
   <string name="button_text_personal">Προσωπικά</string>
   <string name="button_text_play_all_stories">Αναπαραγωγή όλων</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Αναφορά</string>
   <string name="dialog_title_younify_data_sync">Συγχρονισμός Υπαρχόντων Δεδομένων</string>
   <string name="drawer_meta_info_cast">Διανομή</string>
-  <string name="drawer_meta_info_cast_and_crew">Διανομή &amp; Συντελεστές</string>
   <string name="drawer_meta_info_crew">Ομάδα Παραγωγής</string>
   <string name="drawer_title_add_gif">Προσθήκη GIF</string>
   <string name="drawer_title_add_note">Σημείωση</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Συμπεριφορά</string>
   <string name="header_birthday">Γενέθλια</string>
   <string name="header_calendar">Ημερολόγιο</string>
+  <string name="header_calendar_feed">Ροή ημερολογίου</string>
   <string name="header_certification">Πιστοποίηση</string>
   <string name="header_clear_data">Εκκαθάριση Δεδομένων</string>
   <string name="header_comment_reactions">Αντιδράσεις κριτικών</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Εξαγωγή των δεδομένων σας</string>
   <string name="header_favorite_genres">Αγαπημένα είδη</string>
   <string name="header_filters">Φίλτρα</string>
+  <string name="header_follows_leaderboard">Πίνακας Κατάταξης</string>
   <string name="header_genre">Είδος</string>
   <string name="header_genres_loved">Είδη που σας Αρέσουν</string>
   <string name="header_get_notified">Ενημερωθείτε!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Παρακολουθήστε</string>
   <string name="header_landing_trending_now">Τάσεις τώρα</string>
   <string name="header_language">Γλώσσα</string>
-  <string name="header_leaderboard">Πάνθεον</string>
   <string name="header_list_description">Περιγραφή</string>
   <string name="header_main_cast">Κύριο Καστ</string>
   <string name="header_manage_lists">Διαχείριση λιστών</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">Ανά άτομο</string>
   <string name="option_text_today_by_time">Ανά ώρα</string>
   <string name="option_text_today_by_title">Ανά τίτλο</string>
+  <string name="option_text_today_day_today">Σήμερα</string>
+  <string name="option_text_today_day_week">Εβδομάδα</string>
+  <string name="option_text_today_day_yesterday">Χθες</string>
   <string name="option_text_trivia_category_all">Όλα</string>
   <string name="option_text_trivia_category_bts">Παρασκήνια</string>
   <string name="option_text_trivia_category_cast_n_crew">Διανομή &amp; Συντελεστές</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
   <string name="preview_feature_description_genre_picker">Επιλέξτε τα αγαπημένα σας είδη από ένα οπτικό πλέγμα αντί για μια λίστα ετικετών.</string>
   <string name="preview_feature_description_large_screen_cards">Σε μεγαλύτερες οθόνες, όλες οι λίστες χρησιμοποιούν τις ίδιες κάρτες με την υπόλοιπη εφαρμογή. Η επιλογή μιας ανοίγει μια γρήγορη επισκόπηση αντί να αποχωρήσετε από τη λίστα.</string>
-  <string name="preview_feature_description_leaderboard">Κατατάξτε τους ανθρώπους που ακολουθείτε με βάση τον χρόνο παρακολούθησης και δείτε πού βρίσκεστε ανάμεσά τους.</string>
-  <string name="preview_feature_description_list_counts">Δείχνει πόσα στοιχεία περιέχει μια λίστα και πόσες λίστες έχει μια ενότητα.</string>
-  <string name="preview_feature_description_parental_guide">Εμφάνιση επιπέδων κινδύνου περιεχομένου στο πλαίσιο λεπτομερειών για ταινίες και σειρές, και φιλτράρισμα κατά σοβαρότητα στα σύνθετα φίλτρα.</string>
   <string name="preview_feature_description_reactions">Αντιδράστε σε μια ταινία ή σειρά και δείτε πώς ένιωσαν όλοι οι άλλοι.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
-  <string name="preview_feature_description_split_cast">Δείτε το κύριο και υποστηρικτικό καστ ξεχωριστά στους πίνακες ατόμων εκπομπών, σεζόν και επεισοδίων.</string>
   <string name="preview_feature_description_today_story">Δείτε τι παρακολούθησαν και βαθμολόγησαν σήμερα οι χρήστες που ακολουθείτε, καθώς και τι νέο υπάρχει για εσάς, ως ιστορίες στην αρχική σελίδα.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Δοκιμάστε έναν πιο έξυπνο τρόπο να ταξινομήσετε τη Συνέχιση Παρακολούθησης.</string>
   <string name="preview_feature_description_vip_veteran">Δείχνει πόσο καιρό οι χρήστες έχουν διατηρήσει το VIP χωρίς διακοπή, με σήμα Βετεράνου ή Θρύλου, ένα έγχρωμο δαχτυλίδι στο avatar και μερικούς εορτασμούς στο προφίλ σας.</string>
   <string name="preview_feature_description_year_in_review_2026">Το 2026 σας ως μια κυλιόμενη ταινία με ένα προφίλ θεατή, και στη συνέχεια μια σελίδα στατιστικών σχεδιασμένη να ταιριάζει.</string>
-  <string name="preview_feature_description_youtube_specials">Προσθέτει δωρεάν αναρτήσεις YouTube από ειδικές εκπομπές stand-up στην ενότητα \"Πού να παρακολουθήσετε\" στις σελίδες ταινιών.</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_genre_picker">Επιλογέας Είδους</string>
   <string name="preview_feature_title_large_screen_cards">Κάρτες Μεγάλης Οθόνης</string>
-  <string name="preview_feature_title_leaderboard">Πάνθεον</string>
-  <string name="preview_feature_title_list_counts">Πλήθος Λιστών</string>
   <string name="preview_feature_title_reactions">Αντιδράσεις</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_scoped_favorites">Αγαπημένα με χρονικό πλαίσιο</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
-  <string name="preview_feature_title_split_cast">Κύριο και Υποστηρικτικό Καστ</string>
   <string name="preview_feature_title_today_story">Σήμερα</string>
-  <string name="preview_feature_title_up_next_smart_sort">Συνέχιση Παρακολούθησης Έξυπνη Ταξινόμηση</string>
   <string name="preview_feature_title_vip_veteran">Κατάσταση βετεράνου VIP</string>
   <string name="preview_feature_title_year_in_review_2026">Ετήσια Ανασκόπηση 2026</string>
-  <string name="preview_feature_title_youtube_specials">Αφιερώματα YouTube</string>
   <string name="reactions_search_empty">Καμία αντίδραση δεν ταιριάζει</string>
   <string name="reset_status_cleared">Η λίστα παρακολούθησης εκκαθαρίστηκε.</string>
   <string name="row_label_loading_title">Φόρτωση ονόματος</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Χρησιμοποιήστε μόνο τις εγκεκριμένες εκδόσεις λογότυπου που παρέχονται εδώ· μην τις αναδημιουργείτε ή τροποποιείτε.</string>
   <string name="text_buy">Αγορά</string>
   <string name="text_by">από</string>
+  <string name="text_calendar_feed_filtered">Φιλτραρισμένο</string>
   <string name="text_calendar_placeholder_1">Τίποτα για εσάς αυτήν την ημέρα. Πάρτε μια μέρα άδεια, απολαύστε τον καιρό.</string>
   <string name="text_calendar_placeholder_10">Όλα καθαρά. Ώρα να εξερευνήσετε κάτι διαφορετικό.</string>
   <string name="text_calendar_placeholder_2">Δεν βρέθηκαν στοιχεία για αυτήν την ημερομηνία. Ίσως δοκιμάσετε μια άλλη μέρα;</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">Αναγνωριστικό συγχρονισμού %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ώρες</string>
   <string name="text_info_blocked">Ο/Η %s έχει αποκλειστεί.</string>
+  <string name="text_info_calendar_feed_copied">Ο σύνδεσμος iCal αντιγράφηκε. Επικολλήστε τον στην εφαρμογή ημερολογίου σας για να εγγραφείτε.</string>
   <string name="text_info_cover_removed">Η εικόνα εξωφύλλου έχει αφαιρεθεί.</string>
   <string name="text_info_cover_set">Η εικόνα εξωφύλλου έχει οριστεί.</string>
   <string name="text_info_favorites_added">Προστέθηκε στα αγαπημένα.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Σχολιάστηκε · %s</string>
   <string name="text_today_commented_item_at">Σχολιάστηκε το %1$s · %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Τίποτα καινούργιο τις τελευταίες 24 ώρες. Ελέγξτε ξανά αργότερα.</string>
   <string name="text_today_empty_day">Καμία δραστηριότητα από τους χρήστες που ακολουθείτε αυτήν την ημέρα.</string>
   <string name="text_today_for_you">Για εσάς</string>

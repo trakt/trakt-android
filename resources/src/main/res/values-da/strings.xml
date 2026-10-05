@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Gennemse film</string>
   <string name="button_label_browse_shows">Gennemse serier</string>
   <string name="button_label_calendar">Kalender</string>
+  <string name="button_label_calendar_feed">Abonner på denne kalender</string>
   <string name="button_label_cancel">Annuller</string>
   <string name="button_label_cancel_follow_request">Annuller følgeanmodning til %s</string>
   <string name="button_label_cancel_vip">Opsig abonnement</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Tilslut %s</string>
   <string name="button_label_copied">Kopieret</string>
   <string name="button_label_copy">Kopier</string>
+  <string name="button_label_copy_calendar_feed">Kopiér iCal-feedlinket for denne kalender</string>
   <string name="button_label_cover_image_selected">\"%s\" er dit coverbillede.</string>
   <string name="button_label_create_list">Opret liste</string>
   <string name="button_label_delete_account">Slet din Trakt-konto</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Næste periode</string>
   <string name="button_label_next_episode">Næste afsnit</string>
   <string name="button_label_next_story">Næste historie</string>
+  <string name="button_label_open_calendar_feed">Abonner på denne kalender i din kalenderapp</string>
   <string name="button_label_open_comment">Åbn kommentaren</string>
   <string name="button_label_open_leaderboard">Åbn følger-rangliste</string>
   <string name="button_label_open_today_stories">Åbn dagens historier</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Notehandlinger</string>
   <string name="button_label_popup_reactions">Reaktioner</string>
   <string name="button_label_post_reply">Send svar</string>
+  <string name="button_label_poster_details">Plakatdetaljer</string>
   <string name="button_label_preview_gif">Se GIF i fuld størrelse</string>
   <string name="button_label_preview_list">Forhåndsvis liste %s</string>
   <string name="button_label_preview_watchlist">Forhåndsvis huskeliste</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d svar</string>
   <string name="button_text_connect">Tilslut</string>
   <string name="button_text_continue">Fortsæt</string>
+  <string name="button_text_copy_calendar_feed">Kopiér iCal-link</string>
   <string name="button_text_create">Opret</string>
   <string name="button_text_create_list">Liste</string>
   <string name="button_text_cta_create_list">Opret liste</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Flyt til Top</string>
   <string name="button_text_movies">Film</string>
   <string name="button_text_no_services">Ingen tjenester</string>
+  <string name="button_text_open_calendar_feed">Føj til kalenderapp</string>
   <string name="button_text_open_in_service">Åbn i %s</string>
   <string name="button_text_personal">Personlig</string>
   <string name="button_text_play_all_stories">Afspil alle</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Rapportér</string>
   <string name="dialog_title_younify_data_sync">Synkroniser eksisterende data</string>
   <string name="drawer_meta_info_cast">Medvirkende</string>
-  <string name="drawer_meta_info_cast_and_crew">Medvirkende og Stab</string>
   <string name="drawer_meta_info_crew">Hold</string>
   <string name="drawer_title_add_gif">Tilføj en GIF</string>
   <string name="drawer_title_add_note">Note</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Adfærd</string>
   <string name="header_birthday">Fødselsdag</string>
   <string name="header_calendar">Kalender</string>
+  <string name="header_calendar_feed">Kalenderfeed</string>
   <string name="header_certification">Certificering</string>
   <string name="header_clear_data">Ryd data</string>
   <string name="header_comment_reactions">Anmeldelsesreaktioner</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Eksporterer dine data</string>
   <string name="header_favorite_genres">Favoritgenrer</string>
   <string name="header_filters">Filtre</string>
+  <string name="header_follows_leaderboard">Rangliste</string>
   <string name="header_genre">Genre</string>
   <string name="header_genres_loved">Genrer du kan lide</string>
   <string name="header_get_notified">Få besked!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Registrer</string>
   <string name="header_landing_trending_now">Populært nu</string>
   <string name="header_language">Sprog</string>
-  <string name="header_leaderboard">Pantheon</string>
   <string name="header_list_description">Beskrivelse</string>
   <string name="header_main_cast">Hovedroller</string>
   <string name="header_manage_lists">Administrer lister</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">Efter person</string>
   <string name="option_text_today_by_time">Efter tid</string>
   <string name="option_text_today_by_title">Efter titel</string>
+  <string name="option_text_today_day_today">I dag</string>
+  <string name="option_text_today_day_week">Uge</string>
+  <string name="option_text_today_day_yesterday">I går</string>
   <string name="option_text_trivia_category_all">Alle</string>
   <string name="option_text_trivia_category_bts">Bag kulisserne</string>
   <string name="option_text_trivia_category_cast_n_crew">Medvirkende og Stab</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Aktiver kontroller til at skjule eller vise konfigurerbare sektioner i hele appen.</string>
   <string name="preview_feature_description_genre_picker">Vælg dine foretrukne genrer fra et visuelt gitter i stedet for en liste med tags.</string>
   <string name="preview_feature_description_large_screen_cards">På større skærme bruger alle lister de samme kort som resten af appen. Ved at vælge et, åbnes en hurtig oversigt i stedet for at forlade listen.</string>
-  <string name="preview_feature_description_leaderboard">Ranger de personer, du følger, efter set tid, og se hvor du lander blandt dem.</string>
-  <string name="preview_feature_description_list_counts">Viser hvor mange elementer en liste indeholder, og hvor mange lister en sektion har.</string>
-  <string name="preview_feature_description_parental_guide">Vis risikoniveauer for indhold i detaljeskuffen for film og serier, og filtrer efter alvorlighedsgrad i avancerede filtre.</string>
   <string name="preview_feature_description_reactions">Reager på en film eller serie, og se hvordan alle andre havde det.</string>
   <string name="preview_feature_description_rewatch">Start gensynssessioner for serier, du allerede har set, tjek ind eller marker sete episoder direkte fra sessionsskuffen.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsbegræns favoritlister ved at vise indeværende års favoritter på profiler og gruppere den fulde favoritliste efter år.</string>
   <string name="preview_feature_description_soundtrack">Tilføjer en soundtrack-sektion til film- og seriesider, med afspilning hvor et nummer kan matches.</string>
-  <string name="preview_feature_description_split_cast">Se hoved- og birollebesætningen separat i personoversigterne for serier, sæsoner og afsnit.</string>
   <string name="preview_feature_description_today_story">Se, hvad de personer, du følger, har set og bedømt i dag, og hvad der er nyt for dig, som historier på hjemmesiden.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Test en smartere måde at sortere din \'Se videre\' på.</string>
   <string name="preview_feature_description_vip_veteran">Viser, hvor længe medlemmer har opretholdt VIP uden afbrydelse, med et Veteran- eller Legende-badge, en farvet avatarring og et par fejringer på din egen profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Dit 2026 som en scroll-baseret oversigt med en seerpersona, og derefter en statistikside designet til at matche den.</string>
-  <string name="preview_feature_description_youtube_specials">Tilføjer gratis YouTube-uploads af stand-up specials til Hvor kan du se på filmsider.</string>
   <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
   <string name="preview_feature_title_genre_picker">Genre-vælger</string>
   <string name="preview_feature_title_large_screen_cards">Kort til stor skærm</string>
-  <string name="preview_feature_title_leaderboard">Pantheon</string>
-  <string name="preview_feature_title_list_counts">Listeantal</string>
   <string name="preview_feature_title_reactions">Reaktioner</string>
   <string name="preview_feature_title_rewatch">Gensyn</string>
   <string name="preview_feature_title_scoped_favorites">Afgrænsede favoritter</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_split_cast">Hoved- og birollebesætning</string>
   <string name="preview_feature_title_today_story">I dag</string>
-  <string name="preview_feature_title_up_next_smart_sort">Se videre Smart Sortering</string>
   <string name="preview_feature_title_vip_veteran">VIP veteranstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Årsresumé 2026</string>
-  <string name="preview_feature_title_youtube_specials">YouTube-specials</string>
   <string name="reactions_search_empty">Ingen reaktioner matcher dette.</string>
   <string name="reset_status_cleared">Huskeliste ryddet.</string>
   <string name="row_label_loading_title">Indlæser navn</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Brug kun de godkendte logoversioner, der er angivet her; genskab eller modificer dem ikke.</string>
   <string name="text_buy">Køb</string>
   <string name="text_by">af</string>
+  <string name="text_calendar_feed_filtered">Filtreret</string>
   <string name="text_calendar_placeholder_1">Intet for dig denne dag. Tag en fridag, nyd vejret.</string>
   <string name="text_calendar_placeholder_10">Alt klart. Tid til at udforske noget andet.</string>
   <string name="text_calendar_placeholder_2">Ingen elementer fundet for denne dato. Måske prøve en anden dag?</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d timer</string>
   <string name="text_info_blocked">%s er blevet blokeret.</string>
+  <string name="text_info_calendar_feed_copied">iCal-link kopieret. Indsæt det i din kalenderapp for at abonnere.</string>
   <string name="text_info_cover_removed">Forsidebilledet er fjernet.</string>
   <string name="text_info_cover_set">Forsidebilledet er indstillet.</string>
   <string name="text_info_favorites_added">Føjet til favoritter.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Kommenteret · %s</string>
   <string name="text_today_commented_item_at">Kommenteret på %1$s · %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Intet nyt de sidste 24 timer. Prøv igen senere.</string>
   <string name="text_today_empty_day">Intet fra de personer, du følger, på denne dag.</string>
   <string name="text_today_for_you">Til dig</string>

@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Filmlere Göz At</string>
   <string name="button_label_browse_shows">Dizilere Göz At</string>
   <string name="button_label_calendar">Takvim</string>
+  <string name="button_label_calendar_feed">Bu takvime abone ol</string>
   <string name="button_label_cancel">İptal</string>
   <string name="button_label_cancel_follow_request">%s kullanıcısına gönderilen takip isteğini iptal et</string>
   <string name="button_label_cancel_vip">Aboneliği İptal Et</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">%s bağla</string>
   <string name="button_label_copied">Kopyalandı</string>
   <string name="button_label_copy">Kopyala</string>
+  <string name="button_label_copy_calendar_feed">Bu takvimin iCal akış bağlantısını kopyala</string>
   <string name="button_label_cover_image_selected">\"%s\" kapak resminiz.</string>
   <string name="button_label_create_list">Liste oluştur</string>
   <string name="button_label_delete_account">Trakt hesabınızı silin</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Sonraki dönem</string>
   <string name="button_label_next_episode">Sonraki bölüm</string>
   <string name="button_label_next_story">Sonraki hikaye</string>
+  <string name="button_label_open_calendar_feed">Bu takvime takvim uygulamanızda abone olun</string>
   <string name="button_label_open_comment">Yorumu aç</string>
   <string name="button_label_open_leaderboard">Takip edilenler liderlik tablosunu aç</string>
   <string name="button_label_open_today_stories">Bugünün hikayelerini aç</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Not işlemleri</string>
   <string name="button_label_popup_reactions">Tepkiler</string>
   <string name="button_label_post_reply">Yanıtı gönder</string>
+  <string name="button_label_poster_details">Poster detayları</string>
   <string name="button_label_preview_gif">GIF\'i tam boyutta görüntüle</string>
   <string name="button_label_preview_list">Listeyi önizle %s</string>
   <string name="button_label_preview_watchlist">İzleme listesini önizle</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d yanıt</string>
   <string name="button_text_connect">Bağlan</string>
   <string name="button_text_continue">Devam Et</string>
+  <string name="button_text_copy_calendar_feed">iCal bağlantısını kopyala</string>
   <string name="button_text_create">Oluştur</string>
   <string name="button_text_create_list">Liste</string>
   <string name="button_text_cta_create_list">Liste oluştur</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">En Üste Taşı</string>
   <string name="button_text_movies">Filmler</string>
   <string name="button_text_no_services">Hizmet yok</string>
+  <string name="button_text_open_calendar_feed">Takvim uygulamasına ekle</string>
   <string name="button_text_open_in_service">%s içinde aç</string>
   <string name="button_text_personal">Kişisel</string>
   <string name="button_text_play_all_stories">Hepsini oynat</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Bildir</string>
   <string name="dialog_title_younify_data_sync">Mevcut Veriyi Senkronize Et</string>
   <string name="drawer_meta_info_cast">Oyuncular</string>
-  <string name="drawer_meta_info_cast_and_crew">Oyuncular &amp; Ekip</string>
   <string name="drawer_meta_info_crew">Ekip</string>
   <string name="drawer_title_add_gif">GIF Ekle</string>
   <string name="drawer_title_add_note">Not</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Davranış</string>
   <string name="header_birthday">Doğum Günü</string>
   <string name="header_calendar">Takvim</string>
+  <string name="header_calendar_feed">Takvim akışı</string>
   <string name="header_certification">Sertifika</string>
   <string name="header_clear_data">Verileri Temizle</string>
   <string name="header_comment_reactions">Yorum tepkileri</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Verileriniz dışa aktarılıyor</string>
   <string name="header_favorite_genres">Favori türler</string>
   <string name="header_filters">Filtreler</string>
+  <string name="header_follows_leaderboard">Liderlik Tablosu</string>
   <string name="header_genre">Tür</string>
   <string name="header_genres_loved">Beğendiğiniz Türler</string>
   <string name="header_get_notified">Bildirim Alın!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Takip Et</string>
   <string name="header_landing_trending_now">Şimdi trend olanlar</string>
   <string name="header_language">Dil</string>
-  <string name="header_leaderboard">Pantheon</string>
   <string name="header_list_description">Açıklama</string>
   <string name="header_main_cast">Ana Oyuncular</string>
   <string name="header_manage_lists">Listeleri yönet</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">Kişiye göre</string>
   <string name="option_text_today_by_time">Zamana göre</string>
   <string name="option_text_today_by_title">Başlığa göre</string>
+  <string name="option_text_today_day_today">Bugün</string>
+  <string name="option_text_today_day_week">Hafta</string>
+  <string name="option_text_today_day_yesterday">Dün</string>
   <string name="option_text_trivia_category_all">Tümü</string>
   <string name="option_text_trivia_category_bts">Kamera Arkası</string>
   <string name="option_text_trivia_category_cast_n_crew">Oyuncular &amp; Ekip</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_genre_picker">Favori türlerinizi bir etiket listesi yerine görsel bir ızgaradan seçin.</string>
   <string name="preview_feature_description_large_screen_cards">Daha büyük ekranlarda, tüm listeler uygulamanın geri kalanıyla aynı kartları kullanır. Birini seçmek, listeden ayrılmak yerine hızlı bir bakış açar.</string>
-  <string name="preview_feature_description_leaderboard">Takip ettiğin kişileri izleme süresine göre sırala ve aralarında nerede olduğunu gör.</string>
-  <string name="preview_feature_description_list_counts">Bir listenin kaç öğe içerdiğini ve bir bölümün kaç listesi olduğunu gösterir.</string>
-  <string name="preview_feature_description_parental_guide">Filmler ve diziler için detay çekmecesinde içerik risk seviyelerini göster ve gelişmiş filtrelerde şiddete göre filtrele.</string>
   <string name="preview_feature_description_reactions">Bir film veya diziye tepki verin ve diğer herkesin ne hissettiğini görün.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
-  <string name="preview_feature_description_split_cast">Dizi, sezon ve bölüm kişi panellerinde ana ve yardımcı oyuncu kadrosunu ayrı ayrı görün.</string>
   <string name="preview_feature_description_today_story">Takip ettiğiniz kişilerin bugün ne izlediğini ve puanladığını, ayrıca sizin için yeni olanları ana sayfada hikayeler olarak görün.</string>
-  <string name="preview_feature_description_up_next_smart_sort">İzlemeye Devam Edin listenizi sıralamak için daha akıllı bir yolu test edin.</string>
   <string name="preview_feature_description_vip_veteran">Üyelerin VIP statüsünü ne kadar süre kesintisiz sürdürdüğünü, Kıdemli veya Efsane rozetiyle, renkli bir avatar halkasıyla ve kendi profilinizde birkaç kutlamayla gösterir.</string>
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
-  <string name="preview_feature_description_youtube_specials">Stand-up özel içeriklerinin ücretsiz YouTube yüklemelerini film sayfalarındaki \"Nereden İzlenir\" bölümüne ekler.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_genre_picker">Tür Seçici</string>
   <string name="preview_feature_title_large_screen_cards">Geniş Ekran Kartları</string>
-  <string name="preview_feature_title_leaderboard">Pantheon</string>
-  <string name="preview_feature_title_list_counts">Liste Sayıları</string>
   <string name="preview_feature_title_reactions">Tepkiler</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_scoped_favorites">Kapsamlı Favoriler</string>
   <string name="preview_feature_title_soundtrack">Film Müziği</string>
-  <string name="preview_feature_title_split_cast">Ana ve Yardımcı Oyuncu Kadrosu</string>
   <string name="preview_feature_title_today_story">Bugün</string>
-  <string name="preview_feature_title_up_next_smart_sort">İzlemeye Devam Et Akıllı Sıralama</string>
   <string name="preview_feature_title_vip_veteran">VIP kıdemli durumu</string>
   <string name="preview_feature_title_year_in_review_2026">2026 Yılına Genel Bakış</string>
-  <string name="preview_feature_title_youtube_specials">YouTube özel içerikleri</string>
   <string name="reactions_search_empty">Eşleşen tepki bulunamadı</string>
   <string name="reset_status_cleared">İzleme listesi temizlendi.</string>
   <string name="row_label_loading_title">İsim yükleniyor</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Yalnızca burada sağlanan onaylı logo versiyonlarını kullanın; onları yeniden oluşturmayın veya değiştirmeyin.</string>
   <string name="text_buy">Satın Al</string>
   <string name="text_by">yapan</string>
+  <string name="text_calendar_feed_filtered">Filtrelenmiş</string>
   <string name="text_calendar_placeholder_1">Bu gün size özel hiçbir şey yok. Bir gün izin alın, havanın tadını çıkarın.</string>
   <string name="text_calendar_placeholder_10">Her şey yolunda. Farklı bir şeyler keşfetme zamanı.</string>
   <string name="text_calendar_placeholder_2">Bu tarih için hiçbir öğe bulunamadı. Belki başka bir gün denemek ister misiniz?</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">Senkronizasyon Kimliği %1$d (%2$s)</string>
   <string name="text_hours_watched">%d saat</string>
   <string name="text_info_blocked">%s engellendi.</string>
+  <string name="text_info_calendar_feed_copied">iCal bağlantısı kopyalandı. Abone olmak için takvim uygulamanıza yapıştırın.</string>
   <string name="text_info_cover_removed">Kapak resmi temizlendi.</string>
   <string name="text_info_cover_set">Kapak resmi ayarlandı.</string>
   <string name="text_info_favorites_added">Favorilere eklendi.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Yorumlandı · %s</string>
   <string name="text_today_commented_item_at">%1$s yorumlandı · %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s, %2$d</string>
   <string name="text_today_empty">Son 24 saatte yeni bir şey yok. Daha sonra tekrar kontrol edin.</string>
   <string name="text_today_empty_day">Bu güne ait takip ettiklerinizden hiçbir şey yok.</string>
   <string name="text_today_for_you">Sizin için</string>

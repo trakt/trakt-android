@@ -58,6 +58,7 @@
   <string name="button_label_browse_movies">Переглянути фільми</string>
   <string name="button_label_browse_shows">Переглянути серіали</string>
   <string name="button_label_calendar">Календар</string>
+  <string name="button_label_calendar_feed">Підписатися на цей календар</string>
   <string name="button_label_cancel">Скасувати</string>
   <string name="button_label_cancel_follow_request">Скасувати запит на підписку до %s</string>
   <string name="button_label_cancel_vip">Скасувати підписку</string>
@@ -87,6 +88,7 @@
   <string name="button_label_connect_streaming_service">Підключити %s</string>
   <string name="button_label_copied">Скопійовано</string>
   <string name="button_label_copy">Копіювати</string>
+  <string name="button_label_copy_calendar_feed">Скопіювати посилання на стрічку iCal для цього календаря</string>
   <string name="button_label_cover_image_selected">\"%s\" є вашою обкладинкою</string>
   <string name="button_label_create_list">Створити список</string>
   <string name="button_label_delete_account">Видалити свій обліковий запис Trakt</string>
@@ -164,6 +166,7 @@
   <string name="button_label_next_calendar_period">Наступний період</string>
   <string name="button_label_next_episode">Наступний епізод</string>
   <string name="button_label_next_story">Наступна історія</string>
+  <string name="button_label_open_calendar_feed">Підписатися на цей календар у вашому застосунку календаря</string>
   <string name="button_label_open_comment">Відкрити коментар</string>
   <string name="button_label_open_leaderboard">Відкрити таблицю лідерів підписок</string>
   <string name="button_label_open_today_stories">Відкрити сьогоднішні історії</string>
@@ -204,6 +207,7 @@
   <string name="button_label_popup_menu_notes">Дії з приміткою</string>
   <string name="button_label_popup_reactions">Реакції</string>
   <string name="button_label_post_reply">Надіслати відповідь</string>
+  <string name="button_label_poster_details">Деталі постера</string>
   <string name="button_label_preview_gif">Переглянути GIF у повному розмірі</string>
   <string name="button_label_preview_list">Попередній перегляд списку %s</string>
   <string name="button_label_preview_watchlist">Попередній перегляд списку перегляду</string>
@@ -379,6 +383,7 @@
   <string name="button_text_comment_replies">%d відповідей</string>
   <string name="button_text_connect">Підключити</string>
   <string name="button_text_continue">Продовжити</string>
+  <string name="button_text_copy_calendar_feed">Скопіювати посилання iCal</string>
   <string name="button_text_create">Створити</string>
   <string name="button_text_create_list">Список</string>
   <string name="button_text_cta_create_list">Створити список</string>
@@ -457,6 +462,7 @@
   <string name="button_text_move_to_top">Перемістити на початок</string>
   <string name="button_text_movies">Фільми</string>
   <string name="button_text_no_services">Без послуг</string>
+  <string name="button_text_open_calendar_feed">Додати до застосунку календаря</string>
   <string name="button_text_open_in_service">Відкрити в %s</string>
   <string name="button_text_personal">Особисте</string>
   <string name="button_text_play_all_stories">Відтворити все</string>
@@ -666,7 +672,6 @@
   <string name="dialog_title_report">Повідомити</string>
   <string name="dialog_title_younify_data_sync">Синхронізувати існуючі дані</string>
   <string name="drawer_meta_info_cast">Акторський склад</string>
-  <string name="drawer_meta_info_cast_and_crew">Акторський склад та знімальна група</string>
   <string name="drawer_meta_info_crew">Команда</string>
   <string name="drawer_title_add_gif">Додати GIF</string>
   <string name="drawer_title_add_note">Нотатка</string>
@@ -750,6 +755,7 @@
   <string name="header_behavior">Поведінка</string>
   <string name="header_birthday">День народження</string>
   <string name="header_calendar">Календар</string>
+  <string name="header_calendar_feed">Стрічка календаря</string>
   <string name="header_certification">Сертифікація</string>
   <string name="header_clear_data">Очистити дані</string>
   <string name="header_comment_reactions">Реакції на відгук</string>
@@ -775,6 +781,7 @@
   <string name="header_exporting_data">Експорт ваших даних</string>
   <string name="header_favorite_genres">Улюблені жанри</string>
   <string name="header_filters">Фільтри</string>
+  <string name="header_follows_leaderboard">Таблиця лідерів</string>
   <string name="header_genre">Жанр</string>
   <string name="header_genres_loved">Жанри, які вам подобаються</string>
   <string name="header_get_notified">Отримуйте сповіщення!</string>
@@ -794,7 +801,6 @@
   <string name="header_landing_track">Відстежуйте</string>
   <string name="header_landing_trending_now">Зараз у тренді</string>
   <string name="header_language">Мова</string>
-  <string name="header_leaderboard">Пантеон</string>
   <string name="header_list_description">Опис</string>
   <string name="header_main_cast">Основний склад</string>
   <string name="header_manage_lists">Керувати списками</string>
@@ -1258,6 +1264,9 @@
   <string name="option_text_today_by_person">За особою</string>
   <string name="option_text_today_by_time">За часом</string>
   <string name="option_text_today_by_title">За назвою</string>
+  <string name="option_text_today_day_today">Сьогодні</string>
+  <string name="option_text_today_day_week">Тиждень</string>
+  <string name="option_text_today_day_yesterday">Вчора</string>
   <string name="option_text_trivia_category_all">Всі</string>
   <string name="option_text_trivia_category_bts">За лаштунками</string>
   <string name="option_text_trivia_category_cast_n_crew">Акторський склад та знімальна група</string>
@@ -1332,34 +1341,23 @@
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
   <string name="preview_feature_description_genre_picker">Обирайте улюблені жанри з візуальної сітки замість списку тегів.</string>
   <string name="preview_feature_description_large_screen_cards">На великих екранах усі списки використовують ті ж картки, що й решта додатка. Вибір одного відкриває швидкий перегляд, замість того щоб залишати список.</string>
-  <string name="preview_feature_description_leaderboard">Ранжуйте людей, за якими стежите, за часом перегляду та подивіться, яке місце ви посідаєте серед них.</string>
-  <string name="preview_feature_description_list_counts">Показує, скільки елементів містить список, і скільки списків є в розділі.</string>
-  <string name="preview_feature_description_parental_guide">Показувати рівні ризику вмісту у висувній панелі деталей для фільмів та серіалів, а також фільтрувати за рівнем важкості у розширених фільтрах.</string>
   <string name="preview_feature_description_reactions">Реагуйте на фільм або серіал і дивіться, що відчувають інші.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_scoped_favorites">Обмежте списки улюблених за часом, відображаючи улюблене поточного року в профілях та групуючи повний список улюблених за роками.</string>
   <string name="preview_feature_description_soundtrack">Додає розділ саундтреків до сторінок фільмів та серіалів, з відтворенням там, де трек може бути зіставлений.</string>
-  <string name="preview_feature_description_split_cast">Переглядайте основний та додатковий акторський склад окремо на панелях людей у шоу, сезонах та епізодах.</string>
   <string name="preview_feature_description_today_story">Перегляньте, що люди, на яких ви підписані, дивилися та оцінювали сьогодні, а також що нового для вас, у вигляді історій на головній сторінці.</string>
-  <string name="preview_feature_description_up_next_smart_sort">Спробуйте розумніший спосіб сортування вашого розділу «Продовжити перегляд».</string>
   <string name="preview_feature_description_vip_veteran">Показує, як довго учасники зберігали VIP-статус без перерв, з відзнакою «Ветеран» або «Легенда», кольоровим кільцем аватара та кількома святкуваннями у вашому профілі.</string>
   <string name="preview_feature_description_year_in_review_2026">Ваш 2026 рік як прокручуваний ролик з персоною глядача, а потім сторінка статистики, оформлена відповідно до неї.</string>
-  <string name="preview_feature_description_youtube_specials">Додає безкоштовні YouTube-завантаження стендап-спеціалів до розділу \"Де дивитися\" на сторінках фільмів.</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
   <string name="preview_feature_title_genre_picker">Вибір жанрів</string>
   <string name="preview_feature_title_large_screen_cards">Картки для великих екранів</string>
-  <string name="preview_feature_title_leaderboard">Пантеон</string>
-  <string name="preview_feature_title_list_counts">Кількість у списках</string>
   <string name="preview_feature_title_reactions">Реакції</string>
   <string name="preview_feature_title_rewatch">Повторний перегляд</string>
   <string name="preview_feature_title_scoped_favorites">Вибране за періодом</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
-  <string name="preview_feature_title_split_cast">Основний та Додатковий акторський склад</string>
   <string name="preview_feature_title_today_story">Сьогодні</string>
-  <string name="preview_feature_title_up_next_smart_sort">Розумне сортування «Продовжити перегляд»</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
   <string name="preview_feature_title_year_in_review_2026">Рік у Підсумках 2026</string>
-  <string name="preview_feature_title_youtube_specials">Спеціальні випуски YouTube</string>
   <string name="reactions_search_empty">Немає відповідних реакцій</string>
   <string name="reset_status_cleared">Список перегляду очищено.</string>
   <string name="row_label_loading_title">Завантаження назви</string>
@@ -1484,6 +1482,7 @@
   <string name="text_branding_req_6">Використовуйте лише затверджені версії логотипів, надані тут; не відтворюйте та не змінюйте їх.</string>
   <string name="text_buy">Купити</string>
   <string name="text_by">від</string>
+  <string name="text_calendar_feed_filtered">Відфільтровано</string>
   <string name="text_calendar_placeholder_1">Нічого для вас у цей день. Візьміть вихідний, насолоджуйтесь погодою.</string>
   <string name="text_calendar_placeholder_10">Все чисто. Час дослідити щось інше.</string>
   <string name="text_calendar_placeholder_2">Не знайдено елементів для цієї дати. Можливо, спробувати інший день?</string>
@@ -1582,6 +1581,7 @@
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d годин</string>
   <string name="text_info_blocked">%s заблоковано.</string>
+  <string name="text_info_calendar_feed_copied">Посилання iCal скопійовано. Вставте його у ваш застосунок календаря, щоб підписатися.</string>
   <string name="text_info_cover_removed">Зображення обкладинки очищено.</string>
   <string name="text_info_cover_set">Зображення обкладинки встановлено.</string>
   <string name="text_info_favorites_added">Додано до улюблених.</string>
@@ -1844,7 +1844,6 @@
   <string name="text_today_commented_at">Прокоментовано · %s</string>
   <string name="text_today_commented_item_at">Прокоментовано %1$s · %2$s</string>
   <string name="text_today_day_time">%1$s, %2$s</string>
-  <string name="text_today_day_with_count">%1$s %2$d</string>
   <string name="text_today_empty">Нічого нового за останні 24 години. Перевірте пізніше.</string>
   <string name="text_today_empty_day">Нічого від людей, на яких ви підписані, цього дня.</string>
   <string name="text_today_for_you">Для вас</string>
