@@ -15,6 +15,8 @@ internal data class CustomListMediaDestination(
     val listId: Int,
     val listName: String,
     val listLikes: Int,
+    val listAuthor: String,
+    val listItemCount: Int?,
     val listType: String?,
 )
 
@@ -40,6 +42,8 @@ internal fun NavController.navigateToCustomListMedia(
             listId = list.ids.trakt.value,
             listName = list.name,
             listLikes = list.likes ?: 0,
+            listAuthor = list.user.displayName,
+            listItemCount = list.itemCount,
             listType = type?.value,
         ),
     )

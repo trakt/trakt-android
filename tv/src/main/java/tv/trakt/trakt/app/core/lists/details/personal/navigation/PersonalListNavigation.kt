@@ -13,6 +13,8 @@ import tv.trakt.trakt.common.model.lists.CustomList
 internal data class PersonalListDestination(
     val listId: Int,
     val listName: String,
+    val listPrivacy: String?,
+    val listItemCount: Int?,
 )
 
 internal fun NavGraphBuilder.personalListScreen(
@@ -33,6 +35,8 @@ internal fun NavController.navigateToPersonalList(list: CustomList) {
         route = PersonalListDestination(
             listId = list.ids.trakt.value,
             listName = list.name,
+            listPrivacy = list.privacy?.value,
+            listItemCount = list.itemCount,
         ),
     )
 }

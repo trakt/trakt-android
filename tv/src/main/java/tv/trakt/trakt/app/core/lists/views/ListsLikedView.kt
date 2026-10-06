@@ -138,7 +138,6 @@ private fun ContentList(
         ) { item ->
             CustomListCard(
                 list = item,
-                descriptionVisible = false,
                 likesVisible = true,
                 liked = true,
                 onClick = { onClick(item) },

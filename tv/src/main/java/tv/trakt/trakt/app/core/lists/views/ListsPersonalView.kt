@@ -138,7 +138,7 @@ private fun ContentList(
         ) { item ->
             CustomListCard(
                 list = item,
-                descriptionVisible = true,
+                privacyVisible = true,
                 onClick = { onClick(item) },
                 modifier = Modifier
                     .height(TraktTheme.size.detailsCustomListSize)

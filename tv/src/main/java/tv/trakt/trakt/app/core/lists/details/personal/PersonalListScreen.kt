@@ -38,6 +38,7 @@ import androidx.tv.material3.Text
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
+import tv.trakt.trakt.app.core.details.lists.ListPrivacySubtitle
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
@@ -48,6 +49,7 @@ import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
@@ -63,6 +65,10 @@ internal fun PersonalListScreen(
     PersonalListContent(
         state = state,
         listName = viewModel.destination.listName,
+        listPrivacy = remember {
+            CustomList.Privacy.fromString(viewModel.destination.listPrivacy)
+        },
+        listItemCount = viewModel.destination.listItemCount,
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadNextDataPage() },
@@ -73,6 +79,8 @@ internal fun PersonalListScreen(
 private fun PersonalListContent(
     state: PersonalListState,
     listName: String,
+    listPrivacy: CustomList.Privacy?,
+    listItemCount: Int?,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
@@ -117,17 +125,27 @@ private fun PersonalListContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = listName,
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading4,
-                    overflow = TextOverflow.Ellipsis,
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier
                         .focusProperties {
                             down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
                         }
                         .focusable(),
-                )
+                ) {
+                    Text(
+                        text = listName,
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading4,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    if (listPrivacy != null || listItemCount != null) {
+                        ListPrivacySubtitle(
+                            privacy = listPrivacy,
+                            itemCount = listItemCount,
+                        )
+                    }
+                }
             }
 
             if (state.isLoading && state.items.isNullOrEmpty()) {
@@ -319,6 +337,8 @@ private fun Preview() {
     TraktTheme {
         PersonalListContent(
             listName = "Personal List",
+            listPrivacy = CustomList.Privacy.Private,
+            listItemCount = 42,
             state = PersonalListState(
 //                shows = (1..20).map {
 //                    PreviewData.show1.copy(ids = Ids(TraktId(it), SlugId(it.toString())))

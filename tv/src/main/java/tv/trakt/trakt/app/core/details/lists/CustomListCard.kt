@@ -27,8 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,7 +44,6 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
-import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Type
@@ -57,14 +54,14 @@ import tv.trakt.trakt.resources.R
 internal fun CustomListCard(
     list: CustomList,
     modifier: Modifier = Modifier,
-    descriptionVisible: Boolean = false,
+    privacyVisible: Boolean = false,
     likesVisible: Boolean = false,
     liked: Boolean = false,
     onClick: () -> Unit,
 ) {
     CustomListCardContent(
         list = list,
-        descriptionVisible = descriptionVisible,
+        privacyVisible = privacyVisible,
         likesVisible = likesVisible,
         liked = liked,
         onClick = onClick,
@@ -76,7 +73,7 @@ internal fun CustomListCard(
 private fun CustomListCardContent(
     list: CustomList,
     modifier: Modifier = Modifier,
-    descriptionVisible: Boolean = false,
+    privacyVisible: Boolean = false,
     likesVisible: Boolean = false,
     liked: Boolean = false,
     onClick: () -> Unit,
@@ -118,7 +115,7 @@ private fun CustomListCardContent(
         content = {
             CustomListContent(
                 list = list,
-                descriptionVisible = descriptionVisible,
+                privacyVisible = privacyVisible,
                 likesVisible = likesVisible,
                 liked = liked,
             )
@@ -129,7 +126,7 @@ private fun CustomListCardContent(
 @Composable
 private fun CustomListContent(
     list: CustomList,
-    descriptionVisible: Boolean,
+    privacyVisible: Boolean,
     likesVisible: Boolean,
     liked: Boolean,
 ) {
@@ -142,7 +139,7 @@ private fun CustomListContent(
     ) {
         CustomListHeader(
             list = list,
-            descriptionVisible = descriptionVisible,
+            privacyVisible = privacyVisible,
             likesVisible = likesVisible,
             liked = liked,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -185,7 +182,7 @@ private fun CustomListContent(
 private fun CustomListHeader(
     list: CustomList,
     modifier: Modifier = Modifier,
-    descriptionVisible: Boolean,
+    privacyVisible: Boolean,
     likesVisible: Boolean,
     liked: Boolean,
 ) {
@@ -235,36 +232,16 @@ private fun CustomListHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                if (descriptionVisible && !list.description.isNullOrBlank()) {
-                    Text(
-                        text = remember(list.description) {
-                            (list.description?.trim() ?: "").toMarkdownText()
-                        },
-                        style = TraktTheme.typography.paragraphSmall,
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                if (privacyVisible) {
+                    ListPrivacySubtitle(
+                        privacy = list.privacy,
+                        itemCount = list.itemCount,
                     )
                 } else {
-                    Row(
-                        horizontalArrangement = spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.text_by),
-                            style = TraktTheme.typography.paragraphSmall,
-                            color = TraktTheme.colors.textSecondary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            text = list.user.displayName,
-                            style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                            color = TraktTheme.colors.textPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
+                    ListAuthorSubtitle(
+                        userName = list.user.displayName,
+                        itemCount = list.itemCount,
+                    )
                 }
             }
         }
@@ -326,6 +303,19 @@ fun Preview() {
 
                 CustomListCardContent(
                     list = PreviewData.customList1.copy(type = Type.All),
+                    modifier =
+                        Modifier
+                            .height(TraktTheme.size.detailsCustomListSize)
+                            .aspectRatio(CardDefaults.HorizontalImageAspectRatio),
+                    onClick = {},
+                )
+
+                CustomListCardContent(
+                    list = PreviewData.customList1.copy(
+                        type = Type.Personal,
+                        privacy = CustomList.Privacy.Private,
+                    ),
+                    privacyVisible = true,
                     modifier =
                         Modifier
                             .height(TraktTheme.size.detailsCustomListSize)

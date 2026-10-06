@@ -43,6 +43,7 @@ import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.buttons.LikeButton
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
+import tv.trakt.trakt.app.core.details.lists.ListAuthorSubtitle
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
@@ -73,6 +74,8 @@ internal fun CustomListMediaScreen(
     CustomListMediaContent(
         state = state,
         listName = viewModel.destination.listName,
+        listAuthor = viewModel.destination.listAuthor,
+        listItemCount = viewModel.destination.listItemCount,
         onLikeClick = {
             viewModel.setLiked(!state.like.isLiked)
         },
@@ -93,6 +96,8 @@ internal fun CustomListMediaScreen(
 private fun CustomListMediaContent(
     state: CustomListMediaState,
     listName: String,
+    listAuthor: String?,
+    listItemCount: Int?,
     modifier: Modifier = Modifier,
     onLikeClick: () -> Unit,
     onShowClick: (TraktId) -> Unit,
@@ -143,12 +148,8 @@ private fun CustomListMediaContent(
                         .focusRequester(focusRequesters.getValue("header"))
                         .focusGroup(),
                 ) {
-                    Text(
-                        text = listName,
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading4,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                         modifier = Modifier
                             .weight(1F, false)
                             .focusProperties {
@@ -159,7 +160,21 @@ private fun CustomListMediaContent(
                                     ?: FocusRequester.Default
                             }
                             .focusable(),
-                    )
+                    ) {
+                        Text(
+                            text = listName,
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.heading4,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        listAuthor?.let {
+                            ListAuthorSubtitle(
+                                userName = it,
+                                itemCount = listItemCount,
+                            )
+                        }
+                    }
 
                     LikeButton(
                         text = rememberThousandsFormat(state.like.likesCount),
@@ -327,6 +342,8 @@ private fun Preview() {
     TraktTheme {
         CustomListMediaContent(
             listName = "Custom List",
+            listAuthor = "Trakt",
+            listItemCount = 42,
             state = CustomListMediaState(
                 items = (
                     (1..10).map {
