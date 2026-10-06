@@ -80,6 +80,8 @@ private val PillReactionSlotWidth = PillReactionCellSize + PillTouchPadding * 2
 
 internal val DetailsRatingPillOuterSpacing = 8.dp
 
+internal val DetailsRatingPillFootprint = PillHeight + DetailsRatingPillOuterSpacing
+
 // The bar anchors to the reaction slot, which sits inset from the pill's top edge.
 internal val DetailsRatingPillDropdownSpacing =
     DetailsRatingPillOuterSpacing + (PillHeight - PillReactionSlotWidth) / 2

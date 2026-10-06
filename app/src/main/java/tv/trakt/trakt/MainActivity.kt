@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.datastore.core.DataStore
@@ -72,6 +73,8 @@ internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true
 internal val LocalCheckInVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalRatePromptVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
+
+internal val LocalSnackbarBottomOffset = compositionLocalOf { mutableStateOf(0.dp) }
 internal val LocalStartAuthorization = staticCompositionLocalOf { {} }
 
 internal class MainActivity : AppCompatActivity() {
@@ -159,6 +162,7 @@ internal class MainActivity : AppCompatActivity() {
             val bottomBarVisibility = remember { mutableStateOf(true) }
             val checkInVisibility = remember { mutableStateOf(true) }
             val ratePromptVisibility = remember { mutableStateOf(true) }
+            val snackbarBottomOffset = remember { mutableStateOf(0.dp) }
             val snackbarState = remember { SnackbarHostState() }
             val customThemeState = remember {
                 getCustomThemeConfig().also {
@@ -189,6 +193,7 @@ internal class MainActivity : AppCompatActivity() {
                     LocalCheckInVisibility provides checkInVisibility,
                     LocalRatePromptVisibility provides ratePromptVisibility,
                     LocalSnackbarState provides snackbarState,
+                    LocalSnackbarBottomOffset provides snackbarBottomOffset,
                     LocalStartAuthorization provides startAuthorization,
                 ) {
                     MainScreen(

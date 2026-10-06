@@ -59,6 +59,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
@@ -66,6 +67,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalRatePromptVisibility
+import tv.trakt.trakt.LocalSnackbarBottomOffset
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -107,6 +109,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsRatingPill
 import tv.trakt.trakt.core.summary.ui.DetailsRatingPillDropdownSpacing
+import tv.trakt.trakt.core.summary.ui.DetailsRatingPillFootprint
 import tv.trakt.trakt.core.summary.ui.DetailsRatingPillOuterSpacing
 import tv.trakt.trakt.core.summary.ui.DetailsRatingPillReaction
 import tv.trakt.trakt.core.summary.ui.DetailsRatingPillReactionSkeleton
@@ -475,6 +478,7 @@ internal fun MovieDetailsContent(
     )
 
     var ratingPillExpanded by remember { mutableStateOf(false) }
+    val snackbarOffset = LocalSnackbarBottomOffset.current
     val ratingPillThresholdPx = with(LocalDensity.current) { RatingPillScrollThreshold.toPx() }
     val scrolledPastRatingThreshold by remember {
         derivedStateOf {
@@ -761,6 +765,12 @@ internal fun MovieDetailsContent(
 
             val isRatingLoaded = state.movieUserRating?.loading == LoadingState.Done
             val ratingPillVisible = isWatched && isRatingLoaded && !scrolledPastRatingThreshold
+
+            // Resume-scoped so stacked details screens hand the shared offset over in order.
+            LifecycleResumeEffect(ratingPillVisible) {
+                snackbarOffset.value = if (ratingPillVisible) DetailsRatingPillFootprint else 0.dp
+                onPauseOrDispose { snackbarOffset.value = 0.dp }
+            }
 
             AnimatedVisibility(
                 visible = ratingPillVisible,
