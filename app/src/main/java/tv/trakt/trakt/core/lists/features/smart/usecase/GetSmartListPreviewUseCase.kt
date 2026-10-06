@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
+import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -117,6 +118,9 @@ internal class GetSmartListPreviewUseCase(
                 ?.toImmutableList(),
             region = null,
             countries = filters.countries,
+            statuses = filters.statuses
+                ?.mapNotNull(MediaStatus::fromSlug)
+                ?.toImmutableList(),
             rating = filters.ratings.toIntPair(),
             hideWatched = filters.ignoreWatched,
             hideWatchlist = filters.ignoreWatchlisted,
