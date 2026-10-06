@@ -63,6 +63,7 @@ class UserPersonalListsApiClient(
             page = page,
             limit = limit.toString(),
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
             ignoreWatched = filters?.hideWatched,
             ignoreWatchlisted = filters?.hideWatchlist,
@@ -100,6 +101,7 @@ class UserPersonalListsApiClient(
                 else -> limit.toString()
             },
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
             ignoreWatched = filters?.hideWatched,
             ignoreWatchlisted = filters?.hideWatchlist,
@@ -137,6 +139,7 @@ class UserPersonalListsApiClient(
                 else -> limit.toString()
             },
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
             ignoreWatched = filters?.hideWatched,
             ignoreWatchlisted = filters?.hideWatchlist,

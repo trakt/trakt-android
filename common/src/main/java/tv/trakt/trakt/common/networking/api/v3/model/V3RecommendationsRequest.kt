@@ -12,6 +12,7 @@ data class V3RecommendationsRequest(
     val runtimes: String? = null,
     val certifications: String? = null,
     val countries: String? = null,
+    val statuses: String? = null,
     val ignoreWatched: Boolean? = null,
     val ignoreWatchlisted: Boolean? = null,
     val ignoreCollected: Boolean? = null,

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.MediaGenre
+import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Availability
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
@@ -157,6 +159,19 @@ internal fun GlobalFiltersAdvancedView(
                     onUpdateFilter = onUpdateFilter,
                     modifier = Modifier.weight(1f),
                 )
+            }
+
+            Row(
+                horizontalArrangement = spacedBy(RowsSpacing),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                StatusFilter(
+                    state = state,
+                    onUpdateFilter = onUpdateFilter,
+                    modifier = Modifier.weight(1f),
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
             }
 
             YearsFilter(
@@ -398,6 +413,63 @@ private fun RegionFilter(
             onUpdateFilter(
                 state.filter.copy(
                     countries = options
+                        .mapNotNull { it.raw }
+                        .takeIf { it.isNotEmpty() }
+                        ?.toImmutableList(),
+                ),
+                true,
+            )
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun StatusFilter(
+    state: GlobalFiltersState,
+    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val statusValues: List<DropdownOption<MediaStatus?>> =
+        when (val statuses = state.filter.statuses) {
+            null -> listOf(
+                DropdownOption(
+                    raw = null,
+                    displayString = stringResource(R.string.option_text_all),
+                ),
+            )
+            else -> statuses.map {
+                DropdownOption(
+                    raw = it,
+                    displayString = stringResource(it.displayStringRes),
+                )
+            }
+        }
+
+    val statusOptions = buildList<DropdownOption<MediaStatus?>> {
+        add(DropdownOption(null, stringResource(R.string.option_text_all)))
+        addAll(
+            GlobalFilter.FilterableStatuses
+                .map {
+                    DropdownOption(
+                        raw = it,
+                        displayString = stringResource(it.displayStringRes),
+                    )
+                },
+        )
+    }.toImmutableList()
+
+    DropdownMultiView(
+        header = stringResource(R.string.header_status),
+        active = !state.filter.statuses.isNullOrEmpty(),
+        values = remember(state.filter.statuses) {
+            statusValues.toImmutableList()
+        },
+        options = statusOptions,
+        onOptionsSelected = { options ->
+            onUpdateFilter(
+                state.filter.copy(
+                    statuses = options
                         .mapNotNull { it.raw }
                         .takeIf { it.isNotEmpty() }
                         ?.toImmutableList(),
@@ -801,6 +873,10 @@ private fun Preview2() {
                         Availability.AllDigitalReleases,
                     ),
                     years = CurrentYear.years,
+                    statuses = persistentListOf(
+                        MediaStatus.ReturningSeries,
+                        MediaStatus.Continuing,
+                    ),
                 ),
             ),
         )

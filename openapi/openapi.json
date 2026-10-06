@@ -3,7 +3,7 @@
   "paths": {
     "/oauth/authorize": {
       "get": {
-        "description": "Construct then redirect to this URL. The Trakt website will request permissions for your app, which the user needs to approve. If the user isn't signed into Trakt, it will ask them to do so.\n\n> ### Important\n> _Use the **https://auth.trakt.tv** hostname for all OAuth requests, including authorization, device authentication, token exchange and refresh, and token revocation. Do not use the API hostname for these requests._\n\n#### Optional URL Parameters\n\nWhen building the authorization URL, you can optionally include the following query parameters in the URL.\n\n| Parameter | Value | Description |\n|---|---|---|\n| `signup` | `true` | Prefer the account sign up page to be the default. |\n| `prompt` | `login` | Force the user to sign in and authorize your app. |",
+        "description": "Construct then redirect to this URL. The Trakt website will request permissions for your app, which the user needs to approve. If the user isn't signed into Trakt, it will ask them to do so.\n\n> ### Important\n> _Use the **https://auth.trakt.tv** hostname for all OAuth requests, including authorization, device authentication, token exchange and refresh, and token revocation. Do not use the API hostname for these requests._\n\n#### Optional URL Parameters\n\nWhen building the authorization URL, you can optionally include the following query parameters in the URL.\n\n| Parameter | Value | Description |\n|---|---|---|\n| `signup` | `true` | Prefer the account sign up page to be the default. |\n| `prompt` | `login` | Force the user to sign in and authorize your app. |\n\n#### PKCE\n\n[PKCE](https://developer.trakt.tv/docs/pkce) is the recommended way to sign users in. Send these parameters, then send the matching `code_verifier` instead of a `client_secret` when you exchange the code.\n\n| Parameter | Value | Description |\n|---|---|---|\n| `code_challenge` | string | The base64url-encoded SHA-256 hash of your `code_verifier`. |\n| `code_challenge_method` | `S256` | The only supported method. |\n\n> ### Note\n> _`client_secret` is deprecated in favor of [PKCE](https://developer.trakt.tv/docs/pkce). It is optional, and should only be sent from your own server, never from a website, mobile app, or desktop app._",
         "summary": "Authorize Application",
         "tags": [
           "oauth"
@@ -36,6 +36,23 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "code_challenge",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code_challenge_method",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "S256"
+              ]
+            }
           }
         ],
         "responses": {
@@ -64,7 +81,7 @@
     },
     "/oauth/device/code": {
       "post": {
-        "description": "Generate new codes to start the device authentication process. The `device_code` and `interval` will be used later to poll for the `access_token`. The `user_code` and `verification_url` should be presented to the user as mentioned in the flow steps above.\n\n#### QR Code\n\nYou might consider generating a QR code for the user to easily scan on their mobile device. The QR code should use `https://auth.trakt.tv/activate`, which loads the Trakt hosted activation page.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `client_id` * | string | Get this from your app settings. |",
+        "description": "Generate new codes to start the device authentication process. The `device_code` and `interval` will be used later to poll for the `access_token`. The `user_code` and `verification_url` should be presented to the user as mentioned in the flow steps above.\n\n#### QR Code\n\nYou might consider generating a QR code for the user to easily scan on their mobile device. The QR code should use `https://auth.trakt.tv/activate`, which loads the Trakt hosted activation page.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `client_id` * | string | Get this from your app settings. |\n",
         "summary": "Generate new device codes",
         "tags": [
           "oauth",
@@ -142,7 +159,7 @@
     },
     "/oauth/device/token": {
       "post": {
-        "description": "Use the `device_code` and poll at the `interval` (in seconds) to check if the user has authorized you app. Use `expires_in` to stop polling after that many seconds, and gracefully instruct the user to restart the process. **It is important to poll at the correct interval and also stop polling when expired.**\n\nWhen you receive a `200` success response, save the `access_token` so your app can authenticate the user in methods that require it. The `access_token` is valid for **7 days**. Save and use the `refresh_token` to get a new `access_token` without asking the user to re-authenticate. Check below for all the error codes that you should handle.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `code` * | string | `device_code` from the initial method. |\n| `client_id` * | string | Get this from your app settings. |\n| `client_secret` * | string | Get this from your app settings. |\n\n#### Status Codes\nThis method will send various HTTP status codes that you should handle accordingly.\n\n| Code | Description |\n|---|---|\n| `200` | Success - *save the `access_token`*\n| `400` | Pending - *waiting for the user to authorize your app*\n| `404` | Not Found - *invalid `device_code`*\n| `409` | Already Used - *user already approved this code*\n| `410` | Expired - *the tokens have expired, restart the process*\n| `418` | Denied - *user explicitly denied this code*\n| `429` | Slow Down - *your app is polling too quickly*",
+        "description": "Use the `device_code` and poll at the `interval` (in seconds) to check if the user has authorized you app. Use `expires_in` to stop polling after that many seconds, and gracefully instruct the user to restart the process. **It is important to poll at the correct interval and also stop polling when expired.**\n\nWhen you receive a `200` success response, save the `access_token` so your app can authenticate the user in methods that require it. The `access_token` is valid for **7 days**. Save and use the `refresh_token` to get a new `access_token` without asking the user to re-authenticate. Check below for all the error codes that you should handle.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `code` * | string | `device_code` from the initial method. |\n| `client_id` * | string | Get this from your app settings. |\n\n#### Status Codes\nThis method will send various HTTP status codes that you should handle accordingly.\n\n| Code | Description |\n|---|---|\n| `200` | Success - *save the `access_token`*\n| `400` | Pending - *waiting for the user to authorize your app*\n| `404` | Not Found - *invalid `device_code`*\n| `409` | Already Used - *user already approved this code*\n| `410` | Expired - *the tokens have expired, restart the process*\n| `418` | Denied - *user explicitly denied this code*\n| `429` | Slow Down - *your app is polling too quickly*",
         "summary": "Poll for the access_token",
         "tags": [
           "oauth",
@@ -166,13 +183,13 @@
                   },
                   "client_secret": {
                     "type": "string",
-                    "description": "The client secret of the application. \n            You can find it in the application details here: https://app.trakt.tv/settings/apps"
+                    "description": "Deprecated. Only send it from your own server, never from a website, mobile app, or desktop app.",
+                    "deprecated": true
                   }
                 },
                 "required": [
                   "code",
-                  "client_id",
-                  "client_secret"
+                  "client_id"
                 ]
               }
             }
@@ -243,7 +260,7 @@
     },
     "/oauth/token": {
       "post": {
-        "description": "Exchange an OAuth authorization code or refresh token for an access token.\n\n#### Refreshing Tokens\n\nRefresh tokens are single-use. Each successful refresh returns a new `refresh_token` and invalidates the previous one. Store the new `access_token` and `refresh_token` from the response before the next refresh.\n\nIf the exchange cannot be completed, this endpoint returns a `400` response with an OAuth error and description.",
+        "description": "Exchange an OAuth authorization code or refresh token for an access token.\n\nIf you started the flow with [PKCE](https://developer.trakt.tv/docs/pkce), send the `code_verifier`.\n\n> ### Note\n> _`client_secret` is deprecated in favor of [PKCE](https://developer.trakt.tv/docs/pkce). It is optional, and should only be sent from your own server, never from a website, mobile app, or desktop app._\n\n#### Refreshing Tokens\n\nRefresh tokens are single-use. Each successful refresh returns a new `refresh_token` and invalidates the previous one. Store the new `access_token` and `refresh_token` from the response before the next refresh.\n\nIf the exchange cannot be completed, this endpoint returns a `400` response with an OAuth error and description.",
         "summary": "Exchange a token",
         "tags": [
           "oauth"
@@ -264,7 +281,8 @@
                       },
                       "client_secret": {
                         "type": "string",
-                        "description": "The client secret of the application. \n            You can find it in the application details here: https://app.trakt.tv/settings/apps"
+                        "description": "Deprecated. Only send it from your own server, never from a website, mobile app, or desktop app.",
+                        "deprecated": true
                       },
                       "redirect_uri": {
                         "type": "string",
@@ -277,11 +295,14 @@
                       "grant_type": {
                         "type": "string",
                         "description": "Defines how an access token is obtained."
+                      },
+                      "code_verifier": {
+                        "type": "string",
+                        "description": "The PKCE code verifier whose SHA-256 hash was sent as `code_challenge`. Required when the flow started with a `code_challenge`. See https://developer.trakt.tv/docs/pkce"
                       }
                     },
                     "required": [
                       "client_id",
-                      "client_secret",
                       "redirect_uri",
                       "code",
                       "grant_type"
@@ -296,7 +317,8 @@
                       },
                       "client_secret": {
                         "type": "string",
-                        "description": "The client secret of the application. \n            You can find it in the application details here: https://app.trakt.tv/settings/apps"
+                        "description": "Deprecated. Only send it from your own server, never from a website, mobile app, or desktop app.",
+                        "deprecated": true
                       },
                       "redirect_uri": {
                         "type": "string",
@@ -313,7 +335,6 @@
                     },
                     "required": [
                       "client_id",
-                      "client_secret",
                       "redirect_uri",
                       "refresh_token",
                       "grant_type"
@@ -406,7 +427,7 @@
     },
     "/oauth/revoke": {
       "post": {
-        "description": "An `access_token` can be revoked when a user signs out of their Trakt account in your app. This is not required, but might improve the user experience so the user doesn't have an unused app connection hanging around.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `token` * | string | A valid OAuth `access_token`. |\n| `client_id` * | string | Get this from your app settings. |\n| `client_secret` * | string | Get this from your app settings. |",
+        "description": "An `access_token` can be revoked when a user signs out of their Trakt account in your app. This is not required, but might improve the user experience so the user doesn't have an unused app connection hanging around.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `token` * | string | A valid OAuth `access_token`. |\n| `client_id` * | string | Get this from your app settings. |\n\n> ### Note\n> _`client_secret` is deprecated in favor of [PKCE](https://developer.trakt.tv/docs/pkce). It is optional, and should only be sent from your own server, never from a website, mobile app, or desktop app._",
         "summary": "Revoke an access_token",
         "tags": [
           "oauth"
@@ -426,13 +447,14 @@
                     "type": "string"
                   },
                   "client_secret": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Deprecated. Only send it from your own server, never from a website, mobile app, or desktop app.",
+                    "deprecated": true
                   }
                 },
                 "required": [
                   "token",
-                  "client_id",
-                  "client_secret"
+                  "client_id"
                 ]
               }
             }
@@ -585,6 +607,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -1367,6 +1397,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -2124,6 +2162,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -2895,6 +2941,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -3659,6 +3713,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -4088,6 +4150,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -4531,6 +4601,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -4960,6 +5038,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -5952,6 +6038,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -6937,6 +7031,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -7661,6 +7763,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -8378,6 +8488,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -15986,6 +16104,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -18503,6 +18629,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -27267,6 +27401,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -28161,6 +28303,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -28599,6 +28749,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -29221,6 +29379,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -32162,6 +32328,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -32660,6 +32834,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -33196,6 +33378,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -34021,6 +34211,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -46176,6 +46374,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -46653,6 +46859,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -47168,6 +47382,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -47953,6 +48175,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -49578,6 +49808,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -69888,6 +70126,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -89653,6 +89899,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -90357,6 +90611,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -92263,6 +92525,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -92968,6 +93238,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -93666,6 +93944,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -97788,6 +98074,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -100292,6 +100586,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -100708,6 +101010,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -101138,6 +101448,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -101555,6 +101873,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -103095,7 +103421,7 @@
     },
     "/shows/{id}/progress/collection": {
       "get": {
-        "description": "#### 🔒 OAuth Required\nReturns collection progress for a show including details on all aired seasons and episodes. The `next_episode` will be the next episode the user should collect, if there are no upcoming episodes it will be set to `null`.\n\nBy default, any hidden seasons will be removed from the response and stats. To include these and adjust the completion stats, set the `hidden` flag to `true`.",
+        "description": "#### 🔒 OAuth Required\nReturns collection progress for a show including details on all aired seasons and episodes. The `next_episode` will be the next episode the user should collect, if there are no upcoming episodes it will be set to `null`.\n\nBy default, any hidden seasons will be removed from the response and stats. To include these and adjust the completion stats, set the `hidden` flag to `true`.\n\nBy default, the `last_episode` and `next_episode` are calculated using the last `aired` episode the user has collected, even if they've collected older episodes more recently. To use their last collected episode for these calculations, set the `last_activity` flag to `collected`.",
         "summary": "Get show collection progress",
         "tags": [
           "shows",
@@ -103147,11 +103473,15 @@
             }
           },
           {
-            "name": "include_stats",
+            "name": "last_activity",
             "in": "query",
-            "description": "Whether to include stats in the response",
+            "description": "Which episode `last_episode` and `next_episode` are calculated from.",
             "schema": {
-              "type": "boolean",
+              "type": "string",
+              "enum": [
+                "aired",
+                "collected"
+              ],
               "nullable": true
             }
           }
@@ -103170,14 +103500,92 @@
                     "completed": {
                       "type": "integer"
                     },
-                    "last_watched_at": {
+                    "last_collected_at": {
                       "type": "string",
                       "nullable": true
                     },
-                    "reset_at": {
-                      "type": "string",
-                      "format": "null",
-                      "nullable": true
+                    "seasons": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "number": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "aired": {
+                            "type": "integer"
+                          },
+                          "completed": {
+                            "type": "integer"
+                          },
+                          "episodes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "number": {
+                                  "type": "integer"
+                                },
+                                "completed": {
+                                  "type": "boolean"
+                                },
+                                "collected_at": {
+                                  "type": "string",
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "number",
+                                "completed"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "number",
+                          "aired",
+                          "completed",
+                          "episodes"
+                        ]
+                      }
+                    },
+                    "hidden_seasons": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "number": {
+                            "type": "integer"
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "number",
+                          "ids"
+                        ]
+                      }
                     },
                     "next_episode": {
                       "oneOf": [
@@ -103488,159 +103896,15 @@
                         }
                       ],
                       "nullable": true
-                    },
-                    "stats": {
-                      "type": "object",
-                      "properties": {
-                        "play_count": {
-                          "type": "integer"
-                        },
-                        "minutes_watched": {
-                          "type": "integer"
-                        },
-                        "minutes_left": {
-                          "type": "integer",
-                          "nullable": true
-                        }
-                      },
-                      "required": [
-                        "play_count",
-                        "minutes_watched"
-                      ],
-                      "nullable": true
-                    },
-                    "seasons": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "number": {
-                            "type": "integer"
-                          },
-                          "title": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "aired": {
-                            "type": "integer"
-                          },
-                          "completed": {
-                            "type": "integer"
-                          },
-                          "episodes": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "number": {
-                                  "type": "integer"
-                                },
-                                "completed": {
-                                  "type": "boolean"
-                                },
-                                "last_watched_at": {
-                                  "type": "string",
-                                  "nullable": true
-                                },
-                                "stats": {
-                                  "type": "object",
-                                  "properties": {
-                                    "play_count": {
-                                      "type": "integer"
-                                    },
-                                    "minutes_watched": {
-                                      "type": "integer"
-                                    },
-                                    "minutes_left": {
-                                      "type": "integer",
-                                      "nullable": true
-                                    }
-                                  },
-                                  "required": [
-                                    "play_count",
-                                    "minutes_watched"
-                                  ],
-                                  "nullable": true
-                                }
-                              },
-                              "required": [
-                                "number",
-                                "completed"
-                              ]
-                            }
-                          },
-                          "stats": {
-                            "type": "object",
-                            "properties": {
-                              "play_count": {
-                                "type": "integer"
-                              },
-                              "minutes_watched": {
-                                "type": "integer"
-                              },
-                              "minutes_left": {
-                                "type": "integer",
-                                "nullable": true
-                              }
-                            },
-                            "required": [
-                              "play_count",
-                              "minutes_watched"
-                            ],
-                            "nullable": true
-                          }
-                        },
-                        "required": [
-                          "number",
-                          "aired",
-                          "completed",
-                          "episodes"
-                        ]
-                      }
-                    },
-                    "hidden_seasons": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "number": {
-                            "type": "integer"
-                          },
-                          "ids": {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "tvdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true
-                              }
-                            },
-                            "required": [
-                              "trakt"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "number",
-                          "ids"
-                        ]
-                      }
                     }
                   },
                   "required": [
                     "aired",
                     "completed",
-                    "reset_at",
-                    "next_episode",
-                    "last_episode",
                     "seasons",
-                    "hidden_seasons"
+                    "hidden_seasons",
+                    "next_episode",
+                    "last_episode"
                   ]
                 }
               }
@@ -112647,6 +112911,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -113109,6 +113381,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -113597,6 +113877,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -114059,6 +114347,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -114540,6 +114836,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -115422,6 +115726,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -115869,6 +116181,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -116330,6 +116650,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -116778,6 +117106,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -124428,6 +124764,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -124824,6 +125168,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -125204,6 +125556,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -125607,6 +125967,14 @@
             }
           },
           {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "certifications",
             "in": "query",
             "schema": {
@@ -125978,6 +126346,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -126387,6 +126763,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -126861,6 +127245,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -127366,6 +127758,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -128141,6 +128541,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -129756,6 +130164,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",
@@ -132260,6 +132676,14 @@
           },
           {
             "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
             "in": "query",
             "schema": {
               "type": "string",

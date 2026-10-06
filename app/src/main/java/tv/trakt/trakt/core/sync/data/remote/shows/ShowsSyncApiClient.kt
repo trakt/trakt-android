@@ -45,6 +45,7 @@ internal class ShowsSyncApiClient(
             endDate = null,
             runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
         )
         return response.body()

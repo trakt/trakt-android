@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.SliderDefaults
@@ -34,6 +37,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Availability
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.StatusGroup
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterDecade
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterDecade.CurrentYear
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
@@ -63,6 +67,7 @@ internal fun GlobalFiltersSimpleView(
         verticalArrangement = spacedBy(16.dp),
         modifier = Modifier
             .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
             .padding(bottom = 24.dp),
     ) {
@@ -173,6 +178,19 @@ internal fun GlobalFiltersSimpleView(
                     onUpdateFilter = onUpdateFilter,
                     modifier = Modifier.weight(1f),
                 )
+            }
+
+            Row(
+                horizontalArrangement = spacedBy(RowsSpacing),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                StatusFilter(
+                    state = state,
+                    onUpdateFilter = onUpdateFilter,
+                    modifier = Modifier.weight(1f),
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
             }
 
             RatingFilter(
@@ -501,6 +519,54 @@ private fun RegionFilter(
 }
 
 @Composable
+private fun StatusFilter(
+    state: GlobalFiltersState,
+    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val statusValue: DropdownOption<StatusGroup?> = StatusGroup.fromStatuses(state.filter.statuses)?.let {
+        DropdownOption(
+            raw = it,
+            displayString = stringResource(it.displayStringRes),
+        )
+    } ?: DropdownOption(
+        raw = null,
+        displayString = stringResource(R.string.option_text_all),
+    )
+
+    val statusOptions = buildList<DropdownOption<StatusGroup?>> {
+        add(
+            DropdownOption(null, stringResource(R.string.option_text_all)),
+        )
+        addAll(
+            StatusGroup.entries
+                .map {
+                    DropdownOption(
+                        raw = it,
+                        displayString = stringResource(it.displayStringRes),
+                    )
+                },
+        )
+    }.toImmutableList()
+
+    DropdownView(
+        header = stringResource(R.string.header_status),
+        active = !state.filter.statuses.isNullOrEmpty(),
+        value = statusValue,
+        options = statusOptions,
+        onOptionSelected = { option ->
+            onUpdateFilter(
+                state.filter.copy(
+                    statuses = option.raw?.statuses,
+                ),
+                true,
+            )
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
 private fun RatingFilter(
     state: GlobalFiltersState,
     onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
@@ -700,6 +766,7 @@ private fun Preview2() {
                         Availability.AllDigitalReleases,
                     ),
                     years = CurrentYear.years,
+                    statuses = StatusGroup.Upcoming.statuses,
                 ),
             ),
         )

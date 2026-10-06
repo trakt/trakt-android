@@ -46,6 +46,7 @@ internal class ShowsApiClient(
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            statuses = filters.statuses?.joinToString(",") { it.slug },
             ignoreWatched = filters.hideWatched,
             ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
@@ -79,6 +80,7 @@ internal class ShowsApiClient(
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            statuses = filters.statuses?.joinToString(",") { it.slug },
             ignoreWatched = filters.hideWatched,
             ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
@@ -106,6 +108,7 @@ internal class ShowsApiClient(
                 runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
                 certifications = filters.certification?.joinToString(",") { it.slug },
                 countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+                statuses = filters.statuses?.joinToString(",") { it.slug },
                 ignoreWatched = true,
                 ignoreWatchlisted = filters.hideWatchlist,
                 ignoreCollected = true,
@@ -131,6 +134,7 @@ internal class ShowsApiClient(
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            statuses = filters.statuses?.joinToString(",") { it.slug },
             ignoreWatched = filters.hideWatched,
             ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
@@ -165,6 +169,7 @@ internal class ShowsApiClient(
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            statuses = filters.statuses?.joinToString(",") { it.slug },
             startDate2 = null,
             type = "show",
             group = null,
@@ -191,6 +196,7 @@ internal class ShowsApiClient(
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            statuses = filters.statuses?.joinToString(",") { it.slug },
             startDate2 = null,
         ).body()
     }
@@ -213,6 +219,7 @@ internal class ShowsApiClient(
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            statuses = filters.statuses?.joinToString(",") { it.slug },
             startDate2 = null,
         ).body()
     }

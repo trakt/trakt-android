@@ -142,6 +142,7 @@ class V3Api(
         request.runtimes?.let { parameter("runtimes", it) }
         request.certifications?.let { parameter("certifications", it) }
         request.countries?.let { parameter("countries", it) }
+        request.statuses?.let { parameter("statuses", it) }
         request.ignoreWatched?.let { parameter("ignore_watched", it) }
         request.ignoreWatchlisted?.let { parameter("ignore_watchlisted", it) }
         request.ignoreCollected?.let { parameter("ignore_collected", it) }
