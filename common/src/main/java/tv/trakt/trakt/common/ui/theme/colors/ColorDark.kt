@@ -37,6 +37,7 @@ val DarkColors: TraktColors = TraktColors(
     dropdownMenuContainer = Shade900,
     dropdownContent = Shade300,
     dropdownContentActive = Purple500,
+    detailsActionsContainer = Shade900,
     panelCardContainer = Shade900,
     commentContainer = Shade900,
     commentReplyContainer = Shade800,

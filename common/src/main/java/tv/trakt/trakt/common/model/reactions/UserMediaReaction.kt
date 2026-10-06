@@ -9,7 +9,6 @@ data class UserMediaReaction(
     val reaction: MediaReaction,
 ) {
     companion object {
-        /** Returns null for reactions this app version does not know. */
         fun fromDto(dto: V3UserMediaReaction): UserMediaReaction? {
             val reaction = MediaReaction.fromValue(dto.reaction.type) ?: return null
 
