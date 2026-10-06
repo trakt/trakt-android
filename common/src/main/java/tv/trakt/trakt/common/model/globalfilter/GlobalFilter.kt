@@ -3,10 +3,12 @@ package tv.trakt.trakt.common.model.globalfilter
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.resources.R
 
 @Immutable
@@ -26,6 +28,8 @@ data class GlobalFilter(
     val region: Region? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val countries: ImmutableList<String>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val statuses: ImmutableList<MediaStatus>? = null,
     val rating: Pair<Int, Int>? = null,
     val hideWatched: Boolean = false,
     val hideWatchlist: Boolean = false,
@@ -33,6 +37,19 @@ data class GlobalFilter(
     companion object {
         val Default = GlobalFilter(
             mode = MediaMode.Media,
+        )
+
+        val FilterableStatuses = persistentListOf(
+            MediaStatus.ReturningSeries,
+            MediaStatus.Released,
+            MediaStatus.Continuing,
+            MediaStatus.Upcoming,
+            MediaStatus.InProduction,
+            MediaStatus.PostProduction,
+            MediaStatus.Planned,
+            MediaStatus.Ended,
+            MediaStatus.Canceled,
+            MediaStatus.Rumored,
         )
     }
 
@@ -109,6 +126,36 @@ data class GlobalFilter(
         }
     }
 
+    enum class StatusGroup(
+        val statuses: ImmutableList<MediaStatus>,
+        @param:StringRes val displayStringRes: Int,
+    ) {
+        Released(
+            persistentListOf(MediaStatus.ReturningSeries, MediaStatus.Continuing, MediaStatus.Released),
+            R.string.translated_value_status_released,
+        ),
+        Upcoming(
+            persistentListOf(
+                MediaStatus.Upcoming,
+                MediaStatus.InProduction,
+                MediaStatus.Planned,
+                MediaStatus.PostProduction,
+            ),
+            R.string.translated_value_status_upcoming,
+        ),
+        Ended(persistentListOf(MediaStatus.Ended), R.string.translated_value_status_ended),
+        Canceled(persistentListOf(MediaStatus.Canceled), R.string.translated_value_status_canceled),
+        Rumored(persistentListOf(MediaStatus.Rumored), R.string.translated_value_status_rumored),
+        ;
+
+        companion object {
+            fun fromStatuses(statuses: List<MediaStatus>?): StatusGroup? {
+                if (statuses.isNullOrEmpty()) return null
+                return entries.firstOrNull { it.statuses.toSet() == statuses.toSet() }
+            }
+        }
+    }
+
     val isActive: Boolean
         get() = genre != null ||
             subgenre != null ||
@@ -118,6 +165,7 @@ data class GlobalFilter(
             certification != null ||
             region != null ||
             countries != null ||
+            statuses != null ||
             (rating != null && rating != 0 to 100) ||
             hideWatched ||
             hideWatchlist
@@ -131,5 +179,6 @@ data class GlobalFilter(
             certification != null ||
             region != null ||
             countries != null ||
+            statuses != null ||
             (rating != null && rating != 0 to 100)
 }
