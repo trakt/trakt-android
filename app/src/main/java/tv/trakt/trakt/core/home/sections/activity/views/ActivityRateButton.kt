@@ -25,8 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,7 +61,6 @@ private val DismissDelightDelay = 2100.milliseconds
 
 private val PopupShape = RoundedCornerShape(16.dp)
 
-// The popup window always reserves the drag label height, so it never resizes mid-gesture.
 private val PopupIdleTopPadding = 16.dp
 private val PopupDragTopPadding = 50.dp
 private val PopupLabelSpacing = 40.dp
@@ -218,7 +219,15 @@ private fun RatingPopupContent(
             modifier = Modifier
                 .matchParentSize()
                 .padding(top = backgroundInset)
-                .shadow(elevation = 8.dp, shape = PopupShape)
+                .dropShadow(
+                    shape = PopupShape,
+                    shadow = Shadow(
+                        radius = 3.dp,
+                        color = Color.Black,
+                        spread = 1.dp,
+                        alpha = 0.06F,
+                    ),
+                )
                 .background(TraktTheme.colors.dialogContainer, PopupShape),
         )
 
