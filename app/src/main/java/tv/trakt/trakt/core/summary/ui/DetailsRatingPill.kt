@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,16 +40,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.common.model.reactions.MediaReaction
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.ratings.ui.RatingDelight
 import tv.trakt.trakt.core.ratings.ui.RatingDelightOverlay
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.ratings.ui.ratingDelight
+import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsUserPick
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -65,7 +71,19 @@ private val PillHeight = PillIconSize + PillVerticalPadding * 2
 private val PillTouchPadding = 6.dp
 private val PillDragLabelSpacing = 40.dp
 private val SeparatorHeight = 16.dp
-private val SeparatorInnerPadding = 3.dp
+
+private val PillReactionFontSize = 20.sp
+private val PillReactionCellSize = 28.dp
+private val PillLoadingSize = 16.dp
+
+private val PillReactionSlotWidth = PillReactionCellSize + PillTouchPadding * 2
+
+internal val DetailsRatingPillOuterSpacing = 8.dp
+
+// The bar anchors to the reaction slot, which sits inset from the pill's top edge.
+internal val DetailsRatingPillDropdownSpacing =
+    DetailsRatingPillOuterSpacing + (PillHeight - PillReactionSlotWidth) / 2
+private val SeparatorInnerPadding = 4.dp
 
 private data class RatingCommit(
     val id: Int,
@@ -83,6 +101,7 @@ internal fun DetailsRatingPill(
     onRatingClick: (Int) -> Unit = {},
     onRatingRemoveClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
+    reaction: (@Composable () -> Unit)? = null,
 ) {
     var commit by remember { mutableStateOf<RatingCommit?>(null) }
     var ratingDragging by remember { mutableStateOf(false) }
@@ -94,6 +113,12 @@ internal fun DetailsRatingPill(
         onExpandedChange(false)
         commit = null
     }
+
+    val dragAlpha by animateFloatAsState(
+        targetValue = if (ratingDragging) 0.05F else 1F,
+        animationSpec = tween(150),
+        label = "dragAlpha",
+    )
 
     BackHandler(enabled = expanded) {
         onExpandedChange(false)
@@ -115,7 +140,6 @@ internal fun DetailsRatingPill(
             .height(PillHeight)
             .padding(horizontal = PillHorizontalPadding - PillTouchPadding),
     ) {
-        // Only the rating side swaps; the favorite icon stays mounted across both states.
         AnimatedContent(
             targetState = expanded,
             contentAlignment = Alignment.CenterEnd,
@@ -155,12 +179,7 @@ internal fun DetailsRatingPill(
             }
         }
 
-        Box(
-            modifier = Modifier
-                .padding(horizontal = SeparatorInnerPadding)
-                .size(width = 1.dp, height = SeparatorHeight)
-                .background(TraktTheme.colors.separator),
-        )
+        PillSeparator()
 
         PillFavorite(
             favorite = rating?.favorite == true,
@@ -168,7 +187,58 @@ internal fun DetailsRatingPill(
             dimmed = ratingDragging,
             onClick = onFavoriteClick,
         )
+
+        if (reaction != null) {
+            PillSeparator()
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .width(PillReactionSlotWidth)
+                    .alpha(dragAlpha),
+            ) {
+                reaction()
+            }
+        }
     }
+}
+
+@Composable
+internal fun DetailsRatingPillReaction(
+    userReactions: ImmutableList<MediaReaction>,
+    modifier: Modifier = Modifier,
+) {
+    MediaReactionsUserPick(
+        userReactions = userReactions,
+        emojiSize = PillReactionCellSize,
+        emojiFontSize = PillReactionFontSize,
+        addIconSize = PillIconSize,
+        modifier = modifier.padding(PillTouchPadding),
+    )
+}
+
+@Composable
+internal fun DetailsRatingPillReactionSkeleton(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.size(PillIconSize),
+    ) {
+        CircularProgressIndicator(
+            color = TraktTheme.colors.separator,
+            trackColor = Color.Transparent,
+            strokeWidth = 1.5.dp,
+            modifier = Modifier.size(PillLoadingSize),
+        )
+    }
+}
+
+@Composable
+private fun PillSeparator() {
+    Box(
+        modifier = Modifier
+            .padding(horizontal = SeparatorInnerPadding)
+            .size(width = 1.dp, height = SeparatorHeight)
+            .background(TraktTheme.colors.separator),
+    )
 }
 
 @Composable
@@ -197,7 +267,7 @@ private fun CollapsedRating(
             Text(
                 text = rating.rating5Scale,
                 color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.meta.copy(fontSize = 14.sp),
+                style = TraktTheme.typography.meta.copy(fontSize = 15.sp),
             )
         }
     }
@@ -273,6 +343,9 @@ private fun DetailsRatingPillPreview() {
                 favoriteLoading = false,
                 expanded = false,
                 onExpandedChange = {},
+                reaction = {
+                    DetailsRatingPillReactionSkeleton()
+                },
             )
             DetailsRatingPill(
                 rating = UserRating(
@@ -284,6 +357,9 @@ private fun DetailsRatingPillPreview() {
                 favoriteLoading = false,
                 expanded = false,
                 onExpandedChange = {},
+                reaction = {
+                    DetailsRatingPillReaction(userReactions = persistentListOf())
+                },
             )
             DetailsRatingPill(
                 rating = UserRating(
@@ -294,6 +370,9 @@ private fun DetailsRatingPillPreview() {
                 favoriteLoading = false,
                 expanded = true,
                 onExpandedChange = {},
+                reaction = {
+                    DetailsRatingPillReaction(userReactions = persistentListOf(MediaReaction.Fire))
+                },
             )
         }
     }

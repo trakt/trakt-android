@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -51,12 +52,13 @@ internal fun MediaReactionsQuickBarDropdown(
     onReactionClick: (MediaReaction) -> Unit,
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
+    spacing: Dp = DefaultDropdownSpacing,
     anchor: @Composable () -> Unit,
 ) {
     TooltipBox(
         state = state,
         content = anchor,
-        positionProvider = rememberInBoundsAbovePositionProvider(),
+        positionProvider = rememberInBoundsAbovePositionProvider(spacing),
         // The anchor handles its own taps; long press opens the full picker instead.
         enableUserInput = false,
         tooltip = {
@@ -74,16 +76,16 @@ internal fun MediaReactionsQuickBarDropdown(
 
 private val ScreenMargin = 16.dp
 private val QuickEmojiFontSize = 22.sp
-private val AnchorSpacing = 4.dp
+internal val DefaultDropdownSpacing = 4.dp
 private val SummarySpacing = 4.dp
 
 // The default tooltip provider does not keep the popup inside the window.
 @Composable
-private fun rememberInBoundsAbovePositionProvider(): PopupPositionProvider {
+private fun rememberInBoundsAbovePositionProvider(anchorSpacing: Dp): PopupPositionProvider {
     val density = LocalDensity.current
-    return remember(density) {
+    return remember(density, anchorSpacing) {
         val margin = with(density) { ScreenMargin.roundToPx() }
-        val spacing = with(density) { AnchorSpacing.roundToPx() }
+        val spacing = with(density) { anchorSpacing.roundToPx() }
 
         object : PopupPositionProvider {
             override fun calculatePosition(

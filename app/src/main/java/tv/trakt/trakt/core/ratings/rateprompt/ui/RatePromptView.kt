@@ -68,14 +68,13 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.reactions.MediaReaction
-import tv.trakt.trakt.common.model.reactions.MediaReactionsSummary
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.ui.RatingSeparator
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.reactions.media.MediaReactionsView
 import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
-import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsBadge
+import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsUserPick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -446,10 +445,8 @@ private fun Preview() {
                                 RatingSeparator(
                                     modifier = Modifier.padding(end = ratingItemsSpace),
                                 )
-                                MediaReactionsBadge(
-                                    summary = MediaReactionsSummary(),
+                                MediaReactionsUserPick(
                                     userReactions = persistentListOf(MediaReaction.Fire),
-                                    compact = true,
                                 )
                             }
                         },
