@@ -23,15 +23,18 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.LongPress
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.model.reactions.MediaReaction
+import tv.trakt.trakt.core.reactions.media.ui.DefaultDropdownSpacing
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsBadge
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsQuickBarDropdown
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsSheet
+import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsUserPick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 
@@ -41,9 +44,23 @@ internal fun MediaReactionsView(
     modifier: Modifier = Modifier,
     visible: Boolean = true,
     compact: Boolean = false,
+    dropdownSpacing: Dp = DefaultDropdownSpacing,
     onReactionToggle: (MediaReaction) -> Unit = {},
     onActiveChange: (Boolean) -> Unit = {},
     leading: @Composable () -> Unit = {},
+    anchor: @Composable (state: MediaReactionsState, modifier: Modifier) -> Unit = { state, anchorModifier ->
+        when {
+            compact -> MediaReactionsUserPick(
+                userReactions = state.userReactions,
+                modifier = anchorModifier,
+            )
+            else -> MediaReactionsBadge(
+                summary = state.summary,
+                enabled = state.user != null,
+                modifier = anchorModifier,
+            )
+        }
+    },
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -80,11 +97,7 @@ internal fun MediaReactionsView(
             modifier = modifier.alpha(0F),
         ) {
             leading()
-            MediaReactionsBadge(
-                summary = state.summary,
-                userReactions = state.userReactions,
-                compact = true,
-            )
+            anchor(state, Modifier)
         }
     }
 
@@ -101,18 +114,16 @@ internal fun MediaReactionsView(
                 summary = state.summary,
                 userReactions = state.userReactions,
                 isLimitReached = state.isLimitReached,
+                spacing = dropdownSpacing,
                 onReactionClick = ::onReactionClick,
                 onMoreClick = {
                     tooltipState.dismiss()
                     pickerSheet = true
                 },
             ) {
-                MediaReactionsBadge(
-                    summary = state.summary,
-                    userReactions = state.userReactions,
-                    enabled = isSignedIn,
-                    compact = compact,
-                    modifier = Modifier.onClickCombined(
+                anchor(
+                    state,
+                    Modifier.onClickCombined(
                         enabled = isSignedIn,
                         indication = false,
                         onClick = {

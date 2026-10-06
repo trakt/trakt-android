@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -84,6 +85,8 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.reactions.media.MediaReactionsView
+import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
@@ -103,6 +106,10 @@ import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsRatingPill
+import tv.trakt.trakt.core.summary.ui.DetailsRatingPillDropdownSpacing
+import tv.trakt.trakt.core.summary.ui.DetailsRatingPillOuterSpacing
+import tv.trakt.trakt.core.summary.ui.DetailsRatingPillReaction
+import tv.trakt.trakt.core.summary.ui.DetailsRatingPillReactionSkeleton
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -115,7 +122,6 @@ import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val RatingPillScrollThreshold = 64.dp
-private val RatingPillBottomSpace = 8.dp
 
 @Composable
 internal fun MovieDetailsScreen(
@@ -754,8 +760,10 @@ internal fun MovieDetailsContent(
             }
 
             val isRatingLoaded = state.movieUserRating?.loading == LoadingState.Done
+            val ratingPillVisible = isWatched && isRatingLoaded && !scrolledPastRatingThreshold
+
             AnimatedVisibility(
-                visible = isWatched && isRatingLoaded && !scrolledPastRatingThreshold,
+                visible = ratingPillVisible,
                 enter = fadeIn(tween(200)) + slideInVertically(tween(200)) { it / 10 },
                 exit = fadeOut(tween(200)) + slideOutVertically(tween(200)) { it / 10 },
                 modifier = Modifier
@@ -765,9 +773,10 @@ internal fun MovieDetailsContent(
                         bottom = WindowInsets.navigationBars.asPaddingValues()
                             .calculateBottomPadding()
                             .plus(TraktTheme.size.navigationBarHeight)
-                            .plus(RatingPillBottomSpace),
+                            .plus(DetailsRatingPillOuterSpacing),
                     ),
             ) {
+                val movieReactionSlot: @Composable () -> Unit = { MovieRatingPillReaction(movie) }
                 DetailsRatingPill(
                     rating = state.movieUserRating?.rating,
                     favoriteLoading = state.loadingFavorite.isLoading,
@@ -777,9 +786,49 @@ internal fun MovieDetailsContent(
                     onRatingClick = onRatingClick ?: {},
                     onRatingRemoveClick = onRatingRemoveClick ?: {},
                     onFavoriteClick = onFavoriteClick ?: {},
+                    reaction = when {
+                        previewMode -> null
+                        else -> movieReactionSlot
+                    },
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun MovieRatingPillReaction(movie: Movie) {
+    val viewModel: MediaReactionsViewModel = koinViewModel(
+        parameters = {
+            parametersOf(
+                MediaReactionsTarget(
+                    type = MediaType.Movie,
+                    id = movie.ids.trakt,
+                ),
+            )
+        },
+    )
+    val reactionsState by viewModel.state.collectAsStateWithLifecycle()
+
+    Box(contentAlignment = Center) {
+        AnimatedVisibility(
+            visible = !reactionsState.loading.isDone,
+            enter = EnterTransition.None,
+            exit = fadeOut(tween(200, delayMillis = 350)),
+        ) {
+            DetailsRatingPillReactionSkeleton()
+        }
+
+        MediaReactionsView(
+            viewModel = viewModel,
+            dropdownSpacing = DetailsRatingPillDropdownSpacing,
+            anchor = { state, anchorModifier ->
+                DetailsRatingPillReaction(
+                    userReactions = state.userReactions,
+                    modifier = anchorModifier,
+                )
+            },
+        )
     }
 }
 
