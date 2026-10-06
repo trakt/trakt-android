@@ -1,10 +1,10 @@
 package tv.trakt.trakt.common.model
 
-// import tv.trakt.trakt.common.networking.MovieLikesDto
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
@@ -45,6 +45,8 @@ data class Movie(
     val languages: ImmutableList<String>,
     val homepage: String? = null,
     val socialIds: SocialIds? = null,
+    @Serializable(ImmutableListSerializer::class)
+    val postCredits: ImmutableList<PostCreditsScene> = persistentListOf(),
 ) {
     companion object
 
@@ -109,6 +111,10 @@ fun Companion.fromDto(dto: MovieDto): Movie {
             dto.afterCredits == true || dto.duringCredits == true -> 1
             else -> null
         },
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
         country = dto.country,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
         homepage = dto.homepage?.toHttpsUrl(),
@@ -151,6 +157,10 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
             dto.afterCredits == true || dto.duringCredits == true -> 1
             else -> null
         },
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
         homepage = dto.homepage?.toHttpsUrl(),
         socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
@@ -191,6 +201,10 @@ fun Companion.fromDto(dto: MovieCalendarDto): Movie {
             dto.afterCredits == true || dto.duringCredits == true -> 1
             else -> null
         },
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
         homepage = dto.homepage?.toHttpsUrl(),
         socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )

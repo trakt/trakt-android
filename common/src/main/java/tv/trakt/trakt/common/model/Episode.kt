@@ -4,10 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.InstantSerializer
 import tv.trakt.trakt.common.networking.EpisodeCalendarDto
 import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
@@ -47,6 +50,8 @@ data class Episode(
     private val firstAired: Instant?,
     @Serializable(InstantSerializer::class)
     private val effectiveReleaseDate: Instant?,
+    @Serializable(ImmutableListSerializer::class)
+    val postCredits: ImmutableList<PostCreditsScene> = persistentListOf(),
 ) {
     val releasedAt: Instant?
         get() = effectiveReleaseDate ?: firstAired
@@ -105,6 +110,10 @@ fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
     )
 }
 
@@ -130,6 +139,10 @@ fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
     )
 }
 
@@ -155,6 +168,10 @@ fun Episode.Companion.fromDto(dto: EpisodeLikesDto): Episode {
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
     )
 }
 
@@ -180,6 +197,10 @@ fun Episode.Companion.fromDto(dto: EpisodeCalendarsDto): Episode {
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
     )
 }
 
@@ -205,5 +226,9 @@ fun Episode.Companion.fromDto(dto: EpisodeCalendarDto): Episode {
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
     )
 }
