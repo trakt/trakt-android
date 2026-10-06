@@ -4,16 +4,9 @@ package tv.trakt.trakt.core.summary.movies
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -36,7 +29,6 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +43,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -59,7 +50,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
@@ -67,7 +57,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalRatePromptVisibility
-import tv.trakt.trakt.LocalSnackbarBottomOffset
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -83,12 +72,8 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
-import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.comments.model.CommentsFilter
-import tv.trakt.trakt.core.ratings.ui.UserRatingBar
-import tv.trakt.trakt.core.reactions.media.MediaReactionsView
-import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
@@ -107,14 +92,10 @@ import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
-import tv.trakt.trakt.core.summary.ui.DetailsRatingPill
-import tv.trakt.trakt.core.summary.ui.DetailsRatingPillDropdownSpacing
-import tv.trakt.trakt.core.summary.ui.DetailsRatingPillFootprint
-import tv.trakt.trakt.core.summary.ui.DetailsRatingPillOuterSpacing
-import tv.trakt.trakt.core.summary.ui.DetailsRatingPillReaction
-import tv.trakt.trakt.core.summary.ui.DetailsRatingPillReactionSkeleton
+import tv.trakt.trakt.core.summary.ui.DetailsRatingPillOverlay
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.rememberRatingPillScrolledAway
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
@@ -123,8 +104,6 @@ import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private val RatingPillScrollThreshold = 64.dp
 
 @Composable
 internal fun MovieDetailsScreen(
@@ -477,19 +456,7 @@ internal fun MovieDetailsContent(
         label = "alpha",
     )
 
-    var ratingPillExpanded by remember { mutableStateOf(false) }
-    val snackbarOffset = LocalSnackbarBottomOffset.current
-    val ratingPillThresholdPx = with(LocalDensity.current) { RatingPillScrollThreshold.toPx() }
-    val scrolledPastRatingThreshold by remember {
-        derivedStateOf {
-            listState.firstVisibleItemIndex > 0 ||
-                listState.firstVisibleItemScrollOffset > ratingPillThresholdPx
-        }
-    }
-
-    LaunchedEffect(scrolledPastRatingThreshold) {
-        if (scrolledPastRatingThreshold) ratingPillExpanded = false
-    }
+    val ratingPillScrolledAway by rememberRatingPillScrolledAway(listState)
 
     Box(
         contentAlignment = TopCenter,
@@ -755,90 +722,22 @@ internal fun MovieDetailsContent(
                 }
             }
 
-            if (ratingPillExpanded) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .onClick(throttle = false) { ratingPillExpanded = false },
-                )
-            }
-
-            val isRatingLoaded = state.movieUserRating?.loading == LoadingState.Done
-            val ratingPillVisible = isWatched && isRatingLoaded && !scrolledPastRatingThreshold
-
-            // Resume-scoped so stacked details screens hand the shared offset over in order.
-            LifecycleResumeEffect(ratingPillVisible) {
-                snackbarOffset.value = if (ratingPillVisible) DetailsRatingPillFootprint else 0.dp
-                onPauseOrDispose { snackbarOffset.value = 0.dp }
-            }
-
-            AnimatedVisibility(
-                visible = ratingPillVisible,
-                enter = fadeIn(tween(200)) + slideInVertically(tween(200)) { it / 10 },
-                exit = fadeOut(tween(200)) + slideOutVertically(tween(200)) { it / 10 },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(
-                        end = TraktTheme.spacing.mainPageHorizontalSpace,
-                        bottom = WindowInsets.navigationBars.asPaddingValues()
-                            .calculateBottomPadding()
-                            .plus(TraktTheme.size.navigationBarHeight)
-                            .plus(DetailsRatingPillOuterSpacing),
-                    ),
-            ) {
-                val movieReactionSlot: @Composable () -> Unit = { MovieRatingPillReaction(movie) }
-                DetailsRatingPill(
-                    rating = state.movieUserRating?.rating,
-                    favoriteLoading = state.loadingFavorite.isLoading,
-                    expanded = ratingPillExpanded,
-                    onExpandedChange = { ratingPillExpanded = it },
-                    onRatingDrag = { ratingAlphaMaskActive = it },
-                    onRatingClick = onRatingClick ?: {},
-                    onRatingRemoveClick = onRatingRemoveClick ?: {},
-                    onFavoriteClick = onFavoriteClick ?: {},
-                    reaction = when {
-                        previewMode -> null
-                        else -> movieReactionSlot
-                    },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun MovieRatingPillReaction(movie: Movie) {
-    val viewModel: MediaReactionsViewModel = koinViewModel(
-        parameters = {
-            parametersOf(
-                MediaReactionsTarget(
+            DetailsRatingPillOverlay(
+                visible = isWatched &&
+                    state.movieUserRating?.loading == LoadingState.Done &&
+                    !ratingPillScrolledAway,
+                rating = state.movieUserRating?.rating,
+                favoriteLoading = state.loadingFavorite.isLoading,
+                reactionsTarget = MediaReactionsTarget(
                     type = MediaType.Movie,
                     id = movie.ids.trakt,
-                ),
+                ).takeUnless { previewMode },
+                onRatingDrag = { ratingAlphaMaskActive = it },
+                onRatingClick = onRatingClick ?: {},
+                onRatingRemoveClick = onRatingRemoveClick ?: {},
+                onFavoriteClick = onFavoriteClick ?: {},
             )
-        },
-    )
-    val reactionsState by viewModel.state.collectAsStateWithLifecycle()
-
-    Box(contentAlignment = Center) {
-        AnimatedVisibility(
-            visible = !reactionsState.loading.isDone,
-            enter = EnterTransition.None,
-            exit = fadeOut(tween(200, delayMillis = 350)),
-        ) {
-            DetailsRatingPillReactionSkeleton()
         }
-
-        MediaReactionsView(
-            viewModel = viewModel,
-            dropdownSpacing = DetailsRatingPillDropdownSpacing,
-            anchor = { state, anchorModifier ->
-                DetailsRatingPillReaction(
-                    userReactions = state.userReactions,
-                    modifier = anchorModifier,
-                )
-            },
-        )
     }
 }
 
@@ -869,52 +768,6 @@ private fun DetailsOverview(
             textAlign = TextAlign.Start,
             overflow = Ellipsis,
         )
-    }
-}
-
-@Composable
-fun DetailsRating(
-    modifier: Modifier = Modifier,
-    visible: Boolean,
-    rating: UserRating?,
-    loading: Boolean,
-    onRatingDrag: (Boolean) -> Unit,
-    onRatingClick: (Int) -> Unit,
-    onRatingRemoveClick: () -> Unit,
-    onFavoriteClick: () -> Unit,
-) {
-    var animated by remember { mutableStateOf(false) }
-
-    Box(
-        contentAlignment = Center,
-        modifier = modifier
-            .fillMaxWidth()
-            .ifOrElse(
-                condition = animated,
-                isTrue = Modifier,
-                isFalse = Modifier.animateContentSize(
-                    animationSpec = tween(200, delayMillis = 250),
-                ),
-            ),
-    ) {
-        if (visible) {
-            UserRatingBar(
-                rating = rating?.rating,
-                favoriteLoading = loading,
-                favoriteVisible = true,
-                favorite = rating?.favorite == true,
-                onRatingDrag = {
-                    animated = it
-                    onRatingDrag(it)
-                },
-                onRatingClick = onRatingClick,
-                onRatingRemoveClick = onRatingRemoveClick,
-                onFavoriteClick = onFavoriteClick,
-                modifier = Modifier.padding(
-                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
-                ),
-            )
-        }
     }
 }
 

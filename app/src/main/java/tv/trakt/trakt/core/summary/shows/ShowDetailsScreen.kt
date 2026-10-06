@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.summary.shows
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -78,10 +77,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
-import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.comments.model.CommentsFilter
-import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -101,8 +98,10 @@ import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
+import tv.trakt.trakt.core.summary.ui.DetailsRatingPillOverlay
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
+import tv.trakt.trakt.core.summary.ui.rememberRatingPillScrolledAway
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
@@ -530,6 +529,8 @@ internal fun ShowDetailsContent(
         label = "alpha",
     )
 
+    val ratingPillScrolledAway by rememberRatingPillScrolledAway(listState)
+
     Box(
         contentAlignment = TopCenter,
         modifier = modifier
@@ -617,21 +618,6 @@ internal fun ShowDetailsContent(
                                         horizontal = TraktTheme.spacing.detailsActionsHorizontalSpace,
                                     ),
                             ),
-                    )
-                }
-
-                item {
-                    val isLoaded = state.showUserRating?.loading == LoadingState.Done
-                    DetailsRating(
-                        visible = isWatched && isLoaded,
-                        rating = state.showUserRating?.rating,
-                        loading = state.loadingFavorite.isLoading,
-                        onRatingDrag = {
-                            ratingAlphaMaskActive = it
-                        },
-                        onRatingClick = onRatingClick ?: {},
-                        onRatingRemoveClick = onRatingRemoveClick ?: {},
-                        onFavoriteClick = onFavoriteClick ?: {},
                     )
                 }
 
@@ -824,50 +810,21 @@ internal fun ShowDetailsContent(
                     }
                 }
             }
-        }
-    }
-}
 
-@Composable
-fun DetailsRating(
-    modifier: Modifier = Modifier,
-    visible: Boolean,
-    rating: UserRating?,
-    loading: Boolean,
-    onRatingDrag: (Boolean) -> Unit,
-    onRatingClick: (Int) -> Unit,
-    onRatingRemoveClick: () -> Unit,
-    onFavoriteClick: () -> Unit,
-) {
-    var animated by remember { mutableStateOf(false) }
-
-    Box(
-        contentAlignment = Center,
-        modifier = modifier
-            .fillMaxWidth()
-            .ifOrElse(
-                condition = animated,
-                isTrue = Modifier,
-                isFalse = Modifier.animateContentSize(
-                    animationSpec = tween(200, delayMillis = 250),
-                ),
-            ),
-    ) {
-        if (visible) {
-            UserRatingBar(
-                rating = rating?.rating,
-                favoriteLoading = loading,
-                favoriteVisible = true,
-                favorite = rating?.favorite == true,
-                onRatingDrag = {
-                    animated = it
-                    onRatingDrag(it)
-                },
-                onRatingClick = onRatingClick,
-                onRatingRemoveClick = onRatingRemoveClick,
-                onFavoriteClick = onFavoriteClick,
-                modifier = Modifier
-                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+            DetailsRatingPillOverlay(
+                visible = isWatched &&
+                    state.showUserRating?.loading == LoadingState.Done &&
+                    !ratingPillScrolledAway,
+                rating = state.showUserRating?.rating,
+                favoriteLoading = state.loadingFavorite.isLoading,
+                reactionsTarget = MediaReactionsTarget(
+                    type = MediaType.Show,
+                    id = show.ids.trakt,
+                ).takeUnless { previewMode },
+                onRatingDrag = { ratingAlphaMaskActive = it },
+                onRatingClick = onRatingClick ?: {},
+                onRatingRemoveClick = onRatingRemoveClick ?: {},
+                onFavoriteClick = onFavoriteClick ?: {},
             )
         }
     }

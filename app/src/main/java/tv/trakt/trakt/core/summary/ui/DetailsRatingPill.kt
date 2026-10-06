@@ -2,31 +2,44 @@ package tv.trakt.trakt.core.summary.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,33 +53,46 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.LocalSnackbarBottomOffset
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReaction
+import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.ratings.ui.RatingDelight
 import tv.trakt.trakt.core.ratings.ui.RatingDelightOverlay
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.ratings.ui.ratingDelight
+import tv.trakt.trakt.core.reactions.media.MediaReactionsView
+import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsUserPick
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
+private val PillScrollThreshold = 64.dp
+
+private val PillEntranceDelay = 300.milliseconds
 private val CollapseDelay = 600.milliseconds
 private val CollapseDelightDelay = 2100.milliseconds
 
 private val PillShape = RoundedCornerShape(18.dp)
 
 private val PillIconSize = 23.dp
+private val PillStarSize = 22.dp
+private val PillStarLift = 6.dp
 private val PillHorizontalPadding = 12.dp
-private val PillVerticalPadding = 12.dp
+private val PillVerticalPadding = 10.dp
 private val PillHeight = PillIconSize + PillVerticalPadding * 2
 private val PillTouchPadding = 6.dp
 private val PillDragLabelSpacing = 40.dp
@@ -78,19 +104,130 @@ private val PillLoadingSize = 16.dp
 
 private val PillReactionSlotWidth = PillReactionCellSize + PillTouchPadding * 2
 
-internal val DetailsRatingPillOuterSpacing = 8.dp
+private val PillOuterSpacing = 8.dp
 
-internal val DetailsRatingPillFootprint = PillHeight + DetailsRatingPillOuterSpacing
+private val PillFootprint = PillHeight + PillOuterSpacing
 
 // The bar anchors to the reaction slot, which sits inset from the pill's top edge.
-internal val DetailsRatingPillDropdownSpacing =
-    DetailsRatingPillOuterSpacing + (PillHeight - PillReactionSlotWidth) / 2
+private val PillDropdownSpacing =
+    PillOuterSpacing + (PillHeight - PillReactionSlotWidth) / 2
 private val SeparatorInnerPadding = 4.dp
 
 private data class RatingCommit(
     val id: Int,
     val rating: Int?,
 )
+
+@Composable
+internal fun rememberRatingPillScrolledAway(listState: LazyListState): State<Boolean> {
+    val thresholdPx = with(LocalDensity.current) { PillScrollThreshold.toPx() }
+    return remember(listState, thresholdPx) {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0 ||
+                listState.firstVisibleItemScrollOffset > thresholdPx
+        }
+    }
+}
+
+@Composable
+internal fun BoxScope.DetailsRatingPillOverlay(
+    visible: Boolean,
+    rating: UserRating?,
+    favoriteLoading: Boolean,
+    reactionsTarget: MediaReactionsTarget?,
+    onRatingDrag: (Boolean) -> Unit,
+    onRatingClick: (Int) -> Unit,
+    onRatingRemoveClick: () -> Unit,
+    onFavoriteClick: () -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val snackbarOffset = LocalSnackbarBottomOffset.current
+
+    // Held back past the screen's enter transition so the pill's own fade in stays visible.
+    var entranceReady by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        delay(PillEntranceDelay)
+        entranceReady = true
+    }
+    val shown = visible && entranceReady
+
+    LaunchedEffect(shown) {
+        if (!shown) expanded = false
+    }
+
+    // Resume-scoped so stacked details screens hand the shared offset over in order.
+    LifecycleResumeEffect(shown) {
+        snackbarOffset.value = if (shown) PillFootprint else 0.dp
+        onPauseOrDispose { snackbarOffset.value = 0.dp }
+    }
+
+    if (expanded) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .onClick(throttle = false) { expanded = false },
+        )
+    }
+
+    AnimatedVisibility(
+        visible = shown,
+        enter = fadeIn(tween(200)) + slideInVertically(tween(200)) { it / 10 },
+        exit = fadeOut(tween(200)) + slideOutVertically(tween(200)) { it / 10 },
+        modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .padding(
+                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                bottom = WindowInsets.navigationBars.asPaddingValues()
+                    .calculateBottomPadding()
+                    .plus(TraktTheme.size.navigationBarHeight)
+                    .plus(PillOuterSpacing),
+            ),
+    ) {
+        val reactionSlot: (@Composable () -> Unit)? = reactionsTarget?.let { target ->
+            { PillReactionSlot(target) }
+        }
+        DetailsRatingPill(
+            rating = rating,
+            favoriteLoading = favoriteLoading,
+            expanded = expanded,
+            onExpandedChange = { expanded = it },
+            onRatingDrag = onRatingDrag,
+            onRatingClick = onRatingClick,
+            onRatingRemoveClick = onRatingRemoveClick,
+            onFavoriteClick = onFavoriteClick,
+            reaction = reactionSlot,
+        )
+    }
+}
+
+@Composable
+private fun PillReactionSlot(target: MediaReactionsTarget) {
+    val viewModel: MediaReactionsViewModel = koinViewModel(
+        parameters = { parametersOf(target) },
+    )
+    val reactionsState by viewModel.state.collectAsStateWithLifecycle()
+
+    Box(contentAlignment = Alignment.Center) {
+        AnimatedVisibility(
+            visible = !reactionsState.loading.isDone,
+            enter = EnterTransition.None,
+            exit = fadeOut(tween(200, delayMillis = 350)),
+        ) {
+            PillReactionLoading()
+        }
+
+        MediaReactionsView(
+            viewModel = viewModel,
+            dropdownSpacing = PillDropdownSpacing,
+            anchor = { state, anchorModifier ->
+                PillReaction(
+                    userReactions = state.userReactions,
+                    modifier = anchorModifier,
+                )
+            },
+        )
+    }
+}
 
 @Composable
 internal fun DetailsRatingPill(
@@ -156,7 +293,8 @@ internal fun DetailsRatingPill(
                 isExpanded -> UserRatingBar(
                     rating = rating?.rating,
                     favoriteVisible = false,
-                    size = PillIconSize,
+                    size = PillStarSize,
+                    activeLift = PillStarLift,
                     textSpacing = PillDragLabelSpacing,
                     topPadding = 0.dp,
                     onRatingDrag = {
@@ -205,7 +343,7 @@ internal fun DetailsRatingPill(
 }
 
 @Composable
-internal fun DetailsRatingPillReaction(
+private fun PillReaction(
     userReactions: ImmutableList<MediaReaction>,
     modifier: Modifier = Modifier,
 ) {
@@ -219,7 +357,7 @@ internal fun DetailsRatingPillReaction(
 }
 
 @Composable
-internal fun DetailsRatingPillReactionSkeleton(modifier: Modifier = Modifier) {
+private fun PillReactionLoading(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.size(PillIconSize),
@@ -263,7 +401,7 @@ private fun CollapsedRating(
             ),
             contentDescription = null,
             tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier.size(PillIconSize),
+            modifier = Modifier.size(PillStarSize),
         )
         if (rated && rating != null) {
             Text(
@@ -346,7 +484,7 @@ private fun DetailsRatingPillPreview() {
                 expanded = false,
                 onExpandedChange = {},
                 reaction = {
-                    DetailsRatingPillReactionSkeleton()
+                    PillReactionLoading()
                 },
             )
             DetailsRatingPill(
@@ -360,7 +498,7 @@ private fun DetailsRatingPillPreview() {
                 expanded = false,
                 onExpandedChange = {},
                 reaction = {
-                    DetailsRatingPillReaction(userReactions = persistentListOf())
+                    PillReaction(userReactions = persistentListOf())
                 },
             )
             DetailsRatingPill(
@@ -373,7 +511,7 @@ private fun DetailsRatingPillPreview() {
                 expanded = true,
                 onExpandedChange = {},
                 reaction = {
-                    DetailsRatingPillReaction(userReactions = persistentListOf(MediaReaction.Fire))
+                    PillReaction(userReactions = persistentListOf(MediaReaction.Fire))
                 },
             )
         }

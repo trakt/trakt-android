@@ -77,6 +77,7 @@ internal fun UserRatingBar(
     textSpacing: Dp = 44.dp,
     topPadding: Dp = 22.dp,
     separatorVisible: Boolean = false,
+    activeLift: Dp = 12.dp,
     onRatingDrag: (Boolean) -> Unit = {},
     onRatingClick: (Int) -> Unit = {},
     onRatingRemoveClick: () -> Unit = {},
@@ -118,7 +119,7 @@ internal fun UserRatingBar(
     val spacingPx = with(density) { 8.dp.toPx() }
     val starsWidth = 5 * starSizePx
     val totalWidth = 5 * starSizePx + 4 * spacingPx
-    val activeLiftPx = with(density) { 12.dp.toPx() }
+    val activeLiftPx = with(density) { activeLift.toPx() }
 
     var activeDelight by remember { mutableStateOf<ActiveDelight?>(null) }
 
