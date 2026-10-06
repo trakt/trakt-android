@@ -545,6 +545,8 @@ internal fun ShowDetailsContent(
                     state.showProgress?.isWatching == true
             }
 
+            val ratingPillAvailable = isWatched && state.showUserRating?.loading == LoadingState.Done
+
             DetailsBackground(
                 imageUrl = show.images?.getFanartUrl(Images.Size.THUMB),
                 color = show.colors?.colors?.second,
@@ -631,6 +633,7 @@ internal fun ShowDetailsContent(
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
                         },
+                        addReactionVisible = !ratingPillAvailable,
                         modifier = Modifier
                             .alpha(ratingAlphaMask)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
@@ -812,9 +815,7 @@ internal fun ShowDetailsContent(
             }
 
             DetailsRatingPillOverlay(
-                visible = isWatched &&
-                    state.showUserRating?.loading == LoadingState.Done &&
-                    !ratingPillScrolledAway,
+                visible = ratingPillAvailable && !ratingPillScrolledAway,
                 rating = state.showUserRating?.rating,
                 favoriteLoading = state.loadingFavorite.isLoading,
                 reactionsTarget = MediaReactionsTarget(

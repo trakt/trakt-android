@@ -471,6 +471,8 @@ internal fun MovieDetailsContent(
                 (state.movieProgress?.plays ?: 0) > 0
             }
 
+            val ratingPillAvailable = isWatched && state.movieUserRating?.loading == LoadingState.Done
+
             DetailsBackground(
                 imageUrl = movie.images?.getFanartUrl(Images.Size.THUMB),
                 color = movie.colors?.colors?.second,
@@ -558,6 +560,7 @@ internal fun MovieDetailsContent(
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
                         },
+                        addReactionVisible = !ratingPillAvailable,
                         modifier = Modifier
                             .alpha(ratingAlphaMask)
                             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
@@ -723,9 +726,7 @@ internal fun MovieDetailsContent(
             }
 
             DetailsRatingPillOverlay(
-                visible = isWatched &&
-                    state.movieUserRating?.loading == LoadingState.Done &&
-                    !ratingPillScrolledAway,
+                visible = ratingPillAvailable && !ratingPillScrolledAway,
                 rating = state.movieUserRating?.rating,
                 favoriteLoading = state.loadingFavorite.isLoading,
                 reactionsTarget = MediaReactionsTarget(

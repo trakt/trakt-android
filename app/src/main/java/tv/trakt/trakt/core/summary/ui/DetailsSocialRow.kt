@@ -47,6 +47,7 @@ internal fun DetailsSocialRow(
     socials: ImmutableList<MediaSocialActivity>?,
     onActivityClick: () -> Unit,
     modifier: Modifier = Modifier,
+    addReactionVisible: Boolean = true,
 ) {
     val reactionsViewModel: MediaReactionsViewModel? = when {
         LocalInspectionMode.current -> null
@@ -72,9 +73,10 @@ internal fun DetailsSocialRow(
             verticalAlignment = CenterVertically,
         ) {
             reactionsViewModel?.let {
+                val hasReactions = (reactionsState?.value?.summary?.reactionsCount ?: 0) > 0
                 MediaReactionsView(
                     viewModel = it,
-                    visible = isLoaded,
+                    visible = isLoaded && (addReactionVisible || hasReactions),
                     modifier = Modifier.padding(top = RowTopSpace),
                 )
             }
