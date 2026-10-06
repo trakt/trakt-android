@@ -59,10 +59,8 @@ data class Movie(
     // Considered released if status is "released" or released date is today or before
     val isReleased: Boolean
         get() {
-            if (status == MediaStatus.Released) {
-                return true
-            }
-            return released?.isTodayOrBefore() == true
+            return status == MediaStatus.Released ||
+                released?.isTodayOrBefore() == true
         }
 
     val isNew: Boolean
