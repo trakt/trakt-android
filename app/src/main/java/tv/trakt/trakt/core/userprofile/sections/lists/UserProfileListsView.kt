@@ -219,7 +219,6 @@ private fun ContentList(
         ) { list ->
             CustomListCard(
                 list = list,
-                descriptionVisible = true,
                 modifier = Modifier
                     .height(TraktTheme.size.customListCardSize)
                     .aspectRatio(HorizontalImageAspectRatio)

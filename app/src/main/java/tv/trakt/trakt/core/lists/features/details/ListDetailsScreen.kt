@@ -78,6 +78,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortType.Added
 import tv.trakt.trakt.common.model.sorting.SortType.Released
@@ -104,12 +105,11 @@ import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
+import tv.trakt.trakt.ui.components.lists.ListAuthorSubtitle
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private const val LIST_DESCRIPTION_LIMIT = 40
 
 @Composable
 internal fun ListDetailsScreen(
@@ -338,6 +338,8 @@ internal fun ListDetailsContent(
         ContentList(
             title = state.list?.list?.name ?: "",
             subtitle = state.list?.list?.description?.trim(),
+            user = state.list?.list?.user,
+            itemCount = state.list?.list?.itemCount,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter,
@@ -368,8 +370,8 @@ internal fun ListDetailsContent(
 private fun TitleBar(
     enabled: Boolean,
     title: String,
-    subtitle: String?,
-    subtitleVisible: Boolean,
+    user: User?,
+    itemCount: Int?,
     liked: LikedInfo?,
     likesCount: Int?,
     filters: GlobalFilter?,
@@ -378,10 +380,6 @@ private fun TitleBar(
     onBackClick: () -> Unit,
     onFiltersClick: () -> Unit,
 ) {
-    val plainSubtitle = remember(subtitle) {
-        subtitle?.toMarkdownText()?.text
-    }
-
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -414,9 +412,8 @@ private fun TitleBar(
             ) {
                 TraktHeader(
                     title = title,
-                    subtitle = when {
-                        subtitleVisible -> plainSubtitle
-                        else -> null
+                    subtitleTrailing = user?.let {
+                        { ListAuthorSubtitle(user = it, itemCount = itemCount) }
                     },
                     modifier = Modifier
                         .weight(1F, fill = false),
@@ -485,6 +482,8 @@ private fun ContentList(
     contentPadding: PaddingValues,
     title: String,
     subtitle: String?,
+    user: User?,
+    itemCount: Int?,
     listState: LazyListState,
     listItems: ImmutableList<CustomListItem>,
     listFilter: GlobalFilter?,
@@ -504,10 +503,6 @@ private fun ContentList(
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
-    val subtitleVisible = remember(subtitle) {
-        (subtitle?.length ?: 0) <= LIST_DESCRIPTION_LIMIT
-    }
-
     var subtitleCollapsed by remember { mutableStateOf(true) }
 
     val linkColor = TraktTheme.colors.textPrimary
@@ -547,8 +542,8 @@ private fun ContentList(
             TitleBar(
                 enabled = !loading,
                 title = title,
-                subtitle = subtitle,
-                subtitleVisible = subtitleVisible,
+                user = user,
+                itemCount = itemCount,
                 liked = listLiked,
                 likesCount = listLikes,
                 filters = listFilter,
@@ -568,7 +563,7 @@ private fun ContentList(
             )
         }
 
-        if (!subtitleVisible) {
+        if (!subtitle.isNullOrBlank()) {
             item {
                 Text(
                     text = subtitleMarkdownText,
@@ -728,7 +723,8 @@ private fun ContentFilters(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                bottom = 19.dp,
+                top = 8.dp,
+                bottom = 17.dp,
             ),
     ) {
         if (filter != null) {

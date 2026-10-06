@@ -325,8 +325,8 @@ private fun AllListsScreen(
                             Personal if listVisible -> {
                                 CustomListCard(
                                     list = list,
-                                    descriptionVisible = true,
                                     moreVisible = true,
+                                    privacyVisible = true,
                                     onClick = { onListPersonalClick(list) },
                                     onMoreClick = { onListEditClick(list) },
                                     onUserClick = onUserClick,

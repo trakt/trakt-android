@@ -36,6 +36,7 @@ data class CustomList(
     @Serializable(ZonedDateTimeSerializer::class)
     val updatedAt: ZonedDateTime,
     val likes: Int?,
+    val itemCount: Int? = null,
     val images: Images?,
     val user: User,
 ) {
@@ -92,6 +93,7 @@ data class CustomList(
                 createdAt = dto.createdAt.toZonedDateTime(),
                 updatedAt = dto.updatedAt.toZonedDateTime(),
                 likes = dto.likes,
+                itemCount = dto.itemCount,
                 images = dto.images?.let {
                     Images(
                         posters = it.posters
@@ -119,6 +121,7 @@ data class CustomList(
                 createdAt = dto.createdAt.toZonedDateTime(),
                 updatedAt = dto.updatedAt.toZonedDateTime(),
                 likes = dto.likes,
+                itemCount = dto.itemCount,
                 images = dto.images?.let {
                     Images(
                         posters = it.posters
@@ -147,6 +150,7 @@ data class CustomList(
                 createdAt = list.createdAt?.toZonedDateTime()!!,
                 updatedAt = list.updatedAt?.toZonedDateTime()!!,
                 likes = list.likes,
+                itemCount = list.itemCount,
                 images = list.images?.let {
                     Images(
                         posters = it.posters

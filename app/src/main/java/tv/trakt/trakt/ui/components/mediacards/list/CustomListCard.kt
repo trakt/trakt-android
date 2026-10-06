@@ -42,7 +42,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +55,6 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
-import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.User
@@ -64,6 +62,8 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Type
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.lists.ListAuthorSubtitle
+import tv.trakt.trakt.ui.components.lists.ListPrivacySubtitle
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
@@ -78,7 +78,7 @@ internal fun CustomListCard(
     likesVisible: Boolean = false,
     moreVisible: Boolean = false,
     userVisible: Boolean = true,
-    descriptionVisible: Boolean = false,
+    privacyVisible: Boolean = false,
     onClick: () -> Unit,
     onMoreClick: () -> Unit = {},
     onUserClick: ((User) -> Unit)? = null,
@@ -101,8 +101,8 @@ internal fun CustomListCard(
                 liked = liked,
                 likesVisible = likesVisible,
                 userVisible = userVisible,
+                privacyVisible = privacyVisible,
                 moreVisible = moreVisible,
-                descriptionVisible = descriptionVisible,
                 onClick = onClick,
                 onMoreClick = onMoreClick,
                 onUserClick = onUserClick,
@@ -118,7 +118,7 @@ private fun CustomListContent(
     likesVisible: Boolean,
     moreVisible: Boolean,
     userVisible: Boolean,
-    descriptionVisible: Boolean,
+    privacyVisible: Boolean,
     onClick: () -> Unit,
     onMoreClick: () -> Unit,
     onUserClick: ((User) -> Unit)?,
@@ -163,8 +163,8 @@ private fun CustomListContent(
             liked = liked,
             likesVisible = likesVisible,
             userVisible = userVisible,
+            privacyVisible = privacyVisible,
             moreVisible = moreVisible,
-            descriptionVisible = descriptionVisible,
             onMoreClick = onMoreClick,
             onUserClick = onUserClick,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -248,8 +248,8 @@ private fun CustomListHeader(
     liked: Boolean,
     likesVisible: Boolean,
     userVisible: Boolean,
+    privacyVisible: Boolean,
     moreVisible: Boolean,
-    descriptionVisible: Boolean,
     onMoreClick: () -> Unit,
     onUserClick: ((User) -> Unit)?,
     modifier: Modifier = Modifier,
@@ -307,40 +307,17 @@ private fun CustomListHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                if (descriptionVisible) {
-                    if (!list.description.isNullOrBlank()) {
-                        val linkColor = TraktTheme.colors.textPrimary
-                        Text(
-                            text = remember(list.description, linkColor) {
-                                (list.description ?: "").toMarkdownText(linkColor)
-                            },
-                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
-                            color = TraktTheme.colors.textSecondary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
+                if (privacyVisible) {
+                    ListPrivacySubtitle(
+                        privacy = list.privacy,
+                        itemCount = list.itemCount,
+                    )
                 } else {
-                    Row(
-                        horizontalArrangement = spacedBy(3.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.onClick { onUserClick?.invoke(list.user) },
-                    ) {
-                        Text(
-                            text = stringResource(R.string.text_by),
-                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
-                            color = TraktTheme.colors.textSecondary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            text = list.user.displayName,
-                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp, fontWeight = W500),
-                            color = TraktTheme.colors.textPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
+                    ListAuthorSubtitle(
+                        user = list.user,
+                        itemCount = list.itemCount,
+                        onUserClick = onUserClick,
+                    )
                 }
             }
         }
@@ -417,6 +394,17 @@ private fun Preview() {
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},
                 )
+
+                CustomListCard(
+                    list = PreviewData.customList1.copy(
+                        privacy = CustomList.Privacy.Private,
+                    ),
+                    moreVisible = true,
+                    privacyVisible = true,
+                    modifier = Modifier
+                        .aspectRatio(HorizontalImageAspectRatio),
+                    onClick = {},
+                )
             }
         }
     }
@@ -470,7 +458,6 @@ private fun Preview2() {
                             ).toImmutableList(),
                         ),
                     ),
-                    descriptionVisible = true,
                     modifier = Modifier
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},

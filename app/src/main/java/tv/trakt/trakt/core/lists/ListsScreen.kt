@@ -348,8 +348,8 @@ private fun ListsScreenContent(
                             Personal if listVisible -> {
                                 CustomListCard(
                                     list = list,
-                                    descriptionVisible = true,
                                     moreVisible = true,
+                                    privacyVisible = true,
                                     onClick = { onPersonalListClick(list) },
                                     onMoreClick = { onEditListClick(list) },
                                     onUserClick = onUserClick,

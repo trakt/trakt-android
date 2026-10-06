@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.lists.ListItemCount
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -32,6 +33,7 @@ internal fun TraktHeader(
     icon: Painter? = null,
     titleStyle: TextStyle = TraktTheme.typography.heading5,
     titleColor: Color = TraktTheme.colors.textPrimary,
+    subtitleTrailing: (@Composable () -> Unit)? = null,
 ) {
     Row(
         horizontalArrangement = spacedBy(6.dp),
@@ -62,20 +64,29 @@ internal fun TraktHeader(
                     overflow = Ellipsis,
                 )
             }
-            if (!subtitle.isNullOrBlank()) {
-                Text(
-                    text = when {
-                        subtitle.length > maxSubtitleLength -> subtitle.take(maxSubtitleLength).trimEnd() + "…"
-                        else -> subtitle
-                    },
-                    color = subtitleColor,
-                    style = TraktTheme.typography.meta.copy(
-                        fontWeight = W400,
-                        lineHeight = 1.2.em,
-                    ),
-                    maxLines = maxSubtitleLines,
-                    overflow = Ellipsis,
-                )
+            if (!subtitle.isNullOrBlank() || subtitleTrailing != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(8.dp),
+                ) {
+                    if (!subtitle.isNullOrBlank()) {
+                        Text(
+                            text = when {
+                                subtitle.length > maxSubtitleLength -> subtitle.take(maxSubtitleLength).trimEnd() + "…"
+                                else -> subtitle
+                            },
+                            color = subtitleColor,
+                            style = TraktTheme.typography.meta.copy(
+                                fontWeight = W400,
+                                lineHeight = 1.2.em,
+                            ),
+                            maxLines = maxSubtitleLines,
+                            overflow = Ellipsis,
+                            modifier = Modifier.weight(1F, fill = false),
+                        )
+                    }
+                    subtitleTrailing?.invoke()
+                }
             }
         }
     }
@@ -110,6 +121,20 @@ private fun Preview3() {
             title = "Title",
             subtitle = "Subtitle",
             icon = painterResource(R.drawable.ic_person_double),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun Preview4() {
+    TraktTheme {
+        TraktHeader(
+            title = "Title",
+            subtitle = "Subtitle",
+            subtitleTrailing = {
+                ListItemCount(count = 42)
+            },
         )
     }
 }

@@ -235,6 +235,7 @@ object PreviewData {
         shareLink = "",
         type = Type.Official,
         likes = 12,
+        itemCount = 42,
         images = null,
         user = user1,
     )

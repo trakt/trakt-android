@@ -192,7 +192,6 @@ private fun AllUserProfileListsContent(
                         CustomListCard(
                             list = list,
                             userVisible = true,
-                            descriptionVisible = true,
                             onClick = { onListClick(list) },
                             onUserClick = onUserClick,
                             modifier = Modifier

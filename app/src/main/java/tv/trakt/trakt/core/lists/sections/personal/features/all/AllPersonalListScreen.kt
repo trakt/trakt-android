@@ -90,6 +90,7 @@ import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.lists.ListItemCount
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
@@ -297,6 +298,7 @@ internal fun AllPersonalListContent(
             subtitle = state.list?.privacy?.let {
                 stringResource(it.displayRes)
             },
+            itemCount = state.list?.itemCount,
             description = state.list?.description,
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
@@ -327,6 +329,7 @@ private fun TitleBar(
     reorderEnabled: Boolean,
     title: String,
     subtitle: String?,
+    itemCount: Int?,
     filters: GlobalFilter?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
@@ -362,6 +365,9 @@ private fun TitleBar(
             TraktHeader(
                 title = title,
                 subtitle = subtitle,
+                subtitleTrailing = itemCount?.let {
+                    { ListItemCount(count = it) }
+                },
             )
         }
 
@@ -478,7 +484,6 @@ private fun TitleBar(
 
 @Composable
 private fun ContentFilters(
-    hasSubtitle: Boolean,
     watchlistFilter: GlobalFilter,
     watchlistSort: Sorting,
     onSortTypeClick: () -> Unit,
@@ -491,8 +496,8 @@ private fun ContentFilters(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = if (hasSubtitle) 8.dp else 0.dp,
-                bottom = 19.dp,
+                top = 8.dp,
+                bottom = 17.dp,
             ),
     ) {
         MediaModeFilters(
@@ -517,6 +522,7 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String?,
+    itemCount: Int?,
     description: String?,
     loading: Boolean,
     loadingMore: Boolean,
@@ -572,6 +578,7 @@ private fun ContentList(
                 reorderEnabled = !loading && listItems.isNotEmpty(),
                 title = title,
                 subtitle = subtitle,
+                itemCount = itemCount,
                 filters = listFilter,
                 onBackClick = onBackClick,
                 onShareClick = onShareClick,
@@ -579,6 +586,18 @@ private fun ContentList(
                 onReorderClick = onReorderClick,
                 onFiltersClick = onFiltersClick,
             )
+        }
+
+        if (listFilter != null) {
+            item {
+                ContentFilters(
+                    watchlistFilter = listFilter,
+                    watchlistSort = listSorting,
+                    onFilterClick = onModeClick,
+                    onSortTypeClick = onSortTypeClick,
+                    onSortOrderClick = onSortOrderClick,
+                )
+            }
         }
 
         if (!description.isNullOrBlank()) {
@@ -597,23 +616,10 @@ private fun ContentList(
                     },
                     overflow = Ellipsis,
                     modifier = Modifier
-                        .padding(bottom = 10.dp)
+                        .padding(bottom = 18.dp)
                         .onClick {
                             collapsed = !collapsed
                         },
-                )
-            }
-        }
-
-        if (listFilter != null) {
-            item {
-                ContentFilters(
-                    hasSubtitle = !subtitle.isNullOrEmpty(),
-                    watchlistFilter = listFilter,
-                    watchlistSort = listSorting,
-                    onFilterClick = onModeClick,
-                    onSortTypeClick = onSortTypeClick,
-                    onSortOrderClick = onSortOrderClick,
                 )
             }
         }
