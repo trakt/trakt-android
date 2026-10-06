@@ -36,6 +36,7 @@ data class TraktColors(
     val dropdownContent: Color = Color.Unspecified,
     val dropdownContentActive: Color = Color.Unspecified,
     val panelCardContainer: Color = Color.Unspecified,
+    val detailsActionsContainer: Color = Color.Unspecified,
     val commentContainer: Color = Color.Unspecified,
     val commentReplyContainer: Color = Color.Unspecified,
     val customListContainer: Color = Color.Unspecified,

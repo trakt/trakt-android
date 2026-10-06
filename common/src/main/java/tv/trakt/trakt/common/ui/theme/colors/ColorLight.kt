@@ -37,6 +37,7 @@ val LightColors: TraktColors = TraktColors(
     dropdownMenuContainer = Shade40,
     dropdownContent = Shade500,
     dropdownContentActive = White,
+    detailsActionsContainer = Shade20,
     panelCardContainer = Shade40,
     commentContainer = Shade40,
     commentReplyContainer = Shade55,
