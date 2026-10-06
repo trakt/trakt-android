@@ -117,14 +117,12 @@ internal fun AllActivityMovieItem(
                         onRateClick != null -> ActivityRateButton(
                             rating = itemRating,
                             title = item.movie.title,
-                            starSize = 15.dp,
                             onRateClick = onRateClick,
                             modifier = Modifier.offset(x = 4.dp, y = 4.dp),
                         )
 
                         rating != null -> ActivityItemRating(
                             rating = rating,
-                            starSize = 15.dp,
                         )
                     }
 

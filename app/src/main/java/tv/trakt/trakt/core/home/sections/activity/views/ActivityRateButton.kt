@@ -76,7 +76,7 @@ internal fun ActivityRateButton(
     title: String,
     onRateClick: (Int?) -> Unit,
     modifier: Modifier = Modifier,
-    starSize: Dp = 14.dp,
+    starSize: Dp = 16.dp,
 ) {
     var popupVisible by remember { mutableStateOf(false) }
     var commit by remember { mutableStateOf<RatingCommit?>(null) }
@@ -109,7 +109,7 @@ internal fun ActivityRateButton(
                 painter = painterResource(R.drawable.ic_star_trakt_off),
                 contentDescription = rateDescription,
                 tint = TraktTheme.colors.textPrimary,
-                modifier = buttonModifier.size(starSize + 1.dp),
+                modifier = buttonModifier.size(starSize),
             )
         }
 
@@ -136,7 +136,7 @@ internal fun ActivityRateButton(
 internal fun ActivityItemRating(
     rating: UserRating,
     modifier: Modifier = Modifier,
-    starSize: Dp = 14.dp,
+    starSize: Dp = 16.dp,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
