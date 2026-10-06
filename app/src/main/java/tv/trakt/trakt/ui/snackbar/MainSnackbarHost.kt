@@ -36,6 +36,7 @@ import kotlinx.coroutines.delay
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalRatePromptVisibility
+import tv.trakt.trakt.LocalSnackbarBottomOffset
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.seconds
@@ -52,6 +53,7 @@ internal fun MainSnackbarHost(
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     val localCheckInVisibility = LocalCheckInVisibility.current
     val localRatePromptVisibility = LocalRatePromptVisibility.current
+    val localSnackbarBottomOffset = LocalSnackbarBottomOffset.current
 
     val padding = WindowInsets.navigationBars.asPaddingValues()
         .calculateBottomPadding()
@@ -74,6 +76,7 @@ internal fun MainSnackbarHost(
                 else -> 0.dp
             },
         )
+        .plus(localSnackbarBottomOffset.value)
 
     val currentSnackbarData = snackbarHostState.currentSnackbarData
     var snackbarDataToShow by remember { mutableStateOf<SnackbarData?>(null) }
