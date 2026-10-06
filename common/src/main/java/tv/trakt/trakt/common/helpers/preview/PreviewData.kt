@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.helpers.preview
 
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -14,6 +15,7 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.model.PostCreditsScene
 import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
@@ -103,7 +105,7 @@ object PreviewData {
         runtime = 90.minutes,
         trailer = "https://youtube.com/watch?v=abcdefg",
         status = MediaStatus.Canceled,
-        credits = 2,
+        postCredits = persistentListOf(PostCreditsScene.During, PostCreditsScene.After),
         country = "us",
         languages = listOf("en", "de").toImmutableList(),
     )

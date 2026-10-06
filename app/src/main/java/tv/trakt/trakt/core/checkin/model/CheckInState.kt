@@ -104,7 +104,7 @@ val CheckInState.expiresAt: Instant?
 val CheckInState.afterCredits: Int
     get() {
         return when (this) {
-            is ActiveMovie -> movie.credits ?: 0
+            is ActiveMovie -> movie.postCredits.size
             else -> 0
         }
     }

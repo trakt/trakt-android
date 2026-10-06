@@ -488,7 +488,7 @@ internal fun MovieDetailsContent(
                         creator = state.movieCreator,
                         creditsCount = when {
                             isWatched || state.loadingProgress.isLoading -> null
-                            else -> movie.credits
+                            else -> movie.postCredits.size.takeIf { it > 0 }
                         },
                         playsCount = state.movieProgress?.plays ?: 0,
                         loading = state.loading.isLoading ||

@@ -121,7 +121,7 @@ internal fun MovieHeader(
                     },
             )
 
-            val creditsCount = movie.credits ?: 0
+            val creditsCount = movie.postCredits.size
             val creditsVisible = creditsCount > 0 &&
                 !movieCollection.isHistory &&
                 !movieCollection.isHistoryLoading

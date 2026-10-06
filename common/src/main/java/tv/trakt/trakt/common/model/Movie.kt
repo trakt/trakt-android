@@ -39,7 +39,6 @@ data class Movie(
     val certification: String?,
     val status: MediaStatus?,
     val runtime: Duration?,
-    val credits: Int?,
     val country: String?,
     @Serializable(ImmutableListSerializer::class)
     val languages: ImmutableList<String>,
@@ -106,11 +105,6 @@ fun Companion.fromDto(dto: MovieDto): Movie {
         status = MediaStatus.fromSlug(dto.status),
         runtime = dto.runtime?.minutes,
         trailer = dto.trailer,
-        credits = when {
-            dto.afterCredits == true && dto.duringCredits == true -> 2
-            dto.afterCredits == true || dto.duringCredits == true -> 1
-            else -> null
-        },
         postCredits = PostCreditsScene.fromFlags(
             during = dto.duringCredits,
             after = dto.afterCredits,
@@ -152,11 +146,6 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
         runtime = dto.runtime?.minutes,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
         country = dto.country,
-        credits = when {
-            dto.afterCredits == true && dto.duringCredits == true -> 2
-            dto.afterCredits == true || dto.duringCredits == true -> 1
-            else -> null
-        },
         postCredits = PostCreditsScene.fromFlags(
             during = dto.duringCredits,
             after = dto.afterCredits,
@@ -196,11 +185,6 @@ fun Companion.fromDto(dto: MovieCalendarDto): Movie {
         runtime = dto.runtime?.minutes,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
         country = dto.country,
-        credits = when {
-            dto.afterCredits == true && dto.duringCredits == true -> 2
-            dto.afterCredits == true || dto.duringCredits == true -> 1
-            else -> null
-        },
         postCredits = PostCreditsScene.fromFlags(
             during = dto.duringCredits,
             after = dto.afterCredits,
