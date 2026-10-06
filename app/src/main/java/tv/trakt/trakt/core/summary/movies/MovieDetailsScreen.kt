@@ -4,10 +4,15 @@ package tv.trakt.trakt.core.summary.movies
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -30,6 +35,7 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +50,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -96,6 +103,7 @@ import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
+import tv.trakt.trakt.core.summary.ui.DetailsRatingPill
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -106,6 +114,9 @@ import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val RatingPillScrollThreshold = 64.dp
+private val RatingPillBottomSpace = 8.dp
 
 @Composable
 internal fun MovieDetailsScreen(
@@ -459,6 +470,19 @@ internal fun MovieDetailsContent(
         label = "alpha",
     )
 
+    var ratingPillExpanded by remember { mutableStateOf(false) }
+    val ratingPillThresholdPx = with(LocalDensity.current) { RatingPillScrollThreshold.toPx() }
+    val scrolledPastRatingThreshold by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0 ||
+                listState.firstVisibleItemScrollOffset > ratingPillThresholdPx
+        }
+    }
+
+    LaunchedEffect(scrolledPastRatingThreshold) {
+        if (scrolledPastRatingThreshold) ratingPillExpanded = false
+    }
+
     Box(
         contentAlignment = TopCenter,
         modifier = modifier
@@ -546,19 +570,6 @@ internal fun MovieDetailsContent(
                                     .fillMaxWidth()
                                     .padding(horizontal = TraktTheme.spacing.detailsActionsHorizontalSpace),
                             ),
-                    )
-                }
-
-                item {
-                    val isLoaded = state.movieUserRating?.loading == LoadingState.Done
-                    DetailsRating(
-                        visible = isWatched && isLoaded,
-                        rating = state.movieUserRating?.rating,
-                        loading = state.loadingFavorite.isLoading,
-                        onRatingDrag = { ratingAlphaMaskActive = it },
-                        onRatingClick = onRatingClick ?: {},
-                        onRatingRemoveClick = onRatingRemoveClick ?: {},
-                        onFavoriteClick = onFavoriteClick ?: {},
                     )
                 }
 
@@ -735,6 +746,41 @@ internal fun MovieDetailsContent(
                         )
                     }
                 }
+            }
+
+            if (ratingPillExpanded) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .onClick(throttle = false) { ratingPillExpanded = false },
+                )
+            }
+
+            val isRatingLoaded = state.movieUserRating?.loading == LoadingState.Done
+            AnimatedVisibility(
+                visible = isWatched && isRatingLoaded && !scrolledPastRatingThreshold,
+                enter = fadeIn(tween(200)) + slideInVertically(tween(200)) { it / 10 },
+                exit = fadeOut(tween(200)) + slideOutVertically(tween(200)) { it / 10 },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(
+                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        bottom = WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                            .plus(TraktTheme.size.navigationBarHeight)
+                            .plus(RatingPillBottomSpace),
+                    ),
+            ) {
+                DetailsRatingPill(
+                    rating = state.movieUserRating?.rating,
+                    favoriteLoading = state.loadingFavorite.isLoading,
+                    expanded = ratingPillExpanded,
+                    onExpandedChange = { ratingPillExpanded = it },
+                    onRatingDrag = { ratingAlphaMaskActive = it },
+                    onRatingClick = onRatingClick ?: {},
+                    onRatingRemoveClick = onRatingRemoveClick ?: {},
+                    onFavoriteClick = onFavoriteClick ?: {},
+                )
             }
         }
     }
