@@ -138,7 +138,8 @@ internal fun MediaReactionsUserPick(
 @Composable
 private fun rememberRotatingIndex(userReactions: ImmutableList<MediaReaction>): Int {
     val animationsDisabled = rememberAnimationsDisabled()
-    var shownIndex by remember { mutableIntStateOf(0) }
+    // Seeded with the newest pick so a re-entering anchor doesn't animate from the first one.
+    var shownIndex by remember { mutableIntStateOf(userReactions.lastIndex.coerceAtLeast(0)) }
 
     LaunchedEffect(userReactions, animationsDisabled) {
         shownIndex = userReactions.lastIndex.coerceAtLeast(0)
