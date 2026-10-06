@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.model.PostCreditsScene
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.people.model.crewJobStringRes
@@ -70,12 +71,12 @@ internal fun DetailsMetaInfo(
         totalRuntime = show.totalRuntime,
         status = show.status,
         languages = show.languages,
-        titleOriginal = show.titleOriginal,
+        titleOriginal = show.titleOriginal?.takeIf { it.isNotBlank() && it != show.title },
         country = show.country,
         genres = show.genres,
         airs = rememberAirsText(show),
         networks = showNetworks ?: listOfNotNull(show.network),
-        studios = showStudios ?: EmptyImmutableList,
+        studios = showStudios,
         creators = showCreators,
         writers = showWriters,
         episodesCount = show.airedEpisodes,
@@ -88,6 +89,7 @@ internal fun DetailsMetaInfo(
 internal fun DetailsMetaInfo(
     episode: Episode,
     modifier: Modifier = Modifier,
+    episodeNetwork: String? = null,
     episodeDirectors: ImmutableList<CrewPerson>? = null,
     episodeWriters: ImmutableList<CrewPerson>? = null,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
@@ -99,8 +101,10 @@ internal fun DetailsMetaInfo(
         },
         runtime = episode.runtime,
         episodeType = episode.type,
+        networks = listOfNotNull(episodeNetwork),
         directors = episodeDirectors,
         writers = episodeWriters,
+        postCredits = episode.postCredits,
         layout = DetailsLayout.Episode,
         onPersonClick = onPersonClick,
     )
@@ -119,14 +123,16 @@ internal fun DetailsMetaInfo(
         modifier = modifier,
         released = movie.released,
         runtime = movie.runtime,
-        status = movie.status,
+        // Web shows a movie status only while its release year is unknown.
+        status = movie.status.takeIf { movie.year == null },
         languages = movie.languages,
-        titleOriginal = movie.titleOriginal,
+        titleOriginal = movie.titleOriginal?.takeIf { it.isNotBlank() && it != movie.title },
         country = movie.country,
         genres = movie.genres,
         studios = movieStudios,
         directors = movieDirectors,
         writers = movieWriters,
+        postCredits = movie.postCredits,
         onPersonClick = onPersonClick,
     )
 }
@@ -150,6 +156,7 @@ private fun DetailsMetaInfo(
     creators: ImmutableList<CrewPerson>? = null,
     directors: ImmutableList<CrewPerson>? = null,
     writers: ImmutableList<CrewPerson>? = null,
+    postCredits: ImmutableList<PostCreditsScene> = EmptyImmutableList,
     layout: DetailsLayout = DetailsLayout.Movie,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
@@ -184,48 +191,45 @@ private fun DetailsMetaInfo(
         }
     }
 
-    val airsCell = MetaCell(stringResource(R.string.header_airs), listOf(airs ?: EMPTY_VALUE))
+    val airsCell = MetaCell(stringResource(R.string.header_airs), listOfNotNull(airs))
     val releasedCell = MetaCell(releasedTitle, listOf(releasedValue))
     val runtimeCell = MetaCell(
         title = stringResource(R.string.header_runtime),
         values = listOf(runtime?.let { runtimeString } ?: EMPTY_VALUE),
     )
-    val totalRuntimeCell = totalRuntime?.let {
-        val episodes = stringResource(R.string.tag_text_number_of_episodes, episodesCount ?: 0)
-        MetaCell(stringResource(R.string.header_total_runtime), listOf("$totalRuntimeString ($episodes)"))
-    }
-    val networkCell = networks.takeIf { it.isNotEmpty() }?.let {
-        MetaCell(stringResource(R.string.header_network), it)
-    }
-    val episodeTypeCell = episodeType?.let {
-        MetaCell(stringResource(R.string.header_episode_type), listOf(stringResource(it.stringRes)))
-    }
+    val episodesString = stringResource(R.string.tag_text_number_of_episodes, episodesCount ?: 0)
+    val totalRuntimeCell = MetaCell(
+        title = stringResource(R.string.header_total_runtime),
+        values = listOfNotNull(
+            totalRuntime
+                ?.takeIf { it.isPositive() }
+                ?.let { "$totalRuntimeString ($episodesString)" },
+        ),
+    )
+    val networkCell = MetaCell(stringResource(R.string.header_network), networks)
+    val episodeTypeCell = MetaCell(
+        title = stringResource(R.string.header_episode_type),
+        values = listOfNotNull(episodeType?.let { stringResource(it.stringRes) }),
+    )
     val statusCell = MetaCell(
         title = stringResource(R.string.header_status),
-        values = listOf(status?.let { stringResource(it.displayStringRes) } ?: EMPTY_VALUE),
+        values = listOfNotNull(status?.let { stringResource(it.displayStringRes) }),
     )
-    val languageCell = MetaCell(
-        title = stringResource(R.string.header_language),
-        values = languagesStrings.ifEmpty { listOf(EMPTY_VALUE) },
-    )
-    val countryCell = MetaCell(
-        title = stringResource(R.string.header_country),
-        values = listOf(countryString ?: EMPTY_VALUE),
-    )
-    val originalTitleCell = MetaCell(
-        title = stringResource(R.string.header_original_title),
-        values = listOf(titleOriginal ?: EMPTY_VALUE),
-    )
+    val languageCell = MetaCell(stringResource(R.string.header_language), languagesStrings)
+    val countryCell = MetaCell(stringResource(R.string.header_country), listOfNotNull(countryString))
+    val originalTitleCell = MetaCell(stringResource(R.string.header_original_title), listOfNotNull(titleOriginal))
     val studioCell = MetaCell(
         title = stringResource(R.string.header_studio),
-        values = studios?.ifEmpty { listOf(EMPTY_VALUE) } ?: EmptyImmutableList,
+        values = studios ?: EmptyImmutableList,
         loading = studios == null,
     )
     val genreCell = MetaCell(
         title = stringResource(R.string.header_genre),
-        values = genres
-            .map { stringResource(it.displayStringRes) }
-            .ifEmpty { listOf(EMPTY_VALUE) },
+        values = genres.map { stringResource(it.displayStringRes) },
+    )
+    val postCreditsCell = MetaCell(
+        title = stringResource(R.string.header_post_credits),
+        values = postCredits.map { stringResource(it.stringRes) },
     )
 
     val people = remember(creators, directors) {
@@ -242,9 +246,7 @@ private fun DetailsMetaInfo(
                 else -> R.string.header_creator
             },
         ),
-        values = people
-            .map { crewLabel(it) }
-            .ifEmpty { listOf(EMPTY_VALUE) },
+        values = people.map { crewLabel(it) },
         loading = creators == null && directors == null,
         reservedLines = COLLAPSED_VALUES_COUNT,
         onValueClick = { index ->
@@ -257,9 +259,7 @@ private fun DetailsMetaInfo(
     val writersList = writers ?: EmptyImmutableList
     val writerCell = MetaCell(
         title = stringResource(R.string.header_writer),
-        values = writersList
-            .map { crewLabel(it) }
-            .ifEmpty { listOf(EMPTY_VALUE) },
+        values = writersList.map { crewLabel(it) },
         loading = writers == null,
         reservedLines = COLLAPSED_VALUES_COUNT,
         onValueClick = { index ->
@@ -269,42 +269,59 @@ private fun DetailsMetaInfo(
         },
     )
 
-    val rows = when (layout) {
+    // Cells flow two per row in the same order as web, skipping empty ones.
+    val cells = when (layout) {
         DetailsLayout.Movie -> listOf(
-            listOf(releasedCell, runtimeCell),
-            listOf(peopleCell, writerCell),
-            listOf(statusCell, languageCell),
-            listOf(countryCell, originalTitleCell),
-            listOf(studioCell, genreCell),
+            releasedCell,
+            statusCell,
+            runtimeCell,
+            peopleCell,
+            writerCell,
+            countryCell,
+            languageCell,
+            originalTitleCell,
+            studioCell,
+            genreCell,
+            postCreditsCell,
         )
         DetailsLayout.Show -> listOf(
-            listOf(airsCell, releasedCell),
-            listOf(statusCell, originalTitleCell),
-            listOf(runtimeCell, totalRuntimeCell),
-            listOf(peopleCell, writerCell),
-            listOf(countryCell, languageCell),
-            listOf(studioCell, genreCell),
-            listOf(networkCell),
+            airsCell,
+            releasedCell,
+            statusCell,
+            runtimeCell,
+            totalRuntimeCell,
+            networkCell,
+            peopleCell,
+            writerCell,
+            countryCell,
+            languageCell,
+            originalTitleCell,
+            studioCell,
+            genreCell,
         )
         DetailsLayout.Episode -> listOf(
-            listOf(releasedCell, runtimeCell),
-            listOf(episodeTypeCell),
-            listOf(peopleCell, writerCell),
+            releasedCell,
+            networkCell,
+            runtimeCell,
+            episodeTypeCell,
+            peopleCell,
+            writerCell,
+            postCreditsCell,
         )
     }
+    val rows = cells
+        .filter { it.loading || it.values.isNotEmpty() }
+        .chunked(2)
 
     Column(
         verticalArrangement = spacedBy(18.dp),
         modifier = modifier,
     ) {
         for (row in rows) {
-            val cells = row.filterNotNull()
-            if (cells.isEmpty()) continue
-
             Row(
                 horizontalArrangement = spacedBy(16.dp),
             ) {
-                for (cell in cells) {
+                for (cell in row) {
                     DetailsMeta(
                         title = cell.title,
                         values = cell.values,
@@ -314,7 +331,7 @@ private fun DetailsMetaInfo(
                         modifier = Modifier.weight(1F),
                     )
                 }
-                if (cells.size == 1) {
+                if (row.size == 1) {
                     Box(modifier = Modifier.weight(1F))
                 }
             }
@@ -535,6 +552,38 @@ private fun PreviewShowAiring() {
                 ),
             ),
             showNetworks = persistentListOf("AMC", "Netflix", "Hulu"),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewMovieExtras() {
+    TraktTheme {
+        DetailsMetaInfo(
+            movie = PreviewData.movie1.copy(
+                year = null,
+                titleOriginal = "Original Title",
+                postCredits = persistentListOf(PostCreditsScene.During, PostCreditsScene.After),
+            ),
+            movieStudios = persistentListOf(),
+            movieDirectors = persistentListOf(),
+            movieWriters = persistentListOf(),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewEpisode() {
+    TraktTheme {
+        DetailsMetaInfo(
+            episode = PreviewData.episode1.copy(
+                postCredits = persistentListOf(PostCreditsScene.After),
+            ),
+            episodeNetwork = "AMC",
+            episodeDirectors = persistentListOf(),
+            episodeWriters = persistentListOf(),
         )
     }
 }

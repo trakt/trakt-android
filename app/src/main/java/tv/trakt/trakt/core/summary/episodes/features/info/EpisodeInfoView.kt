@@ -74,6 +74,7 @@ private fun EpisodeInfoView(
                 val windowClass = currentWindowAdaptiveInfo().windowSizeClass
                 DetailsMetaInfo(
                     episode = episode,
+                    episodeNetwork = state.show?.network,
                     episodeDirectors = state.episodeCrew?.directors,
                     episodeWriters = state.episodeCrew?.writers,
                     onPersonClick = onPersonClick,
