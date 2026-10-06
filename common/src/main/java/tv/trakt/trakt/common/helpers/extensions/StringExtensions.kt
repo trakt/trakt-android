@@ -34,6 +34,9 @@ private fun Int.thousandsFormat(
 ): String {
     if (this < 1000) return this.toString()
     val fmt = CompactDecimalFormat.getInstance(locale, CompactDecimalFormat.CompactStyle.SHORT)
+        .apply {
+            maximumSignificantDigits = 3
+        }
     return fmt.format(this)
 }
 
