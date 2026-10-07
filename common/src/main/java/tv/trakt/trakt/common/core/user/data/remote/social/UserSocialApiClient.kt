@@ -5,16 +5,20 @@ import org.openapitools.client.models.PostUsersFollow201Response
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.UserBlockedDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserFollowRequestDto
+import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardEntryResponse
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.Instant
 import java.time.ZonedDateTime
 
 class UserSocialApiClient(
     private val usersApi: UsersApi,
+    private val v3Api: V3Api,
     private val cacheMarker: CacheMarkerProvider,
 ) : UserSocialRemoteDataSource {
     override suspend fun getSocialActivity(
@@ -89,6 +93,10 @@ class UserSocialApiClient(
 
         return response
             .sortedByDescending { it.requestedAt }
+    }
+
+    override suspend fun getLeaderboard(pagination: Pagination): List<V3LeaderboardEntryResponse> {
+        return v3Api.getLeaderboard(pagination)
     }
 
     override suspend fun approveRequest(requestId: Int) {

@@ -67,6 +67,7 @@ import org.openapitools.client.models.GetUsersRequestsFollow200ResponseInner
 import org.openapitools.client.models.GetUsersSettings200Response
 import org.openapitools.client.models.GetUsersSmartListsPersonal200ResponseInner
 import org.openapitools.client.models.GetUsersSmartListsPersonal200ResponseInnerFilters
+import org.openapitools.client.models.GetUsersStats200Response
 import org.openapitools.client.models.GetUsersWatching200Response
 import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistMovies200ResponseInner
@@ -154,6 +155,7 @@ typealias UserMediaDto = GetUsersReactionsComments200ResponseInnerCommentUser
 typealias UserRatingDto = GetUsersRatingsMovies200ResponseInner
 typealias UserReactionDto = GetUsersReactionsComments200ResponseInner
 typealias UserSettingsDto = GetUsersSettings200Response
+typealias UserStatsDto = GetUsersStats200Response
 typealias UserWatchingDto = GetUsersWatching200Response
 typealias WatchlistItemDto = GetUsersWatchlistAll200ResponseInner
 typealias WatchlistMovieDto = GetUsersWatchlistMovies200ResponseInner

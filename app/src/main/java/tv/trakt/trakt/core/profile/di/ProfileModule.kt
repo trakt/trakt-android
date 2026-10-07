@@ -85,6 +85,10 @@ import tv.trakt.trakt.core.profile.sections.favorites.all.AllFavoritesViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextViewModel
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryViewModel
+import tv.trakt.trakt.core.profile.sections.leaderboard.LeaderboardViewModel
+import tv.trakt.trakt.core.profile.sections.leaderboard.data.local.LeaderboardLocalDataSource
+import tv.trakt.trakt.core.profile.sections.leaderboard.data.local.LeaderboardStorage
+import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryViewModel
 import tv.trakt.trakt.core.profile.sections.library.all.AllLibraryViewModel
 import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressViewModel
@@ -152,6 +156,7 @@ internal val profileDataModule = module {
     singleOf(::ProfileRatingsStorage) { bind<ProfileRatingsLocalDataSource>() }
     singleOf(::ProfileCommentsStorage) { bind<ProfileCommentsLocalDataSource>() }
     singleOf(::ProfileProfileScreenTimeStorage) { bind<ProfileScreenTimeLocalDataSource>() }
+    singleOf(::LeaderboardStorage) { bind<LeaderboardLocalDataSource>() }
 
     single<UserWatchlistLocalDataSource> {
         UserWatchlistStorage(
@@ -188,6 +193,7 @@ internal val profileModule = module {
     factoryOf(::GetScreenTimeUseCase)
     factoryOf(::LoadUserReactionsUseCase)
     factoryOf(::LoadUserRatingsUseCase)
+    factoryOf(::GetLeaderboardUseCase)
 
     factory {
         GetProgressFilterUseCase(
@@ -238,6 +244,7 @@ internal val profileModule = module {
             localUserRatings = get(),
             localProfileDropped = get(),
             localScreenTime = get(),
+            localLeaderboard = get(),
             localProfileWatching = get(),
             localProfileCompleted = get(),
             localProfileRatings = get(),
@@ -256,6 +263,7 @@ internal val profileModule = module {
     viewModelOf(::ProfileAllActivityViewModel)
     viewModelOf(::ProfileSocialViewModel)
     viewModelOf(::AllProfileSocialViewModel)
+    viewModelOf(::LeaderboardViewModel)
     viewModelOf(::ProfileProgressViewModel)
 
     viewModelOf(::AllProgressViewModel)

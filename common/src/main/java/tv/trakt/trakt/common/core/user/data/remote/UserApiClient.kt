@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.CommentAllDto
 import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
+import tv.trakt.trakt.common.networking.UserStatsDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
@@ -37,6 +38,17 @@ class UserApiClient(
         ).body()
 
         return User.fromDto(response)
+    }
+
+    override suspend fun getStats(userId: String): UserStatsDto? {
+        val response = usersApi.getUsersStats(
+            id = userId,
+        )
+        // 204 means no precomputed stats are available (non-VIP users).
+        return when {
+            response.status == 204 -> null
+            else -> response.body()
+        }
     }
 
     override suspend fun getWatchingNow(): UserWatchingDto? {

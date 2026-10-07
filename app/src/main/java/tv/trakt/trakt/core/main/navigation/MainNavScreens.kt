@@ -53,6 +53,8 @@ import tv.trakt.trakt.core.profile.sections.activity.all.navigation.navigateToPr
 import tv.trakt.trakt.core.profile.sections.activity.all.navigation.profileAllActivityScreen
 import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.allFavoritesScreen
 import tv.trakt.trakt.core.profile.sections.favorites.all.navigation.navigateToFavorites
+import tv.trakt.trakt.core.profile.sections.leaderboard.navigation.leaderboardScreen
+import tv.trakt.trakt.core.profile.sections.leaderboard.navigation.navigateToLeaderboard
 import tv.trakt.trakt.core.profile.sections.library.all.navigation.allLibraryScreen
 import tv.trakt.trakt.core.profile.sections.library.all.navigation.navigateToLibrary
 import tv.trakt.trakt.core.profile.sections.progress.all.navigation.allProgressScreen
@@ -630,6 +632,7 @@ internal fun NavGraphBuilder.profileScreens(
                 )
             },
             onNavigateToSocial = { navigateToProfileSocial() },
+            onNavigateToLeaderboard = { navigateToLeaderboard() },
         )
 
         allFavoritesScreen(
@@ -650,6 +653,16 @@ internal fun NavGraphBuilder.profileScreens(
         )
 
         allProfileSocialScreen(
+            onNavigateToUser = {
+                navigateToUserProfile(
+                    user = it,
+                    currentUserId = userId,
+                )
+            },
+            onNavigateBack = { popBackStack() },
+        )
+
+        leaderboardScreen(
             onNavigateToUser = {
                 navigateToUserProfile(
                     user = it,

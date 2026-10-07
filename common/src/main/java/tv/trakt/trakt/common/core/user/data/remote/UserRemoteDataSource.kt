@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.CommentAllDto
 import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
+import tv.trakt.trakt.common.networking.UserStatsDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
 
 interface UserRemoteDataSource {
@@ -38,6 +39,8 @@ interface UserRemoteDataSource {
     suspend fun getProfile(): User
 
     suspend fun getUserProfile(userId: TraktId): User
+
+    suspend fun getStats(userId: String): UserStatsDto?
 
     suspend fun updateProfileLocation(location: String?)
 
