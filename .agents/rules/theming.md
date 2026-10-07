@@ -118,6 +118,56 @@ Modifier.padding(horizontal = TraktTheme.spacing.lg)
 `TraktTheme.size.*` exposes adaptive sizes for icons, avatars, cards, hero artwork. Same rules as
 spacing — use tokens, don't hard-code `64.dp`.
 
+## Shadows
+
+- Floating containers (rating pill, check-in prompt) share `FloatingContainerShadow`
+  (`app/.../ui/theme/Shadow.kt`) via `Modifier.dropShadow(shape, FloatingContainerShadow)`. Reuse it
+  for new floating surfaces instead of declaring a fresh `Shadow(...)`.
+
+### Shadows and alpha animations
+
+`dropShadow` draws outside the composable's bounds. Any `graphicsLayer` with `alpha < 1` and the
+default `CompositingStrategy.Auto` renders into an offscreen buffer clipped to the layer bounds, so
+the shadow gets cut off mid-animation and pops back in once alpha reaches `1`.
+
+This hits `fadeIn` / `fadeOut` in `AnimatedVisibility` / `AnimatedContent`,
+`Modifier.alpha(...)` and `graphicsLayer { alpha = … }` wrapping a shadowed composable.
+
+Fix one of two ways:
+
+- **Modulated alpha (preferred).** Drop `fadeIn` / `fadeOut`, drive alpha from the
+  `AnimatedVisibilityScope.transition` and apply it with `CompositingStrategy.ModulateAlpha`, which
+  skips the offscreen buffer. Overlapping content can show through slightly mid-fade - fine for
+  short fades. See `MainCheckInView`.
+
+  ```kotlin
+  AnimatedVisibility(
+      visible = visible,
+      enter = slideInVertically(initialOffsetY = { it / 10 }),
+      exit = ExitTransition.None,
+  ) {
+      val alpha by transition.animateFloat(
+          transitionSpec = { tween(if (targetState == Visible) 250 else 100) },
+          label = "alpha",
+      ) { if (it == Visible) 1F else 0F }
+
+      ShadowedContent(
+          modifier = Modifier.graphicsLayer {
+              this.alpha = alpha
+              compositingStrategy = CompositingStrategy.ModulateAlpha
+          },
+      )
+  }
+  ```
+
+- **Inset the layer.** Keep the stock fade, pad the content inside the animated layer by the shadow
+  extent (`radius * 2 + spread`), and `offset` the container back by the same amount so the visual
+  position is unchanged. See `DetailsRatingPillOverlay`.
+
+`Modifier.clipToBounds()`, `animateContentSize()` (clips by default) and `SizeTransform(clip = true)`
+cut shadows the same way. Keep `dropShadow` outside them in the modifier chain, or pass
+`clip = false`.
+
 ## Material 3 vs TraktTheme
 
 - Codebase wraps Material 3 at root via `MaterialTheme(...)`. Trakt tokens layer on top.
@@ -170,3 +220,5 @@ spacing — use tokens, don't hard-code `64.dp`.
 - [ ] Images via Coil 3 + `R.drawable.*`, never Glide/Fresco/Picasso
 - [ ] Light / dark / seasonal variants exist for every new token
 - [ ] Animations honour reduced-motion
+- [ ] Shadowed composables never fade through an offscreen layer (`fadeIn` / `alpha`) - use
+  `ModulateAlpha` or inset the layer
