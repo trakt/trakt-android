@@ -128,12 +128,17 @@ internal class ProfileViewModel(
     private fun loadLeaderboard() {
         viewModelScope.launch {
             try {
+                getLeaderboardUseCase.getLocalLeaderboard()?.let { entries ->
+                    hasLeaderboardState.update { entries.isNotEmpty() }
+                }
+
                 if (!sessionManager.isAuthenticated()) {
                     return@launch
                 }
 
                 val entries = getLeaderboardUseCase.getLeaderboard(
-                    Pagination(page = 1, limit = 1),
+                    pagination = Pagination(page = 1, limit = 1),
+                    saveLocal = true,
                 )
                 hasLeaderboardState.update { entries.isNotEmpty() }
             } catch (error: Exception) {

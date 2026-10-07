@@ -8,16 +8,31 @@ import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSo
 import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.common.model.leaderboard.LeaderboardEntry
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.core.profile.sections.leaderboard.data.local.LeaderboardLocalDataSource
 
 internal class GetLeaderboardUseCase(
     private val socialRemoteSource: UserSocialRemoteDataSource,
     private val userRemoteSource: UserRemoteDataSource,
+    private val localSource: LeaderboardLocalDataSource,
     private val sessionManager: SessionManager,
 ) {
-    suspend fun getLeaderboard(pagination: Pagination): ImmutableList<LeaderboardEntry> {
-        return socialRemoteSource.getLeaderboard(pagination)
+    suspend fun getLocalLeaderboard(): ImmutableList<LeaderboardEntry>? {
+        return localSource.getData()
+    }
+
+    suspend fun getLeaderboard(
+        pagination: Pagination,
+        saveLocal: Boolean = false,
+    ): ImmutableList<LeaderboardEntry> {
+        val entries = socialRemoteSource.getLeaderboard(pagination)
             .map(LeaderboardEntry::fromDto)
             .toImmutableList()
+
+        if (saveLocal) {
+            localSource.setData(entries)
+        }
+
+        return entries
     }
 
     suspend fun getViewerEntry(): LeaderboardEntry? {
