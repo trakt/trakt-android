@@ -6,7 +6,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
@@ -16,9 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.LongPress
 import androidx.compose.ui.platform.LocalContext
@@ -47,7 +44,6 @@ internal fun MediaReactionsView(
     dropdownSpacing: Dp = DefaultDropdownSpacing,
     onReactionToggle: (MediaReaction) -> Unit = {},
     onActiveChange: (Boolean) -> Unit = {},
-    leading: @Composable () -> Unit = {},
     anchor: @Composable (state: MediaReactionsState, modifier: Modifier) -> Unit = { state, anchorModifier ->
         when {
             compact -> MediaReactionsUserPick(
@@ -78,7 +74,6 @@ internal fun MediaReactionsView(
         else -> isSignedIn || state.summary.reactionsCount > 0
     }
     val isShown = visible && state.loading.isDone && hasContent
-    val isReserved = compact && visible && !state.loading.isDone
 
     val isActive = tooltipState.isVisible || pickerSheet
     LaunchedEffect(isActive) {
@@ -91,57 +86,44 @@ internal fun MediaReactionsView(
         onReactionToggle(reaction)
     }
 
-    if (isReserved) {
-        Row(
-            verticalAlignment = CenterVertically,
-            modifier = modifier.alpha(0F),
-        ) {
-            leading()
-            anchor(state, Modifier)
-        }
-    }
-
     AnimatedVisibility(
         visible = isShown,
         enter = fadeIn(tween(200, delayMillis = 350)),
         exit = fadeOut(tween(200, delayMillis = 350)),
         modifier = modifier,
     ) {
-        Row(verticalAlignment = CenterVertically) {
-            leading()
-            MediaReactionsQuickBarDropdown(
-                state = tooltipState,
-                summary = state.summary,
-                userReactions = state.userReactions,
-                isLimitReached = state.isLimitReached,
-                spacing = dropdownSpacing,
-                onReactionClick = ::onReactionClick,
-                onMoreClick = {
-                    tooltipState.dismiss()
-                    pickerSheet = true
-                },
-            ) {
-                anchor(
-                    state,
-                    Modifier.onClickCombined(
-                        enabled = isSignedIn,
-                        indication = false,
-                        onClick = {
-                            scope.launch {
-                                when {
-                                    tooltipState.isVisible -> tooltipState.dismiss()
-                                    else -> tooltipState.show()
-                                }
+        MediaReactionsQuickBarDropdown(
+            state = tooltipState,
+            summary = state.summary,
+            userReactions = state.userReactions,
+            isLimitReached = state.isLimitReached,
+            spacing = dropdownSpacing,
+            onReactionClick = ::onReactionClick,
+            onMoreClick = {
+                tooltipState.dismiss()
+                pickerSheet = true
+            },
+        ) {
+            anchor(
+                state,
+                Modifier.onClickCombined(
+                    enabled = isSignedIn,
+                    indication = false,
+                    onClick = {
+                        scope.launch {
+                            when {
+                                tooltipState.isVisible -> tooltipState.dismiss()
+                                else -> tooltipState.show()
                             }
-                        },
-                        onLongClick = {
-                            haptic.performHapticFeedback(LongPress)
-                            tooltipState.dismiss()
-                            pickerSheet = true
-                        },
-                    ),
-                )
-            }
+                        }
+                    },
+                    onLongClick = {
+                        haptic.performHapticFeedback(LongPress)
+                        tooltipState.dismiss()
+                        pickerSheet = true
+                    },
+                ),
+            )
         }
     }
 

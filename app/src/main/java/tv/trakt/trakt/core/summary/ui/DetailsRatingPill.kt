@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.summary.ui
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -29,7 +28,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,7 +45,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -74,6 +71,7 @@ import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.ratings.ui.ratingDelight
 import tv.trakt.trakt.core.reactions.media.MediaReactionsView
 import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
+import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsLoading
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsUserPick
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -104,7 +102,6 @@ private val SeparatorHeight = 16.dp
 
 private val PillReactionFontSize = 20.sp
 private val PillReactionCellSize = 28.dp
-private val PillLoadingSize = 16.dp
 
 private val PillReactionSlotWidth = PillReactionCellSize + PillTouchPadding * 2
 
@@ -214,13 +211,10 @@ private fun PillReactionSlot(target: MediaReactionsTarget) {
     val reactionsState by viewModel.state.collectAsStateWithLifecycle()
 
     Box(contentAlignment = Alignment.Center) {
-        AnimatedVisibility(
+        MediaReactionsLoading(
             visible = !reactionsState.loading.isDone,
-            enter = EnterTransition.None,
-            exit = fadeOut(tween(200, delayMillis = 350)),
-        ) {
-            PillReactionLoading()
-        }
+            size = PillIconSize,
+        )
 
         MediaReactionsView(
             viewModel = viewModel,
@@ -358,21 +352,6 @@ private fun PillReaction(
 }
 
 @Composable
-private fun PillReactionLoading(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.size(PillIconSize),
-    ) {
-        CircularProgressIndicator(
-            color = TraktTheme.colors.separator,
-            trackColor = Color.Transparent,
-            strokeWidth = 1.5.dp,
-            modifier = Modifier.size(PillLoadingSize),
-        )
-    }
-}
-
-@Composable
 private fun PillSeparator() {
     Box(
         modifier = Modifier
@@ -485,7 +464,10 @@ private fun DetailsRatingPillPreview() {
                 expanded = false,
                 onExpandedChange = {},
                 reaction = {
-                    PillReactionLoading()
+                    MediaReactionsLoading(
+                        visible = true,
+                        size = PillIconSize,
+                    )
                 },
             )
             DetailsRatingPill(
