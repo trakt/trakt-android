@@ -62,6 +62,8 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
 
+private val ItemsSpacing = 10.dp
+
 @Composable
 internal fun UserRatingBar(
     modifier: Modifier = Modifier,
@@ -74,6 +76,7 @@ internal fun UserRatingBar(
     spacing: Dp = 8.dp,
     textSpacing: Dp = 44.dp,
     topPadding: Dp = 22.dp,
+    separatorVisible: Boolean = false,
     onRatingDrag: (Boolean) -> Unit = {},
     onRatingClick: (Int) -> Unit = {},
     onRatingRemoveClick: () -> Unit = {},
@@ -171,6 +174,15 @@ internal fun UserRatingBar(
         label = "alpha",
     )
 
+    val favoriteAlpha = if (ratingAlphaMaskActive) ratingAlphaMask else animatedAlpha
+    val showSeparator = favoriteVisible && separatorVisible
+
+    // Shifts the drag label left so it stays centered over the stars, not the whole row.
+    val favoriteOffset = when {
+        showSeparator -> (ItemsSpacing * 2 + RatingSeparatorWidth + size) / 2
+        else -> (ItemsSpacing + size) / 2
+    }
+
     LaunchedEffect(Unit) {
         tutorialDone = tutorials.get(TutorialKey.RATING_BAR_SWIPE)
     }
@@ -199,7 +211,7 @@ internal fun UserRatingBar(
                     .wrapContentSize(unbounded = true)
                     .graphicsLayer {
                         if (favoriteVisible) {
-                            translationX = -16.dp.toPx()
+                            translationX = -favoriteOffset.toPx()
                         }
                         translationY = -textSpacing.toPx()
                     },
@@ -208,7 +220,7 @@ internal fun UserRatingBar(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(10.dp, CenterHorizontally),
+            horizontalArrangement = spacedBy(ItemsSpacing, CenterHorizontally),
         ) {
             Box {
                 Row(
@@ -415,6 +427,12 @@ internal fun UserRatingBar(
                 }
             }
 
+            if (showSeparator) {
+                RatingSeparator(
+                    modifier = Modifier.alpha(favoriteAlpha),
+                )
+            }
+
             if (favoriteVisible) {
                 val scale = when {
                     lastClickedIndex.intValue == -1 -> scaleAnimation.value
@@ -432,7 +450,7 @@ internal fun UserRatingBar(
                         tint = if (favorite) Red500 else TraktTheme.colors.textPrimary,
                         modifier = Modifier
                             .size(size)
-                            .alpha(if (ratingAlphaMaskActive) ratingAlphaMask else animatedAlpha)
+                            .alpha(favoriteAlpha)
                             .graphicsLayer {
                                 scaleX = scale
                                 scaleY = scale
@@ -503,6 +521,18 @@ private fun Preview() {
 private fun Preview2() {
     TraktThemeLightDark {
         UserRatingBar(
+            rating = 7,
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun PreviewSeparator() {
+    TraktThemeLightDark {
+        UserRatingBar(
+            favorite = true,
+            separatorVisible = true,
             rating = 7,
         )
     }

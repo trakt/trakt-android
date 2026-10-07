@@ -47,7 +47,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,13 +62,20 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.reactions.MediaReaction
+import tv.trakt.trakt.common.model.reactions.MediaReactionsSummary
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
+import tv.trakt.trakt.core.ratings.ui.RatingSeparator
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.reactions.media.MediaReactionsView
+import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
+import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsBadge
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -86,15 +92,18 @@ private val viewPadding = 7.dp
 private val imageShape = RoundedCornerShape(14.dp)
 private val imageHeight = 76.dp
 private val imageShadow = 3.dp
+private val ratingItemsSpace = 10.dp
 
 @Composable
 internal fun RatePromptView(
     modifier: Modifier = Modifier,
     viewModel: RatePromptViewModel = koinViewModel(),
+    reactionsViewModel: MediaReactionsViewModel,
     media: RatePromptMedia,
     onMediaClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    var reactionsActive by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
@@ -133,6 +142,7 @@ internal fun RatePromptView(
             favoriteVisible = media is MovieMedia,
             favoriteLoading = state.loading.isLoading,
             dismissing = state.dismissing,
+            dismissPaused = reactionsActive,
             onMediaClick = onMediaClick,
             onCloseClick = {
                 viewModel.dismiss()
@@ -150,6 +160,19 @@ internal fun RatePromptView(
                 }
             },
             modifier = Modifier.padding(viewPadding),
+            reactions = {
+                MediaReactionsView(
+                    viewModel = reactionsViewModel,
+                    compact = true,
+                    onReactionToggle = { viewModel.onReactionToggle() },
+                    onActiveChange = { reactionsActive = it },
+                    leading = {
+                        RatingSeparator(
+                            modifier = Modifier.padding(end = ratingItemsSpace),
+                        )
+                    },
+                )
+            },
         )
     }
 }
@@ -166,10 +189,12 @@ private fun ExpandedView(
     favoriteLoading: Boolean,
     dismissing: Instant?,
     modifier: Modifier = Modifier,
+    dismissPaused: Boolean = false,
     onRate: (Int?) -> Unit = {},
     onFavoriteClick: () -> Unit = {},
     onMediaClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
+    reactions: @Composable () -> Unit = {},
 ) {
     var isDraggingRate by remember { mutableStateOf(false) }
     val ratingAlphaMask: Float by animateFloatAsState(
@@ -239,20 +264,9 @@ private fun ExpandedView(
                 ) {
                     Row(
                         verticalAlignment = Alignment.Bottom,
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.spacedBy(ratingItemsSpace, Alignment.End),
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text(
-                            text = stringResource(R.string.header_rate_now),
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.cardTitle.copy(
-                                fontWeight = W400,
-                                fontSize = 11.sp,
-                            ),
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask),
-                        )
-
                         UserRatingBar(
                             key = key,
                             size = 22.dp,
@@ -262,19 +276,26 @@ private fun ExpandedView(
                             favorite = favorite,
                             favoriteVisible = favoriteVisible,
                             favoriteLoading = favoriteLoading,
+                            separatorVisible = true,
                             onRatingDrag = { isDraggingRate = it },
                             onRatingClick = { onRate(it) },
                             onRatingRemoveClick = { onRate(null) },
                             onFavoriteClick = onFavoriteClick,
                         )
+
+                        Box(
+                            modifier = Modifier.alpha(ratingAlphaMask),
+                        ) {
+                            reactions()
+                        }
                     }
                 }
             }
         }
 
         val animatedProgress = remember { Animatable(0F) }
-        LaunchedEffect(dismissing, isDraggingRate, favoriteLoading) {
-            if (dismissing != null && !isDraggingRate && !favoriteLoading) {
+        LaunchedEffect(dismissing, isDraggingRate, favoriteLoading, dismissPaused) {
+            if (dismissing != null && !isDraggingRate && !favoriteLoading && !dismissPaused) {
                 animatedProgress.snapTo(0F)
                 animatedProgress.animateTo(
                     targetValue = 1F,
@@ -420,6 +441,18 @@ private fun Preview() {
                         dismissing = null,
                         subtitle = "How did you like it?",
                         modifier = Modifier.padding(viewPadding),
+                        reactions = {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RatingSeparator(
+                                    modifier = Modifier.padding(end = ratingItemsSpace),
+                                )
+                                MediaReactionsBadge(
+                                    summary = MediaReactionsSummary(),
+                                    userReactions = persistentListOf(MediaReaction.Fire),
+                                    compact = true,
+                                )
+                            }
+                        },
                     )
                 }
             }

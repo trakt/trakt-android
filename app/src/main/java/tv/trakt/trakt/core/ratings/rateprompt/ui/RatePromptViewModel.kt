@@ -195,6 +195,10 @@ internal class RatePromptViewModel(
         }
     }
 
+    fun onReactionToggle() {
+        dismissingState.update { nowUtcInstant() }
+    }
+
     fun dismiss() {
         if (loadingState.value == Loading) {
             return

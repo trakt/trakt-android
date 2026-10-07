@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalRatePromptVisibility
+import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.main.MainState
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.UnratedMedia
@@ -51,6 +52,16 @@ internal fun ColumnScope.MainRatePromptView(
                         key = "${media.mediaType.value}-${media.id.value}",
                     ) {
                         parametersOf(media, moreMedia)
+                    },
+                    reactionsViewModel = koinViewModel(
+                        key = "reactions-${media.mediaType.value}-${media.id.value}",
+                    ) {
+                        parametersOf(
+                            MediaReactionsTarget(
+                                type = media.mediaType,
+                                id = media.id,
+                            ),
+                        )
                     },
                     media = media,
                     onMediaClick = {

@@ -60,9 +60,10 @@ internal fun MediaReactionsBadge(
     userReactions: ImmutableList<MediaReaction>,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    compact: Boolean = false,
 ) {
     val topReactions = remember(summary) { summary.top(TOP_REACTIONS_LIMIT) }
-    val hasRoom = summary.reactionsCount > 0
+    val hasRoom = !compact && summary.reactionsCount > 0
     val shownIndex = rememberRotatingIndex(userReactions)
 
     Row(
@@ -75,7 +76,7 @@ internal fun MediaReactionsBadge(
         }
 
         // Dots and separator share one fixed slot, so switching between them never shifts the row.
-        if (enabled && (hasRoom || userReactions.size > 1)) {
+        if (enabled && (hasRoom || (!compact && userReactions.size > 1))) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.width(DividerSlotWidth),
@@ -236,6 +237,18 @@ private fun PreviewUserPicks() {
         MediaReactionsBadge(
             summary = PreviewSummary,
             userReactions = persistentListOf(MediaReaction.Fire, MediaReaction.Skull),
+        )
+    }
+}
+
+@Preview(name = "Compact")
+@Composable
+private fun PreviewCompact() {
+    TraktThemeLightDark {
+        MediaReactionsBadge(
+            summary = PreviewSummary,
+            userReactions = persistentListOf(MediaReaction.Fire, MediaReaction.Skull),
+            compact = true,
         )
     }
 }
