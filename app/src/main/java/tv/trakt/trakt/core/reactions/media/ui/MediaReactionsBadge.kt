@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.reactions.media.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +52,7 @@ private const val TOP_REACTIONS_LIMIT = 3
 
 private val BadgeEmojiSize = 24.dp
 private val BadgeEmojiFontSize = 18.sp
+private val LoadingIndicatorSize = 16.dp
 private val BadgeAddIconSize = 22.dp
 private const val PICK_DRIFT_FRACTION = 12
 
@@ -154,6 +159,36 @@ private fun rememberRotatingIndex(userReactions: ImmutableList<MediaReaction>): 
     return shownIndex
 }
 
+/**
+ * Holds the reaction slot while reactions load. The fade out is delayed to cross over with
+ * [tv.trakt.trakt.core.reactions.media.MediaReactionsView]'s delayed fade in.
+ */
+@Composable
+internal fun MediaReactionsLoading(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    size: Dp = BadgeEmojiSize,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = EnterTransition.None,
+        exit = fadeOut(tween(200, delayMillis = 350)),
+        modifier = modifier,
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.size(size),
+        ) {
+            CircularProgressIndicator(
+                color = TraktTheme.colors.separator,
+                trackColor = Color.Transparent,
+                strokeWidth = 1.5.dp,
+                modifier = Modifier.size(LoadingIndicatorSize),
+            )
+        }
+    }
+}
+
 @Composable
 private fun AddReactionIcon(
     modifier: Modifier = Modifier,
@@ -221,5 +256,13 @@ private fun PreviewSignedOut() {
             summary = MediaReactionsSummary(),
             enabled = false,
         )
+    }
+}
+
+@Preview(name = "Loading")
+@Composable
+private fun PreviewLoading() {
+    TraktThemeLightDark {
+        MediaReactionsLoading(visible = true)
     }
 }

@@ -74,6 +74,7 @@ import tv.trakt.trakt.core.ratings.ui.RatingSeparator
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.reactions.media.MediaReactionsView
 import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
+import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsLoading
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsUserPick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
@@ -102,6 +103,7 @@ internal fun RatePromptView(
     onMediaClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val reactionsState by reactionsViewModel.state.collectAsStateWithLifecycle()
     var reactionsActive by remember { mutableStateOf(false) }
 
     Box(
@@ -160,17 +162,23 @@ internal fun RatePromptView(
             },
             modifier = Modifier.padding(viewPadding),
             reactions = {
-                MediaReactionsView(
-                    viewModel = reactionsViewModel,
-                    compact = true,
-                    onReactionToggle = { viewModel.onReactionToggle() },
-                    onActiveChange = { reactionsActive = it },
-                    leading = {
-                        RatingSeparator(
-                            modifier = Modifier.padding(end = ratingItemsSpace),
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RatingSeparator(
+                        modifier = Modifier.padding(end = ratingItemsSpace),
+                    )
+                    // The loader holds the slot so the rating bar doesn't shift once reactions load.
+                    Box(contentAlignment = Alignment.Center) {
+                        MediaReactionsLoading(
+                            visible = !reactionsState.loading.isDone,
                         )
-                    },
-                )
+                        MediaReactionsView(
+                            viewModel = reactionsViewModel,
+                            compact = true,
+                            onReactionToggle = { viewModel.onReactionToggle() },
+                            onActiveChange = { reactionsActive = it },
+                        )
+                    }
+                }
             },
         )
     }
