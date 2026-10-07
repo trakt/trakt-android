@@ -299,9 +299,6 @@ internal fun ShowDetailsScreen(
         onCheckClick = {
             confirmWatchAgainSheet = true
         },
-        onRemoveClick = {
-            confirmRemoveWatchedSheet = true
-        },
         onListsClick = {
             listsSheet = state.show
         },

@@ -311,9 +311,6 @@ internal fun MovieDetailsScreen(
         onCheckClick = {
             dateSheet = true
         },
-        onRemoveClick = {
-            confirmRemoveWatchedSheet = true
-        },
         onListsClick = {
             listsSheet = state.movie
         },

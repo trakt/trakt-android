@@ -6,12 +6,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -26,10 +29,13 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
@@ -44,11 +50,14 @@ import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.features.history.navigation.ShowHistoryDestination
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.HISTORY_PAGE_LIMIT
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.resources.R
 import java.time.LocalDate
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -59,12 +68,15 @@ internal class ShowHistoryViewModel(
     private val getHistoryUseCase: GetShowHistoryUseCase,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
+    private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val episodeDetailsUpdates: EpisodeDetailsUpdates,
+    private val showDetailsUpdates: ShowDetailsUpdates,
     private val ratingsUpdates: RatingsUpdates,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowHistoryDestination>()
 
@@ -82,6 +94,9 @@ internal class ShowHistoryViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private val infoFlow = MutableSharedFlow<StringResource>(replay = 0)
+    val info = infoFlow.asSharedFlow()
 
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
 
@@ -291,6 +306,45 @@ internal class ShowHistoryViewModel(
 
     fun clearNavigation() {
         navigateEpisode.update { null }
+    }
+
+    fun removeAllFromWatched() {
+        if (processingJob?.isActive == true) {
+            return
+        }
+
+        dataJob?.cancel()
+        processingJob = viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingState.update { Loading }
+
+                updateShowHistoryUseCase.removeAllFromHistory(destination.showId.toTraktId())
+                loadProgressUseCase.loadShowsProgress()
+                episodeDetailsUpdates.notifyUpdate(History)
+                showDetailsUpdates.notifyUpdate(ShowDetailsUpdates.Source.Progress)
+
+                itemsState.update { persistentMapOf() }
+                hasMoreData = false
+
+                analytics.progress.logRemoveWatchedMedia(
+                    mediaType = "show",
+                    source = "show_history",
+                )
+
+                infoFlow.emit(DynamicStringResource(R.string.text_info_history_removed))
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingState.update { Done }
+                processingJob = null
+            }
+        }
     }
 
     val state = combine(

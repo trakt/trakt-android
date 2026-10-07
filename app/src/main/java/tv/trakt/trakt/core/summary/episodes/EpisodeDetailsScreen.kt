@@ -243,9 +243,6 @@ internal fun EpisodeDetailsScreen(
                 )
             }
         },
-        onRemoveClick = {
-            confirmRemoveWatchedSheet = true
-        },
         onShareClick = {
             shareEpisode(
                 show = state.show,

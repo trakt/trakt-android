@@ -56,7 +56,6 @@ internal fun ShowDetailsContextView(
     viewModel: ShowDetailsContextViewModel,
     modifier: Modifier = Modifier,
     onHistoryClick: (() -> Unit)? = null,
-    onRemoveClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
@@ -68,7 +67,6 @@ internal fun ShowDetailsContextView(
         showProgress = showProgress,
         state = state,
         onHistoryClick = onHistoryClick,
-        onRemoveClick = onRemoveClick,
         onCheckClick = onCheckClick,
         onListsClick = onListsClick,
         onCoverClick = onCoverClick,
@@ -84,7 +82,6 @@ private fun ShowDetailsContextViewContent(
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
     onHistoryClick: (() -> Unit)? = null,
-    onRemoveClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
 ) {
@@ -168,7 +165,6 @@ private fun ShowDetailsContextViewContent(
             coverEnabled = !show.images?.getFanartUrl().isNullOrBlank(),
             onCheckClick = onCheckClick ?: {},
             onHistoryClick = onHistoryClick ?: {},
-            onRemoveClick = onRemoveClick ?: {},
             onListsClick = onListsClick ?: {},
             onCoverClick = onCoverClick ?: {},
             modifier = Modifier.padding(top = 14.dp),
@@ -227,7 +223,6 @@ private fun ActionButtons(
     onCheckClick: () -> Unit,
     onCoverClick: () -> Unit,
     onHistoryClick: () -> Unit,
-    onRemoveClick: () -> Unit,
     onListsClick: () -> Unit,
 ) {
     Column(
@@ -257,32 +252,6 @@ private fun ActionButtons(
             )
         }
 
-        if (watched || started) {
-            GhostButton(
-                text = stringResource(R.string.button_text_history),
-                icon = painterResource(R.drawable.ic_calendar_check),
-                iconSize = 23.dp,
-                iconSpace = 15.5.dp,
-                modifier = Modifier
-                    .graphicsLayer {
-                        translationX = -6.dp.toPx()
-                    },
-                onClick = onHistoryClick,
-            )
-
-            GhostButton(
-                text = stringResource(R.string.button_text_remove_from_history),
-                icon = painterResource(R.drawable.ic_close),
-                iconSize = 22.dp,
-                iconSpace = 15.5.dp,
-                modifier = Modifier
-                    .graphicsLayer {
-                        translationX = -6.dp.toPx()
-                    },
-                onClick = onRemoveClick,
-            )
-        }
-
         if (lists) {
             GhostButton(
                 text = stringResource(R.string.button_text_manage_lists),
@@ -294,6 +263,20 @@ private fun ActionButtons(
                         translationX = -4.dp.toPx()
                     },
                 onClick = onListsClick,
+            )
+        }
+
+        if (watched || started) {
+            GhostButton(
+                text = stringResource(R.string.button_text_history),
+                icon = painterResource(R.drawable.ic_calendar_check),
+                iconSize = 23.dp,
+                iconSpace = 15.5.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+                onClick = onHistoryClick,
             )
         }
 

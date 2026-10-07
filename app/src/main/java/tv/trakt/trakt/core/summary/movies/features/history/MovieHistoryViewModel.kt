@@ -6,12 +6,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -24,10 +27,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
@@ -44,6 +50,7 @@ import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHist
 import tv.trakt.trakt.core.summary.movies.features.history.usecases.HISTORY_PAGE_LIMIT
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.resources.R
 import java.time.LocalDate
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -58,6 +65,7 @@ internal class MovieHistoryViewModel(
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val ratingsUpdates: RatingsUpdates,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieHistoryDestination>()
 
@@ -75,6 +83,9 @@ internal class MovieHistoryViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private val infoFlow = MutableSharedFlow<StringResource>(replay = 0)
+    val info = infoFlow.asSharedFlow()
 
     private var pages = 1
     private var hasMoreData = false
@@ -251,6 +262,44 @@ internal class MovieHistoryViewModel(
                         .filterValues { it.isNotEmpty() }
                         .toImmutableMap()
                 }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingState.update { Done }
+                processingJob = null
+            }
+        }
+    }
+
+    fun removeAllFromWatched() {
+        if (processingJob?.isActive == true) {
+            return
+        }
+
+        dataJob?.cancel()
+        processingJob = viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                loadingState.update { Loading }
+
+                updateHistoryUseCase.removeAllFromHistory(destination.movieId.toTraktId())
+                loadProgressUseCase.loadMoviesProgress()
+                movieDetailsUpdates.notifyUpdate(History)
+
+                itemsState.update { persistentMapOf() }
+                hasMoreData = false
+
+                analytics.progress.logRemoveWatchedMedia(
+                    mediaType = "movie",
+                    source = "movie_history",
+                )
+
+                infoFlow.emit(DynamicStringResource(R.string.text_info_history_removed))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

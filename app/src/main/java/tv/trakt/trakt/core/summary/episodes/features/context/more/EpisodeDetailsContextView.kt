@@ -55,7 +55,6 @@ internal fun EpisodeDetailsContextView(
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
     onHistoryClick: (() -> Unit)? = null,
-    onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
 ) {
@@ -67,7 +66,6 @@ internal fun EpisodeDetailsContextView(
         state = state,
         onCheckClick = onCheckClick,
         onHistoryClick = onHistoryClick,
-        onRemoveClick = onRemoveClick,
         onShareClick = onShareClick,
         onCoverClick = onCoverClick,
         modifier = modifier,
@@ -82,7 +80,6 @@ private fun EpisodeDetailsContextViewContent(
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
     onHistoryClick: (() -> Unit)? = null,
-    onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
 ) {
@@ -160,7 +157,6 @@ private fun EpisodeDetailsContextViewContent(
             vip = state.user?.isAnyVip == true,
             onCheckClick = onCheckClick ?: {},
             onHistoryClick = onHistoryClick ?: {},
-            onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
             onCoverClick = onCoverClick ?: {},
             modifier = Modifier
@@ -219,7 +215,6 @@ private fun ActionButtons(
     onCheckClick: () -> Unit,
     onHistoryClick: () -> Unit,
     onShareClick: () -> Unit,
-    onRemoveClick: () -> Unit,
     onCoverClick: () -> Unit,
 ) {
     Column(
@@ -260,18 +255,6 @@ private fun ActionButtons(
                         translationX = -6.dp.toPx()
                     },
                 onClick = onHistoryClick,
-            )
-
-            GhostButton(
-                text = stringResource(R.string.button_text_remove_from_history),
-                icon = painterResource(R.drawable.ic_close),
-                iconSize = 22.dp,
-                iconSpace = 15.5.dp,
-                modifier = Modifier
-                    .graphicsLayer {
-                        translationX = -6.dp.toPx()
-                    },
-                onClick = onRemoveClick,
             )
         }
 

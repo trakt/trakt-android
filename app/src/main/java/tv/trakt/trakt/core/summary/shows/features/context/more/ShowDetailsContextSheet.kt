@@ -28,7 +28,6 @@ internal fun ShowDetailsContextSheet(
     showProgress: ProgressState?,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
-    onRemoveClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
@@ -59,15 +58,6 @@ internal fun ShowDetailsContextSheet(
                 },
                 onCheckClick = {
                     onCheckClick?.invoke()
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
-                },
-                onRemoveClick = {
-                    onRemoveClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

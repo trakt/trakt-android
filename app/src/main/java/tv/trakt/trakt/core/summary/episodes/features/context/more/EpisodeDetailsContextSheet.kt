@@ -30,7 +30,6 @@ internal fun EpisodeDetailsContextSheet(
     watched: Boolean,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
-    onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
@@ -61,15 +60,6 @@ internal fun EpisodeDetailsContextSheet(
                 },
                 onCheckClick = {
                     onCheckClick?.invoke()
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
-                },
-                onRemoveClick = {
-                    onRemoveClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

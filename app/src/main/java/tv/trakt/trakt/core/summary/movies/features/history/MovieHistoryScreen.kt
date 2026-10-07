@@ -4,14 +4,15 @@ package tv.trakt.trakt.core.summary.movies.features.history
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -44,7 +45,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,7 +61,10 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
@@ -79,6 +86,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.time.ZoneId
@@ -89,9 +97,25 @@ internal fun MovieHistoryScreen(
     viewModel: MovieHistoryViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
+    val snack = LocalSnackbarState.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var confirmRemoveAllSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.info.collect { info ->
+            haptic.performHapticFeedback(Confirm)
+            val job = launch {
+                snack.showSnackbar(info.get(context))
+            }
+            delay(ShortSnackDuration)
+            job.cancel()
+        }
+    }
 
     MovieHistoryContent(
         state = state,
@@ -101,6 +125,9 @@ internal fun MovieHistoryScreen(
         onBackClick = onNavigateBack,
         onRemoveClick = {
             confirmRemoveSheet = it
+        },
+        onRemoveAllClick = {
+            confirmRemoveAllSheet = true
         },
     )
 
@@ -121,39 +148,82 @@ internal fun MovieHistoryScreen(
             state.media.title,
         ),
     )
+
+    RemoveConfirmationSheet(
+        active = confirmRemoveAllSheet,
+        onYes = {
+            confirmRemoveAllSheet = false
+            viewModel.removeAllFromWatched()
+        },
+        onNo = {
+            confirmRemoveAllSheet = false
+        },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
+            state.media.title,
+        ),
+    )
 }
 
 @Composable
 private fun TitleBar(
     subtitle: String,
     loading: Boolean,
+    removeVisible: Boolean,
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    onRemoveAllClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
-            .height(TraktTheme.size.titleBarHeight)
-            .graphicsLayer {
-                translationX = -2.dp.toPx()
-            },
+            .fillMaxWidth()
+            .height(TraktTheme.size.titleBarHeight),
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_back_arrow),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-        )
-
-        TraktHeader(
-            title = stringResource(R.string.list_title_history),
-            subtitle = subtitle,
-        )
-
-        if (loading) {
-            Spacer(modifier = Modifier.weight(1f))
-            FilmProgressIndicator(
-                size = 16.dp,
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .weight(1F, fill = false)
+                .graphicsLayer {
+                    translationX = -2.dp.toPx()
+                }
+                .onClick {
+                    onBackClick()
+                },
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
             )
+
+            TraktHeader(
+                title = stringResource(R.string.list_title_history),
+                subtitle = subtitle,
+            )
+        }
+
+        when {
+            loading -> {
+                FilmProgressIndicator(
+                    size = 16.dp,
+                    modifier = Modifier.padding(start = 12.dp),
+                )
+            }
+            removeVisible -> {
+                Icon(
+                    painter = painterResource(R.drawable.ic_trash),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                        .size(22.dp)
+                        .onClick(onClick = onRemoveAllClick),
+                )
+            }
         }
     }
 }
@@ -166,6 +236,7 @@ internal fun MovieHistoryContent(
     onLoadMore: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onRemoveClick: (MovieItem) -> Unit = {},
+    onRemoveAllClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -214,6 +285,7 @@ internal fun MovieHistoryContent(
             onEndOfList = onLoadMore,
             onBackClick = onBackClick,
             onRemoveClick = onRemoveClick,
+            onRemoveAllClick = onRemoveAllClick,
         )
     }
 }
@@ -231,6 +303,7 @@ private fun ContentList(
     onEndOfList: () -> Unit,
     onBackClick: () -> Unit,
     onRemoveClick: (MovieItem) -> Unit,
+    onRemoveAllClick: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -257,11 +330,11 @@ private fun ContentList(
             TitleBar(
                 subtitle = listTitle,
                 loading = loading && listItems.isNotEmpty(),
+                removeVisible = listItems.isNotEmpty(),
+                onBackClick = onBackClick,
+                onRemoveAllClick = onRemoveAllClick,
                 modifier = Modifier
-                    .padding(bottom = 2.dp)
-                    .onClick {
-                        onBackClick()
-                    },
+                    .padding(bottom = 2.dp),
             )
         }
 
