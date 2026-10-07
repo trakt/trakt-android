@@ -104,6 +104,7 @@ internal class LeaderboardViewModel(
         viewModelScope.launch {
             try {
                 loadingMoreState.update { Loading }
+                errorState.update { null }
 
                 val nextEntries = getLeaderboardUseCase.getLeaderboard(
                     Pagination(page = pages + 1, limit = LEADERBOARD_LIMIT),
