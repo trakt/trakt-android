@@ -27,7 +27,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,12 +51,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalRatePromptVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
@@ -137,6 +138,7 @@ internal fun ShowDetailsScreen(
     val haptic = LocalHapticFeedback.current
     val snack = LocalSnackbarState.current
     val localRateVisibility = LocalRatePromptVisibility.current
+    val localCheckInVisibility = LocalCheckInVisibility.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -153,11 +155,14 @@ internal fun ShowDetailsScreen(
     var coverImageSheet by remember { mutableStateOf<Show?>(null) }
     var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
 
-    DisposableEffect(Unit) {
+    // Resume-scoped so stacked details screens keep the overlays hidden when popping back.
+    LifecycleResumeEffect(Unit) {
         localRateVisibility.value = false
+        localCheckInVisibility.value = false
 
-        onDispose {
+        onPauseOrDispose {
             localRateVisibility.value = true
+            localCheckInVisibility.value = true
         }
     }
 
