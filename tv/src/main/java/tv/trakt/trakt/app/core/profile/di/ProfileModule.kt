@@ -103,6 +103,7 @@ internal val profileDataModule = module {
     single<UserSocialRemoteDataSource> {
         UserSocialApiClient(
             usersApi = get(),
+            v3Api = get(),
             cacheMarker = get(),
         )
     }

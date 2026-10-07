@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardEntryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
@@ -182,6 +183,18 @@ class V3Api(
     ): List<V3MediaSocialResponse>? {
         val response = client.get(
             "${baseUrl}shows/${showId.value}/seasons/$season/episodes/$episode/social" +
+                "?page=${pagination.page}" +
+                "&limit=${pagination.limit}",
+        )
+        return response.body()
+    }
+
+    // Leaderboard
+
+    /** Only available for the authenticated user. Other users return 404. */
+    suspend fun getLeaderboard(pagination: Pagination): List<V3LeaderboardEntryResponse> {
+        val response = client.get(
+            "${baseUrl}users/me/leaderboard" +
                 "?page=${pagination.page}" +
                 "&limit=${pagination.limit}",
         )
