@@ -1,10 +1,11 @@
 package tv.trakt.trakt.core.home.sections.activity.views
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterExitState.Visible
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -26,9 +27,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -53,6 +54,7 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.ratings.ui.ratingDelight
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.FloatingContainerShadow
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -60,6 +62,11 @@ private val DismissDelay = 600.milliseconds
 private val DismissDelightDelay = 2100.milliseconds
 
 private val PopupShape = RoundedCornerShape(16.dp)
+private val PopupGap = 4.dp
+private val PopupMargin = 12.dp
+
+// Room around the popup so the blurred shadow is not clipped by the popup window bounds.
+private val PopupShadowInset = FloatingContainerShadow.radius * 2 + FloatingContainerShadow.spread
 
 private val PopupIdleTopPadding = 16.dp
 private val PopupDragTopPadding = 50.dp
@@ -166,8 +173,8 @@ private fun RatingPopup(
     val density = LocalDensity.current
     val positionProvider = remember(density) {
         AboveAnchorPositionProvider(
-            gap = with(density) { 4.dp.roundToPx() },
-            margin = with(density) { 12.dp.roundToPx() },
+            gap = with(density) { (PopupGap - PopupShadowInset).roundToPx() },
+            margin = with(density) { (PopupMargin - PopupShadowInset).roundToPx() },
         )
     }
     val visibleState = remember {
@@ -181,17 +188,28 @@ private fun RatingPopup(
     ) {
         AnimatedVisibility(
             visibleState = visibleState,
-            enter = fadeIn(tween(150)) +
-                scaleIn(
-                    animationSpec = tween(150),
-                    initialScale = 0.9F,
-                    transformOrigin = TransformOrigin(0.5F, 1F),
-                ),
+            enter = scaleIn(
+                animationSpec = tween(150),
+                initialScale = 0.9F,
+                transformOrigin = TransformOrigin(0.5F, 1F),
+            ),
         ) {
+            // ModulateAlpha fades without an offscreen layer, which would clip the shadow.
+            val alpha by transition.animateFloat(
+                transitionSpec = { tween(150) },
+                label = "alpha",
+            ) { if (it == Visible) 1F else 0F }
+
             RatingPopupContent(
                 rating = rating,
                 onRateClick = onRateClick,
                 onDismiss = onDismiss,
+                modifier = Modifier
+                    .graphicsLayer {
+                        this.alpha = alpha
+                        compositingStrategy = CompositingStrategy.ModulateAlpha
+                    }
+                    .padding(PopupShadowInset),
             )
         }
     }
@@ -201,6 +219,7 @@ private fun RatingPopup(
 private fun RatingPopupContent(
     rating: Int?,
     onRateClick: (Int?) -> Unit,
+    modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
     dragging: Boolean = false,
 ) {
@@ -214,19 +233,14 @@ private fun RatingPopupContent(
         label = "backgroundInset",
     )
 
-    Box {
+    Box(modifier = modifier) {
         Box(
             modifier = Modifier
                 .matchParentSize()
                 .padding(top = backgroundInset)
                 .dropShadow(
                     shape = PopupShape,
-                    shadow = Shadow(
-                        radius = 3.dp,
-                        color = Color.Black,
-                        spread = 1.dp,
-                        alpha = 0.06F,
-                    ),
+                    shadow = FloatingContainerShadow,
                 )
                 .background(TraktTheme.colors.dialogContainer, PopupShape),
         )
@@ -313,6 +327,7 @@ private fun RatingPopupContentPreview() {
         RatingPopupContent(
             rating = null,
             onRateClick = {},
+            modifier = Modifier.padding(PopupShadowInset),
         )
     }
 }
@@ -324,6 +339,7 @@ private fun RatingPopupContentDraggingPreview() {
         RatingPopupContent(
             rating = 7,
             onRateClick = {},
+            modifier = Modifier.padding(PopupShadowInset),
             dragging = true,
         )
     }
