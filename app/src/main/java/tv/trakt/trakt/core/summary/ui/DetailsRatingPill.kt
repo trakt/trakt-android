@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -87,6 +88,9 @@ private val CollapseDelay = 600.milliseconds
 private val CollapseDelightDelay = 2100.milliseconds
 
 private val PillShape = RoundedCornerShape(18.dp)
+
+// Room around the pill so the blurred shadow survives the fade's offscreen layer clipping.
+private val PillShadowInset = FloatingContainerShadow.radius * 2 + FloatingContainerShadow.spread
 
 private val PillIconSize = 23.dp
 private val PillStarSize = 22.dp
@@ -181,7 +185,8 @@ internal fun BoxScope.DetailsRatingPillOverlay(
                     .calculateBottomPadding()
                     .plus(TraktTheme.size.navigationBarHeight)
                     .plus(PillOuterSpacing),
-            ),
+            )
+            .offset(x = PillShadowInset, y = PillShadowInset),
     ) {
         val reactionSlot: (@Composable () -> Unit)? = reactionsTarget?.let { target ->
             { PillReactionSlot(target) }
@@ -196,6 +201,7 @@ internal fun BoxScope.DetailsRatingPillOverlay(
             onRatingRemoveClick = onRatingRemoveClick,
             onFavoriteClick = onFavoriteClick,
             reaction = reactionSlot,
+            modifier = Modifier.padding(PillShadowInset),
         )
     }
 }
