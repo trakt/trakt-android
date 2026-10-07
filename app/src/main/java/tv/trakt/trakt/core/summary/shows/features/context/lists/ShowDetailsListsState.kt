@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.model.lists.CustomListMinimal
 @Immutable
 internal data class ShowDetailsListsState(
     val lists: ImmutableList<CustomListMinimal> = EmptyImmutableList,
+    val collaborations: ImmutableList<CustomListMinimal> = EmptyImmutableList,
     val showLists: ImmutableSet<TraktId> = EmptyImmutableSet,
     val toggling: ImmutableSet<TraktId> = EmptyImmutableSet,
     val user: User? = null,

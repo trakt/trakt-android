@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.summary.movies.features.context.lists
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -36,6 +34,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
@@ -64,6 +63,7 @@ internal fun MovieDetailsListsView(
         movie = movie,
         loading = state.loading,
         lists = state.lists,
+        collaborations = state.collaborations,
         movieLists = state.movieLists,
         toggling = state.toggling,
         inWatchlist = inWatchlist,
@@ -99,6 +99,7 @@ private fun MovieDetailsListsContent(
     loading: LoadingState,
     inWatchlist: Boolean,
     lists: ImmutableList<CustomListMinimal>,
+    collaborations: ImmutableList<CustomListMinimal>,
     movieLists: ImmutableSet<TraktId>,
     toggling: ImmutableSet<TraktId>,
     modifier: Modifier = Modifier,
@@ -148,6 +149,7 @@ private fun MovieDetailsListsContent(
             loading = loading.isLoading,
             inWatchlist = inWatchlist,
             lists = lists,
+            collaborations = collaborations,
             movieLists = movieLists,
             toggling = toggling,
             onWatchlistClick = onWatchlistClick,
@@ -164,6 +166,7 @@ private fun ActionButtons(
     loading: Boolean,
     inWatchlist: Boolean,
     lists: ImmutableList<CustomListMinimal>,
+    collaborations: ImmutableList<CustomListMinimal>,
     movieLists: ImmutableSet<TraktId>,
     toggling: ImmutableSet<TraktId>,
     onWatchlistClick: (() -> Unit)? = null,
@@ -191,24 +194,9 @@ private fun ActionButtons(
         )
 
         if (lists.isNotEmpty() || loading) {
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(6.dp),
-                modifier = Modifier
-                    .padding(top = 8.dp, bottom = 8.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.list_title_personal_lists),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.heading5.copy(
-                        fontSize = 16.sp,
-                    ),
-                    maxLines = 1,
-                    overflow = Ellipsis,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier,
-                )
-            }
+            ListsHeader(
+                text = stringResource(R.string.list_title_personal_lists),
+            )
         }
 
         for (list in lists) {
@@ -224,7 +212,46 @@ private fun ActionButtons(
                     },
             )
         }
+
+        if (collaborations.isNotEmpty()) {
+            ListsHeader(
+                text = stringResource(R.string.list_title_collaborative_lists),
+            )
+        }
+
+        for (list in collaborations) {
+            val enabled = !loading && !toggling.contains(list.id)
+            ListButton(
+                text = list.name,
+                enabled = enabled,
+                checked = movieLists.contains(list.id),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onClick(enabled = enabled) {
+                        onListClick?.invoke(list)
+                    },
+            )
+        }
     }
+}
+
+@Composable
+private fun ListsHeader(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = text,
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading5.copy(
+            fontSize = 16.sp,
+        ),
+        maxLines = 1,
+        overflow = Ellipsis,
+        textAlign = TextAlign.Start,
+        modifier = modifier
+            .padding(vertical = 8.dp),
+    )
 }
 
 @OptIn(ExperimentalCoilApi::class)
@@ -241,6 +268,13 @@ private fun Preview() {
             loading = LoadingState.Done,
             inWatchlist = true,
             lists = listOf(PreviewData.customListMinimal1).toImmutableList(),
+            collaborations = listOf(
+                PreviewData.customListMinimal1.copy(
+                    id = TraktId(2),
+                    ownerId = TraktId(2),
+                    name = "Shared List",
+                ),
+            ).toImmutableList(),
             movieLists = setOf(PreviewData.movie1.ids.trakt).toImmutableSet(),
             toggling = emptySet<TraktId>().toImmutableSet(),
         )
@@ -261,6 +295,7 @@ private fun Preview2() {
             loading = LoadingState.Done,
             inWatchlist = false,
             lists = listOf(PreviewData.customListMinimal1).toImmutableList(),
+            collaborations = EmptyImmutableList,
             movieLists = emptySet<TraktId>().toImmutableSet(),
             toggling = emptySet<TraktId>().toImmutableSet(),
         )

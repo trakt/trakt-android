@@ -42,6 +42,7 @@ internal class ShowDetailsListsViewModel(
     private val initialState = ShowDetailsListsState()
 
     private val listsState = MutableStateFlow(initialState.lists)
+    private val collaborationsState = MutableStateFlow(initialState.collaborations)
     private val showListsState = MutableStateFlow(initialState.showLists)
     private val togglingState = MutableStateFlow(initialState.toggling)
     private val userState = MutableStateFlow(initialState.user)
@@ -54,7 +55,7 @@ internal class ShowDetailsListsViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            sessionManager.getProfile()
+            val user = sessionManager.getProfile()
                 .also { user ->
                     userState.update { user }
                 } ?: return@launch
@@ -62,24 +63,19 @@ internal class ShowDetailsListsViewModel(
             try {
                 loadingState.update { LoadingState.Loading }
 
-                listsState.update {
-                    loadListsUseCase.loadLocalLists()
-                        .map { it.value }
-                        .toImmutableList()
-                }
+                val (ownLists, collaborationLists) = loadListsUseCase.loadLocalLists()
+                    .values
+                    .partition { it.ownerId == user.ids.trakt }
+
+                listsState.update { ownLists.toImmutableList() }
+                collaborationsState.update { collaborationLists.toImmutableList() }
 
                 showListsState.update {
                     loadListsUseCase.loadShowLists(show.ids.trakt)
                 }
 
-                listsState.update { lists ->
-                    lists.sortedBy {
-                        when {
-                            showListsState.value.contains(it.id) -> 0
-                            else -> 1
-                        }
-                    }.toImmutableList()
-                }
+                listsState.update(::sortedByListed)
+                collaborationsState.update(::sortedByListed)
 
                 loadingState.update { LoadingState.Done }
             } catch (error: Exception) {
@@ -137,6 +133,15 @@ internal class ShowDetailsListsViewModel(
         }
     }
 
+    private fun sortedByListed(lists: ImmutableList<CustomListMinimal>): ImmutableList<CustomListMinimal> {
+        return lists.sortedBy {
+            when {
+                isListed(it.id) -> 0
+                else -> 1
+            }
+        }.toImmutableList()
+    }
+
     private fun isListed(listId: TraktId): Boolean {
         return showListsState.value.contains(listId)
     }
@@ -157,6 +162,7 @@ internal class ShowDetailsListsViewModel(
     val state = combine(
         userState,
         listsState,
+        collaborationsState,
         showListsState,
         togglingState,
         loadingState,
@@ -165,10 +171,11 @@ internal class ShowDetailsListsViewModel(
         ShowDetailsListsState(
             user = state[0] as User?,
             lists = state[1] as ImmutableList<CustomListMinimal>,
-            showLists = state[2] as ImmutableSet<TraktId>,
-            toggling = state[3] as ImmutableSet<TraktId>,
-            loading = state[4] as LoadingState,
-            error = state[5] as Exception?,
+            collaborations = state[2] as ImmutableList<CustomListMinimal>,
+            showLists = state[3] as ImmutableSet<TraktId>,
+            toggling = state[4] as ImmutableSet<TraktId>,
+            loading = state[5] as LoadingState,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
