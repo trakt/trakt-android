@@ -11305,17 +11305,13 @@
                               "url": {
                                 "type": "string"
                               },
-                              "width": {
-                                "type": "integer"
-                              },
-                              "height": {
-                                "type": "integer"
+                              "slug": {
+                                "type": "string",
+                                "nullable": true
                               }
                             },
                             "required": [
-                              "url",
-                              "width",
-                              "height"
+                              "url"
                             ],
                             "nullable": true
                           },
@@ -11611,17 +11607,13 @@
                                       "url": {
                                         "type": "string"
                                       },
-                                      "width": {
-                                        "type": "integer"
-                                      },
-                                      "height": {
-                                        "type": "integer"
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
                                       }
                                     },
                                     "required": [
-                                      "url",
-                                      "width",
-                                      "height"
+                                      "url"
                                     ],
                                     "nullable": true
                                   },
@@ -17561,17 +17553,13 @@
                               "url": {
                                 "type": "string"
                               },
-                              "width": {
-                                "type": "integer"
-                              },
-                              "height": {
-                                "type": "integer"
+                              "slug": {
+                                "type": "string",
+                                "nullable": true
                               }
                             },
                             "required": [
-                              "url",
-                              "width",
-                              "height"
+                              "url"
                             ],
                             "nullable": true
                           },
@@ -34958,17 +34946,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -44409,17 +44393,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -55386,17 +55366,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -55839,6 +55815,10 @@
                               "type": "string"
                             }
                           },
+                          "watchnow_country": {
+                            "type": "string",
+                            "pattern": "^[a-z]{2}$"
+                          },
                           "years": {
                             "type": "array",
                             "items": {
@@ -55897,6 +55877,54 @@
                               "format": "float"
                             },
                             "maxItems": 2
+                          },
+                          "parental_nudity": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_violence": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_profanity": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_alcohol": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_frightening": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_include_unrated": {
+                            "type": "boolean"
                           },
                           "ignore_watched": {
                             "type": "boolean"
@@ -56072,6 +56100,10 @@
                           "type": "string"
                         }
                       },
+                      "watchnow_country": {
+                        "type": "string",
+                        "pattern": "^[a-z]{2}$"
+                      },
                       "years": {
                         "type": "array",
                         "items": {
@@ -56130,6 +56162,54 @@
                           "format": "float"
                         },
                         "maxItems": 2
+                      },
+                      "parental_nudity": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_violence": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_profanity": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_alcohol": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_frightening": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_include_unrated": {
+                        "type": "boolean"
                       },
                       "ignore_watched": {
                         "type": "boolean"
@@ -56373,6 +56453,10 @@
                             "type": "string"
                           }
                         },
+                        "watchnow_country": {
+                          "type": "string",
+                          "pattern": "^[a-z]{2}$"
+                        },
                         "years": {
                           "type": "array",
                           "items": {
@@ -56431,6 +56515,54 @@
                             "format": "float"
                           },
                           "maxItems": 2
+                        },
+                        "parental_nudity": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_violence": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_profanity": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_alcohol": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_frightening": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_include_unrated": {
+                          "type": "boolean"
                         },
                         "ignore_watched": {
                           "type": "boolean"
@@ -56623,6 +56755,10 @@
                           "type": "string"
                         }
                       },
+                      "watchnow_country": {
+                        "type": "string",
+                        "pattern": "^[a-z]{2}$"
+                      },
                       "years": {
                         "type": "array",
                         "items": {
@@ -56681,6 +56817,54 @@
                           "format": "float"
                         },
                         "maxItems": 2
+                      },
+                      "parental_nudity": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_violence": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_profanity": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_alcohol": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_frightening": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_include_unrated": {
+                        "type": "boolean"
                       },
                       "ignore_watched": {
                         "type": "boolean"
@@ -56847,6 +57031,10 @@
                             "type": "string"
                           }
                         },
+                        "watchnow_country": {
+                          "type": "string",
+                          "pattern": "^[a-z]{2}$"
+                        },
                         "years": {
                           "type": "array",
                           "items": {
@@ -56905,6 +57093,54 @@
                             "format": "float"
                           },
                           "maxItems": 2
+                        },
+                        "parental_nudity": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_violence": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_profanity": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_alcohol": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_frightening": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_include_unrated": {
+                          "type": "boolean"
                         },
                         "ignore_watched": {
                           "type": "boolean"
@@ -97521,17 +97757,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -107301,17 +107533,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -109616,17 +109844,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -111147,17 +111371,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -131742,17 +131962,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -132470,6 +132686,10 @@
                             "type": "string"
                           }
                         },
+                        "watchnow_country": {
+                          "type": "string",
+                          "pattern": "^[a-z]{2}$"
+                        },
                         "years": {
                           "type": "array",
                           "items": {
@@ -132528,6 +132748,54 @@
                             "format": "float"
                           },
                           "maxItems": 2
+                        },
+                        "parental_nudity": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_violence": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_profanity": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_alcohol": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_frightening": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_include_unrated": {
+                          "type": "boolean"
                         },
                         "ignore_watched": {
                           "type": "boolean"
@@ -132594,7 +132862,7 @@
     },
     "/smart-lists/{list_id}/items": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to. Items always match the list's `media_type`, so a movie list only ever resolves to movies and a show list to shows. Use query filters and pagination to refine the result set.",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to, worked out when you request them. A list can hold movies, shows, or both. Use query filters and pagination to refine the result set.\n\nStreaming (`watchnow`) filters resolve against the list owner, not the caller: the list region, else the owner's region, else `us`, and `favorites` means the owner's services.",
         "summary": "Get smart list items",
         "tags": [
           "smart_lists"
@@ -132732,6 +133000,62 @@
             "schema": {
               "nullable": true,
               "type": "string"
+            }
+          },
+          {
+            "name": "watchnow_country",
+            "in": "query",
+            "description": "Two-letter region for `watchnow`. Defaults to the list region, then the owner region, then `us`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_include_unrated",
+            "in": "query",
+            "description": "Keep titles without a parental guide when a parental range is set. Defaults to `false`.",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -133277,6 +133601,774 @@
         "operationId": "getSmart_listsItems"
       }
     },
+    "/smart-lists/{list_id}/items/{type}/{sort_by}/{sort_how}": {
+      "get": {
+        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to, worked out when you request them. A list can hold movies, shows, or both. Use query filters and pagination to refine the result set.\n\nStreaming (`watchnow`) filters resolve against the list owner, not the caller: the list region, else the owner's region, else `us`, and `favorites` means the owner's services.\n\nUse `type` to narrow a list holding both media types, and `sort_by` / `sort_how` to reorder it. A sorted list holding both media types is merged into one order across pages.",
+        "summary": "Get smart list items by type and sort",
+        "tags": [
+          "smart_lists"
+        ],
+        "parameters": [
+          {
+            "name": "list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "`all`, `movies` or `shows`. Narrows a list holding both media types."
+          },
+          {
+            "name": "sort_by",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "`rank` (default, the source order), `random`, `title`, `released`, `runtime`, `percentage`, `votes`, `imdb_rating`, `imdb_votes`, `tmdb_rating`, `tmdb_votes`, `rt_tomatometer`, `rt_audience`, `metascore`. Watchlist lists also take `added`. Recommendation lists always use `rank`. Unknown values fall back to `rank`."
+          },
+          {
+            "name": "sort_how",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "`asc` or `desc`. Defaults to `asc` for `rank` and `title`, `desc` otherwise."
+          },
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page, can be a number or the value all",
+            "schema": {
+              "nullable": true,
+              "type": "string"
+            }
+          },
+          {
+            "name": "watchnow_country",
+            "in": "query",
+            "description": "Two-letter region for `watchnow`. Defaults to the list region, then the owner region, then `us`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_include_unrated",
+            "in": "query",
+            "description": "Keep titles without a parental guide when a parental range is set. Defaults to `false`.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "rank": {
+                        "type": "integer"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "movie": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ],
+                        "nullable": true
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "aired_episodes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "last_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "airs": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "time": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Total runtime in minutes. When exact runtime data is unavailable, this value may include estimated fallback runtimes and should be treated as an approximation."
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "network": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ],
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "rank",
+                      "type"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getSmart_listsTypedSorted"
+      }
+    },
     "/comments/{id}": {
       "get": {
         "description": "#### 😁 Emojis\nReturns a single comment and indicates how many replies it has. Use [**/comments/:id/replies**](/reference/comments/replies/) to get the actual replies.",
@@ -133324,17 +134416,13 @@
                         "url": {
                           "type": "string"
                         },
-                        "width": {
-                          "type": "integer"
-                        },
-                        "height": {
-                          "type": "integer"
+                        "slug": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
-                        "url",
-                        "width",
-                        "height"
+                        "url"
                       ],
                       "nullable": true
                     },
@@ -134898,17 +135986,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -135106,7 +136190,7 @@
         "operationId": "getCommentsReplies"
       },
       "post": {
-        "description": "#### 🔒 OAuth Required 😁 Emojis\nAdd a new reply to an existing comment. Make sure to allow and encourage *spoilers* to be indicated in your app and follow the rules listed above.\n\n> ### Note\n> Replies can only be added to top level comments. If you try to reply to a reply, a `404` HTTP status code is returned.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| `comment` * | string |  | Text for the reply. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF. The size is the GIF's intrinsic size in pixels; a reader uses it to reserve the GIF's box before it downloads.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `width` | integer | Intrinsic width in pixels. |\n| `height` | integer | Intrinsic height in pixels. |",
+        "description": "#### 🔒 OAuth Required 😁 Emojis\nAdd a new reply to an existing comment. Make sure to allow and encourage *spoilers* to be indicated in your app and follow the rules listed above.\n\n> ### Note\n> Replies can only be added to top level comments. If you try to reply to a reply, a `404` HTTP status code is returned.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| `comment` * | string |  | Text for the reply. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `slug` | string | Klipy GIF slug, up to 255 characters. |",
         "summary": "Post a reply for a comment",
         "tags": [
           "comments"
@@ -135141,12 +136225,8 @@
                       "url": {
                         "type": "string"
                       },
-                      "width": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "height": {
-                        "type": "integer",
+                      "slug": {
+                        "type": "string",
                         "nullable": true
                       }
                     },
@@ -135193,17 +136273,13 @@
                         "url": {
                           "type": "string"
                         },
-                        "width": {
-                          "type": "integer"
-                        },
-                        "height": {
-                          "type": "integer"
+                        "slug": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
-                        "url",
-                        "width",
-                        "height"
+                        "url"
                       ],
                       "nullable": true
                     },
@@ -135402,7 +136478,7 @@
     },
     "/comments/{id}/": {
       "put": {
-        "description": "#### 🔒 OAuth Required 😁 Emojis\nUpdate a single comment. The OAuth user must match the author of the comment in order to update it. If not, a `401` HTTP status is returned.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| `comment` | string |  | Text for the comment. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF. The size is the GIF's intrinsic size in pixels; a reader uses it to reserve the GIF's box before it downloads.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `width` | integer | Intrinsic width in pixels. |\n| `height` | integer | Intrinsic height in pixels. |",
+        "description": "#### 🔒 OAuth Required 😁 Emojis\nUpdate a single comment. The OAuth user must match the author of the comment in order to update it. If not, a `401` HTTP status is returned.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| `comment` | string |  | Text for the comment. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `slug` | string | Klipy GIF slug, up to 255 characters. |",
         "summary": "Update a comment or reply",
         "tags": [
           "comments"
@@ -135437,12 +136513,8 @@
                       "url": {
                         "type": "string"
                       },
-                      "width": {
-                        "type": "integer",
-                        "nullable": true
-                      },
-                      "height": {
-                        "type": "integer",
+                      "slug": {
+                        "type": "string",
                         "nullable": true
                       }
                     },
@@ -135489,17 +136561,13 @@
                         "url": {
                           "type": "string"
                         },
-                        "width": {
-                          "type": "integer"
-                        },
-                        "height": {
-                          "type": "integer"
+                        "slug": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
-                        "url",
-                        "width",
-                        "height"
+                        "url"
                       ],
                       "nullable": true
                     },
@@ -136231,17 +137299,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -136531,17 +137595,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -136831,17 +137891,13 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer"
-                          },
-                          "height": {
-                            "type": "integer"
+                          "slug": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "url",
-                          "width",
-                          "height"
+                          "url"
                         ],
                         "nullable": true
                       },
@@ -137041,7 +138097,7 @@
     },
     "/comments/": {
       "post": {
-        "description": "#### 🔒 OAuth Required 😁 Emojis\nAdd a new comment to a movie, show, season, episode, or list. Make sure to allow and encourage *spoilers* to be indicated in your app and follow the rules listed above.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| item * | object | | `movie`, `show`, `season`, `episode`, or `list` object. (see examples ->) |\n| `comment` * | string |  | Text for the comment. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n| `sharing`  | object | | Control sharing to any connected social networks. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF. The size is the GIF's intrinsic size in pixels; a reader uses it to reserve the GIF's box before it downloads.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `width` | integer | Intrinsic width in pixels. |\n| `height` | integer | Intrinsic height in pixels. |\n\n#### Sharing\nThe `sharing` object is optional and will apply the user's settings if not sent. If `sharing` is sent, each key will override the user's setting for that social network. Send `true` to post or `false` to not post on the indicated social network. You can see which social networks a user has connected with the [**/users/settings**](/reference/users/settings) method.\n\n| Key | Type |\n|---|---|\n| `twitter` | boolean |\n| `tumblr` | boolean |\n| `medium` | boolean |",
+        "description": "#### 🔒 OAuth Required 😁 Emojis\nAdd a new comment to a movie, show, season, episode, or list. Make sure to allow and encourage *spoilers* to be indicated in your app and follow the rules listed above.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| item * | object | | `movie`, `show`, `season`, `episode`, or `list` object. (see examples ->) |\n| `comment` * | string |  | Text for the comment. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n| `sharing`  | object | | Control sharing to any connected social networks. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `slug` | string | Klipy GIF slug, up to 255 characters. |\n\n#### Sharing\nThe `sharing` object is optional and will apply the user's settings if not sent. If `sharing` is sent, each key will override the user's setting for that social network. Send `true` to post or `false` to not post on the indicated social network. You can see which social networks a user has connected with the [**/users/settings**](/reference/users/settings) method.\n\n| Key | Type |\n|---|---|\n| `twitter` | boolean |\n| `tumblr` | boolean |\n| `medium` | boolean |",
         "summary": "Post a comment",
         "tags": [
           "comments"
@@ -137068,12 +138124,8 @@
                           "url": {
                             "type": "string"
                           },
-                          "width": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "height": {
-                            "type": "integer",
+                          "slug": {
+                            "type": "string",
                             "nullable": true
                           }
                         },
@@ -137251,17 +138303,13 @@
                         "url": {
                           "type": "string"
                         },
-                        "width": {
-                          "type": "integer"
-                        },
-                        "height": {
-                          "type": "integer"
+                        "slug": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
-                        "url",
-                        "width",
-                        "height"
+                        "url"
                       ],
                       "nullable": true
                     },

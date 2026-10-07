@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -286,14 +284,13 @@ private fun CommentCardContent(
                 ) {
                     CommentGifView(
                         gif = gif,
-                        shape = RoundedCornerShape(12.dp),
+                        shape = SideGifShape,
                         blurred = spoilerBlurred,
                         paused = gifPaused,
                         onRevealSpoiler = { isSpoilerRevealed = true },
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
-                            .padding(top = 14.dp, bottom = 20.dp)
-                            .fillMaxHeight(),
+                            .padding(top = 14.dp, bottom = 20.dp),
                     )
                 }
             }
@@ -307,7 +304,7 @@ private fun CommentCardContent(
                     }
                     CommentGifView(
                         gif = gif,
-                        shape = RoundedCornerShape(12.dp),
+                        shape = SideGifShape,
                         blurred = spoilerBlurred,
                         paused = gifPaused,
                         onRevealSpoiler = { isSpoilerRevealed = true },
@@ -762,7 +759,6 @@ fun CommentPreview() {
                         gif = CommentGif(
                             slug = "funny-cat",
                             url = "https://example.com/gif.gif",
-                            size = 320 to 180,
                         ),
                     ),
                     replies = EmptyImmutableList,
@@ -775,7 +771,6 @@ fun CommentPreview() {
                         gif = CommentGif(
                             slug = "funny-cat",
                             url = "https://example.com/gif.gif",
-                            size = 320 to 240,
                         ),
                     ),
                     replies = EmptyImmutableList,

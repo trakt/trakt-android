@@ -10,11 +10,11 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.openapitools.client.apis.CommentsApi
 import org.openapitools.client.models.GetCommentsReactionsSummary200Response
+import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerCommentGif
 import org.openapitools.client.models.PostCommentsPostRequest
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovie
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovieIds
 import org.openapitools.client.models.PostCommentsReplyRequest
-import org.openapitools.client.models.PostCommentsReplyRequestGif
 import org.openapitools.client.models.PostCommentsReportRequest
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.model.CommentGif
@@ -231,11 +231,9 @@ class CommentsApiClient(
     }
 }
 
-private fun CommentGif.toRequest(): PostCommentsReplyRequestGif {
-    return PostCommentsReplyRequestGif(
+private fun CommentGif.toRequest(): GetUsersReactionsComments200ResponseInnerCommentGif {
+    return GetUsersReactionsComments200ResponseInnerCommentGif(
         slug = slug,
         url = url,
-        width = size.first.takeIf { it > 0 },
-        height = size.second.takeIf { it > 0 },
     )
 }

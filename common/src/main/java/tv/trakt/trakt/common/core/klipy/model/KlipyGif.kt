@@ -25,7 +25,6 @@ data class KlipyGif(
         return CommentGif(
             slug = slug,
             url = media.url,
-            size = media.width to media.height,
         )
     }
 }

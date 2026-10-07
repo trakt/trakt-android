@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class CommentGif(
-    val slug: String,
+    val slug: String?,
     val url: String,
-    val size: Pair<Int, Int>,
 )

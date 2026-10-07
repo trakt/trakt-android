@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -300,6 +301,7 @@ private fun CommentContent(
         comment.gif?.let { gif ->
             CommentGifView(
                 gif = gif,
+                shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .padding(top = 18.dp),
             )
@@ -548,7 +550,6 @@ private fun Preview() {
                             gif = CommentGif(
                                 slug = "funny-cat",
                                 url = "https://example.com/gif.gif",
-                                size = 480 to 270,
                             ),
                         ),
                         replies = listOf(

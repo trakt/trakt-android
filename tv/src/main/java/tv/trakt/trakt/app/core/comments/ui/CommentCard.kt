@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -151,11 +150,11 @@ private fun CommentCardContent(
                 ) {
                     CommentGifView(
                         gif = gif,
+                        shape = SideGifShape,
                         blurred = comment.hasSpoilers,
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
-                            .padding(top = 12.dp, bottom = 16.dp)
-                            .fillMaxHeight(),
+                            .padding(top = 12.dp, bottom = 16.dp),
                     )
                 }
             }
@@ -168,6 +167,7 @@ private fun CommentCardContent(
                     body(Modifier.weight(1F))
                     CommentGifView(
                         gif = gif,
+                        shape = SideGifShape,
                         blurred = comment.hasSpoilers,
                         modifier = Modifier.sizeIn(
                             maxWidth = SideGifMaxSize.width,
@@ -373,5 +373,4 @@ fun CommentGifPreview() {
 private val PreviewGif = CommentGif(
     slug = "funny-cat",
     url = "https://example.com/preview.gif",
-    size = 200 to 150,
 )

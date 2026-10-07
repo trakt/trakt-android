@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -67,6 +66,7 @@ import tv.trakt.trakt.core.comments.ui.CommentGifLayout.Bottom
 import tv.trakt.trakt.core.comments.ui.CommentGifLayout.Side
 import tv.trakt.trakt.core.comments.ui.CommentGifView
 import tv.trakt.trakt.core.comments.ui.SideGifMaxSize
+import tv.trakt.trakt.core.comments.ui.SideGifShape
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem.EpisodeItem
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem.MovieItem
@@ -211,12 +211,11 @@ private fun CommentCardContent(
                 ) {
                     CommentGifView(
                         gif = gif,
-                        shape = RoundedCornerShape(12.dp),
+                        shape = SideGifShape,
                         paused = gifPaused,
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
-                            .padding(top = 11.dp, bottom = 20.dp)
-                            .fillMaxHeight(),
+                            .padding(top = 11.dp, bottom = 20.dp),
                     )
                 }
             }
@@ -230,7 +229,7 @@ private fun CommentCardContent(
                     }
                     CommentGifView(
                         gif = gif,
-                        shape = RoundedCornerShape(12.dp),
+                        shape = SideGifShape,
                         paused = gifPaused,
                         modifier = Modifier
                             .padding(top = 14.dp, end = 16.dp)
@@ -481,7 +480,6 @@ fun CommentPreview() {
                             gif = CommentGif(
                                 slug = "funny-cat",
                                 url = "https://example.com/gif.gif",
-                                size = 320 to 240,
                             ),
                         ),
                     ),
@@ -498,7 +496,6 @@ fun CommentPreview() {
                             gif = CommentGif(
                                 slug = "funny-cat",
                                 url = "https://example.com/gif.gif",
-                                size = 320 to 180,
                             ),
                         ),
                     ),

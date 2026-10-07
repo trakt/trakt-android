@@ -227,7 +227,6 @@ private fun CommentHeader(
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
 fun CommentReplyPreview() {
@@ -275,5 +274,4 @@ fun CommentReplyGifPreview() {
 private val PreviewGif = CommentGif(
     slug = "funny-cat",
     url = "https://example.com/preview.gif",
-    size = 200 to 150,
 )

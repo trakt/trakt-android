@@ -185,6 +185,7 @@ private fun CommentDetailsContent(
         comment.gif?.let { gif ->
             CommentGifView(
                 gif = gif,
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 12.dp),

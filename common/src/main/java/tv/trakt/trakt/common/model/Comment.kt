@@ -73,9 +73,8 @@ data class Comment(
                 comment = dto.comment,
                 gif = dto.gif?.let {
                     CommentGif(
-                        slug = it.slug ?: "",
+                        slug = it.slug,
                         url = it.url,
-                        size = it.width to it.height,
                     )
                 },
                 isSpoiler = dto.spoiler,
