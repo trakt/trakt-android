@@ -4,6 +4,9 @@ package tv.trakt.trakt.core.profile
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -101,6 +104,7 @@ internal fun ProfileScreen(
     onNavigateToHome: () -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToSocial: () -> Unit,
+    onNavigateToLeaderboard: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -128,6 +132,7 @@ internal fun ProfileScreen(
         onSettingsClick = onNavigateToSettings,
         onNavigateToUser = onNavigateToUser,
         onNavigateToSocial = onNavigateToSocial,
+        onLeaderboardClick = onNavigateToLeaderboard,
         onShareClick = {
             shareProfile(
                 user = state.user,
@@ -169,6 +174,7 @@ private fun ProfileScreen(
     onNavigateToShows: () -> Unit = {},
     onNavigateToUser: (User) -> Unit = {},
     onNavigateToSocial: () -> Unit = {},
+    onLeaderboardClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
@@ -221,48 +227,28 @@ private fun ProfileScreen(
             item {
                 TitleBar(
                     user = state.user,
+                    leaderboardVisible = state.hasLeaderboard,
+                    onLeaderboardClick = onLeaderboardClick,
                     onShareClick = onShareClick,
                     onLogoutClick = onLogoutClick,
                     onSettingsClick = onSettingsClick,
                     modifier = Modifier
-                        .padding(bottom = 8.dp),
+                        .padding(bottom = 6.dp),
                 )
             }
 
             if (state.user != null) {
-                item {
-                    ProfileStatsCard(
-                        user = state.user,
-                        stats = state.monthStats,
-                        containerImage = state.monthBackgroundUrl,
-                        modifier = Modifier
-                            .fillMaxWidth(
-                                when {
-                                    windowClass.isAtLeastLarge() -> 0.5F
-                                    else -> 1F
-                                },
-                            )
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                            .padding(
-                                bottom = when {
-                                    state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
-                                    else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
-                                },
-                            ),
-                    )
-                }
-
                 if (!state.user.about.isNullOrBlank()) {
                     item {
                         Column(
                             verticalArrangement = spacedBy(4.dp),
                             modifier = Modifier
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace / 1.5F),
                         ) {
                             Text(
                                 text = stringResource(R.string.text_about).uppercase(),
-                                color = TraktTheme.colors.textSecondary,
+                                color = TraktTheme.colors.textPrimary,
                                 style = TraktTheme.typography.heading6.copy(
                                     fontWeight = W500,
                                     fontSize = 13.sp,
@@ -278,12 +264,29 @@ private fun ProfileScreen(
                                 style = TraktTheme.typography.paragraphSmaller.copy(
                                     fontSize = 13.sp,
                                 ),
-                                color = TraktTheme.colors.textPrimary,
+                                color = TraktTheme.colors.textSecondary,
                                 maxLines = 3,
                                 overflow = Ellipsis,
                             )
                         }
                     }
+                }
+
+                item {
+                    ProfileStatsCard(
+                        user = state.user,
+                        stats = state.monthStats,
+                        containerImage = state.monthBackgroundUrl,
+                        modifier = Modifier
+                            .fillMaxWidth(
+                                when {
+                                    windowClass.isAtLeastLarge() -> 0.5F
+                                    else -> 1F
+                                },
+                            )
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace - 10.dp),
+                    )
                 }
 
                 if (!preview) {
@@ -385,6 +388,8 @@ private fun ProfileScreen(
 private fun TitleBar(
     user: User?,
     modifier: Modifier = Modifier,
+    leaderboardVisible: Boolean = false,
+    onLeaderboardClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
@@ -462,13 +467,29 @@ private fun TitleBar(
 
             Row(
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalArrangement = Arrangement.spacedBy(22.dp),
             ) {
+                AnimatedVisibility(
+                    visible = leaderboardVisible,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_leaderboard),
+                        contentDescription = stringResource(R.string.button_label_open_leaderboard),
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(23.dp)
+                            .onClick(onClick = onLeaderboardClick),
+                    )
+                }
+
                 Icon(
                     painter = painterResource(R.drawable.ic_settings),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
+                        .padding(start = 1.5.dp)
                         .size(22.dp)
                         .graphicsLayer {
                             translationY = 0.25.dp.toPx()
@@ -579,6 +600,7 @@ private fun Preview() {
         ProfileScreen(
             state = ProfileState(
                 user = PreviewData.user1,
+                hasLeaderboard = true,
             ),
         )
     }

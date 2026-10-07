@@ -25,18 +25,23 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
+import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdates
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,
     private val getProfileStatsUseCase: GetProfileStatsUseCase,
+    private val getLeaderboardUseCase: GetLeaderboardUseCase,
     private val logoutUseCase: LogoutUserUseCase,
     private val checkInManager: CheckInManager,
+    private val socialUpdates: SocialUpdates,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProfileState()
@@ -48,13 +53,16 @@ internal class ProfileViewModel(
     private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
     private val checkInState = MutableStateFlow(initialState.checkIn)
+    private val hasLeaderboardState = MutableStateFlow(initialState.hasLeaderboard)
 
     init {
         loadMonthBackground()
         loadData()
+        loadLeaderboard()
 
         observeUser()
         observeCheckIn()
+        observeSocial()
 
         analytics.logScreenView(
             screenName = "profile",
@@ -87,6 +95,14 @@ internal class ProfileViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeSocial() {
+        socialUpdates.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach { loadLeaderboard() }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadMonthBackground() {
         val configUrl = Firebase.remoteConfig.getString(MOBILE_THIS_MONTH_IMAGE_URL)
         monthBackgroundState.update { configUrl }
@@ -105,6 +121,25 @@ internal class ProfileViewModel(
                 }
             } finally {
                 loadingMonthStatsState.update { LoadingState.Done }
+            }
+        }
+    }
+
+    private fun loadLeaderboard() {
+        viewModelScope.launch {
+            try {
+                if (!sessionManager.isAuthenticated()) {
+                    return@launch
+                }
+
+                val entries = getLeaderboardUseCase.getLeaderboard(
+                    Pagination(page = 1, limit = 1),
+                )
+                hasLeaderboardState.update { entries.isNotEmpty() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }
@@ -135,6 +170,7 @@ internal class ProfileViewModel(
         logoutLoadingState,
         userState,
         checkInState,
+        hasLeaderboardState,
     ) { state ->
         ProfileState(
             monthStats = state[0] as ProfileStats?,
@@ -144,6 +180,7 @@ internal class ProfileViewModel(
             logoutLoading = state[4] as LoadingState,
             user = state[5] as User?,
             checkIn = state[6] as Boolean,
+            hasLeaderboard = state[7] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

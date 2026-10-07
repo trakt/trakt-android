@@ -14,4 +14,5 @@ internal data class ProfileState(
     val loadingMonthStats: LoadingState = LoadingState.Idle,
     val logoutLoading: LoadingState = LoadingState.Idle,
     val checkIn: Boolean = false,
+    val hasLeaderboard: Boolean = false,
 )
