@@ -47,7 +47,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,6 +76,7 @@ import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
 import tv.trakt.trakt.core.reactions.media.ui.MediaReactionsUserPick
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.FloatingContainerShadow
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -268,12 +268,7 @@ internal fun DetailsRatingPill(
         modifier = modifier
             .dropShadow(
                 shape = PillShape,
-                shadow = Shadow(
-                    radius = 6.dp,
-                    color = Color.Black,
-                    spread = 1.dp,
-                    alpha = 0.12F,
-                ),
+                shadow = FloatingContainerShadow,
             )
             .background(TraktTheme.colors.navigationContainer, PillShape)
             .height(PillHeight)
