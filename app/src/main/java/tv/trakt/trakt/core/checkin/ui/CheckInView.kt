@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -49,7 +48,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -73,6 +71,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade300
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.theme.FloatingContainerShadow
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -82,13 +81,6 @@ import kotlin.time.Duration.Companion.seconds
 
 private val viewShape = RoundedCornerShape(20.dp)
 private val viewPadding = 7.dp
-private val viewShadow = Shadow(
-    radius = 1.dp,
-    color = Color.Black,
-    spread = 0.75.dp,
-    alpha = 0.1F,
-    offset = DpOffset(x = 0.dp, y = 0.75.dp),
-)
 
 private val imageShape = RoundedCornerShape(14.dp)
 private val imageHeight = 76.dp
@@ -160,7 +152,7 @@ internal fun CheckInView(
                     expanded -> viewShape
                     else -> collapsedViewShape
                 },
-                shadow = viewShadow,
+                shadow = FloatingContainerShadow,
             )
             .background(
                 color = TraktTheme.colors.navigationContainer,
@@ -617,7 +609,7 @@ private fun Preview() {
                     modifier = Modifier
                         .dropShadow(
                             shape = viewShape,
-                            shadow = viewShadow,
+                            shadow = FloatingContainerShadow,
                         )
                         .background(
                             color = TraktTheme.colors.navigationContainer,
@@ -663,7 +655,7 @@ private fun Preview2() {
                     modifier = Modifier
                         .dropShadow(
                             shape = collapsedViewShape,
-                            shadow = viewShadow,
+                            shadow = FloatingContainerShadow,
                         )
                         .background(
                             color = TraktTheme.colors.navigationContainer,
