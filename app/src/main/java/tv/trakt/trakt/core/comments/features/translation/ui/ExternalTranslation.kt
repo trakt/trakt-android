@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.comments.ui
+package tv.trakt.trakt.core.comments.features.translation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -8,10 +8,12 @@ import org.koin.compose.koinInject
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
-import tv.trakt.trakt.common.model.Comment
 
+/**
+ * Returns an action that opens the given text in Google Translate, when installed.
+ */
 @Composable
-internal fun rememberTranslateCommentAction(): (Comment) -> Unit {
+internal fun rememberExternalTranslation(): (String) -> Unit {
     val context = LocalContext.current
     val analytics = when {
         LocalInspectionMode.current -> null
@@ -19,8 +21,7 @@ internal fun rememberTranslateCommentAction(): (Comment) -> Unit {
     }
 
     return remember(context, analytics) {
-        { comment ->
-            val text = comment.comment.trim()
+        { text ->
             val activityInfo = context.googleTranslateActivityInfo()
             if (activityInfo != null) {
                 context.openGoogleTranslate(

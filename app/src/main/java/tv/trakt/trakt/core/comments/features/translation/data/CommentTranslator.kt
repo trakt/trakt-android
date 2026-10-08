@@ -1,0 +1,46 @@
+package tv.trakt.trakt.core.comments.features.translation.data
+
+import androidx.appcompat.app.AppCompatDelegate
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
+import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
+import java.util.Locale
+
+internal interface CommentTranslator {
+    val downloadType: CommentTranslationDownload
+
+    /**
+     * Source languages this translator can translate into the app language on this device.
+     */
+    suspend fun languages(): OnDeviceLanguages
+
+    /**
+     * Returns true when everything needed to translate from [source] is already on the device.
+     */
+    suspend fun isDownloaded(source: Locale): Boolean
+
+    /**
+     * Returns true when a download would go over a metered network, such as mobile data.
+     */
+    fun isOnMeteredNetwork(): Boolean
+
+    /**
+     * Downloads what is needed to translate from [source] into the app language.
+     * [onProgress] receives a percentage when the translator can report download progress.
+     */
+    suspend fun download(
+        source: Locale,
+        onProgress: (Int) -> Unit,
+    ): Result<Unit>
+
+    /**
+     * Translates [text] written in [source] into the app language.
+     */
+    suspend fun translate(
+        text: String,
+        source: Locale,
+    ): Result<String>
+}
+
+internal fun appLocale(): Locale {
+    return AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+}

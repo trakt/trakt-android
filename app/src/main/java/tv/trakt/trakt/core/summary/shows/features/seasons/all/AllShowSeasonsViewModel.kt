@@ -14,6 +14,8 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -53,6 +55,10 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent.OpenExternalTranslation
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
@@ -105,6 +111,7 @@ internal class AllShowSeasonsViewModel(
     private val episodeDetailsUpdates: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
+    private val translationsStore: CommentTranslationsStore,
 ) : ViewModel() {
     private val initialState = AllShowSeasonsState()
 
@@ -446,6 +453,14 @@ internal class AllShowSeasonsViewModel(
                     mutable.remove(commentId)
                     it.copy(selectedSeasonRepliesLoading = mutable.toImmutableSet())
                 }
+            }
+        }
+    }
+
+    fun toggleCommentTranslation(comment: Comment) {
+        viewModelScope.launch {
+            if (!translationsStore.toggle(comment)) {
+                events.emit(OpenExternalTranslation(comment.comment.trim()))
             }
         }
     }
@@ -799,6 +814,9 @@ internal class AllShowSeasonsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
+    val events: Flow<CommentTranslationEvent>
+        field = MutableSharedFlow<CommentTranslationEvent>(replay = 0)
+
     val state = combine(
         showState,
         userState,
@@ -817,6 +835,7 @@ internal class AllShowSeasonsViewModel(
         reactions.userReactions,
         rating.rating,
         commentsLanguageState,
+        translationsStore.translations,
     ) { state ->
         AllShowSeasonsState(
             show = state[0] as Show?,
@@ -836,6 +855,7 @@ internal class AllShowSeasonsViewModel(
             userReactions = state[14] as ImmutableMap<Int, Reaction?>,
             seasonUserRating = state[15] as AllShowSeasonsState.UserRatingState,
             commentsLanguage = state[16] as String?,
+            translations = state[17] as CommentTranslations,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -50,6 +50,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
@@ -65,11 +66,18 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
+import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
+import tv.trakt.trakt.core.comments.features.translation.ui.CommentTranslateButton
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.util.Locale
+
+private val EmptyTranslations = CommentTranslations()
 
 @Composable
 internal fun CommentReplyCard(
@@ -78,6 +86,7 @@ internal fun CommentReplyCard(
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary? = null,
     userReaction: Reaction? = null,
+    translations: CommentTranslations = EmptyTranslations,
     progressTotal: Int? = null,
     onClick: (() -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
@@ -85,6 +94,7 @@ internal fun CommentReplyCard(
     onReactionClick: ((Reaction) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     LaunchedEffect(reply.id) {
         if (reactions == null) {
@@ -109,12 +119,14 @@ internal fun CommentReplyCard(
             comment = reply,
             reactions = reactions,
             userReaction = userReaction,
+            translations = translations,
             progressTotal = progressTotal,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
             onDeleteClick = onDeleteClick,
             onReportClick = { reportActive = true },
             onUserClick = onUserClick,
+            onTranslateClick = onTranslateClick,
         )
     }
 
@@ -160,6 +172,7 @@ private fun CommentReplyCardContent(
     comment: Comment,
     reactions: ReactionsSummary?,
     userReaction: Reaction?,
+    translations: CommentTranslations,
     progressTotal: Int?,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
@@ -167,6 +180,7 @@ private fun CommentReplyCardContent(
     onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     var showSpoilers by remember { mutableStateOf(false) }
 
@@ -189,8 +203,9 @@ private fun CommentReplyCardContent(
         )
 
         val highlightColor = TraktTheme.colors.textPrimary
-        val markdownText = remember(comment, highlightColor) {
-            comment.commentNoSpoilers.toMarkdownText(
+        val displayText = translations.displayText(comment)
+        val markdownText = remember(displayText, highlightColor) {
+            displayText.toMarkdownText(
                 linkColor = highlightColor,
                 mentionColor = highlightColor,
             )
@@ -220,8 +235,10 @@ private fun CommentReplyCardContent(
             comment = comment,
             reactions = reactions,
             userReaction = userReaction,
+            translations = translations,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
+            onTranslateClick = onTranslateClick,
             modifier = Modifier
                 .padding(
                     top = 16.dp,
@@ -390,11 +407,12 @@ private fun CommentFooter(
     comment: Comment,
     reactions: ReactionsSummary?,
     userReaction: Reaction?,
+    translations: CommentTranslations,
     modifier: Modifier = Modifier,
     onReactionClick: ((Reaction) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
-    val onTranslateClick = rememberTranslateCommentAction()
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
 
@@ -439,18 +457,11 @@ private fun CommentFooter(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (comment.rememberTranslatable()) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_translate),
-                    contentDescription = "Replies",
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .onClick {
-                            onTranslateClick(comment)
-                        },
-                )
-            }
+            CommentTranslateButton(
+                comment = comment,
+                translations = translations,
+                onTranslateClick = onTranslateClick,
+            )
 
             if (reactionsEnabled) {
                 Icon(
@@ -498,6 +509,22 @@ private fun Preview() {
                     user = null,
                     reply = PreviewData.comment1.copy(userRating = 7),
                     progressTotal = 10,
+                )
+
+                CommentReplyCard(
+                    onClick = {},
+                    user = null,
+                    reply = PreviewData.comment1.copy(language = Locale.SIMPLIFIED_CHINESE),
+                    translations = CommentTranslations(
+                        languages = OnDeviceLanguages.All,
+                        items = persistentMapOf(
+                            PreviewData.comment1.id to CommentTranslation.Translated(
+                                text = "Translated on device.",
+                                source = PreviewData.comment1.commentNoSpoilers,
+                            ),
+                        ),
+                    ),
+                    onTranslateClick = {},
                 )
 
                 CommentReplyCard(

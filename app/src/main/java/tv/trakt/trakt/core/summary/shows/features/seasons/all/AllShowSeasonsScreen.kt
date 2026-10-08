@@ -15,6 +15,8 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
+import tv.trakt.trakt.core.comments.features.translation.ui.rememberExternalTranslation
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 
 @Composable
@@ -26,12 +28,23 @@ internal fun AllShowSeasonsScreen(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val openExternalTranslation = rememberExternalTranslation()
     val haptic = LocalHapticFeedback.current
     val snack = LocalSnackbarState.current
     val scope = rememberCoroutineScope()
 
     val state by viewModel.state.collectAsStateWithLifecycle()
     val sheetState = rememberAllShowSeasonsSheetState()
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is CommentTranslationEvent.OpenExternalTranslation -> {
+                    openExternalTranslation(event.text)
+                }
+            }
+        }
+    }
 
     AllShowSeasonsContent(
         state = state,
@@ -55,6 +68,7 @@ internal fun AllShowSeasonsScreen(
         onCommentEditClick = { sheetState.editComment = it },
         onCommentDeleteClick = { sheetState.deleteComment = it },
         onCommentReplyDeleteClick = { sheetState.deleteReply = it },
+        onCommentTranslateClick = viewModel::toggleCommentTranslation,
         onPersonClick = { person, role -> state.show?.let { onPersonClick(it, person, role) } },
         onSeasonRatingClick = {
             viewModel.addSeasonRating(it)

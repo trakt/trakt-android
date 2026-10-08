@@ -16,6 +16,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.comments.data.remote.CommentsApiClient
@@ -35,6 +36,10 @@ import tv.trakt.trakt.core.comments.features.editcomment.EditCommentViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
 import tv.trakt.trakt.core.comments.features.postreply.PostReplyViewModel
 import tv.trakt.trakt.core.comments.features.report.ReportCommentViewModel
+import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
+import tv.trakt.trakt.core.comments.features.translation.data.GeminiNanoCommentTranslator
+import tv.trakt.trakt.core.comments.features.translation.data.MlKitCommentTranslator
+import tv.trakt.trakt.core.comments.features.translation.download.CommentTranslationDownloadViewModel
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.EditCommentUseCase
@@ -63,9 +68,22 @@ internal val commentsDataModule = module {
     }
 
     singleOf(::CommentsUpdatesStorage) { bind<CommentsUpdates>() }
+    singleOf(::GeminiNanoCommentTranslator)
+    singleOf(::MlKitCommentTranslator)
+    single {
+        CommentTranslationsStore(
+            translators = listOf(
+                get<GeminiNanoCommentTranslator>(),
+                get<MlKitCommentTranslator>(),
+            ),
+            analytics = get(),
+        )
+    }
 }
 
 internal val commentsModule = module {
+    viewModelOf(::CommentTranslationDownloadViewModel)
+
     factoryOf(::GetCommentRepliesUseCase)
     factoryOf(::GetCommentReactionsUseCase)
     factoryOf(::PostCommentUseCase)
@@ -102,6 +120,7 @@ internal val commentsModule = module {
             loadUserReactionsUseCase = get(),
             reactionsUpdates = get(),
             commentsUpdates = get(),
+            translationsStore = get(),
         )
     }
 
@@ -114,6 +133,7 @@ internal val commentsModule = module {
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
             commentsUpdates = get(),
+            translationsStore = get(),
         )
     }
 
