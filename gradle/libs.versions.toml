@@ -13,6 +13,7 @@ agp = "9.4.1"
 androidxLifecycle = "2.11.0"
 androidxFoundation = "1.12.1"
 appcompat = "1.8.0"
+browser = "1.10.0"
 billing = "9.1.0"
 coil = "3.6.3"
 composeBom = "2026.09.00"
@@ -57,6 +58,7 @@ espressoCore = "3.7.0"
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 android-billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxFoundation" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }

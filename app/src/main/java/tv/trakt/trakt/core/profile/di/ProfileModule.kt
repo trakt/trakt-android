@@ -70,6 +70,7 @@ import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdatesStorage
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.profile.ProfileViewModel
 import tv.trakt.trakt.core.profile.sections.activity.ProfileActivityViewModel
 import tv.trakt.trakt.core.profile.sections.activity.all.ProfileAllActivityViewModel
@@ -217,6 +218,7 @@ internal val profileModule = module {
         LogoutUserUseCase(
             appContext = androidApplication(),
             sessionManager = get(),
+            authPreferences = get(named(AUTH_PREFERENCES)),
             collapsingManager = get(),
             checkInManager = get(),
             apiClients = get(named("apiClients")),
