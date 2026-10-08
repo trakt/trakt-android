@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.persistentMapOf
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -89,15 +90,25 @@ internal fun CommentTranslateButton(
                 )
             }
             is Translated -> {
-                Text(
-                    text = stringResource(
-                        R.string.button_text_comment_show_original,
-                        originalLanguageLabel,
-                    ),
-                    style = TraktTheme.typography.meta,
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                )
+                Row(
+                    horizontalArrangement = spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.button_text_comment_translated),
+                        style = TraktTheme.typography.meta,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                    )
+                    Text(
+                        text = originalLanguageLabel,
+                        style = TraktTheme.typography.meta.copy(
+                            fontSize = 13.sp,
+                        ),
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                    )
+                }
             }
             Translating, null -> {
                 Unit
