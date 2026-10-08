@@ -1697,7 +1697,7 @@
   <string name="text_media_sync_run_checked">%1$d個のアイテムをチェック、%2$d個がコレクションから削除されました</string>
   <string name="text_media_sync_run_failed">この同期は完了しませんでした。自動的に再試行されます。</string>
   <string name="text_media_sync_run_nothing_new">新しいものはありません</string>
-  <string name="text_media_sync_run_nothing_new_since">%1$s以来、%2$d回の同期で新しいものはありません</string>
+  <string name="text_media_sync_run_nothing_new_since">%1$d回の同期で、%2$s以来新しいものはありません</string>
   <string name="text_media_sync_step">%1$dステップ中%2$dステップ</string>
   <string name="text_member_count_accessible">%s件以上のTrakt登録済みアカウント</string>
   <string name="text_member_count_tagline">視聴しているコンテンツを追跡している人々、その数は増加中です</string>

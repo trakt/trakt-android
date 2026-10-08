@@ -1696,7 +1696,7 @@
   <string name="text_media_sync_run_checked">已检查%1$d个项目，%2$d个已从您的收藏中移除</string>
   <string name="text_media_sync_run_failed">此同步未完成。它将自行重试。</string>
   <string name="text_media_sync_run_nothing_new">没有新内容</string>
-  <string name="text_media_sync_run_nothing_new_since">自%1$s以来，在%2$d次同步中没有新内容</string>
+  <string name="text_media_sync_run_nothing_new_since">在%1$d次同步中，自%2$s以来没有新内容</string>
   <string name="text_media_sync_step">第%1$d步，共%2$d步</string>
   <string name="text_member_count_accessible">超过 %s 个已注册 Trakt 帐户</string>
   <string name="text_member_count_tagline">正在追踪观看内容的用户，并且人数还在不断增加</string>

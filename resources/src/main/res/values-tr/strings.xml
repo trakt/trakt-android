@@ -1697,7 +1697,7 @@
   <string name="text_media_sync_run_checked">%1$d öğe kontrol edildi, koleksiyonunuzdan %2$d öğe kaldırıldı</string>
   <string name="text_media_sync_run_failed">Bu senkronizasyon tamamlanmadı. Otomatik olarak tekrar deneyecek.</string>
   <string name="text_media_sync_run_nothing_new">Yeni bir şey yok</string>
-  <string name="text_media_sync_run_nothing_new_since">%1$s tarihinden beri %2$d senkronizasyonda yeni bir şey yok</string>
+  <string name="text_media_sync_run_nothing_new_since">%1$d senkronizasyonda %2$s tarihinden beri yeni bir şey yok</string>
   <string name="text_media_sync_step">%1$d adımın %2$d. adımı</string>
   <string name="text_member_count_accessible">%s üzerinde kayıtlı Trakt hesabı</string>
   <string name="text_member_count_tagline">izlediklerini takip eden ve saymaya devam eden kişiler</string>
