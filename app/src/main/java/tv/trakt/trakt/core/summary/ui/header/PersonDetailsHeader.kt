@@ -102,7 +102,7 @@ internal fun DetailsHeader(
         imagePlaceholderUrl = person.images?.getPosterUrl(Size.THUMB),
         imageHorizontal = false,
         onShareClick = onShareClick,
-        onShareImageClick = {},
+        onShareImageClick = null,
         onBackClick = onBackClick,
         date = null,
         status = null,

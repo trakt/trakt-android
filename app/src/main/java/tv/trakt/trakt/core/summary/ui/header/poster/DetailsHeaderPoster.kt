@@ -55,7 +55,7 @@ fun DetailsHeaderPoster(
     personImdb: ImdbId?,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
-    onShareImageClick: () -> Unit,
+    onShareImageClick: (() -> Unit)?,
     onWatchedClick: () -> Unit,
     extraRightColumn: @Composable () -> Unit = {},
 ) {

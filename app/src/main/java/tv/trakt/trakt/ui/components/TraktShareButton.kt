@@ -28,7 +28,7 @@ internal fun TraktShareButton(
     modifier: Modifier = Modifier,
     size: Dp = 24.dp,
     onShareLinkClick: () -> Unit = {},
-    onShareImageClick: () -> Unit = {},
+    onShareImageClick: (() -> Unit)? = null,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -39,7 +39,13 @@ internal fun TraktShareButton(
             contentDescription = null,
             modifier = Modifier
                 .size(size)
-                .onClick { showMenu = true },
+                .onClick {
+                    if (onShareImageClick == null) {
+                        onShareLinkClick()
+                    } else {
+                        showMenu = true
+                    }
+                },
         )
         DropdownMenu(
             expanded = showMenu,
@@ -69,28 +75,30 @@ internal fun TraktShareButton(
                     onShareLinkClick()
                 },
             )
-            DropdownMenuItem(
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_image),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(22.dp),
-                    )
-                },
-                text = {
-                    Text(
-                        text = stringResource(R.string.button_text_media_share_type_image),
-                        style = TraktTheme.typography.buttonTertiary,
-                        color = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                },
-                onClick = {
-                    showMenu = false
-                    onShareImageClick()
-                },
-            )
+            if (onShareImageClick != null) {
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_image),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.size(22.dp),
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = stringResource(R.string.button_text_media_share_type_image),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                        onShareImageClick()
+                    },
+                )
+            }
         }
     }
 }
@@ -102,6 +110,16 @@ private fun Preview() {
         TraktShareButton(
             onShareLinkClick = {},
             onShareImageClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF212427)
+@Composable
+private fun LinkOnlyPreview() {
+    TraktTheme {
+        TraktShareButton(
+            onShareLinkClick = {},
         )
     }
 }

@@ -108,7 +108,7 @@ internal fun DetailsHeader(
     onLetterboxdClick: (link: String) -> Unit,
     onRottenClick: (link: String) -> Unit,
     onShareClick: () -> Unit,
-    onShareImageClick: () -> Unit,
+    onShareImageClick: (() -> Unit)?,
     onInfoClick: (() -> Unit)? = null,
     onWatchedClick: (() -> Unit)? = null,
     onBackClick: () -> Unit,
