@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.applinks.model.AppLink
 import tv.trakt.trakt.core.applinks.usecases.ResolveImdbLinkUseCase
+import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
@@ -29,6 +30,7 @@ import java.net.HttpURLConnection.HTTP_NOT_FOUND
 internal class AppLinkViewModel(
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val getPersonUseCase: GetPersonUseCase,
     private val resolveImdbLinkUseCase: ResolveImdbLinkUseCase,
 ) : ViewModel() {
     private val initialState = AppLinkState()
@@ -50,6 +52,9 @@ internal class AppLinkViewModel(
                     )
                     is AppLink.Movie -> AppLinkEvent.OpenMovie(
                         movieId = getMovieDetailsUseCase.getMovie(link.slug).ids.trakt,
+                    )
+                    is AppLink.Person -> AppLinkEvent.OpenPerson(
+                        personId = getPersonUseCase.getPersonDetails(link.slug).ids.trakt,
                     )
                     is AppLink.Imdb -> resolveImdbLinkUseCase.resolve(link.imdbId)
                 }

@@ -90,6 +90,7 @@
         <data android:host="app.trakt.tv" />
         <data android:pathPrefix="/shows/" />
         <data android:pathPrefix="/movies/" />
+        <data android:pathPrefix="/people/" />
 
         <uri-relative-filter-group
           android:allow="false"

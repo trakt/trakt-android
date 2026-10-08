@@ -16,6 +16,10 @@ internal sealed interface AppLink {
         val slug: SlugId,
     ) : AppLink
 
+    data class Person(
+        val slug: SlugId,
+    ) : AppLink
+
     data class Imdb(
         val imdbId: String,
     ) : AppLink
@@ -40,6 +44,7 @@ internal fun parseAppLink(uri: Uri): AppLink? {
     return when (type) {
         "shows" -> AppLink.Show(slug.toSlugId())
         "movies" -> AppLink.Movie(slug.toSlugId())
+        "people" -> AppLink.Person(slug.toSlugId())
         else -> null
     }
 }
