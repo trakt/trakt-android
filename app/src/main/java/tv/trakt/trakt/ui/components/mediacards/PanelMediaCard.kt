@@ -75,6 +75,7 @@ internal fun PanelMediaCard(
     contentImageUrl: String?,
     containerImageUrl: String?,
     corner: Dp = 16.dp,
+    imageWidth: Dp = TraktTheme.size.verticalMediumMediaCardSize,
     more: Boolean = true,
     watched: Boolean = false,
     watching: Boolean = false,
@@ -109,7 +110,7 @@ internal fun PanelMediaCard(
             )
             .background(containerColor, RoundedCornerShape(corner))
             .alpha(if (enabled) 1F else 0.33F)
-            .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio)
+            .height(imageWidth / VerticalImageAspectRatio)
             .onClickCombined(
                 enabled = enabled,
                 onClick = onClick,
@@ -119,7 +120,7 @@ internal fun PanelMediaCard(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .width(TraktTheme.size.verticalMediumMediaCardSize),
+                .width(imageWidth),
         ) {
             if (!contentImageUrl.isNullOrBlank() && !isPosterError) {
                 AsyncImage(
@@ -133,7 +134,7 @@ internal fun PanelMediaCard(
                         .padding(start = 4.dp)
                         .padding(vertical = 4.dp)
                         .aspectRatio(VerticalImageAspectRatio)
-                        .width(TraktTheme.size.verticalMediumMediaCardSize)
+                        .width(imageWidth)
                         .clip(RoundedCornerShape(corner - 3.dp))
                         .onClick(
                             enabled = enabled,
@@ -146,7 +147,7 @@ internal fun PanelMediaCard(
                         .padding(start = 4.dp)
                         .padding(vertical = 4.dp)
                         .aspectRatio(VerticalImageAspectRatio)
-                        .width(TraktTheme.size.verticalMediumMediaCardSize)
+                        .width(imageWidth)
                         .clip(RoundedCornerShape(corner - 3.dp))
                         .background(TraktTheme.colors.placeholderContainer)
                         .onClick(onClick = onImageClick ?: {}),

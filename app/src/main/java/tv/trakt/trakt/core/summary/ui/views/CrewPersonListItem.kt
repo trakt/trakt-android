@@ -33,6 +33,7 @@ internal fun CrewPersonListItem(
         subtitleMaxLines = 3,
         contentImageUrl = person.person.images?.getHeadshotUrl(THUMB),
         containerImageUrl = null,
+        imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
         more = false,
         footerContent = if (person.episodesCount > 0) {
             {

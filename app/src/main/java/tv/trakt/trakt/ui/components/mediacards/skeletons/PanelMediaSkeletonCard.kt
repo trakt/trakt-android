@@ -42,6 +42,7 @@ import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 internal fun PanelMediaSkeletonCard(
     modifier: Modifier = Modifier,
     corner: Dp = 16.dp,
+    imageWidth: Dp = TraktTheme.size.verticalMediumMediaCardSize,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
@@ -62,14 +63,14 @@ internal fun PanelMediaSkeletonCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(corner))
             .background(shimmerTransition)
-            .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio),
+            .height(imageWidth / VerticalImageAspectRatio),
     ) {
         Box(
             modifier = Modifier
                 .padding(start = 8.dp)
                 .padding(vertical = 8.dp)
                 .aspectRatio(VerticalImageAspectRatio)
-                .width(TraktTheme.size.verticalMediumMediaCardSize)
+                .width(imageWidth)
                 .clip(RoundedCornerShape(corner - 2.dp))
                 .background(TraktTheme.colors.skeletonShimmer),
         )

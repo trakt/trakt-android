@@ -31,6 +31,7 @@ internal fun CastPersonListItem(
         subtitleMaxLines = 3,
         contentImageUrl = person.person.images?.getHeadshotUrl(),
         containerImageUrl = null,
+        imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
         more = false,
         footerContent = if (person.episodesCount > 0) {
             {

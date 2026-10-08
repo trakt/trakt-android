@@ -128,7 +128,7 @@ private fun AllCreditsContent(
 
         LazyColumn(
             state = listState,
-            verticalArrangement = spacedBy(16.dp),
+            verticalArrangement = spacedBy(14.dp),
             contentPadding = contentPadding,
             overscrollEffect = null,
         ) {
@@ -162,7 +162,9 @@ private fun AllCreditsContent(
             when {
                 state.loading != Done -> {
                     items(count = 6) {
-                        PanelMediaSkeletonCard()
+                        PanelMediaSkeletonCard(
+                            imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
+                        )
                     }
                 }
 

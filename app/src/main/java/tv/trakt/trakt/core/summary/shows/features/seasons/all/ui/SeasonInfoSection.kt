@@ -220,6 +220,7 @@ internal fun LazyListScope.SeasonInfoSection(
     if (state.items.isSeasonPeopleLoading) {
         items(count = 6) {
             PanelMediaSkeletonCard(
+                imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
                 modifier = Modifier
                     .padding(contentPadding)
                     .padding(bottom = 12.dp)
