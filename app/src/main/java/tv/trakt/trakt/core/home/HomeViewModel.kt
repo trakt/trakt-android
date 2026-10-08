@@ -95,7 +95,7 @@ internal class HomeViewModel(
                     val usage = getUserUsageUseCase.getUserUsage()
                     delay(500.milliseconds) // Delay to avoid showing the banner too quickly.
                     welcomeBannerState.update {
-                        isAuthenticated && usage.isEmpty
+                        isAuthenticated && usage?.isEmpty == true
                     }
                 }
             } catch (error: Exception) {
