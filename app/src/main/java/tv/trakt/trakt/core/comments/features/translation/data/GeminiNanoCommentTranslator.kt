@@ -19,6 +19,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.isOnMeteredNetwork
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
+import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
 import java.util.Locale
 
 private const val MAX_OUTPUT_TOKENS = 2048
@@ -40,11 +41,14 @@ internal class GeminiNanoCommentTranslator(
     private var supported = false
     private var downloaded = false
 
-    override suspend fun isAvailable(): Boolean {
-        if (supported) return true
-
-        supported = status() != FeatureStatus.UNAVAILABLE
-        return supported
+    override suspend fun languages(): OnDeviceLanguages {
+        if (!supported) {
+            supported = status() != FeatureStatus.UNAVAILABLE
+        }
+        return when {
+            supported -> OnDeviceLanguages.All
+            else -> OnDeviceLanguages.None
+        }
     }
 
     override suspend fun isDownloaded(source: Locale): Boolean {

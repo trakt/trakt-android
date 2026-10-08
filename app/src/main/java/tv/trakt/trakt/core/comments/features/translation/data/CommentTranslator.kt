@@ -2,12 +2,16 @@ package tv.trakt.trakt.core.comments.features.translation.data
 
 import androidx.appcompat.app.AppCompatDelegate
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
+import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
 import java.util.Locale
 
 internal interface CommentTranslator {
     val downloadType: CommentTranslationDownload
 
-    suspend fun isAvailable(): Boolean
+    /**
+     * Source languages this translator can translate into the app language on this device.
+     */
+    suspend fun languages(): OnDeviceLanguages
 
     /**
      * Returns true when everything needed to translate from [source] is already on the device.

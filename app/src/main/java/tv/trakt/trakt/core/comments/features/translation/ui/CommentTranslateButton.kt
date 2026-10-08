@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslatio
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Translating
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
+import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
 import tv.trakt.trakt.core.comments.model.languageFlag
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -37,13 +38,13 @@ internal fun CommentTranslateButton(
     modifier: Modifier = Modifier,
     onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
-    val onDevice = translations.onDevice && onTranslateClick != null
+    val onDevice = translations.supportsOnDevice(comment) && onTranslateClick != null
     if (!comment.rememberTranslatable(onDeviceAvailable = onDevice)) {
         return
     }
 
     val openExternalTranslation = rememberExternalTranslation()
-    val translation = translations.items[comment.id]
+    val translation = translations.translation(comment)
 
     val inProgress = translation is Downloading || translation == Translating
     val originalLanguageLabel = remember(comment.language) {
@@ -143,13 +144,13 @@ private fun Preview() {
         ) {
             CommentTranslateButton(
                 comment = comment,
-                translations = CommentTranslations(onDevice = true),
+                translations = CommentTranslations(languages = OnDeviceLanguages.All),
                 onTranslateClick = {},
             )
             CommentTranslateButton(
                 comment = comment,
                 translations = CommentTranslations(
-                    onDevice = true,
+                    languages = OnDeviceLanguages.All,
                     items = persistentMapOf(comment.id to Downloading(CommentTranslationDownload.Language)),
                 ),
                 onTranslateClick = {},
@@ -157,7 +158,7 @@ private fun Preview() {
             CommentTranslateButton(
                 comment = comment,
                 translations = CommentTranslations(
-                    onDevice = true,
+                    languages = OnDeviceLanguages.All,
                     items = persistentMapOf(
                         comment.id to Downloading(CommentTranslationDownload.AiModel, progress = 42),
                     ),
@@ -167,7 +168,7 @@ private fun Preview() {
             CommentTranslateButton(
                 comment = comment,
                 translations = CommentTranslations(
-                    onDevice = true,
+                    languages = OnDeviceLanguages.All,
                     items = persistentMapOf(comment.id to Translating),
                 ),
                 onTranslateClick = {},
@@ -175,8 +176,13 @@ private fun Preview() {
             CommentTranslateButton(
                 comment = comment,
                 translations = CommentTranslations(
-                    onDevice = true,
-                    items = persistentMapOf(comment.id to Translated("Translated text")),
+                    languages = OnDeviceLanguages.All,
+                    items = persistentMapOf(
+                        comment.id to Translated(
+                            text = "Translated text",
+                            source = comment.commentNoSpoilers,
+                        ),
+                    ),
                 ),
                 onTranslateClick = {},
             )

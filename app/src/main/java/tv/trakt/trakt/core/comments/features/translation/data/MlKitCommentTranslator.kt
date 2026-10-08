@@ -8,6 +8,7 @@ import com.google.mlkit.nl.translate.TranslateRemoteModel
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.tasks.await
@@ -15,6 +16,8 @@ import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.isOnMeteredNetwork
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
+import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
+import tv.trakt.trakt.core.comments.features.translation.model.languageCode
 import java.util.Locale
 
 internal class MlKitCommentTranslator(
@@ -30,8 +33,13 @@ internal class MlKitCommentTranslator(
     private val translatorLock = Mutex()
     private var translator: Pair<LanguagePair, Translator>? = null
 
-    override suspend fun isAvailable(): Boolean {
-        return true
+    override suspend fun languages(): OnDeviceLanguages {
+        val target = TranslateLanguage.fromLanguageTag(appLocale().languageCode())
+            ?: return OnDeviceLanguages.None
+
+        return OnDeviceLanguages.Some(
+            languages = (TranslateLanguage.getAllLanguages() - target).toImmutableSet(),
+        )
     }
 
     override suspend fun isDownloaded(source: Locale): Boolean {
@@ -128,8 +136,8 @@ private data class LanguagePair(
 )
 
 private fun languagePair(source: Locale): LanguagePair? {
-    val sourceLanguage = TranslateLanguage.fromLanguageTag(source.language) ?: return null
-    val targetLanguage = TranslateLanguage.fromLanguageTag(appLocale().language) ?: return null
+    val sourceLanguage = TranslateLanguage.fromLanguageTag(source.languageCode()) ?: return null
+    val targetLanguage = TranslateLanguage.fromLanguageTag(appLocale().languageCode()) ?: return null
     if (sourceLanguage == targetLanguage) return null
 
     return LanguagePair(

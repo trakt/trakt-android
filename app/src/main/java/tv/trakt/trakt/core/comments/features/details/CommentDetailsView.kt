@@ -79,6 +79,7 @@ import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
+import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
 import tv.trakt.trakt.core.comments.features.translation.ui.CommentTranslateButton
 import tv.trakt.trakt.core.comments.features.translation.ui.rememberExternalTranslation
 import tv.trakt.trakt.core.comments.model.MentionSource
@@ -597,9 +598,12 @@ private fun Preview() {
                     state = CommentDetailsState(
                         comment = PreviewData.comment1.copy(language = Locale.SIMPLIFIED_CHINESE),
                         translations = CommentTranslations(
-                            onDevice = true,
+                            languages = OnDeviceLanguages.All,
                             items = persistentMapOf(
-                                PreviewData.comment1.id to CommentTranslation.Translated("Translated on device."),
+                                PreviewData.comment1.id to CommentTranslation.Translated(
+                                    text = "Translated on device.",
+                                    source = PreviewData.comment1.commentNoSpoilers,
+                                ),
                             ),
                         ),
                         loading = Done,

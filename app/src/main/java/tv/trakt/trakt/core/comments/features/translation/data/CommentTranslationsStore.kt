@@ -17,6 +17,8 @@ import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslatio
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Translating
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownloadRequest
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
+import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
+import tv.trakt.trakt.core.comments.features.translation.model.isOf
 import java.util.Locale
 
 /**
@@ -40,11 +42,11 @@ internal class CommentTranslationsStore(
     val pendingDownload: Flow<CommentTranslationDownloadRequest?> = pendingDownloadState.map { it?.request }
 
     val translations: Flow<CommentTranslations> = combine(
-        flow { emit(translators.any { it.isAvailable() }) },
+        flow { emit(onDeviceLanguages()) },
         itemsState,
-    ) { onDevice, items ->
+    ) { languages, items ->
         CommentTranslations(
-            onDevice = onDevice,
+            languages = languages,
             items = items,
         )
     }
@@ -61,7 +63,7 @@ internal class CommentTranslationsStore(
         if (current is Downloading || current == Translating) {
             return true
         }
-        if (current is Translated) {
+        if (current is Translated && current.isOf(comment)) {
             itemsState.update { it.remove(comment.id) }
             return true
         }
@@ -92,6 +94,12 @@ internal class CommentTranslationsStore(
         pendingDownloadState.update { null }
     }
 
+    private suspend fun onDeviceLanguages(): OnDeviceLanguages {
+        return translators.fold(OnDeviceLanguages.None) { languages: OnDeviceLanguages, translator ->
+            languages + translator.languages()
+        }
+    }
+
     private suspend fun translate(
         comment: Comment,
         firstTranslator: Int,
@@ -102,7 +110,7 @@ internal class CommentTranslationsStore(
         try {
             for (index in firstTranslator until translators.size) {
                 val translator = translators[index]
-                if (!translator.isAvailable()) {
+                if (!translator.languages().supports(source)) {
                     continue
                 }
 
@@ -128,7 +136,11 @@ internal class CommentTranslationsStore(
                     downloaded = downloaded,
                 )
                 if (result.isSuccess) {
-                    itemsState.update { it.put(comment.id, Translated(result.getOrThrow())) }
+                    val translated = Translated(
+                        text = result.getOrThrow(),
+                        source = comment.commentNoSpoilers,
+                    )
+                    itemsState.update { it.put(comment.id, translated) }
                     return true
                 }
             }
