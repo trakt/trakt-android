@@ -28,6 +28,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -165,6 +166,12 @@ private fun AllCreditsContent(
                         PanelMediaSkeletonCard(
                             imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
                         )
+                    }
+                }
+
+                state.error != null -> {
+                    item(key = "error") {
+                        ErrorView(error = state.error)
                     }
                 }
 
@@ -387,6 +394,20 @@ private fun CreditsFiltersSkeleton(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun ErrorView(
+    error: Exception,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n$error",
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.meta,
+        maxLines = 10,
+        modifier = modifier,
+    )
+}
+
+@Composable
 private fun EmptyView(modifier: Modifier = Modifier) {
     EmptyListCard(
         modifier = modifier.height(EmptyVerticalPanelHeight),
@@ -478,6 +499,18 @@ private fun PreviewLoading() {
         state = AllCreditsState(
             mediaTitle = "Slow Horses",
             loading = Loading,
+        ),
+    )
+}
+
+@Preview(device = "id:pixel_5")
+@Composable
+private fun PreviewError() {
+    PreviewContainer(
+        state = AllCreditsState(
+            mediaTitle = "Slow Horses",
+            loading = Done,
+            error = IllegalStateException("Preview error"),
         ),
     )
 }

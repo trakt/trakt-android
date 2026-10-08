@@ -98,7 +98,6 @@ private fun ShowActorsContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_actors),
-            chevron = !state.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -108,7 +107,7 @@ private fun ShowActorsContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == Done && !state.items.isNullOrEmpty()) {
+                .onClick(enabled = state.loading == Done) {
                     onMoreClick?.invoke()
                 },
         )
