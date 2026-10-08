@@ -250,6 +250,10 @@
   </application>
 
   <queries>
+    <intent>
+      <action android:name="android.support.customtabs.action.CustomTabsService" />
+    </intent>
+
     <!-- Streaming Apps -->
     <package android:name="com.amazon.avod.thirdpartyclient" />
     <package android:name="com.netflix.mediaclient" />

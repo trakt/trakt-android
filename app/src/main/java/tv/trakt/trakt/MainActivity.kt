@@ -6,11 +6,14 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.auth.AuthTabIntent
+import androidx.browser.auth.AuthTabIntent.AuthResult
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.CompositionLocalProvider
@@ -19,15 +22,15 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toUri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -44,6 +47,7 @@ import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
+import tv.trakt.trakt.core.auth.AuthBrowser
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_HTTPS_REDIRECT_URI
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_SCHEME
@@ -81,12 +85,16 @@ internal class MainActivity : AppCompatActivity() {
         inject<ThemeModeCache>().value
     }
 
+    private val authBrowser = AuthBrowser(
+        activity = this,
+        onAuthTabResult = ::handleAuthTabResult,
+    )
+
     private val newIntent = mutableStateOf<Intent?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Redirect to TV Activity if on a television device.
         if (isTelevision()) {
             startActivity(
                 Intent(this, TvSplashActivity::class.java),
@@ -109,8 +117,6 @@ internal class MainActivity : AppCompatActivity() {
         )
 
         setContent {
-            val scope = rememberCoroutineScope()
-
             val themeMode by themeModeUseCase.observeThemeMode()
                 .collectAsStateWithLifecycle(
                     initialValue = themeModeCache.read() ?: ThemeMode.Default,
@@ -158,16 +164,8 @@ internal class MainActivity : AppCompatActivity() {
                 }
             }
 
-            val uriHandler = LocalUriHandler.current
-            val startAuthorization = remember(uriHandler) {
-                {
-                    scope.launch {
-                        val codeVerifier = Pkce.generateCodeVerifier()
-                        authPreferences.edit { it[codeVerifierKey] = codeVerifier }
-                        uriHandler.openUri(ConfigAuth.authCodeUrl(codeVerifier, authRedirectUri()))
-                    }
-                    Unit
-                }
+            val startAuthorization = remember {
+                { startAuthorization() }
             }
 
             TraktTheme(
@@ -258,21 +256,67 @@ internal class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun authRedirectUri(): String {
+    private fun startAuthorization(allowHttpsRedirect: Boolean = true) {
+        lifecycleScope.launch {
+            val redirectUri = authRedirectUri(
+                httpsSupported = allowHttpsRedirect && authBrowser.supportsAuthTab(),
+            )
+            val codeVerifier = Pkce.generateCodeVerifier()
+            authPreferences.edit { it[codeVerifierKey] = codeVerifier }
+            authBrowser.open(
+                url = ConfigAuth.authCodeUrl(codeVerifier, redirectUri).toUri(),
+                redirectUri = redirectUri,
+            )
+        }
+    }
+
+    /**
+     * The https redirect is only used through an Auth Tab. A regular browser often fails to hand
+     * the final redirect off to the app, leaving the user on the web handoff page.
+     */
+    private fun authRedirectUri(httpsSupported: Boolean): String {
         return when {
-            Firebase.remoteConfig.getBoolean(MOBILE_HTTPS_AUTH_CALLBACK_ENABLED) -> OAUTH_HTTPS_REDIRECT_URI
-            else -> OAUTH_REDIRECT_URI
+            httpsSupported && Firebase.remoteConfig.getBoolean(MOBILE_HTTPS_AUTH_CALLBACK_ENABLED) -> {
+                OAUTH_HTTPS_REDIRECT_URI
+            }
+            else -> {
+                OAUTH_REDIRECT_URI
+            }
         }.also {
             Timber.d("Using Trakt auth redirect URI: $it")
         }
     }
 
+    private fun handleAuthTabResult(result: AuthResult) {
+        when (result.resultCode) {
+            AuthTabIntent.RESULT_OK -> {
+                result.resultUri?.let(::storeAuthorizationCode)
+            }
+            AuthTabIntent.RESULT_VERIFICATION_FAILED,
+            AuthTabIntent.RESULT_VERIFICATION_TIMED_OUT,
+            -> {
+                Timber.w("Auth Tab could not verify the https redirect (%d), retrying", result.resultCode)
+                startAuthorization(allowHttpsRedirect = false)
+            }
+            else -> {
+                Timber.d("Auth Tab closed without a redirect (%d)", result.resultCode)
+            }
+        }
+    }
+
     private fun handleTraktAuthorization(intent: Intent?) {
         val authData = intent?.data ?: return
+        if (storeAuthorizationCode(authData)) {
+            // Consume the intent so a configuration change does not replay the same code.
+            intent.data = null
+        }
+    }
+
+    private fun storeAuthorizationCode(authData: Uri): Boolean {
         val redirectUri = when {
             ConfigAuth.isHttpsRedirect(authData) -> OAUTH_HTTPS_REDIRECT_URI
             authData.scheme == OAUTH_REDIRECT_SCHEME -> OAUTH_REDIRECT_URI
-            else -> return
+            else -> return false
         }
 
         Timber.d("Handling Trakt authorization with data: %s", authData)
@@ -280,7 +324,7 @@ internal class MainActivity : AppCompatActivity() {
             Timber.recordError(
                 IllegalArgumentException("Invalid Trakt authorization data: $authData"),
             )
-            return
+            return false
         }
 
         val code = authData.getQueryParameter("code")
@@ -288,17 +332,16 @@ internal class MainActivity : AppCompatActivity() {
             Timber.recordError(
                 IllegalArgumentException("Trakt authorization redirect is missing code: $authData"),
             )
-            return
+            return false
         }
 
-        // Consume the intent so a configuration change does not replay the same code.
-        intent.data = null
         runBlocking {
             authPreferences.edit {
                 it[authCodeKey] = code
                 it[authRedirectUriKey] = redirectUri
             }
         }
+        return true
     }
 
     // Custom Theme

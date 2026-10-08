@@ -10,8 +10,8 @@ internal object ConfigAuth {
     const val OAUTH_REDIRECT_SCHEME = "trakt"
     const val OAUTH_REDIRECT_URI = "$OAUTH_REDIRECT_SCHEME://auth"
 
-    private const val OAUTH_HTTPS_REDIRECT_HOST = "app.trakt.tv"
-    private const val OAUTH_HTTPS_REDIRECT_PATH = "/callback/app/trakt"
+    const val OAUTH_HTTPS_REDIRECT_HOST = "app.trakt.tv"
+    const val OAUTH_HTTPS_REDIRECT_PATH = "/callback/app/trakt"
     const val OAUTH_HTTPS_REDIRECT_URI = "https://$OAUTH_HTTPS_REDIRECT_HOST$OAUTH_HTTPS_REDIRECT_PATH"
 
     fun isHttpsRedirect(uri: Uri): Boolean =

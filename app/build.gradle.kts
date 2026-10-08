@@ -113,6 +113,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.browser)
     implementation(libs.androidx.foundation)
     implementation(libs.android.material)
     implementation(libs.androidx.navigation)
