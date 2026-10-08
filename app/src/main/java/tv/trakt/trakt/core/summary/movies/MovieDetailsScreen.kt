@@ -120,6 +120,7 @@ internal fun MovieDetailsScreen(
     onExtraClick: (ExtraVideo) -> Unit,
     onNavigateToHistory: (Movie, watched: Int) -> Unit,
     onNavigateToAllStreamings: (Movie) -> Unit,
+    onNavigateToAllCredits: (Movie) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -242,6 +243,11 @@ internal fun MovieDetailsScreen(
         onAllStreamingsClick = {
             state.movie?.let { movie ->
                 onNavigateToAllStreamings(movie)
+            }
+        },
+        onAllCreditsClick = {
+            state.movie?.let { movie ->
+                onNavigateToAllCredits(movie)
             }
         },
         onBackClick = onNavigateBack,
@@ -413,6 +419,7 @@ internal fun MovieDetailsContent(
     onTriviaClick: (() -> Unit)? = null,
     onSentimentClick: ((Sentiments) -> Unit)? = null,
     onAllStreamingsClick: (() -> Unit)? = null,
+    onAllCreditsClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -644,6 +651,7 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onPersonClick = { onPersonClick?.invoke(it, PersonCreditsRole.Acting) },
+                            onMoreClick = { onAllCreditsClick?.invoke() },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),

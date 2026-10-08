@@ -46,7 +46,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
-import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
@@ -56,8 +55,9 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsPeopleMod
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsPeopleMode.Cast
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsPeopleMode.Crew
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
-import tv.trakt.trakt.core.summary.shows.features.seasons.ui.CastPersonListItem
-import tv.trakt.trakt.core.summary.shows.features.seasons.ui.CrewPersonListItem
+import tv.trakt.trakt.core.summary.ui.views.CastPersonListItem
+import tv.trakt.trakt.core.summary.ui.views.CrewPersonListItem
+import tv.trakt.trakt.core.summary.ui.views.matchesQuery
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.EmptyVerticalPanelHeight
@@ -220,6 +220,7 @@ internal fun LazyListScope.SeasonInfoSection(
     if (state.items.isSeasonPeopleLoading) {
         items(count = 6) {
             PanelMediaSkeletonCard(
+                imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
                 modifier = Modifier
                     .padding(contentPadding)
                     .padding(bottom = 12.dp)
@@ -347,16 +348,6 @@ private fun SeasonRatingView(state: AllShowSeasonsState) {
         }
     }
 }
-
-private fun CastPerson.matchesQuery(query: String): Boolean =
-    query.isBlank() ||
-        person.name.contains(query, ignoreCase = true) ||
-        characters.any { it.contains(query, ignoreCase = true) }
-
-private fun CrewPerson.matchesQuery(query: String): Boolean =
-    query.isBlank() ||
-        person.name.contains(query, ignoreCase = true) ||
-        jobs.any { it.contains(query, ignoreCase = true) }
 
 @Preview(
     device = "id:pixel_5",

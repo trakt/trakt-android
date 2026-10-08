@@ -97070,6 +97070,168 @@
                       },
                       "nullable": true
                     },
+                    "guest_stars": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "episode_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "person": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "slug",
+                                  "trakt"
+                                ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "headshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "headshot",
+                                  "fanart"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "ids"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "headshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "headshot"
+                            ],
+                            "nullable": true
+                          },
+                          "character": {
+                            "type": "string"
+                          },
+                          "characters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "person",
+                          "character",
+                          "characters"
+                        ]
+                      },
+                      "nullable": true
+                    },
                     "crew": {
                       "type": "object",
                       "additionalProperties": {
@@ -106650,6 +106812,168 @@
                       },
                       "nullable": true
                     },
+                    "guest_stars": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "episode_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "person": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "slug",
+                                  "trakt"
+                                ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "headshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "headshot",
+                                  "fanart"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "ids"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "headshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "headshot"
+                            ],
+                            "nullable": true
+                          },
+                          "character": {
+                            "type": "string"
+                          },
+                          "characters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "person",
+                          "character",
+                          "characters"
+                        ]
+                      },
+                      "nullable": true
+                    },
                     "crew": {
                       "type": "object",
                       "additionalProperties": {
@@ -108119,6 +108443,168 @@
                   "type": "object",
                   "properties": {
                     "cast": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "episode_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "person": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "slug",
+                                  "trakt"
+                                ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "headshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "headshot",
+                                  "fanart"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "ids"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "headshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "headshot"
+                            ],
+                            "nullable": true
+                          },
+                          "character": {
+                            "type": "string"
+                          },
+                          "characters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "person",
+                          "character",
+                          "characters"
+                        ]
+                      },
+                      "nullable": true
+                    },
+                    "guest_stars": {
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -111635,6 +112121,168 @@
                   "type": "object",
                   "properties": {
                     "cast": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "episode_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "person": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "slug",
+                                  "trakt"
+                                ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "headshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "headshot",
+                                  "fanart"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "ids"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "headshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "headshot"
+                            ],
+                            "nullable": true
+                          },
+                          "character": {
+                            "type": "string"
+                          },
+                          "characters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "person",
+                          "character",
+                          "characters"
+                        ]
+                      },
+                      "nullable": true
+                    },
+                    "guest_stars": {
                       "type": "array",
                       "items": {
                         "type": "object",

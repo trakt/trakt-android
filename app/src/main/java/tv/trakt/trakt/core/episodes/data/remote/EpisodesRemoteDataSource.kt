@@ -86,6 +86,7 @@ internal interface EpisodesRemoteDataSource {
         showId: TraktId,
         season: Int,
         episode: Int,
+        guestStars: Boolean = false,
     ): CastCrewDto
 
     /**

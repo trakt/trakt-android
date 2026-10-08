@@ -97,12 +97,13 @@ internal class EpisodesApiClient(
         showId: TraktId,
         season: Int,
         episode: Int,
+        guestStars: Boolean,
     ): CastCrewDto {
         val response = showsApi.getShowsEpisodePeople(
             id = showId.value.toString(),
             season = season,
             episode = episode,
-            extended = "cloud9,full",
+            extended = if (guestStars) "cloud9,full,guest_stars" else "cloud9,full",
         )
         return response.body()
     }
