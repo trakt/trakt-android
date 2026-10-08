@@ -110,6 +110,7 @@ internal fun EpisodeDetailsScreen(
     onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateToHistory: (Show, Episode, Int) -> Unit,
     onNavigateToAllStreamings: (Show, Episode) -> Unit,
+    onNavigateToAllCredits: (Show, Episode) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -210,6 +211,13 @@ internal fun EpisodeDetailsScreen(
             val episode = state.episode
             if (show != null && episode != null) {
                 onNavigateToAllStreamings(show, episode)
+            }
+        },
+        onAllCreditsClick = {
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                onNavigateToAllCredits(show, episode)
             }
         },
         onNavigateToUser = onNavigateToUser,
@@ -363,6 +371,7 @@ internal fun EpisodeDetailsContent(
     onRatingRemoveClick: (() -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
     onAllStreamingsClick: (() -> Unit)? = null,
+    onAllCreditsClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -573,6 +582,7 @@ internal fun EpisodeDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onPersonClick = { onPersonClick?.invoke(it, PersonCreditsRole.Acting) },
+                            onMoreClick = { onAllCreditsClick?.invoke() },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(

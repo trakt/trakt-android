@@ -266,11 +266,14 @@ internal class ShowsApiClient(
         return response.body()
     }
 
-    override suspend fun getCastCrew(showId: TraktId): CastCrewDto {
+    override suspend fun getCastCrew(
+        showId: TraktId,
+        guestStars: Boolean,
+    ): CastCrewDto {
         return try {
             showsApi.getShowsPeople(
                 id = showId.value.toString(),
-                extended = "cloud9,full",
+                extended = if (guestStars) "cloud9,full,guest_stars" else "cloud9,full",
             ).body()
         } catch (error: Exception) {
             if (error.getHttpCode() == 204) {

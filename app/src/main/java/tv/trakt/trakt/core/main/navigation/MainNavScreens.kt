@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.main.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -73,6 +74,8 @@ import tv.trakt.trakt.core.streamings.navigation.allStreamingsScreen
 import tv.trakt.trakt.core.streamings.navigation.navigateToEpisodeStreamings
 import tv.trakt.trakt.core.streamings.navigation.navigateToMovieStreamings
 import tv.trakt.trakt.core.streamings.navigation.navigateToShowStreamings
+import tv.trakt.trakt.core.summary.credits.navigation.allCreditsScreen
+import tv.trakt.trakt.core.summary.credits.navigation.navigateToAllCredits
 import tv.trakt.trakt.core.summary.episodes.features.history.navigation.episodeHistoryScreen
 import tv.trakt.trakt.core.summary.episodes.features.history.navigation.navigateToEpisodeHistory
 import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
@@ -293,6 +296,14 @@ internal fun NavGraphBuilder.showsScreens(
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateToAllCredits = { show ->
+                navigateToAllCredits(
+                    mediaId = show.ids.trakt,
+                    mediaType = Show,
+                    mediaTitle = show.title,
+                    backgroundUrl = show.images?.getFanartUrl(),
+                )
+            },
             onNavigateToUser = {
                 navigateToUserProfile(
                     user = it,
@@ -363,6 +374,16 @@ internal fun NavGraphBuilder.episodesScreens(
                     episodeTitle = episode.title,
                     seasonEpisode = episode.seasonEpisode,
                     backgroundUrl = show.images?.getFanartUrl(),
+                )
+            },
+            onNavigateToAllCredits = { show, episode ->
+                navigateToAllCredits(
+                    mediaId = show.ids.trakt,
+                    mediaType = Episode,
+                    mediaTitle = episode.title,
+                    backgroundUrl = show.images?.getFanartUrl(),
+                    season = episode.season,
+                    episode = episode.number,
                 )
             },
             onNavigateToUser = {
@@ -444,6 +465,14 @@ internal fun NavGraphBuilder.moviesScreens(
                 navigateToMovieStreamings(
                     movieId = movie.ids.trakt,
                     movieTitle = movie.title,
+                    backgroundUrl = movie.images?.getFanartUrl(),
+                )
+            },
+            onNavigateToAllCredits = { movie ->
+                navigateToAllCredits(
+                    mediaId = movie.ids.trakt,
+                    mediaType = Movie,
+                    mediaTitle = movie.title,
                     backgroundUrl = movie.images?.getFanartUrl(),
                 )
             },
@@ -732,6 +761,22 @@ internal fun NavGraphBuilder.allShowSeasonsScreens(controller: NavHostController
 internal fun NavGraphBuilder.triviaScreens(controller: NavHostController) {
     with(controller) {
         triviaScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.allCreditsScreens(controller: NavHostController) {
+    with(controller) {
+        allCreditsScreen(
+            onNavigateToPerson = { destination, person, role ->
+                navigateToPerson(
+                    personId = person.ids.trakt,
+                    sourceMediaId = destination.mediaId.toTraktId(),
+                    backdropUrl = destination.backgroundUrl,
+                    creditsRole = role,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }

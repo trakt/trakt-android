@@ -72,7 +72,10 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getStats(showId: TraktId): ShowStatsDto
 
-    suspend fun getCastCrew(showId: TraktId): CastCrewDto
+    suspend fun getCastCrew(
+        showId: TraktId,
+        guestStars: Boolean = false,
+    ): CastCrewDto
 
     suspend fun getSentiments(showId: TraktId): V3SentimentResponse?
 

@@ -17,6 +17,7 @@ import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowIds
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowImages
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowSocialIds
 import org.openapitools.client.models.GetMoviesPeople200Response
+import org.openapitools.client.models.GetMoviesPeople200ResponseCastInner
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
 import org.openapitools.client.models.GetMoviesPeople200ResponseCrewValueInner
 import org.openapitools.client.models.GetMoviesRatings200Response
@@ -85,6 +86,7 @@ typealias CalendarShowDto = GetCalendarsShows200ResponseInner
 typealias CreateSmartListRequestDto = PostUsersSmartListsCreateRequest
 typealias CrewMemberDto = GetMoviesPeople200ResponseCrewValueInner
 typealias CastCrewDto = GetMoviesPeople200Response
+typealias CastMemberDto = GetMoviesPeople200ResponseCastInner
 typealias CommentAllDto = GetUsersComments200ResponseInner
 typealias CommentDto = GetUsersComments200ResponseInnerComment
 typealias DroppedItemDto = GetUsersHiddenGetBySection200ResponseInner

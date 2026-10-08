@@ -60,6 +60,7 @@ internal fun MovieActorsView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onPersonClick: (Person) -> Unit,
+    onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -71,6 +72,7 @@ internal fun MovieActorsView(
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
         onPersonClick = onPersonClick,
+        onMoreClick = onMoreClick,
     )
 }
 
@@ -82,6 +84,7 @@ private fun MovieActorsContent(
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onPersonClick: ((Person) -> Unit)? = null,
+    onMoreClick: (() -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -94,7 +97,7 @@ private fun MovieActorsContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_actors),
-            chevron = false,
+            chevron = !state.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -103,7 +106,10 @@ private fun MovieActorsContent(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick(enabled = state.loading == Done && !state.items.isNullOrEmpty()) {
+                    onMoreClick?.invoke()
+                },
         )
 
         if (state.collapsed != true) {
