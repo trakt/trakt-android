@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation.Downloading
@@ -28,6 +29,7 @@ import java.util.Locale
  */
 internal class CommentTranslationsStore(
     private val translators: List<CommentTranslator>,
+    private val analytics: Analytics,
 ) {
     private val itemsState = MutableStateFlow<PersistentMap<Int, CommentTranslation>>(persistentMapOf())
     private val pendingDownloadState = MutableStateFlow<PendingDownload?>(null)
@@ -157,10 +159,15 @@ internal class CommentTranslationsStore(
 
         itemsState.update { it.put(comment.id, Translating) }
 
+        val text = comment.commentNoSpoilers
         return translator.translate(
-            text = comment.commentNoSpoilers,
+            text = text,
             source = source,
-        )
+        ).onSuccess {
+            analytics.comments.logCommentTranslate(
+                characters = text.codePointCount(0, text.length),
+            )
+        }
     }
 }
 

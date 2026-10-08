@@ -38,7 +38,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -81,7 +80,7 @@ import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslatio
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.features.translation.ui.CommentTranslateButton
-import tv.trakt.trakt.core.comments.features.translation.ui.openExternalTranslation
+import tv.trakt.trakt.core.comments.features.translation.ui.rememberExternalTranslation
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.ui.CommentDropdown
 import tv.trakt.trakt.core.comments.ui.CommentGifView
@@ -104,13 +103,13 @@ internal fun CommentDetailsView(
     onDeleteComment: (commentId: TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val openExternalTranslation = rememberExternalTranslation()
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
                 is CommentTranslationEvent.OpenExternalTranslation -> {
-                    context.openExternalTranslation(event.text)
+                    openExternalTranslation(event.text)
                 }
             }
         }

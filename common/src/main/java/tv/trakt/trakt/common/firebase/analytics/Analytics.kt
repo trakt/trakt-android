@@ -138,7 +138,7 @@ interface Analytics {
         fun logReplyRemove()
 
         /**
-         * Logs a comment or reply being sent to Google Translate.
+         * Logs a comment or reply being translated, on device or in Google Translate.
          * @param characters The number of characters sent for translation.
          */
         fun logCommentTranslate(characters: Int)

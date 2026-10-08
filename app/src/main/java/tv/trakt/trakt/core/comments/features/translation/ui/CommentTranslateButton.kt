@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.comments.features.translation.ui
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -10,15 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentMapOf
-import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -45,7 +41,7 @@ internal fun CommentTranslateButton(
         return
     }
 
-    val context = LocalContext.current
+    val openExternalTranslation = rememberExternalTranslation()
     val translation = translations.items[comment.id]
 
     val inProgress = translation is Downloading || translation == Translating
@@ -61,7 +57,7 @@ internal fun CommentTranslateButton(
                 if (onDevice) {
                     onTranslateClick.invoke(comment)
                 } else {
-                    context.openExternalTranslation(comment.comment.trim())
+                    openExternalTranslation(comment.comment.trim())
                 }
             },
     ) {
@@ -120,14 +116,6 @@ private fun downloadingLabel(translation: Downloading): String {
             else -> stringResource(R.string.text_comment_translation_downloading_ai_progress, progress)
         }
     }
-}
-
-internal fun Context.openExternalTranslation(text: String) {
-    val activityInfo = googleTranslateActivityInfo() ?: return
-    openGoogleTranslate(
-        activity = activityInfo,
-        text = text,
-    )
 }
 
 @Preview(

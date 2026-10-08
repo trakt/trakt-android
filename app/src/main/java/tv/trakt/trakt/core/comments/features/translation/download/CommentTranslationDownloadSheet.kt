@@ -10,13 +10,12 @@ import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationDownload
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
-import tv.trakt.trakt.core.comments.features.translation.ui.openExternalTranslation
+import tv.trakt.trakt.core.comments.features.translation.ui.rememberExternalTranslation
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 
@@ -28,7 +27,7 @@ internal fun CommentTranslationDownloadSheet(
         enabledValues = setOf(Hidden, Expanded),
     ),
 ) {
-    val context = LocalContext.current
+    val openExternalTranslation = rememberExternalTranslation()
     val downloadState by viewModel.state.collectAsStateWithLifecycle()
     val request = downloadState.request
 
@@ -36,7 +35,7 @@ internal fun CommentTranslationDownloadSheet(
         viewModel.events.collect { event ->
             when (event) {
                 is CommentTranslationEvent.OpenExternalTranslation -> {
-                    context.openExternalTranslation(event.text)
+                    openExternalTranslation(event.text)
                 }
             }
         }

@@ -76,6 +76,7 @@ internal val commentsDataModule = module {
                 get<GeminiNanoCommentTranslator>(),
                 get<MlKitCommentTranslator>(),
             ),
+            analytics = get(),
         )
     }
 }
