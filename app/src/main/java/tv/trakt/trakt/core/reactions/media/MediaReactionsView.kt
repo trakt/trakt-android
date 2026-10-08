@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.LongPress
 import androidx.compose.ui.platform.LocalContext
@@ -60,6 +61,7 @@ internal fun MediaReactionsView(
         else -> isSignedIn || state.summary.reactionsCount > 0
     }
     val isShown = visible && state.loading.isDone && hasContent
+    val isReserved = compact && visible && !state.loading.isDone
 
     val isActive = tooltipState.isVisible || pickerSheet
     LaunchedEffect(isActive) {
@@ -70,6 +72,20 @@ internal fun MediaReactionsView(
         haptic.performHapticFeedback(Confirm)
         viewModel.toggleReaction(reaction)
         onReactionToggle(reaction)
+    }
+
+    if (isReserved) {
+        Row(
+            verticalAlignment = CenterVertically,
+            modifier = modifier.alpha(0F),
+        ) {
+            leading()
+            MediaReactionsBadge(
+                summary = state.summary,
+                userReactions = state.userReactions,
+                compact = true,
+            )
+        }
     }
 
     AnimatedVisibility(
