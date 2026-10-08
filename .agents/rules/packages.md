@@ -57,7 +57,7 @@ PR description must include:
 3. **Footprint** — APK size impact (run `:app:reportDependencyGraphChange` or eyeball AAR size), transitive deps, R8 friendliness.
 4. **Exit plan** — how to remove if unmaintained.
 
-Defaults to **rejected** until justified. AndroidX, Jetpack, Compose ecosystem libs and well-established projects (Coil, Ktor, OkHttp, Coroutines, Turbine) clear bar trivially.
+Defaults to **rejected** until justified. AndroidX, Jetpack, Compose ecosystem libs and well-established projects (Coil, Ktor, OkHttp, Coroutines, Turbine) clear bar trivially; for those, one PR-body line with coordinates and reason is enough (see "PR bodies" in `commits.md`).
 
 ## Compose / Kotlin / Compiler alignment
 
