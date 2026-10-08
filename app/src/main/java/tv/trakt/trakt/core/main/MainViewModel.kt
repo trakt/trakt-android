@@ -50,6 +50,7 @@ import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.auth.usecase.authRedirectUriKey
 import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
+import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
@@ -141,6 +142,7 @@ internal class MainViewModel(
                         it.remove(authCodeKey)
                         it.remove(codeVerifierKey)
                         it.remove(authRedirectUriKey)
+                        it.remove(forceLoginKey)
                     }
 
                     if (codeVerifier == null) {

@@ -34,6 +34,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import com.jakewharton.processphoenix.ProcessPhoenix
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
@@ -57,6 +58,7 @@ import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.auth.usecase.authRedirectUriKey
 import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
+import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase.CustomThemeConfig
@@ -261,10 +263,15 @@ internal class MainActivity : AppCompatActivity() {
             val redirectUri = authRedirectUri(
                 httpsSupported = allowHttpsRedirect && authBrowser.supportsAuthTab(),
             )
+            val forceLogin = authPreferences.data.first()[forceLoginKey] == true
             val codeVerifier = Pkce.generateCodeVerifier()
             authPreferences.edit { it[codeVerifierKey] = codeVerifier }
             authBrowser.open(
-                url = ConfigAuth.authCodeUrl(codeVerifier, redirectUri).toUri(),
+                url = ConfigAuth.authCodeUrl(
+                    codeVerifier = codeVerifier,
+                    redirectUri = redirectUri,
+                    forceLogin = forceLogin,
+                ).toUri(),
                 redirectUri = redirectUri,
             )
         }

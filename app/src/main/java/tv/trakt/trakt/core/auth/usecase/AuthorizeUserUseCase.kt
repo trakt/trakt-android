@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.auth.usecase
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.delay
 import timber.log.Timber
@@ -23,6 +24,12 @@ internal val authCodeKey = stringPreferencesKey("auth_code")
  * Redirect URI that delivered [authCodeKey]. The token exchange must send the same one.
  */
 internal val authRedirectUriKey = stringPreferencesKey("auth_redirect_uri")
+
+/**
+ * Set on sign-out so the next sign-in shows the login form instead of reusing the browser's
+ * Trakt session, letting the user pick another account. Cleared once a code arrives.
+ */
+internal val forceLoginKey = booleanPreferencesKey("force_login")
 
 internal class AuthorizeUserUseCase(
     private val remoteSource: AuthRemoteDataSource,

@@ -28,11 +28,13 @@ internal object ConfigAuth {
     /**
      * Builds the OAuth authorization URL for the given PKCE [codeVerifier] (RFC 7636). The
      * verifier is generated and persisted by the caller so it survives process death while the
-     * user is away in the external browser; this function stays pure.
+     * user is away in the external browser; this function stays pure. [forceLogin] makes Trakt
+     * show the login form even when the browser already holds a Trakt session.
      */
     fun authCodeUrl(
         codeVerifier: String,
         redirectUri: String,
+        forceLogin: Boolean,
     ): String {
         val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
         return "${Config.WEB_AUTH_URL}oauth/authorize" +
@@ -41,6 +43,7 @@ internal object ConfigAuth {
             "&redirect_uri=${Uri.encode(redirectUri)}" +
             "&code_challenge=${Pkce.codeChallenge(codeVerifier)}" +
             "&code_challenge_method=S256" +
-            "&lang=${locale.language}-${locale.country}"
+            "&lang=${locale.language}-${locale.country}" +
+            if (forceLogin) "&prompt=login" else ""
     }
 }

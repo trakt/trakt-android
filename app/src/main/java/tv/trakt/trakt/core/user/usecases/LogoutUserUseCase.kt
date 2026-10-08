@@ -1,6 +1,9 @@
 package tv.trakt.trakt.core.user.usecases
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.work.WorkManager
 import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
@@ -19,6 +22,7 @@ import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDa
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
+import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
@@ -45,6 +49,7 @@ import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 internal class LogoutUserUseCase(
     private val appContext: Context,
     private val sessionManager: SessionManager,
+    private val authPreferences: DataStore<Preferences>,
     private val collapsingManager: CollapsingManager,
     private val checkInManager: CheckInManager,
     private val apiClients: Array<ApiClient>,
@@ -82,6 +87,7 @@ internal class LogoutUserUseCase(
 ) {
     suspend fun logoutUser() {
         sessionManager.clear()
+        authPreferences.edit { it[forceLoginKey] = true }
         collapsingManager.clear()
         checkInManager.stop(
             source = CheckInUpdates.Source.Default,
