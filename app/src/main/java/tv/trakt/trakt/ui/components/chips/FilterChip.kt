@@ -147,7 +147,10 @@ internal fun FilterChip(
 }
 
 @Composable
-internal fun FilterChipSkeleton(modifier: Modifier = Modifier) {
+internal fun FilterChipSkeleton(
+    modifier: Modifier = Modifier,
+    height: Dp = 28.dp,
+) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
         .animateColor(
@@ -162,7 +165,7 @@ internal fun FilterChipSkeleton(modifier: Modifier = Modifier) {
 
     Box(
         modifier = modifier
-            .height(28.dp)
+            .height(height)
             .width(72.dp)
             .background(
                 shape = RoundedCornerShape(100),

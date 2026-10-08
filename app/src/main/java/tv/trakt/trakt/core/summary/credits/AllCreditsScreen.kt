@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -318,12 +319,13 @@ private fun CreditsFilters(
                             else -> option.displayRes
                         },
                     ),
+                    height = 32.dp,
                     leadingContent = {
                         Icon(
                             painter = painterResource(option.iconRes),
                             contentDescription = null,
                             tint = TraktTheme.colors.textPrimaryOnAccent,
-                            modifier = Modifier.size(19.dp),
+                            modifier = Modifier.size(FilterChipDefaults.IconSize),
                         )
                     },
                     onClick = { onModeClick(option) },
@@ -376,7 +378,7 @@ private fun CreditsFiltersSkeleton(modifier: Modifier = Modifier) {
             paddingVertical = PaddingValues(bottom = 1.dp),
         ) {
             repeat(3) {
-                FilterChipSkeleton()
+                FilterChipSkeleton(height = 32.dp)
             }
         }
 
