@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickRequest
+import tv.trakt.trakt.core.applinks.ShareArrivalEvents
 import tv.trakt.trakt.core.applinks.model.AppLink
 import tv.trakt.trakt.core.applinks.model.AppLinkShare
 import tv.trakt.trakt.core.applinks.model.ShareArrivalResult
@@ -18,14 +19,20 @@ internal class RecordShareArrivalUseCase(
     private val sessionManager: SessionManager,
     private val v3Api: V3Api,
     private val analytics: Analytics,
+    private val shareArrivalEvents: ShareArrivalEvents,
 ) {
     suspend fun record(link: AppLink) {
         val share = link.share ?: return
         if (isOwnShare(share)) return
 
+        val result = resultOf(share)
+        if (result.isCredited) {
+            shareArrivalEvents.notifyCredited()
+        }
+
         analytics.logShareArrival(
             type = link.shareType(),
-            result = resultOf(share).value,
+            result = result.value,
         )
     }
 

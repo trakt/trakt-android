@@ -11,6 +11,9 @@ internal enum class ShareArrivalResult(
     Failed("failed"),
     ;
 
+    val isCredited: Boolean
+        get() = this == Recorded || this == Duplicate
+
     companion object {
         fun fromApi(value: String): ShareArrivalResult? {
             return listOf(Recorded, Duplicate, Rejected).firstOrNull { it.value == value }

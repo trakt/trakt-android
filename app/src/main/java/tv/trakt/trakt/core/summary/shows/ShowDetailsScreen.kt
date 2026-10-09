@@ -642,6 +642,7 @@ internal fun ShowDetailsContent(
                             type = MediaType.Show,
                             id = show.ids.trakt,
                         ),
+                        recommendedByPath = "/shows/${show.ids.slug.value}",
                         socials = state.showSocials,
                         onActivityClick = {
                             onSocialActivityClick?.invoke()

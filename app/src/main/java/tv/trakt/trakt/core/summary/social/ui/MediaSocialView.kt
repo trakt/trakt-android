@@ -18,7 +18,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
-import tv.trakt.trakt.core.summary.ui.header.social.DetailsHeaderSocialHorizontalChip
+import tv.trakt.trakt.core.summary.ui.header.social.DetailsSocialChip
 
 @Composable
 internal fun MediaSocialView(
@@ -46,7 +46,7 @@ internal fun MediaSocialView(
                 .padding(top = 20.dp)
                 .onClick(onClick = onActivityClick),
         ) {
-            DetailsHeaderSocialHorizontalChip(
+            DetailsSocialChip(
                 users = users ?: EmptyImmutableList,
             )
         }

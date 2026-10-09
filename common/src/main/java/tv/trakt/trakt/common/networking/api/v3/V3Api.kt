@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ParentalGuideResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendedByResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickResponse
@@ -210,6 +211,19 @@ class V3Api(
     suspend fun postShareClick(request: V3ShareClickRequest): V3ShareClickResponse {
         val response = client.post("${baseV3Url}shares/click") {
             setBody(request)
+        }
+        return response.body()
+    }
+
+    /**
+     * @param url Relative web path of the item, e.g. `/movies/<slug>`.
+     */
+    suspend fun getRecommendedBy(url: String): V3RecommendedByResponse? {
+        val response = client.get("${baseV3Url}shares/recommended") {
+            parameter("url", url)
+        }
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
         }
         return response.body()
     }

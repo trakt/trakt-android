@@ -1,16 +1,21 @@
 package tv.trakt.trakt.core.summary.ui.header.social
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,15 +32,35 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.ui.theme.colors.Purple600
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val USERS_LIMIT = 3
 
+private val ShareBadgeSize = 10.dp
+private val ShareBadgeIconSize = 7.dp
+private val ShareBadgeOffset = 0.dp
+
+/**
+ * How the chip reflects people who shared the item with the user.
+ */
+internal enum class SocialChipShare {
+    None,
+
+    /** Shared with the user, alongside followed activity. */
+    Shared,
+
+    /** Shared with the user, without any followed activity. */
+    SharedOnly,
+}
+
 @Composable
-internal fun DetailsHeaderSocialHorizontalChip(
+internal fun DetailsSocialChip(
     modifier: Modifier = Modifier,
     users: ImmutableList<User>,
+    share: SocialChipShare = SocialChipShare.None,
     size: Dp = 28.dp,
     spacing: Int = 16,
 ) {
@@ -67,13 +92,49 @@ internal fun DetailsHeaderSocialHorizontalChip(
                         .clip(CircleShape),
                 )
             }
+
+            if (share != SocialChipShare.None && limitUsers.isNotEmpty()) {
+                ShareBadge(
+                    modifier = Modifier
+                        .align(BottomEnd)
+                        .offset(x = ShareBadgeOffset, y = ShareBadgeOffset)
+                        .zIndex(20F),
+                )
+            }
         }
 
-        if (users.isNotEmpty()) {
-            UsersCount(
-                count = users.size,
-            )
+        when {
+            share == SocialChipShare.SharedOnly -> {
+                Text(
+                    text = stringResource(R.string.text_shared_with_you),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                )
+            }
+
+            users.isNotEmpty() -> {
+                UsersCount(
+                    count = users.size,
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun ShareBadge(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .size(ShareBadgeSize)
+            .background(Purple600, CircleShape),
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_share),
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier.size(ShareBadgeIconSize),
+        )
     }
 }
 
@@ -100,18 +161,36 @@ private fun UsersCount(count: Int) {
     backgroundColor = 0xFF212427,
 )
 @Composable
-private fun DetailsHeaderSocialHorizontalChipPreview() {
-    TraktTheme {
-        DetailsHeaderSocialHorizontalChip(
-            users = listOf(
-                PreviewData.user1,
-                PreviewData.user1.copy(isVip = true),
-                PreviewData.user1.copy(isVip = true),
-                PreviewData.user1.copy(isVip = true),
-                PreviewData.user1.copy(isVip = true),
-                PreviewData.user1.copy(isVip = true),
+private fun DetailsSocialChipPreview() {
+    TraktThemeLightDark {
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+        ) {
+            DetailsSocialChip(
+                users = listOf(
+                    PreviewData.user1,
+                    PreviewData.user1.copy(isVip = true),
+                    PreviewData.user1.copy(isVip = true),
+                    PreviewData.user1.copy(isVip = true),
+                    PreviewData.user1.copy(isVip = true),
+                    PreviewData.user1.copy(isVip = true),
+                )
+                    .toImmutableList(),
             )
-                .toImmutableList(),
-        )
+
+            DetailsSocialChip(
+                users = listOf(
+                    PreviewData.user1,
+                    PreviewData.user1.copy(isVip = true),
+                )
+                    .toImmutableList(),
+                share = SocialChipShare.Shared,
+            )
+
+            DetailsSocialChip(
+                users = listOf(PreviewData.user1).toImmutableList(),
+                share = SocialChipShare.SharedOnly,
+            )
+        }
     }
 }

@@ -567,6 +567,7 @@ internal fun MovieDetailsContent(
                             type = MediaType.Movie,
                             id = movie.ids.trakt,
                         ),
+                        recommendedByPath = "/movies/${movie.ids.slug.value}",
                         socials = state.movieSocials,
                         onActivityClick = {
                             onSocialActivityClick?.invoke()

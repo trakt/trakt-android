@@ -8,4 +8,5 @@
   <string name="text_comment_translation_download_metered">Translating this comment needs a one-time language download. You are on mobile data, so this may use your data allowance.</string>
   <string name="text_comment_translation_download_ai_metered">Translating this comment needs a one-time download of the on-device AI model, which can be large. You are on mobile data, so this may use your data allowance.</string>
   <string name="button_text_comment_translated">Translated</string>
+  <string name="text_shared_with_you">Shared with you</string>
 </resources>
