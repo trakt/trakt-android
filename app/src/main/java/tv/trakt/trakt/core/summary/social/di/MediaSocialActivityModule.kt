@@ -1,15 +1,28 @@
 package tv.trakt.trakt.core.summary.social.di
 
 import kotlinx.collections.immutable.ImmutableList
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.core.summary.social.MediaSocialActivityViewModel
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.social.recommendedby.RecommendedByViewModel
+import tv.trakt.trakt.core.summary.social.recommendedby.usecases.RecommendedByUseCase
 
 internal val mediaSocialActivityModule = module {
+    factoryOf(::RecommendedByUseCase)
+
     viewModel { (activity: ImmutableList<MediaSocialActivity>) ->
         MediaSocialActivityViewModel(
             activity = activity,
+        )
+    }
+
+    viewModel { (path: String) ->
+        RecommendedByViewModel(
+            path = path,
+            recommendedByUseCase = get(),
+            shareArrivalEvents = get(),
         )
     }
 }

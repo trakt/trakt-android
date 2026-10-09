@@ -50,6 +50,16 @@ interface Analytics {
      */
     fun logMediaMode(mode: String)
 
+    /**
+     * Logs the arrival on a shared link and whether the sharer was credited.
+     * @param type The shared item type (movie, show, person).
+     * @param result The credit result (recorded, duplicate, anonymous, uncredited, ...).
+     */
+    fun logShareArrival(
+        type: String,
+        result: String,
+    )
+
     interface Trivia {
         /**
          * Logs a screen view event for trivia screens.

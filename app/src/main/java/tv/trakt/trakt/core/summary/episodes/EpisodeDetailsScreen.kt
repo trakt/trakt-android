@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
@@ -161,6 +162,7 @@ internal fun EpisodeDetailsScreen(
             shareEpisode(
                 show = state.show,
                 episode = state.episode,
+                shareCode = state.user?.settings?.shareCode,
                 context = context,
             )
         },
@@ -255,6 +257,7 @@ internal fun EpisodeDetailsScreen(
             shareEpisode(
                 show = state.show,
                 episode = state.episode,
+                shareCode = state.user?.settings?.shareCode,
                 context = context,
             )
         },
@@ -307,6 +310,7 @@ internal fun EpisodeDetailsScreen(
 
     MediaSocialActivitySheet(
         activity = socialActivitySheet,
+        recommendedByPath = episodePath(state.show, state.episode),
         mediaTitle = state.episode?.title ?: "",
         onUserClick = {
             onNavigateToUser(it)
@@ -516,6 +520,7 @@ internal fun EpisodeDetailsContent(
                     MediaSocialView(
                         visible = !state.episodeSocials.isNullOrEmpty(),
                         activity = state.episodeSocials,
+                        recommendedByPath = episodePath(state.show, state.episode),
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
                         },
@@ -723,18 +728,32 @@ private fun DetailsOverview(
     }
 }
 
+private fun episodePath(
+    show: Show?,
+    episode: Episode?,
+): String? {
+    if (show == null || episode == null) {
+        return null
+    }
+
+    return "/shows/${show.ids.slug.value}/seasons/${episode.season}/episodes/${episode.number}"
+}
+
 private fun shareEpisode(
     show: Show?,
     episode: Episode?,
+    shareCode: String?,
     context: Context,
 ) {
     if (show == null || episode == null) {
         return
     }
 
-    val shareText = "${WEB_V3_BASE_URL}shows/${show.ids.slug.value}" +
-        "/seasons/${episode.season}" +
-        "/episodes/${episode.number}"
+    val shareText = (
+        "${WEB_V3_BASE_URL}shows/${show.ids.slug.value}" +
+            "/seasons/${episode.season}" +
+            "/episodes/${episode.number}"
+    ).toShareUrl(shareCode)
 
     val intent = Intent().apply {
         action = Intent.ACTION_SEND

@@ -31,6 +31,7 @@ data class User(
         val watchOnlyOnce: Boolean,
         val ratingPrompts: Boolean,
         val coverImage: String?,
+        val shareCode: String?,
     )
 
     val isAnyVip: Boolean
@@ -97,6 +98,7 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
             watchOnlyOnce = dto.browsing?.watchOnlyOnce ?: false,
             ratingPrompts = dto.browsing?.showRatingPrompt ?: false,
             coverImage = dto.user.vipCoverImage,
+            shareCode = dto.account.shareCode,
         ),
     )
 }
@@ -127,6 +129,7 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
             watchOnlyOnce = false,
             ratingPrompts = false,
             coverImage = dto.vipCoverImage,
+            shareCode = null,
         ),
     )
 }

@@ -60,6 +60,7 @@ import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
+import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
@@ -777,7 +778,7 @@ private fun shareList(
             Config.webListUrl(
                 userId = user.ids.slug.value,
                 listId = list,
-            ),
+            ).toShareUrl(user.settings?.shareCode),
         )
         type = "text/plain"
     }

@@ -92,6 +92,14 @@
         <data android:pathPrefix="/movies/" />
         <data android:pathPrefix="/people/" />
 
+        <!-- Groups are evaluated in order: shared links must be allowed before other queries are blocked. -->
+        <uri-relative-filter-group
+          android:allow="true"
+          tools:targetApi="35"
+          >
+          <data android:queryPrefix="share=" />
+        </uri-relative-filter-group>
+
         <uri-relative-filter-group
           android:allow="false"
           tools:targetApi="35"

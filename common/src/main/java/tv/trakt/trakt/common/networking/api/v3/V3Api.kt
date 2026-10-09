@@ -7,7 +7,9 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
 import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.model.MediaType
@@ -21,7 +23,11 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ParentalGuideResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendedByResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3ShareMuteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
@@ -199,6 +205,34 @@ class V3Api(
                 "&limit=${pagination.limit}",
         )
         return response.body()
+    }
+
+    // Shares
+
+    suspend fun postShareClick(request: V3ShareClickRequest): V3ShareClickResponse {
+        val response = client.post("${baseV3Url}shares/click") {
+            setBody(request)
+        }
+        return response.body()
+    }
+
+    /**
+     * @param url Relative web path of the item, e.g. `/movies/<slug>`.
+     */
+    suspend fun getRecommendedBy(url: String): V3RecommendedByResponse? {
+        val response = client.get("${baseV3Url}shares/recommended") {
+            parameter("url", url)
+        }
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
+        }
+        return response.body()
+    }
+
+    suspend fun postShareMute(request: V3ShareMuteRequest) {
+        client.post("${baseV3Url}shares/mutes") {
+            setBody(request)
+        }
     }
 
     // Reactions

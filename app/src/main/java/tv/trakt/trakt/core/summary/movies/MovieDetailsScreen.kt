@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
@@ -178,7 +179,7 @@ internal fun MovieDetailsScreen(
             }
         },
         onShareClick = {
-            state.movie?.let { shareMovie(it, context) }
+            state.movie?.let { shareMovie(it, state.user?.settings?.shareCode, context) }
         },
         onShareImageClick = {
             state.movie?.let { shareSheet = true }
@@ -365,6 +366,7 @@ internal fun MovieDetailsScreen(
 
     MediaSocialActivitySheet(
         activity = socialActivitySheet,
+        recommendedByPath = state.movie?.let { "/movies/${it.ids.slug.value}" },
         mediaTitle = state.movie?.title ?: "",
         onUserClick = {
             onNavigateToUser?.invoke(it)
@@ -566,6 +568,7 @@ internal fun MovieDetailsContent(
                             type = MediaType.Movie,
                             id = movie.ids.trakt,
                         ),
+                        recommendedByPath = "/movies/${movie.ids.slug.value}",
                         socials = state.movieSocials,
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
@@ -815,9 +818,10 @@ fun DetailsRating(
 
 private fun shareMovie(
     movie: Movie,
+    shareCode: String?,
     context: Context,
 ) {
-    val shareText = "${WEB_V3_BASE_URL}movies/${movie.ids.slug.value}"
+    val shareText = "${WEB_V3_BASE_URL}movies/${movie.ids.slug.value}".toShareUrl(shareCode)
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, shareText)

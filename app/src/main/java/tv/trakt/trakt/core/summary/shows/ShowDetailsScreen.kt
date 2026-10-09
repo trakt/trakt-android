@@ -67,6 +67,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExtraVideo
@@ -194,7 +195,7 @@ internal fun ShowDetailsScreen(
             }
         },
         onShareClick = {
-            state.show?.let { shareShow(it, context) }
+            state.show?.let { shareShow(it, state.user?.settings?.shareCode, context) }
         },
         onShareImageClick = {
             state.show?.let { shareSheet = true }
@@ -429,6 +430,7 @@ internal fun ShowDetailsScreen(
 
     MediaSocialActivitySheet(
         activity = socialActivitySheet,
+        recommendedByPath = state.show?.let { "/shows/${it.ids.slug.value}" },
         mediaTitle = state.show?.title ?: "",
         onUserClick = {
             onNavigateToUser?.invoke(it)
@@ -641,6 +643,7 @@ internal fun ShowDetailsContent(
                             type = MediaType.Show,
                             id = show.ids.trakt,
                         ),
+                        recommendedByPath = "/shows/${show.ids.slug.value}",
                         socials = state.showSocials,
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
@@ -905,9 +908,10 @@ private fun DetailsOverview(
 
 private fun shareShow(
     show: Show,
+    shareCode: String?,
     context: Context,
 ) {
-    val shareText = "${WEB_V3_BASE_URL}shows/${show.ids.slug.value}"
+    val shareText = "${WEB_V3_BASE_URL}shows/${show.ids.slug.value}".toShareUrl(shareCode)
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, shareText)

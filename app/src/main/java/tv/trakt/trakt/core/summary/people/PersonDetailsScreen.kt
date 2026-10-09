@@ -59,6 +59,7 @@ import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
@@ -206,7 +207,7 @@ internal fun PersonDetailsContent(
                     DetailsHeader(
                         person = person,
                         loading = state.loadingDetails.isLoading,
-                        onShareClick = { sharePerson(person, context) },
+                        onShareClick = { sharePerson(person, state.user?.settings?.shareCode, context) },
                         onBackClick = onBackClick ?: {},
                     )
                 }
@@ -482,9 +483,10 @@ internal fun ListEmptyView(contentPadding: PaddingValues) {
 
 private fun sharePerson(
     person: Person,
+    shareCode: String?,
     context: Context,
 ) {
-    val shareText = "${WEB_V3_BASE_URL}people/${person.ids.slug.value}"
+    val shareText = "${WEB_V3_BASE_URL}people/${person.ids.slug.value}".toShareUrl(shareCode)
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
         type = "text/plain"
