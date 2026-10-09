@@ -520,6 +520,7 @@ internal fun EpisodeDetailsContent(
                     MediaSocialView(
                         visible = !state.episodeSocials.isNullOrEmpty(),
                         activity = state.episodeSocials,
+                        recommendedByPath = episodePath(state.show, state.episode),
                         onActivityClick = {
                             onSocialActivityClick?.invoke()
                         },

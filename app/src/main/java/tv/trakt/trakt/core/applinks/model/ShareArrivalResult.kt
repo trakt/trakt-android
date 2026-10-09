@@ -7,7 +7,6 @@ internal enum class ShareArrivalResult(
     Duplicate("duplicate"),
     Rejected("rejected"),
     Anonymous("anonymous"),
-    Uncredited("uncredited"),
     Failed("failed"),
     ;
 

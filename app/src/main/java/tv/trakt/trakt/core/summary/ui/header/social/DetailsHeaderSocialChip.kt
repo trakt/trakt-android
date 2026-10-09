@@ -33,6 +33,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Purple600
+import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.social.recommendedby.model.RecommendedBy
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -54,6 +56,34 @@ internal enum class SocialChipShare {
 
     /** Shared with the user, without any followed activity. */
     SharedOnly,
+    ;
+
+    companion object {
+        fun of(
+            recommendedBy: RecommendedBy?,
+            socials: List<MediaSocialActivity>?,
+        ): SocialChipShare {
+            return when {
+                recommendedBy?.hasSharers != true -> None
+                socials.isNullOrEmpty() -> SharedOnly
+                else -> Shared
+            }
+        }
+    }
+}
+
+/**
+ * Avatars for the chip: the first sharer when only shared, otherwise the followed users.
+ */
+internal fun socialChipUsers(
+    share: SocialChipShare,
+    socials: List<MediaSocialActivity>?,
+    recommendedBy: RecommendedBy?,
+): ImmutableList<User>? {
+    return when (share) {
+        SocialChipShare.SharedOnly -> recommendedBy?.users?.take(1)?.toImmutableList()
+        SocialChipShare.None, SocialChipShare.Shared -> socials?.map { it.user }?.toImmutableList()
+    }
 }
 
 @Composable

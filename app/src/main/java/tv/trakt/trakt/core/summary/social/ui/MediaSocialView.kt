@@ -12,21 +12,46 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.social.recommendedby.RecommendedByViewModel
+import tv.trakt.trakt.core.summary.social.recommendedby.recommendedByViewModelKey
 import tv.trakt.trakt.core.summary.ui.header.social.DetailsSocialChip
+import tv.trakt.trakt.core.summary.ui.header.social.SocialChipShare
+import tv.trakt.trakt.core.summary.ui.header.social.socialChipUsers
 
+/**
+ * @param recommendedByPath Relative web path of the item, e.g. `/shows/<slug>/seasons/1/episodes/1`.
+ */
 @Composable
 internal fun MediaSocialView(
     modifier: Modifier = Modifier,
     visible: Boolean,
     activity: ImmutableList<MediaSocialActivity>?,
+    recommendedByPath: String?,
     onActivityClick: () -> Unit,
 ) {
+    val recommendedByViewModel: RecommendedByViewModel? = when {
+        LocalInspectionMode.current || recommendedByPath == null -> null
+        else -> koinViewModel(
+            key = recommendedByViewModelKey(recommendedByPath),
+            parameters = { parametersOf(recommendedByPath) },
+        )
+    }
+    val recommendedByState = recommendedByViewModel?.state?.collectAsStateWithLifecycle()
+    val recommendedBy = recommendedByState?.value?.recommendedBy
+    val isLoaded = activity != null &&
+        recommendedByState?.value?.loading?.isDone != false
+
+    val share = SocialChipShare.of(recommendedBy, activity)
+
     Box(
         contentAlignment = Center,
         modifier = modifier
@@ -35,11 +60,11 @@ internal fun MediaSocialView(
                 animationSpec = tween(200, delayMillis = 250),
             ),
     ) {
-        val users = remember(activity?.size) {
-            activity?.map { it.user }?.toImmutableList()
+        val users = remember(activity?.size, share, recommendedBy) {
+            socialChipUsers(share, activity, recommendedBy)
         }
         AnimatedVisibility(
-            visible = visible,
+            visible = isLoaded && (visible || share != SocialChipShare.None),
             enter = fadeIn(tween(200, delayMillis = 350)),
             exit = fadeOut(tween(200, delayMillis = 350)),
             modifier = Modifier
@@ -48,6 +73,7 @@ internal fun MediaSocialView(
         ) {
             DetailsSocialChip(
                 users = users ?: EmptyImmutableList,
+                share = share,
             )
         }
     }

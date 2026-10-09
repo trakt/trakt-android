@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.summary.social.recommendedby.model.RecommendedBy
 import tv.trakt.trakt.core.summary.social.recommendedby.recommendedByViewModelKey
 import tv.trakt.trakt.core.summary.ui.header.social.DetailsSocialChip
 import tv.trakt.trakt.core.summary.ui.header.social.SocialChipShare
+import tv.trakt.trakt.core.summary.ui.header.social.socialChipUsers
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 
 private val RowTopSpace = 20.dp
@@ -78,17 +79,9 @@ internal fun DetailsSocialRow(
         reactionsState?.value?.loading?.isDone != false &&
         recommendedByState?.value?.loading?.isDone != false
 
-    val share = when {
-        recommendedBy?.hasSharers != true -> SocialChipShare.None
-        socials.isNullOrEmpty() -> SocialChipShare.SharedOnly
-        else -> SocialChipShare.Shared
-    }
-
+    val share = SocialChipShare.of(recommendedBy, socials)
     val users = remember(socials?.size, share, recommendedBy) {
-        when (share) {
-            SocialChipShare.SharedOnly -> recommendedBy?.users?.take(1)?.toImmutableList()
-            SocialChipShare.None, SocialChipShare.Shared -> socials?.map { it.user }?.toImmutableList()
-        }
+        socialChipUsers(share, socials, recommendedBy)
     }
 
     Box(
