@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Részletek elrejtése</string>
   <string name="button_label_hide_recommendation">\"%s\" elrejtése az ajánlások közül</string>
   <string name="button_label_hide_section">Elrejtés: %s</string>
+  <string name="button_label_hide_their_recommendations">Ajánlásaik elrejtése</string>
   <string name="button_label_history">Előzmények</string>
   <string name="button_label_history_slot">Megnézve %1$s és %2$s között</string>
   <string name="button_label_history_slot_picker_insert_here">Dátum beállítása ide</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">\"%s\" eltávolítása a Megnézendők közül</string>
   <string name="button_label_remove_gif">GIF eltávolítása</string>
   <string name="button_label_remove_photo">Profilképed eltávolítása</string>
+  <string name="button_label_remove_reaction">%s eltávolítása</string>
   <string name="button_label_renew_vip">Előfizetés megújítása</string>
   <string name="button_label_reorder_item">%s átrendezése</string>
   <string name="button_label_reorder_list">%s átrendezése</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Törlés</string>
   <string name="button_text_delete_note">Törlés</string>
   <string name="button_text_delete_reply">Válasz törlése</string>
+  <string name="button_text_deselect_all">Összes kijelölés törlése</string>
   <string name="button_text_details">Részletek</string>
   <string name="button_text_diagnostics_and_cache">Diagnosztika és gyorsítótár</string>
   <string name="button_text_discard">Elvetés</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Újra</string>
   <string name="button_text_revoke_access">Hozzáférési jog visszavonása</string>
   <string name="button_text_save_filters">Beállítás alapértelmezettként</string>
+  <string name="button_text_select_all">Összes kijelölése</string>
   <string name="button_text_set_cover_image">Beállítás borítóképként</string>
   <string name="button_text_settings">Beállítások</string>
   <string name="button_text_share">Megosztás</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Listák keresése…</string>
   <string name="input_placeholder_search_movies">Filmek keresése…</string>
   <string name="input_placeholder_search_people">Személyek keresése…</string>
-  <string name="input_placeholder_search_reactions">Reakciók keresése</string>
   <string name="input_placeholder_search_shows">Sorozatok keresése…</string>
   <string name="input_placeholder_search_streaming_services">Streaming szolgáltatás vagy ország keresése…</string>
   <string name="input_prompt_about">Mesélj magadról egy kicsit.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt Állapot</string>
   <string name="link_label_view_social_activities">%s közösségi tevékenységeinek megtekintése</string>
+  <string name="link_label_view_social_activities_shared">%s közösségi tevékenységeinek megtekintése, veled megosztva</string>
   <string name="link_text_about">Névjegy</string>
   <string name="link_text_account_settings">Fiók</string>
   <string name="link_text_advanced_settings">Haladó</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Megjelenések</string>
   <string name="list_title_replies">Válaszok</string>
   <string name="list_title_seasons">Évadok</string>
+  <string name="list_title_shared_by">Megosztotta:</string>
   <string name="list_title_show_credits">Sorozatok</string>
   <string name="list_title_smart_lists">Okos listák</string>
   <string name="list_title_social">Közösségi</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Filmzene</string>
   <string name="preview_feature_title_vip_veteran">VIP veterán státusz</string>
   <string name="preview_feature_title_year_in_review_2026">Éves összefoglaló 2026</string>
-  <string name="reactions_search_empty">Nincs egyező reakció</string>
   <string name="reset_status_cleared">Megnézendők listája kiürítve.</string>
   <string name="row_label_loading_title">Név betöltése</string>
   <string name="screen_account_settings_language_system_message_tvos">A Trakt az Apple TV nyelvi beállításait használja. A frissítéshez lépjen ide:\n\nApple TV Beállítások &gt; Általános &gt; Apple TV Nyelvek</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Segíts lefordítani az alkalmazást, és javítsd ki a hibákat a nyelveden.</string>
   <string name="text_settings_widget_show_title">Fejléc</string>
   <string name="text_settings_widget_show_title_description">Fejléc engedélyezése/letiltása, amely felül látható.</string>
+  <string name="text_shared_with_you">Veled megosztva</string>
   <string name="text_shout_by">Írta:</string>
   <string name="text_show_multiple_watches">Újranézések engedélyezése</string>
   <string name="text_show_spoilers">Spoilerek megjelenítése</string>
@@ -2484,6 +2489,7 @@
   <string name="yir_2026_persona_cinephile_name">A Cinefil</string>
   <string name="yir_2026_persona_cinephile_tagline">Két óra csak a bemelegítés.</string>
   <string name="yir_2026_persona_comfort_rewatcher_name">Kényelmi Újranéző</string>
+  <string name="yir_2026_persona_comfort_rewatcher_tagline">Tudod, hogyan végződik. Ez a lényeg.</string>
   <string name="yir_2026_persona_critic_name">A Kritikus</string>
   <string name="yir_2026_persona_critic_tagline">Te nem nézel dolgokat. Te ítélsz róluk.</string>
   <string name="yir_2026_persona_curator_name">A Kurátor</string>

@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Sembunyikan detail</string>
   <string name="button_label_hide_recommendation">Sembunyikan \"%s\" dari rekomendasi</string>
   <string name="button_label_hide_section">Sembunyikan %s</string>
+  <string name="button_label_hide_their_recommendations">Sembunyikan rekomendasi mereka</string>
   <string name="button_label_history">Sejarah</string>
   <string name="button_label_history_slot">Ditonton antara %1$s dan %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Atur tanggal di sini</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Hapus \"%s\" dari Daftar Tontonan Anda</string>
   <string name="button_label_remove_gif">Hapus GIF</string>
   <string name="button_label_remove_photo">Hapus foto profil Anda</string>
+  <string name="button_label_remove_reaction">Hapus %s</string>
   <string name="button_label_renew_vip">Perbarui Langganan</string>
   <string name="button_label_reorder_item">Susun ulang %s</string>
   <string name="button_label_reorder_list">Susun ulang %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Hapus</string>
   <string name="button_text_delete_note">Hapus</string>
   <string name="button_text_delete_reply">Hapus Balasan</string>
+  <string name="button_text_deselect_all">Batalkan pilihan semua</string>
   <string name="button_text_details">Detail</string>
   <string name="button_text_diagnostics_and_cache">Diagnostik &amp; Cache</string>
   <string name="button_text_discard">Batalkan</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Coba lagi</string>
   <string name="button_text_revoke_access">Cabut akses</string>
   <string name="button_text_save_filters">Atur sebagai default</string>
+  <string name="button_text_select_all">Pilih semua</string>
   <string name="button_text_set_cover_image">Atur sebagai gambar sampul</string>
   <string name="button_text_settings">Pengaturan</string>
   <string name="button_text_share">Bagikan</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Cari daftar…</string>
   <string name="input_placeholder_search_movies">Cari film…</string>
   <string name="input_placeholder_search_people">Cari orang…</string>
-  <string name="input_placeholder_search_reactions">Cari reaksi</string>
   <string name="input_placeholder_search_shows">Cari acara…</string>
   <string name="input_placeholder_search_streaming_services">Cari layanan streaming atau negara…</string>
   <string name="input_prompt_about">Ceritakan sedikit tentang diri Anda.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Status Trakt</string>
   <string name="link_label_view_social_activities">Lihat aktivitas sosial untuk %s</string>
+  <string name="link_label_view_social_activities_shared">Lihat aktivitas sosial untuk %s, dibagikan kepada Anda</string>
   <string name="link_text_about">Tentang</string>
   <string name="link_text_account_settings">Akun</string>
   <string name="link_text_advanced_settings">Lanjutan</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Rilis</string>
   <string name="list_title_replies">Balasan</string>
   <string name="list_title_seasons">Musim</string>
+  <string name="list_title_shared_by">Dibagikan oleh</string>
   <string name="list_title_show_credits">Acara</string>
   <string name="list_title_smart_lists">Daftar Cerdas</string>
   <string name="list_title_social">Sosial</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">Status veteran VIP</string>
   <string name="preview_feature_title_year_in_review_2026">Kilas Balik Tahunan 2026</string>
-  <string name="reactions_search_empty">Tidak ada reaksi yang cocok</string>
   <string name="reset_status_cleared">Daftar tontonan dibersihkan.</string>
   <string name="row_label_loading_title">Memuat nama</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt menggunakan pengaturan bahasa Apple TV Anda. Untuk memperbarui, buka:\n\nPengaturan Apple TV &gt; Umum &gt; Bahasa Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Bantu terjemahkan aplikasi dan perbaiki kesalahan untuk bahasa Anda.</string>
   <string name="text_settings_widget_show_title">Header</string>
   <string name="text_settings_widget_show_title_description">Mengaktifkan/menonaktifkan bilah header yang terlihat di bagian atas.</string>
+  <string name="text_shared_with_you">Dibagikan kepada Anda</string>
   <string name="text_shout_by">Teriakan oleh</string>
   <string name="text_show_multiple_watches">Aktifkan beberapa kali tonton</string>
   <string name="text_show_spoilers">Tampilkan Spoiler</string>
@@ -2483,6 +2488,7 @@
   <string name="yir_2026_persona_anime_voyager_tagline">Teks aktif, alur panjang, tidak pernah melewati pembuka.</string>
   <string name="yir_2026_persona_cinephile_name">Sang Cinephile</string>
   <string name="yir_2026_persona_cinephile_tagline">Dua jam adalah pemanasan.</string>
+  <string name="yir_2026_persona_comfort_rewatcher_name">Penonton Ulang Nyaman</string>
   <string name="yir_2026_persona_comfort_rewatcher_tagline">Anda tahu bagaimana itu berakhir. Itulah intinya.</string>
   <string name="yir_2026_persona_critic_name">Sang Kritikus</string>
   <string name="yir_2026_persona_critic_tagline">Anda tidak menonton. Anda menilainya.</string>

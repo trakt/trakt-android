@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Ocultar detalles</string>
   <string name="button_label_hide_recommendation">Ocultar \"%s\" de las recomendaciones</string>
   <string name="button_label_hide_section">Ocultar %s</string>
+  <string name="button_label_hide_their_recommendations">Ocultar sus recomendaciones</string>
   <string name="button_label_history">Historia</string>
   <string name="button_label_history_slot">Visto entre %1$s y %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Establecer fecha aquí</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Eliminar \"%s\" de tu Lista de seguimiento</string>
   <string name="button_label_remove_gif">Eliminar GIF</string>
   <string name="button_label_remove_photo">Eliminar tu foto de perfil</string>
+  <string name="button_label_remove_reaction">Eliminar %s</string>
   <string name="button_label_renew_vip">Renovar suscripción</string>
   <string name="button_label_reorder_item">Reordenar %s</string>
   <string name="button_label_reorder_list">Reordenar %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Eliminar</string>
   <string name="button_text_delete_note">Eliminar</string>
   <string name="button_text_delete_reply">Eliminar respuesta</string>
+  <string name="button_text_deselect_all">Desmarcar todo</string>
   <string name="button_text_details">Detalles</string>
   <string name="button_text_diagnostics_and_cache">Diagnóstico y caché</string>
   <string name="button_text_discard">Descartar</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Reintentar</string>
   <string name="button_text_revoke_access">Revocar acceso</string>
   <string name="button_text_save_filters">Establecer como predeterminado</string>
+  <string name="button_text_select_all">Seleccionar todo</string>
   <string name="button_text_set_cover_image">Establecer como imagen de portada</string>
   <string name="button_text_settings">Configuración</string>
   <string name="button_text_share">Comparte</string>
@@ -560,7 +564,7 @@
   <string name="button_text_undo">Deshacer</string>
   <string name="button_text_unfollow">Dejar de seguir</string>
   <string name="button_text_unlink">Desvincular</string>
-  <string name="button_text_upgrade">Actualizar</string>
+  <string name="button_text_upgrade">Upgrade</string>
   <string name="button_text_upgrade_to_vip">Actualizar a VIP</string>
   <string name="button_text_upload_photo">Subir foto</string>
   <string name="button_text_usage">Uso</string>
@@ -889,7 +893,7 @@
   <string name="header_stream_on">Ver en</string>
   <string name="header_streaming">Disponibilidad</string>
   <string name="header_streaming_services">Servicios de streaming</string>
-  <string name="header_streaming_sync">Sincronización de streaming</string>
+  <string name="header_streaming_sync">Streaming Sync</string>
   <string name="header_streaming_vip_services">Disponible con VIP</string>
   <string name="header_studio">Estudio</string>
   <string name="header_supporting_cast">Reparto secundario</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Buscar listas…</string>
   <string name="input_placeholder_search_movies">Buscar películas…</string>
   <string name="input_placeholder_search_people">Buscar personas…</string>
-  <string name="input_placeholder_search_reactions">Buscar reacciones</string>
   <string name="input_placeholder_search_shows">Buscar series…</string>
   <string name="input_placeholder_search_streaming_services">Buscar servicio de streaming o país…</string>
   <string name="input_prompt_about">Cuéntanos un poco sobre ti.</string>
@@ -1020,7 +1023,7 @@
   <string name="label_add_from_lists_source">Lista de origen</string>
   <string name="label_date_picker_time">Hora</string>
   <string name="label_drag_image_to_adjust">Arrastra la imagen para ajustar</string>
-  <string name="label_favorites">Favoritos</string>
+  <string name="label_favorites">Favorites</string>
   <string name="label_genres_drawer_all">Todos los Géneros</string>
   <string name="label_genres_drawer_selected">Seleccionados</string>
   <string name="label_genres_drawer_subtitle_loved">Selecciona hasta 5 géneros de los que te gustaría ver más.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Estado de Trakt</string>
   <string name="link_label_view_social_activities">Ver actividades sociales de %s</string>
+  <string name="link_label_view_social_activities_shared">Ver actividades sociales de %s, compartidas contigo</string>
   <string name="link_text_about">Acerca de</string>
   <string name="link_text_account_settings">Cuenta</string>
   <string name="link_text_advanced_settings">Avanzado</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Estrenos</string>
   <string name="list_title_replies">Respuestas</string>
   <string name="list_title_seasons">Temporadas</string>
+  <string name="list_title_shared_by">Compartido por</string>
   <string name="list_title_show_credits">Series</string>
   <string name="list_title_smart_lists">Listas inteligentes</string>
   <string name="list_title_social">Social</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_vip_veteran">Estado VIP veterano</string>
   <string name="preview_feature_title_year_in_review_2026">Resumen del año 2026</string>
-  <string name="reactions_search_empty">Ninguna reacción coincide con eso</string>
   <string name="reset_status_cleared">Lista de seguimiento borrada.</string>
   <string name="row_label_loading_title">Cargando nombre</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt utiliza la configuración de idioma de tu Apple TV. Para actualizarla, ve a:\n\nAjustes del Apple TV &gt; General &gt; Idiomas del Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Ayuda a traducir la aplicación y corrige errores para tu idioma.</string>
   <string name="text_settings_widget_show_title">Encabezado</string>
   <string name="text_settings_widget_show_title_description">Activar/desactivar la barra de encabezado visible en la parte superior.</string>
+  <string name="text_shared_with_you">Compartido contigo</string>
   <string name="text_shout_by">Comentario de</string>
   <string name="text_show_multiple_watches">Activar múltiples reproducciones</string>
   <string name="text_show_spoilers">Mostrar spoilers</string>
@@ -2482,6 +2487,7 @@
   <string name="yir_2026_persona_anime_voyager_name">Viajero del Anime</string>
   <string name="yir_2026_persona_anime_voyager_tagline">Subtítulos activados, arcos largos, nunca te saltas la introducción.</string>
   <string name="yir_2026_persona_cinephile_name">El Cinéfilo</string>
+  <string name="yir_2026_persona_cinephile_tagline">Dos horas son un calentamiento.</string>
   <string name="yir_2026_persona_comfort_rewatcher_name">Espectador de Repeticiones Cómodas</string>
   <string name="yir_2026_persona_comfort_rewatcher_tagline">Sabes cómo termina. Esa es la cuestión.</string>
   <string name="yir_2026_persona_critic_name">El Crítico</string>

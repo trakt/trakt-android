@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Ocultar detalhes</string>
   <string name="button_label_hide_recommendation">Ocultar \"%s\" das recomendações</string>
   <string name="button_label_hide_section">Ocultar %s</string>
+  <string name="button_label_hide_their_recommendations">Ocultar recomendações deles</string>
   <string name="button_label_history">Histórico</string>
   <string name="button_label_history_slot">Assistido entre %1$s e %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Definir data para este ponto</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Remover \"%s\" da sua Lista para Assistir</string>
   <string name="button_label_remove_gif">Remover GIF</string>
   <string name="button_label_remove_photo">Remover sua foto de perfil</string>
+  <string name="button_label_remove_reaction">Remover %s</string>
   <string name="button_label_renew_vip">Renovar Assinatura</string>
   <string name="button_label_reorder_item">Reordenar %s</string>
   <string name="button_label_reorder_list">Reordenar %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Excluir</string>
   <string name="button_text_delete_note">Excluir</string>
   <string name="button_text_delete_reply">Excluir Resposta</string>
+  <string name="button_text_deselect_all">Desselecionar tudo</string>
   <string name="button_text_details">Detalhes</string>
   <string name="button_text_diagnostics_and_cache">Diagnóstico e Cache</string>
   <string name="button_text_discard">Descartar</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Tentar novamente</string>
   <string name="button_text_revoke_access">Revogar acesso</string>
   <string name="button_text_save_filters">Definir como padrão</string>
+  <string name="button_text_select_all">Selecionar tudo</string>
   <string name="button_text_set_cover_image">Definir como capa</string>
   <string name="button_text_settings">Configurações</string>
   <string name="button_text_share">Compartilhar</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Pesquisar listas…</string>
   <string name="input_placeholder_search_movies">Pesquisar filmes…</string>
   <string name="input_placeholder_search_people">Pesquisar pessoas…</string>
-  <string name="input_placeholder_search_reactions">Pesquisar reações</string>
   <string name="input_placeholder_search_shows">Pesquisar séries…</string>
   <string name="input_placeholder_search_streaming_services">Pesquisar serviço de streaming ou país…</string>
   <string name="input_prompt_about">Fale um pouco sobre você.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Status do Trakt</string>
   <string name="link_label_view_social_activities">Ver atividades sociais para %s</string>
+  <string name="link_label_view_social_activities_shared">Ver atividades sociais para %s, compartilhadas com você</string>
   <string name="link_text_about">Sobre</string>
   <string name="link_text_account_settings">Conta</string>
   <string name="link_text_advanced_settings">Avançado</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Lançamentos</string>
   <string name="list_title_replies">Respostas</string>
   <string name="list_title_seasons">Temporadas</string>
+  <string name="list_title_shared_by">Compartilhado por</string>
   <string name="list_title_show_credits">Séries</string>
   <string name="list_title_smart_lists">Listas Inteligentes</string>
   <string name="list_title_social">Social</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Trilha Sonora</string>
   <string name="preview_feature_title_vip_veteran">Status VIP Veterano</string>
   <string name="preview_feature_title_year_in_review_2026">Retrospectiva do Ano 2026</string>
-  <string name="reactions_search_empty">Nenhuma reação corresponde a isso</string>
   <string name="reset_status_cleared">Lista para Assistir limpa.</string>
   <string name="row_label_loading_title">Carregando nome</string>
   <string name="screen_account_settings_language_system_message_tvos">O Trakt usa as configurações de idioma da sua Apple TV. Para atualizá-las, vá para:\n\nAjustes da Apple TV &gt; Geral &gt; Idiomas da Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Ajude a traduzir o aplicativo e corrigir erros para o seu idioma.</string>
   <string name="text_settings_widget_show_title">Cabeçalho</string>
   <string name="text_settings_widget_show_title_description">Ativar/desativar a barra de cabeçalho visível na parte superior.</string>
+  <string name="text_shared_with_you">Compartilhado com você</string>
   <string name="text_shout_by">Comentário por</string>
   <string name="text_show_multiple_watches">Ativar múltiplas visualizações</string>
   <string name="text_show_spoilers">Mostrar Spoilers</string>
@@ -2498,6 +2503,7 @@
   <string name="yir_2026_persona_opening_act_name">O Ato de Abertura</string>
   <string name="yir_2026_persona_opening_act_tagline">Sua história está apenas começando.</string>
   <string name="yir_2026_persona_opening_night_name">Noite de Estreia</string>
+  <string name="yir_2026_persona_opening_night_tagline">Primeiro na fila, fez check-in antes do fim dos trailers.</string>
   <string name="yir_2026_persona_weekend_marathoner_name">Maratonista de Fim de Semana</string>
   <string name="yir_2026_persona_weekend_marathoner_tagline">Sexta-feira começa uma temporada. Domingo a encerra.</string>
   <string name="yir_2026_persona_wildcard_name">O Curinga</string>

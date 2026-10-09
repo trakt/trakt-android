@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">詳細を非表示</string>
   <string name="button_label_hide_recommendation">「%s」を おすすめから非表示にする</string>
   <string name="button_label_hide_section">%sを非表示</string>
+  <string name="button_label_hide_their_recommendations">相手のおすすめを非表示にする</string>
   <string name="button_label_history">歴史</string>
   <string name="button_label_history_slot">%1$sから%2$sの間に視聴</string>
   <string name="button_label_history_slot_picker_insert_here">ここに日付を設定</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">「%s」をウォッチリストから削除</string>
   <string name="button_label_remove_gif">GIFを削除</string>
   <string name="button_label_remove_photo">プロフィール写真を削除</string>
+  <string name="button_label_remove_reaction">%sを削除</string>
   <string name="button_label_renew_vip">サブスクリプションを更新</string>
   <string name="button_label_reorder_item">%sを並べ替える</string>
   <string name="button_label_reorder_list">%sを並べ替える</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">削除</string>
   <string name="button_text_delete_note">削除</string>
   <string name="button_text_delete_reply">返信を削除</string>
+  <string name="button_text_deselect_all">すべて選択解除</string>
   <string name="button_text_details">詳細</string>
   <string name="button_text_diagnostics_and_cache">診断とキャッシュ</string>
   <string name="button_text_discard">破棄</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">再試行</string>
   <string name="button_text_revoke_access">アクセスを取り消す</string>
   <string name="button_text_save_filters">デフォルトとして設定</string>
+  <string name="button_text_select_all">すべて選択</string>
   <string name="button_text_set_cover_image">カバー画像に設定</string>
   <string name="button_text_settings">設定</string>
   <string name="button_text_share">共有</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">リストを検索…</string>
   <string name="input_placeholder_search_movies">映画を検索…</string>
   <string name="input_placeholder_search_people">人物を検索…</string>
-  <string name="input_placeholder_search_reactions">リアクションを検索</string>
   <string name="input_placeholder_search_shows">番組を検索…</string>
   <string name="input_placeholder_search_streaming_services">ストリーミングサービスまたは国を検索…</string>
   <string name="input_prompt_about">自己紹介を少し教えてください。</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt ステータス</string>
   <string name="link_label_view_social_activities">%sのソーシャルアクティビティを表示</string>
+  <string name="link_label_view_social_activities_shared">あなたと共有された%sのソーシャルアクティビティを表示</string>
   <string name="link_text_about">Traktについて</string>
   <string name="link_text_account_settings">アカウント</string>
   <string name="link_text_advanced_settings">高度な設定</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">リリース</string>
   <string name="list_title_replies">返信</string>
   <string name="list_title_seasons">シーズン</string>
+  <string name="list_title_shared_by">共有者</string>
   <string name="list_title_show_credits">番組</string>
   <string name="list_title_smart_lists">スマートリスト</string>
   <string name="list_title_social">ソーシャル</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
   <string name="preview_feature_title_vip_veteran">VIPベテランステータス</string>
   <string name="preview_feature_title_year_in_review_2026">年間レビュー 2026</string>
-  <string name="reactions_search_empty">一致するリアクションはありません</string>
   <string name="reset_status_cleared">ウォッチリストをクリアしました。</string>
   <string name="row_label_loading_title">名前を読み込み中</string>
   <string name="screen_account_settings_language_system_message_tvos">TraktはApple TVの言語設定を使用します。更新するには、以下に移動してください:\n\nApple TV 設定 &gt; 一般 &gt; Apple TVの言語</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">アプリの翻訳や、お使いの言語の間違いの修正にご協力ください。</string>
   <string name="text_settings_widget_show_title">ヘッダー</string>
   <string name="text_settings_widget_show_title_description">上部に表示されるヘッダーバーを有効/無効にします。</string>
+  <string name="text_shared_with_you">あなたと共有済み</string>
   <string name="text_shout_by">シャウト投稿者</string>
   <string name="text_show_multiple_watches">複数回視聴を有効にする</string>
   <string name="text_show_spoilers">ネタバレを表示</string>
@@ -2487,6 +2492,7 @@
   <string name="yir_2026_persona_comfort_rewatcher_tagline">結末は知っている。それが肝心だ。</string>
   <string name="yir_2026_persona_critic_name">批評家</string>
   <string name="yir_2026_persona_critic_tagline">あなたはただ観るのではない。評価するのだ。</string>
+  <string name="yir_2026_persona_curator_name">キュレーター</string>
   <string name="yir_2026_persona_curator_tagline">より少なく、より良いものを。</string>
   <string name="yir_2026_persona_day_one_devotee_name">初回放送の信奉者</string>
   <string name="yir_2026_persona_day_one_devotee_tagline">ネタバレはあなたを捕らえられない。</string>

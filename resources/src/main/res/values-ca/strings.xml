@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Oculta els detalls</string>
   <string name="button_label_hide_recommendation">Amaga \"%s\" de les recomanacions</string>
   <string name="button_label_hide_section">Amaga %s</string>
+  <string name="button_label_hide_their_recommendations">Amaga les seves recomanacions</string>
   <string name="button_label_history">Història</string>
   <string name="button_label_history_slot">Vist entre %1$s i %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Establir la data aquí</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Elimina \"%s\" de la teva Llista de seguiment</string>
   <string name="button_label_remove_gif">Eliminar GIF</string>
   <string name="button_label_remove_photo">Elimina la teva foto de perfil</string>
+  <string name="button_label_remove_reaction">Eliminar %s</string>
   <string name="button_label_renew_vip">Renova la subscripció</string>
   <string name="button_label_reorder_item">Reordenar %s</string>
   <string name="button_label_reorder_list">Reordenar %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Suprimeix</string>
   <string name="button_text_delete_note">Suprimeix</string>
   <string name="button_text_delete_reply">Suprimeix la resposta</string>
+  <string name="button_text_deselect_all">Desselecciona-ho tot</string>
   <string name="button_text_details">Detalls</string>
   <string name="button_text_diagnostics_and_cache">Diagnòstics i memòria cau</string>
   <string name="button_text_discard">Descartar</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Torna a intentar-ho</string>
   <string name="button_text_revoke_access">Revoca l\'accés</string>
   <string name="button_text_save_filters">Defineix com a predeterminat</string>
+  <string name="button_text_select_all">Selecciona-ho tot</string>
   <string name="button_text_set_cover_image">Defineix com a imatge de portada</string>
   <string name="button_text_settings">Configuració</string>
   <string name="button_text_share">Comparteix</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Cerca llistes…</string>
   <string name="input_placeholder_search_movies">Cerca pel·lícules…</string>
   <string name="input_placeholder_search_people">Cerca persones…</string>
-  <string name="input_placeholder_search_reactions">Cerca reaccions</string>
   <string name="input_placeholder_search_shows">Cerca sèries…</string>
   <string name="input_placeholder_search_streaming_services">Cercar servei de streaming o país…</string>
   <string name="input_prompt_about">Explica\'ns una mica sobre tu.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Estat de Trakt</string>
   <string name="link_label_view_social_activities">Mostra les activitats socials de %s</string>
+  <string name="link_label_view_social_activities_shared">Mostra les activitats socials de %s, compartides amb tu</string>
   <string name="link_text_about">Quant a</string>
   <string name="link_text_account_settings">Compte</string>
   <string name="link_text_advanced_settings">Avançat</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Estrenes</string>
   <string name="list_title_replies">Respostes</string>
   <string name="list_title_seasons">Temporades</string>
+  <string name="list_title_shared_by">Compartit per</string>
   <string name="list_title_show_credits">Sèries</string>
   <string name="list_title_smart_lists">Llistes intel·ligents</string>
   <string name="list_title_social">Social</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_vip_veteran">Estat VIP de veterà</string>
   <string name="preview_feature_title_year_in_review_2026">Resum de l\'Any 2026</string>
-  <string name="reactions_search_empty">Cap reacció coincideix</string>
   <string name="reset_status_cleared">Llista de seguiment esborrada.</string>
   <string name="row_label_loading_title">Carregant el nom</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt utilitza la configuració d\'idioma de l\'Apple TV. Per actualitzar-la, ves a:\nAjustos de l\'Apple TV &gt; General &gt; Idiomes de l\'Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Ajuda a traduir l\'aplicació i a corregir errors per al teu idioma.</string>
   <string name="text_settings_widget_show_title">Capçalera</string>
   <string name="text_settings_widget_show_title_description">Activa/desactiva la barra de capçalera visible a la part superior.</string>
+  <string name="text_shared_with_you">Compartit amb tu</string>
   <string name="text_shout_by">Comentari de</string>
   <string name="text_show_multiple_watches">Habilita múltiples visualitzacions</string>
   <string name="text_show_spoilers">Mostra spoilers</string>
@@ -2493,6 +2498,7 @@
   <string name="yir_2026_persona_day_one_devotee_tagline">Els spoilers no et poden atrapar.</string>
   <string name="yir_2026_persona_loyalist_name">El Lleial</string>
   <string name="yir_2026_persona_loyalist_tagline">Un món, totalment compromès.</string>
+  <string name="yir_2026_persona_omnivore_name">L\'Omnívor</string>
   <string name="yir_2026_persona_omnivore_tagline">Crim, anime, telerrealitat, prestigi. Tot.</string>
   <string name="yir_2026_persona_opening_act_name">L\'Acte d\'Obertura</string>
   <string name="yir_2026_persona_opening_act_tagline">La teva història tot just comença.</string>

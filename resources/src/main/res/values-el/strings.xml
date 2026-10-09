@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Απόκρυψη λεπτομερειών</string>
   <string name="button_label_hide_recommendation">Απόκρυψη του \"%s\" από τις προτάσεις</string>
   <string name="button_label_hide_section">Απόκρυψη %s</string>
+  <string name="button_label_hide_their_recommendations">Απόκρυψη των προτάσεών τους</string>
   <string name="button_label_history">Ιστορικά</string>
   <string name="button_label_history_slot">Παρακολουθήθηκε μεταξύ %1$s και %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Ορισμός ημερομηνίας εδώ</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Αφαίρεση του \"%s\" από τη λίστα παρακολούθησής σας</string>
   <string name="button_label_remove_gif">Κατάργηση GIF</string>
   <string name="button_label_remove_photo">Αφαίρεση της φωτογραφίας προφίλ σας</string>
+  <string name="button_label_remove_reaction">Κατάργηση %s</string>
   <string name="button_label_renew_vip">Ανανέωση Συνδρομής</string>
   <string name="button_label_reorder_item">Αναδιάταξη %s</string>
   <string name="button_label_reorder_list">Αναδιάταξη %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Διαγραφή</string>
   <string name="button_text_delete_note">Διαγραφή</string>
   <string name="button_text_delete_reply">Διαγραφή Απάντησης</string>
+  <string name="button_text_deselect_all">Κατάργηση επιλογής όλων</string>
   <string name="button_text_details">Λεπτομέρειες</string>
   <string name="button_text_diagnostics_and_cache">Διαγνωστικά &amp; Κρυφή Μνήμη</string>
   <string name="button_text_discard">Απόρριψη</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Επανάληψη</string>
   <string name="button_text_revoke_access">Ανάκληση πρόσβασης</string>
   <string name="button_text_save_filters">Ορισμός ως προεπιλογή</string>
+  <string name="button_text_select_all">Επιλογή όλων</string>
   <string name="button_text_set_cover_image">Ορισμός ως εικόνα εξωφύλλου</string>
   <string name="button_text_settings">Ρυθμίσεις</string>
   <string name="button_text_share">Μοιραστείτε</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Αναζήτηση λιστών…</string>
   <string name="input_placeholder_search_movies">Αναζήτηση ταινιών…</string>
   <string name="input_placeholder_search_people">Αναζήτηση ανθρώπων…</string>
-  <string name="input_placeholder_search_reactions">Αναζήτηση αντιδράσεων</string>
   <string name="input_placeholder_search_shows">Αναζήτηση σειρών…</string>
   <string name="input_placeholder_search_streaming_services">Αναζήτηση υπηρεσίας streaming ή χώρας…</string>
   <string name="input_prompt_about">Πείτε μας λίγα λόγια για εσάς.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Κατάσταση Trakt</string>
   <string name="link_label_view_social_activities">Προβολή κοινωνικών δραστηριοτήτων για το/την %s</string>
+  <string name="link_label_view_social_activities_shared">Προβολή κοινωνικών δραστηριοτήτων για το/την %s, που κοινοποιήθηκε σε εσάς</string>
   <string name="link_text_about">Σχετικά</string>
   <string name="link_text_account_settings">Λογαριασμός</string>
   <string name="link_text_advanced_settings">Για προχωρημένους</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Κυκλοφορίες</string>
   <string name="list_title_replies">Απαντήσεις</string>
   <string name="list_title_seasons">Σεζόν</string>
+  <string name="list_title_shared_by">Κοινοποιήθηκε από</string>
   <string name="list_title_show_credits">Σειρές</string>
   <string name="list_title_smart_lists">Έξυπνες Λίστες</string>
   <string name="list_title_social">Κοινωνικά</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
   <string name="preview_feature_title_vip_veteran">Κατάσταση βετεράνου VIP</string>
   <string name="preview_feature_title_year_in_review_2026">Ετήσια Ανασκόπηση 2026</string>
-  <string name="reactions_search_empty">Καμία αντίδραση δεν ταιριάζει</string>
   <string name="reset_status_cleared">Η λίστα παρακολούθησης εκκαθαρίστηκε.</string>
   <string name="row_label_loading_title">Φόρτωση ονόματος</string>
   <string name="screen_account_settings_language_system_message_tvos">Το Trakt χρησιμοποιεί τις ρυθμίσεις γλώσσας του Apple TV σας. Για να την ενημερώσετε, μεταβείτε σε:\n\nΡυθμίσεις Apple TV &gt; Γενικά &gt; Γλώσσες Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Βοηθήστε στη μετάφραση της εφαρμογής και διορθώστε λάθη για τη γλώσσα σας.</string>
   <string name="text_settings_widget_show_title">Κεφαλίδα</string>
   <string name="text_settings_widget_show_title_description">Ενεργοποίηση/απενεργοποίηση της κεφαλίδας που είναι ορατή στην κορυφή.</string>
+  <string name="text_shared_with_you">Κοινοποιήθηκε σε εσάς</string>
   <string name="text_shout_by">Σχόλιο από</string>
   <string name="text_show_multiple_watches">Ενεργοποίηση πολλαπλών παρακολουθήσεων</string>
   <string name="text_show_spoilers">Εμφάνιση spoilers</string>
@@ -2479,6 +2484,7 @@
   <string name="yir_2026_hybrid">με σερί %s</string>
   <string name="yir_2026_peak_hour">Ώρα αιχμής</string>
   <string name="yir_2026_peak_week">Πιο ενεργή εβδομάδα</string>
+  <string name="yir_2026_persona_anime_voyager_name">Ταξιδιώτης Άνιμε</string>
   <string name="yir_2026_persona_anime_voyager_tagline">Υπότιτλοι ενεργοί, μεγάλα τόξα, ποτέ δεν παραλείπετε την αρχή.</string>
   <string name="yir_2026_persona_cinephile_name">Ο Σινεφίλ</string>
   <string name="yir_2026_persona_cinephile_tagline">Δύο ώρες είναι ζέσταμα.</string>

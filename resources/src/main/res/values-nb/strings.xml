@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Skjul detaljer</string>
   <string name="button_label_hide_recommendation">Skjul \"%s\" fra anbefalinger</string>
   <string name="button_label_hide_section">Skjul %s</string>
+  <string name="button_label_hide_their_recommendations">Skjul deres anbefalinger</string>
   <string name="button_label_history">Historie</string>
   <string name="button_label_history_slot">Sett mellom %1$s og %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Sett datoen til her</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Fjern \"%s\" fra ønskelisten din</string>
   <string name="button_label_remove_gif">Fjern GIF</string>
   <string name="button_label_remove_photo">Fjern profilbildet ditt</string>
+  <string name="button_label_remove_reaction">Fjern %s</string>
   <string name="button_label_renew_vip">Forny abonnement</string>
   <string name="button_label_reorder_item">Omorganiser %s</string>
   <string name="button_label_reorder_list">Omorganiser %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Slett</string>
   <string name="button_text_delete_note">Slett</string>
   <string name="button_text_delete_reply">Slett svar</string>
+  <string name="button_text_deselect_all">Avmarker alle</string>
   <string name="button_text_details">Detaljer</string>
   <string name="button_text_diagnostics_and_cache">Diagnostikk og hurtigbuffer</string>
   <string name="button_text_discard">Forkast</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Prøv igjen</string>
   <string name="button_text_revoke_access">Trekk tilbake tilgang</string>
   <string name="button_text_save_filters">Sett som standard</string>
+  <string name="button_text_select_all">Velg alle</string>
   <string name="button_text_set_cover_image">Sett som forsidebilde</string>
   <string name="button_text_settings">Innstillinger</string>
   <string name="button_text_share">Del</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Søk lister…</string>
   <string name="input_placeholder_search_movies">Søk filmer…</string>
   <string name="input_placeholder_search_people">Søk personer…</string>
-  <string name="input_placeholder_search_reactions">Søk etter reaksjoner</string>
   <string name="input_placeholder_search_shows">Søk serier…</string>
   <string name="input_placeholder_search_streaming_services">Søk strømmetjeneste eller land…</string>
   <string name="input_prompt_about">Fortell oss litt om deg selv.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt-status</string>
   <string name="link_label_view_social_activities">Se sosiale aktiviteter for %s</string>
+  <string name="link_label_view_social_activities_shared">Se sosiale aktiviteter for %s, delt med deg</string>
   <string name="link_text_about">Om</string>
   <string name="link_text_account_settings">Konto</string>
   <string name="link_text_advanced_settings">Avansert</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Utgivelser</string>
   <string name="list_title_replies">Svar</string>
   <string name="list_title_seasons">Sesonger</string>
+  <string name="list_title_shared_by">Delt av</string>
   <string name="list_title_show_credits">Serier</string>
   <string name="list_title_smart_lists">Smarte lister</string>
   <string name="list_title_social">Sosialt</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP veteranstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Året i retrospekt 2026</string>
-  <string name="reactions_search_empty">Ingen reaksjoner funnet</string>
   <string name="reset_status_cleared">Overvåkningsliste tømt.</string>
   <string name="row_label_loading_title">Laster inn navn</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt bruker Apple TV-språkinnstillingene dine. For å oppdatere, gå til:Apple TV-innstillinger &gt; Generelt &gt; Apple TV-språk</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Hjelp til med å oversette appen og rette feil i språket ditt.</string>
   <string name="text_settings_widget_show_title">Overskrift</string>
   <string name="text_settings_widget_show_title_description">Aktiver/deaktiver overskriftslinjen som er synlig øverst.</string>
+  <string name="text_shared_with_you">Delt med deg</string>
   <string name="text_shout_by">Kommentar av</string>
   <string name="text_show_multiple_watches">Aktiver flere visninger</string>
   <string name="text_show_spoilers">Vis spoilere</string>
@@ -2493,6 +2498,7 @@
   <string name="yir_2026_persona_day_one_devotee_tagline">Spoilere kan ikke ta deg.</string>
   <string name="yir_2026_persona_loyalist_name">Lojalisten</string>
   <string name="yir_2026_persona_loyalist_tagline">Én verden, fullt engasjert.</string>
+  <string name="yir_2026_persona_omnivore_name">The Omnivore</string>
   <string name="yir_2026_persona_omnivore_tagline">Krim, anime, reality, prestisje. Alt sammen.</string>
   <string name="yir_2026_persona_opening_act_name">Åpningsakten</string>
   <string name="yir_2026_persona_opening_act_tagline">Din historie er nettopp i gang.</string>

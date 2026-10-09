@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Details ausblenden</string>
   <string name="button_label_hide_recommendation">„%s“ aus Empfehlungen ausblenden</string>
   <string name="button_label_hide_section">%s ausblenden</string>
+  <string name="button_label_hide_their_recommendations">Ihre Empfehlungen ausblenden</string>
   <string name="button_label_history">Historie</string>
   <string name="button_label_history_slot">Gesehen zwischen %1$s und %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Datum hier festlegen</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">\"%s\" von Ihrer Merkliste entfernen</string>
   <string name="button_label_remove_gif">GIF entfernen</string>
   <string name="button_label_remove_photo">Ihr Profilfoto entfernen</string>
+  <string name="button_label_remove_reaction">%s entfernen</string>
   <string name="button_label_renew_vip">Abonnement erneuern</string>
   <string name="button_label_reorder_item">%s neu anordnen</string>
   <string name="button_label_reorder_list">%s neu anordnen</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Löschen</string>
   <string name="button_text_delete_note">Löschen</string>
   <string name="button_text_delete_reply">Antwort löschen</string>
+  <string name="button_text_deselect_all">Alle abwählen</string>
   <string name="button_text_details">Details</string>
   <string name="button_text_diagnostics_and_cache">Diagnose &amp; Cache</string>
   <string name="button_text_discard">Verwerfen</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Erneut versuchen</string>
   <string name="button_text_revoke_access">Zugriff widerrufen</string>
   <string name="button_text_save_filters">Als Standard festlegen</string>
+  <string name="button_text_select_all">Alle auswählen</string>
   <string name="button_text_set_cover_image">Als Coverbild festlegen</string>
   <string name="button_text_settings">Einstellungen</string>
   <string name="button_text_share">Teilen</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Listen suchen…</string>
   <string name="input_placeholder_search_movies">Filme suchen…</string>
   <string name="input_placeholder_search_people">Personen suchen…</string>
-  <string name="input_placeholder_search_reactions">Reaktionen suchen</string>
   <string name="input_placeholder_search_shows">Serien suchen…</string>
   <string name="input_placeholder_search_streaming_services">Suche Streaming-Dienst oder Land…</string>
   <string name="input_prompt_about">Erzählen Sie uns etwas über sich.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt-Status</string>
   <string name="link_label_view_social_activities">Soziale Aktivitäten für %s anzeigen</string>
+  <string name="link_label_view_social_activities_shared">Soziale Aktivitäten für %s anzeigen, die mit Ihnen geteilt wurden</string>
   <string name="link_text_about">Über uns</string>
   <string name="link_text_account_settings">Konto</string>
   <string name="link_text_advanced_settings">Erweitert</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Veröffentlichungen</string>
   <string name="list_title_replies">Antworten</string>
   <string name="list_title_seasons">Staffeln</string>
+  <string name="list_title_shared_by">Geteilt von</string>
   <string name="list_title_show_credits">Serien</string>
   <string name="list_title_smart_lists">Smart Lists</string>
   <string name="list_title_social">Soziales</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP-Veteranenstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Jahresrückblick 2026</string>
-  <string name="reactions_search_empty">Keine passenden Reaktionen</string>
   <string name="reset_status_cleared">Watchlist geleert.</string>
   <string name="row_label_loading_title">Name wird geladen</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt verwendet die Spracheinstellungen deines Apple TV. Um diese zu aktualisieren, gehe zu:\n\nApple TV-Einstellungen &gt; Allgemein &gt; Apple TV-Sprachen</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Hilf, die App zu übersetzen und Fehler für deine Sprache zu beheben.</string>
   <string name="text_settings_widget_show_title">Kopfzeile</string>
   <string name="text_settings_widget_show_title_description">Kopfzeile oben ein-/ausschalten.</string>
+  <string name="text_shared_with_you">Mit Ihnen geteilt</string>
   <string name="text_shout_by">Shout von</string>
   <string name="text_show_multiple_watches">Mehrfaches Ansehen aktivieren</string>
   <string name="text_show_spoilers">Spoiler anzeigen</string>

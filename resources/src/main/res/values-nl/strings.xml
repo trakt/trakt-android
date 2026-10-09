@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Verberg details</string>
   <string name="button_label_hide_recommendation">Verberg \"%s\" uit aanbevelingen</string>
   <string name="button_label_hide_section">%s verbergen</string>
+  <string name="button_label_hide_their_recommendations">Verberg hun aanbevelingen</string>
   <string name="button_label_history">Geschiedenis</string>
   <string name="button_label_history_slot">Bekeken tussen %1$s en %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Datum hier instellen</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">\"%s\" van je kijklijst verwijderen</string>
   <string name="button_label_remove_gif">Verwijder GIF</string>
   <string name="button_label_remove_photo">Verwijder je profielfoto</string>
+  <string name="button_label_remove_reaction">Verwijder %s</string>
   <string name="button_label_renew_vip">Abonnement verlengen</string>
   <string name="button_label_reorder_item">Herschik %s</string>
   <string name="button_label_reorder_list">Herschik %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Verwijderen</string>
   <string name="button_text_delete_note">Verwijderen</string>
   <string name="button_text_delete_reply">Verwijder reactie</string>
+  <string name="button_text_deselect_all">Alles deselecteren</string>
   <string name="button_text_details">Details</string>
   <string name="button_text_diagnostics_and_cache">Diagnostiek &amp; Cache</string>
   <string name="button_text_discard">Negeren</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Opnieuw proberen</string>
   <string name="button_text_revoke_access">Toegang intrekken</string>
   <string name="button_text_save_filters">Instellen als standaard</string>
+  <string name="button_text_select_all">Alles selecteren</string>
   <string name="button_text_set_cover_image">Instellen als omslagafbeelding</string>
   <string name="button_text_settings">Instellingen</string>
   <string name="button_text_share">Delen</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Zoek lijsten…</string>
   <string name="input_placeholder_search_movies">Films zoeken…</string>
   <string name="input_placeholder_search_people">Zoek personen…</string>
-  <string name="input_placeholder_search_reactions">Reacties zoeken</string>
   <string name="input_placeholder_search_shows">Series zoeken…</string>
   <string name="input_placeholder_search_streaming_services">Zoek streamingdienst of land…</string>
   <string name="input_prompt_about">Vertel ons iets over jezelf.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">Sociale activiteiten bekijken voor %s</string>
+  <string name="link_label_view_social_activities_shared">Bekijk sociale activiteiten voor %s, met jou gedeeld</string>
   <string name="link_text_about">Over ons</string>
   <string name="link_text_account_settings">Account</string>
   <string name="link_text_advanced_settings">Geavanceerd</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Uitgaven</string>
   <string name="list_title_replies">Antwoorden</string>
   <string name="list_title_seasons">Seizoenen</string>
+  <string name="list_title_shared_by">Gedeeld door</string>
   <string name="list_title_show_credits">Series</string>
   <string name="list_title_smart_lists">Slimme lijsten</string>
   <string name="list_title_social">Sociaal</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteraanstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Jaaroverzicht 2026</string>
-  <string name="reactions_search_empty">Geen reacties gevonden</string>
   <string name="reset_status_cleared">Kijklijst gewist.</string>
   <string name="row_label_loading_title">Naam laden</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt gebruikt de taalinstellingen van uw Apple TV. Om deze bij te werken, gaat u naar:\n\nApple TV Instellingen &gt; Algemeen &gt; Apple TV Talen</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Help mee de app te vertalen en fouten voor je taal te herstellen.</string>
   <string name="text_settings_widget_show_title">Koptekst</string>
   <string name="text_settings_widget_show_title_description">Koptekstbalk bovenaan in-/uitschakelen.</string>
+  <string name="text_shared_with_you">Gedeeld met jou</string>
   <string name="text_shout_by">Shout door</string>
   <string name="text_show_multiple_watches">Meerdere kijkbeurten inschakelen</string>
   <string name="text_show_spoilers">Toon spoilers</string>
