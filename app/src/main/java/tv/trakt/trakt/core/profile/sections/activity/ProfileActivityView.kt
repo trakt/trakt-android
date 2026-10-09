@@ -3,6 +3,7 @@
 package tv.trakt.trakt.core.profile.sections.activity
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
@@ -162,6 +163,7 @@ internal fun ProfileActivityView(
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun ProfileActivityContent(
     state: ProfileActivityState,

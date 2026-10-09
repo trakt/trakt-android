@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.klipy
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -74,6 +75,7 @@ internal fun GifPickerView(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun GifPickerContent(
     state: GifPickerState,
