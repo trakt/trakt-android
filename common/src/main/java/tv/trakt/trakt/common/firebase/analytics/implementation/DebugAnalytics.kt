@@ -41,6 +41,13 @@ internal class DebugAnalytics(
     override fun logMediaModeClick(mode: String) {
         Timber.d("logMediaModeClick: mode=${mode.lowercase()}")
     }
+
+    override fun logShareArrival(
+        type: String,
+        result: String,
+    ) {
+        Timber.d("logShareArrival: type=%s, result=%s", type, result)
+    }
 }
 
 internal class DebugAnalyticsReactions : Analytics.Reactions {

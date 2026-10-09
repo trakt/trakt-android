@@ -20,6 +20,7 @@ private const val PARAMETER_DATE = "date"
 private const val PARAMETER_REACTION = "reaction"
 private const val PARAMETER_RATING = "rating_value"
 private const val PARAMETER_COUNT = "count"
+private const val PARAMETER_RESULT = "result"
 
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
@@ -37,10 +38,12 @@ internal class FirebaseAnalytics(
         const val LOGOUT = "logout"
         const val MEDIA_MODE = "media_mode"
         const val MEDIA_MODE_CLICK = "media_mode_click"
+        const val SHARE_ARRIVAL = "share_arrival"
     }
 
     init {
         require(eventName(LOGOUT).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        require(eventName(SHARE_ARRIVAL).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
     override fun setUserId(userId: String?) {
@@ -90,6 +93,19 @@ internal class FirebaseAnalytics(
             eventName(MEDIA_MODE),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mode.lowercase(),
+            ),
+        )
+    }
+
+    override fun logShareArrival(
+        type: String,
+        result: String,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(SHARE_ARRIVAL),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to type.lowercase(),
+                PARAMETER_RESULT to result.lowercase(),
             ),
         )
     }

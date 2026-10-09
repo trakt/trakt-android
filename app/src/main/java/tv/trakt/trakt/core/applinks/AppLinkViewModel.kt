@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.applinks.model.AppLink
+import tv.trakt.trakt.core.applinks.usecases.RecordShareArrivalUseCase
 import tv.trakt.trakt.core.applinks.usecases.ResolveImdbLinkUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
@@ -32,6 +33,7 @@ internal class AppLinkViewModel(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getPersonUseCase: GetPersonUseCase,
     private val resolveImdbLinkUseCase: ResolveImdbLinkUseCase,
+    private val recordShareArrivalUseCase: RecordShareArrivalUseCase,
 ) : ViewModel() {
     private val initialState = AppLinkState()
 
@@ -69,6 +71,10 @@ internal class AppLinkViewModel(
                 loadingState.update { Done }
                 events.emit(AppLinkEvent.Error)
             }
+        }
+
+        viewModelScope.launch {
+            recordShareArrivalUseCase.record(link)
         }
     }
 
