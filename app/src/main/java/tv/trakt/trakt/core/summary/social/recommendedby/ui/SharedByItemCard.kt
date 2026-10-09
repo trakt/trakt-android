@@ -123,7 +123,7 @@ private fun MuteMenu(
                 },
                 text = {
                     Text(
-                        text = stringResource(R.string.button_text_hide_their_recommendations),
+                        text = stringResource(R.string.button_label_hide_their_recommendations),
                         style = TraktTheme.typography.buttonTertiary,
                         color = TraktTheme.colors.textPrimary,
                     )
