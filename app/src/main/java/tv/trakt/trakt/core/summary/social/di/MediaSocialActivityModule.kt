@@ -7,10 +7,10 @@ import org.koin.dsl.module
 import tv.trakt.trakt.core.summary.social.MediaSocialActivityViewModel
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.recommendedby.RecommendedByViewModel
-import tv.trakt.trakt.core.summary.social.recommendedby.usecases.GetRecommendedByUseCase
+import tv.trakt.trakt.core.summary.social.recommendedby.usecases.RecommendedByUseCase
 
 internal val mediaSocialActivityModule = module {
-    factoryOf(::GetRecommendedByUseCase)
+    factoryOf(::RecommendedByUseCase)
 
     viewModel { (activity: ImmutableList<MediaSocialActivity>) ->
         MediaSocialActivityViewModel(
@@ -21,7 +21,7 @@ internal val mediaSocialActivityModule = module {
     viewModel { (path: String) ->
         RecommendedByViewModel(
             path = path,
-            getRecommendedByUseCase = get(),
+            recommendedByUseCase = get(),
             shareArrivalEvents = get(),
         )
     }

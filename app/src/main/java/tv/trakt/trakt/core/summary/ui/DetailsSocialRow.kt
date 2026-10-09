@@ -35,6 +35,7 @@ import tv.trakt.trakt.core.reactions.media.MediaReactionsViewModel
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.recommendedby.RecommendedByViewModel
 import tv.trakt.trakt.core.summary.social.recommendedby.model.RecommendedBy
+import tv.trakt.trakt.core.summary.social.recommendedby.recommendedByViewModelKey
 import tv.trakt.trakt.core.summary.ui.header.social.DetailsSocialChip
 import tv.trakt.trakt.core.summary.ui.header.social.SocialChipShare
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -63,11 +64,10 @@ internal fun DetailsSocialRow(
     }
     val reactionsState = reactionsViewModel?.state?.collectAsStateWithLifecycle()
 
-    // Keyed by path so the social sheet can share the same instance.
     val recommendedByViewModel: RecommendedByViewModel? = when {
         isInspection -> null
         else -> koinViewModel(
-            key = "recommended_by_$recommendedByPath",
+            key = recommendedByViewModelKey(recommendedByPath),
             parameters = { parametersOf(recommendedByPath) },
         )
     }

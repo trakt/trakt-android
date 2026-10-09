@@ -310,6 +310,7 @@ internal fun EpisodeDetailsScreen(
 
     MediaSocialActivitySheet(
         activity = socialActivitySheet,
+        recommendedByPath = episodePath(state.show, state.episode),
         mediaTitle = state.episode?.title ?: "",
         onUserClick = {
             onNavigateToUser(it)
@@ -724,6 +725,17 @@ private fun DetailsOverview(
             overflow = Ellipsis,
         )
     }
+}
+
+private fun episodePath(
+    show: Show?,
+    episode: Episode?,
+): String? {
+    if (show == null || episode == null) {
+        return null
+    }
+
+    return "/shows/${show.ids.slug.value}/seasons/${episode.season}/episodes/${episode.number}"
 }
 
 private fun shareEpisode(

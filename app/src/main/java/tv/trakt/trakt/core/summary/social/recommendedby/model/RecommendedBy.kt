@@ -12,8 +12,11 @@ internal data class RecommendedBy(
     val users: ImmutableList<User>,
     val otherCount: Int,
 ) {
+    val totalCount: Int
+        get() = users.size + otherCount
+
     val hasSharers: Boolean
-        get() = users.size + otherCount > 0
+        get() = totalCount > 0
 
     companion object {
         fun fromDto(dto: V3RecommendedByResponse): RecommendedBy {

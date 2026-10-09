@@ -366,6 +366,7 @@ internal fun MovieDetailsScreen(
 
     MediaSocialActivitySheet(
         activity = socialActivitySheet,
+        recommendedByPath = state.movie?.let { "/movies/${it.ids.slug.value}" },
         mediaTitle = state.movie?.title ?: "",
         onUserClick = {
             onNavigateToUser?.invoke(it)

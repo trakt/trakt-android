@@ -430,6 +430,7 @@ internal fun ShowDetailsScreen(
 
     MediaSocialActivitySheet(
         activity = socialActivitySheet,
+        recommendedByPath = state.show?.let { "/shows/${it.ids.slug.value}" },
         mediaTitle = state.show?.title ?: "",
         onUserClick = {
             onNavigateToUser?.invoke(it)

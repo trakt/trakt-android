@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendedByResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3ShareMuteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
@@ -226,6 +227,12 @@ class V3Api(
             return null
         }
         return response.body()
+    }
+
+    suspend fun postShareMute(request: V3ShareMuteRequest) {
+        client.post("${baseV3Url}shares/mutes") {
+            setBody(request)
+        }
     }
 
     // Reactions

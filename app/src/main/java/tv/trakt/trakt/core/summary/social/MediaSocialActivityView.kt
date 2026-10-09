@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package tv.trakt.trakt.core.summary.social
 
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -42,6 +39,10 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.social.recommendedby.RecommendedByState
+import tv.trakt.trakt.core.summary.social.recommendedby.RecommendedByViewModel
+import tv.trakt.trakt.core.summary.social.recommendedby.model.RecommendedBy
+import tv.trakt.trakt.core.summary.social.recommendedby.ui.SharedByItemCard
 import tv.trakt.trakt.core.summary.social.ui.MediaSocialItemCard
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -54,16 +55,20 @@ import kotlin.time.Duration.Companion.hours
 @Composable
 internal fun MediaSocialActivityView(
     viewModel: MediaSocialActivityViewModel,
+    recommendedByViewModel: RecommendedByViewModel?,
     mediaTitle: String,
     onUserClick: (user: User) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val recommendedByState = recommendedByViewModel?.state?.collectAsStateWithLifecycle()
 
     MediaSocialActivityContent(
         state = state,
+        recommendedByState = recommendedByState?.value ?: RecommendedByState(),
         mediaTitle = mediaTitle,
         onUserClick = onUserClick,
+        onMuteSharerClick = { recommendedByViewModel?.muteSharer(it) },
         modifier = modifier,
     )
 }
@@ -71,9 +76,11 @@ internal fun MediaSocialActivityView(
 @Composable
 private fun MediaSocialActivityContent(
     state: MediaSocialActivityState,
+    recommendedByState: RecommendedByState,
     mediaTitle: String,
     modifier: Modifier = Modifier,
     onUserClick: (user: User) -> Unit = {},
+    onMuteSharerClick: (user: User) -> Unit = {},
 ) {
     val averageRating = remember(state.activity) {
         val ratings = state.activity.orEmpty().mapNotNull { it.watched?.rated?.rating }
@@ -148,6 +155,40 @@ private fun MediaSocialActivityContent(
                 modifier = Modifier.fillMaxWidth(),
             )
         }
+
+        recommendedByState.recommendedBy
+            ?.takeIf { it.hasSharers }
+            ?.let { recommendedBy ->
+                item(key = "shared_by_header") {
+                    TraktHeader(
+                        title = stringResource(R.string.list_title_shared_by),
+                        titleColor = TraktTheme.colors.textPrimary,
+                        subtitle = when (val count = recommendedBy.totalCount) {
+                            1 -> stringResource(R.string.text_person_count, count)
+                            else -> stringResource(R.string.text_people_count, count)
+                        },
+                        modifier = Modifier.padding(
+                            top = if (activitiesCount > 0) 14.dp else 0.dp,
+                            bottom = 4.dp,
+                        ),
+                    )
+                }
+
+                items(
+                    items = recommendedBy.users,
+                    key = { "shared_by_${it.ids.trakt.value}" },
+                ) { user ->
+                    SharedByItemCard(
+                        user = user,
+                        muting = recommendedByState.muting.isLoading,
+                        containerColor = TraktTheme.colors.dialogOnContainer,
+                        onMuteClick = { onMuteSharerClick(user) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
+                    )
+                }
+            }
     }
 }
 
@@ -200,6 +241,12 @@ private fun Preview() {
                                 ),
                             ),
                         ),
+                    ),
+                ),
+                recommendedByState = RecommendedByState(
+                    recommendedBy = RecommendedBy(
+                        users = persistentListOf(PreviewData.user1),
+                        otherCount = 2,
                     ),
                 ),
                 mediaTitle = "The Movie Title",
@@ -261,6 +308,7 @@ private fun PreviewRtl() {
                         ),
                     ),
                 ),
+                recommendedByState = RecommendedByState(),
                 mediaTitle = "The Movie Title",
             )
         }

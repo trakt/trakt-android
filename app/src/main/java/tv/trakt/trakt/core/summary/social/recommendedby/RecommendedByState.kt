@@ -8,4 +8,5 @@ import tv.trakt.trakt.core.summary.social.recommendedby.model.RecommendedBy
 internal data class RecommendedByState(
     val recommendedBy: RecommendedBy? = null,
     val loading: LoadingState = LoadingState.Idle,
+    val muting: LoadingState = LoadingState.Idle,
 )
