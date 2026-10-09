@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">پنهان کردن جزئیات</string>
   <string name="button_label_hide_recommendation">پنهان کردن \"%s\" از توصیه‌ها</string>
   <string name="button_label_hide_section">پنهان کردن %s</string>
+  <string name="button_label_hide_their_recommendations">پنهان کردن توصیه‌های آن‌ها</string>
   <string name="button_label_history">تاریخی</string>
   <string name="button_label_history_slot">تماشا شده بین %1$s و %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">تنظیم تاریخ به اینجا</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">\" %s \" را از لیست تماشای خود حذف کنید</string>
   <string name="button_label_remove_gif">حذف گیف</string>
   <string name="button_label_remove_photo">حذف عکس پروفایل شما</string>
+  <string name="button_label_remove_reaction">حذف %s</string>
   <string name="button_label_renew_vip">تمدید اشتراک</string>
   <string name="button_label_reorder_item">مرتب سازی %s</string>
   <string name="button_label_reorder_list">مرتب سازی %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">حذف</string>
   <string name="button_text_delete_note">حذف</string>
   <string name="button_text_delete_reply">حذف پاسخ</string>
+  <string name="button_text_deselect_all">لغو انتخاب همه</string>
   <string name="button_text_details">جزئیات</string>
   <string name="button_text_diagnostics_and_cache">عیب‌یابی و کش</string>
   <string name="button_text_discard">نادیده گرفتن</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">تلاش مجدد</string>
   <string name="button_text_revoke_access">لغو دسترسی</string>
   <string name="button_text_save_filters">به عنوان پیش‌فرض تنظیم کن</string>
+  <string name="button_text_select_all">انتخاب همه</string>
   <string name="button_text_set_cover_image">به عنوان تصویر کاور تنظیم کن</string>
   <string name="button_text_settings">تنظیمات</string>
   <string name="button_text_share">به اشتراک بگذارید</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">جستجوی لیست‌ها…</string>
   <string name="input_placeholder_search_movies">جستجوی فیلم‌ها…</string>
   <string name="input_placeholder_search_people">جستجوی افراد…</string>
-  <string name="input_placeholder_search_reactions">جستجوی واکنش‌ها</string>
   <string name="input_placeholder_search_shows">جستجوی برنامه‌ها…</string>
   <string name="input_placeholder_search_streaming_services">سرویس پخش یا کشور را جستجو کنید…</string>
   <string name="input_prompt_about">کمی درباره خودتان بگویید.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">ردیت</string>
   <string name="link_label_status">وضعیت Trakt</string>
   <string name="link_label_view_social_activities">مشاهده فعالیت‌های اجتماعی برای %s</string>
+  <string name="link_label_view_social_activities_shared">مشاهده فعالیت‌های اجتماعی برای %s, به اشتراک گذاشته شده با شما</string>
   <string name="link_text_about">درباره ما</string>
   <string name="link_text_account_settings">حساب کاربری</string>
   <string name="link_text_advanced_settings">پیشرفته</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">انتشارها</string>
   <string name="list_title_replies">پاسخ‌ها</string>
   <string name="list_title_seasons">فصل‌ها</string>
+  <string name="list_title_shared_by">به اشتراک گذاشته شده توسط</string>
   <string name="list_title_show_credits">برنامه‌ها</string>
   <string name="list_title_smart_lists">لیست‌های هوشمند</string>
   <string name="list_title_social">اجتماعی</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>
   <string name="preview_feature_title_vip_veteran">وضعیت VIP کهنه‌کار</string>
   <string name="preview_feature_title_year_in_review_2026">مرور سال 2026</string>
-  <string name="reactions_search_empty">هیچ واکنشی مطابقت ندارد.</string>
   <string name="reset_status_cleared">لیست تماشا پاک شد.</string>
   <string name="row_label_loading_title">در حال بارگذاری نام</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt از تنظیمات زبان Apple TV شما استفاده می‌کند. برای به‌روزرسانی آن، به مسیر زیر بروید:\n\nتنظیمات Apple TV &gt; عمومی &gt; زبان‌های Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">به ترجمه برنامه و رفع اشتباهات برای زبان خود کمک کنید.</string>
   <string name="text_settings_widget_show_title">عنوان</string>
   <string name="text_settings_widget_show_title_description">نوار عنوان قابل مشاهده در بالا را فعال/غیرفعال کنید.</string>
+  <string name="text_shared_with_you">به اشتراک گذاشته شده با شما</string>
   <string name="text_shout_by">فریاد توسط</string>
   <string name="text_show_multiple_watches">فعال کردن تماشای چندگانه</string>
   <string name="text_show_spoilers">نمایش اسپویلرها</string>
@@ -2499,6 +2504,7 @@
   <string name="yir_2026_persona_opening_act_tagline">داستان شما تازه شروع شده است.</string>
   <string name="yir_2026_persona_opening_night_name">شب افتتاحیه</string>
   <string name="yir_2026_persona_opening_night_tagline">اولین نفر در صف، قبل از پایان تریلرها چک این شده است.</string>
+  <string name="yir_2026_persona_weekend_marathoner_name">ماراتن‌باز آخر هفته</string>
   <string name="yir_2026_persona_weekend_marathoner_tagline">جمعه یک فصل شروع می‌شود. یکشنبه به پایان می‌رسد.</string>
   <string name="yir_2026_persona_wildcard_name">کارت آزاد</string>
   <string name="yir_2026_persona_wildcard_tagline">هیچ قالبی به شما نمی‌خورد. نکته همین است.</string>

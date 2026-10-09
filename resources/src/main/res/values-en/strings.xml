@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Hide details</string>
   <string name="button_label_hide_recommendation">Hide \"%s\" from recommendations</string>
   <string name="button_label_hide_section">Hide %s</string>
+  <string name="button_label_hide_their_recommendations">Hide their recommendations</string>
   <string name="button_label_history">History</string>
   <string name="button_label_history_slot">Watched between %1$s and %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Set date to here</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Remove \"%s\" from your Watchlist</string>
   <string name="button_label_remove_gif">Remove GIF</string>
   <string name="button_label_remove_photo">Remove your profile photo</string>
+  <string name="button_label_remove_reaction">Remove %s</string>
   <string name="button_label_renew_vip">Renew Subscription</string>
   <string name="button_label_reorder_item">Reorder %s</string>
   <string name="button_label_reorder_list">Reorder %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Delete</string>
   <string name="button_text_delete_note">Delete</string>
   <string name="button_text_delete_reply">Delete Reply</string>
+  <string name="button_text_deselect_all">Deselect all</string>
   <string name="button_text_details">Details</string>
   <string name="button_text_diagnostics_and_cache">Diagnostics &amp; Cache</string>
   <string name="button_text_discard">Discard</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Retry</string>
   <string name="button_text_revoke_access">Revoke access</string>
   <string name="button_text_save_filters">Set as default</string>
+  <string name="button_text_select_all">Select all</string>
   <string name="button_text_set_cover_image">Set as cover image</string>
   <string name="button_text_settings">Settings</string>
   <string name="button_text_share">Share</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Search lists…</string>
   <string name="input_placeholder_search_movies">Search movies…</string>
   <string name="input_placeholder_search_people">Search people…</string>
-  <string name="input_placeholder_search_reactions">Search reactions</string>
   <string name="input_placeholder_search_shows">Search shows…</string>
   <string name="input_placeholder_search_streaming_services">Search streaming service or country…</string>
   <string name="input_prompt_about">Tell us a bit about yourself.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">View social activities for %s</string>
+  <string name="link_label_view_social_activities_shared">View social activities for %s, shared with you</string>
   <string name="link_text_about">About</string>
   <string name="link_text_account_settings">Account</string>
   <string name="link_text_advanced_settings">Advanced</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Releases</string>
   <string name="list_title_replies">Replies</string>
   <string name="list_title_seasons">Seasons</string>
+  <string name="list_title_shared_by">Shared by</string>
   <string name="list_title_show_credits">Shows</string>
   <string name="list_title_smart_lists">Smart Lists</string>
   <string name="list_title_social">Social</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP veteran status</string>
   <string name="preview_feature_title_year_in_review_2026">Year in Review 2026</string>
-  <string name="reactions_search_empty">No reactions match that</string>
   <string name="reset_status_cleared">Watchlist cleared.</string>
   <string name="row_label_loading_title">Loading name</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt uses your Apple TV language settings. To update it, go to:\n\nApple TV Settings &gt; General &gt; Apple TV Languages</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Help translate the app and fix mistakes for your language.</string>
   <string name="text_settings_widget_show_title">Header</string>
   <string name="text_settings_widget_show_title_description">Enable/disable header bar visible at the top.</string>
+  <string name="text_shared_with_you">Shared with you</string>
   <string name="text_shout_by">Shout by</string>
   <string name="text_show_multiple_watches">Enable multiple watches</string>
   <string name="text_show_spoilers">Show Spoilers</string>

@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Detayları gizle</string>
   <string name="button_label_hide_recommendation">\"%s\" öğesini önerilerden gizle</string>
   <string name="button_label_hide_section">%s gizle</string>
+  <string name="button_label_hide_their_recommendations">Önerilerini gizle</string>
   <string name="button_label_history">Geçmiş</string>
   <string name="button_label_history_slot">%1$s ile %2$s arasında izlendi</string>
   <string name="button_label_history_slot_picker_insert_here">Tarihi buraya ayarla</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">\"%s\" İzleme Listenizden kaldır</string>
   <string name="button_label_remove_gif">GIF\'i Kaldır</string>
   <string name="button_label_remove_photo">Profil fotoğrafınızı kaldır</string>
+  <string name="button_label_remove_reaction">%s\'ı Kaldır</string>
   <string name="button_label_renew_vip">Aboneliği Yenile</string>
   <string name="button_label_reorder_item">%s listesini yeniden sırala</string>
   <string name="button_label_reorder_list">%s listesini yeniden sırala</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Sil</string>
   <string name="button_text_delete_note">Sil</string>
   <string name="button_text_delete_reply">Yanıtı Sil</string>
+  <string name="button_text_deselect_all">Tüm Seçimi Kaldır</string>
   <string name="button_text_details">Detaylar</string>
   <string name="button_text_diagnostics_and_cache">Tanılama ve Önbellek</string>
   <string name="button_text_discard">İptal Et</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Tekrar Dene</string>
   <string name="button_text_revoke_access">Erişimi İptal Et</string>
   <string name="button_text_save_filters">Varsayılan olarak ayarla</string>
+  <string name="button_text_select_all">Tümünü Seç</string>
   <string name="button_text_set_cover_image">Kapak resmi olarak ayarla</string>
   <string name="button_text_settings">Ayarlar</string>
   <string name="button_text_share">Paylaş</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Listelerde ara…</string>
   <string name="input_placeholder_search_movies">Film ara…</string>
   <string name="input_placeholder_search_people">Kişi ara…</string>
-  <string name="input_placeholder_search_reactions">Tepkileri ara</string>
   <string name="input_placeholder_search_shows">Dizi ara…</string>
   <string name="input_placeholder_search_streaming_services">Yayın hizmeti veya ülke ara…</string>
   <string name="input_prompt_about">Bize kendinizden biraz bahsedin.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt Durumu</string>
   <string name="link_label_view_social_activities">%s için sosyal etkinlikleri görüntüle</string>
+  <string name="link_label_view_social_activities_shared">%s için sizinle paylaşılan sosyal etkinlikleri görüntüle</string>
   <string name="link_text_about">Hakkında</string>
   <string name="link_text_account_settings">Hesap</string>
   <string name="link_text_advanced_settings">Gelişmiş</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Yayınlar</string>
   <string name="list_title_replies">Yanıtlar</string>
   <string name="list_title_seasons">Sezonlar</string>
+  <string name="list_title_shared_by">Paylaşan</string>
   <string name="list_title_show_credits">Diziler</string>
   <string name="list_title_smart_lists">Akıllı Listeler</string>
   <string name="list_title_social">Sosyal</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Film Müziği</string>
   <string name="preview_feature_title_vip_veteran">VIP kıdemli durumu</string>
   <string name="preview_feature_title_year_in_review_2026">2026 Yılına Genel Bakış</string>
-  <string name="reactions_search_empty">Eşleşen tepki bulunamadı</string>
   <string name="reset_status_cleared">İzleme listesi temizlendi.</string>
   <string name="row_label_loading_title">İsim yükleniyor</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt, Apple TV dil ayarlarınızı kullanır. Güncellemek için şu adrese gidin:\n\nApple TV Ayarları &gt; Genel &gt; Apple TV Dilleri</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Uygulamayı çevirmeye ve dilinizdeki hataları düzeltmeye yardımcı olun.</string>
   <string name="text_settings_widget_show_title">Başlık</string>
   <string name="text_settings_widget_show_title_description">Üstteki başlık çubuğunu etkinleştirin/devre dışı bırakın.</string>
+  <string name="text_shared_with_you">Sizinle paylaşılan</string>
   <string name="text_shout_by">Yorumlayan</string>
   <string name="text_show_multiple_watches">Birden fazla izlemeyi etkinleştir</string>
   <string name="text_show_spoilers">Spoilerları göster</string>

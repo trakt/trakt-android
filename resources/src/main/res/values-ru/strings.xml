@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Скрыть подробности</string>
   <string name="button_label_hide_recommendation">Скрыть \"%s\" из рекомендаций</string>
   <string name="button_label_hide_section">Скрыть %s</string>
+  <string name="button_label_hide_their_recommendations">Скрыть их рекомендации</string>
   <string name="button_label_history">История</string>
   <string name="button_label_history_slot">Просмотрено между %1$s и %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Установить дату сюда</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Удалить \"%s\" из списка просмотра</string>
   <string name="button_label_remove_gif">Удалить GIF</string>
   <string name="button_label_remove_photo">Удалить ваше фото профиля</string>
+  <string name="button_label_remove_reaction">Удалить %s</string>
   <string name="button_label_renew_vip">Продлить подписку</string>
   <string name="button_label_reorder_item">Переупорядочить %s</string>
   <string name="button_label_reorder_list">Переупорядочить %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Удалить</string>
   <string name="button_text_delete_note">Удалить</string>
   <string name="button_text_delete_reply">Удалить ответ</string>
+  <string name="button_text_deselect_all">Снять выбор со всех</string>
   <string name="button_text_details">Подробности</string>
   <string name="button_text_diagnostics_and_cache">Диагностика и кэш</string>
   <string name="button_text_discard">Отменить</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Повторить</string>
   <string name="button_text_revoke_access">Отозвать доступ</string>
   <string name="button_text_save_filters">Установить по умолчанию</string>
+  <string name="button_text_select_all">Выбрать все</string>
   <string name="button_text_set_cover_image">Установить как обложку</string>
   <string name="button_text_settings">Настройки</string>
   <string name="button_text_share">Поделиться</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Искать списки…</string>
   <string name="input_placeholder_search_movies">Искать фильмы…</string>
   <string name="input_placeholder_search_people">Искать людей…</string>
-  <string name="input_placeholder_search_reactions">Поиск реакций</string>
   <string name="input_placeholder_search_shows">Искать сериалы…</string>
   <string name="input_placeholder_search_streaming_services">Поиск стримингового сервиса или страны…</string>
   <string name="input_prompt_about">Расскажите немного о себе.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Статус Trakt</string>
   <string name="link_label_view_social_activities">Посмотреть социальную активность для %s</string>
+  <string name="link_label_view_social_activities_shared">Посмотреть социальную активность для %s, которой с вами поделились</string>
   <string name="link_text_about">О нас</string>
   <string name="link_text_account_settings">Аккаунт</string>
   <string name="link_text_advanced_settings">Дополнительно</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Релизы</string>
   <string name="list_title_replies">Ответы</string>
   <string name="list_title_seasons">Сезоны</string>
+  <string name="list_title_shared_by">Поделились</string>
   <string name="list_title_show_credits">Сериалы</string>
   <string name="list_title_smart_lists">Умные списки</string>
   <string name="list_title_social">Социальные</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
   <string name="preview_feature_title_year_in_review_2026">Обзор года 2026</string>
-  <string name="reactions_search_empty">Реакции не найдены</string>
   <string name="reset_status_cleared">Список просмотра очищен.</string>
   <string name="row_label_loading_title">Загрузка названия</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt использует языковые настройки вашего Apple TV. Чтобы обновить их, перейдите:\n\nНастройки Apple TV &gt; Основные &gt; Языки Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Помогите перевести приложение и исправить ошибки для вашего языка.</string>
   <string name="text_settings_widget_show_title">Заголовок</string>
   <string name="text_settings_widget_show_title_description">Включить/отключить видимость верхней панели заголовка.</string>
+  <string name="text_shared_with_you">Поделились с вами</string>
   <string name="text_shout_by">Комментарий от</string>
   <string name="text_show_multiple_watches">Включить несколько просмотров</string>
   <string name="text_show_spoilers">Показать спойлеры</string>
@@ -2449,6 +2454,7 @@
   <string name="yir_2024_watched_at">Просмотрено</string>
   <string name="yir_2026_credits_kicker">Титры</string>
   <string name="yir_2026_highlight_anime_episodes">эпизоды аниме</string>
+  <string name="yir_2026_highlight_anime_share">из всех эпизодов были аниме</string>
   <string name="yir_2026_highlight_apps">приложения</string>
   <string name="yir_2026_highlight_avg_rating">средняя оценка</string>
   <string name="yir_2026_highlight_avg_runtime">мин. средняя продолжительность</string>

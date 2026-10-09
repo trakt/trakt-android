@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Ascunde detalii</string>
   <string name="button_label_hide_recommendation">Ascunde „%s” din recomandări</string>
   <string name="button_label_hide_section">Ascunde %s</string>
+  <string name="button_label_hide_their_recommendations">Ascunde recomandările lor</string>
   <string name="button_label_history">Istoric</string>
   <string name="button_label_history_slot">Vizionat între %1$s și %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Setează data aici</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Elimină \"%s\" din lista ta de vizionare</string>
   <string name="button_label_remove_gif">Eliminați GIF-ul</string>
   <string name="button_label_remove_photo">Elimină fotografia ta de profil</string>
+  <string name="button_label_remove_reaction">Eliminați %s</string>
   <string name="button_label_renew_vip">Reînnoiește abonamentul</string>
   <string name="button_label_reorder_item">Rearanjează %s</string>
   <string name="button_label_reorder_list">Rearanjează %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Șterge</string>
   <string name="button_text_delete_note">Șterge</string>
   <string name="button_text_delete_reply">Șterge răspunsul</string>
+  <string name="button_text_deselect_all">Deselectează tot</string>
   <string name="button_text_details">Detalii</string>
   <string name="button_text_diagnostics_and_cache">Diagnostic &amp; Cache</string>
   <string name="button_text_discard">Anulează</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Reîncearcă</string>
   <string name="button_text_revoke_access">Revocă accesul</string>
   <string name="button_text_save_filters">Setează ca implicit</string>
+  <string name="button_text_select_all">Selectează tot</string>
   <string name="button_text_set_cover_image">Setează ca imagine de copertă</string>
   <string name="button_text_settings">Setări</string>
   <string name="button_text_share">Partajează</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Căutați liste…</string>
   <string name="input_placeholder_search_movies">Căutați filme…</string>
   <string name="input_placeholder_search_people">Căutați persoane…</string>
-  <string name="input_placeholder_search_reactions">Căutați reacții</string>
   <string name="input_placeholder_search_shows">Căutați seriale…</string>
   <string name="input_placeholder_search_streaming_services">Căutați serviciul de streaming sau țara…</string>
   <string name="input_prompt_about">Spune-ne puțin despre tine.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Starea Trakt</string>
   <string name="link_label_view_social_activities">Vezi activitățile sociale pentru %s</string>
+  <string name="link_label_view_social_activities_shared">Vezi activitățile sociale pentru %s, partajate cu tine</string>
   <string name="link_text_about">Despre</string>
   <string name="link_text_account_settings">Cont</string>
   <string name="link_text_advanced_settings">Avansate</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Lansări</string>
   <string name="list_title_replies">Răspunsuri</string>
   <string name="list_title_seasons">Sezoane</string>
+  <string name="list_title_shared_by">Partajat de</string>
   <string name="list_title_show_credits">Seriale</string>
   <string name="list_title_smart_lists">Liste inteligente</string>
   <string name="list_title_social">Social</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP veteran</string>
   <string name="preview_feature_title_year_in_review_2026">Retrospectiva Anului 2026</string>
-  <string name="reactions_search_empty">Nicio reacție nu se potrivește</string>
   <string name="reset_status_cleared">Lista de vizionare a fost ștearsă.</string>
   <string name="row_label_loading_title">Se încarcă numele</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt folosește setările de limbă ale Apple TV-ului tău. Pentru a le actualiza, mergi la:\n\nSetări Apple TV &gt; General &gt; Limbi Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Ajută la traducerea aplicației și corectează greșelile pentru limba ta.</string>
   <string name="text_settings_widget_show_title">Antet</string>
   <string name="text_settings_widget_show_title_description">Activează/dezactivează bara de antet vizibilă în partea de sus.</string>
+  <string name="text_shared_with_you">Partajat cu tine</string>
   <string name="text_shout_by">Comentariu de la</string>
   <string name="text_show_multiple_watches">Activează vizionări multiple</string>
   <string name="text_show_spoilers">Arată spoilere</string>
@@ -2501,6 +2506,7 @@
   <string name="yir_2026_persona_opening_night_tagline">Primul la rând, înregistrat înainte de finalul trailerelor.</string>
   <string name="yir_2026_persona_weekend_marathoner_name">Maratonist de weekend</string>
   <string name="yir_2026_persona_weekend_marathoner_tagline">Vineri începe un sezon. Duminică se termină.</string>
+  <string name="yir_2026_persona_wildcard_name">Wildcard</string>
   <string name="yir_2026_persona_wildcard_tagline">Niciun șablon nu ți se potrivește. Asta e ideea.</string>
   <string name="yir_2026_preview_persona">Persona</string>
   <string name="yir_2026_preview_play_reel">Redă rezumatul</string>

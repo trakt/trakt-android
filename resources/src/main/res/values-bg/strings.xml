@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Скрий детайли</string>
   <string name="button_label_hide_recommendation">Скрий „%s“ от препоръки</string>
   <string name="button_label_hide_section">Скриване на %s</string>
+  <string name="button_label_hide_their_recommendations">Скрий техните препоръки</string>
   <string name="button_label_history">Исторически</string>
   <string name="button_label_history_slot">Гледано между %1$s и %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Задайте дата тук</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Премахни \"%s\" от списъка си за гледане</string>
   <string name="button_label_remove_gif">Премахване на GIF</string>
   <string name="button_label_remove_photo">Премахни профилната си снимка</string>
+  <string name="button_label_remove_reaction">Премахване на %s</string>
   <string name="button_label_renew_vip">Подновяване на абонамент</string>
   <string name="button_label_reorder_item">Пренареди %s</string>
   <string name="button_label_reorder_list">Пренареди %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Изтрий</string>
   <string name="button_text_delete_note">Изтрий</string>
   <string name="button_text_delete_reply">Изтриване на отговор</string>
+  <string name="button_text_deselect_all">Отмени всички</string>
   <string name="button_text_details">Детайли</string>
   <string name="button_text_diagnostics_and_cache">Диагностика и кеш</string>
   <string name="button_text_discard">Отхвърляне</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Опитай отново</string>
   <string name="button_text_revoke_access">Отнемане на достъп</string>
   <string name="button_text_save_filters">Задай като по подразбиране</string>
+  <string name="button_text_select_all">Избери всички</string>
   <string name="button_text_set_cover_image">Задай като корица</string>
   <string name="button_text_settings">Настройки</string>
   <string name="button_text_share">Сподели</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Търси списъци…</string>
   <string name="input_placeholder_search_movies">Търси филми…</string>
   <string name="input_placeholder_search_people">Търси хора…</string>
-  <string name="input_placeholder_search_reactions">Търсене на реакции</string>
   <string name="input_placeholder_search_shows">Търси сериали…</string>
   <string name="input_placeholder_search_streaming_services">Търсене на стрийминг услуга или държава…</string>
   <string name="input_prompt_about">Разкажи ни малко за себе си.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt Статус</string>
   <string name="link_label_view_social_activities">Преглед на социалните дейности за %s</string>
+  <string name="link_label_view_social_activities_shared">Преглед на социалните дейности за %s, споделени с вас</string>
   <string name="link_text_about">За нас</string>
   <string name="link_text_account_settings">Профил</string>
   <string name="link_text_advanced_settings">Разширени</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Издания</string>
   <string name="list_title_replies">Отговори</string>
   <string name="list_title_seasons">Сезони</string>
+  <string name="list_title_shared_by">Споделено от</string>
   <string name="list_title_show_credits">Сериали</string>
   <string name="list_title_smart_lists">Интелигентни списъци</string>
   <string name="list_title_social">Социални</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Саундтрак</string>
   <string name="preview_feature_title_vip_veteran">VIP ветерански статус</string>
   <string name="preview_feature_title_year_in_review_2026">Годишен преглед 2026</string>
-  <string name="reactions_search_empty">Няма съвпадащи реакции</string>
   <string name="reset_status_cleared">Списъкът за гледане е изчистен.</string>
   <string name="row_label_loading_title">Зареждане на име</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt използва езиковите настройки на вашия Apple TV. За да ги актуализирате, отидете на:\n\nНастройки на Apple TV &gt; Общи &gt; Езици на Apple TV</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Помогнете да преведете приложението и да коригирате грешки за вашия език.</string>
   <string name="text_settings_widget_show_title">Заглавка</string>
   <string name="text_settings_widget_show_title_description">Активиране/деактивиране на заглавната лента, видима в горната част.</string>
+  <string name="text_shared_with_you">Споделено с вас</string>
   <string name="text_shout_by">Коментар от</string>
   <string name="text_show_multiple_watches">Разрешаване на многократно гледане</string>
   <string name="text_show_spoilers">Покажи спойлери</string>
@@ -2479,6 +2484,7 @@
   <string name="yir_2026_hybrid">с поредица от %s</string>
   <string name="yir_2026_peak_hour">Пиков час</string>
   <string name="yir_2026_peak_week">Най-активна седмица</string>
+  <string name="yir_2026_persona_anime_voyager_name">Аниме Пътешественик</string>
   <string name="yir_2026_persona_anime_voyager_tagline">Субтитри включени, дълги арки, никога не пропускате началото.</string>
   <string name="yir_2026_persona_cinephile_name">Киноманът</string>
   <string name="yir_2026_persona_cinephile_tagline">Два часа са само загрявка.</string>

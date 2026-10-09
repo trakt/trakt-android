@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">隐藏详情</string>
   <string name="button_label_hide_recommendation">从推荐中隐藏“%s”</string>
   <string name="button_label_hide_section">隐藏%s</string>
+  <string name="button_label_hide_their_recommendations">隐藏他们的推荐</string>
   <string name="button_label_history">历史</string>
   <string name="button_label_history_slot">在 %1$s 到 %2$s 期间观看</string>
   <string name="button_label_history_slot_picker_insert_here">将日期设为此处</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">将“%s”从你的待看列表中移除</string>
   <string name="button_label_remove_gif">移除GIF</string>
   <string name="button_label_remove_photo">移除你的个人资料照片</string>
+  <string name="button_label_remove_reaction">移除%s</string>
   <string name="button_label_renew_vip">续订</string>
   <string name="button_label_reorder_item">重新排序 %s</string>
   <string name="button_label_reorder_list">重新排序 %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">删除</string>
   <string name="button_text_delete_note">删除</string>
   <string name="button_text_delete_reply">删除回复</string>
+  <string name="button_text_deselect_all">取消全选</string>
   <string name="button_text_details">详情</string>
   <string name="button_text_diagnostics_and_cache">诊断与缓存</string>
   <string name="button_text_discard">放弃</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">重试</string>
   <string name="button_text_revoke_access">撤销访问</string>
   <string name="button_text_save_filters">设为默认</string>
+  <string name="button_text_select_all">全选</string>
   <string name="button_text_set_cover_image">设为封面图片</string>
   <string name="button_text_settings">设置</string>
   <string name="button_text_share">分享</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">搜索列表…</string>
   <string name="input_placeholder_search_movies">搜索电影…</string>
   <string name="input_placeholder_search_people">搜索人物…</string>
-  <string name="input_placeholder_search_reactions">搜索反应</string>
   <string name="input_placeholder_search_shows">搜索剧集…</string>
   <string name="input_placeholder_search_streaming_services">搜索流媒体服务或国家/地区…</string>
   <string name="input_prompt_about">告诉我们一些关于你自己的信息。</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt 状态</string>
   <string name="link_label_view_social_activities">查看%s的社交动态</string>
+  <string name="link_label_view_social_activities_shared">查看%s的社交动态，与你分享</string>
   <string name="link_text_about">关于</string>
   <string name="link_text_account_settings">帐户</string>
   <string name="link_text_advanced_settings">高级</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">发布</string>
   <string name="list_title_replies">回复</string>
   <string name="list_title_seasons">季</string>
+  <string name="list_title_shared_by">分享者</string>
   <string name="list_title_show_credits">剧集</string>
   <string name="list_title_smart_lists">智能列表</string>
   <string name="list_title_social">社交</string>
@@ -1377,6 +1382,7 @@
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
+  <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
   <string name="preview_feature_title_reactions">反应</string>
@@ -1384,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">原声带</string>
   <string name="preview_feature_title_vip_veteran">VIP 资深会员身份</string>
   <string name="preview_feature_title_year_in_review_2026">2026 年度回顾</string>
-  <string name="reactions_search_empty">没有匹配的反应</string>
   <string name="reset_status_cleared">待看列表已清除。</string>
   <string name="row_label_loading_title">正在加载名称</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt 使用您的 Apple TV 语言设置。要更新，请前往：\n\nApple TV 设置 &gt; 通用 &gt; Apple TV 语言</string>
@@ -1829,6 +1834,7 @@
   <string name="text_settings_translations">帮助翻译应用并修正您语言的错误。</string>
   <string name="text_settings_widget_show_title">标题</string>
   <string name="text_settings_widget_show_title_description">启用/禁用顶部标题栏显示。</string>
+  <string name="text_shared_with_you">与你分享</string>
   <string name="text_shout_by">喊话者</string>
   <string name="text_show_multiple_watches">启用多次观看</string>
   <string name="text_show_spoilers">显示剧透</string>

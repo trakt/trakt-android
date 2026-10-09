@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">إخفاء التفاصيل</string>
   <string name="button_label_hide_recommendation">إخفاء \"%s\" من التوصيات</string>
   <string name="button_label_hide_section">إخفاء %s</string>
+  <string name="button_label_hide_their_recommendations">إخفاء توصياتهم</string>
   <string name="button_label_history">سجل المشاهدة</string>
   <string name="button_label_history_slot">تمت المشاهدة بين %1$s و%2$s</string>
   <string name="button_label_history_slot_picker_insert_here">تعيين التاريخ هنا</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">أزِل \"%s\" من قائمة المشاهدة</string>
   <string name="button_label_remove_gif">إزالة صورة GIF</string>
   <string name="button_label_remove_photo">إزالة صورة ملفك الشخصي</string>
+  <string name="button_label_remove_reaction">إزالة %s</string>
   <string name="button_label_renew_vip">تجديد الاشتراك</string>
   <string name="button_label_reorder_item">إعادة ترتيب %s</string>
   <string name="button_label_reorder_list">إعادة ترتيب %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">حذف</string>
   <string name="button_text_delete_note">حذف</string>
   <string name="button_text_delete_reply">حذف الرد</string>
+  <string name="button_text_deselect_all">إلغاء تحديد الكل</string>
   <string name="button_text_details">التفاصيل</string>
   <string name="button_text_diagnostics_and_cache">التشخيص وذاكرة التخزين المؤقت</string>
   <string name="button_text_discard">تجاهل</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">أعد المحاولة</string>
   <string name="button_text_revoke_access">إبطال الوصول</string>
   <string name="button_text_save_filters">تعيين كافتراضي</string>
+  <string name="button_text_select_all">تحديد الكل</string>
   <string name="button_text_set_cover_image">تعيين كصورة غلاف</string>
   <string name="button_text_settings">الإعدادات</string>
   <string name="button_text_share">شارك</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">قوائم البحث…</string>
   <string name="input_placeholder_search_movies">البحث عن الأفلام…</string>
   <string name="input_placeholder_search_people">بحث عن الناس…</string>
-  <string name="input_placeholder_search_reactions">ابحث عن ردود الفعل</string>
   <string name="input_placeholder_search_shows">البحث عن مسلسلات…</string>
   <string name="input_placeholder_search_streaming_services">ابحث عن خدمة البث أو البلد…</string>
   <string name="input_prompt_about">أخبرنا قليلا عن نفسك.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">ريديت</string>
   <string name="link_label_status">حالة Trakt</string>
   <string name="link_label_view_social_activities">عرض الأنشطة الاجتماعية لـ %s</string>
+  <string name="link_label_view_social_activities_shared">عرض الأنشطة الاجتماعية لـ %s، التي تمت مشاركتها معك</string>
   <string name="link_text_about">حول</string>
   <string name="link_text_account_settings">الحساب</string>
   <string name="link_text_advanced_settings">متقدم</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">الإصدارات</string>
   <string name="list_title_replies">الردود</string>
   <string name="list_title_seasons">مواسم</string>
+  <string name="list_title_shared_by">تمت المشاركة بواسطة</string>
   <string name="list_title_show_credits">عروض</string>
   <string name="list_title_smart_lists">القوائم الذكية</string>
   <string name="list_title_social">اجتماعي</string>
@@ -1384,7 +1389,7 @@
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
   <string name="preview_feature_title_vip_veteran">حالة VIP المخضرم</string>
-  <string name="reactions_search_empty">لا توجد ردود فعل مطابقة</string>
+  <string name="preview_feature_title_year_in_review_2026">العام قيد المراجعة 2026</string>
   <string name="reset_status_cleared">تم مسح قائمة المشاهدة.</string>
   <string name="row_label_loading_title">جاري تحميل الاسم</string>
   <string name="screen_account_settings_language_system_message_tvos">يستخدم Trakt إعدادات لغة Apple TV الخاصة بك. لتحديثها، انتقل إلى:\n\nإعدادات Apple TV &gt; عام &gt; لغات Apple TV</string>
@@ -1829,6 +1834,7 @@
   <string name="text_settings_translations">ساعد في ترجمة التطبيق وتصحيح الأخطاء للغتك.</string>
   <string name="text_settings_widget_show_title">الترويسة</string>
   <string name="text_settings_widget_show_title_description">تمكين/تعطيل شريط الترويسة المرئي في الأعلى.</string>
+  <string name="text_shared_with_you">تمت مشاركتها معك</string>
   <string name="text_shout_by">تعليق بقلم</string>
   <string name="text_show_multiple_watches">تمكين ساعات متعددة</string>
   <string name="text_show_spoilers">إظهار الحرق</string>

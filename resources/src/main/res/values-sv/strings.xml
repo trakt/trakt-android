@@ -137,6 +137,7 @@
   <string name="button_label_hide_details">Dölj detaljer</string>
   <string name="button_label_hide_recommendation">Dölj \"%s\" från rekommendationer</string>
   <string name="button_label_hide_section">Dölj %s</string>
+  <string name="button_label_hide_their_recommendations">Dölj deras rekommendationer</string>
   <string name="button_label_history">Historik</string>
   <string name="button_label_history_slot">Sedda mellan %1$s och %2$s</string>
   <string name="button_label_history_slot_picker_insert_here">Ställ in datum här</string>
@@ -238,6 +239,7 @@
   <string name="button_label_remove_from_watchlist">Ta bort \"%s\" från din bevakningslista</string>
   <string name="button_label_remove_gif">Ta bort GIF</string>
   <string name="button_label_remove_photo">Ta bort din profilbild</string>
+  <string name="button_label_remove_reaction">Ta bort %s</string>
   <string name="button_label_renew_vip">Förnya prenumeration</string>
   <string name="button_label_reorder_item">Omordna %s</string>
   <string name="button_label_reorder_list">Omordna %s</string>
@@ -408,6 +410,7 @@
   <string name="button_text_delete_list">Ta bort</string>
   <string name="button_text_delete_note">Ta bort</string>
   <string name="button_text_delete_reply">Ta bort svar</string>
+  <string name="button_text_deselect_all">Avmarkera alla</string>
   <string name="button_text_details">Detaljer</string>
   <string name="button_text_diagnostics_and_cache">Diagnostik &amp; Cache</string>
   <string name="button_text_discard">Kasta</string>
@@ -513,6 +516,7 @@
   <string name="button_text_retry">Försök igen</string>
   <string name="button_text_revoke_access">Återkalla åtkomst</string>
   <string name="button_text_save_filters">Ange som standard</string>
+  <string name="button_text_select_all">Markera alla</string>
   <string name="button_text_set_cover_image">Ange som omslagsbild</string>
   <string name="button_text_settings">Inställningar</string>
   <string name="button_text_share">Dela</string>
@@ -1006,7 +1010,6 @@
   <string name="input_placeholder_search_lists">Sök listor…</string>
   <string name="input_placeholder_search_movies">Sök filmer…</string>
   <string name="input_placeholder_search_people">Sök personer…</string>
-  <string name="input_placeholder_search_reactions">Sök reaktioner</string>
   <string name="input_placeholder_search_shows">Sök serier…</string>
   <string name="input_placeholder_search_streaming_services">Sök streamingtjänst eller land…</string>
   <string name="input_prompt_about">Berätta lite om dig själv.</string>
@@ -1127,6 +1130,7 @@
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_status">Trakt-status</string>
   <string name="link_label_view_social_activities">Visa sociala aktiviteter för %s</string>
+  <string name="link_label_view_social_activities_shared">Visa sociala aktiviteter för %s, delat med dig</string>
   <string name="link_text_about">Om</string>
   <string name="link_text_account_settings">Konto</string>
   <string name="link_text_advanced_settings">Avancerat</string>
@@ -1224,6 +1228,7 @@
   <string name="list_title_releases">Utgivningar</string>
   <string name="list_title_replies">Svar</string>
   <string name="list_title_seasons">Säsonger</string>
+  <string name="list_title_shared_by">Delat av</string>
   <string name="list_title_show_credits">Serier</string>
   <string name="list_title_smart_lists">Smarta listor</string>
   <string name="list_title_social">Socialt</string>
@@ -1385,7 +1390,6 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteranstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Årsöversikt 2026</string>
-  <string name="reactions_search_empty">Inga reaktioner matchar det</string>
   <string name="reset_status_cleared">Bevakningslistan rensad.</string>
   <string name="row_label_loading_title">Laddar namn</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt använder dina Apple TV-språkinställningar. För att uppdatera dem, gå till:\n\nApple TV Inställningar &gt; Allmänt &gt; Apple TV-språk</string>
@@ -1830,6 +1834,7 @@
   <string name="text_settings_translations">Hjälp till att översätta appen och korrigera fel för ditt språk.</string>
   <string name="text_settings_widget_show_title">Rubrik</string>
   <string name="text_settings_widget_show_title_description">Aktivera/inaktivera rubrikfältet synligt längst upp.</string>
+  <string name="text_shared_with_you">Delat med dig</string>
   <string name="text_shout_by">Utrop av</string>
   <string name="text_show_multiple_watches">Aktivera flera visningar</string>
   <string name="text_show_spoilers">Visa spoilers</string>
@@ -2491,6 +2496,7 @@
   <string name="yir_2026_persona_curator_tagline">Färre saker, bättre saker.</string>
   <string name="yir_2026_persona_day_one_devotee_name">Hängiven från dag ett</string>
   <string name="yir_2026_persona_day_one_devotee_tagline">Spoilers kan inte hinna ikapp dig.</string>
+  <string name="yir_2026_persona_loyalist_name">Loyalisten</string>
   <string name="yir_2026_persona_loyalist_tagline">En värld, fullt engagerad.</string>
   <string name="yir_2026_persona_omnivore_name">Allätaren</string>
   <string name="yir_2026_persona_omnivore_tagline">Brott, anime, reality, prestige. Alltihop.</string>
