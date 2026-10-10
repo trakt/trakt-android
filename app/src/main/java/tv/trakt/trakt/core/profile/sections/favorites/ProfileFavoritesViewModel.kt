@@ -23,8 +23,8 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
-import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done

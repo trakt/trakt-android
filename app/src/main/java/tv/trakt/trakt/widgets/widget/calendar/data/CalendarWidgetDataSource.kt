@@ -18,9 +18,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
-import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode

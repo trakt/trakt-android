@@ -7,8 +7,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.movies.data.local.MovieStorage
+import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.movies.local.MovieStorage
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates

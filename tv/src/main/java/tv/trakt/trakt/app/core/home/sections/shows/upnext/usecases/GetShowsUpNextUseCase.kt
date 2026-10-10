@@ -6,8 +6,8 @@ import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow.Progress
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
-import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Episode

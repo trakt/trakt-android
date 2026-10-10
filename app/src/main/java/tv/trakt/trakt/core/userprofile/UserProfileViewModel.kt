@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
-import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.blocking.BlockUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.blocking.GetBlockedUsersUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowRequestUserUseCase

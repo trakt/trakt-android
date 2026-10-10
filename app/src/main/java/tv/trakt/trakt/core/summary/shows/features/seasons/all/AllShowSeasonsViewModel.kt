@@ -31,7 +31,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
-import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource

@@ -23,8 +23,8 @@ import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.FavoriteItem.MovieItem
 import tv.trakt.trakt.common.core.favorites.FavoriteItem.ShowItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
-import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState

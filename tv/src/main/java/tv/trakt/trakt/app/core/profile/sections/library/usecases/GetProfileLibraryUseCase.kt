@@ -6,8 +6,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.profile.sections.library.model.LibraryItem
-import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap

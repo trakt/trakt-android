@@ -31,8 +31,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
-import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist

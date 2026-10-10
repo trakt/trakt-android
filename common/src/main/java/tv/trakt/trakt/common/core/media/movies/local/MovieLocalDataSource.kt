@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.core.movies.data.local
+package tv.trakt.trakt.common.core.media.movies.local
 
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId

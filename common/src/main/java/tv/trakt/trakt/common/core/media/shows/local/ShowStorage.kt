@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.core.shows.data.local
+package tv.trakt.trakt.common.core.media.shows.local
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

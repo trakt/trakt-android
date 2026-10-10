@@ -20,9 +20,9 @@ import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.app.core.search.SearchState.SearchResult
 import tv.trakt.trakt.app.core.search.SearchState.State
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
-import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
-import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL

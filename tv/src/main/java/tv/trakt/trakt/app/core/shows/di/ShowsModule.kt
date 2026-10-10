@@ -14,8 +14,8 @@ import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetReleasesShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
-import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
+import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.media.shows.local.ShowStorage
 
 internal val showsDataModule = module {
     single<ShowsRemoteDataSource> {

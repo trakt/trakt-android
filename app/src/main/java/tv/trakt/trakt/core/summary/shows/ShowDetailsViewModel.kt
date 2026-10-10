@@ -26,9 +26,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
 import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource

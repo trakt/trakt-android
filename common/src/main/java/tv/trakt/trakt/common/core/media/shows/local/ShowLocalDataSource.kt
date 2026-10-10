@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.core.shows.data.local
+package tv.trakt.trakt.common.core.media.shows.local
 
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
