@@ -8,6 +8,5 @@ import tv.trakt.trakt.common.networking.MovieDto
 @Serializable
 data class V3MovieRecommendationResponse(
     val movie: MovieDto,
-    val score: String? = null,
     val sources: List<V3RecommendationSource>? = null,
 )

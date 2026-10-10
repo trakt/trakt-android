@@ -10,6 +10,5 @@ import tv.trakt.trakt.common.networking.ShowDto
 data class V3MediaRecommendationResponse(
     val show: ShowDto? = null,
     val movie: MovieDto? = null,
-    val score: String? = null,
     val sources: List<V3RecommendationSource>? = null,
 )

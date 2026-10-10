@@ -8,6 +8,5 @@ import tv.trakt.trakt.common.networking.ShowDto
 @Serializable
 data class V3ShowRecommendationResponse(
     val show: ShowDto,
-    val score: String? = null,
     val sources: List<V3RecommendationSource>? = null,
 )
