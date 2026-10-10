@@ -10,8 +10,8 @@ import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerI
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOf1SeasonsInner
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOf1SeasonsInnerEpisodesInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfSeasonsInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfSeasonsInnerEpisodesInner
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
@@ -51,9 +51,9 @@ internal class EpisodesSyncApiClient(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
                     seasons = listOf(
-                        PostUsersListsListAddRequestShowsInnerOneOf1SeasonsInner(
+                        PostUsersListsListAddRequestShowsInnerOneOfSeasonsInner(
                             episodes = listOf(
-                                PostUsersListsListAddRequestShowsInnerOneOf1SeasonsInnerEpisodesInner(
+                                PostUsersListsListAddRequestShowsInnerOneOfSeasonsInnerEpisodesInner(
                                     number = episode,
                                     watchedAt = watchedAt,
                                 ),
