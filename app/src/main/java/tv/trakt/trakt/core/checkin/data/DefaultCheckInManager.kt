@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.checkin.data
 
 import android.content.Context
+import com.google.firebase.crashlytics.CustomKeysAndValues
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -9,6 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import org.openapitools.client.models.PostCheckinStart200Response
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
@@ -57,11 +61,29 @@ internal class DefaultCheckInManager(
     private val state = MutableStateFlow<CheckInState>(CheckInState.Idle)
     private var lastCheckAt: Instant? = null
 
+    private val mutex = Mutex()
+
     override fun observe(): Flow<CheckInState> {
         return state.asStateFlow()
     }
 
     override suspend fun startEpisode(
+        showId: TraktId,
+        seasonEpisode: SeasonEpisode,
+        source: Source,
+        context: Context,
+    ) {
+        mutex.withLock {
+            startEpisodeLocked(
+                showId = showId,
+                seasonEpisode = seasonEpisode,
+                source = source,
+                context = context,
+            )
+        }
+    }
+
+    private suspend fun startEpisodeLocked(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
         source: Source,
@@ -80,8 +102,9 @@ internal class DefaultCheckInManager(
         state.update { CheckInState.Loading }
         Timber.d("Checking in episode $seasonEpisode of show: ${showId.value}")
 
+        var checkIn: PostCheckinStart200Response? = null
         try {
-            checkInRemoteDataSource.postEpisodeCheckIn(
+            checkIn = checkInRemoteDataSource.postEpisodeCheckIn(
                 showId = showId,
                 season = seasonEpisode.season,
                 episode = seasonEpisode.episode,
@@ -122,12 +145,35 @@ internal class DefaultCheckInManager(
         } catch (error: Exception) {
             error.rethrowCancellation {
                 state.update { CheckInState.Error(error) }
-                Timber.recordError(error)
+                Timber.recordError(
+                    error = error,
+                    keysValues = CustomKeysAndValues.Builder()
+                        .putString("checkin_media_type", "episode")
+                        .putInt("checkin_trakt_id", showId.value)
+                        .putInt("checkin_season", seasonEpisode.season)
+                        .putInt("checkin_episode", seasonEpisode.episode)
+                        .putCheckIn(checkIn)
+                        .build(),
+                )
             }
         }
     }
 
     override suspend fun startMovie(
+        movieId: TraktId,
+        source: Source,
+        context: Context,
+    ) {
+        mutex.withLock {
+            startMovieLocked(
+                movieId = movieId,
+                source = source,
+                context = context,
+            )
+        }
+    }
+
+    private suspend fun startMovieLocked(
         movieId: TraktId,
         source: Source,
         context: Context,
@@ -145,8 +191,9 @@ internal class DefaultCheckInManager(
         state.update { CheckInState.Loading }
         Timber.d("Checking in movie with ID: ${movieId.value}")
 
+        var checkIn: PostCheckinStart200Response? = null
         try {
-            checkInRemoteDataSource.postMovieCheckIn(movieId)
+            checkIn = checkInRemoteDataSource.postMovieCheckIn(movieId)
             cacheMarkerProvider.invalidate()
 
             delay(300.milliseconds)
@@ -182,7 +229,14 @@ internal class DefaultCheckInManager(
         } catch (error: Exception) {
             error.rethrowCancellation {
                 state.update { CheckInState.Error(error) }
-                Timber.recordError(error)
+                Timber.recordError(
+                    error = error,
+                    keysValues = CustomKeysAndValues.Builder()
+                        .putString("checkin_media_type", "movie")
+                        .putInt("checkin_trakt_id", movieId.value)
+                        .putCheckIn(checkIn)
+                        .build(),
+                )
             }
         }
     }
@@ -204,6 +258,17 @@ internal class DefaultCheckInManager(
             return
         }
 
+        if (mutex.isLocked) {
+            Timber.d("Check-in operation in progress, skipping active check.")
+            return
+        }
+
+        mutex.withLock {
+            checkActiveLocked(context)
+        }
+    }
+
+    private suspend fun checkActiveLocked(context: Context) {
         lastCheckAt?.let { lastCheck ->
             if (now().minus(ACTIVE_CHECK_COOLDOWN) < lastCheck) {
                 Timber.d("Last check-in check was too recent, skipping redundant check.")
@@ -221,7 +286,7 @@ internal class DefaultCheckInManager(
                     checkInUpdates.notifyUpdate(Source.Default)
                 }
 
-                stop(Source.Default, context)
+                stopLocked(Source.Default, context)
                 Timber.d("No active check-ins / scrobbles found.")
                 return
             }
@@ -284,6 +349,15 @@ internal class DefaultCheckInManager(
     }
 
     override suspend fun stop(
+        source: Source,
+        context: Context,
+    ) {
+        mutex.withLock {
+            stopLocked(source, context)
+        }
+    }
+
+    private suspend fun stopLocked(
         source: Source,
         context: Context,
     ) {
@@ -401,5 +475,15 @@ internal class DefaultCheckInManager(
             context = context,
             data = data,
         )
+    }
+
+    private fun CustomKeysAndValues.Builder.putCheckIn(
+        checkIn: PostCheckinStart200Response?,
+    ): CustomKeysAndValues.Builder {
+        return this
+            .putBoolean("checkin_response_parsed", checkIn != null)
+            .putLong("checkin_history_id", checkIn?.id ?: -1)
+            .putString("checkin_watched_at", checkIn?.watchedAt ?: "none")
+            .putString("checkin_device_time", now().toString())
     }
 }
