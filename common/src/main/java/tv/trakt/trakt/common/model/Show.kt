@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.model.MediaStatus.Canceled
 import tv.trakt.trakt.common.model.MediaStatus.Ended
 import tv.trakt.trakt.common.model.MediaStatus.Released
 import tv.trakt.trakt.common.model.Show.Companion
+import tv.trakt.trakt.common.networking.PopularMediaDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowAirsDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
@@ -208,6 +209,49 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
 }
 
 fun Companion.fromDto(dto: ShowCalendarsDto): Show {
+    return Show(
+        ids = Ids.fromDto(dto.ids),
+        title = dto.title,
+        titleOriginal = dto.originalTitle,
+        overview = dto.overview,
+        year = dto.year,
+        releasedAt = dto.firstAired?.toInstant(),
+        genres = (dto.genres ?: listOf())
+            .mapNotNull { MediaGenre.fromSlug(it) }
+            .toImmutableList(),
+        images = dto.images?.let { Images.fromDto(it) },
+        colors = dto.colors?.poster?.let {
+            MediaColors(
+                Pair(
+                    Color(it.getOrElse(0) { "#00000000" }.toColorInt()),
+                    Color(it.getOrElse(1) { "#00000000" }.toColorInt()),
+                ),
+            )
+        },
+        certification = dto.certification,
+        rating = Rating(
+            rating = dto.rating ?: 0F,
+            votes = dto.votes ?: 0,
+        ),
+        runtime = dto.runtime?.minutes,
+        totalRuntime = totalRuntimeOf(
+            totalRuntime = dto.totalRuntime,
+            runtime = dto.runtime,
+            airedEpisodes = dto.airedEpisodes,
+        ),
+        status = MediaStatus.fromSlug(dto.status),
+        trailer = dto.trailer,
+        airedEpisodes = dto.airedEpisodes ?: 0,
+        country = dto.country,
+        network = dto.network,
+        languages = (dto.languages ?: emptyList()).toImmutableList(),
+        airs = dto.airs?.let { Show.Airs.fromDto(it) },
+        homepage = dto.homepage?.toHttpsUrl(),
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
+    )
+}
+
+fun Companion.fromDto(dto: PopularMediaDto): Show {
     return Show(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,

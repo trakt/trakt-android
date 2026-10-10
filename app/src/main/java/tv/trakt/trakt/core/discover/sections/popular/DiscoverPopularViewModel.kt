@@ -5,10 +5,7 @@ package tv.trakt.trakt.core.discover.sections.popular
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -21,7 +18,6 @@ import timber.log.Timber
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode.Media
@@ -29,8 +25,10 @@ import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
+import tv.trakt.trakt.core.discover.usecases.GetDiscoverMediaUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -39,6 +37,7 @@ internal class DiscoverPopularViewModel(
     private val filterManager: GlobalFilterManager,
     private val getPopularShowsUseCase: GetPopularShowsUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getDiscoverMediaUseCase: GetDiscoverMediaUseCase,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = DiscoverPopularState()
@@ -72,19 +71,7 @@ internal class DiscoverPopularViewModel(
         dataJob = viewModelScope.launch {
             try {
                 loadLocalData()
-                coroutineScope {
-                    val showsAsync = async { getPopularShowsUseCase.getShows(filters = filterState.value) }
-                    val moviesAsync = async { getPopularMoviesUseCase.getMovies(filters = filterState.value) }
-
-                    val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
-                    val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
-
-                    itemsState.update {
-                        listOf(shows, movies)
-                            .interleave()
-                            .toImmutableList()
-                    }
-                }
+                loadRemoteData()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -95,29 +82,35 @@ internal class DiscoverPopularViewModel(
                 dataJob = null
             }
         }
-
-        Timber.d("Loading popular data for mode: ${filterState.value}")
     }
 
     private suspend fun loadLocalData() {
-        return coroutineScope {
-            val localShowsAsync = async { getPopularShowsUseCase.getLocalShows() }
-            val localMoviesAsync = async { getPopularMoviesUseCase.getLocalMovies() }
-
-            val localShows = if (filterState.value.mode.isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (filterState.value.mode.isMediaOrMovies) localMoviesAsync.await() else emptyList()
-
-            if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
-                itemsState.update {
-                    listOf(localShows, localMovies)
-                        .interleave()
-                        .toImmutableList()
-                }
-                loadingState.update { Done }
-            } else {
-                loadingState.update { Loading }
-            }
+        val localItems = when (filterState.value.mode) {
+            Media -> getDiscoverMediaUseCase.getLocalMedia(DiscoverSection.Popular)
+            Shows -> getPopularShowsUseCase.getLocalShows()
+            Movies -> getPopularMoviesUseCase.getLocalMovies()
         }
+
+        if (localItems.isNotEmpty()) {
+            itemsState.update { localItems }
+            loadingState.update { Done }
+        } else {
+            loadingState.update { Loading }
+        }
+    }
+
+    private suspend fun loadRemoteData() {
+        val filter = filterState.value
+        val items = when (filter.mode) {
+            Media -> getDiscoverMediaUseCase.getMedia(
+                section = DiscoverSection.Popular,
+                filters = filter,
+            )
+            Shows -> getPopularShowsUseCase.getShows(filters = filter)
+            Movies -> getPopularMoviesUseCase.getMovies(filters = filter)
+        }
+
+        itemsState.update { items }
     }
 
     fun setCollapsed(collapsed: Boolean) {

@@ -37,6 +37,9 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseC
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedViewModel
+import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaStorage
+import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.all.StreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.data.DefaultStreaksManager
@@ -73,6 +76,12 @@ internal val homeDataModule = module {
     singleOf(::AllActivityStorage) { bind<AllActivityLocalDataSource>() }
     singleOf(::DefaultStreaksManager) { bind<StreaksManager>() }
 
+    single<RecommendedMediaLocalDataSource> {
+        RecommendedMediaStorage(
+            dataStore = get(named(HOME_PREFERENCES)),
+        )
+    }
+
     single<DataStore<Preferences>>(named(HOME_PREFERENCES)) {
         createStore(
             context = androidApplication(),
@@ -91,6 +100,7 @@ internal val homeModule = module {
     factoryOf(::RateActivityItemUseCase)
     factoryOf(::GetUpcomingUseCase)
     factoryOf(::GetUserUsageUseCase)
+    factoryOf(::GetRecommendedMediaUseCase)
 
     viewModelOf(::HomeViewModel)
     viewModelOf(::HomeSocialViewModel)
@@ -208,6 +218,7 @@ internal val homeModule = module {
             collapsingManager = get(),
             getRecommendedShowsUseCase = get(named("defaultRecommendedShowsUseCase")),
             getRecommendedMoviesUseCase = get(named("defaultRecommendedMoviesUseCase")),
+            getRecommendedMediaUseCase = get(),
             hideRecommendedShowUseCase = get(),
             hideRecommendedMovieUseCase = get(),
         )

@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardEntryResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3MediaRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
@@ -132,6 +133,13 @@ class V3Api(
 
     suspend fun getShowRecommendations(request: V3RecommendationsRequest): List<V3ShowRecommendationResponse> {
         val response = client.get("${baseUrl}shows/recommendations") {
+            applyRecommendationsRequest(request)
+        }
+        return response.body()
+    }
+
+    suspend fun getMediaRecommendations(request: V3RecommendationsRequest): List<V3MediaRecommendationResponse> {
+        val response = client.get("${baseUrl}media/recommendations") {
             applyRecommendationsRequest(request)
         }
         return response.body()

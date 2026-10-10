@@ -16,6 +16,9 @@ import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowAirs
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowIds
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowImages
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowSocialIds
+import org.openapitools.client.models.GetMediaAnticipated200ResponseInner
+import org.openapitools.client.models.GetMediaPopular200ResponseInner
+import org.openapitools.client.models.GetMediaTrending200ResponseInner
 import org.openapitools.client.models.GetMoviesPeople200Response
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInner
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
@@ -80,6 +83,7 @@ import org.openapitools.client.models.PostUsersSmartListsCreateRequest
 /**
  * Type aliases for OpenAPI models used in the app.
  */
+typealias AnticipatedMediaDto = GetMediaAnticipated200ResponseInner
 typealias CalendarMediaDto = GetCalendarsMedia200ResponseInner
 typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner
@@ -117,6 +121,7 @@ typealias PersonDto = GetMoviesPeople200ResponseCastInnerPerson
 typealias PersonMoviesDto = GetPeopleMovies200Response
 typealias PersonShowsDto = GetPeopleShows200Response
 typealias PersonSearchDto = GetSearchQuery200ResponseInnerPerson
+typealias PopularMediaDto = GetMediaPopular200ResponseInner
 typealias ProgressEpisodeDto = GetSyncProgressEpisodesResponse
 typealias ProgressMovieDto = GetSyncProgressMovies200ResponseInner
 typealias ProgressShowDto = GetSyncProgressUpNextStandard200ResponseInner
@@ -149,6 +154,7 @@ typealias SyncHistoryMovieItemDto = GetUsersHistoryMovies200ResponseInner
 typealias SyncLibraryMediaDto = GetSyncCollectionAll200ResponseInner
 typealias TraktRatingsDto = GetMoviesRatings200ResponseTrakt
 typealias TranslationDto = GetMoviesTranslations200ResponseInner
+typealias TrendingMediaDto = GetMediaTrending200ResponseInner
 typealias TrendingSearchDto = GetSearchTrending200ResponseInner
 typealias UserBlockedDto = GetUsersReactionsComments200ResponseInnerCommentUser
 typealias UserCommentsDto = GetUsersReactionsComments200ResponseInnerCommentUser

@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.helpers.serializers.LocalDateSerializer
 import tv.trakt.trakt.common.model.Movie.Companion
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.PopularMediaDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import java.time.LocalDate
 import kotlin.time.Duration
@@ -154,6 +155,45 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
 }
 
 fun Companion.fromDto(dto: MovieCalendarDto): Movie {
+    return Movie(
+        ids = Ids.fromDto(dto.ids),
+        title = dto.title,
+        titleOriginal = dto.originalTitle,
+        overview = dto.overview,
+        year = dto.year,
+        released = dto.released?.let { LocalDate.parse(it) },
+        genres = (dto.genres ?: listOf())
+            .mapNotNull { MediaGenre.fromSlug(it) }
+            .toImmutableList(),
+        images = dto.images?.let { Images.fromDto(it) },
+        colors = dto.colors?.poster?.let {
+            MediaColors(
+                Pair(
+                    Color(it.getOrElse(0) { "#00000000" }.toColorInt()),
+                    Color(it.getOrElse(1) { "#00000000" }.toColorInt()),
+                ),
+            )
+        },
+        certification = dto.certification,
+        rating = Rating(
+            rating = dto.rating ?: 0F,
+            votes = dto.votes ?: 0,
+        ),
+        status = MediaStatus.fromSlug(dto.status),
+        trailer = dto.trailer,
+        runtime = dto.runtime?.minutes,
+        languages = (dto.languages ?: emptyList()).toImmutableList(),
+        country = dto.country,
+        postCredits = PostCreditsScene.fromFlags(
+            during = dto.duringCredits,
+            after = dto.afterCredits,
+        ),
+        homepage = dto.homepage?.toHttpsUrl(),
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
+    )
+}
+
+fun Companion.fromDto(dto: PopularMediaDto): Movie {
     return Movie(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,

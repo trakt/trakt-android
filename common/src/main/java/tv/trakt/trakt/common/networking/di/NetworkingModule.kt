@@ -15,6 +15,7 @@ import org.openapitools.client.apis.EpisodeApi
 import org.openapitools.client.apis.EpisodesApi
 import org.openapitools.client.apis.HistoryApi
 import org.openapitools.client.apis.ListsApi
+import org.openapitools.client.apis.MediaApi
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.OauthApi
 import org.openapitools.client.apis.PeopleApi
@@ -190,6 +191,14 @@ val networkingApiModule = module {
 
     single<MoviesApi> {
         MoviesApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<MediaApi> {
+        MediaApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),

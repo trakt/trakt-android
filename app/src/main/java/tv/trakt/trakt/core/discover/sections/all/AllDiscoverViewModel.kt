@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,13 +24,16 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
@@ -40,6 +41,7 @@ import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.sections.all.navigation.DiscoverDestination
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
+import tv.trakt.trakt.core.discover.usecases.GetDiscoverMediaUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
@@ -52,6 +54,7 @@ internal class AllDiscoverViewModel(
     private val filterManager: GlobalFilterManager,
     private val getShowsUseCase: GetAllDiscoverShowsUseCase,
     private val getMoviesUseCase: GetAllDiscoverMoviesUseCase,
+    private val getDiscoverMediaUseCase: GetDiscoverMediaUseCase,
     private val hideRecommendedShowUseCase: HideRecommendedShowUseCase,
     private val hideRecommendedMovieUseCase: HideRecommendedMovieUseCase,
     private val collectionStateProvider: CollectionStateProvider,
@@ -115,35 +118,9 @@ internal class AllDiscoverViewModel(
             try {
                 loadLocalData()
 
-                coroutineScope {
-                    val showsAsync = async {
-                        getShowsUseCase.getShows(
-                            source = destination.source,
-                            filters = filterState.value,
-                            skipLocal = true,
-                        )
-                    }
-                    val moviesAsync = async {
-                        getMoviesUseCase.getMovies(
-                            source = destination.source,
-                            filters = filterState.value,
-                            skipLocal = true,
-                        )
-                    }
-
-                    val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
-                    val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
-
-                    val initialData = listOf(shows, movies)
-                        .interleave()
-
-                    itemsState
-                        .update {
-                            initialData.toImmutableList()
-                        }.also {
-                            hasMoreData = initialData.isNotEmpty()
-                        }
-                }
+                val initialData = fetchItems()
+                itemsState.update { initialData.toImmutableList() }
+                hasMoreData = initialData.isNotEmpty()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -163,31 +140,8 @@ internal class AllDiscoverViewModel(
                 pages = 1
                 hasMoreData = false
 
-                coroutineScope {
-                    val showsAsync = async {
-                        getShowsUseCase.getShows(
-                            source = destination.source,
-                            filters = filterState.value,
-                            skipLocal = true,
-                        )
-                    }
-                    val moviesAsync = async {
-                        getMoviesUseCase.getMovies(
-                            source = destination.source,
-                            filters = filterState.value,
-                            skipLocal = true,
-                        )
-                    }
-
-                    val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
-                    val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
-
-                    itemsState.update {
-                        listOf(shows, movies)
-                            .interleave()
-                            .toImmutableList()
-                    }
-                }
+                val data = fetchItems()
+                itemsState.update { data.toImmutableList() }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -200,23 +154,11 @@ internal class AllDiscoverViewModel(
     }
 
     private suspend fun loadLocalData() {
-        return coroutineScope {
-            val localShowsAsync = async { getShowsUseCase.getLocalShows(destination.source) }
-            val localMoviesAsync = async { getMoviesUseCase.getLocalMovies(destination.source) }
+        val localData = fetchLocalItems()
+        itemsState.update { localData.toImmutableList() }
 
-            val localShows = if (filterState.value.mode.isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (filterState.value.mode.isMediaOrMovies) localMoviesAsync.await() else emptyList()
-
-            itemsState
-                .update {
-                    listOf(localShows, localMovies)
-                        .interleave()
-                        .toImmutableList()
-                }.also {
-                    if (localShows.isEmpty() && localMovies.isEmpty()) {
-                        loadingState.update { Loading }
-                    }
-                }
+        if (localData.isEmpty()) {
+            loadingState.update { Loading }
         }
     }
 
@@ -232,41 +174,16 @@ internal class AllDiscoverViewModel(
             try {
                 loadingMoreState.update { Loading }
 
-                coroutineScope {
-                    val showsAsync = async {
-                        getShowsUseCase.getShows(
-                            source = destination.source,
-                            page = pages + 1,
-                            filters = filterState.value,
-                            skipLocal = true,
-                        )
-                    }
-
-                    val moviesAsync = async {
-                        getMoviesUseCase.getMovies(
-                            source = destination.source,
-                            page = pages + 1,
-                            filters = filterState.value,
-                            skipLocal = true,
-                        )
-                    }
-
-                    val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
-                    val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
-
-                    val nextData = listOf(shows, movies)
-                        .interleave()
-
-                    itemsState.update { items ->
-                        items
-                            ?.plus(nextData)
-                            ?.distinctBy { it.key }
-                            ?.toImmutableList()
-                    }
-
-                    pages += 1
-                    hasMoreData = nextData.isNotEmpty()
+                val nextData = fetchItems(page = pages + 1)
+                itemsState.update { items ->
+                    items
+                        ?.plus(nextData)
+                        ?.distinctBy { it.key }
+                        ?.toImmutableList()
                 }
+
+                pages += 1
+                hasMoreData = nextData.isNotEmpty()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -276,6 +193,54 @@ internal class AllDiscoverViewModel(
                 loadingMoreState.update { Done }
             }
         }
+    }
+
+    private suspend fun fetchLocalItems(): List<DiscoverItem> {
+        val source = destination.source
+        return when (filterState.value.mode) {
+            Media -> getDiscoverMediaUseCase.getLocalMedia(source)
+            Shows -> getShowsUseCase.getLocalShows(source)
+            Movies -> getMoviesUseCase.getLocalMovies(source)
+        }
+    }
+
+    private suspend fun fetchItems(page: Int = 1): List<DiscoverItem> {
+        val filter = filterState.value
+        return when (filter.mode) {
+            Media -> getDiscoverMediaUseCase.getMedia(
+                section = destination.source,
+                page = page,
+                limit = DEFAULT_ALL_LIMIT,
+                skipLocal = true,
+                filters = filter,
+            )
+            Shows -> fetchShows(page = page, filter = filter)
+            Movies -> fetchMovies(page = page, filter = filter)
+        }
+    }
+
+    private suspend fun fetchShows(
+        page: Int,
+        filter: GlobalFilter,
+    ): List<DiscoverItem> {
+        return getShowsUseCase.getShows(
+            source = destination.source,
+            page = page,
+            filters = filter,
+            skipLocal = true,
+        )
+    }
+
+    private suspend fun fetchMovies(
+        page: Int,
+        filter: GlobalFilter,
+    ): List<DiscoverItem> {
+        return getMoviesUseCase.getMovies(
+            source = destination.source,
+            page = page,
+            filters = filter,
+            skipLocal = true,
+        )
     }
 
     fun hideRecommendation(show: Show) {

@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +21,6 @@ import timber.log.Timber
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode.Media
@@ -40,6 +37,7 @@ import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMovie
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -47,6 +45,7 @@ internal class HomeRecommendedViewModel(
     private val filterManager: GlobalFilterManager,
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
+    private val getRecommendedMediaUseCase: GetRecommendedMediaUseCase,
     private val hideRecommendedShowUseCase: HideRecommendedShowUseCase,
     private val hideRecommendedMovieUseCase: HideRecommendedMovieUseCase,
     private val collapsingManager: CollapsingManager,
@@ -82,19 +81,7 @@ internal class HomeRecommendedViewModel(
         dataJob = viewModelScope.launch {
             try {
                 loadLocalData()
-                coroutineScope {
-                    val showsAsync = async { getRecommendedShowsUseCase.getShows(filters = filterState.value) }
-                    val moviesAsync = async { getRecommendedMoviesUseCase.getMovies(filters = filterState.value) }
-
-                    val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
-                    val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
-
-                    itemsState.update {
-                        listOf(shows, movies)
-                            .interleave()
-                            .toImmutableList()
-                    }
-                }
+                loadRemoteData()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -108,24 +95,29 @@ internal class HomeRecommendedViewModel(
     }
 
     private suspend fun loadLocalData() {
-        return coroutineScope {
-            val localShowsAsync = async { getRecommendedShowsUseCase.getLocalShows() }
-            val localMoviesAsync = async { getRecommendedMoviesUseCase.getLocalMovies() }
-
-            val localShows = if (filterState.value.mode.isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (filterState.value.mode.isMediaOrMovies) localMoviesAsync.await() else emptyList()
-
-            if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
-                itemsState.update {
-                    listOf(localShows, localMovies)
-                        .interleave()
-                        .toImmutableList()
-                }
-                loadingState.update { Done }
-            } else {
-                loadingState.update { Loading }
-            }
+        val localItems = when (filterState.value.mode) {
+            Media -> getRecommendedMediaUseCase.getLocalMedia()
+            Shows -> getRecommendedShowsUseCase.getLocalShows()
+            Movies -> getRecommendedMoviesUseCase.getLocalMovies()
         }
+
+        if (localItems.isNotEmpty()) {
+            itemsState.update { localItems }
+            loadingState.update { Done }
+        } else {
+            loadingState.update { Loading }
+        }
+    }
+
+    private suspend fun loadRemoteData() {
+        val filter = filterState.value
+        val items = when (filter.mode) {
+            Media -> getRecommendedMediaUseCase.getMedia(filters = filter)
+            Shows -> getRecommendedShowsUseCase.getShows(filters = filter)
+            Movies -> getRecommendedMoviesUseCase.getMovies(filters = filter)
+        }
+
+        itemsState.update { items }
     }
 
     fun hideRecommendation(show: Show) {

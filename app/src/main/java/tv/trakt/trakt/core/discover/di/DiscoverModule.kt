@@ -12,11 +12,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.discover.DiscoverViewModel
+import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalDataSource
+import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaStorage
 import tv.trakt.trakt.core.discover.sections.all.AllDiscoverViewModel
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
@@ -27,6 +30,7 @@ import tv.trakt.trakt.core.discover.sections.releases.all.AllReleasesViewModel
 import tv.trakt.trakt.core.discover.sections.releases.all.usecases.GetAllReleasesItemsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.GetReleasesTypeUseCase
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingViewModel
+import tv.trakt.trakt.core.discover.usecases.GetDiscoverMediaUseCase
 
 internal const val DISCOVER_PREFERENCES = "discover_preferences_mobile"
 
@@ -37,6 +41,14 @@ internal val discoverModule = module {
             context = androidApplication(),
         )
     }
+
+    single<DiscoverMediaLocalDataSource> {
+        DiscoverMediaStorage(
+            dataStore = get(named(DISCOVER_PREFERENCES)),
+        )
+    }
+
+    factoryOf(::GetDiscoverMediaUseCase)
 
     factory {
         GetReleasesTypeUseCase(
@@ -82,6 +94,7 @@ internal val discoverModule = module {
             sessionManager = get(),
             getShowsUseCase = get(named("defaultAllDiscoverShowsUseCase")),
             getMoviesUseCase = get(named("defaultAllDiscoverMoviesUseCase")),
+            getDiscoverMediaUseCase = get(),
             hideRecommendedShowUseCase = get(),
             hideRecommendedMovieUseCase = get(),
             collectionStateProvider = get(),
@@ -94,6 +107,7 @@ internal val discoverModule = module {
             collapsingManager = get(),
             getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
             getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
+            getDiscoverMediaUseCase = get(),
         )
     }
 
@@ -103,6 +117,7 @@ internal val discoverModule = module {
             collapsingManager = get(),
             getAnticipatedShowsUseCase = get(named("defaultAnticipatedShowsUseCase")),
             getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
+            getDiscoverMediaUseCase = get(),
         )
     }
 
@@ -112,6 +127,7 @@ internal val discoverModule = module {
             collapsingManager = get(),
             getPopularShowsUseCase = get(named("defaultPopularShowsUseCase")),
             getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
+            getDiscoverMediaUseCase = get(),
         )
     }
 
