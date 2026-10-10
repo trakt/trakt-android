@@ -1,7 +1,6 @@
 package tv.trakt.trakt.ui.components
 
 import android.annotation.SuppressLint
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -47,7 +46,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
@@ -135,7 +133,6 @@ private fun BackdropImage(
     modifier: Modifier = Modifier,
 ) {
     val configuration = LocalConfiguration.current
-    val activity = LocalActivity.current
     val inspection = LocalInspectionMode.current
 
     val sessionManager = koinInject<SessionManager>()
@@ -149,14 +146,8 @@ private fun BackdropImage(
     }
 
     val imageUrl = remember(imageUrl, userImageUrl) {
-        val config = (activity as? MainActivity)?.customThemeConfig
-
-        val customThemeEnabled = config?.enabled == true
-        val customThemeBackground = config?.theme?.backgroundImageUrl
-
         when {
             inspection -> imageUrl // For preview.
-            customThemeEnabled && !customThemeBackground.isNullOrBlank() -> customThemeBackground
             !imageUrl.isNullOrBlank() -> imageUrl
             userImageUrl == null -> null // Show nothing while loading the user image.
             !userImageUrl.isNullOrBlank() -> userImageUrl

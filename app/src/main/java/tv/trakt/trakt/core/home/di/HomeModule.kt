@@ -202,18 +202,12 @@ internal val homeModule = module {
         )
     }
 
-    viewModel { (customTheme: Boolean) ->
+    viewModel {
         HomeRecommendedViewModel(
             filterManager = get(),
             collapsingManager = get(),
-            getRecommendedShowsUseCase = when {
-                customTheme -> get(named("customRecommendedShowsUseCase"))
-                else -> get(named("defaultRecommendedShowsUseCase"))
-            },
-            getRecommendedMoviesUseCase = when {
-                customTheme -> get(named("customRecommendedMoviesUseCase"))
-                else -> get(named("defaultRecommendedMoviesUseCase"))
-            },
+            getRecommendedShowsUseCase = get(named("defaultRecommendedShowsUseCase")),
+            getRecommendedMoviesUseCase = get(named("defaultRecommendedMoviesUseCase")),
             hideRecommendedShowUseCase = get(),
             hideRecommendedMovieUseCase = get(),
         )

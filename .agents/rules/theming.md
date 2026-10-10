@@ -36,7 +36,7 @@ Use via `TraktTheme.<namespace>.<token>` inside composables. Each namespace = da
 ## Colours
 
 Default: colours via `TraktTheme.colors.*`. Semantic, theme-aware UI colours (text, backgrounds,
-surfaces, accents that adapt to light/dark/seasonal) belong in tokens. For example:
+surfaces, accents that adapt to light/dark) belong in tokens. For example:
 
 ```kotlin
 Text(
@@ -69,18 +69,16 @@ named `val` (or a token) for clarity.
 
 - Raw `Color(0xFF…)` as a stand-in for a **semantic, theme-aware** colour (text, background,
   surface,
-  adaptive accent). Those → **add a token** to `TraktColors` with light/dark/seasonal variants.
+  adaptive accent). Those → **add a token** to `TraktColors` with light/dark variants.
 - `MaterialTheme.colorScheme.primary` direct reads (use Trakt token). Material 3 colour scheme wired
   underneath; consumers go through `TraktTheme.colors`.
 - `colorResource(R.color.…)` for design-system colours. Colour resources OK for legacy values also
   referenced from XML (notifications, app icon); new tokens live in theme.
 
-## Seasonal themes
+## Theme switching
 
-- Halloween (orange), Christmas (red), other overrides flow through Firebase Remote Config +
-  `CustomThemeUseCase`.
-- Theme switching wires at app root (`TraktTheme(colors = customColors ?: DefaultColors) { … }`).
-- Feature code doesn't branch on season — reads `TraktTheme.colors.*`, active palette swaps
+- Light/dark palette picked at app root in `MainActivity` (`DarkColors` / `LightColors`).
+- Feature code doesn't branch on theme - reads `TraktTheme.colors.*`, active palette swaps
   automatically.
 
 ## Typography
@@ -168,5 +166,5 @@ spacing — use tokens, don't hard-code `64.dp`.
 - [ ] Sizes via `TraktTheme.size.*` — no `Modifier.size(64.dp)` magic
 - [ ] Typography via `TraktTheme.typography.*` — no inline `TextStyle`
 - [ ] Images via Coil 3 + `R.drawable.*`, never Glide/Fresco/Picasso
-- [ ] Light / dark / seasonal variants exist for every new token
+- [ ] Light / dark variants exist for every new token
 - [ ] Animations honour reduced-motion

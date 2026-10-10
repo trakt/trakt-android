@@ -22,7 +22,7 @@ Trakt Android codebase. Phone + Android TV, Compose-first, Kotlin 2.x, Gradle KT
 - **Persistence**: DataStore (Preferences) + entity caches. No SharedPreferences in new code, no Realm, no SQLDelight.
 - **Images**: Coil 3 (`io.coil-kt.coil3`) with Ktor 3 engine adapter and SVG decoder.
 - **Serialization**: kotlinx.serialization for protobuf and typed navigation routes; Moshi for OpenAPI-generated DTOs.
-- **Firebase**: Crashlytics, Analytics, Remote Config (seasonal themes + feature flags).
+- **Firebase**: Crashlytics, Analytics, Remote Config (feature flags).
 - **Media**: Media3 (ExoPlayer) for video; `youtube-player` (thirdspark) for embedded trailers.
 - **Logging**: Timber.
 
@@ -113,7 +113,7 @@ chore(i18n): translations updates from CrowdIn
 
 - All visual values via `TraktTheme.*` tokens.
 - Material 3 base with `TraktTheme` overlays for colours and typography.
-- Light/dark + seasonal theme overrides (Halloween → orange, Christmas → red) flow through Firebase Remote Config + `CustomThemeUseCase` — wired in `MainActivity`.
+- Light/dark palette chosen in `MainActivity`.
 - Images via Coil 3 + Trakt placeholders; do not introduce Glide / Fresco.
 
 ## Logging

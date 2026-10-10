@@ -30,15 +30,15 @@ applyTo: 'common/src/main/**/*.kt'
 private val Context.userPrefs: DataStore<Preferences> by preferencesDataStore("user_prefs")
 
 class UserPreferencesStore(private val dataStore: DataStore<Preferences>) {
-    val seasonalThemeEnabled: Flow<Boolean> = dataStore.data
-        .map { it[KEY_SEASONAL_THEME] ?: true }
+    val autoplayTrailers: Flow<Boolean> = dataStore.data
+        .map { it[KEY_AUTOPLAY_TRAILERS] ?: true }
 
-    suspend fun setSeasonalThemeEnabled(enabled: Boolean) {
-        dataStore.edit { it[KEY_SEASONAL_THEME] = enabled }
+    suspend fun setAutoplayTrailers(enabled: Boolean) {
+        dataStore.edit { it[KEY_AUTOPLAY_TRAILERS] = enabled }
     }
 
     private companion object {
-        val KEY_SEASONAL_THEME = booleanPreferencesKey("seasonal_theme")
+        val KEY_AUTOPLAY_TRAILERS = booleanPreferencesKey("autoplay_trailers")
     }
 }
 ```

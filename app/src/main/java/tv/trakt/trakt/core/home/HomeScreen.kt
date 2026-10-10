@@ -2,7 +2,6 @@
 
 package tv.trakt.trakt.core.home
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -37,9 +36,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalStartAuthorization
-import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.Config.WEB_DATA_IMPORT_URL
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
@@ -178,9 +175,6 @@ private fun HomeScreenContent(
     onDismissWelcomeClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
-    val activity = LocalActivity.current
-    val customThemeEnabled = (activity as? MainActivity)?.customThemeConfig?.enabled == true
-
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -309,9 +303,7 @@ private fun HomeScreenContent(
             if (state.user.user != null) {
                 item {
                     HomeRecommendedView(
-                        viewModel = koinViewModel {
-                            parametersOf(customThemeEnabled)
-                        },
+                        viewModel = koinViewModel(),
                         collection = state.collection,
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,

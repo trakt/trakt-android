@@ -33,7 +33,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -42,7 +41,6 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import tv.trakt.trakt.app.TvSplashActivity
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HTTPS_AUTH_CALLBACK_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -60,13 +58,10 @@ import tv.trakt.trakt.core.auth.usecase.authRedirectUriKey
 import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.main.MainScreen
-import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
-import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase.CustomThemeConfig
 import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.ThemeMode
-import tv.trakt.trakt.ui.theme.model.toTraktDarkColors
 
 internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalCheckInVisibility = compositionLocalOf { mutableStateOf(true) }
@@ -160,11 +155,6 @@ internal class MainActivity : AppCompatActivity() {
             val checkInVisibility = remember { mutableStateOf(true) }
             val ratePromptVisibility = remember { mutableStateOf(true) }
             val snackbarState = remember { SnackbarHostState() }
-            val customThemeState = remember {
-                getCustomThemeConfig().also {
-                    customThemeConfig = it
-                }
-            }
 
             val startAuthorization = remember {
                 { startAuthorization() }
@@ -172,16 +162,8 @@ internal class MainActivity : AppCompatActivity() {
 
             TraktTheme(
                 colors = when {
-                    darkTheme && customThemeState.enabled -> {
-                        val customColors = customThemeConfig?.theme?.colors?.toTraktDarkColors()
-                        customColors ?: DarkColors
-                    }
-                    darkTheme -> {
-                        DarkColors
-                    }
-                    else -> {
-                        LightColors
-                    }
+                    darkTheme -> DarkColors
+                    else -> LightColors
                 },
             ) {
                 CompositionLocalProvider(
@@ -240,22 +222,15 @@ internal class MainActivity : AppCompatActivity() {
     }
 
     private fun updateRemoteConfig() {
-        with(Firebase.remoteConfig) {
-            val customThemeEnabled = getBoolean(MOBILE_CUSTOM_THEME_ENABLED)
-            this
-                .fetchAndActivate()
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Timber.d("Remote Config updated: ${it.result}")
-                        if (customThemeEnabled != getBoolean(MOBILE_CUSTOM_THEME_ENABLED)) {
-                            // Reload app to apply custom theme change.
-                            ProcessPhoenix.triggerRebirth(this@MainActivity)
-                        }
-                    } else {
-                        Timber.e("Remote Config update failed!")
-                    }
+        Firebase.remoteConfig
+            .fetchAndActivate()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Timber.d("Remote Config updated: ${it.result}")
+                } else {
+                    Timber.e("Remote Config update failed!")
                 }
-        }
+            }
     }
 
     private fun startAuthorization(allowHttpsRedirect: Boolean = true) {
@@ -349,31 +324,5 @@ internal class MainActivity : AppCompatActivity() {
             }
         }
         return true
-    }
-
-    // Custom Theme
-    internal var customThemeConfig: CustomThemeConfig? = null
-    private val customThemeUseCase: CustomThemeUseCase by lazy {
-        inject<CustomThemeUseCase>().value
-    }
-
-    private fun getCustomThemeConfig(): CustomThemeConfig {
-        return runBlocking {
-            customThemeUseCase.getConfig()
-        }
-    }
-
-    internal fun toggleCustomTheme(enabled: Boolean) {
-        runBlocking {
-            customThemeUseCase.toggleUserEnabled(enabled)
-            ProcessPhoenix.triggerRebirth(this@MainActivity)
-        }
-    }
-
-    internal fun toggleCustomThemeOverlay() {
-        val id = customThemeConfig?.theme?.id ?: return
-        runBlocking {
-            customThemeUseCase.setUserDismissedOverlay(id)
-        }
     }
 }

@@ -13,24 +13,17 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
@@ -54,10 +47,8 @@ import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.shadow.Shadow
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -81,13 +72,11 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.LocalStartAuthorization
-import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.applinks.AppLinkViewModel
 import tv.trakt.trakt.core.auth.model.AuthorizationException
@@ -289,15 +278,10 @@ private fun MainScreenContent(
     onDismissWelcome: () -> Unit = {},
     onDismissCheckIn: () -> Unit = {},
 ) {
-    val localActivity = LocalActivity.current
     val localSnackbar = LocalSnackbarState.current
     val localBottomBarVisibility = LocalBottomBarVisibility.current
     val localCheckInVisibility = LocalCheckInVisibility.current
     val startAuthorization = LocalStartAuthorization.current
-
-    val customThemeConfig = remember {
-        (localActivity as? MainActivity)?.customThemeConfig
-    }
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -322,7 +306,6 @@ private fun MainScreenContent(
                 else -> {
                     MainNavHost(
                         navController = navController,
-                        customThemeEnabled = customThemeConfig?.enabled == true,
                         userId = state.user?.ids?.trakt,
                         userLoading = state.userLoading.isLoading,
                         searchInput = searchState.searchInput,
@@ -455,47 +438,6 @@ private fun MainScreenContent(
             exit = fadeOut(tween(150)),
         ) {
             AppLinkLoadingMask()
-        }
-
-        var overlayVisible by remember {
-            mutableStateOf(customThemeConfig?.overlayVisible == true)
-        }
-
-        if (overlayVisible && customThemeConfig?.theme?.type == "christmas") {
-            Box {
-                Image(
-                    painter = painterResource(R.drawable.img_splash_christmas),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable(
-                            onClick = {},
-                            indication = null,
-                            interactionSource = null,
-                        ),
-                )
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_close),
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier
-                        .align(BottomCenter)
-                        .padding(
-                            WindowInsets.navigationBars.asPaddingValues()
-                                .calculateBottomPadding()
-                                .plus(64.dp),
-                        )
-                        .background(TraktTheme.colors.accent, shape = RoundedCornerShape(100))
-                        .padding(8.dp)
-                        .size(18.dp)
-                        .onClick {
-                            (localActivity as? MainActivity)?.toggleCustomThemeOverlay()
-                            overlayVisible = false
-                        },
-                )
-            }
         }
     }
 }

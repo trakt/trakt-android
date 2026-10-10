@@ -22,12 +22,10 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsStorage
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.CustomGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.DefaultGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsStorage
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.CustomGetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.DefaultGetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsStorage
@@ -43,7 +41,6 @@ import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShows
 import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsStorage
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
-import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.CustomGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
@@ -117,17 +114,6 @@ internal val showsModule = module {
         )
     }
 
-//    factory<GetTrendingShowsUseCase>(
-//        qualifier = named("customTrendingShowsUseCase"),
-//    ) {
-//        CustomGetTrendingShowsUseCase(
-//            remoteSource = get(),
-//            localTrendingSource = get(),
-//            localShowSource = get(),
-//            customThemeUseCase = get(),
-//        )
-//    }
-
     factory<GetPopularShowsUseCase>(
         qualifier = named("defaultPopularShowsUseCase"),
     ) {
@@ -138,17 +124,6 @@ internal val showsModule = module {
         )
     }
 
-    factory<GetPopularShowsUseCase>(
-        qualifier = named("customPopularShowsUseCase"),
-    ) {
-        CustomGetPopularShowsUseCase(
-            remoteSource = get(),
-            localPopularSource = get(),
-            localShowSource = get(),
-            customThemeUseCase = get(),
-        )
-    }
-
     factory<GetAnticipatedShowsUseCase>(
         qualifier = named("defaultAnticipatedShowsUseCase"),
     ) {
@@ -156,17 +131,6 @@ internal val showsModule = module {
             remoteSource = get(),
             localAnticipatedSource = get(),
             localShowSource = get(),
-        )
-    }
-
-    factory<GetAnticipatedShowsUseCase>(
-        qualifier = named("customAnticipatedShowsUseCase"),
-    ) {
-        CustomGetAnticipatedShowsUseCase(
-            remoteSource = get(),
-            localAnticipatedSource = get(),
-            localShowSource = get(),
-            customThemeUseCase = get(),
         )
     }
 
@@ -188,17 +152,6 @@ internal val showsModule = module {
             remoteSource = get(),
             localRecommendedSource = get(),
             localShowSource = get(),
-        )
-    }
-
-    factory<GetRecommendedShowsUseCase>(
-        qualifier = named("customRecommendedShowsUseCase"),
-    ) {
-        CustomGetRecommendedShowsUseCase(
-            remoteSource = get(),
-            localRecommendedSource = get(),
-            localShowSource = get(),
-            customThemeUseCase = get(),
         )
     }
 

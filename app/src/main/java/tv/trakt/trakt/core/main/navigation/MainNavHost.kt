@@ -14,7 +14,6 @@ import tv.trakt.trakt.core.search.model.SearchInput
 @Composable
 internal fun MainNavHost(
     navController: NavHostController,
-    customThemeEnabled: Boolean,
     userId: TraktId?,
     userLoading: Boolean,
     searchInput: SearchInput,
@@ -34,10 +33,7 @@ internal fun MainNavHost(
             userLoading = userLoading,
         )
         calendarScreens(navController)
-        discoverScreens(
-            controller = navController,
-            customThemeEnabled = customThemeEnabled,
-        )
+        discoverScreens(navController)
         showsScreens(navController, userId)
         moviesScreens(navController, userId)
         episodesScreens(navController, userId)

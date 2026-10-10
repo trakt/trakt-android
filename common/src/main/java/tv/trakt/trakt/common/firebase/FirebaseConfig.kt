@@ -14,9 +14,6 @@ class FirebaseConfig {
         const val MOBILE_WELCOME_BANNER_ENABLED = "mobile_welcome_banner_enabled"
         const val MOBILE_HTTPS_AUTH_CALLBACK_ENABLED = "mobile_https_auth_callback_enabled_2"
 
-        const val MOBILE_CUSTOM_THEME_ENABLED = "mobile_custom_theme_enabled"
-        const val MOBILE_CUSTOM_THEME_JSON = "mobile_custom_theme_json"
-
         const val BACKGROUND_IMAGE_URL = "background_image_url"
         const val PLEX_PLAY_ENABLED = "plex_play_enabled"
     }

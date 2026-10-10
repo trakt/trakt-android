@@ -2,7 +2,6 @@
 
 package tv.trakt.trakt.core.discover
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -30,8 +29,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
-import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -99,9 +96,6 @@ private fun DiscoverScreen(
     onVipClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
 ) {
-    val activity = LocalActivity.current
-    val customThemeEnabled = (activity as? MainActivity)?.customThemeConfig?.enabled == true
-
     val lazyListState = rememberLazyListState()
     val headerState = rememberHeaderState()
 
@@ -151,9 +145,7 @@ private fun DiscoverScreen(
         ) {
             item {
                 DiscoverTrendingView(
-                    viewModel = koinViewModel {
-                        parametersOf(customThemeEnabled)
-                    },
+                    viewModel = koinViewModel(),
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -165,9 +157,7 @@ private fun DiscoverScreen(
 
             item {
                 DiscoverReleasesView(
-                    viewModel = koinViewModel {
-                        parametersOf(customThemeEnabled)
-                    },
+                    viewModel = koinViewModel(),
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onShowClick = onShowClick,
@@ -179,9 +169,7 @@ private fun DiscoverScreen(
 
             item {
                 DiscoverAnticipatedView(
-                    viewModel = koinViewModel {
-                        parametersOf(customThemeEnabled)
-                    },
+                    viewModel = koinViewModel(),
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -193,9 +181,7 @@ private fun DiscoverScreen(
 
             item {
                 DiscoverPopularView(
-                    viewModel = koinViewModel {
-                        parametersOf(customThemeEnabled)
-                    },
+                    viewModel = koinViewModel(),
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,

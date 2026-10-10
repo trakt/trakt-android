@@ -1,6 +1,5 @@
 package tv.trakt.trakt.ui.components.headerbar
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,20 +29,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import tv.trakt.trakt.LocalStartAuthorization
-import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
-import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
-import tv.trakt.trakt.ui.components.switch.TraktThemeSwitch
 import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewIcon
 import tv.trakt.trakt.ui.theme.TraktTheme
-import tv.trakt.trakt.ui.theme.model.CustomTheme
 
 @Composable
 internal fun HeaderBar(
@@ -61,11 +55,6 @@ internal fun HeaderBar(
     onWhatsNewClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
-    val localActivity = LocalActivity.current
-
-    val customThemeConfig = remember {
-        (localActivity as? MainActivity)?.customThemeConfig
-    }
 
     val filterManager: GlobalFilterManager = koinInject()
     val currentFilter = filterManager
@@ -82,13 +71,9 @@ internal fun HeaderBar(
         showFilters = showFilters,
         showWhatsNew = showWhatsNew,
         userLoading = userLoading,
-        customTheme = customThemeConfig,
         onVipClick = onVipClick,
         onFilterClick = onFilterClick,
         onWhatsNewClick = onWhatsNewClick,
-        onCustomThemeChange = {
-            (localActivity as? MainActivity)?.toggleCustomTheme(it)
-        },
         onMediaModeSelect = { mode ->
             scope.launch {
                 filterManager.setFilter(currentFilter.value.copy(mode = mode))
@@ -108,9 +93,7 @@ private fun HeaderBar(
     showFilters: Boolean = false,
     showWhatsNew: Boolean = false,
     userLoading: Boolean = false,
-    customTheme: CustomThemeUseCase.CustomThemeConfig? = null,
     onMediaModeSelect: (MediaMode) -> Unit = {},
-    onCustomThemeChange: (Boolean) -> Unit = {},
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
     onWhatsNewClick: () -> Unit = {},
@@ -172,14 +155,6 @@ private fun HeaderBar(
                         enabled = !userLoading,
                         onClick = startAuthorization,
                     )
-                } else if (customTheme?.theme != null && customTheme.visible) {
-                    TraktThemeSwitch(
-                        theme = customTheme.theme,
-                        checked = customTheme.enabled,
-                        onCheckedChange = onCustomThemeChange,
-                        modifier = Modifier
-                            .height(contentHeight),
-                    )
                 } else if (showVip) {
                     VipChip(
                         onClick = onVipClick,
@@ -221,28 +196,6 @@ private fun Preview2() {
         HeaderBar(
             showLogin = true,
             filter = GlobalFilter.Default,
-        )
-    }
-}
-
-@Preview(widthDp = 400)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        HeaderBar(
-            filter = GlobalFilter.Default.copy(mode = MediaMode.Shows),
-            customTheme = CustomThemeUseCase.CustomThemeConfig(
-                theme = CustomTheme(
-                    id = "christmas25",
-                    type = "christmas",
-                    backgroundImageUrl = null,
-                    colors = null,
-                    filters = null,
-                ),
-                enabled = false,
-                visible = true,
-                overlayVisible = false,
-            ),
         )
     }
 }
