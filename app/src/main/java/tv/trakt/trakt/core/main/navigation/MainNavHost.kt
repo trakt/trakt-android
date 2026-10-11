@@ -40,7 +40,7 @@ internal fun MainNavHost(
         listsScreens(navController, userId)
         profileScreens(navController, userId)
         commentsScreens(navController, userId)
-        allShowSeasonsScreens(navController)
+        allShowSeasonsScreens(navController, userId)
         triviaScreens(navController)
         sentimentScreens(navController)
         allCreditsScreens(navController)

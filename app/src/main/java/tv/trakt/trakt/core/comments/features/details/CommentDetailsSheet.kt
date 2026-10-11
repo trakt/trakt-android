@@ -21,6 +21,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
@@ -37,6 +38,7 @@ internal fun CommentDetailsSheet(
     mentionSource: MentionSource? = null,
     progressTotal: Int? = null,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
+    onUserClick: ((User) -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current
@@ -74,6 +76,13 @@ internal fun CommentDetailsSheet(
                                 job.cancel()
                             }
                         },
+                    )
+                },
+                onUserClick = {
+                    sheetScope.dismissWithAction(
+                        sheet = state,
+                        action = { onUserClick?.invoke(it) },
+                        onDismiss = onDismiss,
                     )
                 },
                 modifier = Modifier

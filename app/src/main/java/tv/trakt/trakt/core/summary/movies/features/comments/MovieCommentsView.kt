@@ -163,6 +163,7 @@ internal fun MovieCommentsView(
         gifQuery = MediaType.Movie.toGifQuery(state.movie?.title),
         mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
+        onUserClick = onUserClick,
         onDismiss = {
             commentSheet = null
         },

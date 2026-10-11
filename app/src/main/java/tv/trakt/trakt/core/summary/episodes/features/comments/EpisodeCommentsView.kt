@@ -164,6 +164,7 @@ internal fun EpisodeCommentsView(
         gifQuery = MediaType.Episode.toGifQuery(state.media?.first?.title),
         mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
+        onUserClick = onUserClick,
         onDismiss = {
             commentSheet = null
         },

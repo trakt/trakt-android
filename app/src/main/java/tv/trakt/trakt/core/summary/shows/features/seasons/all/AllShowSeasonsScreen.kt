@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.ui.rememberExternalTranslation
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -24,6 +25,7 @@ internal fun AllShowSeasonsScreen(
     viewModel: AllShowSeasonsViewModel,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onPersonClick: (show: Show, person: Person, role: PersonCreditsRole?) -> Unit,
+    onUserClick: (User) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -69,6 +71,7 @@ internal fun AllShowSeasonsScreen(
         onCommentDeleteClick = { sheetState.deleteComment = it },
         onCommentReplyDeleteClick = { sheetState.deleteReply = it },
         onCommentTranslateClick = viewModel::toggleCommentTranslation,
+        onCommentUserClick = onUserClick,
         onPersonClick = { person, role -> state.show?.let { onPersonClick(it, person, role) } },
         onSeasonRatingClick = {
             viewModel.addSeasonRating(it)

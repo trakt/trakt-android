@@ -735,7 +735,10 @@ internal fun NavGraphBuilder.commentsScreens(
     }
 }
 
-internal fun NavGraphBuilder.allShowSeasonsScreens(controller: NavHostController) {
+internal fun NavGraphBuilder.allShowSeasonsScreens(
+    controller: NavHostController,
+    userId: TraktId?,
+) {
     with(controller) {
         allShowSeasonsScreen(
             onNavigateToEpisode = { showId, episode ->
@@ -747,6 +750,12 @@ internal fun NavGraphBuilder.allShowSeasonsScreens(controller: NavHostController
                     sourceMediaId = show.ids.trakt,
                     backdropUrl = show.images?.getFanartUrl(Size.THUMB),
                     creditsRole = role,
+                )
+            },
+            onNavigateToUser = {
+                navigateToUserProfile(
+                    user = it,
+                    currentUserId = userId,
                 )
             },
             onNavigateBack = { popBackStack() },

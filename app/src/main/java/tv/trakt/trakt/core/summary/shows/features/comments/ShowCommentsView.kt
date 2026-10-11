@@ -161,6 +161,7 @@ internal fun ShowCommentsView(
         progressTotal = state.show?.airedEpisodes,
         mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
+        onUserClick = onUserClick,
         onDismiss = {
             commentSheet = null
         },
