@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Année à ce jour</string>
   <string name="preview_feature_description_edit_mode">Activez les commandes pour masquer ou afficher les sections configurables dans toute l\'application.</string>
   <string name="preview_feature_description_large_screen_cards">Sur les grands écrans, toutes les listes utilisent les mêmes cartes que le reste de l\'application. En sélectionner une ouvre un aperçu rapide au lieu de quitter la liste.</string>
-  <string name="preview_feature_description_reactions">Réagissez à un film ou une série, et découvrez ce que les autres en ont pensé.</string>
   <string name="preview_feature_description_rewatch">Démarrez des sessions de revisionnage pour les émissions que vous avez déjà vues, enregistrez-vous ou marquez les épisodes comme vus directement depuis le panneau de session.</string>
   <string name="preview_feature_description_soundtrack">Ajoute une section bande originale aux pages de films et d\'émissions, avec lecture des pistes correspondantes.</string>
   <string name="preview_feature_description_vip_veteran">Indique depuis combien de temps les membres ont conservé leur statut VIP sans interruption, avec un badge Vétéran ou Légende, un anneau d\'avatar coloré et quelques célébrations sur votre propre profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Votre année 2026 sous forme de bobine défilante avec un profil de spectateur, puis une page de statistiques stylisée pour correspondre.</string>
   <string name="preview_feature_title_edit_mode">Mode édition</string>
   <string name="preview_feature_title_large_screen_cards">Cartes grand écran</string>
-  <string name="preview_feature_title_reactions">Réactions</string>
   <string name="preview_feature_title_rewatch">Revisionnage</string>
   <string name="preview_feature_title_soundtrack">Bande originale</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP vétéran</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Aucune catégorie ne vous convient. C\'est le principe.</string>
   <string name="yir_2026_preview_persona">Personnalité</string>
   <string name="yir_2026_preview_play_reel">Lire la bobine</string>
-  <string name="yir_2026_preview_reset">Réinitialiser</string>
+  <string name="yir_2026_preview_real_data">Données réelles</string>
   <string name="yir_2026_preview_runner_default">Par défaut</string>
   <string name="yir_2026_preview_runner_default_named">Par défaut (%s)</string>
   <string name="yir_2026_preview_runner_none">Aucun (pas hybride)</string>

@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Tahun Berjalan</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
-  <string name="preview_feature_description_reactions">Bereaksi terhadap film atau acara, dan lihat bagaimana perasaan orang lain.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
-  <string name="preview_feature_title_reactions">Reaksi</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">Status veteran VIP</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Tidak ada kategori yang cocok untuk Anda. Itulah intinya.</string>
   <string name="yir_2026_preview_persona">Persona</string>
   <string name="yir_2026_preview_play_reel">Putar reel</string>
-  <string name="yir_2026_preview_reset">Setel Ulang</string>
+  <string name="yir_2026_preview_real_data">Data nyata</string>
   <string name="yir_2026_preview_runner_default">Default</string>
   <string name="yir_2026_preview_runner_default_named">Default (%s)</string>
   <string name="yir_2026_preview_runner_none">Tidak ada (tanpa hibrida)</string>

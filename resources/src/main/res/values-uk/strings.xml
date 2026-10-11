@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Рік до сьогодні</string>
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
   <string name="preview_feature_description_large_screen_cards">На великих екранах усі списки використовують ті ж картки, що й решта додатка. Вибір одного відкриває швидкий перегляд, замість того щоб залишати список.</string>
-  <string name="preview_feature_description_reactions">Реагуйте на фільм або серіал і дивіться, що відчувають інші.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_soundtrack">Додає розділ саундтреків до сторінок фільмів та серіалів, з відтворенням там, де трек може бути зіставлений.</string>
   <string name="preview_feature_description_vip_veteran">Показує, як довго учасники зберігали VIP-статус без перерв, з відзнакою «Ветеран» або «Легенда», кольоровим кільцем аватара та кількома святкуваннями у вашому профілі.</string>
   <string name="preview_feature_description_year_in_review_2026">Ваш 2026 рік як прокручуваний ролик з персоною глядача, а потім сторінка статистики, оформлена відповідно до неї.</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
   <string name="preview_feature_title_large_screen_cards">Картки для великих екранів</string>
-  <string name="preview_feature_title_reactions">Реакції</string>
   <string name="preview_feature_title_rewatch">Повторний перегляд</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Жодна категорія вам не підходить. У цьому весь сенс.</string>
   <string name="yir_2026_preview_persona">Персона</string>
   <string name="yir_2026_preview_play_reel">Відтворити ролик</string>
-  <string name="yir_2026_preview_reset">Скинути</string>
+  <string name="yir_2026_preview_real_data">Реальні дані</string>
   <string name="yir_2026_preview_runner_default">Типово</string>
   <string name="yir_2026_preview_runner_default_named">За замовчуванням (%s)</string>
   <string name="yir_2026_preview_runner_none">Немає (без гібрида)</string>

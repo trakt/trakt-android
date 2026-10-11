@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_large_screen_cards">大画面では、すべてのリストでアプリの他の部分と同じカードを使用します。いずれかを選択すると、リストを離れることなくクイック概要が開きます。</string>
-  <string name="preview_feature_description_reactions">映画や番組にリアクションして、他の人がどう感じたかを見てみましょう。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_vip_veteran">VIPを途切れることなく継続した期間を表示します。ベテランまたはレジェンドバッジ、色付きのアバターリング、そしてプロフィールでのささやかなお祝いが贈られます。</string>
   <string name="preview_feature_description_year_in_review_2026">視聴者ペルソナに基づいたスクロールリール形式の2026年、そしてそれに合わせたスタイルの統計ページです。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_large_screen_cards">大画面カード</string>
-  <string name="preview_feature_title_reactions">リアクション</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
   <string name="preview_feature_title_vip_veteran">VIPベテランステータス</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">どの枠にもはまらない。それがあなたの特徴だ。</string>
   <string name="yir_2026_preview_persona">ペルソナ</string>
   <string name="yir_2026_preview_play_reel">リールを再生</string>
-  <string name="yir_2026_preview_reset">リセット</string>
+  <string name="yir_2026_preview_real_data">実際のデータ</string>
   <string name="yir_2026_preview_runner_default">デフォルト</string>
   <string name="yir_2026_preview_runner_default_named">デフォルト（%s）</string>
   <string name="yir_2026_preview_runner_none">なし（ハイブリッドなし）</string>

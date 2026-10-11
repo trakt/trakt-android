@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller for å skjule eller vise konfigurerbare seksjoner i hele appen.</string>
   <string name="preview_feature_description_large_screen_cards">På større skjermer bruker alle lister de samme kortene som resten av appen. Ved å velge ett åpnes en hurtigvisning i stedet for å forlate listen.</string>
-  <string name="preview_feature_description_reactions">Reager på en film eller serie, og se hva alle andre syntes.</string>
   <string name="preview_feature_description_rewatch">Start gjensynsøkter for serier du allerede har sett, sjekk inn eller merk episoder som sett direkte fra gjensynsskuffen.</string>
   <string name="preview_feature_description_soundtrack">Legger til en lydspor-seksjon på film- og seriesider, med avspilling der et spor kan matches.</string>
   <string name="preview_feature_description_vip_veteran">Viser hvor lenge medlemmer har beholdt VIP uten avbrudd, med et Veteran- eller Legend-merke, en farget avatarring og noen feiringer på din egen profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en rulle-drevet film med en seerpersona, deretter en statistikkside stylet for å matche den.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
   <string name="preview_feature_title_large_screen_cards">Store skjermkort</string>
-  <string name="preview_feature_title_reactions">Reaksjoner</string>
   <string name="preview_feature_title_rewatch">Gjensyn</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP veteranstatus</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Ingen kategori passer deg. Det er hele poenget.</string>
   <string name="yir_2026_preview_persona">Persona</string>
   <string name="yir_2026_preview_play_reel">Spill av film</string>
-  <string name="yir_2026_preview_reset">Tilbakestill</string>
+  <string name="yir_2026_preview_real_data">Ekte data</string>
   <string name="yir_2026_preview_runner_default">Standard</string>
   <string name="yir_2026_preview_runner_default_named">Standard (%s)</string>
   <string name="yir_2026_preview_runner_none">Ingen (ingen hybrid)</string>

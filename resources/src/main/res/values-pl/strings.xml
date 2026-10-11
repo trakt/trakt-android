@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Od początku roku</string>
   <string name="preview_feature_description_edit_mode">Włącz sterowanie ukrywaniem lub pokazywaniem konfigurowalnych sekcji w całej aplikacji.</string>
   <string name="preview_feature_description_large_screen_cards">Na większych ekranach wszystkie listy używają tych samych kart, co reszta aplikacji. Wybranie elementu otwiera szybki podgląd zamiast opuszczania listy.</string>
-  <string name="preview_feature_description_reactions">Reaguj na film lub serial i zobacz, jak czuli się inni.</string>
   <string name="preview_feature_description_rewatch">Rozpocznij sesje ponownego oglądania dla programów, które już widziałeś, melduj się lub oznaczaj obejrzane odcinki bezpośrednio z szuflady sesji.</string>
   <string name="preview_feature_description_soundtrack">Dodaje sekcję ścieżek dźwiękowych do stron filmów i seriali, z możliwością odtwarzania, gdy utwór może zostać dopasowany.</string>
   <string name="preview_feature_description_vip_veteran">Pokazuje, jak długo członkowie utrzymywali status VIP bez przerwy, wraz z odznaką Weterana lub Legendy, kolorową obwódką awatara i kilkoma wyróżnieniami na Twoim profilu.</string>
   <string name="preview_feature_description_year_in_review_2026">Twój rok 2026 w formie przewijanego nagrania z personą widza, a następnie strona ze statystykami dopasowana do niej.</string>
   <string name="preview_feature_title_edit_mode">Tryb edycji</string>
   <string name="preview_feature_title_large_screen_cards">Karty na dużym ekranie</string>
-  <string name="preview_feature_title_reactions">Reakcje</string>
   <string name="preview_feature_title_rewatch">Ponowne oglądanie</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">Status weterana VIP</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Żadna kategoria cię nie obejmuje. O to właśnie chodzi.</string>
   <string name="yir_2026_preview_persona">Persona</string>
   <string name="yir_2026_preview_play_reel">Odtwórz nagranie</string>
-  <string name="yir_2026_preview_reset">Resetuj</string>
+  <string name="yir_2026_preview_real_data">Prawdziwe dane</string>
   <string name="yir_2026_preview_runner_default">Domyślne</string>
   <string name="yir_2026_preview_runner_default_named">Domyślna (%s)</string>
   <string name="yir_2026_preview_runner_none">Brak (bez hybrydy)</string>

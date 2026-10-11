@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_large_screen_cards">On bigger screens, all lists use the same cards as the rest of the app. Selecting one opens a quick glance instead of leaving the list.</string>
-  <string name="preview_feature_description_reactions">React to a movie or show, and see how everyone else felt.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
   <string name="preview_feature_description_vip_veteran">Shows how long members have kept VIP without a break, with a Veteran or Legend badge, a coloured avatar ring and a few celebrations on your own profile.</string>
   <string name="preview_feature_description_year_in_review_2026">Your 2026 as a scroll-driven reel with a viewer persona, then a stats page styled to match it.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_large_screen_cards">Large Screen Cards</string>
-  <string name="preview_feature_title_reactions">Reactions</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP veteran status</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">No box fits you. That\'s the whole point.</string>
   <string name="yir_2026_preview_persona">Persona</string>
   <string name="yir_2026_preview_play_reel">Play reel</string>
-  <string name="yir_2026_preview_reset">Reset</string>
+  <string name="yir_2026_preview_real_data">Real data</string>
   <string name="yir_2026_preview_runner_default">Default</string>
   <string name="yir_2026_preview_runner_default_named">Default (%s)</string>
   <string name="yir_2026_preview_runner_none">None (no hybrid)</string>

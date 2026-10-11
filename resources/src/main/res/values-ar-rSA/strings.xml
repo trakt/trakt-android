@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">منذ بداية العام</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
-  <string name="preview_feature_description_reactions">تفاعل مع فيلم أو عرض، وشاهد كيف شعر الآخرون.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
   <string name="preview_feature_description_vip_veteran">تُظهر المدة التي احتفظ فيها الأعضاء بخدمة VIP دون انقطاع، مع شارة مخضرم أو أسطورة، وحلقة ملونة للصورة الرمزية، وبعض الاحتفالات على ملفك الشخصي.</string>
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
-  <string name="preview_feature_title_reactions">ردود الفعل</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
   <string name="preview_feature_title_vip_veteran">حالة VIP المخضرم</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">لا يوجد قالب يناسبك. هذه هي الفكرة برمتها.</string>
   <string name="yir_2026_preview_persona">الشخصية</string>
   <string name="yir_2026_preview_play_reel">تشغيل الفيديو الملخص</string>
-  <string name="yir_2026_preview_reset">إعادة تعيين</string>
+  <string name="yir_2026_preview_real_data">بيانات حقيقية</string>
   <string name="yir_2026_preview_runner_default">الافتراضي</string>
   <string name="yir_2026_preview_runner_default_named">افتراضي (%s)</string>
   <string name="yir_2026_preview_runner_none">لا شيء (لا يوجد هجين)</string>

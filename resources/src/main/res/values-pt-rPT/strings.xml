@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Até agora</string>
   <string name="preview_feature_description_edit_mode">Ativa controlos para mostrar ou ocultar secções configuráveis em toda a app.</string>
   <string name="preview_feature_description_large_screen_cards">Em ecrãs maiores, todas as listas usam os mesmos cartões que o resto da app. Ao selecionares um, abre-se uma vista rápida em vez de saíres da lista.</string>
-  <string name="preview_feature_description_reactions">Reage a um filme ou série e vê o que os outros acharam.</string>
   <string name="preview_feature_description_rewatch">Inicia sessões de revisão para séries que já viste e regista a visualização ou marca episódios como vistos diretamente no painel da sessão.</string>
   <string name="preview_feature_description_soundtrack">Adiciona uma secção de banda sonora às páginas de filmes e séries, permitindo reproduzir as faixas que conseguirmos associar.</string>
   <string name="preview_feature_description_vip_veteran">Mostra há quanto tempo os membros mantêm o VIP sem interrupções, com um distintivo de Veterano ou Lenda, um anel colorido à volta do avatar e algumas celebrações no teu próprio perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">O teu 2026 num reel interativo com uma persona de espectador, seguido de uma página de estatísticas com o mesmo estilo.</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
   <string name="preview_feature_title_large_screen_cards">Cartões para ecrãs grandes</string>
-  <string name="preview_feature_title_reactions">Reações</string>
   <string name="preview_feature_title_rewatch">Rever</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_vip_veteran">Estatuto de veterano VIP</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Não cabes em nenhuma caixa. É esse o objetivo.</string>
   <string name="yir_2026_preview_persona">Persona</string>
   <string name="yir_2026_preview_play_reel">Reproduzir reel</string>
-  <string name="yir_2026_preview_reset">Repor</string>
+  <string name="yir_2026_preview_real_data">Dados reais</string>
   <string name="yir_2026_preview_runner_default">Predefinido</string>
   <string name="yir_2026_preview_runner_default_named">Predefinido (%s)</string>
   <string name="yir_2026_preview_runner_none">Nenhum (sem híbrido)</string>

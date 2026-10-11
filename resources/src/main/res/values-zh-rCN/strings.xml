@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">年至今</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
-  <string name="preview_feature_description_reactions">对电影或节目发表反应，看看别人的感受。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
-  <string name="preview_feature_title_reactions">反应</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
   <string name="preview_feature_title_vip_veteran">VIP 资深会员身份</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">没有哪个标签能定义您。这正是关键。</string>
   <string name="yir_2026_preview_persona">角色</string>
   <string name="yir_2026_preview_play_reel">播放短片</string>
-  <string name="yir_2026_preview_reset">重置</string>
+  <string name="yir_2026_preview_real_data">真实数据</string>
   <string name="yir_2026_preview_runner_default">默认</string>
   <string name="yir_2026_preview_runner_default_named">默认 (%s)</string>
   <string name="yir_2026_preview_runner_none">无（非混合）</string>

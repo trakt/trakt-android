@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_large_screen_cards">A pantalles més grans, totes les llistes utilitzen les mateixes targetes que la resta de l\'aplicació. Si en seleccioneu una, s\'obre una vista ràpida en lloc de sortir de la llista.</string>
-  <string name="preview_feature_description_reactions">Reacciona a una pel·lícula o sèrie, i mira què en pensen els altres.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
   <string name="preview_feature_description_vip_veteran">Mostra quant de temps els membres han mantingut el VIP sense interrupcions, amb una insígnia de Veterà o Llegenda, un anell d\'avatar de color i algunes celebracions al teu propi perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">El teu 2026 en un carrusel desplaçable amb una personalitat d\'espectador, i després una pàgina d\'estadístiques amb el mateix estil.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_large_screen_cards">Targetes per a pantalles grans</string>
-  <string name="preview_feature_title_reactions">Reaccions</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_vip_veteran">Estat VIP de veterà</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Cap etiqueta et quadra. Aquesta és la qüestió.</string>
   <string name="yir_2026_preview_persona">Personalitat</string>
   <string name="yir_2026_preview_play_reel">Reproduir carrusel</string>
-  <string name="yir_2026_preview_reset">Restableix</string>
+  <string name="yir_2026_preview_real_data">Dades reals</string>
   <string name="yir_2026_preview_runner_default">Per defecte</string>
   <string name="yir_2026_preview_runner_default_named">Per defecte (%s)</string>
   <string name="yir_2026_preview_runner_none">Cap (sense híbrid)</string>

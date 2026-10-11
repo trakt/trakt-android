@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">От началото на годината</string>
   <string name="preview_feature_description_edit_mode">Активирайте контроли за скриване или показване на конфигурируеми секции в цялото приложение.</string>
   <string name="preview_feature_description_large_screen_cards">На по-големи екрани, всички списъци използват същите карти като останалата част от приложението. Избирането на елемент отваря бърз преглед, вместо да напускате списъка.</string>
-  <string name="preview_feature_description_reactions">Реагирайте на филм или шоу и вижте как се чувстват всички останали.</string>
   <string name="preview_feature_description_rewatch">Започнете сесии за повторно гледане на предавания, които вече сте гледали, отбележете гледани епизоди директно от прозореца на сесията.</string>
   <string name="preview_feature_description_soundtrack">Добавя секция за саундтрак към страниците на филми и предавания, с възпроизвеждане, където може да бъде намерена песен.</string>
   <string name="preview_feature_description_vip_veteran">Показва колко дълго членовете са запазили VIP без прекъсване, с значка Ветеран или Легенда, цветен пръстен на аватара и няколко празненства в профила ви.</string>
   <string name="preview_feature_description_year_in_review_2026">Вашата 2026 като превъртащ се клип с потребителска персона, след което страница със статистика, оформена според нея.</string>
   <string name="preview_feature_title_edit_mode">Режим на редактиране</string>
   <string name="preview_feature_title_large_screen_cards">Карти за голям екран</string>
-  <string name="preview_feature_title_reactions">Реакции</string>
   <string name="preview_feature_title_rewatch">Преглед</string>
   <string name="preview_feature_title_soundtrack">Саундтрак</string>
   <string name="preview_feature_title_vip_veteran">VIP ветерански статус</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Никоя категория не ви пасва. Това е смисълът.</string>
   <string name="yir_2026_preview_persona">Персона</string>
   <string name="yir_2026_preview_play_reel">Пуснете клипа</string>
-  <string name="yir_2026_preview_reset">Нулиране</string>
+  <string name="yir_2026_preview_real_data">Реални данни</string>
   <string name="yir_2026_preview_runner_default">По подразбиране</string>
   <string name="yir_2026_preview_runner_default_named">По подразбиране (%s)</string>
   <string name="yir_2026_preview_runner_none">Няма (без хибрид)</string>

@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Anul curent</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_large_screen_cards">Pe ecrane mai mari, toate listele folosesc aceleași carduri ca și restul aplicației. Selectarea unui card deschide o vizualizare rapidă, în loc să părăsească lista.</string>
-  <string name="preview_feature_description_reactions">Reacționează la un film sau serial și vezi cum s-au simțit toți ceilalți.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_vip_veteran">Arată cât timp au păstrat membrii statutul VIP fără întrerupere, cu o insignă Veteran sau Legendă, un inel colorat de avatar și câteva celebrații pe propriul profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Anul tău 2026 sub forma unui rezumat derulabil cu o persona de spectator, apoi o pagină de statistici stilizată pentru a o egala.</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_large_screen_cards">Carduri pe Ecrane Mari</string>
-  <string name="preview_feature_title_reactions">Reacții</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP veteran</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Niciun șablon nu ți se potrivește. Asta e ideea.</string>
   <string name="yir_2026_preview_persona">Persona</string>
   <string name="yir_2026_preview_play_reel">Redă rezumatul</string>
-  <string name="yir_2026_preview_reset">Resetează</string>
+  <string name="yir_2026_preview_real_data">Date reale</string>
   <string name="yir_2026_preview_runner_default">Implicit</string>
   <string name="yir_2026_preview_runner_default_named">Implicit (%s)</string>
   <string name="yir_2026_preview_runner_none">Niciunul (fără hibrid)</string>

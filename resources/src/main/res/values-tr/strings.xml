@@ -1378,14 +1378,12 @@
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_large_screen_cards">Daha büyük ekranlarda, tüm listeler uygulamanın geri kalanıyla aynı kartları kullanır. Birini seçmek, listeden ayrılmak yerine hızlı bir bakış açar.</string>
-  <string name="preview_feature_description_reactions">Bir film veya diziye tepki verin ve diğer herkesin ne hissettiğini görün.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
   <string name="preview_feature_description_vip_veteran">Üyelerin VIP statüsünü ne kadar süre kesintisiz sürdürdüğünü, Kıdemli veya Efsane rozetiyle, renkli bir avatar halkasıyla ve kendi profilinizde birkaç kutlamayla gösterir.</string>
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_large_screen_cards">Geniş Ekran Kartları</string>
-  <string name="preview_feature_title_reactions">Tepkiler</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_soundtrack">Film Müziği</string>
   <string name="preview_feature_title_vip_veteran">VIP kıdemli durumu</string>
@@ -2510,7 +2508,7 @@
   <string name="yir_2026_persona_wildcard_tagline">Hiçbir kategori size uymaz. Bütün mesele bu.</string>
   <string name="yir_2026_preview_persona">Kişilik</string>
   <string name="yir_2026_preview_play_reel">Makara oynat</string>
-  <string name="yir_2026_preview_reset">Sıfırla</string>
+  <string name="yir_2026_preview_real_data">Gerçek veri</string>
   <string name="yir_2026_preview_runner_default">Varsayılan</string>
   <string name="yir_2026_preview_runner_default_named">Varsayılan (%s)</string>
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
