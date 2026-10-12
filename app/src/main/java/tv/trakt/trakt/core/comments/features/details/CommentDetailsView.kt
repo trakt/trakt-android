@@ -90,6 +90,7 @@ import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.comments.ui.CommentUserChips
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
+import tv.trakt.trakt.core.userprofile.navigation.canNavigateToUserProfile
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
@@ -149,7 +150,13 @@ internal fun CommentDetailsView(
             reportCommentSheet = comment
         },
         onTranslateClick = viewModel::toggleTranslation,
-        onUserClick = onUserClick,
+        onUserClick = onUserClick?.let { userClick ->
+            { user ->
+                if (canNavigateToUserProfile(user, state.user?.ids?.trakt)) {
+                    userClick(user)
+                }
+            }
+        },
     )
 
     PostReplySheet(
@@ -404,7 +411,7 @@ private fun CommentHeader(
         Box(
             modifier = Modifier
                 .size(36.dp)
-                .onClick {
+                .onClick(enabled = onUserClick != null) {
                     onUserClick?.invoke(comment.user)
                 },
         ) {
@@ -446,7 +453,7 @@ private fun CommentHeader(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
-                        .onClick {
+                        .onClick(enabled = onUserClick != null) {
                             onUserClick?.invoke(comment.user)
                         },
                 )

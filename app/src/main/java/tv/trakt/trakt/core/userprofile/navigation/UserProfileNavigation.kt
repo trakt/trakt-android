@@ -49,8 +49,15 @@ internal fun NavController.navigateToUserProfile(
     user: User,
     currentUserId: TraktId?,
 ) {
-    if (user.ids.trakt == currentUserId || user.username.lowercase() == "trakt") {
+    if (!canNavigateToUserProfile(user, currentUserId)) {
         return
     }
     navigate(route = UserProfileDestination(userJson = Json.encodeToString(user)))
+}
+
+internal fun canNavigateToUserProfile(
+    user: User,
+    currentUserId: TraktId?,
+): Boolean {
+    return user.ids.trakt != currentUserId && user.username.lowercase() != "trakt"
 }

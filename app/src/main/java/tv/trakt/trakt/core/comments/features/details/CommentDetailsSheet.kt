@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,8 +32,9 @@ import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun CommentDetailsSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     comment: Comment?,
     gifQuery: String? = null,
@@ -78,12 +81,14 @@ internal fun CommentDetailsSheet(
                         },
                     )
                 },
-                onUserClick = {
-                    sheetScope.dismissWithAction(
-                        sheet = state,
-                        action = { onUserClick?.invoke(it) },
-                        onDismiss = onDismiss,
-                    )
+                onUserClick = onUserClick?.let { userClick ->
+                    { user ->
+                        sheetScope.dismissWithAction(
+                            sheet = state,
+                            action = { userClick(user) },
+                            onDismiss = onDismiss,
+                        )
+                    }
                 },
                 modifier = Modifier
                     .fillMaxHeight(0.75F)
