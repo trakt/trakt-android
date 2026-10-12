@@ -1,0 +1,178 @@
+package tv.trakt.trakt.app.core.lists.views
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.tv.material3.CardDefaults
+import androidx.tv.material3.Icon
+import androidx.tv.material3.Text
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
+import tv.trakt.trakt.app.common.ui.mediacards.CustomListSkeletonCard
+import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
+import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.model.lists.SmartList
+import tv.trakt.trakt.resources.R
+
+@Composable
+internal fun ListsSmartView(
+    items: ImmutableList<SmartList>?,
+    isLoading: Boolean,
+    focusRequesters: Map<String, FocusRequester>,
+    onLoaded: () -> Unit = {},
+    onFocused: (SmartList?) -> Unit,
+    onClick: (SmartList) -> Unit,
+) {
+    val contentPadding = PaddingValues(
+        start = TraktTheme.spacing.mainContentStartSpace,
+        end = TraktTheme.spacing.mainContentEndSpace,
+    )
+
+    LaunchedEffect(isLoading) {
+        if (!isLoading && items != null) {
+            onLoaded()
+        }
+    }
+
+    Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        modifier = Modifier
+            .focusGroup()
+            .focusRequester(focusRequesters.getValue("smart")),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(8.dp),
+            modifier = Modifier
+                .padding(contentPadding)
+                .graphicsLayer {
+                    translationX = -5.dp.toPx()
+                },
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_bolt),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier.size(22.dp),
+            )
+            Text(
+                text = stringResource(R.string.button_text_smart_lists),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading5,
+            )
+        }
+
+        when {
+            isLoading -> {
+                ListsContentLoading(
+                    contentPadding = contentPadding,
+                )
+            }
+
+            items?.isEmpty() == true -> {
+                Text(
+                    text = stringResource(R.string.list_placeholder_empty),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.heading6,
+                    modifier = Modifier.padding(contentPadding),
+                )
+            }
+
+            else -> {
+                ContentList(
+                    listItems = { items ?: emptyList<SmartList>().toImmutableList() },
+                    onFocused = onFocused,
+                    onClick = onClick,
+                    contentPadding = contentPadding,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ListsContentLoading(contentPadding: PaddingValues) {
+    PositionFocusLazyRow(
+        contentPadding = contentPadding,
+    ) {
+        items(count = 5) {
+            CustomListSkeletonCard(
+                modifier = Modifier
+                    .height(TraktTheme.size.detailsCustomListSize)
+                    .aspectRatio(CardDefaults.HorizontalImageAspectRatio),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContentList(
+    listItems: () -> ImmutableList<SmartList>,
+    onFocused: (SmartList?) -> Unit,
+    onClick: (SmartList) -> Unit,
+    contentPadding: PaddingValues,
+) {
+    PositionFocusLazyRow(
+        contentPadding = contentPadding,
+    ) {
+        items(
+            items = listItems(),
+            key = { it.ids.trakt.value },
+        ) { item ->
+            SmartListCard(
+                list = item,
+                onClick = { onClick(item) },
+                modifier = Modifier
+                    .height(TraktTheme.size.detailsCustomListSize)
+                    .aspectRatio(CardDefaults.HorizontalImageAspectRatio)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            onFocused(item)
+                        }
+                    },
+            )
+        }
+
+        emptyFocusListItems()
+    }
+}
+
+@Preview(
+    device = "id:tv_4k",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+@SuppressLint("RememberInComposition")
+private fun ListsSmartViewPreview() {
+    TraktTheme {
+        ListsSmartView(
+            items = null,
+            isLoading = true,
+            focusRequesters = mapOf("smart" to FocusRequester()),
+            onFocused = {},
+            onClick = {},
+        )
+    }
+}

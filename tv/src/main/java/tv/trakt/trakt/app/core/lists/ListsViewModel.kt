@@ -23,6 +23,7 @@ import tv.trakt.trakt.app.core.lists.usecases.GetListsLikedUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
+import tv.trakt.trakt.app.core.lists.usecases.GetListsSmartUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -32,12 +33,14 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGR
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
 
 internal class ListsViewModel(
     private val getShowsWatchlistUseCase: GetListsShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetListsMoviesWatchlistUseCase,
+    private val getSmartUseCase: GetListsSmartUseCase,
     private val getPersonalUseCase: GetListsPersonalUseCase,
     private val getLikedUseCase: GetListsLikedUseCase,
     private val showsLocalSyncSource: ShowsSyncLocalDataSource,
@@ -49,6 +52,7 @@ internal class ListsViewModel(
 
     private val showsState = MutableStateFlow(initialState.watchlistShows)
     private val moviesState = MutableStateFlow(initialState.watchlistMovies)
+    private val listsSmartState = MutableStateFlow(initialState.smartLists)
     private val listsPersonalState = MutableStateFlow(initialState.personalLists)
     private val listsLikedState = MutableStateFlow(initialState.likedLists)
     private val loadingState = MutableStateFlow(initialState.loadingLists)
@@ -60,6 +64,7 @@ internal class ListsViewModel(
 
     init {
         loadWatchlistData()
+        loadSmartListsData()
         loadPersonalListsData()
         loadLikedListsData()
 
@@ -117,6 +122,27 @@ internal class ListsViewModel(
             } finally {
                 loadingState.update {
                     it.copy(loadingWatchlist = false)
+                }
+            }
+        }
+    }
+
+    private fun loadSmartListsData() {
+        viewModelScope.launch {
+            try {
+                loadingState.update {
+                    it.copy(loadingSmart = true)
+                }
+                val lists = getSmartUseCase.getLists()
+                listsSmartState.update { lists }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.e(error, "Error loading smart lists")
+                }
+            } finally {
+                loadingState.update {
+                    it.copy(loadingSmart = false)
                 }
             }
         }
@@ -225,6 +251,7 @@ internal class ListsViewModel(
         listsLikedState,
         loadingState,
         errorState,
+        listsSmartState,
     ) { s ->
         ListsState(
             watchlistShows = s[0] as ImmutableList<Show>?,
@@ -233,6 +260,7 @@ internal class ListsViewModel(
             likedLists = s[3] as ImmutableList<CustomList>?,
             loadingLists = s[4] as ListsState.LoadingState,
             error = s[5] as Exception?,
+            smartLists = s[6] as ImmutableList<SmartList>?,
         )
     }.stateIn(
         scope = viewModelScope,

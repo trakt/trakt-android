@@ -9,11 +9,13 @@ import tv.trakt.trakt.app.core.lists.ListsScreen
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 
 @Serializable
 internal data object ListsDestination
 
 internal fun NavGraphBuilder.listsScreen(
+    onNavigateToSmartList: (SmartList) -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToLikedList: (CustomList) -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
@@ -24,6 +26,7 @@ internal fun NavGraphBuilder.listsScreen(
     composable<ListsDestination> {
         ListsScreen(
             viewModel = koinViewModel(),
+            onSmartListClick = onNavigateToSmartList,
             onListClick = onNavigateToPersonalList,
             onLikedListClick = onNavigateToLikedList,
             onShowClick = onNavigateToShow,

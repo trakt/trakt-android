@@ -33,16 +33,19 @@ import tv.trakt.trakt.app.core.lists.views.ListsLikedView
 import tv.trakt.trakt.app.core.lists.views.ListsMoviesWatchlistView
 import tv.trakt.trakt.app.core.lists.views.ListsPersonalView
 import tv.trakt.trakt.app.core.lists.views.ListsShowsWatchlistView
+import tv.trakt.trakt.app.core.lists.views.ListsSmartView
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
     "shows",
     "movies",
+    "smart",
     "personal",
     "liked",
 )
@@ -50,6 +53,7 @@ private val sections = listOf(
 @Composable
 internal fun ListsScreen(
     viewModel: ListsViewModel,
+    onSmartListClick: (SmartList) -> Unit = {},
     onListClick: (CustomList) -> Unit = {},
     onLikedListClick: (CustomList) -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
@@ -70,6 +74,7 @@ internal fun ListsScreen(
 
     ListsScreenContent(
         state = state,
+        onSmartListClick = onSmartListClick,
         onListClick = onListClick,
         onLikedListClick = onLikedListClick,
         onShowClick = onShowClick,
@@ -83,6 +88,7 @@ internal fun ListsScreen(
 internal fun ListsScreenContent(
     modifier: Modifier = Modifier,
     state: ListsState,
+    onSmartListClick: (SmartList) -> Unit = {},
     onListClick: (CustomList) -> Unit = {},
     onLikedListClick: (CustomList) -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
@@ -184,6 +190,21 @@ internal fun ListsScreenContent(
                         onMovieClick(it.ids.trakt)
                     },
                     onViewAllClick = onMovieViewAllClick,
+                )
+            }
+
+            item {
+                ListsSmartView(
+                    items = state.smartLists,
+                    isLoading = state.loadingLists.loadingSmart ||
+                        state.loadingLists.loadingWatchlist,
+                    focusRequesters = focusRequesters,
+                    onLoaded = { refocusOnLoad("smart") },
+                    onFocused = {
+                        focusedSection = "smart"
+                        focusedImageUrl = null
+                    },
+                    onClick = onSmartListClick,
                 )
             }
 

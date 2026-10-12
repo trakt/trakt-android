@@ -65,6 +65,8 @@ import tv.trakt.trakt.app.core.lists.details.personal.navigation.navigateToPerso
 import tv.trakt.trakt.app.core.lists.details.personal.navigation.personalListScreen
 import tv.trakt.trakt.app.core.lists.details.shows.navigation.navigateToWatchlistShows
 import tv.trakt.trakt.app.core.lists.details.shows.navigation.watchlistShowsScreen
+import tv.trakt.trakt.app.core.lists.details.smart.navigation.navigateToSmartList
+import tv.trakt.trakt.app.core.lists.details.smart.navigation.smartListScreen
 import tv.trakt.trakt.app.core.lists.navigation.listsScreen
 import tv.trakt.trakt.app.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.app.core.main.ui.drawer.NavigationDrawerContent
@@ -357,6 +359,7 @@ private fun MainNavHost(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             listsScreen(
+                onNavigateToSmartList = { navigateToSmartList(it) },
                 onNavigateToPersonalList = { navigateToPersonalList(it) },
                 onNavigateToLikedList = { navigateToCustomListMedia(it, null) },
                 onNavigateToShow = { navigateToShow(it) },
@@ -365,6 +368,10 @@ private fun MainNavHost(
                 onNavigateToWatchlistMovie = { navigateToWatchlistMovies() },
             )
             personalListScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            smartListScreen(
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
             )

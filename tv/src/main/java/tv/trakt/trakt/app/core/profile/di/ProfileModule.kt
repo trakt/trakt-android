@@ -42,6 +42,8 @@ import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalLis
 import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsApiClient
 import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsApiClient
+import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialApiClient
 import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistApiClient
@@ -128,6 +130,7 @@ internal val profileDataModule = module {
     singleOf(::UserWatchlistMinimalStorage) { bind<UserWatchlistMinimalLocalDataSource>() }
     singleOf(::ProgressUpdatesStorage) { bind<ProgressUpdates>() }
     singleOf(::UserProgressStorage) { bind<UserProgressLocalDataSource>() }
+    singleOf(::UserSmartListsApiClient) { bind<UserSmartListsRemoteDataSource>() }
 }
 
 internal val profileModule = module {

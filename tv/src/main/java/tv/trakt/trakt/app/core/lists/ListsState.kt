@@ -5,11 +5,13 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 
 @Immutable
 internal data class ListsState(
     val watchlistMovies: ImmutableList<Movie>? = null,
     val watchlistShows: ImmutableList<Show>? = null,
+    val smartLists: ImmutableList<SmartList>? = null,
     val personalLists: ImmutableList<CustomList>? = null,
     val likedLists: ImmutableList<CustomList>? = null,
     val loadingLists: LoadingState = LoadingState(),
@@ -17,6 +19,7 @@ internal data class ListsState(
 ) {
     internal data class LoadingState(
         val loadingWatchlist: Boolean = true,
+        val loadingSmart: Boolean = true,
         val loadingPersonal: Boolean = true,
         val loadingLiked: Boolean = true,
     )

@@ -62,13 +62,22 @@ internal fun PersonalListScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val listPrivacy = remember {
+        CustomList.Privacy.fromString(viewModel.destination.listPrivacy)
+    }
+    val listItemCount = viewModel.destination.listItemCount
+
     PersonalListContent(
         state = state,
         listName = viewModel.destination.listName,
-        listPrivacy = remember {
-            CustomList.Privacy.fromString(viewModel.destination.listPrivacy)
+        listSubtitle = {
+            if (listPrivacy != null || listItemCount != null) {
+                ListPrivacySubtitle(
+                    privacy = listPrivacy,
+                    itemCount = listItemCount,
+                )
+            }
         },
-        listItemCount = viewModel.destination.listItemCount,
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadNextDataPage() },
@@ -76,11 +85,10 @@ internal fun PersonalListScreen(
 }
 
 @Composable
-private fun PersonalListContent(
+internal fun PersonalListContent(
     state: PersonalListState,
     listName: String,
-    listPrivacy: CustomList.Privacy?,
-    listItemCount: Int?,
+    listSubtitle: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
@@ -139,12 +147,7 @@ private fun PersonalListContent(
                         style = TraktTheme.typography.heading4,
                         overflow = TextOverflow.Ellipsis,
                     )
-                    if (listPrivacy != null || listItemCount != null) {
-                        ListPrivacySubtitle(
-                            privacy = listPrivacy,
-                            itemCount = listItemCount,
-                        )
-                    }
+                    listSubtitle()
                 }
             }
 
@@ -337,8 +340,12 @@ private fun Preview() {
     TraktTheme {
         PersonalListContent(
             listName = "Personal List",
-            listPrivacy = CustomList.Privacy.Private,
-            listItemCount = 42,
+            listSubtitle = {
+                ListPrivacySubtitle(
+                    privacy = CustomList.Privacy.Private,
+                    itemCount = 42,
+                )
+            },
             state = PersonalListState(
 //                shows = (1..20).map {
 //                    PreviewData.show1.copy(ids = Ids(TraktId(it), SlugId(it.toString())))
