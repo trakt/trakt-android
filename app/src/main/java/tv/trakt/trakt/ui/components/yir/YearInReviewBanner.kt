@@ -1,6 +1,11 @@
 package tv.trakt.trakt.ui.components.yir
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -51,9 +56,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Shade930
+import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.math.ceil
 import tv.trakt.trakt.R as AppR
 
 private val BackgroundTop = Color(0xFF1C1730)
@@ -65,6 +72,7 @@ private val DotSize = 1.5.dp
 
 private const val POSTER_RATIO = 1200F / 1680F
 private const val RIBBON_ROTATION = -6F
+private const val RIBBON_CYCLE_MILLIS = 200_000
 
 private data class Poster(
     @param:DrawableRes val drawable: Int,
@@ -105,7 +113,7 @@ internal fun YearInReviewBanner(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 16.dp,
+                    top = 24.dp,
                     start = 12.dp,
                     end = 12.dp,
                 ),
@@ -224,6 +232,12 @@ private fun PosterRibbons(modifier: Modifier = Modifier) {
     ) {
         val posterWidth = min(maxWidth * 0.32F, 180.dp)
         val posterSpacing = posterWidth * 0.08F
+        val cycleWidth = (posterWidth + posterSpacing) * TopRibbon.size
+
+        // Each ribbon must overhang both screen edges by one full cycle so the loop never shows a gap.
+        val copies = ceil(maxWidth * 1.3F / cycleWidth).toInt() + 2
+
+        val progress = rememberRibbonProgress()
 
         Column(
             verticalArrangement = spacedBy(posterSpacing * 1.5F),
@@ -233,23 +247,54 @@ private fun PosterRibbons(modifier: Modifier = Modifier) {
         ) {
             PosterRibbon(
                 posters = TopRibbon,
+                copies = copies,
                 posterWidth = posterWidth,
                 spacing = posterSpacing,
-                modifier = Modifier.offset(x = posterWidth * 0.1F),
+                modifier = Modifier
+                    .offset(x = posterWidth * 0.1F)
+                    .graphicsLayer {
+                        translationX = (progress() - 0.5F) * cycleWidth.toPx()
+                    },
             )
             PosterRibbon(
                 posters = BottomRibbon,
+                copies = copies,
                 posterWidth = posterWidth,
                 spacing = posterSpacing,
-                modifier = Modifier.offset(x = -posterWidth * 0.25F),
+                modifier = Modifier
+                    .offset(x = -posterWidth * 0.25F)
+                    .graphicsLayer {
+                        translationX = (0.5F - progress()) * cycleWidth.toPx()
+                    },
             )
         }
     }
 }
 
 @Composable
+private fun rememberRibbonProgress(): () -> Float {
+    if (rememberAnimationsDisabled()) {
+        return { 0.5F }
+    }
+
+    val progress = rememberInfiniteTransition(label = "ribbons").animateFloat(
+        initialValue = 0F,
+        targetValue = 1F,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = RIBBON_CYCLE_MILLIS,
+                easing = LinearEasing,
+            ),
+        ),
+        label = "ribbonsProgress",
+    )
+    return { progress.value }
+}
+
+@Composable
 private fun PosterRibbon(
     posters: ImmutableList<Poster>,
+    copies: Int,
     posterWidth: Dp,
     spacing: Dp,
     modifier: Modifier = Modifier,
@@ -259,18 +304,20 @@ private fun PosterRibbon(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.wrapContentWidth(unbounded = true),
     ) {
-        posters.forEach { poster ->
-            Image(
-                painter = painterResource(poster.drawable),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(posterWidth)
-                    .aspectRatio(POSTER_RATIO)
-                    .graphicsLayer { rotationZ = poster.rotation }
-                    .shadow(8.dp, PosterShape)
-                    .clip(PosterShape),
-            )
+        repeat(copies) {
+            posters.forEach { poster ->
+                Image(
+                    painter = painterResource(poster.drawable),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(posterWidth)
+                        .aspectRatio(POSTER_RATIO)
+                        .graphicsLayer { rotationZ = poster.rotation }
+                        .shadow(8.dp, PosterShape)
+                        .clip(PosterShape),
+                )
+            }
         }
     }
 }
