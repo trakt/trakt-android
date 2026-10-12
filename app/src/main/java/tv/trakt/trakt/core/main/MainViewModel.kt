@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
+import tv.trakt.trakt.core.main.usecases.YearInReviewBannerUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
@@ -84,6 +85,7 @@ internal class MainViewModel(
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
     private val inAppReviewUseCase: RequestAppReviewUseCase,
     private val installPromptUseCase: InstallPromptUseCase,
+    private val yearInReviewBannerUseCase: YearInReviewBannerUseCase,
     private val inAppUpdateManager: AppUpdateManager,
     private val errorsManager: GlobalErrorsManager,
     private val widgetsUpdates: WidgetsUpdater,
@@ -99,6 +101,7 @@ internal class MainViewModel(
     private val welcomeState = MutableStateFlow(initialState.welcome)
     private val reviewState = MutableStateFlow(initialState.review)
     private val installPromptState = MutableStateFlow(initialState.installPrompt)
+    private val yearInReviewState = MutableStateFlow(initialState.yearInReviewUrl)
     private val paywallState = MutableStateFlow(initialState.paywall)
     private val updateState = MutableStateFlow(initialState.update)
     private val errorState = MutableStateFlow(initialState.error)
@@ -326,6 +329,20 @@ internal class MainViewModel(
         }
     }
 
+    fun loadYearInReview() {
+        viewModelScope.launch {
+            try {
+                yearInReviewState.update {
+                    yearInReviewBannerUseCase.loadBannerUrl()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     private fun loadRatePrompt() {
         viewModelScope.launch {
             try {
@@ -427,6 +444,13 @@ internal class MainViewModel(
         }
     }
 
+    fun dismissYearInReview() {
+        yearInReviewState.update { null }
+        viewModelScope.launch {
+            yearInReviewBannerUseCase.dismissBanner()
+        }
+    }
+
     fun dismissInAppReview() {
         reviewState.update { null }
     }
@@ -476,6 +500,7 @@ internal class MainViewModel(
         paywallState,
         updateState,
         errorState,
+        yearInReviewState,
     ) { state ->
         MainState(
             user = state[0] as User?,
@@ -489,6 +514,7 @@ internal class MainViewModel(
             paywall = state[8] as Boolean?,
             update = state[9] as AppUpdateResult?,
             error = state[10] as Exception?,
+            yearInReviewUrl = state[11] as String?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -38,6 +38,11 @@
     <value>https://media.trakt.tv/images/shows/000/154/997/fanarts/medium/9400ecb8e2.jpg.webp</value>
   </entry>
 
+  <entry>
+    <key>yir_2026_url</key>
+    <value>https://app.trakt.tv/users/me/year/2026</value>
+  </entry>
+
   <!-- TV -->
 
   <entry>

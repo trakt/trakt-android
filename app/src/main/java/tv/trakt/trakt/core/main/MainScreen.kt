@@ -94,6 +94,7 @@ import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.checkin.MainCheckInView
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.main.ui.rateprompt.MainRatePromptView
+import tv.trakt.trakt.core.main.ui.yir.MainYearInReviewView
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.ratings.data.work.PostRatingException
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
@@ -141,6 +142,7 @@ internal fun MainScreen(
         viewModel.loadData()
         viewModel.loadCheckIn()
         viewModel.loadNotifications(localContext)
+        viewModel.loadYearInReview()
     }
 
     LaunchedUpdateEffect(state.user) {
@@ -233,6 +235,10 @@ internal fun MainScreen(
         onPrompted = viewModel::dismissInstallPrompt,
     )
 
+    val yearInReviewVisible = state.yearInReviewUrl != null &&
+        state.user != null &&
+        !state.welcome.isActive
+
     MainScreenContent(
         modifier = modifier,
         state = state,
@@ -244,8 +250,14 @@ internal fun MainScreen(
         onDismissCheckIn = viewModel::dismissCheckIn,
     )
 
+    MainYearInReviewView(
+        visible = yearInReviewVisible,
+        url = state.yearInReviewUrl,
+        onDismiss = viewModel::dismissYearInReview,
+    )
+
     BackHandler(
-        enabled = !state.welcome.isActive,
+        enabled = !state.welcome.isActive && !yearInReviewVisible,
     ) {
         with(currentDestination.value?.destination) {
             if (isStartDestination(this)) {
@@ -264,6 +276,11 @@ internal fun MainScreen(
     BackHandler(
         enabled = appLinkState.loading.isLoading,
         onBack = appLinkViewModel::cancelAppLink,
+    )
+
+    BackHandler(
+        enabled = yearInReviewVisible,
+        onBack = viewModel::dismissYearInReview,
     )
 }
 

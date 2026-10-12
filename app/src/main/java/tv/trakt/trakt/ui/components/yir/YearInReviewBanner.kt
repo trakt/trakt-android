@@ -105,8 +105,7 @@ internal fun YearInReviewBanner(
         modifier = modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(listOf(BackgroundTop, BackgroundBottom)))
-            .dotGrid()
-            .windowInsetsPadding(WindowInsets.safeDrawing),
+            .dotGrid(),
     ) {
         Box(
             contentAlignment = Alignment.Center,
