@@ -2,8 +2,10 @@ package tv.trakt.trakt.app.core.lists.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import timber.log.Timber
 import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListSource
@@ -23,8 +25,19 @@ internal class GetListsSmartUseCase(
         return remoteSource.getSmartLists()
             .filter { it.source in supportedSources }
             .asyncMap { SmartList.fromDto(it) }
-            .asyncMap { it.copy(images = getPreviewImages(it)) }
+            .asyncMap { it.withPreviewImages() }
             .toImmutableList()
+    }
+
+    private suspend fun SmartList.withPreviewImages(): SmartList {
+        return try {
+            copy(images = getPreviewImages(this))
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.w(error, "Error loading smart list %d posters", ids.trakt.value)
+            }
+            this
+        }
     }
 
     private suspend fun getPreviewImages(list: SmartList): Images {

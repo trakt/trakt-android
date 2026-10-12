@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -20,8 +21,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,10 +37,10 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.persistentListOf
-import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
@@ -52,6 +55,7 @@ import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 
 private val cardShape = RoundedCornerShape(12.dp)
+private val posterShape = RoundedCornerShape(8.dp)
 
 @Composable
 internal fun SmartListCard(
@@ -116,11 +120,8 @@ private fun SmartListContent(list: SmartList) {
                 ),
             ) {
                 images.forEachIndexed { index, url ->
-                    VerticalMediaCard(
-                        title = "",
+                    PreviewPoster(
                         imageUrl = url,
-                        width = 70.dp,
-                        corner = 8.dp,
                         modifier = Modifier.padding(start = (32 * index).dp),
                     )
                 }
@@ -129,6 +130,24 @@ private fun SmartListContent(list: SmartList) {
 
         Spacer(modifier = Modifier.weight(1F))
     }
+}
+
+// Plain image instead of VerticalMediaCard so decorative posters never take D-pad focus.
+@Composable
+private fun PreviewPoster(
+    imageUrl: String,
+    modifier: Modifier = Modifier,
+) {
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = modifier
+            .width(70.dp)
+            .aspectRatio(CardDefaults.VerticalImageAspectRatio)
+            .clip(posterShape)
+            .background(TraktTheme.colors.placeholderContainer),
+    )
 }
 
 @Composable
