@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -27,32 +28,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.PointMode
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.min
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Shade930
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.R as AppR
 
-// The banner is always dark, matching the persona artwork, so colors are fixed instead of theme-aware.
 private val BackgroundTop = Color(0xFF1C1730)
 private val BackgroundBottom = Shade930
 private val PosterShape = RoundedCornerShape(12.dp)
+private val DotColor = Color.White.copy(alpha = 0.07F)
+private val DotSpacing = 14.dp
+private val DotSize = 1.5.dp
 
 private const val POSTER_RATIO = 1200F / 1680F
 private const val RIBBON_ROTATION = -6F
@@ -81,22 +90,44 @@ internal fun YearInReviewBanner(
     year: Int,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit = {},
+    onCloseClick: () -> Unit = {},
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(listOf(BackgroundTop, BackgroundBottom)))
+            .dotGrid()
             .windowInsetsPadding(WindowInsets.safeDrawing),
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_trakt_logo),
-            contentDescription = null,
-            tint = Color.White,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(top = 24.dp)
-                .height(32.dp),
-        )
+                .fillMaxWidth()
+                .padding(
+                    top = 16.dp,
+                    start = 12.dp,
+                    end = 12.dp,
+                ),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_trakt_logo),
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.height(32.dp),
+            )
+
+            Icon(
+                painter = painterResource(R.drawable.ic_close),
+                contentDescription = stringResource(R.string.button_label_close),
+                tint = Color.White,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterEnd)
+                    .size(20.dp)
+                    .onClick(onClick = onCloseClick),
+            )
+        }
 
         PosterRibbons(
             modifier = Modifier
@@ -106,7 +137,7 @@ internal fun YearInReviewBanner(
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = spacedBy(40.dp),
+            verticalArrangement = spacedBy(48.dp),
             modifier = Modifier.padding(
                 start = 24.dp,
                 end = 24.dp,
@@ -120,11 +151,7 @@ internal fun YearInReviewBanner(
             ) {
                 Text(
                     text = stringResource(R.string.header_year_in_review_banner, year),
-                    style = TraktTheme.typography.heading2.copy(
-                        fontWeight = FontWeight.W700,
-                        lineHeight = 1.1.em,
-                        letterSpacing = (-0.02).em,
-                    ),
+                    style = TraktTheme.typography.heading2,
                     color = TraktTheme.colors.textPrimary,
                     textAlign = TextAlign.Center,
                 )
@@ -138,7 +165,7 @@ internal fun YearInReviewBanner(
             }
 
             PrimaryButton(
-                text = stringResource(R.string.button_text_check_now),
+                text = stringResource(R.string.button_text_continue),
                 onClick = onCheckClick,
                 contentColor = Color.White,
                 modifier = Modifier.fillMaxWidth(),
@@ -147,11 +174,53 @@ internal fun YearInReviewBanner(
     }
 }
 
+private fun Modifier.dotGrid(): Modifier =
+    drawWithCache {
+        val spacing = DotSpacing.toPx()
+        val columns = (size.width / spacing).toInt()
+        val rows = (size.height / spacing).toInt()
+        val inset = Offset(
+            x = (size.width - columns * spacing) / 2F,
+            y = (size.height - rows * spacing) / 2F,
+        )
+        val points = (0..rows).flatMap { row ->
+            (0..columns).map { column ->
+                inset + Offset(column * spacing, row * spacing)
+            }
+        }
+
+        onDrawBehind {
+            drawPoints(
+                points = points,
+                pointMode = PointMode.Points,
+                color = DotColor,
+                strokeWidth = DotSize.toPx(),
+                cap = StrokeCap.Round,
+            )
+        }
+    }
+
+// Masks the content to transparent so the background gradient and dots show through.
+private fun Modifier.fadeOutBottom(): Modifier =
+    graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+        .drawWithContent {
+            drawContent()
+            drawRect(
+                brush = Brush.verticalGradient(
+                    0.8F to Color.Black,
+                    1F to Color.Transparent,
+                ),
+                blendMode = BlendMode.DstIn,
+            )
+        }
+
 @Composable
 private fun PosterRibbons(modifier: Modifier = Modifier) {
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
-        modifier = modifier.clipToBounds(),
+        modifier = modifier
+            .clipToBounds()
+            .fadeOutBottom(),
     ) {
         val posterWidth = min(maxWidth * 0.32F, 180.dp)
         val posterSpacing = posterWidth * 0.08F
@@ -175,14 +244,6 @@ private fun PosterRibbons(modifier: Modifier = Modifier) {
                 modifier = Modifier.offset(x = -posterWidth * 0.25F),
             )
         }
-
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .height(posterWidth * 0.5F)
-                .background(Brush.verticalGradient(listOf(Color.Transparent, BackgroundBottom))),
-        )
     }
 }
 
