@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Browse Shows</string>
   <string name="button_label_calendar">Calendar</string>
   <string name="button_label_calendar_feed">Subscribe to this calendar</string>
+  <string name="button_label_calendar_view">Calendar view</string>
   <string name="button_label_cancel">Cancel</string>
   <string name="button_label_cancel_follow_request">Cancel follow request to %s</string>
   <string name="button_label_cancel_vip">Cancel Subscription</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Mark as spoiler</string>
   <string name="button_label_get_started">Get started with Trakt</string>
   <string name="button_label_get_vip">Unlock VIP features</string>
-  <string name="button_label_go_to_calendar_day">Go to %d</string>
+  <string name="button_label_go_to_calendar_day">Go to %s</string>
   <string name="button_label_hide_details">Hide details</string>
   <string name="button_label_hide_recommendation">Hide \"%s\" from recommendations</string>
   <string name="button_label_hide_section">Hide %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Set the image of \"%s\" as your cover image.</string>
   <string name="button_label_settings">Settings</string>
   <string name="button_label_share">Share \"%s\"</string>
+  <string name="button_label_show_convertible_lists">Show the lists that can update themselves</string>
   <string name="button_label_show_details">Show details</string>
   <string name="button_label_show_section">Show %s</string>
   <string name="button_label_shows">Shows</string>
+  <string name="button_label_smart_list_convert">Turn this list into a smart list</string>
+  <string name="button_label_smart_list_convert_named">Turn %s into a smart list</string>
   <string name="button_label_sort_added_date">Sort by date added</string>
   <string name="button_label_sort_ascending">Sort ascending</string>
   <string name="button_label_sort_created_date">Sort by created date</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d replies</string>
   <string name="button_text_connect">Connect</string>
   <string name="button_text_continue">Continue</string>
+  <string name="button_text_convert">Convert</string>
   <string name="button_text_copy_calendar_feed">Copy iCal link</string>
   <string name="button_text_create">Create</string>
   <string name="button_text_create_list">List</string>
+  <string name="button_text_create_smart_list">Create a smart list</string>
   <string name="button_text_cta_create_list">Create list</string>
   <string name="button_text_data_sync_ignore">Ignore existing data</string>
   <string name="button_text_data_sync_yes">Sync existing data</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Hide</string>
   <string name="button_text_hide_description">Hide Description</string>
   <string name="button_text_hide_details">Hide Details</string>
+  <string name="button_text_hide_lists">Hide</string>
   <string name="button_text_hide_recommendation">Hide recommendation</string>
   <string name="button_text_history">History</string>
   <string name="button_text_history_slot_picker_reset">Reset</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Move to Top</string>
   <string name="button_text_movies">Movies</string>
   <string name="button_text_no_services">No services</string>
+  <string name="button_text_not_now">Not now</string>
   <string name="button_text_open_calendar_feed">Add to calendar app</string>
   <string name="button_text_open_in_service">Open in %s</string>
   <string name="button_text_personal">Personal</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Restore Rating Prompts</string>
   <string name="button_text_restore_show">Restore show</string>
   <string name="button_text_retry">Retry</string>
+  <string name="button_text_review_lists">Review</string>
   <string name="button_text_revoke_access">Revoke access</string>
   <string name="button_text_save_filters">Set as default</string>
   <string name="button_text_select_all">Select all</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Settings</string>
   <string name="button_text_share">Share</string>
   <string name="button_text_share_auth_logs">Share Authentication Logs</string>
+  <string name="button_text_show_me">Show me</string>
   <string name="button_text_shows">Shows</string>
+  <string name="button_text_smart_list_convert">Turn into a smart list</string>
   <string name="button_text_smart_lists">Smart</string>
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Date Added</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Fix</string>
   <string name="button_text_younify_send_logs">Send Logs</string>
   <string name="button_text_younify_unlink">Unlink</string>
+  <string name="calendar_day_item_count_one">%d Item</string>
+  <string name="calendar_day_item_count_other">%d Items</string>
+  <string name="calendar_view_day">Day</string>
+  <string name="calendar_view_week">Week</string>
   <string name="chart_label_grouped_categories">%d categories</string>
   <string name="chart_label_other">Other</string>
   <string name="cleanup_status_done">Removed %d duplicate plays.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Third-party apps you\'ve authorised to access your Trakt account.</string>
   <string name="description_data_syncs">Recent data syncs from your connected streaming services.</string>
   <string name="description_delete_account">Your personal information will be removed and your statistical data will be anonymised.</string>
+  <string name="description_emails">Choose which emails you\'d like to receive from us.</string>
+  <string name="description_emails_marketing">Product news, special offers and the weekly digest.</string>
+  <string name="description_emails_notifications">Replies, mentions, likes, new followers and list collaborations.</string>
+  <string name="description_emails_recaps">Your Month in Review and streaming service insights.</string>
+  <string name="description_emails_system">Sign-in codes, security alerts, billing and legal updates. These can\'t be turned off.</string>
   <string name="description_export">Get an export of your user data in a single ZIP file. This process may take a while.</string>
   <string name="description_export_before_destructive">Downloads a ZIP of your data before anything is removed.</string>
   <string name="description_history_analysis">Find duplicate plays in your watch history and keep only one watch of each item.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Birthday</string>
   <string name="header_calendar">Calendar</string>
   <string name="header_calendar_feed">Calendar feed</string>
+  <string name="header_calendar_last_week">Last week</string>
+  <string name="header_calendar_next_week">Next week</string>
+  <string name="header_calendar_this_week">This week</string>
   <string name="header_certification">Certification</string>
   <string name="header_clear_data">Clear Data</string>
   <string name="header_comment_reactions">Review reactions</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Director</string>
   <string name="header_display">Display</string>
   <string name="header_edit_smart_list">Edit Smart List</string>
+  <string name="header_emails">Emails</string>
   <string name="header_episode_type">Type</string>
   <string name="header_expected_premiere">Expected Premiere</string>
   <string name="header_expiration_date">Expiration Date</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Up to %s</string>
   <string name="list_title_activity">Activity</string>
   <string name="list_title_actors">Actors</string>
+  <string name="list_title_all_titles">All titles</string>
   <string name="list_title_anticipated_movies">Anticipated Movies</string>
   <string name="list_title_anticipated_shows">Anticipated Shows</string>
   <string name="list_title_birthdays_this_month">Birthdays This Month</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Background</string>
   <string name="page_title_year_in_review">%s in review</string>
   <string name="page_title_year_to_date">Year to date</string>
+  <string name="preview_feature_description_calendar_redesign">A week board with posters, a month view, a docked sidebar with a mini calendar and collapsible filters, and a day drawer on phones.</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_large_screen_cards">On bigger screens, all lists use the same cards as the rest of the app. Selecting one opens a quick glance instead of leaving the list.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
   <string name="preview_feature_description_vip_veteran">Shows how long members have kept VIP without a break, with a Veteran or Legend badge, a coloured avatar ring and a few celebrations on your own profile.</string>
   <string name="preview_feature_description_year_in_review_2026">Your 2026 as a scroll-driven reel with a viewer persona, then a stats page styled to match it.</string>
+  <string name="preview_feature_title_calendar_redesign">Calendar redesign</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_large_screen_cards">Large Screen Cards</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Season %d progress</string>
   <string name="section_title_seasons_overview">Overview</string>
   <string name="section_title_specials_progress">Specials progress</string>
+  <string name="smart_list_nudge_message">%d of your lists can update themselves</string>
+  <string name="smart_list_nudge_message_short">%d lists can update themselves</string>
+  <string name="smart_list_nudge_message_short_single">%d list can update itself</string>
+  <string name="smart_list_nudge_row_overlap">Brings back %1$d of %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Make this list update itself</string>
+  <string name="smart_list_upgrade_origin_note">Synced from %s, which no longer updates Trakt lists.</string>
+  <string name="smart_list_upgrade_origin_note_link">Synced from %s, which no longer updates Trakt lists. Same list, same link after converting.</string>
+  <string name="smart_list_upgrade_overlap">Brings back %1$s of your %2$s titles, plus new releases</string>
+  <string name="smart_list_upgrade_plain_description">Smart lists add new titles on their own, based on filters you pick.</string>
+  <string name="smart_list_upgrade_plain_title">Want this list to update itself?</string>
   <string name="spotlight_dialog_label">Quick navigation</string>
   <string name="spotlight_hint_dismiss">Close</string>
   <string name="spotlight_hint_navigate">Navigate</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Plays</string>
   <string name="stat_text_time_watched">Watched</string>
   <string name="stat_text_watchers">Watchers</string>
+  <string name="switch_label_emails_marketing">Receive news &amp; offer emails</string>
+  <string name="switch_label_emails_notifications">Receive activity notification emails</string>
+  <string name="switch_label_emails_recaps">Receive recap emails</string>
   <string name="switch_label_export_before_destructive">Export my data first</string>
   <string name="switch_label_mark_as_spoiler">Mark as spoiler</string>
   <string name="switch_label_multiple_watches">Enable or disable multiple watches</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Blocked</string>
   <string name="tag_text_deal_price">First 2 Years</string>
   <string name="tag_text_dropped">Dropped</string>
+  <string name="tag_text_emails_always_on">Always on</string>
   <string name="tag_text_episodes">Episodes</string>
   <string name="tag_text_finale">Finale</string>
   <string name="tag_text_follow_request_pending">Pending</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Buy</string>
   <string name="text_by">by</string>
   <string name="text_calendar_feed_filtered">Filtered</string>
+  <string name="text_calendar_nothing_scheduled">Nothing scheduled</string>
   <string name="text_calendar_placeholder_1">Nothing for you on this day. Take a day off, enjoy the weather.</string>
   <string name="text_calendar_placeholder_10">All clear. Time to explore something different.</string>
   <string name="text_calendar_placeholder_2">No items found for this date. Maybe try another day?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Your schedule is clear. Make the most of it.</string>
   <string name="text_calendar_placeholder_9">No events this day. Maybe revisit an old favourite.</string>
   <string name="text_calendar_placeholder_empty_period">The screen is dark. No movies. No episodes. Just you and the silence.</string>
+  <string name="text_calendar_today">Today</string>
+  <string name="text_calendar_up_next">Up next</string>
   <string name="text_clear_data_failed">Some items couldn\'t be cleared. Please try again.</string>
   <string name="text_clear_source_custom_library">Custom Library</string>
   <string name="text_clear_source_history">History</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Hide/show sections</string>
   <string name="text_email_unsubscribe_message">You\'ll no longer receive these emails from Trakt.</string>
   <string name="text_email_unsubscribe_title">Unsubscribed</string>
+  <string name="text_emails_marketing">News &amp; offers</string>
+  <string name="text_emails_notifications">Activity notifications</string>
+  <string name="text_emails_recaps">Recaps</string>
+  <string name="text_emails_system">Account &amp; security</string>
   <string name="text_empty_list_add_from_lists">Nothing here yet. Start with titles you already saved in your other lists.</string>
   <string name="text_empty_plex_library">Connect your Plex account to sync your Plex Library with Trakt.</string>
   <string name="text_ends_at">Ends at %s</string>

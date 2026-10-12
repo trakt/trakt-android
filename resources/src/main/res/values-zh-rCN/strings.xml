@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">浏览剧集</string>
   <string name="button_label_calendar">日历</string>
   <string name="button_label_calendar_feed">订阅此日历</string>
+  <string name="button_label_calendar_view">日历视图</string>
   <string name="button_label_cancel">取消</string>
   <string name="button_label_cancel_follow_request">取消对 %s 的关注请求</string>
   <string name="button_label_cancel_vip">取消订阅</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">隐藏为剧透</string>
   <string name="button_label_get_started">开始使用 Trakt</string>
   <string name="button_label_get_vip">解锁VIP功能</string>
-  <string name="button_label_go_to_calendar_day">前往 %d</string>
+  <string name="button_label_go_to_calendar_day">前往 %s</string>
   <string name="button_label_hide_details">隐藏详情</string>
   <string name="button_label_hide_recommendation">从推荐中隐藏“%s”</string>
   <string name="button_label_hide_section">隐藏%s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">将“%s”的图片设为你的封面图片。</string>
   <string name="button_label_settings">设置</string>
   <string name="button_label_share">分享“%s”</string>
+  <string name="button_label_show_convertible_lists">显示可自动更新的列表</string>
   <string name="button_label_show_details">显示详情</string>
   <string name="button_label_show_section">显示%s</string>
   <string name="button_label_shows">剧集</string>
+  <string name="button_label_smart_list_convert">将此列表转为智能列表</string>
+  <string name="button_label_smart_list_convert_named">将%s转为智能列表</string>
   <string name="button_label_sort_added_date">按添加日期排序</string>
   <string name="button_label_sort_ascending">升序排序</string>
   <string name="button_label_sort_created_date">按创建日期排序</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d 条回复</string>
   <string name="button_text_connect">连接</string>
   <string name="button_text_continue">继续</string>
+  <string name="button_text_convert">转换</string>
   <string name="button_text_copy_calendar_feed">复制 iCal 链接</string>
   <string name="button_text_create">创建</string>
   <string name="button_text_create_list">列表</string>
+  <string name="button_text_create_smart_list">创建智能列表</string>
   <string name="button_text_cta_create_list">创建列表</string>
   <string name="button_text_data_sync_ignore">忽略现有数据</string>
   <string name="button_text_data_sync_yes">同步现有数据</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">隐藏</string>
   <string name="button_text_hide_description">隐藏描述</string>
   <string name="button_text_hide_details">隐藏详情</string>
+  <string name="button_text_hide_lists">隐藏</string>
   <string name="button_text_hide_recommendation">隐藏推荐</string>
   <string name="button_text_history">历史</string>
   <string name="button_text_history_slot_picker_reset">重置</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">移至顶部</string>
   <string name="button_text_movies">电影</string>
   <string name="button_text_no_services">无服务</string>
+  <string name="button_text_not_now">暂不</string>
   <string name="button_text_open_calendar_feed">添加到日历应用</string>
   <string name="button_text_open_in_service">在 %s 中打开</string>
   <string name="button_text_personal">个人</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">恢复评分提示</string>
   <string name="button_text_restore_show">恢复剧集</string>
   <string name="button_text_retry">重试</string>
+  <string name="button_text_review_lists">评论</string>
   <string name="button_text_revoke_access">撤销访问</string>
   <string name="button_text_save_filters">设为默认</string>
   <string name="button_text_select_all">全选</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">设置</string>
   <string name="button_text_share">分享</string>
   <string name="button_text_share_auth_logs">分享认证日志</string>
+  <string name="button_text_show_me">查看</string>
   <string name="button_text_shows">剧集</string>
+  <string name="button_text_smart_list_convert">转为智能列表</string>
   <string name="button_text_smart_lists">智能</string>
   <string name="button_text_social">社交</string>
   <string name="button_text_sort_added_date">添加日期</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">修复</string>
   <string name="button_text_younify_send_logs">发送日志</string>
   <string name="button_text_younify_unlink">取消关联</string>
+  <string name="calendar_day_item_count_one">%d 个项目</string>
+  <string name="calendar_day_item_count_other">%d 个项目</string>
+  <string name="calendar_view_day">日</string>
+  <string name="calendar_view_week">一周</string>
   <string name="chart_label_grouped_categories">%d 条类别</string>
   <string name="chart_label_other">其他</string>
   <string name="cleanup_status_done">已移除 %d 个重复播放记录。</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">您已授权访问 Trakt 账户的第三方应用。</string>
   <string name="description_data_syncs">来自您已连接的流媒体服务的最新数据同步。</string>
   <string name="description_delete_account">您的个人信息将被删除，您的统计数据将匿名化。</string>
+  <string name="description_emails">选择您想接收的电子邮件类型。</string>
+  <string name="description_emails_marketing">产品新闻、特别优惠和每周摘要。</string>
+  <string name="description_emails_notifications">回复、提及、点赞、新关注者和列表协作。</string>
+  <string name="description_emails_recaps">您的每月回顾和流媒体服务洞察。</string>
+  <string name="description_emails_system">登录码、安全警报、账单和法律更新。这些无法关闭。</string>
   <string name="description_export">将你的用户数据导出为单个 ZIP 文件。此过程可能需要一些时间。</string>
   <string name="description_export_before_destructive">在移除任何内容之前下载您的数据ZIP。</string>
   <string name="description_history_analysis">在您的观看历史中查找重复播放，并只保留每个项目的一次观看记录。</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">生日</string>
   <string name="header_calendar">日历</string>
   <string name="header_calendar_feed">日历源</string>
+  <string name="header_calendar_last_week">上周</string>
+  <string name="header_calendar_next_week">下周</string>
+  <string name="header_calendar_this_week">本周</string>
   <string name="header_certification">分级</string>
   <string name="header_clear_data">清除数据</string>
   <string name="header_comment_reactions">评论反应</string>
@@ -797,6 +820,7 @@
   <string name="header_director">导演</string>
   <string name="header_display">显示</string>
   <string name="header_edit_smart_list">编辑智能列表</string>
+  <string name="header_emails">电子邮件</string>
   <string name="header_episode_type">类型</string>
   <string name="header_expected_premiere">预计首播</string>
   <string name="header_expiration_date">到期日期</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">最高 %s</string>
   <string name="list_title_activity">动态</string>
   <string name="list_title_actors">演员</string>
+  <string name="list_title_all_titles">所有标题</string>
   <string name="list_title_anticipated_movies">最受期待的电影</string>
   <string name="list_title_anticipated_shows">最受期待的剧集</string>
   <string name="list_title_birthdays_this_month">本月生日</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">背景</string>
   <string name="page_title_year_in_review">%s 年回顾</string>
   <string name="page_title_year_to_date">年至今</string>
+  <string name="preview_feature_description_calendar_redesign">一个带有海报的周视图面板、月视图、带迷你日历和可折叠过滤器的停靠侧边栏，以及手机上的日抽屉。</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
+  <string name="preview_feature_title_calendar_redesign">日历改版</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
   <string name="preview_feature_title_rewatch">重温</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">第 %d 季 进度</string>
   <string name="section_title_seasons_overview">概览</string>
   <string name="section_title_specials_progress">特辑进度</string>
+  <string name="smart_list_nudge_message">您的%d个列表可自动更新</string>
+  <string name="smart_list_nudge_message_short">%d个列表可自动更新</string>
+  <string name="smart_list_nudge_message_short_single">%d个列表可自动更新</string>
+  <string name="smart_list_nudge_row_overlap">从%1$d个中保留%2$d个</string>
+  <string name="smart_list_upgrade_draft_title">让此列表自动更新</string>
+  <string name="smart_list_upgrade_origin_note">从 %s 同步，该服务不再更新 Trakt 列表。</string>
+  <string name="smart_list_upgrade_origin_note_link">从 %s 同步，该服务不再更新 Trakt 列表。转换后列表和链接保持不变。</string>
+  <string name="smart_list_upgrade_overlap">找回您 %1$s 个片名中的 %2$s 个，并加入新发行。</string>
+  <string name="smart_list_upgrade_plain_description">智能列表会根据您选择的筛选条件，自动添加新片名。</string>
+  <string name="smart_list_upgrade_plain_title">想让此列表自动更新吗？</string>
   <string name="spotlight_dialog_label">快速导航</string>
   <string name="spotlight_hint_dismiss">关闭</string>
   <string name="spotlight_hint_navigate">导航</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">播放次数</string>
   <string name="stat_text_time_watched">已观看</string>
   <string name="stat_text_watchers">观看者</string>
+  <string name="switch_label_emails_marketing">接收新闻与优惠电子邮件</string>
+  <string name="switch_label_emails_notifications">接收活动通知电子邮件</string>
+  <string name="switch_label_emails_recaps">接收回顾电子邮件</string>
   <string name="switch_label_export_before_destructive">优先导出我的数据</string>
   <string name="switch_label_mark_as_spoiler">标记为剧透</string>
   <string name="switch_label_multiple_watches">启用或禁用多次观看</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">已屏蔽</string>
   <string name="tag_text_deal_price">前两年</string>
   <string name="tag_text_dropped">已弃看</string>
+  <string name="tag_text_emails_always_on">始终开启</string>
   <string name="tag_text_episodes">剧集</string>
   <string name="tag_text_finale">结局</string>
   <string name="tag_text_follow_request_pending">待处理</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">购买</string>
   <string name="text_by">作者</string>
   <string name="text_calendar_feed_filtered">已筛选</string>
+  <string name="text_calendar_nothing_scheduled">未安排任何内容</string>
   <string name="text_calendar_placeholder_1">今天没什么。休息一天，享受天气吧。</string>
   <string name="text_calendar_placeholder_10">一切就绪。是时候探索一些不同的东西了。</string>
   <string name="text_calendar_placeholder_2">此日期未找到项目。也许试试另一天？</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">你的日程很空。充分利用它吧。</string>
   <string name="text_calendar_placeholder_9">今天没有活动。也许重温一部老电影吧。</string>
   <string name="text_calendar_placeholder_empty_period">屏幕一片漆黑。没有电影。没有剧集。只有您和寂静。</string>
+  <string name="text_calendar_today">今天</string>
+  <string name="text_calendar_up_next">接下来</string>
   <string name="text_clear_data_failed">某些项目无法清除。请重试。</string>
   <string name="text_clear_source_custom_library">自定义媒体库</string>
   <string name="text_clear_source_history">历史</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">隐藏/显示部分</string>
   <string name="text_email_unsubscribe_message">您将不再收到 Trakt 的此类电子邮件。</string>
   <string name="text_email_unsubscribe_title">已取消订阅</string>
+  <string name="text_emails_marketing">新闻与优惠</string>
+  <string name="text_emails_notifications">活动通知</string>
+  <string name="text_emails_recaps">回顾</string>
+  <string name="text_emails_system">账户与安全</string>
   <string name="text_empty_list_add_from_lists">此处尚无内容。请从你的其他列表中保存的条目开始。</string>
   <string name="text_empty_plex_library">连接您的 Plex 帐户，将您的 Plex 媒体库与 Trakt 同步。</string>
   <string name="text_ends_at">结束于 %s</string>

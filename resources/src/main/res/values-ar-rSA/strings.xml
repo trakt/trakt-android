@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">تصفح العروض</string>
   <string name="button_label_calendar">التقويم</string>
   <string name="button_label_calendar_feed">اشترك في هذا التقويم</string>
+  <string name="button_label_calendar_view">عرض التقويم</string>
   <string name="button_label_cancel">إلغاء</string>
   <string name="button_label_cancel_follow_request">إلغاء طلب المتابعة إلى %s</string>
   <string name="button_label_cancel_vip">إلغاء الاشتراك</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">إخفاء كحرق</string>
   <string name="button_label_get_started">ابدأ مع Trakt</string>
   <string name="button_label_get_vip">فتح ميزات VIP</string>
-  <string name="button_label_go_to_calendar_day">اذهب إلى %d</string>
+  <string name="button_label_go_to_calendar_day">اذهب إلى %s</string>
   <string name="button_label_hide_details">إخفاء التفاصيل</string>
   <string name="button_label_hide_recommendation">إخفاء \"%s\" من التوصيات</string>
   <string name="button_label_hide_section">إخفاء %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">تعيين صورة \"%s\" كصورة غلاف لك.</string>
   <string name="button_label_settings">الإعدادات</string>
   <string name="button_label_share">مشاركة \"%s\"</string>
+  <string name="button_label_show_convertible_lists">عرض القوائم التي يمكنها تحديث نفسها</string>
   <string name="button_label_show_details">عرض التفاصيل</string>
   <string name="button_label_show_section">عرض %s</string>
   <string name="button_label_shows">مسلسلات</string>
+  <string name="button_label_smart_list_convert">تحويل هذه القائمة إلى قائمة ذكية</string>
+  <string name="button_label_smart_list_convert_named">تحويل %s إلى قائمة ذكية</string>
   <string name="button_label_sort_added_date">الترتيب حسب تاريخ الإضافة</string>
   <string name="button_label_sort_ascending">فرز تصاعدي</string>
   <string name="button_label_sort_created_date">الترتيب حسب تاريخ الإنشاء</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d رد</string>
   <string name="button_text_connect">تواصل</string>
   <string name="button_text_continue">متابعة</string>
+  <string name="button_text_convert">تحويل</string>
   <string name="button_text_copy_calendar_feed">نسخ رابط iCal</string>
   <string name="button_text_create">إنشاء</string>
   <string name="button_text_create_list">قائمة</string>
+  <string name="button_text_create_smart_list">إنشاء قائمة ذكية</string>
   <string name="button_text_cta_create_list">إنشاء قائمة</string>
   <string name="button_text_data_sync_ignore">تجاهل البيانات الموجودة</string>
   <string name="button_text_data_sync_yes">مزامنة البيانات الموجودة</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">إخفاء</string>
   <string name="button_text_hide_description">إخفاء الوصف</string>
   <string name="button_text_hide_details">إخفاء التفاصيل</string>
+  <string name="button_text_hide_lists">إخفاء</string>
   <string name="button_text_hide_recommendation">إخفاء التوصية</string>
   <string name="button_text_history">التاريخ</string>
   <string name="button_text_history_slot_picker_reset">إعادة تعيين</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">انتقل إلى الأعلى</string>
   <string name="button_text_movies">أفلام</string>
   <string name="button_text_no_services">لا توجد خدمات</string>
+  <string name="button_text_not_now">ليس الآن</string>
   <string name="button_text_open_calendar_feed">إضافة إلى تطبيق التقويم</string>
   <string name="button_text_open_in_service">فتح في %s</string>
   <string name="button_text_personal">شخصي</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">استعادة مطالبات التقييم</string>
   <string name="button_text_restore_show">استعادة المسلسل</string>
   <string name="button_text_retry">أعد المحاولة</string>
+  <string name="button_text_review_lists">مراجعة</string>
   <string name="button_text_revoke_access">إبطال الوصول</string>
   <string name="button_text_save_filters">تعيين كافتراضي</string>
   <string name="button_text_select_all">تحديد الكل</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">الإعدادات</string>
   <string name="button_text_share">شارك</string>
   <string name="button_text_share_auth_logs">مشاركة سجلات المصادقة</string>
+  <string name="button_text_show_me">أرني</string>
   <string name="button_text_shows">مسلسلات</string>
+  <string name="button_text_smart_list_convert">تحويل إلى قائمة ذكية</string>
   <string name="button_text_smart_lists">ذكي</string>
   <string name="button_text_social">اجتماعي</string>
   <string name="button_text_sort_added_date">تاريخ الإضافة</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">اصلاح</string>
   <string name="button_text_younify_send_logs">إرسال السجلات</string>
   <string name="button_text_younify_unlink">فك الارتباط</string>
+  <string name="calendar_day_item_count_one">%d عنصر</string>
+  <string name="calendar_day_item_count_other">القائمة: %d</string>
+  <string name="calendar_view_day">يوم</string>
+  <string name="calendar_view_week">أسبوع</string>
   <string name="chart_label_grouped_categories">%d من الفئات</string>
   <string name="chart_label_other">أخرى</string>
   <string name="cleanup_status_done">تمت إزالة %d مشاهدة مكررة.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">تطبيقات الطرف الثالث التي سمحت لها بالوصول إلى حساب Trakt الخاص بك.</string>
   <string name="description_data_syncs">أحدث مزامنات البيانات من خِدمات البثّ المربوطة.</string>
   <string name="description_delete_account">ستتم إزالة معلوماتك الشخصية وستكون بياناتك الإحصائية مجهولة المصدر.</string>
+  <string name="description_emails">اختر رسائل البريد الإلكتروني التي ترغب في استلامها منا.</string>
+  <string name="description_emails_marketing">أخبار المنتج، العروض الخاصة، والملخص الأسبوعي.</string>
+  <string name="description_emails_notifications">الردود، الإشارات، الإعجابات، المتابعين الجدد، وتعاونات القوائم.</string>
+  <string name="description_emails_recaps">ملخص شهرك وتحليلات خدمة البث.</string>
+  <string name="description_emails_system">رموز تسجيل الدخول، تنبيهات الأمان، الفواتير، والتحديثات القانونية. لا يمكن إيقاف تشغيل هذه.</string>
   <string name="description_export">احصل على تصدير بيانات المستخدم الخاصة بك في ملف ZIP واحد. قد تستغرق هذه العملية بعض الوقت.</string>
   <string name="description_export_before_destructive">يقوم بتنزيل ملف ZIP لبياناتك قبل إزالة أي شيء.</string>
   <string name="description_history_analysis">ابحث عن عمليات التشغيل المكررة في سجل المشاهدة الخاص بك واحتفظ بمشاهدة واحدة فقط لكل عنصر.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">تاريخ الميلاد</string>
   <string name="header_calendar">التقويم</string>
   <string name="header_calendar_feed">موجز التقويم</string>
+  <string name="header_calendar_last_week">الأسبوع الماضي</string>
+  <string name="header_calendar_next_week">الأسبوع القادم</string>
+  <string name="header_calendar_this_week">هذا الاسبوع</string>
   <string name="header_certification">التصنيف العمري</string>
   <string name="header_clear_data">مسح البيانات</string>
   <string name="header_comment_reactions">ردود الفعل المراجعة</string>
@@ -797,6 +820,7 @@
   <string name="header_director">المخرج</string>
   <string name="header_display">عرض</string>
   <string name="header_edit_smart_list">تعديل قائمة ذكية</string>
+  <string name="header_emails">رسائل البريد الإلكتروني</string>
   <string name="header_episode_type">النوع</string>
   <string name="header_expected_premiere">العرض الأول المتوقع</string>
   <string name="header_expiration_date">تاريخ انتهاء الصلاحية</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">حتى %s</string>
   <string name="list_title_activity">النشاط</string>
   <string name="list_title_actors">الممثلين</string>
+  <string name="list_title_all_titles">كل العناوين</string>
   <string name="list_title_anticipated_movies">الأفلام المنتظرة</string>
   <string name="list_title_anticipated_shows">المسلسلات المنتظرة</string>
   <string name="list_title_birthdays_this_month">أعياد الميلاد هذا الشهر</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">خلفية</string>
   <string name="page_title_year_in_review">ملخص %s</string>
   <string name="page_title_year_to_date">منذ بداية العام</string>
+  <string name="preview_feature_description_calendar_redesign">لوحة أسبوعية مع ملصقات، وعرض شهري، وشريط جانبي ثابت مع تقويم مصغر وفلاتر قابلة للطي، ودرج يومي على الهواتف.</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
   <string name="preview_feature_description_vip_veteran">تُظهر المدة التي احتفظ فيها الأعضاء بخدمة VIP دون انقطاع، مع شارة مخضرم أو أسطورة، وحلقة ملونة للصورة الرمزية، وبعض الاحتفالات على ملفك الشخصي.</string>
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
+  <string name="preview_feature_title_calendar_redesign">إعادة تصميم التقويم</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">تقدم الموسم %d</string>
   <string name="section_title_seasons_overview">نظرة عامة</string>
   <string name="section_title_specials_progress">تقدّم الحلقات الخاصة</string>
+  <string name="smart_list_nudge_message">%d من قوائمك يمكنها تحديث نفسها</string>
+  <string name="smart_list_nudge_message_short">%d قوائم يمكنها تحديث نفسها</string>
+  <string name="smart_list_nudge_message_short_single">%d قائمة يمكنها تحديث نفسها</string>
+  <string name="smart_list_nudge_row_overlap">تستعيد %1$d من %2$d</string>
+  <string name="smart_list_upgrade_draft_title">اجعل هذه القائمة تحدّث نفسها</string>
+  <string name="smart_list_upgrade_origin_note">تمت المزامنة من %s، والتي لم تعد تحدّث قوائم Trakt.</string>
+  <string name="smart_list_upgrade_origin_note_link">تمت المزامنة من %s، والتي لم تعد تحدّث قوائم Trakt. نفس القائمة، نفس الرابط بعد التحويل.</string>
+  <string name="smart_list_upgrade_overlap">يعيد %1$s من أصل %2$s عنوان لديك، بالإضافة إلى الإصدارات الجديدة.</string>
+  <string name="smart_list_upgrade_plain_description">تضيف القوائم الذكية عناوين جديدة تلقائياً، بناءً على الفلاتر التي تختارها.</string>
+  <string name="smart_list_upgrade_plain_title">هل تريد أن تحدّث هذه القائمة نفسها؟</string>
   <string name="spotlight_dialog_label">تنقل سريع</string>
   <string name="spotlight_hint_dismiss">إغلاق</string>
   <string name="spotlight_hint_navigate">تنقل</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">مشاهدات</string>
   <string name="stat_text_time_watched">شاهدت</string>
   <string name="stat_text_watchers">مراقبون</string>
+  <string name="switch_label_emails_marketing">تلقي رسائل البريد الإلكتروني للأخبار والعروض</string>
+  <string name="switch_label_emails_notifications">تلقي رسائل البريد الإلكتروني لإشعارات النشاط</string>
+  <string name="switch_label_emails_recaps">تلقي رسائل البريد الإلكتروني للملخصات</string>
   <string name="switch_label_export_before_destructive">تصدير بياناتي أولاً</string>
   <string name="switch_label_mark_as_spoiler">وضع علامة كحرق</string>
   <string name="switch_label_multiple_watches">تمكين أو تعطيل ساعات متعددة</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">محظور</string>
   <string name="tag_text_deal_price">أول سنتين</string>
   <string name="tag_text_dropped">متوقف</string>
+  <string name="tag_text_emails_always_on">دائمًا قيد التشغيل</string>
   <string name="tag_text_episodes">الحلقات</string>
   <string name="tag_text_finale">النهاية</string>
   <string name="tag_text_follow_request_pending">في انتظار</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">شراء</string>
   <string name="text_by">بواسطة</string>
   <string name="text_calendar_feed_filtered">مُصفى</string>
+  <string name="text_calendar_nothing_scheduled">لا يوجد شيء مجدول</string>
   <string name="text_calendar_placeholder_1">لا شيء لك في هذا اليوم. خذ يوم عطلة واستمتع بالطقس.</string>
   <string name="text_calendar_placeholder_10">كل شيء واضح. حان الوقت لاستكشاف شيء مختلف.</string>
   <string name="text_calendar_placeholder_2">لم يتم العثور على عناصر لهذا التاريخ. ربما حاول في يوم آخر؟</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">الجدول الزمني الخاص بك واضح. الاستفادة القصوى منه.</string>
   <string name="text_calendar_placeholder_9">لا توجد أحداث هذا اليوم. ربما إعادة النظر في المفضلة القديمة.</string>
   <string name="text_calendar_placeholder_empty_period">الشاشة مظلمة. لا أفلام. لا حلقات. فقط أنت والصمت.</string>
+  <string name="text_calendar_today">اليوم</string>
+  <string name="text_calendar_up_next">القادم</string>
   <string name="text_clear_data_failed">تعذر مسح بعض العناصر. يرجى المحاولة مرة أخرى.</string>
   <string name="text_clear_source_custom_library">المكتبة المخصصة</string>
   <string name="text_clear_source_history">التاريخ</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">إخفاء/إظهار الأقسام</string>
   <string name="text_email_unsubscribe_message">لن تتلقى بعد الآن هذه الرسائل الإلكترونية من Trakt.</string>
   <string name="text_email_unsubscribe_title">تم إلغاء الاشتراك</string>
+  <string name="text_emails_marketing">الأخبار والعروض</string>
+  <string name="text_emails_notifications">إشعارات النشاط</string>
+  <string name="text_emails_recaps">الملخصات</string>
+  <string name="text_emails_system">الحساب والأمان</string>
   <string name="text_empty_list_add_from_lists">لا يوجد شيء هنا بعد. ابدأ بالعناوين التي قمت بحفظها بالفعل في قوائمك الأخرى.</string>
   <string name="text_empty_plex_library">قم بتوصيل حساب Plex الخاص بك لمزامنة مكتبة Plex الخاصة بك مع Trakt.</string>
   <string name="text_ends_at">ينتهي في %s</string>

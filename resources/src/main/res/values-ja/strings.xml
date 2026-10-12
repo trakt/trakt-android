@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">番組を閲覧</string>
   <string name="button_label_calendar">カレンダー</string>
   <string name="button_label_calendar_feed">このカレンダーを購読</string>
+  <string name="button_label_calendar_view">カレンダー表示</string>
   <string name="button_label_cancel">キャンセル</string>
   <string name="button_label_cancel_follow_request">%sへのフォローリクエストをキャンセル</string>
   <string name="button_label_cancel_vip">サブスクリプションをキャンセル</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">ネタバレとしてマーク</string>
   <string name="button_label_get_started">Traktの利用を開始する</string>
   <string name="button_label_get_vip">VIP機能をアンロック</string>
-  <string name="button_label_go_to_calendar_day">%dへ移動</string>
+  <string name="button_label_go_to_calendar_day">%sへ移動</string>
   <string name="button_label_hide_details">詳細を非表示</string>
   <string name="button_label_hide_recommendation">「%s」を おすすめから非表示にする</string>
   <string name="button_label_hide_section">%sを非表示</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">「%s」の画像をカバー画像として設定</string>
   <string name="button_label_settings">設定</string>
   <string name="button_label_share">「%s」を共有</string>
+  <string name="button_label_show_convertible_lists">自動更新できるリストを表示</string>
   <string name="button_label_show_details">詳細を表示</string>
   <string name="button_label_show_section">%sを表示</string>
   <string name="button_label_shows">番組</string>
+  <string name="button_label_smart_list_convert">このリストをスマートリストに変換</string>
+  <string name="button_label_smart_list_convert_named">%sをスマートリストに変換</string>
   <string name="button_label_sort_added_date">追加日でソート</string>
   <string name="button_label_sort_ascending">昇順でソート</string>
   <string name="button_label_sort_created_date">作成日でソート</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d件の返信</string>
   <string name="button_text_connect">接続</string>
   <string name="button_text_continue">続ける</string>
+  <string name="button_text_convert">変換</string>
   <string name="button_text_copy_calendar_feed">iCalリンクをコピー</string>
   <string name="button_text_create">作成</string>
   <string name="button_text_create_list">リスト</string>
+  <string name="button_text_create_smart_list">スマートリストを作成</string>
   <string name="button_text_cta_create_list">リストを作成</string>
   <string name="button_text_data_sync_ignore">既存データを無視</string>
   <string name="button_text_data_sync_yes">既存データを同期</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">非表示</string>
   <string name="button_text_hide_description">説明を非表示</string>
   <string name="button_text_hide_details">詳細を非表示</string>
+  <string name="button_text_hide_lists">非表示</string>
   <string name="button_text_hide_recommendation">おすすめを非表示</string>
   <string name="button_text_history">歴史</string>
   <string name="button_text_history_slot_picker_reset">リセット</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">一番上に移動</string>
   <string name="button_text_movies">映画</string>
   <string name="button_text_no_services">サービスなし</string>
+  <string name="button_text_not_now">後で</string>
   <string name="button_text_open_calendar_feed">カレンダーアプリに追加</string>
   <string name="button_text_open_in_service">%sで開く</string>
   <string name="button_text_personal">個人的なアクティビティ</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">評価プロンプトを復元</string>
   <string name="button_text_restore_show">番組を復元</string>
   <string name="button_text_retry">再試行</string>
+  <string name="button_text_review_lists">レビュー</string>
   <string name="button_text_revoke_access">アクセスを取り消す</string>
   <string name="button_text_save_filters">デフォルトとして設定</string>
   <string name="button_text_select_all">すべて選択</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">設定</string>
   <string name="button_text_share">共有</string>
   <string name="button_text_share_auth_logs">認証ログを共有</string>
+  <string name="button_text_show_me">表示</string>
   <string name="button_text_shows">番組</string>
+  <string name="button_text_smart_list_convert">スマートリストに変換</string>
   <string name="button_text_smart_lists">スマート</string>
   <string name="button_text_social">ソーシャル</string>
   <string name="button_text_sort_added_date">追加日</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">修正</string>
   <string name="button_text_younify_send_logs">ログを送信</string>
   <string name="button_text_younify_unlink">リンク解除</string>
+  <string name="calendar_day_item_count_one">%dアイテム</string>
+  <string name="calendar_day_item_count_other">%dアイテム</string>
+  <string name="calendar_view_day">日</string>
+  <string name="calendar_view_week">週</string>
   <string name="chart_label_grouped_categories">%d件のカテゴリ</string>
   <string name="chart_label_other">その他</string>
   <string name="cleanup_status_done">重複する再生を%d件削除しました。</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Traktアカウントへのアクセスを許可したサードパーティアプリです。</string>
   <string name="description_data_syncs">接続済みのストリーミングサービスからの最近のデータ同期。</string>
   <string name="description_delete_account">個人情報は削除され、統計データは匿名化されます。</string>
+  <string name="description_emails">当社から受信するメールを選択してください。</string>
+  <string name="description_emails_marketing">製品ニュース、特別オファー、週刊ダイジェスト。</string>
+  <string name="description_emails_notifications">返信、メンション、いいね、新しいフォロワー、リストの共同作業。</string>
+  <string name="description_emails_recaps">月ごとのレビューとストリーミングサービスに関するインサイト。</string>
+  <string name="description_emails_system">サインインコード、セキュリティ警告、請求、法務に関する最新情報。これらはオフにできません。</string>
   <string name="description_export">ユーザーデータを1つのZIPファイルとしてエクスポートします。この処理には時間がかかる場合があります。</string>
   <string name="description_export_before_destructive">データが削除される前に、お客様のデータのZIPファイルをダウンロードします。</string>
   <string name="description_history_analysis">視聴履歴から重複する再生を見つけて、各アイテムにつき1回の視聴のみを保持します。</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">誕生日</string>
   <string name="header_calendar">カレンダー</string>
   <string name="header_calendar_feed">カレンダーフィード</string>
+  <string name="header_calendar_last_week">先週</string>
+  <string name="header_calendar_next_week">来週</string>
+  <string name="header_calendar_this_week">今週</string>
   <string name="header_certification">認証</string>
   <string name="header_clear_data">データクリア</string>
   <string name="header_comment_reactions">レビューリアクション</string>
@@ -797,6 +820,7 @@
   <string name="header_director">監督</string>
   <string name="header_display">表示</string>
   <string name="header_edit_smart_list">スマートリストを編集</string>
+  <string name="header_emails">メール</string>
   <string name="header_episode_type">タイプ</string>
   <string name="header_expected_premiere">予定されているプレミア</string>
   <string name="header_expiration_date">有効期限</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">%sまで</string>
   <string name="list_title_activity">アクティビティ</string>
   <string name="list_title_actors">俳優</string>
+  <string name="list_title_all_titles">全タイトル</string>
   <string name="list_title_anticipated_movies">期待作映画</string>
   <string name="list_title_anticipated_shows">期待作番組</string>
   <string name="list_title_birthdays_this_month">今月の誕生日</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">背景</string>
   <string name="page_title_year_in_review">%s年のレビュー</string>
   <string name="page_title_year_to_date">今年これまでの統計</string>
+  <string name="preview_feature_description_calendar_redesign">ポスター付きの週間ボード、月表示、ミニカレンダーと開閉式フィルターを備えたドッキングサイドバー、そして携帯電話では日別ドロワー。</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_large_screen_cards">大画面では、すべてのリストでアプリの他の部分と同じカードを使用します。いずれかを選択すると、リストを離れることなくクイック概要が開きます。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_vip_veteran">VIPを途切れることなく継続した期間を表示します。ベテランまたはレジェンドバッジ、色付きのアバターリング、そしてプロフィールでのささやかなお祝いが贈られます。</string>
   <string name="preview_feature_description_year_in_review_2026">視聴者ペルソナに基づいたスクロールリール形式の2026年、そしてそれに合わせたスタイルの統計ページです。</string>
+  <string name="preview_feature_title_calendar_redesign">カレンダーの再設計</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_large_screen_cards">大画面カード</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">シーズン%dの進捗</string>
   <string name="section_title_seasons_overview">概要</string>
   <string name="section_title_specials_progress">スペシャルエピソードの進捗</string>
+  <string name="smart_list_nudge_message">%d件のリストが自動更新できます。</string>
+  <string name="smart_list_nudge_message_short">%d件のリストが自動更新できます。</string>
+  <string name="smart_list_nudge_message_short_single">%d件のリストが自動更新できます。</string>
+  <string name="smart_list_nudge_row_overlap">%1$d件中%2$d件を保持</string>
+  <string name="smart_list_upgrade_draft_title">このリストを自動更新する</string>
+  <string name="smart_list_upgrade_origin_note">%sから同期されましたが、Traktリストは更新されなくなりました。</string>
+  <string name="smart_list_upgrade_origin_note_link">%sから同期されましたが、Traktリストは更新されなくなりました。変換後も同じリスト、同じリンクになります。</string>
+  <string name="smart_list_upgrade_overlap">%1$s個のタイトル中%2$s個と、新しいリリースを含めます</string>
+  <string name="smart_list_upgrade_plain_description">スマートリストは、選択したフィルターに基づいて新しいタイトルを自動で追加します。</string>
+  <string name="smart_list_upgrade_plain_title">このリストを自動更新しますか？</string>
   <string name="spotlight_dialog_label">クイックナビゲーション</string>
   <string name="spotlight_hint_dismiss">閉じる</string>
   <string name="spotlight_hint_navigate">移動</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">再生回数</string>
   <string name="stat_text_time_watched">視聴済み</string>
   <string name="stat_text_watchers">視聴者数</string>
+  <string name="switch_label_emails_marketing">ニュースとオファーのメールを受信する</string>
+  <string name="switch_label_emails_notifications">アクティビティ通知メールを受信する</string>
+  <string name="switch_label_emails_recaps">まとめメールを受信する</string>
   <string name="switch_label_export_before_destructive">まずデータをエクスポート</string>
   <string name="switch_label_mark_as_spoiler">ネタバレとしてマーク</string>
   <string name="switch_label_multiple_watches">複数回視聴を有効または無効にする</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">ブロック済み</string>
   <string name="tag_text_deal_price">最初の2年間</string>
   <string name="tag_text_dropped">視聴中止</string>
+  <string name="tag_text_emails_always_on">常にオン</string>
   <string name="tag_text_episodes">エピソード</string>
   <string name="tag_text_finale">最終回</string>
   <string name="tag_text_follow_request_pending">保留中</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">購入</string>
   <string name="text_by">作成者</string>
   <string name="text_calendar_feed_filtered">フィルター済み</string>
+  <string name="text_calendar_nothing_scheduled">予定なし</string>
   <string name="text_calendar_placeholder_1">この日には何もありません。一日休みを取り、天気を楽しんでください。</string>
   <string name="text_calendar_placeholder_10">全てクリア。何か違うものを探求する時間です。</string>
   <string name="text_calendar_placeholder_2">この日付のアイテムは見つかりませんでした。別の日を試してみますか？</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">スケジュールは空いています。最大限に活用してください。</string>
   <string name="text_calendar_placeholder_9">この日にはイベントはありません。昔のお気に入りを再訪してみませんか。</string>
   <string name="text_calendar_placeholder_empty_period">画面は暗いまま。映画もエピソードもなし。ただあなたと静寂だけ。</string>
+  <string name="text_calendar_today">今日</string>
+  <string name="text_calendar_up_next">次に公開</string>
   <string name="text_clear_data_failed">一部のアイテムをクリアできませんでした。もう一度お試しください。</string>
   <string name="text_clear_source_custom_library">カスタムライブラリ</string>
   <string name="text_clear_source_history">歴史</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">セクションの表示/非表示</string>
   <string name="text_email_unsubscribe_message">今後、Traktからのメールは届きません。</string>
   <string name="text_email_unsubscribe_title">登録解除しました</string>
+  <string name="text_emails_marketing">ニュースとオファー</string>
+  <string name="text_emails_notifications">アクティビティ通知</string>
+  <string name="text_emails_recaps">まとめ</string>
+  <string name="text_emails_system">アカウントとセキュリティ</string>
   <string name="text_empty_list_add_from_lists">まだ何もありません。他のリストに保存済みのタイトルから始めてください。</string>
   <string name="text_empty_plex_library">Plexアカウントを接続して、PlexライブラリをTraktと同期してください。</string>
   <string name="text_ends_at">%sに終了</string>

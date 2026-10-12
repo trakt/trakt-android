@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Răsfoiește seriale</string>
   <string name="button_label_calendar">Calendar</string>
   <string name="button_label_calendar_feed">Abonează-te la acest calendar</string>
+  <string name="button_label_calendar_view">Vizualizare calendar</string>
   <string name="button_label_cancel">Anulează</string>
   <string name="button_label_cancel_follow_request">Anulează cererea de urmărire către %s</string>
   <string name="button_label_cancel_vip">Anulează abonamentul</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Ascunde ca spoiler</string>
   <string name="button_label_get_started">Începe cu Trakt</string>
   <string name="button_label_get_vip">Deblochează funcții VIP</string>
-  <string name="button_label_go_to_calendar_day">Mergi la %d</string>
+  <string name="button_label_go_to_calendar_day">Mergi la %s</string>
   <string name="button_label_hide_details">Ascunde detalii</string>
   <string name="button_label_hide_recommendation">Ascunde „%s” din recomandări</string>
   <string name="button_label_hide_section">Ascunde %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Setează imaginea \"%s\" ca imagine de copertă.</string>
   <string name="button_label_settings">Setări</string>
   <string name="button_label_share">Partajează \"%s\"</string>
+  <string name="button_label_show_convertible_lists">Afișează listele care se pot actualiza automat</string>
   <string name="button_label_show_details">Arată detalii</string>
   <string name="button_label_show_section">Afișează %s</string>
   <string name="button_label_shows">Seriale</string>
+  <string name="button_label_smart_list_convert">Transformă această listă într-o listă inteligentă</string>
+  <string name="button_label_smart_list_convert_named">Transformă %s într-o listă inteligentă</string>
   <string name="button_label_sort_added_date">Sortează după data adăugării</string>
   <string name="button_label_sort_ascending">Sortează ascendent</string>
   <string name="button_label_sort_created_date">Sortează după data creării</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d răspunsuri</string>
   <string name="button_text_connect">Conectează</string>
   <string name="button_text_continue">Continuă</string>
+  <string name="button_text_convert">Convertește</string>
   <string name="button_text_copy_calendar_feed">Copiază linkul iCal</string>
   <string name="button_text_create">Creează</string>
   <string name="button_text_create_list">Listă</string>
+  <string name="button_text_create_smart_list">Creează o listă inteligentă</string>
   <string name="button_text_cta_create_list">Creează listă</string>
   <string name="button_text_data_sync_ignore">Ignoră datele existente</string>
   <string name="button_text_data_sync_yes">Sincronizează datele existente</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Ascunde</string>
   <string name="button_text_hide_description">Ascunde descrierea</string>
   <string name="button_text_hide_details">Ascunde detalii</string>
+  <string name="button_text_hide_lists">Ascunde</string>
   <string name="button_text_hide_recommendation">Ascunde recomandarea</string>
   <string name="button_text_history">Istoric</string>
   <string name="button_text_history_slot_picker_reset">Resetează</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Mută la început</string>
   <string name="button_text_movies">Filme</string>
   <string name="button_text_no_services">Niciun serviciu</string>
+  <string name="button_text_not_now">Nu acum</string>
   <string name="button_text_open_calendar_feed">Adaugă în aplicația de calendar</string>
   <string name="button_text_open_in_service">Deschide în %s</string>
   <string name="button_text_personal">Personal</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Restaurează solicitările de evaluare</string>
   <string name="button_text_restore_show">Restaurează serialul</string>
   <string name="button_text_retry">Reîncearcă</string>
+  <string name="button_text_review_lists">Recenzie</string>
   <string name="button_text_revoke_access">Revocă accesul</string>
   <string name="button_text_save_filters">Setează ca implicit</string>
   <string name="button_text_select_all">Selectează tot</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Setări</string>
   <string name="button_text_share">Partajează</string>
   <string name="button_text_share_auth_logs">Partajează Jurnalele de Autentificare</string>
+  <string name="button_text_show_me">Arată-mi</string>
   <string name="button_text_shows">Seriale</string>
+  <string name="button_text_smart_list_convert">Transformă în listă inteligentă</string>
   <string name="button_text_smart_lists">Inteligent</string>
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Data adăugării</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Repară</string>
   <string name="button_text_younify_send_logs">Trimite jurnale</string>
   <string name="button_text_younify_unlink">Deconectează</string>
+  <string name="calendar_day_item_count_one">%d Element</string>
+  <string name="calendar_day_item_count_other">%d Elemente</string>
+  <string name="calendar_view_day">Zi</string>
+  <string name="calendar_view_week">Săptămână</string>
   <string name="chart_label_grouped_categories">%d categorii</string>
   <string name="chart_label_other">Altele</string>
   <string name="cleanup_status_done">Au fost eliminate %d vizionări duplicate.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Aplicații terțe pe care le-ai autorizat să-ți acceseze contul Trakt.</string>
   <string name="description_data_syncs">Sincronizări recente de date de la serviciile tale de streaming conectate.</string>
   <string name="description_delete_account">Informațiile tale personale vor fi eliminate, iar datele tale statistice vor fi anonimizate.</string>
+  <string name="description_emails">Alegeți ce e-mailuri doriți să primiți de la noi.</string>
+  <string name="description_emails_marketing">Noutăți despre produse, oferte speciale și rezumatul săptămânal.</string>
+  <string name="description_emails_notifications">Răspunsuri, mențiuni, aprecieri, urmăritori noi și colaborări la liste.</string>
+  <string name="description_emails_recaps">Rezumatul lunii și informații despre serviciile de streaming.</string>
+  <string name="description_emails_system">Coduri de conectare, alerte de securitate, facturare și actualizări legale. Acestea nu pot fi dezactivate.</string>
   <string name="description_export">Obține un export al datelor tale de utilizator într-un singur fișier ZIP. Acest proces poate dura.</string>
   <string name="description_export_before_destructive">Descarcă un fișier ZIP cu datele tale înainte ca orice să fie eliminat.</string>
   <string name="description_history_analysis">Găsește vizionări duplicate în istoricul tău și păstrează doar o singură vizionare pentru fiecare element.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Zi de naștere</string>
   <string name="header_calendar">Calendar</string>
   <string name="header_calendar_feed">Flux calendar</string>
+  <string name="header_calendar_last_week">Săptămâna trecută</string>
+  <string name="header_calendar_next_week">Săptămâna viitoare</string>
+  <string name="header_calendar_this_week">Săptămâna aceasta</string>
   <string name="header_certification">Certificare</string>
   <string name="header_clear_data">Șterge datele</string>
   <string name="header_comment_reactions">Reacții la recenzie</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Regizor</string>
   <string name="header_display">Afișare</string>
   <string name="header_edit_smart_list">Editare listă inteligentă</string>
+  <string name="header_emails">E-mailuri</string>
   <string name="header_episode_type">Tip</string>
   <string name="header_expected_premiere">Premiera așteptată</string>
   <string name="header_expiration_date">Data expirării</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Până la %s</string>
   <string name="list_title_activity">Activitate</string>
   <string name="list_title_actors">Actori</string>
+  <string name="list_title_all_titles">Toate titlurile</string>
   <string name="list_title_anticipated_movies">Filme anticipate</string>
   <string name="list_title_anticipated_shows">Seriale anticipate</string>
   <string name="list_title_birthdays_this_month">Zile de naștere luna aceasta</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Fundal</string>
   <string name="page_title_year_in_review">Retrospectiva anului %s</string>
   <string name="page_title_year_to_date">Anul curent</string>
+  <string name="preview_feature_description_calendar_redesign">Un panou săptămânal cu postere, o vizualizare lunară, o bară laterală fixă cu un mini-calendar și filtre restrângibile, și o bară de zi pe telefoane.</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_large_screen_cards">Pe ecrane mai mari, toate listele folosesc aceleași carduri ca și restul aplicației. Selectarea unui card deschide o vizualizare rapidă, în loc să părăsească lista.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_vip_veteran">Arată cât timp au păstrat membrii statutul VIP fără întrerupere, cu o insignă Veteran sau Legendă, un inel colorat de avatar și câteva celebrații pe propriul profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Anul tău 2026 sub forma unui rezumat derulabil cu o persona de spectator, apoi o pagină de statistici stilizată pentru a o egala.</string>
+  <string name="preview_feature_title_calendar_redesign">Redesign calendar</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_large_screen_cards">Carduri pe Ecrane Mari</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Sezonul %d progres</string>
   <string name="section_title_seasons_overview">Prezentare generală</string>
   <string name="section_title_specials_progress">Progresul episoadelor speciale</string>
+  <string name="smart_list_nudge_message">%d dintre listele tale se pot actualiza automat</string>
+  <string name="smart_list_nudge_message_short">%d liste se pot actualiza automat</string>
+  <string name="smart_list_nudge_message_short_single">%d listă se poate actualiza automat</string>
+  <string name="smart_list_nudge_row_overlap">Include %1$d din %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Actualizează automat această listă</string>
+  <string name="smart_list_upgrade_origin_note">Sincronizat de la %s, care nu mai actualizează listele Trakt.</string>
+  <string name="smart_list_upgrade_origin_note_link">Sincronizat de la %s, care nu mai actualizează listele Trakt. Aceeași listă, același link după conversie.</string>
+  <string name="smart_list_upgrade_overlap">Include %1$s din cele %2$s titluri, plus lansări noi</string>
+  <string name="smart_list_upgrade_plain_description">Listele inteligente adaugă automat titluri noi, pe baza filtrelor alese.</string>
+  <string name="smart_list_upgrade_plain_title">Vrei ca această listă să se actualizeze singură?</string>
   <string name="spotlight_dialog_label">Navigare rapidă</string>
   <string name="spotlight_hint_dismiss">Închide</string>
   <string name="spotlight_hint_navigate">Navighează</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Vizionări</string>
   <string name="stat_text_time_watched">Vizionat</string>
   <string name="stat_text_watchers">Spectatori</string>
+  <string name="switch_label_emails_marketing">Primește e-mailuri cu știri și oferte</string>
+  <string name="switch_label_emails_notifications">Primește e-mailuri de notificare a activității</string>
+  <string name="switch_label_emails_recaps">Primește e-mailuri de rezumat</string>
   <string name="switch_label_export_before_destructive">Exportă-mi datele mai întâi</string>
   <string name="switch_label_mark_as_spoiler">Marchează ca spoiler</string>
   <string name="switch_label_multiple_watches">Activează sau dezactivează vizionările multiple</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Blocat</string>
   <string name="tag_text_deal_price">Primii 2 ani</string>
   <string name="tag_text_dropped">Abandonat</string>
+  <string name="tag_text_emails_always_on">Întotdeauna activ</string>
   <string name="tag_text_episodes">Episoade</string>
   <string name="tag_text_finale">Finala</string>
   <string name="tag_text_follow_request_pending">În așteptare</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Cumpără</string>
   <string name="text_by">de</string>
   <string name="text_calendar_feed_filtered">Filtrat</string>
+  <string name="text_calendar_nothing_scheduled">Nimic programat</string>
   <string name="text_calendar_placeholder_1">Nimic pentru tine în această zi. Ia o zi liberă, bucură-te de vreme.</string>
   <string name="text_calendar_placeholder_10">Totul clar. E timpul să explorezi ceva diferit.</string>
   <string name="text_calendar_placeholder_2">Nu s-au găsit elemente pentru această dată. Poate încerci o altă zi?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Programul tău este liber. Profită la maximum.</string>
   <string name="text_calendar_placeholder_9">Fără evenimente în această zi. Poate revizitezi un vechi favorit.</string>
   <string name="text_calendar_placeholder_empty_period">Ecranul este întunecat. Fără filme. Fără episoade. Doar tu și liniștea.</string>
+  <string name="text_calendar_today">Astăzi</string>
+  <string name="text_calendar_up_next">Urmează</string>
   <string name="text_clear_data_failed">Unele elemente nu au putut fi șterse. Te rugăm să încerci din nou.</string>
   <string name="text_clear_source_custom_library">Bibliotecă personalizată</string>
   <string name="text_clear_source_history">Istoric</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Ascunde/afișează secțiunile</string>
   <string name="text_email_unsubscribe_message">Nu vei mai primi aceste e-mailuri de la Trakt.</string>
   <string name="text_email_unsubscribe_title">Dezabonat</string>
+  <string name="text_emails_marketing">Știri și oferte</string>
+  <string name="text_emails_notifications">Notificări de activitate</string>
+  <string name="text_emails_recaps">Rezumat</string>
+  <string name="text_emails_system">Cont și securitate</string>
   <string name="text_empty_list_add_from_lists">Încă nu este nimic aici. Începe cu titluri pe care le-ai salvat deja în celelalte liste ale tale.</string>
   <string name="text_empty_plex_library">Conectează-ți contul Plex pentru a sincroniza Biblioteca ta Plex cu Trakt.</string>
   <string name="text_ends_at">Se termină la %s</string>

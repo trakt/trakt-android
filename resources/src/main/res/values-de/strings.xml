@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Serien durchstöbern</string>
   <string name="button_label_calendar">Kalender</string>
   <string name="button_label_calendar_feed">Diesen Kalender abonnieren</string>
+  <string name="button_label_calendar_view">Kalenderansicht</string>
   <string name="button_label_cancel">Abbrechen</string>
   <string name="button_label_cancel_follow_request">Folgeanfrage an %s abbrechen</string>
   <string name="button_label_cancel_vip">Abonnement kündigen</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Als Spoiler markieren</string>
   <string name="button_label_get_started">Starten mit Trakt</string>
   <string name="button_label_get_vip">VIP-Funktionen freischalten</string>
-  <string name="button_label_go_to_calendar_day">Gehe zu %d</string>
+  <string name="button_label_go_to_calendar_day">Gehe zu %s</string>
   <string name="button_label_hide_details">Details ausblenden</string>
   <string name="button_label_hide_recommendation">„%s“ aus Empfehlungen ausblenden</string>
   <string name="button_label_hide_section">%s ausblenden</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Das Bild von \"%s\" als Ihr Coverbild festlegen.</string>
   <string name="button_label_settings">Einstellungen</string>
   <string name="button_label_share">\"%s\" teilen</string>
+  <string name="button_label_show_convertible_lists">Listen anzeigen, die sich automatisch aktualisieren können</string>
   <string name="button_label_show_details">Details anzeigen</string>
   <string name="button_label_show_section">%s anzeigen</string>
   <string name="button_label_shows">Serien</string>
+  <string name="button_label_smart_list_convert">Diese Liste in eine Smart List umwandeln</string>
+  <string name="button_label_smart_list_convert_named">%s in eine Smart List umwandeln</string>
   <string name="button_label_sort_added_date">Nach Hinzugefügt-Datum sortieren</string>
   <string name="button_label_sort_ascending">Aufsteigend sortieren</string>
   <string name="button_label_sort_created_date">Nach Erstellungsdatum sortieren</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d Antworten</string>
   <string name="button_text_connect">Verbinden</string>
   <string name="button_text_continue">Weiter</string>
+  <string name="button_text_convert">Umwandeln</string>
   <string name="button_text_copy_calendar_feed">iCal-Link kopieren</string>
   <string name="button_text_create">Erstellen</string>
   <string name="button_text_create_list">Liste</string>
+  <string name="button_text_create_smart_list">Smart List erstellen</string>
   <string name="button_text_cta_create_list">Liste erstellen</string>
   <string name="button_text_data_sync_ignore">Vorhandene Daten ignorieren</string>
   <string name="button_text_data_sync_yes">Vorhandene Daten synchronisieren</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Ausblenden</string>
   <string name="button_text_hide_description">Beschreibung ausblenden</string>
   <string name="button_text_hide_details">Details ausblenden</string>
+  <string name="button_text_hide_lists">Ausblenden</string>
   <string name="button_text_hide_recommendation">Empfehlung ausblenden</string>
   <string name="button_text_history">Geschichte</string>
   <string name="button_text_history_slot_picker_reset">Zurücksetzen</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">An den Anfang verschieben</string>
   <string name="button_text_movies">Filme</string>
   <string name="button_text_no_services">Keine Dienste</string>
+  <string name="button_text_not_now">Nicht jetzt</string>
   <string name="button_text_open_calendar_feed">Zur Kalender-App hinzufügen</string>
   <string name="button_text_open_in_service">In %s öffnen</string>
   <string name="button_text_personal">Persönlich</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Bewertungsaufforderungen wiederherstellen</string>
   <string name="button_text_restore_show">Serie wiederherstellen</string>
   <string name="button_text_retry">Erneut versuchen</string>
+  <string name="button_text_review_lists">Rezension</string>
   <string name="button_text_revoke_access">Zugriff widerrufen</string>
   <string name="button_text_save_filters">Als Standard festlegen</string>
   <string name="button_text_select_all">Alle auswählen</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Einstellungen</string>
   <string name="button_text_share">Teilen</string>
   <string name="button_text_share_auth_logs">Authentifizierungs-Logs teilen</string>
+  <string name="button_text_show_me">Anzeigen</string>
   <string name="button_text_shows">Serien</string>
+  <string name="button_text_smart_list_convert">In eine Smart List umwandeln</string>
   <string name="button_text_smart_lists">Smart</string>
   <string name="button_text_social">Soziales</string>
   <string name="button_text_sort_added_date">Hinzugefügt am</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Reparieren</string>
   <string name="button_text_younify_send_logs">Logs senden</string>
   <string name="button_text_younify_unlink">Entknüpfen</string>
+  <string name="calendar_day_item_count_one">%d Element</string>
+  <string name="calendar_day_item_count_other">%d Elemente</string>
+  <string name="calendar_view_day">Tag</string>
+  <string name="calendar_view_week">Woche</string>
   <string name="chart_label_grouped_categories">%d Kategorien</string>
   <string name="chart_label_other">Andere</string>
   <string name="cleanup_status_done">%d doppelte Wiedergaben entfernt.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Drittanbieter-Apps, denen Sie den Zugriff auf Ihr Trakt-Konto gestattet haben.</string>
   <string name="description_data_syncs">Aktuelle Datensynchronisierungen von deinen verbundenen Streaming-Diensten.</string>
   <string name="description_delete_account">Ihre persönlichen Informationen werden entfernt und Ihre statistischen Daten werden anonymisiert.</string>
+  <string name="description_emails">Wählen Sie aus, welche E-Mails Sie von uns erhalten möchten.</string>
+  <string name="description_emails_marketing">Produktneuigkeiten, Sonderangebote und die wöchentliche Zusammenfassung.</string>
+  <string name="description_emails_notifications">Antworten, Erwähnungen, Likes, neue Follower und Listen-Kollaborationen.</string>
+  <string name="description_emails_recaps">Ihr Monatsrückblick und Einblicke zu Streaming-Diensten.</string>
+  <string name="description_emails_system">Anmeldecodes, Sicherheitswarnungen, Abrechnungen und rechtliche Updates. Diese können nicht deaktiviert werden.</string>
   <string name="description_export">Erhalten Sie einen Export Ihrer Nutzerdaten in einer einzigen ZIP-Datei. Dieser Vorgang kann eine Weile dauern.</string>
   <string name="description_export_before_destructive">Lädt eine ZIP-Datei Ihrer Daten herunter, bevor etwas entfernt wird.</string>
   <string name="description_history_analysis">Finde doppelte Wiedergaben in deinem Wiedergabeverlauf und behalte nur eine Wiedergabe jedes Elements.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Geburtstag</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Kalender-Feed</string>
+  <string name="header_calendar_last_week">Letzte Woche</string>
+  <string name="header_calendar_next_week">Nächste Woche</string>
+  <string name="header_calendar_this_week">Diese Woche</string>
   <string name="header_certification">Altersfreigabe</string>
   <string name="header_clear_data">Daten löschen</string>
   <string name="header_comment_reactions">Rezensionsreaktionen</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Regisseur</string>
   <string name="header_display">Anzeige</string>
   <string name="header_edit_smart_list">Smart List bearbeiten</string>
+  <string name="header_emails">E-Mails</string>
   <string name="header_episode_type">Typ</string>
   <string name="header_expected_premiere">Erwartete Premiere</string>
   <string name="header_expiration_date">Ablaufdatum</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Bis zu %s</string>
   <string name="list_title_activity">Aktivität</string>
   <string name="list_title_actors">Darsteller</string>
+  <string name="list_title_all_titles">Alle Titel</string>
   <string name="list_title_anticipated_movies">Erwartete Filme</string>
   <string name="list_title_anticipated_shows">Erwartete Serien</string>
   <string name="list_title_birthdays_this_month">Geburtstage diesen Monat</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Hintergrund</string>
   <string name="page_title_year_in_review">%s im Rückblick</string>
   <string name="page_title_year_to_date">Jahresstatistik</string>
+  <string name="preview_feature_description_calendar_redesign">Eine Wochenübersicht mit Postern, eine Monatsansicht, eine angedockte Seitenleiste mit einem Minikalender und einklappbaren Filtern sowie eine Tagesansicht auf Telefonen.</string>
   <string name="preview_feature_description_edit_mode">Aktivieren Sie Steuerelemente zum Ausblenden oder Anzeigen konfigurierbarer Abschnitte in der gesamten App.</string>
   <string name="preview_feature_description_large_screen_cards">Auf größeren Bildschirmen verwenden alle Listen die gleichen Karten wie der Rest der App. Wenn Sie eine auswählen, öffnet sich eine Kurzübersicht, anstatt die Liste zu verlassen.</string>
   <string name="preview_feature_description_rewatch">Starten Sie Wiederholungssitzungen für bereits gesehene Serien, checken Sie Episoden ein oder markieren Sie diese direkt aus dem Sitzungs-Drawer als gesehen.</string>
   <string name="preview_feature_description_soundtrack">Fügt einen Soundtrack-Bereich zu Film- und Serienseiten hinzu, mit Wiedergabe, wo ein Titel zugeordnet werden kann.</string>
   <string name="preview_feature_description_vip_veteran">Zeigt, wie lange Mitglieder VIP ohne Unterbrechung waren, mit einem Veteranen- oder Legendenabzeichen, einem farbigen Avatarring und einigen Feiern auf Ihrem Profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Dein Jahr 2026 als scrollbares Reel mit einer Zuschauerpersönlichkeit und anschließend einer dazu passenden Statistikseite.</string>
+  <string name="preview_feature_title_calendar_redesign">Kalender-Redesign</string>
   <string name="preview_feature_title_edit_mode">Bearbeitungsmodus</string>
   <string name="preview_feature_title_large_screen_cards">Großbildkarten</string>
   <string name="preview_feature_title_rewatch">Wiederholung</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Staffel %d Fortschritt</string>
   <string name="section_title_seasons_overview">Übersicht</string>
   <string name="section_title_specials_progress">Spezialfolgen Fortschritt</string>
+  <string name="smart_list_nudge_message">%d Ihrer Listen können sich automatisch aktualisieren</string>
+  <string name="smart_list_nudge_message_short">%d Listen können sich automatisch aktualisieren</string>
+  <string name="smart_list_nudge_message_short_single">%d Liste kann sich automatisch aktualisieren</string>
+  <string name="smart_list_nudge_row_overlap">Behält %1$d von %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Diese Liste automatisch aktualisieren</string>
+  <string name="smart_list_upgrade_origin_note">Synchronisiert von %s, das Trakt-Listen nicht mehr aktualisiert.</string>
+  <string name="smart_list_upgrade_origin_note_link">Synchronisiert von %s, das Trakt-Listen nicht mehr aktualisiert. Dieselbe Liste, derselbe Link nach der Umwandlung.</string>
+  <string name="smart_list_upgrade_overlap">Behält %1$s von %2$s Titeln bei, plus Neuerscheinungen</string>
+  <string name="smart_list_upgrade_plain_description">Smart Lists fügen basierend auf Ihren Filtern automatisch neue Titel hinzu.</string>
+  <string name="smart_list_upgrade_plain_title">Soll sich diese Liste automatisch aktualisieren?</string>
   <string name="spotlight_dialog_label">Schnelle Navigation</string>
   <string name="spotlight_hint_dismiss">Schließen</string>
   <string name="spotlight_hint_navigate">Navigieren</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Wiedergaben</string>
   <string name="stat_text_time_watched">Gesehen</string>
   <string name="stat_text_watchers">Zuschauer</string>
+  <string name="switch_label_emails_marketing">Neuigkeiten- &amp; Angebots-E-Mails erhalten</string>
+  <string name="switch_label_emails_notifications">Aktivitätsbenachrichtigungen per E-Mail erhalten</string>
+  <string name="switch_label_emails_recaps">Rückblicks-E-Mails erhalten</string>
   <string name="switch_label_export_before_destructive">Zuerst meine Daten exportieren</string>
   <string name="switch_label_mark_as_spoiler">Als Spoiler markieren</string>
   <string name="switch_label_multiple_watches">Mehrfaches Ansehen aktivieren oder deaktivieren</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Blockiert</string>
   <string name="tag_text_deal_price">Erste 2 Jahre</string>
   <string name="tag_text_dropped">Abgebrochen</string>
+  <string name="tag_text_emails_always_on">Immer aktiv</string>
   <string name="tag_text_episodes">Episoden</string>
   <string name="tag_text_finale">Finale</string>
   <string name="tag_text_follow_request_pending">Ausstehend</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Kaufen</string>
   <string name="text_by">von</string>
   <string name="text_calendar_feed_filtered">Gefiltert</string>
+  <string name="text_calendar_nothing_scheduled">Nichts geplant</string>
   <string name="text_calendar_placeholder_1">Nichts für Sie an diesem Tag. Nehmen Sie sich einen Tag frei, genießen Sie das Wetter.</string>
   <string name="text_calendar_placeholder_10">Alles klar. Zeit, etwas Neues zu erkunden.</string>
   <string name="text_calendar_placeholder_2">Keine Elemente für dieses Datum gefunden. Vielleicht einen anderen Tag versuchen?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Ihr Zeitplan ist klar. Machen Sie das Beste daraus.</string>
   <string name="text_calendar_placeholder_9">Keine Ereignisse an diesem Tag. Vielleicht einen alten Favoriten wiedersehen.</string>
   <string name="text_calendar_placeholder_empty_period">Der Bildschirm ist dunkel. Keine Filme. Keine Episoden. Nur Sie und die Stille.</string>
+  <string name="text_calendar_today">Heute</string>
+  <string name="text_calendar_up_next">Als Nächstes</string>
   <string name="text_clear_data_failed">Einige Elemente konnten nicht geleert werden. Bitte versuchen Sie es erneut.</string>
   <string name="text_clear_source_custom_library">Benutzerdefinierte Bibliothek</string>
   <string name="text_clear_source_history">Historie</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Abschnitte aus-/einblenden</string>
   <string name="text_email_unsubscribe_message">Sie erhalten diese E-Mails von Trakt nicht mehr.</string>
   <string name="text_email_unsubscribe_title">Abgemeldet</string>
+  <string name="text_emails_marketing">Neuigkeiten &amp; Angebote</string>
+  <string name="text_emails_notifications">Aktivitätsbenachrichtigungen</string>
+  <string name="text_emails_recaps">Rückblicke</string>
+  <string name="text_emails_system">Konto &amp; Sicherheit</string>
   <string name="text_empty_list_add_from_lists">Hier ist noch nichts. Beginnen Sie mit Titeln, die Sie bereits in Ihren anderen Listen gespeichert haben.</string>
   <string name="text_empty_plex_library">Verbinden Sie Ihr Plex-Konto, um Ihre Plex-Bibliothek mit Trakt zu synchronisieren.</string>
   <string name="text_ends_at">Endet um %s</string>

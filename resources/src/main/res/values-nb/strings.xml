@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Bla gjennom serier</string>
   <string name="button_label_calendar">Kalender</string>
   <string name="button_label_calendar_feed">Abonner på denne kalenderen</string>
+  <string name="button_label_calendar_view">Kalendervisning</string>
   <string name="button_label_cancel">Avbryt</string>
   <string name="button_label_cancel_follow_request">Avbryt følgeforspørsel til %s</string>
   <string name="button_label_cancel_vip">Avbryt abonnement</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Merk som spoiler</string>
   <string name="button_label_get_started">Kom i gang med Trakt</string>
   <string name="button_label_get_vip">Lås opp VIP-funksjoner</string>
-  <string name="button_label_go_to_calendar_day">Gå til %d</string>
+  <string name="button_label_go_to_calendar_day">Gå til %s</string>
   <string name="button_label_hide_details">Skjul detaljer</string>
   <string name="button_label_hide_recommendation">Skjul \"%s\" fra anbefalinger</string>
   <string name="button_label_hide_section">Skjul %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Angi bildet av \"%s\" som forsidebilde.</string>
   <string name="button_label_settings">Innstillinger</string>
   <string name="button_label_share">Del \"%s\"</string>
+  <string name="button_label_show_convertible_lists">Vis listene som kan oppdatere seg selv</string>
   <string name="button_label_show_details">Vis detaljer</string>
   <string name="button_label_show_section">Vis %s</string>
   <string name="button_label_shows">Serier</string>
+  <string name="button_label_smart_list_convert">Gjør denne listen om til en smart liste</string>
+  <string name="button_label_smart_list_convert_named">Gjør %s om til en smart liste</string>
   <string name="button_label_sort_added_date">Sorter etter dato lagt til</string>
   <string name="button_label_sort_ascending">Sorter stigende</string>
   <string name="button_label_sort_created_date">Sorter etter opprettet dato</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d svar</string>
   <string name="button_text_connect">Koble til</string>
   <string name="button_text_continue">Fortsett</string>
+  <string name="button_text_convert">Konverter</string>
   <string name="button_text_copy_calendar_feed">Kopier iCal-lenke</string>
   <string name="button_text_create">Opprett</string>
   <string name="button_text_create_list">Liste</string>
+  <string name="button_text_create_smart_list">Opprett smart liste</string>
   <string name="button_text_cta_create_list">Opprett liste</string>
   <string name="button_text_data_sync_ignore">Ignorer eksisterende data</string>
   <string name="button_text_data_sync_yes">Synkroniser eksisterende data</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Skjul</string>
   <string name="button_text_hide_description">Skjul beskrivelse</string>
   <string name="button_text_hide_details">Skjul detaljer</string>
+  <string name="button_text_hide_lists">Skjul</string>
   <string name="button_text_hide_recommendation">Skjul anbefaling</string>
   <string name="button_text_history">Historie</string>
   <string name="button_text_history_slot_picker_reset">Tilbakestill</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Flytt til toppen</string>
   <string name="button_text_movies">Filmer</string>
   <string name="button_text_no_services">Ingen tjenester</string>
+  <string name="button_text_not_now">Ikke nå</string>
   <string name="button_text_open_calendar_feed">Legg til i kalenderapp</string>
   <string name="button_text_open_in_service">Åpne i %s</string>
   <string name="button_text_personal">Personlig</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Gjenopprett vurderingsmeldinger</string>
   <string name="button_text_restore_show">Gjenopprett serie</string>
   <string name="button_text_retry">Prøv igjen</string>
+  <string name="button_text_review_lists">Anmeldelse</string>
   <string name="button_text_revoke_access">Trekk tilbake tilgang</string>
   <string name="button_text_save_filters">Sett som standard</string>
   <string name="button_text_select_all">Velg alle</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Innstillinger</string>
   <string name="button_text_share">Del</string>
   <string name="button_text_share_auth_logs">Del autentiseringslogger</string>
+  <string name="button_text_show_me">Vis meg</string>
   <string name="button_text_shows">Serier</string>
+  <string name="button_text_smart_list_convert">Gjør om til en smart liste</string>
   <string name="button_text_smart_lists">Smart</string>
   <string name="button_text_social">Sosialt</string>
   <string name="button_text_sort_added_date">Dato lagt til</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Fiks</string>
   <string name="button_text_younify_send_logs">Send logger</string>
   <string name="button_text_younify_unlink">Frakoble</string>
+  <string name="calendar_day_item_count_one">%d element</string>
+  <string name="calendar_day_item_count_other">%d elementer</string>
+  <string name="calendar_view_day">Dag</string>
+  <string name="calendar_view_week">Uke</string>
   <string name="chart_label_grouped_categories">%d kategorier</string>
   <string name="chart_label_other">Annet</string>
   <string name="cleanup_status_done">Fjernet %d duplikate avspillinger.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Tredjepartsapper du har autorisert til å få tilgang til Trakt-kontoen din.</string>
   <string name="description_data_syncs">Nylige datasynkroniseringer fra dine tilkoblede strømmetjenester.</string>
   <string name="description_delete_account">Din personlige informasjon vil bli fjernet, og dine statistiske data vil bli anonymisert.</string>
+  <string name="description_emails">Velg hvilke e-postmeldinger du vil motta fra oss.</string>
+  <string name="description_emails_marketing">Produktnyheter, spesialtilbud og ukentlig oppsummering.</string>
+  <string name="description_emails_notifications">Svar, omtaler, likerklikk, nye følgere og listesamarbeid.</string>
+  <string name="description_emails_recaps">Din Måned i Oversikt og innsikt fra strømmetjenester.</string>
+  <string name="description_emails_system">Påloggingskoder, sikkerhetsvarsler, fakturering og juridiske oppdateringer. Disse kan ikke slås av.</string>
   <string name="description_export">Få en eksport av brukerdataene dine i én ZIP-fil. Denne prosessen kan ta litt tid.</string>
   <string name="description_export_before_destructive">Laster ned en ZIP av dataene dine før noe fjernes.</string>
   <string name="description_history_analysis">Finn duplikate avspillinger i visningshistorikken din og behold kun én avspilling av hvert element.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Fødselsdag</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Kalenderstrøm</string>
+  <string name="header_calendar_last_week">Forrige uke</string>
+  <string name="header_calendar_next_week">Neste uke</string>
+  <string name="header_calendar_this_week">Denne uken</string>
   <string name="header_certification">Sertifisering</string>
   <string name="header_clear_data">Tøm data</string>
   <string name="header_comment_reactions">Anmeldelsesreaksjoner</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Regissør</string>
   <string name="header_display">Visning</string>
   <string name="header_edit_smart_list">Rediger smart liste</string>
+  <string name="header_emails">E-postmeldinger</string>
   <string name="header_episode_type">Type</string>
   <string name="header_expected_premiere">Forventet premiere</string>
   <string name="header_expiration_date">Utløpsdato</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Opp til %s</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skuespillere</string>
+  <string name="list_title_all_titles">Alle titler</string>
   <string name="list_title_anticipated_movies">Forventede filmer</string>
   <string name="list_title_anticipated_shows">Forventede serier</string>
   <string name="list_title_birthdays_this_month">Fødselsdager denne måneden</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Bakgrunn</string>
   <string name="page_title_year_in_review">Året %s i tilbakeblikk</string>
   <string name="page_title_year_to_date">År til dato</string>
+  <string name="preview_feature_description_calendar_redesign">En ukeoversikt med plakater, en månedsvisning, en dokket sidefelt med en minikalender og kollapserbare filtre, samt en dagsskuff på telefoner.</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller for å skjule eller vise konfigurerbare seksjoner i hele appen.</string>
   <string name="preview_feature_description_large_screen_cards">På større skjermer bruker alle lister de samme kortene som resten av appen. Ved å velge ett åpnes en hurtigvisning i stedet for å forlate listen.</string>
   <string name="preview_feature_description_rewatch">Start gjensynsøkter for serier du allerede har sett, sjekk inn eller merk episoder som sett direkte fra gjensynsskuffen.</string>
   <string name="preview_feature_description_soundtrack">Legger til en lydspor-seksjon på film- og seriesider, med avspilling der et spor kan matches.</string>
   <string name="preview_feature_description_vip_veteran">Viser hvor lenge medlemmer har beholdt VIP uten avbrudd, med et Veteran- eller Legend-merke, en farget avatarring og noen feiringer på din egen profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en rulle-drevet film med en seerpersona, deretter en statistikkside stylet for å matche den.</string>
+  <string name="preview_feature_title_calendar_redesign">Kalender redesign</string>
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
   <string name="preview_feature_title_large_screen_cards">Store skjermkort</string>
   <string name="preview_feature_title_rewatch">Gjensyn</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Sesong %d fremdrift</string>
   <string name="section_title_seasons_overview">Oversikt</string>
   <string name="section_title_specials_progress">Spesialer fremdrift</string>
+  <string name="smart_list_nudge_message">%d av listene dine kan oppdatere seg selv</string>
+  <string name="smart_list_nudge_message_short">%d lister kan oppdatere seg selv</string>
+  <string name="smart_list_nudge_message_short_single">%d liste kan oppdatere seg selv</string>
+  <string name="smart_list_nudge_row_overlap">Beholder %1$d av %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Få denne listen til å oppdatere seg selv</string>
+  <string name="smart_list_upgrade_origin_note">Synkronisert fra %s, som ikke lenger oppdaterer Trakt-lister.</string>
+  <string name="smart_list_upgrade_origin_note_link">Synkronisert fra %s, som ikke lenger oppdaterer Trakt-lister. Samme liste, samme lenke etter konvertering.</string>
+  <string name="smart_list_upgrade_overlap">Inkluderer %1$s av dine %2$s titler, pluss nye utgivelser</string>
+  <string name="smart_list_upgrade_plain_description">Smarte lister legger til nye titler automatisk, basert på filtrene du velger.</string>
+  <string name="smart_list_upgrade_plain_title">Vil du at denne listen skal oppdatere seg selv?</string>
   <string name="spotlight_dialog_label">Rask navigasjon</string>
   <string name="spotlight_hint_dismiss">Lukk</string>
   <string name="spotlight_hint_navigate">Naviger</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Avspillinger</string>
   <string name="stat_text_time_watched">Sett</string>
   <string name="stat_text_watchers">Seere</string>
+  <string name="switch_label_emails_marketing">Motta e-poster om nyheter og tilbud</string>
+  <string name="switch_label_emails_notifications">Motta e-postvarsler om aktivitet</string>
+  <string name="switch_label_emails_recaps">Motta e-poster med sammendrag</string>
   <string name="switch_label_export_before_destructive">Eksporter dataene mine først</string>
   <string name="switch_label_mark_as_spoiler">Merk som spoiler</string>
   <string name="switch_label_multiple_watches">Aktiver eller deaktiver flere visninger</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Blokkert</string>
   <string name="tag_text_deal_price">Første 2 år</string>
   <string name="tag_text_dropped">Droppet</string>
+  <string name="tag_text_emails_always_on">Alltid på</string>
   <string name="tag_text_episodes">Episoder</string>
   <string name="tag_text_finale">Finale</string>
   <string name="tag_text_follow_request_pending">Venter</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Kjøp</string>
   <string name="text_by">av</string>
   <string name="text_calendar_feed_filtered">Filtrert</string>
+  <string name="text_calendar_nothing_scheduled">Ingenting planlagt</string>
   <string name="text_calendar_placeholder_1">Ingenting for deg denne dagen. Ta en fridag, nyt været.</string>
   <string name="text_calendar_placeholder_10">Helt klart. Tid for å utforske noe annet.</string>
   <string name="text_calendar_placeholder_2">Ingen elementer funnet for denne datoen. Kanskje prøve en annen dag?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Tidsplanen din er klar. Få mest mulig ut av det.</string>
   <string name="text_calendar_placeholder_9">Ingen hendelser denne dagen. Kanskje gjenopplive en gammel favoritt.</string>
   <string name="text_calendar_placeholder_empty_period">Skjermen er mørk. Ingen filmer. Ingen episoder. Bare deg og stillheten.</string>
+  <string name="text_calendar_today">I dag</string>
+  <string name="text_calendar_up_next">Neste</string>
   <string name="text_clear_data_failed">Noen elementer kunne ikke tømmes. Vennligst prøv igjen.</string>
   <string name="text_clear_source_custom_library">Tilpasset bibliotek</string>
   <string name="text_clear_source_history">Historie</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Skjul/vis seksjoner</string>
   <string name="text_email_unsubscribe_message">Du vil ikke lenger motta disse e-postene fra Trakt.</string>
   <string name="text_email_unsubscribe_title">Avmeldt</string>
+  <string name="text_emails_marketing">Nyheter og tilbud</string>
+  <string name="text_emails_notifications">Aktivitetsvarsler</string>
+  <string name="text_emails_recaps">Sammendrag</string>
+  <string name="text_emails_system">Konto og sikkerhet</string>
   <string name="text_empty_list_add_from_lists">Ingenting her ennå. Begynn med titler du allerede har lagret i dine andre lister.</string>
   <string name="text_empty_plex_library">Koble til Plex-kontoen din for å synkronisere Plex-biblioteket ditt med Trakt.</string>
   <string name="text_ends_at">Slutter kl. %s</string>

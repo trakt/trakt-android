@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Door series bladeren</string>
   <string name="button_label_calendar">Kalender</string>
   <string name="button_label_calendar_feed">Abonneren op deze kalender</string>
+  <string name="button_label_calendar_view">Kalenderweergave</string>
   <string name="button_label_cancel">Annuleren</string>
   <string name="button_label_cancel_follow_request">Volgverzoek aan %s annuleren</string>
   <string name="button_label_cancel_vip">Abonnement opzeggen</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Markeer als spoiler</string>
   <string name="button_label_get_started">Aan de slag met Trakt</string>
   <string name="button_label_get_vip">VIP-functies ontgrendelen</string>
-  <string name="button_label_go_to_calendar_day">Ga naar %d</string>
+  <string name="button_label_go_to_calendar_day">Ga naar %s</string>
   <string name="button_label_hide_details">Verberg details</string>
   <string name="button_label_hide_recommendation">Verberg \"%s\" uit aanbevelingen</string>
   <string name="button_label_hide_section">%s verbergen</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Stel de afbeelding van \"%s\" in als je omslagafbeelding.</string>
   <string name="button_label_settings">Instellingen</string>
   <string name="button_label_share">Deel \"%s\"</string>
+  <string name="button_label_show_convertible_lists">Toon de lijsten die zichzelf kunnen bijwerken</string>
   <string name="button_label_show_details">Toon details</string>
   <string name="button_label_show_section">%s tonen</string>
   <string name="button_label_shows">Series</string>
+  <string name="button_label_smart_list_convert">Zet deze lijst om naar een slimme lijst</string>
+  <string name="button_label_smart_list_convert_named">Zet %s om naar een slimme lijst</string>
   <string name="button_label_sort_added_date">Sorteren op datum toegevoegd</string>
   <string name="button_label_sort_ascending">Oplopend sorteren</string>
   <string name="button_label_sort_created_date">Sorteren op datum aangemaakt</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d reacties</string>
   <string name="button_text_connect">Verbinden</string>
   <string name="button_text_continue">Verder</string>
+  <string name="button_text_convert">Omzetten</string>
   <string name="button_text_copy_calendar_feed">iCal-link kopiëren</string>
   <string name="button_text_create">Maken</string>
   <string name="button_text_create_list">Lijst</string>
+  <string name="button_text_create_smart_list">Slimme lijst maken</string>
   <string name="button_text_cta_create_list">Lijst maken</string>
   <string name="button_text_data_sync_ignore">Bestaande gegevens negeren</string>
   <string name="button_text_data_sync_yes">Bestaande gegevens synchroniseren</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Verbergen</string>
   <string name="button_text_hide_description">Verberg beschrijving</string>
   <string name="button_text_hide_details">Verberg details</string>
+  <string name="button_text_hide_lists">Verbergen</string>
   <string name="button_text_hide_recommendation">Aanbeveling verbergen</string>
   <string name="button_text_history">Geschiedenis</string>
   <string name="button_text_history_slot_picker_reset">Resetten</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Naar boven verplaatsen</string>
   <string name="button_text_movies">Films</string>
   <string name="button_text_no_services">Geen services</string>
+  <string name="button_text_not_now">Niet nu</string>
   <string name="button_text_open_calendar_feed">Toevoegen aan kalenderapp</string>
   <string name="button_text_open_in_service">Openen in %s</string>
   <string name="button_text_personal">Persoonlijk</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Beoordelingsprompts herstellen</string>
   <string name="button_text_restore_show">Herstel serie</string>
   <string name="button_text_retry">Opnieuw proberen</string>
+  <string name="button_text_review_lists">Recensie</string>
   <string name="button_text_revoke_access">Toegang intrekken</string>
   <string name="button_text_save_filters">Instellen als standaard</string>
   <string name="button_text_select_all">Alles selecteren</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Instellingen</string>
   <string name="button_text_share">Delen</string>
   <string name="button_text_share_auth_logs">Authenticatielogs delen</string>
+  <string name="button_text_show_me">Toon mij</string>
   <string name="button_text_shows">Series</string>
+  <string name="button_text_smart_list_convert">Zet om naar een slimme lijst</string>
   <string name="button_text_smart_lists">Slim</string>
   <string name="button_text_social">Sociaal</string>
   <string name="button_text_sort_added_date">Datum toegevoegd</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Repareer</string>
   <string name="button_text_younify_send_logs">Logs verzenden</string>
   <string name="button_text_younify_unlink">Ontkoppelen</string>
+  <string name="calendar_day_item_count_one">%d item</string>
+  <string name="calendar_day_item_count_other">%d items</string>
+  <string name="calendar_view_day">Dag</string>
+  <string name="calendar_view_week">Week</string>
   <string name="chart_label_grouped_categories">%d categorieën</string>
   <string name="chart_label_other">Overig</string>
   <string name="cleanup_status_done">%d dubbele weergaven verwijderd.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Apps van derden die je hebt geautoriseerd om toegang te krijgen tot je Trakt-account.</string>
   <string name="description_data_syncs">Recente gegevenssynchronisaties van je verbonden streamingdiensten.</string>
   <string name="description_delete_account">Je persoonlijke informatie wordt verwijderd en je statistische gegevens worden geanonimiseerd.</string>
+  <string name="description_emails">Kies welke e-mails je van ons wilt ontvangen.</string>
+  <string name="description_emails_marketing">Productnieuws, speciale aanbiedingen en de wekelijkse samenvatting.</string>
+  <string name="description_emails_notifications">Reacties, vermeldingen, likes, nieuwe volgers en lijst samenwerkingen.</string>
+  <string name="description_emails_recaps">Je maandoverzicht en inzichten over streamingdiensten.</string>
+  <string name="description_emails_system">Aanmeldcodes, beveiligingswaarschuwingen, facturering en juridische updates. Deze kunnen niet worden uitgeschakeld.</string>
   <string name="description_export">Exporteer uw gebruikersgegevens naar één ZIP-bestand. Dit proces kan even duren.</string>
   <string name="description_export_before_destructive">Downloadt een ZIP van je gegevens voordat er iets wordt verwijderd.</string>
   <string name="description_history_analysis">Vind dubbele weergaven in je kijkgeschiedenis en bewaar slechts één weergave van elk item.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Geboortedatum</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Kalenderfeed</string>
+  <string name="header_calendar_last_week">Vorige week</string>
+  <string name="header_calendar_next_week">Volgende week</string>
+  <string name="header_calendar_this_week">Deze week</string>
   <string name="header_certification">Classificatie</string>
   <string name="header_clear_data">Gegevens wissen</string>
   <string name="header_comment_reactions">Recensie reacties</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Regisseur</string>
   <string name="header_display">Weergave</string>
   <string name="header_edit_smart_list">Slimme lijst bewerken</string>
+  <string name="header_emails">E-mails</string>
   <string name="header_episode_type">Type</string>
   <string name="header_expected_premiere">Verwachte première</string>
   <string name="header_expiration_date">Vervaldatum</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Tot %s</string>
   <string name="list_title_activity">Activiteit</string>
   <string name="list_title_actors">Acteurs</string>
+  <string name="list_title_all_titles">Alle titels</string>
   <string name="list_title_anticipated_movies">Verwachte films</string>
   <string name="list_title_anticipated_shows">Verwachte series</string>
   <string name="list_title_birthdays_this_month">Verjaardagen deze maand</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Achtergrond</string>
   <string name="page_title_year_in_review">%s in overzicht</string>
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
+  <string name="preview_feature_description_calendar_redesign">Een weekoverzicht met posters, een maandoverzicht, een vast zijpaneel met een minikalender en inklapbare filters, en een daglade op telefoons.</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_large_screen_cards">Op grotere schermen gebruiken alle lijsten dezelfde kaarten als de rest van de app. Het selecteren van een item opent een snel overzicht in plaats van de lijst te verlaten.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_vip_veteran">Toont hoe lang leden ononderbroken VIP zijn, met een Veteraan- of Legende-badge, een gekleurde avatarring en enkele vieringen op je eigen profiel.</string>
   <string name="preview_feature_description_year_in_review_2026">Jouw 2026 als een scroll-gedreven reel met een kijkerspersoonlijkheid, gevolgd door een statistiekenpagina die daarbij past.</string>
+  <string name="preview_feature_title_calendar_redesign">Kalenderherontwerp</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_large_screen_cards">Grote Scherm Kaarten</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Seizoen %d voortgang</string>
   <string name="section_title_seasons_overview">Overzicht</string>
   <string name="section_title_specials_progress">Specials voortgang</string>
+  <string name="smart_list_nudge_message">%d van jouw lijsten kunnen zichzelf bijwerken</string>
+  <string name="smart_list_nudge_message_short">%d lijsten kunnen zichzelf bijwerken</string>
+  <string name="smart_list_nudge_message_short_single">%d lijst kan zichzelf bijwerken</string>
+  <string name="smart_list_nudge_row_overlap">Behoudt %1$d van %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Laat deze lijst zichzelf bijwerken</string>
+  <string name="smart_list_upgrade_origin_note">Gesynchroniseerd vanuit %s, dat geen Trakt-lijsten meer bijwerkt.</string>
+  <string name="smart_list_upgrade_origin_note_link">Gesynchroniseerd vanuit %s, dat geen Trakt-lijsten meer bijwerkt. Zelfde lijst, zelfde link na conversie.</string>
+  <string name="smart_list_upgrade_overlap">Haalt %1$s van je %2$s titels terug, plus nieuwe releases</string>
+  <string name="smart_list_upgrade_plain_description">Slimme lijsten voegen zelf nieuwe titels toe, gebaseerd op de filters die je kiest.</string>
+  <string name="smart_list_upgrade_plain_title">Wil je dat deze lijst zichzelf bijwerkt?</string>
   <string name="spotlight_dialog_label">Snelle navigatie</string>
   <string name="spotlight_hint_dismiss">Sluiten</string>
   <string name="spotlight_hint_navigate">Navigeren</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Bekeken</string>
   <string name="stat_text_time_watched">Bekeken</string>
   <string name="stat_text_watchers">Kijkers</string>
+  <string name="switch_label_emails_marketing">Ontvang nieuws- &amp; aanbieding e-mails</string>
+  <string name="switch_label_emails_notifications">Ontvang e-mails met activiteitsmeldingen</string>
+  <string name="switch_label_emails_recaps">Ontvang recap e-mails</string>
   <string name="switch_label_export_before_destructive">Exporteer eerst mijn gegevens</string>
   <string name="switch_label_mark_as_spoiler">Markeer als spoiler</string>
   <string name="switch_label_multiple_watches">Meerdere kijkbeurten in- of uitschakelen</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Geblokkeerd</string>
   <string name="tag_text_deal_price">Eerste 2 jaar</string>
   <string name="tag_text_dropped">Gestopt</string>
+  <string name="tag_text_emails_always_on">Altijd aan</string>
   <string name="tag_text_episodes">Afleveringen</string>
   <string name="tag_text_finale">Finale</string>
   <string name="tag_text_follow_request_pending">In behandeling</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Kopen</string>
   <string name="text_by">door</string>
   <string name="text_calendar_feed_filtered">Gefilterd</string>
+  <string name="text_calendar_nothing_scheduled">Niets gepland</string>
   <string name="text_calendar_placeholder_1">Niets voor jou op deze dag. Neem een vrije dag, geniet van het weer.</string>
   <string name="text_calendar_placeholder_10">Alles vrij. Tijd om iets anders te verkennen.</string>
   <string name="text_calendar_placeholder_2">Geen items gevonden voor deze datum. Misschien een andere dag proberen?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Je agenda is leeg. Maak er het beste van.</string>
   <string name="text_calendar_placeholder_9">Geen evenementen deze dag. Misschien een oude favoriet opnieuw bekijken.</string>
   <string name="text_calendar_placeholder_empty_period">Het scherm is donker. Geen films. Geen afleveringen. Alleen u en de stilte.</string>
+  <string name="text_calendar_today">Vandaag</string>
+  <string name="text_calendar_up_next">Hierna</string>
   <string name="text_clear_data_failed">Sommige items konden niet worden gewist. Probeer het opnieuw.</string>
   <string name="text_clear_source_custom_library">Aangepaste bibliotheek</string>
   <string name="text_clear_source_history">Geschiedenis</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Secties verbergen/tonen</string>
   <string name="text_email_unsubscribe_message">U ontvangt deze e-mails van Trakt niet meer.</string>
   <string name="text_email_unsubscribe_title">Uitschrijving</string>
+  <string name="text_emails_marketing">Nieuws &amp; aanbiedingen</string>
+  <string name="text_emails_notifications">Activiteitsmeldingen</string>
+  <string name="text_emails_recaps">Recaps</string>
+  <string name="text_emails_system">Account &amp; beveiliging</string>
   <string name="text_empty_list_add_from_lists">Nog niets hier. Begin met titels die je al in je andere lijsten hebt opgeslagen.</string>
   <string name="text_empty_plex_library">Koppel je Plex-account om je Plex-bibliotheek met Trakt te synchroniseren.</string>
   <string name="text_ends_at">Eindigt om %s</string>

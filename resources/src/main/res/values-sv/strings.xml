@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Bläddra bland serier</string>
   <string name="button_label_calendar">Kalender</string>
   <string name="button_label_calendar_feed">Prenumerera på den här kalendern</string>
+  <string name="button_label_calendar_view">Kalendervy</string>
   <string name="button_label_cancel">Avbryt</string>
   <string name="button_label_cancel_follow_request">Avbryt följningsförfrågan till %s</string>
   <string name="button_label_cancel_vip">Avbryt prenumeration</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Dölj som spoiler</string>
   <string name="button_label_get_started">Kom igång med Trakt</string>
   <string name="button_label_get_vip">Lås upp VIP-funktioner</string>
-  <string name="button_label_go_to_calendar_day">Gå till %d</string>
+  <string name="button_label_go_to_calendar_day">Gå till %s</string>
   <string name="button_label_hide_details">Dölj detaljer</string>
   <string name="button_label_hide_recommendation">Dölj \"%s\" från rekommendationer</string>
   <string name="button_label_hide_section">Dölj %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Ange bilden för \"%s\" som din omslagsbild.</string>
   <string name="button_label_settings">Inställningar</string>
   <string name="button_label_share">Dela \"%s\"</string>
+  <string name="button_label_show_convertible_lists">Visa listorna som kan uppdatera sig själva</string>
   <string name="button_label_show_details">Visa detaljer</string>
   <string name="button_label_show_section">Visa %s</string>
   <string name="button_label_shows">Serier</string>
+  <string name="button_label_smart_list_convert">Gör den här listan till en smart lista</string>
+  <string name="button_label_smart_list_convert_named">Gör %s till en smart lista</string>
   <string name="button_label_sort_added_date">Sortera efter datum tillagt</string>
   <string name="button_label_sort_ascending">Sortera stigande</string>
   <string name="button_label_sort_created_date">Sortera efter skapandedatum</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d svar</string>
   <string name="button_text_connect">Anslut</string>
   <string name="button_text_continue">Fortsätt</string>
+  <string name="button_text_convert">Konvertera</string>
   <string name="button_text_copy_calendar_feed">Kopiera iCal-länk</string>
   <string name="button_text_create">Skapa</string>
   <string name="button_text_create_list">Lista</string>
+  <string name="button_text_create_smart_list">Skapa smart lista</string>
   <string name="button_text_cta_create_list">Skapa lista</string>
   <string name="button_text_data_sync_ignore">Ignorera befintlig data</string>
   <string name="button_text_data_sync_yes">Synkronisera befintlig data</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Dölj</string>
   <string name="button_text_hide_description">Dölj beskrivning</string>
   <string name="button_text_hide_details">Dölj detaljer</string>
+  <string name="button_text_hide_lists">Dölj</string>
   <string name="button_text_hide_recommendation">Dölj rekommendation</string>
   <string name="button_text_history">Historia</string>
   <string name="button_text_history_slot_picker_reset">Återställ</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Flytta högst upp</string>
   <string name="button_text_movies">Filmer</string>
   <string name="button_text_no_services">Inga tjänster</string>
+  <string name="button_text_not_now">Inte nu</string>
   <string name="button_text_open_calendar_feed">Lägg till i kalenderapp</string>
   <string name="button_text_open_in_service">Öppna i %s</string>
   <string name="button_text_personal">Personlig</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Återställ betygsfrågor</string>
   <string name="button_text_restore_show">Återställ serie</string>
   <string name="button_text_retry">Försök igen</string>
+  <string name="button_text_review_lists">Recension</string>
   <string name="button_text_revoke_access">Återkalla åtkomst</string>
   <string name="button_text_save_filters">Ange som standard</string>
   <string name="button_text_select_all">Markera alla</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Inställningar</string>
   <string name="button_text_share">Dela</string>
   <string name="button_text_share_auth_logs">Dela autentiseringsloggar</string>
+  <string name="button_text_show_me">Visa mig</string>
   <string name="button_text_shows">Serier</string>
+  <string name="button_text_smart_list_convert">Gör om till en smart lista</string>
   <string name="button_text_smart_lists">Smart</string>
   <string name="button_text_social">Socialt</string>
   <string name="button_text_sort_added_date">Datum tillagt</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Åtgärda</string>
   <string name="button_text_younify_send_logs">Skicka loggar</string>
   <string name="button_text_younify_unlink">Avlänka</string>
+  <string name="calendar_day_item_count_one">%d Objekt</string>
+  <string name="calendar_day_item_count_other">%d Objekt</string>
+  <string name="calendar_view_day">Dag</string>
+  <string name="calendar_view_week">Vecka</string>
   <string name="chart_label_grouped_categories">%d kategorier</string>
   <string name="chart_label_other">Övrigt</string>
   <string name="cleanup_status_done">Tog bort %d dubblettvisningar.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Tredjepartsappar som du har godkänt för att få åtkomst till ditt Trakt-konto.</string>
   <string name="description_data_syncs">Senaste datasynkroniseringar från dina anslutna streamingtjänster.</string>
   <string name="description_delete_account">Din personliga information kommer att tas bort och din statistiska data kommer att anonymiseras.</string>
+  <string name="description_emails">Välj vilka e-postmeddelanden du vill ta emot från oss.</string>
+  <string name="description_emails_marketing">Produktnyheter, specialerbjudanden och veckosammanfattningen.</string>
+  <string name="description_emails_notifications">Svar, omnämnanden, gillamarkeringar, nya följare och listsamarbeten.</string>
+  <string name="description_emails_recaps">Din Månadsöversikt och insikter från streamingtjänster.</string>
+  <string name="description_emails_system">Inloggningskoder, säkerhetsvarningar, fakturering och juridiska uppdateringar. Dessa kan inte stängas av.</string>
   <string name="description_export">Få en export av din användardata i en enda ZIP-fil. Denna process kan ta ett tag.</string>
   <string name="description_export_before_destructive">Laddar ner en ZIP-fil med dina data innan något tas bort.</string>
   <string name="description_history_analysis">Hitta dubblettvisningar i din visningshistorik och behåll endast en visning av varje objekt.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Födelsedag</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Kalenderflöde</string>
+  <string name="header_calendar_last_week">Förra veckan</string>
+  <string name="header_calendar_next_week">Nästa vecka</string>
+  <string name="header_calendar_this_week">Denna vecka</string>
   <string name="header_certification">Åldersgräns</string>
   <string name="header_clear_data">Rensa data</string>
   <string name="header_comment_reactions">Recensionsreaktioner</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Regissör</string>
   <string name="header_display">Visning</string>
   <string name="header_edit_smart_list">Redigera smart lista</string>
+  <string name="header_emails">E-post</string>
   <string name="header_episode_type">Typ</string>
   <string name="header_expected_premiere">Förväntad premiär</string>
   <string name="header_expiration_date">Utgångsdatum</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Upp till %s</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skådespelare</string>
+  <string name="list_title_all_titles">Alla titlar</string>
   <string name="list_title_anticipated_movies">Förväntade filmer</string>
   <string name="list_title_anticipated_shows">Förväntade serier</string>
   <string name="list_title_birthdays_this_month">Födelsedagar denna månad</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Bakgrund</string>
   <string name="page_title_year_in_review">Sammanfattning för %s</string>
   <string name="page_title_year_to_date">År hittills</string>
+  <string name="preview_feature_description_calendar_redesign">En veckotavla med affischer, en månadsvy, en dockad sidofält med en minikalender och hopfällbara filter, samt en dagslåda på telefoner.</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
   <string name="preview_feature_description_large_screen_cards">På större skärmar används samma kort för alla listor som i resten av appen. Att välja ett kort öppnar en snabböverblick istället för att lämna listan.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
   <string name="preview_feature_description_vip_veteran">Visar hur länge medlemmar har behållit VIP utan avbrott, med ett Veteran- eller Legend-märke, en färgad avatarring och några firanden på din egen profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en scrollbar rulle med en tittarpersona, följt av en statistik sida med matchande stil.</string>
+  <string name="preview_feature_title_calendar_redesign">Kalenderomdesign</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_large_screen_cards">Kort för stor skärm</string>
   <string name="preview_feature_title_rewatch">Omtittning</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Säsong %d förlopp</string>
   <string name="section_title_seasons_overview">Översikt</string>
   <string name="section_title_specials_progress">Specialavsnitt förlopp</string>
+  <string name="smart_list_nudge_message">%d av dina listor kan uppdatera sig själva</string>
+  <string name="smart_list_nudge_message_short">%d listor kan uppdatera sig själva</string>
+  <string name="smart_list_nudge_message_short_single">%d lista kan uppdatera sig själv</string>
+  <string name="smart_list_nudge_row_overlap">Behåller %1$d av %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Låt den här listan uppdatera sig själv</string>
+  <string name="smart_list_upgrade_origin_note">Synkad från %s, som inte längre uppdaterar Trakt-listor.</string>
+  <string name="smart_list_upgrade_origin_note_link">Synkad från %s, som inte längre uppdaterar Trakt-listor. Samma lista, samma länk efter konvertering.</string>
+  <string name="smart_list_upgrade_overlap">Inkluderar %1$s av dina %2$s titlar, plus nya utgåvor</string>
+  <string name="smart_list_upgrade_plain_description">Smarta listor lägger automatiskt till nya titlar baserat på de filter du väljer.</string>
+  <string name="smart_list_upgrade_plain_title">Vill du att den här listan ska uppdatera sig själv?</string>
   <string name="spotlight_dialog_label">Snabbnavigering</string>
   <string name="spotlight_hint_dismiss">Stäng</string>
   <string name="spotlight_hint_navigate">Navigera</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Spelningar</string>
   <string name="stat_text_time_watched">Sedd</string>
   <string name="stat_text_watchers">Tittare</string>
+  <string name="switch_label_emails_marketing">Ta emot e-postmeddelanden med nyheter &amp; erbjudanden</string>
+  <string name="switch_label_emails_notifications">Ta emot e-postmeddelanden om aktivitetsaviseringar</string>
+  <string name="switch_label_emails_recaps">Ta emot e-postmeddelanden med sammanfattningar</string>
   <string name="switch_label_export_before_destructive">Exportera mina data först</string>
   <string name="switch_label_mark_as_spoiler">Markera som spoiler</string>
   <string name="switch_label_multiple_watches">Aktivera eller inaktivera flera visningar</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Blockerad</string>
   <string name="tag_text_deal_price">Första 2 åren</string>
   <string name="tag_text_dropped">Avbruten</string>
+  <string name="tag_text_emails_always_on">Alltid på</string>
   <string name="tag_text_episodes">Avsnitt</string>
   <string name="tag_text_finale">Final</string>
   <string name="tag_text_follow_request_pending">Väntande</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Köp</string>
   <string name="text_by">av</string>
   <string name="text_calendar_feed_filtered">Filtrerad</string>
+  <string name="text_calendar_nothing_scheduled">Inget planerat</string>
   <string name="text_calendar_placeholder_1">Inget för dig idag. Ta ledigt, njut av vädret.</string>
   <string name="text_calendar_placeholder_10">Helt klart. Dags att utforska något annat.</string>
   <string name="text_calendar_placeholder_2">Inga objekt hittades för detta datum. Kanske prova en annan dag?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Ditt schema är tomt. Passa på att göra det bästa av det.</string>
   <string name="text_calendar_placeholder_9">Inga händelser idag. Kanske återbesök en gammal favorit.</string>
   <string name="text_calendar_placeholder_empty_period">Skärmen är mörk. Inga filmer. Inga avsnitt. Bara du och tystnaden.</string>
+  <string name="text_calendar_today">Idag</string>
+  <string name="text_calendar_up_next">Kommande</string>
   <string name="text_clear_data_failed">Vissa objekt kunde inte rensas. Försök igen.</string>
   <string name="text_clear_source_custom_library">Anpassat bibliotek</string>
   <string name="text_clear_source_history">Historia</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Dölj/visa avsnitt</string>
   <string name="text_email_unsubscribe_message">Du kommer inte längre att få dessa e-postmeddelanden från Trakt.</string>
   <string name="text_email_unsubscribe_title">Avprenumererad</string>
+  <string name="text_emails_marketing">Nyheter &amp; erbjudanden</string>
+  <string name="text_emails_notifications">Aktivitetsaviseringar</string>
+  <string name="text_emails_recaps">Sammanfattningar</string>
+  <string name="text_emails_system">Konto &amp; säkerhet</string>
   <string name="text_empty_list_add_from_lists">Inget här än. Börja med titlar du redan har sparat i dina andra listor.</string>
   <string name="text_empty_plex_library">Anslut ditt Plex-konto för att synkronisera ditt Plex-bibliotek med Trakt.</string>
   <string name="text_ends_at">Slutar klockan %s</string>

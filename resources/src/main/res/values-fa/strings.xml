@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">مرور برنامه‌ها</string>
   <string name="button_label_calendar">تقویم</string>
   <string name="button_label_calendar_feed">در این تقویم مشترک شوید</string>
+  <string name="button_label_calendar_view">نمای تقویم</string>
   <string name="button_label_cancel">لغو</string>
   <string name="button_label_cancel_follow_request">لغو درخواست دنبال کردن برای %s</string>
   <string name="button_label_cancel_vip">لغو اشتراک</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">پنهان کردن به عنوان اسپویلر</string>
   <string name="button_label_get_started">شروع کنید با ترکت</string>
   <string name="button_label_get_vip">ویژگی‌های VIP را باز کنید</string>
-  <string name="button_label_go_to_calendar_day">برو به %d</string>
+  <string name="button_label_go_to_calendar_day">برو به %s</string>
   <string name="button_label_hide_details">پنهان کردن جزئیات</string>
   <string name="button_label_hide_recommendation">پنهان کردن \"%s\" از توصیه‌ها</string>
   <string name="button_label_hide_section">پنهان کردن %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">تصویر \"%s\" را به عنوان تصویر کاور خود تنظیم کنید.</string>
   <string name="button_label_settings">تنظیمات</string>
   <string name="button_label_share">اشتراک‌گذاری \"%s\"</string>
+  <string name="button_label_show_convertible_lists">نمایش لیست‌هایی که می‌توانند خودشان را به‌روزرسانی کنند</string>
   <string name="button_label_show_details">نمایش جزئیات</string>
   <string name="button_label_show_section">نمایش %s</string>
   <string name="button_label_shows">برنامه‌ها</string>
+  <string name="button_label_smart_list_convert">این لیست را به یک لیست هوشمند تبدیل کنید</string>
+  <string name="button_label_smart_list_convert_named">%s را به یک لیست هوشمند تبدیل کنید</string>
   <string name="button_label_sort_added_date">مرتب‌سازی بر اساس تاریخ اضافه شدن</string>
   <string name="button_label_sort_ascending">مرتب‌سازی صعودی</string>
   <string name="button_label_sort_created_date">مرتب‌سازی بر اساس تاریخ ایجاد</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d پاسخ</string>
   <string name="button_text_connect">اتصال</string>
   <string name="button_text_continue">ادامه</string>
+  <string name="button_text_convert">تبدیل</string>
   <string name="button_text_copy_calendar_feed">کپی کردن لینک iCal</string>
   <string name="button_text_create">ایجاد</string>
   <string name="button_text_create_list">لیست</string>
+  <string name="button_text_create_smart_list">ایجاد لیست هوشمند</string>
   <string name="button_text_cta_create_list">ایجاد لیست</string>
   <string name="button_text_data_sync_ignore">نادیده گرفتن داده‌های موجود</string>
   <string name="button_text_data_sync_yes">همگام‌سازی داده‌های موجود</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">پنهان کردن</string>
   <string name="button_text_hide_description">پنهان کردن توضیحات</string>
   <string name="button_text_hide_details">پنهان کردن جزئیات</string>
+  <string name="button_text_hide_lists">پنهان کردن</string>
   <string name="button_text_hide_recommendation">پنهان کردن توصیه</string>
   <string name="button_text_history">تاریخی</string>
   <string name="button_text_history_slot_picker_reset">بازنشانی</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">انتقال به بالا</string>
   <string name="button_text_movies">فیلم‌ها</string>
   <string name="button_text_no_services">هیچ سرویسی</string>
+  <string name="button_text_not_now">فعلا نه</string>
   <string name="button_text_open_calendar_feed">افزودن به برنامه تقویم</string>
   <string name="button_text_open_in_service">باز کردن در %s</string>
   <string name="button_text_personal">شخصی</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">بازگرداندن درخواست‌های امتیاز</string>
   <string name="button_text_restore_show">بازگرداندن برنامه</string>
   <string name="button_text_retry">تلاش مجدد</string>
+  <string name="button_text_review_lists">بازخورد</string>
   <string name="button_text_revoke_access">لغو دسترسی</string>
   <string name="button_text_save_filters">به عنوان پیش‌فرض تنظیم کن</string>
   <string name="button_text_select_all">انتخاب همه</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">تنظیمات</string>
   <string name="button_text_share">به اشتراک بگذارید</string>
   <string name="button_text_share_auth_logs">اشتراک‌گذاری گزارش‌های احراز هویت</string>
+  <string name="button_text_show_me">نمایش بده</string>
   <string name="button_text_shows">برنامه‌ها</string>
+  <string name="button_text_smart_list_convert">تبدیل به لیست هوشمند</string>
   <string name="button_text_smart_lists">هوشمند</string>
   <string name="button_text_social">اجتماعی</string>
   <string name="button_text_sort_added_date">تاریخ اضافه شدن</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">رفع</string>
   <string name="button_text_younify_send_logs">ارسال گزارش‌ها</string>
   <string name="button_text_younify_unlink">قطع پیوند</string>
+  <string name="calendar_day_item_count_one">%d مورد</string>
+  <string name="calendar_day_item_count_other">%d مورد</string>
+  <string name="calendar_view_day">روز</string>
+  <string name="calendar_view_week">هفته</string>
   <string name="chart_label_grouped_categories">%d دسته‌بندی</string>
   <string name="chart_label_other">دیگر</string>
   <string name="cleanup_status_done">%d نوازش تکراری حذف شد.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">برنامه‌های شخص ثالثی که به آن‌ها اجازه دسترسی به حساب Trakt خود را داده‌اید.</string>
   <string name="description_data_syncs">همگام‌سازی‌های اخیر داده‌ها از سرویس‌های پخش متصل شما.</string>
   <string name="description_delete_account">اطلاعات شخصی شما حذف خواهد شد و داده‌های آماری شما ناشناس می‌شوند.</string>
+  <string name="description_emails">انتخاب کنید که کدام ایمیل‌ها را مایلید از ما دریافت کنید.</string>
+  <string name="description_emails_marketing">اخبار محصول، پیشنهادات ویژه و خلاصه‌هفته.</string>
+  <string name="description_emails_notifications">پاسخ‌ها، اشاره‌ها، لایک‌ها، فالوورهای جدید و همکاری‌های فهرست.</string>
+  <string name="description_emails_recaps">مرور ماهانه شما و بینش‌های سرویس پخش.</string>
+  <string name="description_emails_system">کدهای ورود، هشدارهای امنیتی، صورت‌حساب و به‌روزرسانی‌های حقوقی. این‌ها را نمی‌توان غیرفعال کرد.</string>
   <string name="description_export">یک خروجی از داده‌های کاربر خود را در یک فایل ZIP دریافت کنید. این فرآیند ممکن است کمی طول بکشد.</string>
   <string name="description_export_before_destructive">یک فایل ZIP از داده‌های شما را قبل از حذف هر چیزی دانلود می‌کند.</string>
   <string name="description_history_analysis">تماشاهای تکراری را در تاریخچه تماشای خود بیابید و فقط یک تماشای هر مورد را نگه دارید.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">تاریخ تولد</string>
   <string name="header_calendar">تقویم</string>
   <string name="header_calendar_feed">فید تقویم</string>
+  <string name="header_calendar_last_week">هفته گذشته</string>
+  <string name="header_calendar_next_week">هفته آینده</string>
+  <string name="header_calendar_this_week">این هفته</string>
   <string name="header_certification">گواهینامه</string>
   <string name="header_clear_data">پاک کردن داده‌ها</string>
   <string name="header_comment_reactions">واکنش‌های بازخورد</string>
@@ -797,6 +820,7 @@
   <string name="header_director">کارگردان</string>
   <string name="header_display">نمایش</string>
   <string name="header_edit_smart_list">ویرایش لیست هوشمند</string>
+  <string name="header_emails">ایمیل‌ها</string>
   <string name="header_episode_type">نوع</string>
   <string name="header_expected_premiere">اولین نمایش مورد انتظار</string>
   <string name="header_expiration_date">تاریخ انقضا</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">تا %s</string>
   <string name="list_title_activity">فعالیت</string>
   <string name="list_title_actors">بازیگران</string>
+  <string name="list_title_all_titles">همه عناوین</string>
   <string name="list_title_anticipated_movies">فیلم‌های مورد انتظار</string>
   <string name="list_title_anticipated_shows">برنامه‌های مورد انتظار</string>
   <string name="list_title_birthdays_this_month">تولدهای این ماه</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">پس‌زمینه</string>
   <string name="page_title_year_in_review">مرور سال %s</string>
   <string name="page_title_year_to_date">سال تا به امروز</string>
+  <string name="preview_feature_description_calendar_redesign">یک تابلوی هفتگی با پوسترها، یک نمای ماهانه، یک نوار کناری ثابت با یک تقویم کوچک و فیلترهای قابل جمع‌شدن، و یک کشوی روزانه در تلفن‌ها.</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_large_screen_cards">در صفحه‌های نمایش بزرگ‌تر، همه لیست‌ها از همان طراحی کارت‌های مورد استفاده در بقیه برنامه بهره می‌برند. با انتخاب هر کدام، به جای ترک لیست، یک نمای کلی سریع نمایش داده می‌شود.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
   <string name="preview_feature_description_vip_veteran">نشان می‌دهد که اعضا چقدر بدون وقفه اشتراک VIP را حفظ کرده‌اند، با نشان کهنه‌کار یا افسانه، حلقه‌ی آواتار رنگی و چند جشن در پروفایل خودتان.</string>
   <string name="preview_feature_description_year_in_review_2026">سال 2026 شما به صورت یک حلقه قابل پیمایش با یک پرسونای بیننده، و سپس یک صفحه آمار که با آن همخوانی دارد.</string>
+  <string name="preview_feature_title_calendar_redesign">بازطراحی تقویم</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_large_screen_cards">کارت‌های صفحه نمایش بزرگ</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">فصل %d پیشرفت</string>
   <string name="section_title_seasons_overview">مرور کلی</string>
   <string name="section_title_specials_progress">پیشرفت قسمت‌های ویژه</string>
+  <string name="smart_list_nudge_message">%d مورد از لیست‌های شما می‌توانند خودشان را به‌روزرسانی کنند</string>
+  <string name="smart_list_nudge_message_short">%d لیست می‌توانند خودشان را به‌روزرسانی کنند</string>
+  <string name="smart_list_nudge_message_short_single">%d لیست می‌تواند خودش را به‌روزرسانی کند</string>
+  <string name="smart_list_nudge_row_overlap">شامل %1$d از %2$d مورد</string>
+  <string name="smart_list_upgrade_draft_title">این لیست را خودکار به‌روز کنید</string>
+  <string name="smart_list_upgrade_origin_note">همگام‌سازی‌شده از %s، که دیگر لیست‌های Trakt را به‌روزرسانی نمی‌کند.</string>
+  <string name="smart_list_upgrade_origin_note_link">همگام‌سازی‌شده از %s، که دیگر لیست‌های Trakt را به‌روزرسانی نمی‌کند. پس از تبدیل، لیست و لینک یکسان خواهند بود.</string>
+  <string name="smart_list_upgrade_overlap">%1$s از %2$s عنوان شما را بازمی‌گرداند، به علاوه عناوین جدید.</string>
+  <string name="smart_list_upgrade_plain_description">لیست‌های هوشمند، بر اساس فیلترهایی که انتخاب می‌کنید، عناوین جدید را به‌طور خودکار اضافه می‌کنند.</string>
+  <string name="smart_list_upgrade_plain_title">آیا می‌خواهید این لیست خودکار به‌روز شود؟</string>
   <string name="spotlight_dialog_label">پیمایش سریع</string>
   <string name="spotlight_hint_dismiss">بستن</string>
   <string name="spotlight_hint_navigate">پیمایش</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">بازدیدها</string>
   <string name="stat_text_time_watched">تماشا شده</string>
   <string name="stat_text_watchers">تماشاگران</string>
+  <string name="switch_label_emails_marketing">دریافت ایمیل‌های اخبار و پیشنهادات</string>
+  <string name="switch_label_emails_notifications">دریافت ایمیل‌های اعلان فعالیت</string>
+  <string name="switch_label_emails_recaps">دریافت ایمیل‌های خلاصه</string>
   <string name="switch_label_export_before_destructive">ابتدا داده‌های من را صادر کنید</string>
   <string name="switch_label_mark_as_spoiler">علامت‌گذاری به عنوان اسپویلر</string>
   <string name="switch_label_multiple_watches">فعال یا غیرفعال کردن تماشای چندگانه</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">مسدود شده</string>
   <string name="tag_text_deal_price">۲ سال اول</string>
   <string name="tag_text_dropped">رها شده</string>
+  <string name="tag_text_emails_always_on">همیشه فعال</string>
   <string name="tag_text_episodes">اپیزودها</string>
   <string name="tag_text_finale">قسمت پایانی</string>
   <string name="tag_text_follow_request_pending">در انتظار</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">خرید</string>
   <string name="text_by">توسط</string>
   <string name="text_calendar_feed_filtered">فیلتر شده</string>
+  <string name="text_calendar_nothing_scheduled">برنامه‌ای وجود ندارد</string>
   <string name="text_calendar_placeholder_1">در این روز چیزی برای شما نیست. یک روز مرخصی بگیرید، از آب و هوا لذت ببرید.</string>
   <string name="text_calendar_placeholder_10">همه چیز روشن است. زمان آن است که چیز متفاوتی را کشف کنید.</string>
   <string name="text_calendar_placeholder_2">هیچ موردی برای این تاریخ یافت نشد. شاید روز دیگری را امتحان کنید؟</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">برنامه شما روشن است. از آن نهایت استفاده را ببرید.</string>
   <string name="text_calendar_placeholder_9">هیچ رویدادی در این روز. شاید یک مورد قدیمی مورد علاقه را دوباره ببینید.</string>
   <string name="text_calendar_placeholder_empty_period">صفحه تاریک است. نه فیلمی. نه قسمتی. فقط شما و سکوت.</string>
+  <string name="text_calendar_today">امروز</string>
+  <string name="text_calendar_up_next">بعدی</string>
   <string name="text_clear_data_failed">برخی از موارد قابل پاکسازی نبودند. لطفاً دوباره تلاش کنید.</string>
   <string name="text_clear_source_custom_library">کتابخانه سفارشی</string>
   <string name="text_clear_source_history">تاریخی</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">پنهان/نمایش بخش‌ها</string>
   <string name="text_email_unsubscribe_message">شما دیگر این ایمیل‌ها را از Trakt دریافت نخواهید کرد.</string>
   <string name="text_email_unsubscribe_title">لغو اشتراک شد</string>
+  <string name="text_emails_marketing">اخبار و پیشنهادات</string>
+  <string name="text_emails_notifications">اعلان‌های فعالیت</string>
+  <string name="text_emails_recaps">خلاصه‌ها</string>
+  <string name="text_emails_system">حساب و امنیت</string>
   <string name="text_empty_list_add_from_lists">هنوز چیزی اینجا نیست. با عنوان‌هایی که قبلاً در دیگر لیست‌های خود ذخیره کرده‌اید، شروع کنید.</string>
   <string name="text_empty_plex_library">حساب Plex خود را متصل کنید تا کتابخانه Plex خود را با Trakt همگام‌سازی کنید.</string>
   <string name="text_ends_at">در %s به پایان می‌رسد</string>

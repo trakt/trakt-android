@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Dizilere Göz At</string>
   <string name="button_label_calendar">Takvim</string>
   <string name="button_label_calendar_feed">Bu takvime abone ol</string>
+  <string name="button_label_calendar_view">Takvim görünümü</string>
   <string name="button_label_cancel">İptal</string>
   <string name="button_label_cancel_follow_request">%s kullanıcısına gönderilen takip isteğini iptal et</string>
   <string name="button_label_cancel_vip">Aboneliği İptal Et</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Spoiler olarak gizle</string>
   <string name="button_label_get_started">Trakt ile Başla</string>
   <string name="button_label_get_vip">VIP özelliklerini aç</string>
-  <string name="button_label_go_to_calendar_day">%d tarihine git</string>
+  <string name="button_label_go_to_calendar_day">%s tarihine git</string>
   <string name="button_label_hide_details">Detayları gizle</string>
   <string name="button_label_hide_recommendation">\"%s\" öğesini önerilerden gizle</string>
   <string name="button_label_hide_section">%s gizle</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">\"%s\" görselini kapak resminiz olarak ayarla.</string>
   <string name="button_label_settings">Ayarlar</string>
   <string name="button_label_share">\"%s\" paylaş</string>
+  <string name="button_label_show_convertible_lists">Kendini güncelleyebilen listeleri göster</string>
   <string name="button_label_show_details">Detayları göster</string>
   <string name="button_label_show_section">%s göster</string>
   <string name="button_label_shows">Diziler</string>
+  <string name="button_label_smart_list_convert">Bu listeyi akıllı listeye dönüştür</string>
+  <string name="button_label_smart_list_convert_named">%s listesini akıllı listeye dönüştür</string>
   <string name="button_label_sort_added_date">Eklenme tarihine göre sırala</string>
   <string name="button_label_sort_ascending">Artan şekilde sırala</string>
   <string name="button_label_sort_created_date">Oluşturma tarihine göre sırala</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d yanıt</string>
   <string name="button_text_connect">Bağlan</string>
   <string name="button_text_continue">Devam Et</string>
+  <string name="button_text_convert">Dönüştür</string>
   <string name="button_text_copy_calendar_feed">iCal bağlantısını kopyala</string>
   <string name="button_text_create">Oluştur</string>
   <string name="button_text_create_list">Liste</string>
+  <string name="button_text_create_smart_list">Akıllı liste oluştur</string>
   <string name="button_text_cta_create_list">Liste oluştur</string>
   <string name="button_text_data_sync_ignore">Mevcut veriyi yok say</string>
   <string name="button_text_data_sync_yes">Mevcut veriyi senkronize et</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Gizle</string>
   <string name="button_text_hide_description">Açıklamayı Gizle</string>
   <string name="button_text_hide_details">Detayları Gizle</string>
+  <string name="button_text_hide_lists">Gizle</string>
   <string name="button_text_hide_recommendation">Öneriyi gizle</string>
   <string name="button_text_history">Tarih</string>
   <string name="button_text_history_slot_picker_reset">Sıfırla</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">En Üste Taşı</string>
   <string name="button_text_movies">Filmler</string>
   <string name="button_text_no_services">Hizmet yok</string>
+  <string name="button_text_not_now">Şimdi değil</string>
   <string name="button_text_open_calendar_feed">Takvim uygulamasına ekle</string>
   <string name="button_text_open_in_service">%s içinde aç</string>
   <string name="button_text_personal">Kişisel</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Derecelendirme İstemlerini Geri Yükle</string>
   <string name="button_text_restore_show">Diziyi geri yükle</string>
   <string name="button_text_retry">Tekrar Dene</string>
+  <string name="button_text_review_lists">Yorum</string>
   <string name="button_text_revoke_access">Erişimi İptal Et</string>
   <string name="button_text_save_filters">Varsayılan olarak ayarla</string>
   <string name="button_text_select_all">Tümünü Seç</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Ayarlar</string>
   <string name="button_text_share">Paylaş</string>
   <string name="button_text_share_auth_logs">Kimlik Doğrulama Günlüklerini Paylaş</string>
+  <string name="button_text_show_me">Göster</string>
   <string name="button_text_shows">Diziler</string>
+  <string name="button_text_smart_list_convert">Akıllı listeye dönüştür</string>
   <string name="button_text_smart_lists">Akıllı</string>
   <string name="button_text_social">Sosyal</string>
   <string name="button_text_sort_added_date">Eklenme Tarihi</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Düzelt</string>
   <string name="button_text_younify_send_logs">Günlükleri Gönder</string>
   <string name="button_text_younify_unlink">Bağlantıyı Kes</string>
+  <string name="calendar_day_item_count_one">%d Öğe</string>
+  <string name="calendar_day_item_count_other">%d Öğe</string>
+  <string name="calendar_view_day">Gün</string>
+  <string name="calendar_view_week">Hafta</string>
   <string name="chart_label_grouped_categories">%d kategori</string>
   <string name="chart_label_other">Diğer</string>
   <string name="cleanup_status_done">%d yinelenen oynatma kaldırıldı.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Trakt hesabınıza erişim izni verdiğiniz üçüncü taraf uygulamalar.</string>
   <string name="description_data_syncs">Bağlı yayın hizmetlerinizden en son veri senkronizasyonları.</string>
   <string name="description_delete_account">Kişisel bilgileriniz kaldırılacak ve istatistiksel verileriniz anonimleştirilecektir.</string>
+  <string name="description_emails">Bizden hangi e-postaları almak istediğinizi seçin.</string>
+  <string name="description_emails_marketing">Ürün haberleri, özel teklifler ve haftalık özet.</string>
+  <string name="description_emails_notifications">Yanıtlar, bahsetmeler, beğeniler, yeni takipçiler ve liste işbirlikleri.</string>
+  <string name="description_emails_recaps">Aya Genel Bakışınız ve yayın hizmeti analizleriniz.</string>
+  <string name="description_emails_system">Giriş kodları, güvenlik uyarıları, faturalandırma ve yasal güncellemeler. Bunlar kapatılamaz.</string>
   <string name="description_export">Kullanıcı verilerinizin tek bir ZIP dosyasında dışa aktarımını alın. Bu işlem biraz zaman alabilir.</string>
   <string name="description_export_before_destructive">Herhangi bir şey silinmeden önce verilerinizin ZIP dosyasını indirir.</string>
   <string name="description_history_analysis">İzleme geçmişinizdeki yinelenen oynatmaları bulun ve her bir öğenin yalnızca bir izlemesini tutun.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Doğum Günü</string>
   <string name="header_calendar">Takvim</string>
   <string name="header_calendar_feed">Takvim akışı</string>
+  <string name="header_calendar_last_week">Geçen hafta</string>
+  <string name="header_calendar_next_week">Gelecek hafta</string>
+  <string name="header_calendar_this_week">Bu hafta</string>
   <string name="header_certification">Sertifika</string>
   <string name="header_clear_data">Verileri Temizle</string>
   <string name="header_comment_reactions">Yorum tepkileri</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Yönetmen</string>
   <string name="header_display">Görüntüleme</string>
   <string name="header_edit_smart_list">Akıllı Listeyi Düzenle</string>
+  <string name="header_emails">E-postalar</string>
   <string name="header_episode_type">Tür</string>
   <string name="header_expected_premiere">Beklenen İlk Gösterim</string>
   <string name="header_expiration_date">Son Kullanma Tarihi</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">%s\'a kadar</string>
   <string name="list_title_activity">Etkinlik</string>
   <string name="list_title_actors">Oyuncular</string>
+  <string name="list_title_all_titles">Tüm Başlıklar</string>
   <string name="list_title_anticipated_movies">Beklenen Filmler</string>
   <string name="list_title_anticipated_shows">Beklenen Diziler</string>
   <string name="list_title_birthdays_this_month">Bu Ayın Doğum Günleri</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Arka Plan</string>
   <string name="page_title_year_in_review">%s Yılına Genel Bakış</string>
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
+  <string name="preview_feature_description_calendar_redesign">Posterli bir hafta panosu, ay görünümü, mini takvim ve daraltılabilir filtreler içeren sabit bir kenar çubuğu ve telefonlarda bir gün çekmecesi.</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_large_screen_cards">Daha büyük ekranlarda, tüm listeler uygulamanın geri kalanıyla aynı kartları kullanır. Birini seçmek, listeden ayrılmak yerine hızlı bir bakış açar.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
   <string name="preview_feature_description_vip_veteran">Üyelerin VIP statüsünü ne kadar süre kesintisiz sürdürdüğünü, Kıdemli veya Efsane rozetiyle, renkli bir avatar halkasıyla ve kendi profilinizde birkaç kutlamayla gösterir.</string>
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
+  <string name="preview_feature_title_calendar_redesign">Takvim yeniden tasarımı</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_large_screen_cards">Geniş Ekran Kartları</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Sezon %d ilerlemesi</string>
   <string name="section_title_seasons_overview">Genel Bakış</string>
   <string name="section_title_specials_progress">Özel bölümler ilerlemesi</string>
+  <string name="smart_list_nudge_message">%d listeniz kendini güncelleyebilir</string>
+  <string name="smart_list_nudge_message_short">%d liste kendini güncelleyebilir</string>
+  <string name="smart_list_nudge_message_short_single">%d liste kendini güncelleyebilir</string>
+  <string name="smart_list_nudge_row_overlap">%1$d arasından %2$d ögeyi geri getirir</string>
+  <string name="smart_list_upgrade_draft_title">Bu listenin otomatik güncellenmesini sağlayın</string>
+  <string name="smart_list_upgrade_origin_note">%s kaynağından senkronize edildi, artık Trakt listelerini güncellemiyor.</string>
+  <string name="smart_list_upgrade_origin_note_link">%s kaynağından senkronize edildi, artık Trakt listelerini güncellemiyor. Dönüştürdükten sonra aynı liste, aynı bağlantı.</string>
+  <string name="smart_list_upgrade_overlap">%1$s başlığınızdan %2$s tanesini ve yeni yayınları geri getirir</string>
+  <string name="smart_list_upgrade_plain_description">Akıllı listeler, seçtiğiniz filtrelere göre kendi kendilerine yeni başlıklar ekler.</string>
+  <string name="smart_list_upgrade_plain_title">Bu listenin otomatik güncellenmesini ister misiniz?</string>
   <string name="spotlight_dialog_label">Hızlı gezinme</string>
   <string name="spotlight_hint_dismiss">Kapat</string>
   <string name="spotlight_hint_navigate">Gezin</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Oynatma Sayısı</string>
   <string name="stat_text_time_watched">İzlendi</string>
   <string name="stat_text_watchers">İzleyiciler</string>
+  <string name="switch_label_emails_marketing">Haber ve teklif e-postaları al</string>
+  <string name="switch_label_emails_notifications">Etkinlik bildirim e-postaları al</string>
+  <string name="switch_label_emails_recaps">Özet e-postaları al</string>
   <string name="switch_label_export_before_destructive">Verilerimi önce dışa aktar</string>
   <string name="switch_label_mark_as_spoiler">Spoiler olarak işaretle</string>
   <string name="switch_label_multiple_watches">Birden fazla izlemeyi etkinleştir veya devre dışı bırak</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
   <string name="tag_text_dropped">Bırakıldı</string>
+  <string name="tag_text_emails_always_on">Her zaman açık</string>
   <string name="tag_text_episodes">Bölümler</string>
   <string name="tag_text_finale">Final</string>
   <string name="tag_text_follow_request_pending">Beklemede</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Satın Al</string>
   <string name="text_by">yapan</string>
   <string name="text_calendar_feed_filtered">Filtrelenmiş</string>
+  <string name="text_calendar_nothing_scheduled">Planlanmış bir şey yok</string>
   <string name="text_calendar_placeholder_1">Bu gün size özel hiçbir şey yok. Bir gün izin alın, havanın tadını çıkarın.</string>
   <string name="text_calendar_placeholder_10">Her şey yolunda. Farklı bir şeyler keşfetme zamanı.</string>
   <string name="text_calendar_placeholder_2">Bu tarih için hiçbir öğe bulunamadı. Belki başka bir gün denemek ister misiniz?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Programınız boş. Tadını çıkarın.</string>
   <string name="text_calendar_placeholder_9">Bu gün hiçbir etkinlik yok. Belki eski bir favoriyi tekrar ziyaret edersiniz.</string>
   <string name="text_calendar_placeholder_empty_period">Ekran karanlık. Film yok. Bölüm yok. Sadece siz ve sessizlik.</string>
+  <string name="text_calendar_today">Bugün</string>
+  <string name="text_calendar_up_next">Sırada</string>
   <string name="text_clear_data_failed">Bazı öğeler temizlenemedi. Lütfen tekrar deneyin.</string>
   <string name="text_clear_source_custom_library">Özel Kütüphane</string>
   <string name="text_clear_source_history">Geçmiş</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Bölümleri gizle/göster</string>
   <string name="text_email_unsubscribe_message">Bu e-postaları Trakt\'ten artık almayacaksınız.</string>
   <string name="text_email_unsubscribe_title">Abonelikten Çıkıldı</string>
+  <string name="text_emails_marketing">Haberler ve teklifler</string>
+  <string name="text_emails_notifications">Etkinlik bildirimleri</string>
+  <string name="text_emails_recaps">Özetler</string>
+  <string name="text_emails_system">Hesap ve güvenlik</string>
   <string name="text_empty_list_add_from_lists">Burada henüz hiçbir şey yok. Diğer listelerinize kaydettiğiniz başlıklarla başlayın.</string>
   <string name="text_empty_plex_library">Plex Kütüphanenizi Trakt ile senkronize etmek için Plex hesabınızı bağlayın.</string>
   <string name="text_ends_at">%sda biter</string>

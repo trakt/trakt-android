@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Explora sèries</string>
   <string name="button_label_calendar">Calendari</string>
   <string name="button_label_calendar_feed">Subscriu-te a aquest calendari</string>
+  <string name="button_label_calendar_view">Vista de calendari</string>
   <string name="button_label_cancel">Cancel·la</string>
   <string name="button_label_cancel_follow_request">Cancel·la la sol·licitud de seguiment a %s</string>
   <string name="button_label_cancel_vip">Cancel·la la subscripció</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Amaga com a spoiler</string>
   <string name="button_label_get_started">Comença amb Trakt</string>
   <string name="button_label_get_vip">Desbloqueja les funcions VIP</string>
-  <string name="button_label_go_to_calendar_day">Ves a %d</string>
+  <string name="button_label_go_to_calendar_day">Ves a %s</string>
   <string name="button_label_hide_details">Oculta els detalls</string>
   <string name="button_label_hide_recommendation">Amaga \"%s\" de les recomanacions</string>
   <string name="button_label_hide_section">Amaga %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Defineix la imatge de \"%s\" com a imatge de portada.</string>
   <string name="button_label_settings">Configuració</string>
   <string name="button_label_share">Comparteix \"%s\"</string>
+  <string name="button_label_show_convertible_lists">Mostra les llistes que es poden actualitzar soles</string>
   <string name="button_label_show_details">Mostra els detalls</string>
   <string name="button_label_show_section">Mostra %s</string>
   <string name="button_label_shows">Sèries</string>
+  <string name="button_label_smart_list_convert">Converteix aquesta llista en una llista intel·ligent</string>
+  <string name="button_label_smart_list_convert_named">Converteix %s en una llista intel·ligent</string>
   <string name="button_label_sort_added_date">Ordena per data d\'incorporació</string>
   <string name="button_label_sort_ascending">Ordena ascendent</string>
   <string name="button_label_sort_created_date">Ordena per data de creació</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d respostes</string>
   <string name="button_text_connect">Connecta</string>
   <string name="button_text_continue">Continua</string>
+  <string name="button_text_convert">Converteix</string>
   <string name="button_text_copy_calendar_feed">Copia l\'enllaç iCal</string>
   <string name="button_text_create">Crea</string>
   <string name="button_text_create_list">Llista</string>
+  <string name="button_text_create_smart_list">Crea una llista intel·ligent</string>
   <string name="button_text_cta_create_list">Crea llista</string>
   <string name="button_text_data_sync_ignore">Ignora les dades existents</string>
   <string name="button_text_data_sync_yes">Sincronitza les dades existents</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Amaga</string>
   <string name="button_text_hide_description">Oculta la descripció</string>
   <string name="button_text_hide_details">Oculta els detalls</string>
+  <string name="button_text_hide_lists">Amaga</string>
   <string name="button_text_hide_recommendation">Amaga la recomanació</string>
   <string name="button_text_history">Història</string>
   <string name="button_text_history_slot_picker_reset">Restableix</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Moure a dalt</string>
   <string name="button_text_movies">Pel·lícules</string>
   <string name="button_text_no_services">Sense serveis</string>
+  <string name="button_text_not_now">Ara no</string>
   <string name="button_text_open_calendar_feed">Afegeix a l\'aplicació de calendari</string>
   <string name="button_text_open_in_service">Obre a %s</string>
   <string name="button_text_personal">Personal</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Restaura les sol·licituds de valoració</string>
   <string name="button_text_restore_show">Restaura la sèrie</string>
   <string name="button_text_retry">Torna a intentar-ho</string>
+  <string name="button_text_review_lists">Ressenya</string>
   <string name="button_text_revoke_access">Revoca l\'accés</string>
   <string name="button_text_save_filters">Defineix com a predeterminat</string>
   <string name="button_text_select_all">Selecciona-ho tot</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Configuració</string>
   <string name="button_text_share">Comparteix</string>
   <string name="button_text_share_auth_logs">Comparteix els registres d\'autenticació</string>
+  <string name="button_text_show_me">Mostra-me\'ls</string>
   <string name="button_text_shows">Sèries</string>
+  <string name="button_text_smart_list_convert">Converteix en una llista intel·ligent</string>
   <string name="button_text_smart_lists">Intel·ligent</string>
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Data d\'incorporació</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Arregla</string>
   <string name="button_text_younify_send_logs">Envia registres</string>
   <string name="button_text_younify_unlink">Desvincula</string>
+  <string name="calendar_day_item_count_one">%d Element</string>
+  <string name="calendar_day_item_count_other">%d Elements de la llista</string>
+  <string name="calendar_view_day">Dia</string>
+  <string name="calendar_view_week">Setmana</string>
   <string name="chart_label_grouped_categories">%d categories</string>
   <string name="chart_label_other">Altres</string>
   <string name="cleanup_status_done">S\'han eliminat %d reproduccions duplicades.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Aplicacions de tercers que has autoritzat per accedir al teu compte de Trakt.</string>
   <string name="description_data_syncs">Sincronitzacions de dades recents dels teus serveis de streaming connectats.</string>
   <string name="description_delete_account">La teva informació personal s\'eliminarà i les teves dades estadístiques s\'anonimitzaran.</string>
+  <string name="description_emails">Tria quins correus electrònics vols rebre de nosaltres.</string>
+  <string name="description_emails_marketing">Notícies de producte, ofertes especials i el resum setmanal.</string>
+  <string name="description_emails_notifications">Respostes, mencions, m\'agrada, nous seguidors i col·laboracions de llistes.</string>
+  <string name="description_emails_recaps">El teu Mes en Revisió i estadístiques de serveis de streaming.</string>
+  <string name="description_emails_system">Codis d\'inici de sessió, alertes de seguretat, facturació i actualitzacions legals. No es poden desactivar.</string>
   <string name="description_export">Obtén una exportació de les teves dades d\'usuari en un sol fitxer ZIP. Aquest procés pot trigar una mica.</string>
   <string name="description_export_before_destructive">Descarrega un ZIP de les teves dades abans que s\'elimini res.</string>
   <string name="description_history_analysis">Troba reproduccions duplicades al teu historial de reproduccions i conserva només una reproducció de cada element.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Aniversari</string>
   <string name="header_calendar">Calendari</string>
   <string name="header_calendar_feed">Font de calendari</string>
+  <string name="header_calendar_last_week">Setmana passada</string>
+  <string name="header_calendar_next_week">Setmana vinent</string>
+  <string name="header_calendar_this_week">Aquesta setmana</string>
   <string name="header_certification">Certificació</string>
   <string name="header_clear_data">Esborra dades</string>
   <string name="header_comment_reactions">Reaccions a la ressenya</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Director</string>
   <string name="header_display">Visualització</string>
   <string name="header_edit_smart_list">Edita llista intel·ligent</string>
+  <string name="header_emails">Correus electrònics</string>
   <string name="header_episode_type">Tipus</string>
   <string name="header_expected_premiere">Estrena esperada</string>
   <string name="header_expiration_date">Data de caducitat</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Fins a %s</string>
   <string name="list_title_activity">Activitat</string>
   <string name="list_title_actors">Actors</string>
+  <string name="list_title_all_titles">Tots els títols</string>
   <string name="list_title_anticipated_movies">Pel·lícules anticipades</string>
   <string name="list_title_anticipated_shows">Sèries anticipades</string>
   <string name="list_title_birthdays_this_month">Aniversaris aquest mes</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Fons</string>
   <string name="page_title_year_in_review">%s en resum</string>
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
+  <string name="preview_feature_description_calendar_redesign">Un tauler setmanal amb pòsters, una vista mensual, una barra lateral ancorada amb un mini calendari i filtres desplegables, i una safata de dia als telèfons.</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_large_screen_cards">A pantalles més grans, totes les llistes utilitzen les mateixes targetes que la resta de l\'aplicació. Si en seleccioneu una, s\'obre una vista ràpida en lloc de sortir de la llista.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
   <string name="preview_feature_description_vip_veteran">Mostra quant de temps els membres han mantingut el VIP sense interrupcions, amb una insígnia de Veterà o Llegenda, un anell d\'avatar de color i algunes celebracions al teu propi perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">El teu 2026 en un carrusel desplaçable amb una personalitat d\'espectador, i després una pàgina d\'estadístiques amb el mateix estil.</string>
+  <string name="preview_feature_title_calendar_redesign">Redisseny del calendari</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_large_screen_cards">Targetes per a pantalles grans</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Temporada %d progrés</string>
   <string name="section_title_seasons_overview">Visió general</string>
   <string name="section_title_specials_progress">Progrés dels especials</string>
+  <string name="smart_list_nudge_message">%d de les teves llistes es poden actualitzar soles</string>
+  <string name="smart_list_nudge_message_short">%d llistes es poden actualitzar soles</string>
+  <string name="smart_list_nudge_message_short_single">%d llista es pot actualitzar sola</string>
+  <string name="smart_list_nudge_row_overlap">Inclou %1$d de %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Fes que aquesta llista s\'actualitzi sola</string>
+  <string name="smart_list_upgrade_origin_note">Sincronitzat des de %s, que ja no actualitza les llistes de Trakt.</string>
+  <string name="smart_list_upgrade_origin_note_link">Sincronitzat des de %s, que ja no actualitza les llistes de Trakt. La mateixa llista, el mateix enllaç després de la conversió.</string>
+  <string name="smart_list_upgrade_overlap">Recupera %1$s dels teus %2$s títols, més els nous llançaments</string>
+  <string name="smart_list_upgrade_plain_description">Les llistes intel·ligents afegeixen títols nous soles, segons els filtres que triïs.</string>
+  <string name="smart_list_upgrade_plain_title">Vols que aquesta llista s\'actualitzi sola?</string>
   <string name="spotlight_dialog_label">Navegació ràpida</string>
   <string name="spotlight_hint_dismiss">Tanca</string>
   <string name="spotlight_hint_navigate">Navegar</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Reproduccions</string>
   <string name="stat_text_time_watched">Vist</string>
   <string name="stat_text_watchers">Espectadors</string>
+  <string name="switch_label_emails_marketing">Rebre correus electrònics de notícies i ofertes</string>
+  <string name="switch_label_emails_notifications">Rebre correus electrònics de notificació d\'activitat</string>
+  <string name="switch_label_emails_recaps">Rebre correus electrònics de resum</string>
   <string name="switch_label_export_before_destructive">Exporta les meves dades primer</string>
   <string name="switch_label_mark_as_spoiler">Marca com a spoiler</string>
   <string name="switch_label_multiple_watches">Habilita o deshabilita múltiples visualitzacions</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Bloquejat</string>
   <string name="tag_text_deal_price">Primers 2 anys</string>
   <string name="tag_text_dropped">Abandonat</string>
+  <string name="tag_text_emails_always_on">Sempre activat</string>
   <string name="tag_text_episodes">Episodis</string>
   <string name="tag_text_finale">Final</string>
   <string name="tag_text_follow_request_pending">Pendent</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Compra</string>
   <string name="text_by">per</string>
   <string name="text_calendar_feed_filtered">Filtrat</string>
+  <string name="text_calendar_nothing_scheduled">Res programat</string>
   <string name="text_calendar_placeholder_1">Res per a tu aquest dia. Agafa un dia lliure, gaudeix del temps.</string>
   <string name="text_calendar_placeholder_10">Tot clar. És hora d\'explorar alguna cosa diferent.</string>
   <string name="text_calendar_placeholder_2">No s\'han trobat elements per a aquesta data. Potser prova un altre dia?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">El teu horari està lliure. Aprofita-ho al màxim.</string>
   <string name="text_calendar_placeholder_9">No hi ha esdeveniments aquest dia. Potser revisita un antic preferit.</string>
   <string name="text_calendar_placeholder_empty_period">La pantalla és fosca. Sense pel·lícules. Sense episodis. Només tu i el silenci.</string>
+  <string name="text_calendar_today">Avui</string>
+  <string name="text_calendar_up_next">A continuació</string>
   <string name="text_clear_data_failed">No s\'han pogut esborrar alguns elements. Torna-ho a provar.</string>
   <string name="text_clear_source_custom_library">Biblioteca personalitzada</string>
   <string name="text_clear_source_history">Història</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Amaga/mostra seccions</string>
   <string name="text_email_unsubscribe_message">Ja no rebràs aquests correus electrònics de Trakt.</string>
   <string name="text_email_unsubscribe_title">Subscripció cancel·lada</string>
+  <string name="text_emails_marketing">Notícies i ofertes</string>
+  <string name="text_emails_notifications">Notificacions d\'activitat</string>
+  <string name="text_emails_recaps">Resums</string>
+  <string name="text_emails_system">Compte i seguretat</string>
   <string name="text_empty_list_add_from_lists">Encara no hi ha res aquí. Comença amb títols que ja has desat a les teves altres llistes.</string>
   <string name="text_empty_plex_library">Connecta el teu compte de Plex per sincronitzar la teva biblioteca de Plex amb Trakt.</string>
   <string name="text_ends_at">Acaba a les %s</string>

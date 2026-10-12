@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Sorozatok böngészése</string>
   <string name="button_label_calendar">Naptár</string>
   <string name="button_label_calendar_feed">Feliratkozás erre a naptárra</string>
+  <string name="button_label_calendar_view">Naptár nézet</string>
   <string name="button_label_cancel">Mégse</string>
   <string name="button_label_cancel_follow_request">Követési kérelem visszavonása %s felhasználótól</string>
   <string name="button_label_cancel_vip">Előfizetés lemondása</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Elrejtés spoilerként</string>
   <string name="button_label_get_started">Kezdés a Trakt-tal</string>
   <string name="button_label_get_vip">VIP funkciók feloldása</string>
-  <string name="button_label_go_to_calendar_day">Ugrás ide: %d</string>
+  <string name="button_label_go_to_calendar_day">Ugrás ide: %s</string>
   <string name="button_label_hide_details">Részletek elrejtése</string>
   <string name="button_label_hide_recommendation">\"%s\" elrejtése az ajánlások közül</string>
   <string name="button_label_hide_section">Elrejtés: %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Állítsd be a(z) \"%s\" képét borítóképként.</string>
   <string name="button_label_settings">Beállítások</string>
   <string name="button_label_share">„%s” megosztása</string>
+  <string name="button_label_show_convertible_lists">Mutasd azokat a listákat, amelyek frissíthetik magukat</string>
   <string name="button_label_show_details">Részletek megjelenítése</string>
   <string name="button_label_show_section">Megjelenítés: %s</string>
   <string name="button_label_shows">Sorozatok</string>
+  <string name="button_label_smart_list_convert">Alakítsa át ezt a listát okoslistává</string>
+  <string name="button_label_smart_list_convert_named">Alakítsd át a(z) %s listát okoslistává</string>
   <string name="button_label_sort_added_date">Rendezés hozzáadás dátuma szerint</string>
   <string name="button_label_sort_ascending">Rendezés növekvő sorrendben</string>
   <string name="button_label_sort_created_date">Rendezés létrehozás dátuma szerint</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d válasz</string>
   <string name="button_text_connect">Csatlakozás</string>
   <string name="button_text_continue">Folytatás</string>
+  <string name="button_text_convert">Átalakítás</string>
   <string name="button_text_copy_calendar_feed">iCal link másolása</string>
   <string name="button_text_create">Létrehozás</string>
   <string name="button_text_create_list">Lista</string>
+  <string name="button_text_create_smart_list">Okos lista létrehozása</string>
   <string name="button_text_cta_create_list">Lista létrehozása</string>
   <string name="button_text_data_sync_ignore">Meglévő adatok figyelmen kívül hagyása</string>
   <string name="button_text_data_sync_yes">Meglévő adatok szinkronizálása</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Elrejtés</string>
   <string name="button_text_hide_description">Leírás elrejtése</string>
   <string name="button_text_hide_details">Részletek elrejtése</string>
+  <string name="button_text_hide_lists">Elrejtés</string>
   <string name="button_text_hide_recommendation">Ajánlás elrejtése</string>
   <string name="button_text_history">Történelmi</string>
   <string name="button_text_history_slot_picker_reset">Visszaállítás</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Mozgatás felülre</string>
   <string name="button_text_movies">Filmek</string>
   <string name="button_text_no_services">Nincsenek szolgáltatások</string>
+  <string name="button_text_not_now">Nem most</string>
   <string name="button_text_open_calendar_feed">Hozzáadás naptáralkalmazáshoz</string>
   <string name="button_text_open_in_service">Megnyitás ezzel: %s</string>
   <string name="button_text_personal">Személyes</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Értékelési felszólítások visszaállítása</string>
   <string name="button_text_restore_show">Sorozat visszaállítása</string>
   <string name="button_text_retry">Újra</string>
+  <string name="button_text_review_lists">Értékelés</string>
   <string name="button_text_revoke_access">Hozzáférési jog visszavonása</string>
   <string name="button_text_save_filters">Beállítás alapértelmezettként</string>
   <string name="button_text_select_all">Összes kijelölése</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Beállítások</string>
   <string name="button_text_share">Megosztás</string>
   <string name="button_text_share_auth_logs">Hitelesítési naplók megosztása</string>
+  <string name="button_text_show_me">Mutasd</string>
   <string name="button_text_shows">Sorozatok</string>
+  <string name="button_text_smart_list_convert">Okoslistává alakítás</string>
   <string name="button_text_smart_lists">Okos</string>
   <string name="button_text_social">Közösségi</string>
   <string name="button_text_sort_added_date">Hozzáadás dátuma</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Javítás</string>
   <string name="button_text_younify_send_logs">Naplók küldése</string>
   <string name="button_text_younify_unlink">Leválasztás</string>
+  <string name="calendar_day_item_count_one">%d Elem</string>
+  <string name="calendar_day_item_count_other">%d Elem</string>
+  <string name="calendar_view_day">Nap</string>
+  <string name="calendar_view_week">Hét</string>
   <string name="chart_label_grouped_categories">%d kategóriák</string>
   <string name="chart_label_other">Egyéb</string>
   <string name="cleanup_status_done">Eltávolítva %d duplikált lejátszás.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Harmadik féltől származó alkalmazások, amelyeknek hozzáférést adtál Trakt fiókodhoz.</string>
   <string name="description_data_syncs">Legutóbbi adatszinkronizálások a csatlakoztatott streaming szolgáltatásaiból.</string>
   <string name="description_delete_account">Személyes adataid törlésre kerülnek, és statisztikai adataid anonimizálásra kerülnek.</string>
+  <string name="description_emails">Válassza ki, mely e-maileket szeretné kapni tőlünk.</string>
+  <string name="description_emails_marketing">Termék hírek, különleges ajánlatok és a heti összefoglaló.</string>
+  <string name="description_emails_notifications">Válaszok, említések, kedvelések, új követők és lista-együttműködések.</string>
+  <string name="description_emails_recaps">A Hónap összefoglalója és streaming szolgáltatás statisztikái.</string>
+  <string name="description_emails_system">Bejelentkezési kódok, biztonsági riasztások, számlázási és jogi frissítések. Ezeket nem lehet kikapcsolni.</string>
   <string name="description_export">Töltsd le a felhasználói adataidat egyetlen ZIP-fájlban. Ez a folyamat eltarthat egy ideig.</string>
   <string name="description_export_before_destructive">Letölti az adataid ZIP-fájlját, mielőtt bármi eltávolításra kerülne.</string>
   <string name="description_history_analysis">Keresse meg a duplikált lejátszásokat a megtekintési előzményeiben, és tartson meg csak egy megtekintést minden elemből.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Születésnap</string>
   <string name="header_calendar">Naptár</string>
   <string name="header_calendar_feed">Naptár hírfolyam</string>
+  <string name="header_calendar_last_week">Előző hét</string>
+  <string name="header_calendar_next_week">Következő hét</string>
+  <string name="header_calendar_this_week">Ezen a héten</string>
   <string name="header_certification">Besorolás</string>
   <string name="header_clear_data">Adatok törlése</string>
   <string name="header_comment_reactions">Reakciók az értékelésre</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Rendező</string>
   <string name="header_display">Megjelenítés</string>
   <string name="header_edit_smart_list">Okos lista szerkesztése</string>
+  <string name="header_emails">E-mailek</string>
   <string name="header_episode_type">Típus</string>
   <string name="header_expected_premiere">Várható premier</string>
   <string name="header_expiration_date">Lejárat dátuma</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Akár %s-ig</string>
   <string name="list_title_activity">Tevékenység</string>
   <string name="list_title_actors">Színészek</string>
+  <string name="list_title_all_titles">Minden cím</string>
   <string name="list_title_anticipated_movies">Várt filmek</string>
   <string name="list_title_anticipated_shows">Várt sorozatok</string>
   <string name="list_title_birthdays_this_month">Születésnapok ebben a hónapban</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Háttér</string>
   <string name="page_title_year_in_review">%s év áttekintése</string>
   <string name="page_title_year_to_date">Éves összesítés</string>
+  <string name="preview_feature_description_calendar_redesign">Egy hétnézet poszterekkel, egy hónapnézet, egy rögzített oldalsáv mini naptárral és összecsukható szűrőkkel, valamint egy napfiók telefonokon.</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_large_screen_cards">Nagyobb képernyőkön minden lista ugyanazokat a kártyákat használja, mint az alkalmazás többi része. Egy elem kiválasztása gyors áttekintést nyit meg ahelyett, hogy elhagyná a listát.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
   <string name="preview_feature_description_vip_veteran">Megmutatja, mennyi ideig tartották a tagok szünet nélkül a VIP státuszt, Veterán vagy Legenda jelvénnyel, színes avatargyűrűvel és néhány ünnepséggel a saját profilodon.</string>
   <string name="preview_feature_description_year_in_review_2026">A 2026-os éved egy görgethető videóként, egy nézői személyiséggel, majd egy hozzá illeszkedő statisztikai oldallal.</string>
+  <string name="preview_feature_title_calendar_redesign">Naptár átalakítás</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_large_screen_cards">Nagyképernyős kártyák</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">%d. évad előrehaladása</string>
   <string name="section_title_seasons_overview">Áttekintés</string>
   <string name="section_title_specials_progress">Különkiadások előrehaladása</string>
+  <string name="smart_list_nudge_message">%d listád frissítheti magát</string>
+  <string name="smart_list_nudge_message_short">%d lista frissítheti magát</string>
+  <string name="smart_list_nudge_message_short_single">%d lista frissítheti magát</string>
+  <string name="smart_list_nudge_row_overlap">Megtart %1$d-t a %2$d-ból</string>
+  <string name="smart_list_upgrade_draft_title">Frissítse magát ez a lista</string>
+  <string name="smart_list_upgrade_origin_note">%s szolgáltatásból szinkronizálva, amely már nem frissíti a Trakt listákat.</string>
+  <string name="smart_list_upgrade_origin_note_link">%s szolgáltatásból szinkronizálva, amely már nem frissíti a Trakt listákat. Ugyanaz a lista, ugyanaz a link konvertálás után.</string>
+  <string name="smart_list_upgrade_overlap">%1$s címéből %2$s címet hoz vissza, plusz az új megjelenéseket.</string>
+  <string name="smart_list_upgrade_plain_description">Az okoslisták automatikusan adnak hozzá új címeket az Ön által kiválasztott szűrők alapján.</string>
+  <string name="smart_list_upgrade_plain_title">Szeretné, ha ez a lista magától frissülne?</string>
   <string name="spotlight_dialog_label">Gyorsnavigáció</string>
   <string name="spotlight_hint_dismiss">Bezárás</string>
   <string name="spotlight_hint_navigate">Navigálás</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Lejátszások</string>
   <string name="stat_text_time_watched">Megnézve</string>
   <string name="stat_text_watchers">Nézők</string>
+  <string name="switch_label_emails_marketing">Hírek és ajánlatok e-mailjeinek fogadása</string>
+  <string name="switch_label_emails_notifications">Tevékenységi értesítő e-mailek fogadása</string>
+  <string name="switch_label_emails_recaps">Összefoglaló e-mailek fogadása</string>
   <string name="switch_label_export_before_destructive">Előbb exportáld az adataimat</string>
   <string name="switch_label_mark_as_spoiler">Jelölés spoilerként</string>
   <string name="switch_label_multiple_watches">Újranézések engedélyezése vagy letiltása</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Blokkolva</string>
   <string name="tag_text_deal_price">Első 2 év</string>
   <string name="tag_text_dropped">Félbehagyva</string>
+  <string name="tag_text_emails_always_on">Mindig bekapcsolva</string>
   <string name="tag_text_episodes">Epizódok</string>
   <string name="tag_text_finale">Finálé</string>
   <string name="tag_text_follow_request_pending">Függőben</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Megvásárolható</string>
   <string name="text_by">Készítette:</string>
   <string name="text_calendar_feed_filtered">Szűrve</string>
+  <string name="text_calendar_nothing_scheduled">Nincs semmi beütemezve</string>
   <string name="text_calendar_placeholder_1">Mára nincs semmi dolgod. Tarts egy szabadnapot, élvezd a jó időt!</string>
   <string name="text_calendar_placeholder_10">Minden tiszta. Itt az idő, hogy felfedezz valami újat!</string>
   <string name="text_calendar_placeholder_2">Erre a dátumra nincsenek elemek. Esetleg próbálj meg egy másik napot.</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">A naptárad teljesen tiszta. Hozd ki belőle a legtöbbet!</string>
   <string name="text_calendar_placeholder_9">Mára nincsenek események. Mit szólnál egy régi kedvenchez?</string>
   <string name="text_calendar_placeholder_empty_period">A képernyő sötét. Nincsenek filmek. Nincsenek epizódok. Csak te és a csend.</string>
+  <string name="text_calendar_today">Ma</string>
+  <string name="text_calendar_up_next">Következik</string>
   <string name="text_clear_data_failed">Néhány elemet nem sikerült törölni. Kérjük, próbálja újra.</string>
   <string name="text_clear_source_custom_library">Egyéni könyvtár</string>
   <string name="text_clear_source_history">Történelmi</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Szakaszok elrejtése/megjelenítése</string>
   <string name="text_email_unsubscribe_message">A továbbiakban nem kap ilyen e-maileket a Trakt-tól.</string>
   <string name="text_email_unsubscribe_title">Leiratkozva</string>
+  <string name="text_emails_marketing">Hírek és ajánlatok</string>
+  <string name="text_emails_notifications">Tevékenységi értesítések</string>
+  <string name="text_emails_recaps">Összefoglalók</string>
+  <string name="text_emails_system">Fiók és biztonság</string>
   <string name="text_empty_list_add_from_lists">Még semmi sincs itt. Kezdj azokkal a címekkel, amelyeket már elmentettél a többi listádba.</string>
   <string name="text_empty_plex_library">Csatlakoztassa Plex fiókját, hogy szinkronizálja Plex könyvtárát a Trakttal.</string>
   <string name="text_ends_at">Vége %s órakor</string>

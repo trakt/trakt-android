@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Разгледай сериали</string>
   <string name="button_label_calendar">Календар</string>
   <string name="button_label_calendar_feed">Абонирайте се за този календар</string>
+  <string name="button_label_calendar_view">Изглед на календар</string>
   <string name="button_label_cancel">Отказ</string>
   <string name="button_label_cancel_follow_request">Отмяна на заявка за следване до %s</string>
   <string name="button_label_cancel_vip">Анулиране на абонамент</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Скрий като спойлер</string>
   <string name="button_label_get_started">Започни с Trakt</string>
   <string name="button_label_get_vip">Отключи VIP функции</string>
-  <string name="button_label_go_to_calendar_day">Отиди на %d</string>
+  <string name="button_label_go_to_calendar_day">Отиди на %s</string>
   <string name="button_label_hide_details">Скрий детайли</string>
   <string name="button_label_hide_recommendation">Скрий „%s“ от препоръки</string>
   <string name="button_label_hide_section">Скриване на %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Задайте изображението на „%s“ като ваша корица.</string>
   <string name="button_label_settings">Настройки</string>
   <string name="button_label_share">Сподели \"%s\"</string>
+  <string name="button_label_show_convertible_lists">Покажи списъците, които могат да се актуализират сами</string>
   <string name="button_label_show_details">Покажи детайли</string>
   <string name="button_label_show_section">Показване на %s</string>
   <string name="button_label_shows">Сериали</string>
+  <string name="button_label_smart_list_convert">Превърнете този списък в интелигентен списък</string>
+  <string name="button_label_smart_list_convert_named">Превърни %s в интелигентен списък</string>
   <string name="button_label_sort_added_date">Сортиране по дата на добавяне</string>
   <string name="button_label_sort_ascending">Сортиране във възходящ ред</string>
   <string name="button_label_sort_created_date">Сортиране по дата на създаване</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d отговора</string>
   <string name="button_text_connect">Свързване</string>
   <string name="button_text_continue">Продължи</string>
+  <string name="button_text_convert">Конвертирай</string>
   <string name="button_text_copy_calendar_feed">Копиране на iCal връзка</string>
   <string name="button_text_create">Създай</string>
   <string name="button_text_create_list">Списък</string>
+  <string name="button_text_create_smart_list">Създаване на интелигентен списък</string>
   <string name="button_text_cta_create_list">Създай списък</string>
   <string name="button_text_data_sync_ignore">Игнориране на съществуващи данни</string>
   <string name="button_text_data_sync_yes">Синхронизиране на съществуващи данни</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Скрий</string>
   <string name="button_text_hide_description">Скрий описанието</string>
   <string name="button_text_hide_details">Скрий детайли</string>
+  <string name="button_text_hide_lists">Скрий</string>
   <string name="button_text_hide_recommendation">Скрий препоръка</string>
   <string name="button_text_history">Исторически</string>
   <string name="button_text_history_slot_picker_reset">Нулиране</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Премести най-отгоре</string>
   <string name="button_text_movies">Филми</string>
   <string name="button_text_no_services">Няма услуги</string>
+  <string name="button_text_not_now">Не сега</string>
   <string name="button_text_open_calendar_feed">Добавяне към приложението за календар</string>
   <string name="button_text_open_in_service">Отвори в %s</string>
   <string name="button_text_personal">Лично</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Възстановяване на подканите за оценка</string>
   <string name="button_text_restore_show">Възстанови сериал</string>
   <string name="button_text_retry">Опитай отново</string>
+  <string name="button_text_review_lists">Рецензия</string>
   <string name="button_text_revoke_access">Отнемане на достъп</string>
   <string name="button_text_save_filters">Задай като по подразбиране</string>
   <string name="button_text_select_all">Избери всички</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Настройки</string>
   <string name="button_text_share">Сподели</string>
   <string name="button_text_share_auth_logs">Сподели регистрационни файлове за удостоверяване</string>
+  <string name="button_text_show_me">Покажи ми</string>
   <string name="button_text_shows">Сериали</string>
+  <string name="button_text_smart_list_convert">Превърни в интелигентен списък</string>
   <string name="button_text_smart_lists">Интелигентно</string>
   <string name="button_text_social">Социални</string>
   <string name="button_text_sort_added_date">Дата на добавяне</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Отстраняване</string>
   <string name="button_text_younify_send_logs">Изпращане на логове</string>
   <string name="button_text_younify_unlink">Откачи</string>
+  <string name="calendar_day_item_count_one">%d Елемент</string>
+  <string name="calendar_day_item_count_other">%d Елементи</string>
+  <string name="calendar_view_day">Ден</string>
+  <string name="calendar_view_week">Седмица</string>
   <string name="chart_label_grouped_categories">%d категории</string>
   <string name="chart_label_other">Други</string>
   <string name="cleanup_status_done">Премахнати %d дублиращи се гледания.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Приложения на трети страни, на които сте разрешили достъп до вашия Trakt акаунт.</string>
   <string name="description_data_syncs">Последни синхронизации на данни от свързаните ви стрийминг услуги.</string>
   <string name="description_delete_account">Вашата лична информация ще бъде премахната и статистическите ви данни ще бъдат анонимизирани.</string>
+  <string name="description_emails">Изберете какви имейли желаете да получавате от нас.</string>
+  <string name="description_emails_marketing">Новини за продукти, специални оферти и седмичен дайджест.</string>
+  <string name="description_emails_notifications">Отговори, споменавания, харесвания, нови последователи и сътрудничество по списъци.</string>
+  <string name="description_emails_recaps">Вашият месечен преглед и прозрения за стрийминг услугите.</string>
+  <string name="description_emails_system">Кодове за вход, сигнали за сигурност, фактуриране и правни актуализации. Те не могат да бъдат изключени.</string>
   <string name="description_export">Изтеглете експорт на потребителските си данни в един ZIP файл. Този процес може да отнеме известно време.</string>
   <string name="description_export_before_destructive">Изтегля ZIP архив с вашите данни, преди нещо да бъде премахнато.</string>
   <string name="description_history_analysis">Намерете дублиращи се гледания във вашата история на гледания и запазете само едно гледане на всеки елемент.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Рожден ден</string>
   <string name="header_calendar">Календар</string>
   <string name="header_calendar_feed">Календарна емисия</string>
+  <string name="header_calendar_last_week">Минала седмица</string>
+  <string name="header_calendar_next_week">Следваща седмица</string>
+  <string name="header_calendar_this_week">Тази седмица</string>
   <string name="header_certification">Сертификация</string>
   <string name="header_clear_data">Изчисти данните</string>
   <string name="header_comment_reactions">Реакции към рецензия</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Режисьор</string>
   <string name="header_display">Показване</string>
   <string name="header_edit_smart_list">Редактиране на интелигентен списък</string>
+  <string name="header_emails">Имейли</string>
   <string name="header_episode_type">Тип</string>
   <string name="header_expected_premiere">Очаквана премиера</string>
   <string name="header_expiration_date">Дата на изтичане</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">До %s</string>
   <string name="list_title_activity">Активност</string>
   <string name="list_title_actors">Актьори</string>
+  <string name="list_title_all_titles">Всички заглавия</string>
   <string name="list_title_anticipated_movies">Очаквани филми</string>
   <string name="list_title_anticipated_shows">Очаквани сериали</string>
   <string name="list_title_birthdays_this_month">Рождени дни този месец</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Фон</string>
   <string name="page_title_year_in_review">%s в преглед</string>
   <string name="page_title_year_to_date">От началото на годината</string>
+  <string name="preview_feature_description_calendar_redesign">Седмичен изглед с плакати, месечен изглед, докирана странична лента с мини календар и свиваеми филтри, и чекмедже за деня на телефони.</string>
   <string name="preview_feature_description_edit_mode">Активирайте контроли за скриване или показване на конфигурируеми секции в цялото приложение.</string>
   <string name="preview_feature_description_large_screen_cards">На по-големи екрани, всички списъци използват същите карти като останалата част от приложението. Избирането на елемент отваря бърз преглед, вместо да напускате списъка.</string>
   <string name="preview_feature_description_rewatch">Започнете сесии за повторно гледане на предавания, които вече сте гледали, отбележете гледани епизоди директно от прозореца на сесията.</string>
   <string name="preview_feature_description_soundtrack">Добавя секция за саундтрак към страниците на филми и предавания, с възпроизвеждане, където може да бъде намерена песен.</string>
   <string name="preview_feature_description_vip_veteran">Показва колко дълго членовете са запазили VIP без прекъсване, с значка Ветеран или Легенда, цветен пръстен на аватара и няколко празненства в профила ви.</string>
   <string name="preview_feature_description_year_in_review_2026">Вашата 2026 като превъртащ се клип с потребителска персона, след което страница със статистика, оформена според нея.</string>
+  <string name="preview_feature_title_calendar_redesign">Преработен календар</string>
   <string name="preview_feature_title_edit_mode">Режим на редактиране</string>
   <string name="preview_feature_title_large_screen_cards">Карти за голям екран</string>
   <string name="preview_feature_title_rewatch">Преглед</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Сезон %d напредък</string>
   <string name="section_title_seasons_overview">Преглед</string>
   <string name="section_title_specials_progress">Напредък на специални епизоди</string>
+  <string name="smart_list_nudge_message">%d от списъците ви могат да се актуализират сами</string>
+  <string name="smart_list_nudge_message_short">%d списъка могат да се актуализират сами</string>
+  <string name="smart_list_nudge_message_short_single">%d списък може да се актуализира сам</string>
+  <string name="smart_list_nudge_row_overlap">Включва %1$d от %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Този списък да се актуализира сам</string>
+  <string name="smart_list_upgrade_origin_note">Синхронизиран от %s, който вече не актуализира списъците на Trakt.</string>
+  <string name="smart_list_upgrade_origin_note_link">Синхронизиран от %s, който вече не актуализира списъците на Trakt. Същият списък, същата връзка след преобразуване.</string>
+  <string name="smart_list_upgrade_overlap">Връща %1$s от вашите %2$s заглавия, плюс нови издания</string>
+  <string name="smart_list_upgrade_plain_description">Интелигентните списъци добавят нови заглавия сами, въз основа на избраните от вас филтри.</string>
+  <string name="smart_list_upgrade_plain_title">Искате ли този списък да се актуализира сам?</string>
   <string name="spotlight_dialog_label">Бърза навигация</string>
   <string name="spotlight_hint_dismiss">Затвори</string>
   <string name="spotlight_hint_navigate">Навигиране</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Гледания</string>
   <string name="stat_text_time_watched">Гледано</string>
   <string name="stat_text_watchers">Зрители</string>
+  <string name="switch_label_emails_marketing">Получаване на имейли с новини и оферти</string>
+  <string name="switch_label_emails_notifications">Получаване на имейли за известия за активност</string>
+  <string name="switch_label_emails_recaps">Получаване на имейли с резюмета</string>
   <string name="switch_label_export_before_destructive">Първо експортирайте данните ми</string>
   <string name="switch_label_mark_as_spoiler">Маркирай като спойлер</string>
   <string name="switch_label_multiple_watches">Разрешаване или забраняване на многократно гледане</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Блокиран</string>
   <string name="tag_text_deal_price">Първите 2 години</string>
   <string name="tag_text_dropped">Спрян</string>
+  <string name="tag_text_emails_always_on">Винаги включено</string>
   <string name="tag_text_episodes">Епизоди</string>
   <string name="tag_text_finale">Финал</string>
   <string name="tag_text_follow_request_pending">В очакване</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Купи</string>
   <string name="text_by">от</string>
   <string name="text_calendar_feed_filtered">Филтрирано</string>
+  <string name="text_calendar_nothing_scheduled">Нищо насрочено</string>
   <string name="text_calendar_placeholder_1">Нищо за теб този ден. Вземи си почивка, наслади се на времето.</string>
   <string name="text_calendar_placeholder_10">Всичко е ясно. Време е да изследваш нещо различно.</string>
   <string name="text_calendar_placeholder_2">Няма намерени елементи за тази дата. Може би опитай друг ден?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Графикът ти е свободен. Използвай го по най-добрия начин.</string>
   <string name="text_calendar_placeholder_9">Няма събития този ден. Може би прегледай стар любим.</string>
   <string name="text_calendar_placeholder_empty_period">Екранът е тъмен. Без филми. Без епизоди. Само вие и тишината.</string>
+  <string name="text_calendar_today">Днес</string>
+  <string name="text_calendar_up_next">Предстои</string>
   <string name="text_clear_data_failed">Някои елементи не можаха да бъдат изчистени. Моля, опитайте отново.</string>
   <string name="text_clear_source_custom_library">Персонализирана библиотека</string>
   <string name="text_clear_source_history">Исторически</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Скриване/показване на секции</string>
   <string name="text_email_unsubscribe_message">Вече няма да получавате тези имейли от Trakt.</string>
   <string name="text_email_unsubscribe_title">Отписан</string>
+  <string name="text_emails_marketing">Новини и оферти</string>
+  <string name="text_emails_notifications">Известия за активност</string>
+  <string name="text_emails_recaps">Резюмета</string>
+  <string name="text_emails_system">Профил и сигурност</string>
   <string name="text_empty_list_add_from_lists">Все още няма нищо тук. Започнете със заглавия, които вече сте запазили в другите си списъци.</string>
   <string name="text_empty_plex_library">Свържете вашия Plex акаунт, за да синхронизирате вашата Plex библиотека с Trakt.</string>
   <string name="text_ends_at">Приключва в %s</string>

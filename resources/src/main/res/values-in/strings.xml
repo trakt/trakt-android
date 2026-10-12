@@ -63,6 +63,7 @@
   <string name="button_label_browse_shows">Jelajahi Acara</string>
   <string name="button_label_calendar">Kalender</string>
   <string name="button_label_calendar_feed">Berlangganan kalender ini</string>
+  <string name="button_label_calendar_view">Tampilan Kalender</string>
   <string name="button_label_cancel">Batal</string>
   <string name="button_label_cancel_follow_request">Batalkan permintaan ikuti ke %s</string>
   <string name="button_label_cancel_vip">Batalkan Langganan</string>
@@ -133,7 +134,7 @@
   <string name="button_label_format_spoiler">Tandai sebagai spoiler</string>
   <string name="button_label_get_started">Mulai dengan Trakt</string>
   <string name="button_label_get_vip">Buka fitur VIP</string>
-  <string name="button_label_go_to_calendar_day">Pergi ke %d</string>
+  <string name="button_label_go_to_calendar_day">Pergi ke %s</string>
   <string name="button_label_hide_details">Sembunyikan detail</string>
   <string name="button_label_hide_recommendation">Sembunyikan \"%s\" dari rekomendasi</string>
   <string name="button_label_hide_section">Sembunyikan %s</string>
@@ -261,9 +262,12 @@
   <string name="button_label_set_cover_image">Atur gambar \"%s\" sebagai gambar sampul Anda.</string>
   <string name="button_label_settings">Pengaturan</string>
   <string name="button_label_share">Bagikan \"%s\"</string>
+  <string name="button_label_show_convertible_lists">Tampilkan daftar yang dapat memperbarui sendiri</string>
   <string name="button_label_show_details">Tampilkan detail</string>
   <string name="button_label_show_section">Tampilkan %s</string>
   <string name="button_label_shows">Acara</string>
+  <string name="button_label_smart_list_convert">Ubah daftar ini menjadi daftar cerdas</string>
+  <string name="button_label_smart_list_convert_named">Ubah %s menjadi daftar cerdas</string>
   <string name="button_label_sort_added_date">Urutkan berdasarkan tanggal ditambahkan</string>
   <string name="button_label_sort_ascending">Urutkan menaik</string>
   <string name="button_label_sort_created_date">Urutkan berdasarkan tanggal dibuat</string>
@@ -399,9 +403,11 @@
   <string name="button_text_comment_replies">%d balasan</string>
   <string name="button_text_connect">Hubungkan</string>
   <string name="button_text_continue">Lanjutkan</string>
+  <string name="button_text_convert">Konversi</string>
   <string name="button_text_copy_calendar_feed">Salin tautan iCal</string>
   <string name="button_text_create">Buat</string>
   <string name="button_text_create_list">Daftar</string>
+  <string name="button_text_create_smart_list">Buat daftar cerdas</string>
   <string name="button_text_cta_create_list">Buat daftar</string>
   <string name="button_text_data_sync_ignore">Abaikan data yang ada</string>
   <string name="button_text_data_sync_yes">Sinkronkan data yang ada</string>
@@ -438,6 +444,7 @@
   <string name="button_text_hide">Sembunyikan</string>
   <string name="button_text_hide_description">Sembunyikan Deskripsi</string>
   <string name="button_text_hide_details">Sembunyikan Detail</string>
+  <string name="button_text_hide_lists">Sembunyikan</string>
   <string name="button_text_hide_recommendation">Sembunyikan rekomendasi</string>
   <string name="button_text_history">Sejarah</string>
   <string name="button_text_history_slot_picker_reset">Setel Ulang</string>
@@ -479,6 +486,7 @@
   <string name="button_text_move_to_top">Pindahkan ke Atas</string>
   <string name="button_text_movies">Film</string>
   <string name="button_text_no_services">Tidak ada layanan</string>
+  <string name="button_text_not_now">Nanti saja</string>
   <string name="button_text_open_calendar_feed">Tambahkan ke aplikasi kalender</string>
   <string name="button_text_open_in_service">Buka di %s</string>
   <string name="button_text_personal">Pribadi</string>
@@ -514,6 +522,7 @@
   <string name="button_text_restore_rating_prompts">Pulihkan Prompt Peringkat</string>
   <string name="button_text_restore_show">Pulihkan acara</string>
   <string name="button_text_retry">Coba lagi</string>
+  <string name="button_text_review_lists">Ulasan</string>
   <string name="button_text_revoke_access">Cabut akses</string>
   <string name="button_text_save_filters">Atur sebagai default</string>
   <string name="button_text_select_all">Pilih semua</string>
@@ -521,7 +530,9 @@
   <string name="button_text_settings">Pengaturan</string>
   <string name="button_text_share">Bagikan</string>
   <string name="button_text_share_auth_logs">Bagikan Log Autentikasi</string>
+  <string name="button_text_show_me">Tampilkan</string>
   <string name="button_text_shows">Acara</string>
+  <string name="button_text_smart_list_convert">Ubah menjadi daftar cerdas</string>
   <string name="button_text_smart_lists">Cerdas</string>
   <string name="button_text_social">Sosial</string>
   <string name="button_text_sort_added_date">Tanggal Ditambahkan</string>
@@ -593,6 +604,10 @@
   <string name="button_text_younify_fix">Perbaiki</string>
   <string name="button_text_younify_send_logs">Kirim Log</string>
   <string name="button_text_younify_unlink">Lepas Tautan</string>
+  <string name="calendar_day_item_count_one">%d Item</string>
+  <string name="calendar_day_item_count_other">%d Item</string>
+  <string name="calendar_view_day">Hari</string>
+  <string name="calendar_view_week">Minggu</string>
   <string name="chart_label_grouped_categories">%d kategori</string>
   <string name="chart_label_other">Lain-lain</string>
   <string name="cleanup_status_done">Berhasil menghapus %d pemutaran duplikat.</string>
@@ -654,6 +669,11 @@
   <string name="description_connected_apps">Aplikasi pihak ketiga yang telah Anda otorisasi untuk mengakses akun Trakt Anda.</string>
   <string name="description_data_syncs">Sinkronisasi data terbaru dari layanan streaming yang terhubung.</string>
   <string name="description_delete_account">Informasi pribadi Anda akan dihapus dan data statistik Anda akan dianonimkan.</string>
+  <string name="description_emails">Pilih email mana yang ingin Anda terima dari kami.</string>
+  <string name="description_emails_marketing">Berita produk, penawaran khusus, dan ringkasan mingguan.</string>
+  <string name="description_emails_notifications">Balasan, penyebutan, suka, pengikut baru, dan kolaborasi daftar.</string>
+  <string name="description_emails_recaps">Ulasan Bulan Ini dan insight layanan streaming Anda.</string>
+  <string name="description_emails_system">Kode masuk, peringatan keamanan, pembaruan tagihan, dan hukum. Ini tidak dapat dimatikan.</string>
   <string name="description_export">Dapatkan ekspor data pengguna Anda dalam satu file ZIP. Proses ini mungkin memakan waktu.</string>
   <string name="description_export_before_destructive">Mengunduh ZIP data Anda sebelum ada yang dihapus.</string>
   <string name="description_history_analysis">Temukan pemutaran duplikat dalam riwayat tontonan Anda dan hanya simpan satu tontonan dari setiap item.</string>
@@ -778,6 +798,9 @@
   <string name="header_birthday">Ulang Tahun</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Umpan Kalender</string>
+  <string name="header_calendar_last_week">Minggu lalu</string>
+  <string name="header_calendar_next_week">Minggu depan</string>
+  <string name="header_calendar_this_week">Minggu ini</string>
   <string name="header_certification">Sertifikasi</string>
   <string name="header_clear_data">Hapus Data</string>
   <string name="header_comment_reactions">Reaksi ulasan</string>
@@ -797,6 +820,7 @@
   <string name="header_director">Sutradara</string>
   <string name="header_display">Tampilan</string>
   <string name="header_edit_smart_list">Edit Daftar Cerdas</string>
+  <string name="header_emails">Email</string>
   <string name="header_episode_type">Jenis</string>
   <string name="header_expected_premiere">Premiere yang Diharapkan</string>
   <string name="header_expiration_date">Tanggal Kedaluwarsa</string>
@@ -1188,6 +1212,7 @@
   <string name="list_summary_range_up_to">Hingga %s</string>
   <string name="list_title_activity">Aktivitas</string>
   <string name="list_title_actors">Aktor</string>
+  <string name="list_title_all_titles">Semua judul</string>
   <string name="list_title_anticipated_movies">Film yang Dinantikan</string>
   <string name="list_title_anticipated_shows">Acara yang Dinantikan</string>
   <string name="list_title_birthdays_this_month">Ulang Tahun Bulan Ini</string>
@@ -1376,12 +1401,14 @@
   <string name="page_title_widget_background">Latar Belakang</string>
   <string name="page_title_year_in_review">%s dalam tinjauan</string>
   <string name="page_title_year_to_date">Tahun Berjalan</string>
+  <string name="preview_feature_description_calendar_redesign">Papan minggu dengan poster, tampilan bulan, bilah sisi tertambat dengan kalender mini dan filter yang dapat dilipat, serta laci hari di ponsel.</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
+  <string name="preview_feature_title_calendar_redesign">Desain ulang Kalender</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
@@ -1394,6 +1421,16 @@
   <string name="section_title_season_progress">Musim %d kemajuan</string>
   <string name="section_title_seasons_overview">Ikhtisar</string>
   <string name="section_title_specials_progress">Kemajuan Spesial</string>
+  <string name="smart_list_nudge_message">%d dari daftar Anda dapat memperbarui sendiri</string>
+  <string name="smart_list_nudge_message_short">%d daftar dapat memperbarui sendiri</string>
+  <string name="smart_list_nudge_message_short_single">%d daftar dapat memperbarui sendiri</string>
+  <string name="smart_list_nudge_row_overlap">Mempertahankan %1$d dari %2$d</string>
+  <string name="smart_list_upgrade_draft_title">Buat daftar ini memperbarui dirinya sendiri</string>
+  <string name="smart_list_upgrade_origin_note">Disinkronkan dari %s, yang tidak lagi memperbarui daftar Trakt.</string>
+  <string name="smart_list_upgrade_origin_note_link">Disinkronkan dari %s, yang tidak lagi memperbarui daftar Trakt. Daftar yang sama, tautan yang sama setelah dikonversi.</string>
+  <string name="smart_list_upgrade_overlap">Mengembalikan %1$s dari %2$s judul Anda, ditambah rilis baru</string>
+  <string name="smart_list_upgrade_plain_description">Daftar cerdas menambahkan judul baru secara otomatis, berdasarkan filter yang Anda pilih.</string>
+  <string name="smart_list_upgrade_plain_title">Ingin daftar ini memperbarui dirinya sendiri?</string>
   <string name="spotlight_dialog_label">Navigasi cepat</string>
   <string name="spotlight_hint_dismiss">Tutup</string>
   <string name="spotlight_hint_navigate">Navigasi</string>
@@ -1408,6 +1445,9 @@
   <string name="stat_text_plays">Tontonan</string>
   <string name="stat_text_time_watched">Ditonton</string>
   <string name="stat_text_watchers">Penonton</string>
+  <string name="switch_label_emails_marketing">Terima email berita &amp; penawaran</string>
+  <string name="switch_label_emails_notifications">Terima email notifikasi aktivitas</string>
+  <string name="switch_label_emails_recaps">Terima email rekap</string>
   <string name="switch_label_export_before_destructive">Ekspor data saya terlebih dahulu</string>
   <string name="switch_label_mark_as_spoiler">Tandai sebagai spoiler</string>
   <string name="switch_label_multiple_watches">Aktifkan atau nonaktifkan beberapa kali tonton</string>
@@ -1440,6 +1480,7 @@
   <string name="tag_text_blocked_user">Diblokir</string>
   <string name="tag_text_deal_price">2 Tahun Pertama</string>
   <string name="tag_text_dropped">Dihentikan</string>
+  <string name="tag_text_emails_always_on">Selalu aktif</string>
   <string name="tag_text_episodes">Episode</string>
   <string name="tag_text_finale">Finale</string>
   <string name="tag_text_follow_request_pending">Tertunda</string>
@@ -1525,6 +1566,7 @@
   <string name="text_buy">Beli</string>
   <string name="text_by">oleh</string>
   <string name="text_calendar_feed_filtered">Terfilter</string>
+  <string name="text_calendar_nothing_scheduled">Tidak ada yang dijadwalkan</string>
   <string name="text_calendar_placeholder_1">Tidak ada apa-apa untuk Anda hari ini. Ambil cuti, nikmati cuaca.</string>
   <string name="text_calendar_placeholder_10">Semua jelas. Saatnya menjelajahi sesuatu yang berbeda.</string>
   <string name="text_calendar_placeholder_2">Tidak ada item ditemukan untuk tanggal ini. Mungkin coba hari lain?</string>
@@ -1536,6 +1578,8 @@
   <string name="text_calendar_placeholder_8">Jadwal Anda kosong. Manfaatkan sebaik-baiknya.</string>
   <string name="text_calendar_placeholder_9">Tidak ada acara hari ini. Mungkin kunjungi kembali favorit lama.</string>
   <string name="text_calendar_placeholder_empty_period">Layar gelap. Tidak ada film. Tidak ada episode. Hanya Anda dan keheningan.</string>
+  <string name="text_calendar_today">Hari Ini</string>
+  <string name="text_calendar_up_next">Berikutnya</string>
   <string name="text_clear_data_failed">Beberapa item tidak dapat dihapus. Silakan coba lagi.</string>
   <string name="text_clear_source_custom_library">Perpustakaan Kustom</string>
   <string name="text_clear_source_history">Sejarah</string>
@@ -1599,6 +1643,10 @@
   <string name="text_edit_mode_toggle_sections">Sembunyikan/tampilkan bagian</string>
   <string name="text_email_unsubscribe_message">Anda tidak akan lagi menerima email ini dari Trakt.</string>
   <string name="text_email_unsubscribe_title">Berhenti Berlangganan</string>
+  <string name="text_emails_marketing">Berita &amp; penawaran</string>
+  <string name="text_emails_notifications">Notifikasi aktivitas</string>
+  <string name="text_emails_recaps">Rekap</string>
+  <string name="text_emails_system">Akun &amp; keamanan</string>
   <string name="text_empty_list_add_from_lists">Belum ada apa pun di sini. Mulailah dengan judul yang sudah Anda simpan di daftar Anda yang lain.</string>
   <string name="text_empty_plex_library">Hubungkan akun Plex Anda untuk menyinkronkan Perpustakaan Plex Anda dengan Trakt.</string>
   <string name="text_ends_at">Berakhir pukul %s</string>
