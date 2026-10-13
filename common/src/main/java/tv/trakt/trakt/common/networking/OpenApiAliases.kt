@@ -62,6 +62,7 @@ import org.openapitools.client.models.GetUsersLikes200ResponseInner
 import org.openapitools.client.models.GetUsersLikes200ResponseInnerOneOfAllOfOneOf2Episode
 import org.openapitools.client.models.GetUsersLikes200ResponseInnerOneOfAllOfOneOf3Season
 import org.openapitools.client.models.GetUsersListsListItemsAll200ResponseInner
+import org.openapitools.client.models.GetUsersListsListSmartListDraft200ResponseFilters
 import org.openapitools.client.models.GetUsersListsPersonal200ResponseInner
 import org.openapitools.client.models.GetUsersRatingsMovies200ResponseInner
 import org.openapitools.client.models.GetUsersRatingsMovies200ResponseInnerOneOf3Season
@@ -70,7 +71,6 @@ import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerC
 import org.openapitools.client.models.GetUsersRequestsFollow200ResponseInner
 import org.openapitools.client.models.GetUsersSettings200Response
 import org.openapitools.client.models.GetUsersSmartListsPersonal200ResponseInner
-import org.openapitools.client.models.GetUsersSmartListsPersonal200ResponseInnerFilters
 import org.openapitools.client.models.GetUsersStats200Response
 import org.openapitools.client.models.GetUsersWatching200Response
 import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner
@@ -78,7 +78,7 @@ import org.openapitools.client.models.GetUsersWatchlistMovies200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistShows200ResponseInner
 import org.openapitools.client.models.GetWatchnowSourcesAll200ResponseInnerValueInner
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
-import org.openapitools.client.models.PostUsersSmartListsCreateRequest
+import org.openapitools.client.models.PostUsersListsListConvertToSmartListRequest
 
 /**
  * Type aliases for OpenAPI models used in the app.
@@ -87,7 +87,7 @@ typealias AnticipatedMediaDto = GetMediaAnticipated200ResponseInner
 typealias CalendarMediaDto = GetCalendarsMedia200ResponseInner
 typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner
-typealias CreateSmartListRequestDto = PostUsersSmartListsCreateRequest
+typealias CreateSmartListRequestDto = PostUsersListsListConvertToSmartListRequest
 typealias CrewMemberDto = GetMoviesPeople200ResponseCrewValueInner
 typealias CastCrewDto = GetMoviesPeople200Response
 typealias CastMemberDto = GetMoviesPeople200ResponseCastInner
@@ -138,7 +138,7 @@ typealias ShowDto = GetCalendarsMedia200ResponseInnerShow
 typealias ShowIdsDto = GetCalendarsShows200ResponseInnerShowIds
 typealias ShowStatsDto = GetMoviesStats200Response
 typealias SmartListDto = GetUsersSmartListsPersonal200ResponseInner
-typealias SmartListFiltersDto = GetUsersSmartListsPersonal200ResponseInnerFilters
+typealias SmartListFiltersDto = GetUsersListsListSmartListDraft200ResponseFilters
 typealias SmartListItemDto = GetSmartListsItems200ResponseInner
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
 typealias SocialIdsDto = GetCalendarsShows200ResponseInnerShowSocialIds

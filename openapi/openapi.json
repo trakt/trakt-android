@@ -13058,6 +13058,47 @@
                                       "ids"
                                     ]
                                   },
+                                  "stale_origin": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "url": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "url"
+                                    ],
+                                    "nullable": true
+                                  },
+                                  "converted_to": {
+                                    "type": "object",
+                                    "properties": {
+                                      "ids": {
+                                        "type": "object",
+                                        "properties": {
+                                          "trakt": {
+                                            "type": "integer"
+                                          },
+                                          "slug": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "trakt",
+                                          "slug"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "ids"
+                                    ],
+                                    "nullable": true
+                                  },
                                   "images": {
                                     "type": "object",
                                     "properties": {
@@ -26811,6 +26852,447 @@
           }
         ],
         "operationId": "getUsersYear_in_review"
+      }
+    },
+    "/users/{id}/yir/{year}/persona": {
+      "get": {
+        "description": "#### 🔥 VIP Only 🔓 OAuth Optional\nReturns the watching persona a user earned for a year in review, with its runner-up, traits, highlights, scores, longest streak and monthly personas. Send the `year` path parameter (2026 or later) to choose the review period.\n\nReturns `400` for an invalid year or user slug, `403` when a non-VIP user requests their own persona, and `404` when the profile is not visible or no persona has been computed.",
+        "summary": "Get year in review persona",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 2026
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "persona": {
+                      "type": "string",
+                      "enum": [
+                        "anime-voyager",
+                        "day-one-devotee",
+                        "weekend-marathoner",
+                        "comfort-rewatcher",
+                        "omnivore",
+                        "opening-night",
+                        "cinephile",
+                        "critic",
+                        "loyalist",
+                        "curator",
+                        "wildcard",
+                        "opening-act"
+                      ]
+                    },
+                    "runner_up": {
+                      "type": "string",
+                      "enum": [
+                        "anime-voyager",
+                        "day-one-devotee",
+                        "weekend-marathoner",
+                        "comfort-rewatcher",
+                        "omnivore",
+                        "opening-night",
+                        "cinephile",
+                        "critic",
+                        "loyalist",
+                        "curator",
+                        "wildcard",
+                        "opening-act"
+                      ],
+                      "nullable": true
+                    },
+                    "confidence": {
+                      "type": "string",
+                      "enum": [
+                        "strong",
+                        "leaning"
+                      ]
+                    },
+                    "rarity": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100,
+                      "description": "How rare the persona is, as a percentage from 0 to 100."
+                    },
+                    "card_number": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 12
+                    },
+                    "traits": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "streak-keeper",
+                          "night-owl",
+                          "early-bird",
+                          "weekend-warrior",
+                          "time-traveler",
+                          "globetrotter",
+                          "social-butterfly",
+                          "automaton",
+                          "app-hopper",
+                          "silent-watcher",
+                          "hype-machine",
+                          "tough-crowd",
+                          "polariser",
+                          "live-checker",
+                          "doc-nerd",
+                          "horror-hound",
+                          "fresh-start"
+                        ]
+                      },
+                      "maxItems": 3
+                    },
+                    "highlights": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "anime-episodes",
+                              "anime-share",
+                              "streak-days",
+                              "premiere-share",
+                              "premieres",
+                              "weekend-share",
+                              "binge-days",
+                              "plays-per-day",
+                              "catalog-share",
+                              "top-show-episodes",
+                              "apps",
+                              "shows",
+                              "networks",
+                              "checkin-share",
+                              "new-releases",
+                              "avg-runtime",
+                              "avg-vintage",
+                              "pre-2000",
+                              "ratings",
+                              "avg-rating",
+                              "perfect-tens",
+                              "top-show-share",
+                              "genre-share",
+                              "movies",
+                              "plays",
+                              "personas-in-range"
+                            ]
+                          },
+                          "value": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value"
+                        ]
+                      },
+                      "maxItems": 3
+                    },
+                    "runner_up_highlights": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "anime-episodes",
+                              "anime-share",
+                              "streak-days",
+                              "premiere-share",
+                              "premieres",
+                              "weekend-share",
+                              "binge-days",
+                              "plays-per-day",
+                              "catalog-share",
+                              "top-show-episodes",
+                              "apps",
+                              "shows",
+                              "networks",
+                              "checkin-share",
+                              "new-releases",
+                              "avg-runtime",
+                              "avg-vintage",
+                              "pre-2000",
+                              "ratings",
+                              "avg-rating",
+                              "perfect-tens",
+                              "top-show-share",
+                              "genre-share",
+                              "movies",
+                              "plays",
+                              "personas-in-range"
+                            ]
+                          },
+                          "value": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value"
+                        ]
+                      },
+                      "maxItems": 3
+                    },
+                    "scores": {
+                      "type": "object",
+                      "properties": {
+                        "anime-voyager": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "day-one-devotee": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "weekend-marathoner": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "comfort-rewatcher": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "omnivore": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "opening-night": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "cinephile": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "critic": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "loyalist": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "curator": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "wildcard": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "opening-act": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 100
+                        }
+                      },
+                      "required": [
+                        "anime-voyager",
+                        "day-one-devotee",
+                        "weekend-marathoner",
+                        "comfort-rewatcher",
+                        "omnivore",
+                        "opening-night",
+                        "cinephile",
+                        "critic",
+                        "loyalist",
+                        "curator",
+                        "wildcard",
+                        "opening-act"
+                      ],
+                      "description": "Score from 0 to 100 for every persona."
+                    },
+                    "streak": {
+                      "type": "object",
+                      "properties": {
+                        "longest": {
+                          "type": "integer"
+                        },
+                        "started_at": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "longest",
+                        "started_at"
+                      ]
+                    },
+                    "monthly": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "month": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 12
+                          },
+                          "persona": {
+                            "type": "string",
+                            "enum": [
+                              "anime-voyager",
+                              "day-one-devotee",
+                              "weekend-marathoner",
+                              "comfort-rewatcher",
+                              "omnivore",
+                              "opening-night",
+                              "cinephile",
+                              "critic",
+                              "loyalist",
+                              "curator",
+                              "wildcard",
+                              "opening-act"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "month",
+                          "persona"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "persona",
+                    "runner_up",
+                    "confidence",
+                    "rarity",
+                    "card_number",
+                    "traits",
+                    "highlights",
+                    "runner_up_highlights",
+                    "scores",
+                    "streak",
+                    "monthly"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "invalid_year",
+                        "invalid_user_slug"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "vip_required"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "persona_not_found"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getUsersYear_in_review_persona"
       }
     },
     "/users/{id}/watched/movies": {
@@ -44863,6 +45345,47 @@
                           "ids"
                         ]
                       },
+                      "stale_origin": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "nullable": true
+                      },
+                      "converted_to": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "ids"
+                        ],
+                        "nullable": true
+                      },
                       "images": {
                         "type": "object",
                         "properties": {
@@ -45163,6 +45686,47 @@
                         "ids"
                       ]
                     },
+                    "stale_origin": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "url"
+                      ],
+                      "nullable": true
+                    },
+                    "converted_to": {
+                      "type": "object",
+                      "properties": {
+                        "ids": {
+                          "type": "object",
+                          "properties": {
+                            "trakt": {
+                              "type": "integer"
+                            },
+                            "slug": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "trakt",
+                            "slug"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "ids"
+                      ],
+                      "nullable": true
+                    },
                     "images": {
                       "type": "object",
                       "properties": {
@@ -45434,6 +45998,47 @@
                           "deleted",
                           "ids"
                         ]
+                      },
+                      "stale_origin": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "nullable": true
+                      },
+                      "converted_to": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "ids"
+                        ],
+                        "nullable": true
                       },
                       "images": {
                         "type": "object",
@@ -45793,6 +46398,47 @@
                         "ids"
                       ]
                     },
+                    "stale_origin": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "url"
+                      ],
+                      "nullable": true
+                    },
+                    "converted_to": {
+                      "type": "object",
+                      "properties": {
+                        "ids": {
+                          "type": "object",
+                          "properties": {
+                            "trakt": {
+                              "type": "integer"
+                            },
+                            "slug": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "trakt",
+                            "slug"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "ids"
+                      ],
+                      "nullable": true
+                    },
                     "images": {
                       "type": "object",
                       "properties": {
@@ -46109,6 +46755,47 @@
                           "deleted",
                           "ids"
                         ]
+                      },
+                      "stale_origin": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "nullable": true
+                      },
+                      "converted_to": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "ids"
+                        ],
+                        "nullable": true
                       },
                       "images": {
                         "type": "object",
@@ -54814,6 +55501,889 @@
         "operationId": "getUsersListsListComments"
       }
     },
+    "/users/{id}/lists/{list_id}/smart-list-draft": {
+      "get": {
+        "description": "#### 🔒 OAuth Required\nReturns a ready-made smart list setup for a personal list that stopped updating (see `stale_origin` on the list). Only the list owner can read it.\n\n`filters` use the same shape as smart list filters, so they can be sent as-is when creating a smart list. `confidence` is the share of the list's current titles the setup brings back, from 0 to 1. Lists without a good setup return `404`. `converted` is set once the owner has turned the list into a smart list.",
+        "summary": "Get a smart list draft for a list",
+        "tags": [
+          "users",
+          "lists",
+          "list"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          },
+          {
+            "name": "list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "list": {
+                      "type": "object",
+                      "properties": {
+                        "ids": {
+                          "type": "object",
+                          "properties": {
+                            "trakt": {
+                              "type": "integer"
+                            },
+                            "slug": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "trakt",
+                            "slug"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "ids"
+                      ]
+                    },
+                    "origin_url": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "media_type": {
+                      "type": "string"
+                    },
+                    "filters": {
+                      "type": "object",
+                      "properties": {
+                        "genres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "genres_operator": {
+                          "type": "string",
+                          "enum": [
+                            "and",
+                            "or"
+                          ]
+                        },
+                        "subgenres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "certifications": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "languages": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "countries": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "statuses": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "networks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "keywords": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "keywords_operator": {
+                          "type": "string",
+                          "enum": [
+                            "and",
+                            "or"
+                          ]
+                        },
+                        "studios": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "people": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "people_operator": {
+                          "type": "string",
+                          "enum": [
+                            "and",
+                            "or"
+                          ]
+                        },
+                        "people_role": {
+                          "type": "string",
+                          "enum": [
+                            "any",
+                            "cast",
+                            "directing",
+                            "writing",
+                            "producing"
+                          ]
+                        },
+                        "watchnow": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "watchnow_country": {
+                          "type": "string",
+                          "pattern": "^[a-z]{2}$"
+                        },
+                        "years": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "released_within_days": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 3650
+                        },
+                        "ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "runtimes": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "imdb_ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "maxItems": 2
+                        },
+                        "tmdb_ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "maxItems": 2
+                        },
+                        "metascores": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "votes": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "imdb_votes": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "rt_meters": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "rt_user_meters": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "letterboxd_ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "maxItems": 2
+                        },
+                        "mal_ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "format": "float"
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_nudity": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_violence": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_profanity": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_alcohol": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_frightening": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 3
+                          },
+                          "maxItems": 2
+                        },
+                        "parental_include_unrated": {
+                          "type": "boolean"
+                        },
+                        "ignore_watched": {
+                          "type": "boolean"
+                        },
+                        "ignore_watchlisted": {
+                          "type": "boolean"
+                        },
+                        "ignore_watching": {
+                          "type": "boolean"
+                        },
+                        "ignore_unreleased": {
+                          "type": "boolean"
+                        },
+                        "ignore_released": {
+                          "type": "boolean"
+                        },
+                        "ignore_ended": {
+                          "type": "boolean"
+                        },
+                        "ignore_airing": {
+                          "type": "boolean"
+                        },
+                        "ignore_no_release_date": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "unsupported": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "confidence": {
+                      "type": "number"
+                    },
+                    "converted": {
+                      "type": "object",
+                      "properties": {
+                        "smart_list_id": {
+                          "type": "integer"
+                        },
+                        "converted_at": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "smart_list_id",
+                        "converted_at"
+                      ],
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "list",
+                    "origin_url",
+                    "source",
+                    "media_type",
+                    "filters",
+                    "unsupported",
+                    "confidence",
+                    "converted"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getUsersListsListSmartListDraft"
+      }
+    },
+    "/users/{id}/lists/{list_id}/smart-list-draft/convert": {
+      "post": {
+        "description": "#### 🔒 OAuth Required\nTurns your personal list that stopped updating (see `stale_origin`) into a smart list. Send the same body as creating a smart list, usually the `filters`, `source` and `media_type` from [**smart-list-draft**](#reference/users/lists), edited as you like. Only the list owner can convert it.\n\nThe list keeps its address: its items are then served from the smart list, and it carries `converted_to` pointing at the smart list.\n\n| Status | When |\n|---|---|\n| `201` | Converted; `ids` of the new smart list. |\n| `200` | Already converted; `ids` of the existing smart list. Safe to retry. |\n| `404` | `list_not_convertible` |\n| `420` | Smart list limit reached. |",
+        "summary": "Turn a list into a smart list",
+        "tags": [
+          "users",
+          "lists",
+          "list"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          },
+          {
+            "name": "list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "trending",
+                      "popular",
+                      "anticipated",
+                      "recommendations",
+                      "discover",
+                      "watchlist",
+                      "library"
+                    ]
+                  },
+                  "media_type": {
+                    "type": "string",
+                    "enum": [
+                      "movies",
+                      "shows",
+                      "media"
+                    ]
+                  },
+                  "filters": {
+                    "type": "object",
+                    "properties": {
+                      "genres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "genres_operator": {
+                        "type": "string",
+                        "enum": [
+                          "and",
+                          "or"
+                        ]
+                      },
+                      "subgenres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "certifications": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "languages": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "countries": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "statuses": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "networks": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "keywords": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "keywords_operator": {
+                        "type": "string",
+                        "enum": [
+                          "and",
+                          "or"
+                        ]
+                      },
+                      "studios": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "people": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "people_operator": {
+                        "type": "string",
+                        "enum": [
+                          "and",
+                          "or"
+                        ]
+                      },
+                      "people_role": {
+                        "type": "string",
+                        "enum": [
+                          "any",
+                          "cast",
+                          "directing",
+                          "writing",
+                          "producing"
+                        ]
+                      },
+                      "watchnow": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "watchnow_country": {
+                        "type": "string",
+                        "pattern": "^[a-z]{2}$"
+                      },
+                      "years": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "released_within_days": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 3650
+                      },
+                      "ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "runtimes": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "imdb_ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "maxItems": 2
+                      },
+                      "tmdb_ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "maxItems": 2
+                      },
+                      "metascores": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "votes": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "imdb_votes": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "rt_meters": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "rt_user_meters": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "letterboxd_ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "maxItems": 2
+                      },
+                      "mal_ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_nudity": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_violence": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_profanity": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_alcohol": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_frightening": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "maxItems": 2
+                      },
+                      "parental_include_unrated": {
+                        "type": "boolean"
+                      },
+                      "ignore_watched": {
+                        "type": "boolean"
+                      },
+                      "ignore_watchlisted": {
+                        "type": "boolean"
+                      },
+                      "ignore_watching": {
+                        "type": "boolean"
+                      },
+                      "ignore_unreleased": {
+                        "type": "boolean"
+                      },
+                      "ignore_released": {
+                        "type": "boolean"
+                      },
+                      "ignore_ended": {
+                        "type": "boolean"
+                      },
+                      "ignore_airing": {
+                        "type": "boolean"
+                      },
+                      "ignore_no_release_date": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "privacy": {
+                    "type": "string",
+                    "enum": [
+                      "public",
+                      "private",
+                      "friends"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "source",
+                  "media_type"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ids": {
+                      "type": "object",
+                      "properties": {
+                        "trakt": {
+                          "type": "integer"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "trakt",
+                        "slug"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "ids"
+                  ]
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ids": {
+                      "type": "object",
+                      "properties": {
+                        "trakt": {
+                          "type": "integer"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "trakt",
+                        "slug"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "ids"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "420": {
+            "description": "420",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "postUsersListsListConvertToSmartList"
+      }
+    },
     "/users/{id}/lists/{list_id}/report": {
       "post": {
         "description": "#### 🔒 OAuth Required\nReport a list for moderator review. Send a `reason` and optional `message` with additional context. A user can only have one `pending` report per list.",
@@ -56818,6 +58388,119 @@
           }
         ],
         "operationId": "deleteUsersSmartListsSmartListDelete"
+      }
+    },
+    "/users/{id}/smart-list-drafts": {
+      "get": {
+        "description": "#### 🔒 OAuth Required\nReturns how many of your personal lists that stopped updating (see `stale_origin` on a list) have a ready-made smart list setup, the best setup's `confidence`, and the top three of those lists. Only the owner can read it.\n\nLists are counted when their setup's `confidence` is 0.5 or more and they haven't been converted yet. With none, it returns `convertible_count: 0` and `best_confidence: null`.",
+        "summary": "Get lists ready to become smart lists",
+        "tags": [
+          "users",
+          "smartListDrafts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "convertible_count": {
+                      "type": "integer"
+                    },
+                    "best_confidence": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "lists": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "item_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "confidence": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "ids",
+                          "name",
+                          "item_count",
+                          "confidence"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "convertible_count",
+                    "best_confidence",
+                    "lists"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getUsersSmartListDraftsSummary"
       }
     },
     "/users/hidden/{section}": {
@@ -92460,6 +94143,168 @@
                       },
                       "nullable": true
                     },
+                    "guest_stars": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "episode_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "person": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "slug",
+                                  "trakt"
+                                ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "headshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "headshot",
+                                  "fanart"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "ids"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "headshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "headshot"
+                            ],
+                            "nullable": true
+                          },
+                          "character": {
+                            "type": "string"
+                          },
+                          "characters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "person",
+                          "character",
+                          "characters"
+                        ]
+                      },
+                      "nullable": true
+                    },
                     "crew": {
                       "type": "object",
                       "additionalProperties": {
@@ -92997,6 +94842,47 @@
                           "deleted",
                           "ids"
                         ]
+                      },
+                      "stale_origin": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "nullable": true
+                      },
+                      "converted_to": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "ids"
+                        ],
+                        "nullable": true
                       },
                       "images": {
                         "type": "object",
@@ -102067,6 +103953,168 @@
                       },
                       "nullable": true
                     },
+                    "guest_stars": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "episode_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "person": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "slug",
+                                  "trakt"
+                                ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "headshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "headshot",
+                                  "fanart"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "ids"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "headshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "headshot"
+                            ],
+                            "nullable": true
+                          },
+                          "character": {
+                            "type": "string"
+                          },
+                          "characters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "person",
+                          "character",
+                          "characters"
+                        ]
+                      },
+                      "nullable": true
+                    },
                     "crew": {
                       "type": "object",
                       "additionalProperties": {
@@ -103439,6 +105487,47 @@
                           "ids"
                         ]
                       },
+                      "stale_origin": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "nullable": true
+                      },
+                      "converted_to": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "ids"
+                        ],
+                        "nullable": true
+                      },
                       "images": {
                         "type": "object",
                         "properties": {
@@ -103536,6 +105625,168 @@
                   "type": "object",
                   "properties": {
                     "cast": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "episode_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "person": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "slug",
+                                  "trakt"
+                                ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "headshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "headshot",
+                                  "fanart"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "ids"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "headshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "headshot"
+                            ],
+                            "nullable": true
+                          },
+                          "character": {
+                            "type": "string"
+                          },
+                          "characters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "person",
+                          "character",
+                          "characters"
+                        ]
+                      },
+                      "nullable": true
+                    },
+                    "guest_stars": {
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -105111,6 +107362,47 @@
                           "deleted",
                           "ids"
                         ]
+                      },
+                      "stale_origin": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "nullable": true
+                      },
+                      "converted_to": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "ids"
+                        ],
+                        "nullable": true
                       },
                       "images": {
                         "type": "object",
@@ -107213,6 +109505,168 @@
                       },
                       "nullable": true
                     },
+                    "guest_stars": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "episode_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "person": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "slug",
+                                  "trakt"
+                                ]
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "biography": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthday": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "death": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "birthplace": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "gender": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "known_for_department": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "headshot": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "headshot",
+                                  "fanart"
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "ids"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "headshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "headshot"
+                            ],
+                            "nullable": true
+                          },
+                          "character": {
+                            "type": "string"
+                          },
+                          "characters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "person",
+                          "character",
+                          "characters"
+                        ]
+                      },
+                      "nullable": true
+                    },
                     "crew": {
                       "type": "object",
                       "additionalProperties": {
@@ -107686,6 +110140,47 @@
                           "deleted",
                           "ids"
                         ]
+                      },
+                      "stale_origin": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "nullable": true
+                      },
+                      "converted_to": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "ids"
+                        ],
+                        "nullable": true
                       },
                       "images": {
                         "type": "object",
@@ -114190,6 +116685,47 @@
                               "ids"
                             ]
                           },
+                          "stale_origin": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "url"
+                            ],
+                            "nullable": true
+                          },
+                          "converted_to": {
+                            "type": "object",
+                            "properties": {
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ],
+                            "nullable": true
+                          },
                           "images": {
                             "type": "object",
                             "properties": {
@@ -115286,6 +117822,47 @@
                               "deleted",
                               "ids"
                             ]
+                          },
+                          "stale_origin": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "url"
+                            ],
+                            "nullable": true
+                          },
+                          "converted_to": {
+                            "type": "object",
+                            "properties": {
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ],
+                            "nullable": true
                           },
                           "images": {
                             "type": "object",
@@ -116387,6 +118964,47 @@
                               "deleted",
                               "ids"
                             ]
+                          },
+                          "stale_origin": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "url"
+                            ],
+                            "nullable": true
+                          },
+                          "converted_to": {
+                            "type": "object",
+                            "properties": {
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ],
+                            "nullable": true
                           },
                           "images": {
                             "type": "object",
@@ -119267,6 +121885,47 @@
                           "ids"
                         ]
                       },
+                      "stale_origin": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "nullable": true
+                      },
+                      "converted_to": {
+                        "type": "object",
+                        "properties": {
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "ids"
+                        ],
+                        "nullable": true
+                      },
                       "images": {
                         "type": "object",
                         "properties": {
@@ -119494,6 +122153,17 @@
                           "name": {
                             "type": "string"
                           },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "free",
+                              "tv_everywhere",
+                              "subscription",
+                              "purchase",
+                              "cinema"
+                            ],
+                            "nullable": true
+                          },
                           "free": {
                             "type": "boolean"
                           },
@@ -119590,6 +122260,17 @@
                           },
                           "name": {
                             "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "free",
+                              "tv_everywhere",
+                              "subscription",
+                              "purchase",
+                              "cinema"
+                            ],
+                            "nullable": true
                           },
                           "free": {
                             "type": "boolean"
@@ -120652,6 +123333,47 @@
                               "ids"
                             ]
                           },
+                          "stale_origin": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "url"
+                            ],
+                            "nullable": true
+                          },
+                          "converted_to": {
+                            "type": "object",
+                            "properties": {
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ],
+                            "nullable": true
+                          },
                           "images": {
                             "type": "object",
                             "properties": {
@@ -121056,6 +123778,47 @@
                               "ids"
                             ]
                           },
+                          "stale_origin": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "url"
+                            ],
+                            "nullable": true
+                          },
+                          "converted_to": {
+                            "type": "object",
+                            "properties": {
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ],
+                            "nullable": true
+                          },
                           "images": {
                             "type": "object",
                             "properties": {
@@ -121450,6 +124213,47 @@
                               "deleted",
                               "ids"
                             ]
+                          },
+                          "stale_origin": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "url"
+                            ],
+                            "nullable": true
+                          },
+                          "converted_to": {
+                            "type": "object",
+                            "properties": {
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ],
+                            "nullable": true
                           },
                           "images": {
                             "type": "object",
@@ -121855,6 +124659,47 @@
                               "ids"
                             ]
                           },
+                          "stale_origin": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "url"
+                            ],
+                            "nullable": true
+                          },
+                          "converted_to": {
+                            "type": "object",
+                            "properties": {
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "ids"
+                            ],
+                            "nullable": true
+                          },
                           "images": {
                             "type": "object",
                             "properties": {
@@ -122256,6 +125101,47 @@
                         "deleted",
                         "ids"
                       ]
+                    },
+                    "stale_origin": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "url"
+                      ],
+                      "nullable": true
+                    },
+                    "converted_to": {
+                      "type": "object",
+                      "properties": {
+                        "ids": {
+                          "type": "object",
+                          "properties": {
+                            "trakt": {
+                              "type": "integer"
+                            },
+                            "slug": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "trakt",
+                            "slug"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "ids"
+                      ],
+                      "nullable": true
                     },
                     "images": {
                       "type": "object",
@@ -131148,6 +134034,47 @@
                             "deleted",
                             "ids"
                           ]
+                        },
+                        "stale_origin": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": "string",
+                              "nullable": true
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "url"
+                          ],
+                          "nullable": true
+                        },
+                        "converted_to": {
+                          "type": "object",
+                          "properties": {
+                            "ids": {
+                              "type": "object",
+                              "properties": {
+                                "trakt": {
+                                  "type": "integer"
+                                },
+                                "slug": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "trakt",
+                                "slug"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "ids"
+                          ],
+                          "nullable": true
                         },
                         "images": {
                           "type": "object",

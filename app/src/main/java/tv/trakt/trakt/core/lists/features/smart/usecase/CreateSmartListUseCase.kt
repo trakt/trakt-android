@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.lists.features.smart.usecase
 
-import org.openapitools.client.models.PostUsersSmartListsCreateRequest
+import org.openapitools.client.models.PostUsersListsListConvertToSmartListRequest
 import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteDataSource
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Movies
@@ -41,21 +41,21 @@ internal class CreateSmartListUseCase(
     }
 }
 
-private fun SmartListSource.toDto(): PostUsersSmartListsCreateRequest.Source {
+private fun SmartListSource.toDto(): PostUsersListsListConvertToSmartListRequest.Source {
     return when (this) {
-        Trending -> PostUsersSmartListsCreateRequest.Source.TRENDING
-        Popular -> PostUsersSmartListsCreateRequest.Source.POPULAR
-        Anticipated -> PostUsersSmartListsCreateRequest.Source.ANTICIPATED
-        Recommendations -> PostUsersSmartListsCreateRequest.Source.RECOMMENDATIONS
-        Discover -> PostUsersSmartListsCreateRequest.Source.DISCOVER
+        Trending -> PostUsersListsListConvertToSmartListRequest.Source.TRENDING
+        Popular -> PostUsersListsListConvertToSmartListRequest.Source.POPULAR
+        Anticipated -> PostUsersListsListConvertToSmartListRequest.Source.ANTICIPATED
+        Recommendations -> PostUsersListsListConvertToSmartListRequest.Source.RECOMMENDATIONS
+        Discover -> PostUsersListsListConvertToSmartListRequest.Source.DISCOVER
         Unknown -> throw IllegalArgumentException("Unsupported smart list source: $this")
     }
 }
 
-private fun MediaMode.toMediaType(): PostUsersSmartListsCreateRequest.MediaType {
+private fun MediaMode.toMediaType(): PostUsersListsListConvertToSmartListRequest.MediaType {
     return when (this) {
-        Shows -> PostUsersSmartListsCreateRequest.MediaType.SHOWS
-        Movies -> PostUsersSmartListsCreateRequest.MediaType.MOVIES
+        Shows -> PostUsersListsListConvertToSmartListRequest.MediaType.SHOWS
+        Movies -> PostUsersListsListConvertToSmartListRequest.MediaType.MOVIES
         else -> throw IllegalArgumentException("Unsupported media mode: $this")
     }
 }

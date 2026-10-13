@@ -20,7 +20,7 @@ class UserSmartListsApiClient(
     ) {
         smartListsApi.postUsersSmartListsCreate(
             id = userId,
-            postUsersSmartListsCreateRequest = request,
+            postUsersListsListConvertToSmartListRequest = request,
         )
     }
 
