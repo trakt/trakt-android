@@ -3,12 +3,12 @@ package tv.trakt.trakt.core.sync.data.remote.movies
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
+import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
-import org.openapitools.client.models.PutSyncFavoritesUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.ProgressMovieDto
@@ -130,7 +130,7 @@ internal class MoviesSyncApiClient(
     }
 
     override suspend fun addToFavorites(movieId: TraktId) {
-        val request = PutSyncFavoritesUpdateRequest(
+        val request = PostSyncFavoritesAddRequest(
             movies = listOf(
                 PostSyncRatingsRemoveRequestMoviesInner(
                     ids = PostCheckinStartRequestOneOf1MovieIds(
@@ -147,7 +147,7 @@ internal class MoviesSyncApiClient(
     }
 
     override suspend fun removeFromFavorites(movieId: TraktId) {
-        val request = PutSyncFavoritesUpdateRequest(
+        val request = PostSyncFavoritesAddRequest(
             movies = listOf(
                 PostSyncRatingsRemoveRequestMoviesInner(
                     ids = PostCheckinStartRequestOneOf1MovieIds(
