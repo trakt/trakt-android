@@ -19,5 +19,6 @@ class FirebaseConfig {
 
         const val BACKGROUND_IMAGE_URL = "background_image_url"
         const val PLEX_PLAY_ENABLED = "plex_play_enabled"
+        const val SEASONAL_THEME = "mobile_seasonal_theme"
     }
 }

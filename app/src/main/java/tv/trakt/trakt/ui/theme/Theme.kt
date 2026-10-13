@@ -10,11 +10,13 @@ import tv.trakt.trakt.common.ui.theme.colors.DarkColors
 import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
+import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 
 internal val LocalTraktColors = staticCompositionLocalOf { TraktColors() }
 internal val LocalTraktTypography = staticCompositionLocalOf { TraktTypography() }
 internal val LocalTraktSpacing = staticCompositionLocalOf { TraktSpacing() }
 internal val LocalTraktSize = staticCompositionLocalOf { TraktSize() }
+internal val LocalSeasonalTheme = staticCompositionLocalOf<SeasonalTheme?> { null }
 
 internal object TraktTheme {
     val colors: TraktColors

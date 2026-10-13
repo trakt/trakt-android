@@ -82,10 +82,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
-import tv.trakt.trakt.common.ui.theme.colors.Purple300
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.settings.features.notifications.AdjustNotificationTimeSheet
@@ -995,7 +993,7 @@ private fun RateTraktView(modifier: Modifier = Modifier) {
                 clip = false,
             )
             .background(
-                color = Purple600,
+                color = TraktTheme.colors.rateBannerContainer,
                 shape = DefaultCardShape,
             )
             .padding(horizontal = 16.dp, vertical = 18.dp),
@@ -1032,10 +1030,7 @@ private fun RateTraktView(modifier: Modifier = Modifier) {
 
 @Composable
 private fun getHeaderColor(): Color {
-    return when {
-        TraktTheme.colors.isLight -> Purple500
-        else -> Purple300
-    }
+    return TraktTheme.colors.settingsHeader
 }
 
 // Previews
@@ -1064,6 +1059,27 @@ private fun Preview() {
 private fun PreviewLight() {
     TraktTheme(
         colors = LightColors,
+    ) {
+        SettingsScreenContent(
+            state = SettingsState(
+                user = PreviewData.user1.copy(
+                    settings = User.Settings(
+                        watchOnlyOnce = true,
+                        ratingPrompts = false,
+                        coverImage = null,
+                        shareCode = null,
+                    ),
+                ),
+            ),
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun HalloweenPreview() {
+    TraktTheme(
+        colors = HalloweenDarkColors,
     ) {
         SettingsScreenContent(
             state = SettingsState(

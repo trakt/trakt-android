@@ -29,7 +29,6 @@ import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.yearMonthFormat
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.home.sections.streaks.all.ui.StreaksMonthGrid
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
 import tv.trakt.trakt.resources.R
@@ -179,7 +178,7 @@ private fun StreakStatCard(
                 fontSize = 22.sp,
                 letterSpacing = 0.02.sp,
             ),
-            color = Purple400,
+            color = TraktTheme.colors.streakValue,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(bottom = 2.dp),

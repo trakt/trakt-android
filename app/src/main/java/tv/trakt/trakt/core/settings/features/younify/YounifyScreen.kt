@@ -64,7 +64,6 @@ import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.settings.features.younify.model.LinkStatus
@@ -372,7 +371,7 @@ private fun YounifyServiceView(
                         },
                     ),
                     color = when (service.linkStatus) {
-                        LinkStatus.LINKED -> Purple400
+                        LinkStatus.LINKED -> TraktTheme.colors.settingsLinkedStatus
                         LinkStatus.BROKEN -> Red400
                         else -> TraktTheme.colors.textSecondary
                     },

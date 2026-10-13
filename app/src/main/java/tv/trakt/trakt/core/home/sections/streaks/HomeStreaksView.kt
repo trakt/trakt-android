@@ -40,15 +40,18 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
+import tv.trakt.trakt.ui.theme.LocalSeasonalTheme
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 import java.time.DayOfWeek
 import java.time.LocalDate
+import androidx.compose.runtime.CompositionLocalProvider
+import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 
 private val viewHeight = 72.dp
 private val viewShape = DefaultCardShape
@@ -73,6 +76,8 @@ private fun HomeStreaksContent(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
+    val season = LocalSeasonalTheme.current
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -118,8 +123,8 @@ private fun HomeStreaksContent(
                                         TraktTheme.colors.isLight -> R.drawable.ic_flame_1_light
                                         else -> R.drawable.ic_flame_1
                                     }
-                                    data.currentStreakTotal <= 7 -> R.drawable.ic_flame_2
-                                    else -> R.drawable.ic_flame_3
+                                    data.currentStreakTotal <= 7 -> season?.streakFlameMedium ?: R.drawable.ic_flame_2
+                                    else -> season?.streakFlameLarge ?: R.drawable.ic_flame_3
                                 },
                             ),
                             contentDescription = null,
@@ -190,14 +195,14 @@ private fun WeekActivityPills(
 
             val background = when {
                 !date.isTodayOrBefore() -> Color.Transparent
-                date <= today && active -> Purple500
+                date <= today && active -> TraktTheme.colors.streakAccent
                 date < today && !active -> Shade700
                 else -> Color.Transparent
             }
 
             val border = when {
                 !date.isTodayOrBefore() -> Shade700
-                active || today == date -> Purple500
+                active || today == date -> TraktTheme.colors.streakAccent
                 else -> Color.Transparent
             }
 
@@ -278,5 +283,33 @@ private fun Preview() {
             modifier = Modifier
                 .width(400.dp),
         )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun HalloweenPreview() {
+    TraktTheme(colors = HalloweenDarkColors) {
+        CompositionLocalProvider(LocalSeasonalTheme provides SeasonalTheme.Halloween) {
+            HomeStreaksContent(
+                data = MonthlyStreakData(
+                    activity = persistentMapOf(),
+                    weekActiveDays = persistentSetOf(
+                        nowLocalDay(),
+                        nowLocalDay().minusDays(1),
+                    ),
+                    currentStreakTotal = 365,
+                    currentStreak = 33,
+                    previousStreak = 2,
+                    previousStreakTotal = 0,
+                    droppedStreaks = 2,
+                    activeDaysMonth = 4,
+                    activeDaysMonthPercent = 50,
+                    activeDaysYear = 89,
+                ),
+                modifier = Modifier
+                    .width(400.dp),
+            )
+        }
     }
 }

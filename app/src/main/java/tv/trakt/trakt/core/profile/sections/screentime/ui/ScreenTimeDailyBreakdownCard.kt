@@ -30,9 +30,8 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
-import tv.trakt.trakt.common.ui.theme.colors.Purple200
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.common.ui.theme.colors.Purple850
+import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 import tv.trakt.trakt.core.profile.sections.screentime.StatWideCardWidth
 import tv.trakt.trakt.core.profile.sections.screentime.usecase.WAKING_HOURS_PER_DAY
 import tv.trakt.trakt.resources.R
@@ -134,7 +133,7 @@ internal fun ScreenTimeDailyBreakdownCard(
                                 .fillMaxWidth()
                                 .fillMaxHeight(fraction)
                                 .background(
-                                    color = barColor(minutes),
+                                    color = barColor(minutes, TraktTheme.colors),
                                     shape = RoundedCornerShape(
                                         topStart = 6.dp,
                                         topEnd = 6.dp,
@@ -176,12 +175,15 @@ private fun configurationLocale(): Locale {
     }
 }
 
-private fun barColor(minutes: Long): Color {
+private fun barColor(
+    minutes: Long,
+    colors: TraktColors,
+): Color {
     val pct = minutes.toFloat() / (WAKING_HOURS_PER_DAY * 60) * 100
     return when {
-        pct >= 30 -> Purple200
-        pct >= 15 -> Purple500
-        else -> Purple850
+        pct >= 30 -> colors.screenTimeHigh
+        pct >= 15 -> colors.screenTimeMedium
+        else -> colors.screenTimeLow
     }
 }
 
@@ -195,6 +197,26 @@ private fun Preview() {
         .toImmutableMap()
 
     TraktTheme {
+        ScreenTimeDailyBreakdownCard(
+            data = sample,
+            modifier = Modifier
+                .width(StatWideCardWidth)
+                .height(156.dp)
+                .padding(16.dp),
+        )
+    }
+}
+
+@Preview(widthDp = 320)
+@Composable
+private fun HalloweenPreview() {
+    val base = LocalDate.now().minusDays(6)
+    val sample = listOf(108L, 145L, 51L, 51L, 51L, 320L, 95L)
+        .mapIndexed { index, mins -> base.plusDays(index.toLong()) to mins.minutes }
+        .toMap()
+        .toImmutableMap()
+
+    TraktTheme(colors = HalloweenDarkColors) {
         ScreenTimeDailyBreakdownCard(
             data = sample,
             modifier = Modifier

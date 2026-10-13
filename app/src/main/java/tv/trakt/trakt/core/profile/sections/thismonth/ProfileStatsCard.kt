@@ -61,7 +61,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.theme.colors.Purple700
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -85,11 +84,12 @@ internal fun ProfileStatsCard(
     val currentDate = remember { nowLocal() }
     val previousMonth = remember { currentDate.minusMonths(1) }
 
-    val colorGradient = remember {
+    val gradientColor = TraktTheme.colors.statsCardGradient
+    val colorGradient = remember(gradientColor) {
         verticalGradient(
             0F to Color.Transparent,
             0.7F to Color.Transparent,
-            1F to Purple700.copy(alpha = 0.4F),
+            1F to gradientColor.copy(alpha = 0.4F),
         )
     }
 

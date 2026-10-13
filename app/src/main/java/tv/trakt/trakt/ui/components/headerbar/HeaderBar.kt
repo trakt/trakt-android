@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,19 +27,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import tv.trakt.trakt.LocalStartAuthorization
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
+import tv.trakt.trakt.ui.components.seasonal.SeasonalThemeIcon
 import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewIcon
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 
 @Composable
 internal fun HeaderBar(
@@ -61,6 +67,12 @@ internal fun HeaderBar(
         .observeFilter()
         .collectAsStateWithLifecycle(filterManager.getFilter())
 
+    val seasonalThemeUseCase: SeasonalThemeUseCase = koinInject()
+    val season = remember { seasonalThemeUseCase.currentSeason() }
+    val seasonEnabled by remember(season) {
+        season?.let(seasonalThemeUseCase::observeEnabled) ?: flowOf(false)
+    }.collectAsStateWithLifecycle(initialValue = true)
+
     HeaderBar(
         modifier = modifier,
         containerColor = containerColor,
@@ -70,10 +82,19 @@ internal fun HeaderBar(
         showVip = showVip,
         showFilters = showFilters,
         showWhatsNew = showWhatsNew,
+        season = season,
+        seasonEnabled = seasonEnabled,
         userLoading = userLoading,
         onVipClick = onVipClick,
         onFilterClick = onFilterClick,
         onWhatsNewClick = onWhatsNewClick,
+        onSeasonClick = {
+            season?.let {
+                scope.launch {
+                    seasonalThemeUseCase.setEnabled(it, !seasonEnabled)
+                }
+            }
+        },
         onMediaModeSelect = { mode ->
             scope.launch {
                 filterManager.setFilter(currentFilter.value.copy(mode = mode))
@@ -92,11 +113,14 @@ private fun HeaderBar(
     showVip: Boolean = false,
     showFilters: Boolean = false,
     showWhatsNew: Boolean = false,
+    season: SeasonalTheme? = null,
+    seasonEnabled: Boolean = false,
     userLoading: Boolean = false,
     onMediaModeSelect: (MediaMode) -> Unit = {},
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
     onWhatsNewClick: () -> Unit = {},
+    onSeasonClick: () -> Unit = {},
 ) {
     val startAuthorization = LocalStartAuthorization.current
 
@@ -161,6 +185,14 @@ private fun HeaderBar(
                     )
                 }
 
+                if (season != null) {
+                    SeasonalThemeIcon(
+                        season = season,
+                        enabled = seasonEnabled,
+                        onClick = onSeasonClick,
+                    )
+                }
+
                 if (showWhatsNew) {
                     WhatsNewIcon(
                         onClick = onWhatsNewClick,
@@ -210,7 +242,35 @@ private fun Preview4() {
             ),
             showVip = true,
             showFilters = true,
-            showWhatsNew = true,
+            showWhatsNew = false,
+        )
+    }
+}
+
+@Preview(widthDp = 400)
+@Composable
+private fun Preview5() {
+    TraktTheme(colors = HalloweenDarkColors) {
+        HeaderBar(
+            filter = GlobalFilter.Default,
+            showVip = true,
+            showFilters = true,
+            season = SeasonalTheme.Halloween,
+            seasonEnabled = true,
+        )
+    }
+}
+
+@Preview(widthDp = 400)
+@Composable
+private fun Preview6() {
+    TraktTheme {
+        HeaderBar(
+            filter = GlobalFilter.Default,
+            showVip = true,
+            showFilters = true,
+            season = SeasonalTheme.Halloween,
+            seasonEnabled = false,
         )
     }
 }

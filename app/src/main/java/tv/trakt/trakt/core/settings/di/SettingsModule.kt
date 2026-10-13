@@ -32,6 +32,7 @@ import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsU
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServiceUseCase
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.younify.sdk.connect.Connect
@@ -79,6 +80,12 @@ internal val settingsModule = module {
         ThemeModeUseCase(
             dataStore = get(named(SETTINGS_PREFERENCES)),
             cache = get(),
+        )
+    }
+
+    factory {
+        SeasonalThemeUseCase(
+            dataStore = get(named(SETTINGS_PREFERENCES)),
         )
     }
 

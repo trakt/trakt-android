@@ -59,7 +59,9 @@ import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.core.settings.data.ThemeModeCache
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
+import tv.trakt.trakt.ui.theme.LocalSeasonalTheme
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.ThemeMode
 
@@ -80,6 +82,10 @@ internal class MainActivity : AppCompatActivity() {
 
     private val themeModeCache: ThemeModeCache by lazy {
         inject<ThemeModeCache>().value
+    }
+
+    private val seasonalThemeUseCase: SeasonalThemeUseCase by lazy {
+        inject<SeasonalThemeUseCase>().value
     }
 
     private val authBrowser = AuthBrowser(
@@ -118,6 +124,9 @@ internal class MainActivity : AppCompatActivity() {
                 .collectAsStateWithLifecycle(
                     initialValue = themeModeCache.read() ?: ThemeMode.Default,
                 )
+
+            val seasonalTheme by seasonalThemeUseCase.observeActive()
+                .collectAsStateWithLifecycle(initialValue = null)
 
             val darkTheme = when (themeMode) {
                 ThemeMode.System -> isSystemInDarkTheme()
@@ -162,8 +171,8 @@ internal class MainActivity : AppCompatActivity() {
 
             TraktTheme(
                 colors = when {
-                    darkTheme -> DarkColors
-                    else -> LightColors
+                    darkTheme -> seasonalTheme?.darkColors ?: DarkColors
+                    else -> seasonalTheme?.lightColors ?: LightColors
                 },
             ) {
                 CompositionLocalProvider(
@@ -172,6 +181,7 @@ internal class MainActivity : AppCompatActivity() {
                     LocalRatePromptVisibility provides ratePromptVisibility,
                     LocalSnackbarState provides snackbarState,
                     LocalStartAuthorization provides startAuthorization,
+                    LocalSeasonalTheme provides seasonalTheme,
                 ) {
                     MainScreen(
                         viewModel = koinViewModel(),
