@@ -9,6 +9,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -30,6 +32,7 @@ import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUs
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.usecases.GetDiscoverMediaUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -39,6 +42,7 @@ internal class DiscoverPopularViewModel(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getDiscoverMediaUseCase: GetDiscoverMediaUseCase,
     private val collapsingManager: CollapsingManager,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : ViewModel() {
     private val initialState = DiscoverPopularState()
 
@@ -54,6 +58,7 @@ internal class DiscoverPopularViewModel(
     init {
         loadData()
         observeMode()
+        observeSeasonalTheme()
     }
 
     private fun observeMode() {
@@ -63,6 +68,14 @@ internal class DiscoverPopularViewModel(
                 collapseState.update { isCollapsed() }
                 loadData()
             }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeSeasonalTheme() {
+        seasonalThemeUseCase.observeActive()
+            .distinctUntilChanged()
+            .drop(1)
+            .onEach { loadData() }
             .launchIn(viewModelScope)
     }
 

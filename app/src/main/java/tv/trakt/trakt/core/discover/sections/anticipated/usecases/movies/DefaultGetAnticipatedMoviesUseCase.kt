@@ -12,11 +12,13 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
 internal class DefaultGetAnticipatedMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localAnticipatedSource: AnticipatedMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : GetAnticipatedMoviesUseCase {
     override suspend fun getLocalMovies(): ImmutableList<DiscoverItem.MovieItem> {
         return localAnticipatedSource.getMovies()
@@ -38,6 +40,7 @@ internal class DefaultGetAnticipatedMoviesUseCase(
         return remoteSource.getAnticipated(
             page = page,
             limit = limit,
+            theme = seasonalThemeUseCase.activeSeason()?.remoteValue,
             filters = filters,
         )
             .asyncMap {

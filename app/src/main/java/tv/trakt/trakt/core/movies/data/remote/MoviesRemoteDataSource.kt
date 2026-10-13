@@ -23,12 +23,14 @@ internal interface MoviesRemoteDataSource {
         limit: Int,
         filters: GlobalFilter,
         subgenres: List<String>? = null,
+        theme: String? = null,
     ): List<TrendingMovieDto>
 
     suspend fun getPopular(
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter,
+        theme: String? = null,
     ): List<MovieCalendarDto>
 
     suspend fun getRecommended(
@@ -41,6 +43,7 @@ internal interface MoviesRemoteDataSource {
         limit: Int,
         endDate: Instant? = null,
         filters: GlobalFilter,
+        theme: String? = null,
     ): List<AnticipatedMovieDto>
 
     suspend fun getReleases(

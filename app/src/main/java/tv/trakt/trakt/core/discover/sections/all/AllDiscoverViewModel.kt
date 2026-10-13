@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -45,6 +47,7 @@ import tv.trakt.trakt.core.discover.usecases.GetDiscoverMediaUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
 @Suppress("UNCHECKED_CAST")
 internal class AllDiscoverViewModel(
@@ -58,6 +61,7 @@ internal class AllDiscoverViewModel(
     private val hideRecommendedShowUseCase: HideRecommendedShowUseCase,
     private val hideRecommendedMovieUseCase: HideRecommendedMovieUseCase,
     private val collectionStateProvider: CollectionStateProvider,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<DiscoverDestination>()
     private val initialState = AllDiscoverState()
@@ -78,6 +82,7 @@ internal class AllDiscoverViewModel(
         loadInitialData()
 
         observeFilters()
+        observeSeasonalTheme()
         observeData()
 
         analytics.logScreenView(
@@ -91,6 +96,14 @@ internal class AllDiscoverViewModel(
                 filterState.update { value }
                 loadData()
             }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeSeasonalTheme() {
+        seasonalThemeUseCase.observeActive()
+            .distinctUntilChanged()
+            .drop(1)
+            .onEach { loadData() }
             .launchIn(viewModelScope)
     }
 

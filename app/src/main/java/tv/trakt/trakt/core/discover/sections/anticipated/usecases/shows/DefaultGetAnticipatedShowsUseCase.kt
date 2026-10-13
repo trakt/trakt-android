@@ -12,6 +12,7 @@ import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -19,6 +20,7 @@ internal class DefaultGetAnticipatedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localAnticipatedSource: AnticipatedShowsLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : GetAnticipatedShowsUseCase {
     override suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {
         return localAnticipatedSource.getShows()
@@ -40,6 +42,7 @@ internal class DefaultGetAnticipatedShowsUseCase(
         return remoteSource.getAnticipated(
             page = page,
             limit = limit,
+            theme = seasonalThemeUseCase.activeSeason()?.remoteValue,
             endDate = nowUtcInstant().plus(365, DAYS).truncatedTo(DAYS),
             filters = filters,
         )

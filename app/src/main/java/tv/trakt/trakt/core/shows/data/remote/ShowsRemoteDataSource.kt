@@ -24,12 +24,14 @@ internal interface ShowsRemoteDataSource {
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter,
+        theme: String? = null,
     ): List<TrendingShowDto>
 
     suspend fun getPopular(
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter,
+        theme: String? = null,
     ): List<ShowCalendarsDto>
 
     suspend fun getRecommended(
@@ -42,6 +44,7 @@ internal interface ShowsRemoteDataSource {
         limit: Int,
         endDate: Instant? = null,
         filters: GlobalFilter,
+        theme: String? = null,
     ): List<AnticipatedShowDto>
 
     suspend fun getReleases(

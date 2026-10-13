@@ -11,12 +11,14 @@ import tv.trakt.trakt.core.discover.DiscoverConfig
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class DefaultGetPopularShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localPopularSource: PopularShowsLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : GetPopularShowsUseCase {
     override suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {
         return localPopularSource.getShows()
@@ -37,6 +39,7 @@ internal class DefaultGetPopularShowsUseCase(
         return remoteSource.getPopular(
             page = page,
             limit = limit,
+            theme = seasonalThemeUseCase.activeSeason()?.remoteValue,
             filters = filters,
         )
             .mapIndexed { index, showDto ->

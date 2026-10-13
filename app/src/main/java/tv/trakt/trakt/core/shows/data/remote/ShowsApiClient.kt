@@ -33,11 +33,13 @@ internal class ShowsApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter,
+        theme: String?,
     ): List<TrendingShowDto> {
         val response = showsApi.getShowsTrending(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = filters.subgenre?.joinToString(","),
@@ -67,11 +69,13 @@ internal class ShowsApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter,
+        theme: String?,
     ): List<ShowCalendarsDto> {
         val response = showsApi.getShowsPopular(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = filters.subgenre?.joinToString(","),
@@ -121,11 +125,13 @@ internal class ShowsApiClient(
         limit: Int,
         endDate: Instant?,
         filters: GlobalFilter,
+        theme: String?,
     ): List<AnticipatedShowDto> {
         val response = showsApi.getShowsAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = filters.subgenre?.joinToString(","),

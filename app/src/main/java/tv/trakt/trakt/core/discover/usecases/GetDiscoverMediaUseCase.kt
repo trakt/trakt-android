@@ -23,16 +23,15 @@ import tv.trakt.trakt.core.discover.model.DiscoverSection.Recommended
 import tv.trakt.trakt.core.discover.model.DiscoverSection.Trending
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
-/**
- * Loads interleaved shows and movies from the media endpoints for Media mode.
- */
 internal class GetDiscoverMediaUseCase(
     private val remoteSource: MediaRemoteDataSource,
     private val localMediaSource: DiscoverMediaLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
     private val getRecommendedMediaUseCase: GetRecommendedMediaUseCase,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) {
     suspend fun getLocalMedia(section: DiscoverSection): ImmutableList<DiscoverItem> {
         if (section == Recommended) {
@@ -54,14 +53,15 @@ internal class GetDiscoverMediaUseCase(
         if (section == Recommended) {
             return getRecommendedMedia(page = page, limit = limit, skipLocal = skipLocal, filters = filters)
         }
+        val theme = seasonalThemeUseCase.activeSeason()?.remoteValue
         val items = when (section) {
-            Trending -> remoteSource.getTrending(page = page, limit = limit, filters = filters)
+            Trending -> remoteSource.getTrending(page = page, limit = limit, filters = filters, theme = theme)
                 .mapNotNull(::toDiscoverItem)
 
-            Popular -> remoteSource.getPopular(page = page, limit = limit, filters = filters)
+            Popular -> remoteSource.getPopular(page = page, limit = limit, filters = filters, theme = theme)
                 .mapIndexed { index, dto -> toDiscoverItem(dto = dto, rank = index + 1) }
 
-            Anticipated -> remoteSource.getAnticipated(page = page, limit = limit, filters = filters)
+            Anticipated -> remoteSource.getAnticipated(page = page, limit = limit, filters = filters, theme = theme)
                 .mapNotNull(::toDiscoverItem)
 
             Recommended -> error("Recommended is loaded through GetRecommendedMediaUseCase")
@@ -125,9 +125,6 @@ private fun toDiscoverItem(dto: AnticipatedMediaDto): DiscoverItem? {
         ?: dto.movie?.let { DiscoverItem.MovieItem(movie = Movie.fromDto(it), count = dto.listCount) }
 }
 
-/**
- * Popular items are bare show or movie objects; only shows carry aired episodes.
- */
 private fun toDiscoverItem(
     dto: PopularMediaDto,
     rank: Int,

@@ -33,11 +33,13 @@ internal class MoviesApiClient(
         limit: Int,
         filters: GlobalFilter,
         subgenres: List<String>?,
+        theme: String?,
     ): List<TrendingMovieDto> {
         val response = moviesApi.getMoviesTrending(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = subgenres?.joinToString(","),
@@ -67,11 +69,13 @@ internal class MoviesApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter,
+        theme: String?,
     ): List<MovieCalendarDto> {
         val response = moviesApi.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = filters.subgenre?.joinToString(","),
@@ -121,11 +125,13 @@ internal class MoviesApiClient(
         limit: Int,
         endDate: Instant?,
         filters: GlobalFilter,
+        theme: String?,
     ): List<AnticipatedMovieDto> {
         val response = moviesApi.getMoviesAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = filters.subgenre?.joinToString(","),

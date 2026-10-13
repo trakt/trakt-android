@@ -11,18 +11,21 @@ interface MediaRemoteDataSource {
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter,
+        theme: String? = null,
     ): List<TrendingMediaDto>
 
     suspend fun getPopular(
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter,
+        theme: String? = null,
     ): List<PopularMediaDto>
 
     suspend fun getAnticipated(
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter,
+        theme: String? = null,
     ): List<AnticipatedMediaDto>
 
     suspend fun getRecommended(

@@ -11,12 +11,14 @@ import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class DefaultGetTrendingShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,
     private val localTrendingSource: TrendingShowsLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : GetTrendingShowsUseCase {
     override suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {
         return localTrendingSource.getShows()
@@ -38,6 +40,7 @@ internal class DefaultGetTrendingShowsUseCase(
         return remoteSource.getTrending(
             page = page,
             limit = limit,
+            theme = seasonalThemeUseCase.activeSeason()?.remoteValue,
             filters = filters,
         )
             .asyncMap {

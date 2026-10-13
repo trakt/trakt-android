@@ -12,11 +12,13 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
 internal class DefaultGetPopularMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localPopularSource: PopularMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : GetPopularMoviesUseCase {
     override suspend fun getLocalMovies(): ImmutableList<DiscoverItem.MovieItem> {
         return localPopularSource.getMovies()
@@ -37,6 +39,7 @@ internal class DefaultGetPopularMoviesUseCase(
         return remoteSource.getPopular(
             page = page,
             limit = limit,
+            theme = seasonalThemeUseCase.activeSeason()?.remoteValue,
             filters = filters,
         )
             .mapIndexed { index, movieDto ->

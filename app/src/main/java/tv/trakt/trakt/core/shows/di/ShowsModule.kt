@@ -111,6 +111,7 @@ internal val showsModule = module {
             remoteSource = get(),
             localTrendingSource = get(),
             localShowSource = get(),
+            seasonalThemeUseCase = get(),
         )
     }
 
@@ -121,6 +122,7 @@ internal val showsModule = module {
             remoteSource = get(),
             localPopularSource = get(),
             localShowSource = get(),
+            seasonalThemeUseCase = get(),
         )
     }
 
@@ -131,6 +133,7 @@ internal val showsModule = module {
             remoteSource = get(),
             localAnticipatedSource = get(),
             localShowSource = get(),
+            seasonalThemeUseCase = get(),
         )
     }
 

@@ -98,6 +98,7 @@ internal val discoverModule = module {
             hideRecommendedShowUseCase = get(),
             hideRecommendedMovieUseCase = get(),
             collectionStateProvider = get(),
+            seasonalThemeUseCase = get(),
         )
     }
 
@@ -108,6 +109,7 @@ internal val discoverModule = module {
             getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
             getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
             getDiscoverMediaUseCase = get(),
+            seasonalThemeUseCase = get(),
         )
     }
 
@@ -118,6 +120,7 @@ internal val discoverModule = module {
             getAnticipatedShowsUseCase = get(named("defaultAnticipatedShowsUseCase")),
             getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
             getDiscoverMediaUseCase = get(),
+            seasonalThemeUseCase = get(),
         )
     }
 
@@ -128,6 +131,7 @@ internal val discoverModule = module {
             getPopularShowsUseCase = get(named("defaultPopularShowsUseCase")),
             getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
             getDiscoverMediaUseCase = get(),
+            seasonalThemeUseCase = get(),
         )
     }
 

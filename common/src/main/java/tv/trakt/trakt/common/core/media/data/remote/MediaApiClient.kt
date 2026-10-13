@@ -17,11 +17,13 @@ class MediaApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter,
+        theme: String?,
     ): List<TrendingMediaDto> {
         val response = mediaApi.getMediaTrending(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = filters.subgenre?.joinToString(","),
@@ -45,11 +47,13 @@ class MediaApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter,
+        theme: String?,
     ): List<PopularMediaDto> {
         val response = mediaApi.getMediaPopular(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = filters.subgenre?.joinToString(","),
@@ -73,11 +77,13 @@ class MediaApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter,
+        theme: String?,
     ): List<AnticipatedMediaDto> {
         val response = mediaApi.getMediaAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
+            theme = theme,
             watchnow = filters.availability?.joinToString(",") { it.slug },
             genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = filters.subgenre?.joinToString(","),
