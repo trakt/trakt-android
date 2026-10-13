@@ -107,6 +107,7 @@ import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.WithoutSeasonalTheme
 
 private const val IN_APP_UPDATE_REQUEST_CODE = 4001
 private const val IN_APP_UPDATE_STALENESS_DAYS = 7
@@ -309,15 +310,19 @@ private fun MainScreenContent(
         ) { targetState ->
             when {
                 targetState.welcome -> {
-                    WelcomeScreen(
-                        onDismiss = onDismissWelcome,
-                    )
+                    WithoutSeasonalTheme {
+                        WelcomeScreen(
+                            onDismiss = onDismissWelcome,
+                        )
+                    }
                 }
 
                 targetState.onboarding -> {
-                    OnboardingScreen(
-                        onLogin = startAuthorization,
-                    )
+                    WithoutSeasonalTheme {
+                        OnboardingScreen(
+                            onLogin = startAuthorization,
+                        )
+                    }
                 }
 
                 else -> {

@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import timber.log.Timber
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
@@ -60,6 +61,20 @@ internal fun TraktTheme(
             windowClass.isAtLeastMedium() -> MediumSize
             else -> Size
         },
+        content = content,
+    )
+}
+
+@Composable
+internal fun WithoutSeasonalTheme(content: @Composable () -> Unit) {
+    val colors = when {
+        TraktTheme.colors.isLight -> LightColors
+        else -> DarkColors
+    }
+
+    CompositionLocalProvider(
+        LocalTraktColors provides colors,
+        LocalSeasonalTheme provides null,
         content = content,
     )
 }
