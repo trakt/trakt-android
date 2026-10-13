@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
@@ -63,7 +64,9 @@ import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
+import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -76,6 +79,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun SentimentScreen(
     viewModel: SentimentViewModel,
     onNavigateVip: () -> Unit,
+    onNavigateToPerson: (SlugId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -83,6 +87,7 @@ internal fun SentimentScreen(
     SentimentContent(
         state = state,
         onVipClick = onNavigateVip,
+        onPersonLinkClick = onNavigateToPerson,
         onBackClick = onNavigateBack,
     )
 }
@@ -91,9 +96,11 @@ internal fun SentimentScreen(
 private fun SentimentContent(
     state: SentimentState,
     onVipClick: () -> Unit = {},
+    onPersonLinkClick: (SlugId) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
+    val linkUriHandler = rememberAppLinkUriHandler(onPersonClick = onPersonLinkClick)
 
     val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -120,87 +127,89 @@ private fun SentimentContent(
             imageUrl = state.backgroundUrl,
         )
 
-        LazyColumn(
-            state = listState,
-            verticalArrangement = spacedBy(0.dp),
-            contentPadding = contentPadding,
-            overscrollEffect = null,
-        ) {
-            item {
-                TitleBar(
-                    mediaTitle = state.mediaTitle,
-                    modifier = Modifier.onClick { onBackClick() },
-                )
-            }
-
-            if (state.user?.isAnyVip != true) {
+        CompositionLocalProvider(LocalUriHandler provides linkUriHandler) {
+            LazyColumn(
+                state = listState,
+                verticalArrangement = spacedBy(0.dp),
+                contentPadding = contentPadding,
+                overscrollEffect = null,
+            ) {
                 item {
-                    Column {
-                        GetVipView(
-                            modifier = Modifier
-                                .onClick(onClick = onVipClick),
-                        )
+                    TitleBar(
+                        mediaTitle = state.mediaTitle,
+                        modifier = Modifier.onClick { onBackClick() },
+                    )
+                }
 
-                        Row(
-                            horizontalArrangement = spacedBy(4.dp, CenterHorizontally),
-                            verticalAlignment = CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(top = 24.dp, bottom = 8.dp),
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_info),
-                                tint = TraktTheme.colors.textSecondary,
-                                contentDescription = null,
+                if (state.user?.isAnyVip != true) {
+                    item {
+                        Column {
+                            GetVipView(
                                 modifier = Modifier
-                                    .size(16.dp),
+                                    .onClick(onClick = onVipClick),
                             )
-                            Text(
-                                text = stringResource(R.string.text_sentiment_example, "Star Wars: The Last Jedi"),
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.heading6,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier,
-                            )
+
+                            Row(
+                                horizontalArrangement = spacedBy(4.dp, CenterHorizontally),
+                                verticalAlignment = CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                                    .padding(top = 24.dp, bottom = 8.dp),
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_info),
+                                    tint = TraktTheme.colors.textSecondary,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(16.dp),
+                                )
+                                Text(
+                                    text = stringResource(R.string.text_sentiment_example, "Star Wars: The Last Jedi"),
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.heading6,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier,
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            val sentiments = state.sentiments
-            if (sentiments.analysis.isNotBlank()) {
-                item {
-                    val linkColor = TraktTheme.colors.textPrimary
-                    Text(
-                        text = remember(sentiments.analysis, linkColor) {
-                            sentiments.analysis.toMarkdownText(linkColor)
-                        },
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
-                        modifier = Modifier.padding(top = 16.dp),
-                    )
+                val sentiments = state.sentiments
+                if (sentiments.analysis.isNotBlank()) {
+                    item {
+                        val linkColor = TraktTheme.colors.textPrimary
+                        Text(
+                            text = remember(sentiments.analysis, linkColor) {
+                                sentiments.analysis.toMarkdownText(linkColor)
+                            },
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
+                            modifier = Modifier.padding(top = 16.dp),
+                        )
+                    }
                 }
-            }
 
-            if (sentiments.highlight.isNotBlank()) {
-                item {
-                    HighlightsCard(
-                        header = stringResource(R.string.header_sentiment_highlight),
-                        text = sentiments.highlight,
-                        modifier = Modifier.padding(top = 20.dp),
-                    )
+                if (sentiments.highlight.isNotBlank()) {
+                    item {
+                        HighlightsCard(
+                            header = stringResource(R.string.header_sentiment_highlight),
+                            text = sentiments.highlight,
+                            modifier = Modifier.padding(top = 20.dp),
+                        )
+                    }
                 }
-            }
 
-            if (sentiments.pros.isNotEmpty() || sentiments.cons.isNotEmpty()) {
-                item {
-                    ProsConsCard(
-                        header = stringResource(R.string.header_sentiment_aspects),
-                        pros = sentiments.pros,
-                        cons = sentiments.cons,
-                        modifier = Modifier.padding(top = 20.dp),
-                    )
+                if (sentiments.pros.isNotEmpty() || sentiments.cons.isNotEmpty()) {
+                    item {
+                        ProsConsCard(
+                            header = stringResource(R.string.header_sentiment_aspects),
+                            pros = sentiments.pros,
+                            cons = sentiments.cons,
+                            modifier = Modifier.padding(top = 20.dp),
+                        )
+                    }
                 }
             }
         }

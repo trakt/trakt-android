@@ -269,6 +269,7 @@ internal fun NavGraphBuilder.showsScreens(
             },
             onNavigateToSentiment = { show, sentiments ->
                 navigateToSentiment(
+                    mediaId = show.ids.trakt,
                     sentiments = sentiments,
                     mediaTitle = show.title,
                     mediaImage = show.images?.getFanartUrl(),
@@ -455,6 +456,7 @@ internal fun NavGraphBuilder.moviesScreens(
             },
             onNavigateToSentiment = { movie, sentiments ->
                 navigateToSentiment(
+                    mediaId = movie.ids.trakt,
                     sentiments = sentiments,
                     mediaTitle = movie.title,
                     mediaImage = movie.images?.getFanartUrl(),
@@ -812,6 +814,13 @@ internal fun NavGraphBuilder.sentimentScreens(controller: NavHostController) {
     with(controller) {
         sentimentScreen(
             onNavigateVip = { navigateToBilling() },
+            onNavigateToPerson = { slug, sentiment ->
+                navigateToPerson(
+                    personSlug = slug,
+                    sourceMediaId = TraktId(sentiment.mediaId),
+                    backdropUrl = sentiment.mediaImage,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }
