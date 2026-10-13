@@ -21,7 +21,7 @@ internal fun SeasonalThemeIcon(
     modifier: Modifier = Modifier,
     season: SeasonalTheme,
     enabled: Boolean,
-    size: Dp = 24.dp,
+    size: Dp = 26.dp,
     onClick: () -> Unit,
 ) {
     val tint by animateColorAsState(
