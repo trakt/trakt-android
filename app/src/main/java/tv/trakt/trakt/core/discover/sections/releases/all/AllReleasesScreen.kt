@@ -77,7 +77,6 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
 import tv.trakt.trakt.core.calendar.model.CalendarItem.MovieItem
@@ -737,7 +736,10 @@ private fun ContentItemsGrid(
                     if (isToday) {
                         Box(
                             modifier = Modifier
-                                .background(color = Purple400, shape = RoundedCornerShape(100))
+                                .background(
+                                    color = TraktTheme.colors.accentPalette.shade400,
+                                    shape = RoundedCornerShape(100),
+                                )
                                 .size(3.dp, 16.dp),
                         )
                     }

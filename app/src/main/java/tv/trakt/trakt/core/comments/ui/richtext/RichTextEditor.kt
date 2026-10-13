@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.comments.model.CommentMention
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -124,7 +123,7 @@ private fun EditorField(
             bulletColor = colors.textPrimary.toArgb(),
             bulletRadius = BulletRadius.roundToPx(),
             bulletGap = BlockGap.roundToPx(),
-            quoteColor = Purple50.toArgb(),
+            quoteColor = TraktTheme.colors.accentPalette.shade50.toArgb(),
             quoteStripe = QuoteStripe.roundToPx(),
             quoteGap = BlockGap.roundToPx(),
         )

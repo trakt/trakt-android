@@ -55,7 +55,6 @@ import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -415,7 +414,7 @@ internal fun UserRatingBar(
                     Icon(
                         painter = painterResource(R.drawable.ic_touch),
                         contentDescription = null,
-                        tint = Purple400,
+                        tint = TraktTheme.colors.accentPalette.shade400,
                         modifier = Modifier
                             .size(size)
                             .graphicsLayer {

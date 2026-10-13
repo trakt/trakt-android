@@ -32,7 +32,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.recommendedby.model.RecommendedBy
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -157,7 +156,7 @@ private fun ShareBadge(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(ShareBadgeSize)
-            .background(Purple600, CircleShape),
+            .background(TraktTheme.colors.accentPalette.shade600, CircleShape),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_share),

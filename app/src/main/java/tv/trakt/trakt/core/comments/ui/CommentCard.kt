@@ -77,7 +77,6 @@ import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
@@ -620,7 +619,7 @@ private fun CommentFooter(
                     contentDescription = "Replies",
                     tint = when {
                         repliesLoading -> TraktTheme.colors.textSecondary.copy(alpha = 0.5f)
-                        else -> Purple400
+                        else -> TraktTheme.colors.accentPalette.shade400
                     },
                     modifier = Modifier
                         .size(16.dp)
@@ -637,7 +636,7 @@ private fun CommentFooter(
                     style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                     color = when {
                         repliesLoading -> TraktTheme.colors.textSecondary.copy(alpha = 0.5f)
-                        else -> Purple400
+                        else -> TraktTheme.colors.accentPalette.shade400
                     },
                 )
             }

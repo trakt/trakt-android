@@ -48,8 +48,6 @@ import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_VIP_IMAGE_URL
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Shade200
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -301,12 +299,13 @@ private fun ImportTvTimeCard(
     onLiberatorClick: () -> Unit = {},
     onGdprClick: () -> Unit = {},
 ) {
-    val radialGradient = remember {
+    val gradientAccent = TraktTheme.colors.accentPalette.shade600
+    val radialGradient = remember(gradientAccent) {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
-                        Purple600,
+                        gradientAccent,
                         Shade910,
                     ),
                     center = Offset(size.width * 1.5F, -size.height / 1.5F),
@@ -365,12 +364,13 @@ private fun ImportTvTimeCard(
 
 @Composable
 private fun BecomeVipCard(modifier: Modifier = Modifier) {
-    val radialGradient = remember {
+    val gradientAccent = TraktTheme.colors.accentPalette.shade600
+    val radialGradient = remember(gradientAccent) {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
-                        Purple600,
+                        gradientAccent,
                         Shade910,
                     ),
                     center = Offset(size.width * 1.5F, -size.height / 1.5F),
@@ -415,7 +415,7 @@ private fun BecomeVipCard(modifier: Modifier = Modifier) {
         VipChip(
             text = stringResource(R.string.badge_text_get_vip),
             icon = painterResource(R.drawable.ic_stars),
-            color = Purple500,
+            color = TraktTheme.colors.accent,
             modifier = Modifier.shadow(
                 elevation = 1.dp,
                 shape = RoundedCornerShape(100),

@@ -50,8 +50,6 @@ import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.common.ui.theme.colors.Purple200
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -225,6 +223,8 @@ private fun QualityLineGraph(
 ) {
     val textMeasurer = rememberTextMeasurer()
     val dotLabelColor = TraktTheme.colors.textPrimary
+    val fillColor = TraktTheme.colors.accentPalette.shade200
+    val lineColor = TraktTheme.colors.accent
     val dotLabelStyle = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp)
     val percentLabels = seasons.map { it.rating.ratingPercent.rememberPercentFormat() }
 
@@ -269,7 +269,7 @@ private fun QualityLineGraph(
                 path = fillPath,
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Purple200.copy(alpha = 0.95F),
+                        fillColor.copy(alpha = 0.95F),
                         Color.Transparent,
                     ),
                 ),
@@ -277,7 +277,7 @@ private fun QualityLineGraph(
 
             drawPath(
                 path = linePath,
-                color = Purple500,
+                color = lineColor,
                 style = Stroke(
                     width = 2.dp.toPx(),
                     cap = StrokeCap.Round,

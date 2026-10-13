@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.model.ExternalRating
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -78,7 +77,7 @@ internal fun DetailsRatings(
                     contentDescription = null,
                     modifier = Modifier.height(16.dp),
                     tint = when {
-                        traktRating > 0 && !hidden -> Purple400
+                        traktRating > 0 && !hidden -> TraktTheme.colors.accentPalette.shade400
                         else -> TraktTheme.colors.textSecondary
                     },
                 )

@@ -25,7 +25,6 @@ import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.WhatsNew
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -67,7 +66,7 @@ internal fun WhatsNewView(
                     Icon(
                         painter = painterResource(R.drawable.ic_discover_off),
                         contentDescription = null,
-                        tint = Purple400,
+                        tint = TraktTheme.colors.accentPalette.shade400,
                         modifier = Modifier
                             .padding(top = 4.dp)
                             .size(14.dp),

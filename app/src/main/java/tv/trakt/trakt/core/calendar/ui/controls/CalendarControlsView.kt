@@ -43,7 +43,6 @@ import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -217,7 +216,7 @@ private fun DayRowItem(
             .border(
                 width = if (isToday) 1.dp else 0.dp,
                 color = when {
-                    isToday -> Purple400
+                    isToday -> TraktTheme.colors.accentPalette.shade400
                     else -> Color.Transparent
                 },
                 shape = RoundedCornerShape(10.dp),

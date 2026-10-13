@@ -51,7 +51,6 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage1
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage2
@@ -204,7 +203,7 @@ internal fun OnboardingScreen(
                     isLastPage -> stringResource(R.string.button_text_join_trakt)
                     else -> stringResource(R.string.button_text_continue)
                 },
-                containerColor = Purple500,
+                containerColor = TraktTheme.colors.accent,
                 contentColor = Color.White,
                 onClick = {
                     currentPage.intValue = when {
@@ -270,7 +269,7 @@ internal fun PageIndicator(
             val isActive = index == currentPage
             val dotColor = animateColorAsState(
                 targetValue = when {
-                    isActive -> Purple500
+                    isActive -> TraktTheme.colors.accent
                     else -> Color.White
                 },
                 animationSpec = tween(durationMillis = 250),

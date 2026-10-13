@@ -55,7 +55,6 @@ import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -236,7 +235,7 @@ internal fun ListReorderMediaCard(
                         Text(
                             text = rank,
                             style = TraktTheme.typography.cardTitle.copy(fontSize = 14.sp),
-                            color = Purple400,
+                            color = TraktTheme.colors.accentPalette.shade400,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )

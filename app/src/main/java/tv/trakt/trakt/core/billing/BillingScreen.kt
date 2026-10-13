@@ -69,7 +69,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.billing.model.InternalVersionError
 import tv.trakt.trakt.core.billing.model.VipBillingError
@@ -440,7 +439,7 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_heart_on),
-                tint = Purple400,
+                tint = TraktTheme.colors.accentPalette.shade400,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(bottom = 2.dp)

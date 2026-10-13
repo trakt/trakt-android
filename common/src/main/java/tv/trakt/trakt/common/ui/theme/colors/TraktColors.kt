@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 data class TraktColors(
     val isLight: Boolean = false,
     val accent: Color = Color.Unspecified,
+    val accentPalette: AccentPalette = PurplePalette,
     val backgroundPrimary: Color = Color.Unspecified,
     val backgroundImageAlpha: Float = Float.NaN,
     val textPrimary: Color = Color.Unspecified,

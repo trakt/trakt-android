@@ -47,7 +47,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsState
@@ -323,7 +322,7 @@ private fun SeasonRatingView(state: AllShowSeasonsState) {
             contentDescription = null,
             modifier = Modifier.height(16.dp),
             tint = when {
-                traktRating > 0 -> Purple400
+                traktRating > 0 -> TraktTheme.colors.accentPalette.shade400
                 else -> TraktTheme.colors.textSecondary
             },
         )

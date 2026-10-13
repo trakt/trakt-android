@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.home.sections.welcome.sheet.WelcomeSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -171,7 +170,7 @@ internal fun HomeWelcomeView(
                 VipChip(
                     text = stringResource(R.string.badge_text_get_vip),
                     icon = painterResource(R.drawable.ic_stars),
-                    color = Purple500,
+                    color = TraktTheme.colors.accent,
                     modifier = Modifier.shadow(
                         elevation = 1.dp,
                         shape = RoundedCornerShape(100),

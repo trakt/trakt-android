@@ -62,7 +62,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -385,12 +384,13 @@ private fun SentimentThemeRow(
 
 @Composable
 private fun GetVipView(modifier: Modifier = Modifier) {
-    val radialGradient = remember {
+    val gradientAccent = TraktTheme.colors.accent
+    val radialGradient = remember(gradientAccent) {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
-                        Purple500,
+                        gradientAccent,
                         Shade920,
                     ),
                     center = Offset(size.width * 1.5F, -size.height / 1.5F),

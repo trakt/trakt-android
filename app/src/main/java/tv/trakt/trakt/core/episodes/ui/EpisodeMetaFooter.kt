@@ -29,7 +29,6 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.temporal.ChronoUnit.DAYS
@@ -133,7 +132,7 @@ fun EpisodeMetaFooter(
                     contentDescription = null,
                     modifier = Modifier.size(14.dp),
                     tint = when {
-                        episode.rating.rating > 0 -> Purple400
+                        episode.rating.rating > 0 -> TraktTheme.colors.accentPalette.shade400
                         else -> TraktTheme.colors.textSecondary
                     },
                 )

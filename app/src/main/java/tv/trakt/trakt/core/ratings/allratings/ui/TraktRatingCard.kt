@@ -31,9 +31,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.persistentMapOf
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.ExternalRating
-import tv.trakt.trakt.common.ui.theme.colors.Purple200
-import tv.trakt.trakt.common.ui.theme.colors.Purple300
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -126,7 +124,7 @@ internal fun TraktRatingCard(
                                 .fillMaxWidth()
                                 .fillMaxHeight(fraction)
                                 .background(
-                                    color = barColor(fraction),
+                                    color = barColor(fraction, TraktTheme.colors),
                                     shape = RoundedCornerShape(6.dp),
                                 ),
                         )
@@ -170,11 +168,14 @@ internal fun TraktRatingCard(
     }
 }
 
-private fun barColor(fraction: Float): Color {
+private fun barColor(
+    fraction: Float,
+    colors: TraktColors,
+): Color {
     return when {
-        fraction >= 0.66F -> Purple200
-        fraction >= 0.33F -> Purple300
-        else -> Purple500
+        fraction >= 0.66F -> colors.accentPalette.shade200
+        fraction >= 0.33F -> colors.accentPalette.shade300
+        else -> colors.accent
     }
 }
 

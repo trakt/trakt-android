@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -43,12 +42,13 @@ internal fun VipBanner(
     containerColor: Color = Shade920,
     onClick: () -> Unit = {},
 ) {
-    val radialGradient = remember {
+    val gradientAccent = TraktTheme.colors.accentPalette.shade600
+    val radialGradient = remember(gradientAccent) {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
-                        Purple600,
+                        gradientAccent,
                         containerColor,
                     ),
                     center = Offset(size.width * 1.5F, -size.height * 4F),
