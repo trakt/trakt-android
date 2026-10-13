@@ -76,6 +76,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
@@ -124,6 +125,7 @@ internal fun ShowDetailsScreen(
     onListClick: ((Show, CustomList) -> Unit),
     onPersonClick: ((Show, Person, PersonCreditsRole) -> Unit),
     onTriviaClick: ((Show) -> Unit)? = null,
+    onPersonLinkClick: ((Show, SlugId) -> Unit)? = null,
     onSentimentClick: ((Show, Sentiments) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
@@ -250,6 +252,11 @@ internal fun ShowDetailsScreen(
         onTriviaClick = {
             state.show?.let { show ->
                 onTriviaClick?.invoke(show)
+            }
+        },
+        onPersonLinkClick = { slug ->
+            state.show?.let { show ->
+                onPersonLinkClick?.invoke(show, slug)
             }
         },
         onSentimentClick = { sentiments ->
@@ -489,6 +496,7 @@ internal fun ShowDetailsContent(
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
+    onPersonLinkClick: ((SlugId) -> Unit)? = null,
     onSentimentClick: ((Sentiments) -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
     onAllStreamingsClick: (() -> Unit)? = null,
@@ -820,6 +828,7 @@ internal fun ShowDetailsContent(
                             contentPadding = sectionPadding,
                             onVipClick = onVipClick ?: {},
                             onTriviaClick = onTriviaClick ?: {},
+                            onPersonLinkClick = onPersonLinkClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),

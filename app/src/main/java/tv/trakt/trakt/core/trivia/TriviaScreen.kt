@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.core.trivia.model.TriviaFilter
 import tv.trakt.trakt.core.trivia.ui.TriviaFactCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -51,6 +52,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun TriviaScreen(
     viewModel: TriviaViewModel,
+    onNavigateToPerson: (SlugId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -59,6 +61,7 @@ internal fun TriviaScreen(
         state = state,
         onFilterClick = viewModel::setFilter,
         onBackClick = onNavigateBack,
+        onPersonLinkClick = onNavigateToPerson,
     )
 }
 
@@ -67,6 +70,7 @@ private fun TriviaContent(
     state: TriviaState,
     onFilterClick: (TriviaFilter) -> Unit = {},
     onBackClick: () -> Unit = {},
+    onPersonLinkClick: (SlugId) -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -134,6 +138,7 @@ private fun TriviaContent(
                     TriviaFactCard(
                         fact = fact,
                         spoilerVisible = (state.filter == null),
+                        onPersonLinkClick = onPersonLinkClick,
                         modifier = Modifier
                             .padding(bottom = 16.dp)
                             .animateItem(

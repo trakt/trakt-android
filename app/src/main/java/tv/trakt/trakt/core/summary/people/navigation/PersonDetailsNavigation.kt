@@ -6,13 +6,15 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.summary.people.PersonDetailsScreen
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 
 @Serializable
 internal data class PersonDestination(
-    val personId: Int,
+    val personId: Int?,
+    val personSlug: String? = null,
     val sourceMediaId: Int?,
     val backdropUrl: String?,
     val creditsFilter: String? = null,
@@ -50,6 +52,26 @@ internal fun NavController.navigateToPerson(
             sourceMediaId = sourceMediaId?.value,
             backdropUrl = backdropUrl,
             creditsFilter = creditsRole?.filterKey,
+        ),
+    )
+}
+
+internal fun NavController.navigateToPerson(
+    personSlug: SlugId,
+    sourceMediaId: TraktId?,
+    backdropUrl: String?,
+) {
+    if (personSlug.value.isBlank()) {
+        Timber.d("Invalid personSlug")
+        return
+    }
+
+    navigate(
+        route = PersonDestination(
+            personId = null,
+            personSlug = personSlug.value,
+            sourceMediaId = sourceMediaId?.value,
+            backdropUrl = backdropUrl,
         ),
     )
 }

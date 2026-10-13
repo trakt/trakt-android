@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
@@ -29,6 +30,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateToPerson: (Show, Person, PersonCreditsRole) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToTrivia: (Show) -> Unit,
+    onNavigateToPersonLink: (Show, SlugId) -> Unit,
     onNavigateToSentiment: (Show, Sentiments) -> Unit,
     onNavigateToTrailer: (String) -> Unit,
     onNavigateToExtra: (ExtraVideo) -> Unit,
@@ -51,6 +53,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
             onListClick = { show, list -> onNavigateToList(show, list) },
             onPersonClick = { show, person, role -> onNavigateToPerson(show, person, role) },
             onTriviaClick = { show -> onNavigateToTrivia(show) },
+            onPersonLinkClick = { show, slug -> onNavigateToPersonLink(show, slug) },
             onSentimentClick = { show, sentiments -> onNavigateToSentiment(show, sentiments) },
             onTrailerClick = { url -> onNavigateToTrailer(url) },
             onExtraClick = { extra -> onNavigateToExtra(extra) },

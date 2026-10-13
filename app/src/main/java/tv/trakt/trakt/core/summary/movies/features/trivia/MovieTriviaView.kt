@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.core.summary.ui.views.DetailsTrivia
 import tv.trakt.trakt.core.summary.ui.views.DetailsTriviaSkeleton
 import tv.trakt.trakt.resources.R
@@ -49,6 +50,7 @@ internal fun MovieTriviaView(
     contentPadding: PaddingValues,
     onVipClick: () -> Unit,
     onTriviaClick: () -> Unit,
+    onPersonLinkClick: (SlugId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -64,6 +66,7 @@ internal fun MovieTriviaView(
             onNotAvailable = { visible = false },
             onVipClick = onVipClick,
             onTriviaClick = onTriviaClick,
+            onPersonLinkClick = onPersonLinkClick,
         )
     }
 }
@@ -77,6 +80,7 @@ private fun MovieTriviaContent(
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onVipClick: () -> Unit = {},
     onTriviaClick: () -> Unit = {},
+    onPersonLinkClick: (SlugId) -> Unit = {},
     onNotAvailable: (() -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -128,6 +132,7 @@ private fun MovieTriviaContent(
                                 items = state.summary,
                                 vip = state.user?.isAnyVip == true,
                                 onVipClick = onVipClick,
+                                onPersonLinkClick = onPersonLinkClick,
                                 modifier = Modifier
                                     .padding(contentPadding)
                                     .padding(bottom = TraktTheme.spacing.shadowClipSpace)

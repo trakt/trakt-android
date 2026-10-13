@@ -72,6 +72,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Sentiments
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
@@ -116,6 +117,7 @@ internal fun MovieDetailsScreen(
     onListClick: ((Movie, CustomList) -> Unit),
     onPersonClick: ((Movie, Person, PersonCreditsRole) -> Unit),
     onTriviaClick: (Movie) -> Unit,
+    onPersonLinkClick: ((Movie, SlugId) -> Unit)? = null,
     onSentimentClick: ((Movie, Sentiments) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
@@ -234,6 +236,11 @@ internal fun MovieDetailsScreen(
         onTriviaClick = {
             state.movie?.let { movie ->
                 onTriviaClick(movie)
+            }
+        },
+        onPersonLinkClick = { slug ->
+            state.movie?.let { movie ->
+                onPersonLinkClick?.invoke(movie, slug)
             }
         },
         onSentimentClick = { sentiments ->
@@ -419,6 +426,7 @@ internal fun MovieDetailsContent(
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
+    onPersonLinkClick: ((SlugId) -> Unit)? = null,
     onSentimentClick: ((Sentiments) -> Unit)? = null,
     onAllStreamingsClick: (() -> Unit)? = null,
     onAllCreditsClick: (() -> Unit)? = null,
@@ -729,6 +737,7 @@ internal fun MovieDetailsContent(
                             contentPadding = sectionPadding,
                             onVipClick = onVipClick ?: {},
                             onTriviaClick = onTriviaClick ?: {},
+                            onPersonLinkClick = onPersonLinkClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),

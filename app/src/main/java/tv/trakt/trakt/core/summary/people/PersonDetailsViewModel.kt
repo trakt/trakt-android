@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
@@ -95,24 +96,39 @@ internal class PersonDetailsViewModel(
         viewModelScope.launch {
             loadingDetailsState.update { LoadingState.Loading }
 
-            val person = getPersonUseCase.getPerson(
-                personId = destination.personId.toTraktId(),
-            )
-
-            person.let { person ->
-                personDetailsState.update { person }
-
-                loadPersonDetails(person.ids.trakt)
+            val person = try {
+                loadPerson()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
                 loadingDetailsState.update { LoadingState.Done }
-
-                loadPersonCredits(person.ids.trakt)
+                return@launch
             }
+
+            personDetailsState.update { person }
+
+            loadPersonDetails(person.ids.trakt)
+            loadingDetailsState.update { LoadingState.Done }
+
+            loadPersonCredits(person.ids.trakt)
         }
+    }
+
+    private suspend fun loadPerson(): Person {
+        destination.personSlug?.let {
+            return getPersonUseCase.getPersonDetails(it.toSlugId())
+        }
+
+        val personId = checkNotNull(destination.personId) {
+            "PersonDestination requires a personId or personSlug"
+        }
+        return getPersonUseCase.getPerson(personId.toTraktId())
     }
 
     private suspend fun loadPersonDetails(personId: TraktId) {
         if (personDetailsState.value?.biography != null) {
-            // Skip if biography is already available.
             return
         }
         try {

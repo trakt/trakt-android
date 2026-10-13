@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.trivia.TriviaScreen
 import tv.trakt.trakt.core.trivia.TriviaViewModel
@@ -21,7 +22,10 @@ internal data class TriviaDestination(
     val navSource: String,
 )
 
-internal fun NavGraphBuilder.triviaScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.triviaScreen(
+    onNavigateToPerson: (SlugId, TriviaDestination) -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     composable<TriviaDestination> { entry ->
         val dest = entry.toRoute<TriviaDestination>()
         TriviaScreen(
@@ -35,6 +39,7 @@ internal fun NavGraphBuilder.triviaScreen(onNavigateBack: () -> Unit) {
                     )
                 },
             ),
+            onNavigateToPerson = { slug -> onNavigateToPerson(slug, dest) },
             onNavigateBack = onNavigateBack,
         )
     }

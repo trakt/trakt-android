@@ -251,6 +251,13 @@ internal fun NavGraphBuilder.showsScreens(
                     creditsRole = role,
                 )
             },
+            onNavigateToPersonLink = { show, slug ->
+                navigateToPerson(
+                    personSlug = slug,
+                    sourceMediaId = show.ids.trakt,
+                    backdropUrl = show.images?.getFanartUrl(Size.THUMB),
+                )
+            },
             onNavigateToTrivia = { show ->
                 navigateToTrivia(
                     mediaId = show.ids.trakt,
@@ -428,6 +435,13 @@ internal fun NavGraphBuilder.moviesScreens(
                     sourceMediaId = movie.ids.trakt,
                     backdropUrl = movie.images?.getFanartUrl(Size.THUMB),
                     creditsRole = role,
+                )
+            },
+            onNavigateToPersonLink = { movie, slug ->
+                navigateToPerson(
+                    personSlug = slug,
+                    sourceMediaId = movie.ids.trakt,
+                    backdropUrl = movie.images?.getFanartUrl(Size.THUMB),
                 )
             },
             onNavigateToTrivia = { movie ->
@@ -766,6 +780,13 @@ internal fun NavGraphBuilder.allShowSeasonsScreens(
 internal fun NavGraphBuilder.triviaScreens(controller: NavHostController) {
     with(controller) {
         triviaScreen(
+            onNavigateToPerson = { slug, trivia ->
+                navigateToPerson(
+                    personSlug = slug,
+                    sourceMediaId = TraktId(trivia.mediaId),
+                    backdropUrl = trivia.mediaImage,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }
