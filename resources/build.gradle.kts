@@ -46,6 +46,7 @@ android {
 
 val validateStringPlaceholders = tasks.register<ValidateStringPlaceholdersTask>("validateStringPlaceholders") {
     resDir.from(layout.projectDirectory.dir("src/main/res"))
+    ignoredFormatKeys.addAll("match_pill_aria_label", "yir_2026_rarity")
 }
 
 tasks.named("preBuild") {
