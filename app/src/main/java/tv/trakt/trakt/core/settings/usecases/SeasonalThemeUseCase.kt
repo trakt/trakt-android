@@ -31,6 +31,21 @@ internal class SeasonalThemeUseCase(
         }
     }
 
+    fun observePendingSplash(): Flow<SeasonalTheme?> {
+        return dataStore.data.map { prefs ->
+            val season = currentSeason() ?: return@map null
+            val enabled = prefs[enabledKey(season)] ?: false
+            val shown = prefs[splashShownKey(season)] ?: false
+            season.takeIf { enabled && !shown }
+        }
+    }
+
+    suspend fun markSplashShown(season: SeasonalTheme) {
+        dataStore.edit { prefs ->
+            prefs[splashShownKey(season)] = true
+        }
+    }
+
     suspend fun activeSeason(): SeasonalTheme? {
         return observeActive().first()
     }
@@ -44,7 +59,11 @@ internal class SeasonalThemeUseCase(
         }
     }
 
+    private fun splashShownKey(season: SeasonalTheme): Preferences.Key<Boolean> {
+        return booleanPreferencesKey("key_seasonal_splash_shown_${season.remoteValue}_2026")
+    }
+
     private fun enabledKey(season: SeasonalTheme): Preferences.Key<Boolean> {
-        return booleanPreferencesKey("key_seasonal_theme_enabled_${season.remoteValue}")
+        return booleanPreferencesKey("key_seasonal_theme_enabled_${season.remoteValue}_2026")
     }
 }

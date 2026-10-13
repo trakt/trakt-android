@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.helpers.errors.DefaultGlobalErrorsManager
@@ -24,6 +25,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.main.MainViewModel
+import tv.trakt.trakt.core.main.ui.seasonal.SeasonalSplashViewModel
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
@@ -74,6 +76,8 @@ internal val mainModule = module {
     single<AppUpdateManager> {
         AppUpdateManagerFactory.create(androidApplication())
     }
+
+    viewModelOf(::SeasonalSplashViewModel)
 
     viewModel {
         MainViewModel(

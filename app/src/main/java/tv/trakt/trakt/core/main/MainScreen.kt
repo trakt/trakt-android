@@ -84,6 +84,7 @@ import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import tv.trakt.trakt.core.comments.features.translation.download.CommentTranslationDownloadSheet
+import tv.trakt.trakt.core.discover.navigation.DiscoverDestination
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
@@ -94,6 +95,7 @@ import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.checkin.MainCheckInView
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.main.ui.rateprompt.MainRatePromptView
+import tv.trakt.trakt.core.main.ui.seasonal.SeasonalSplashView
 import tv.trakt.trakt.core.main.ui.yir.MainYearInReviewView
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.ratings.data.work.PostRatingException
@@ -249,6 +251,13 @@ internal fun MainScreen(
         appLinkLoading = appLinkState.loading.isLoading,
         onDismissWelcome = viewModel::dismissWelcome,
         onDismissCheckIn = viewModel::dismissCheckIn,
+    )
+
+    SeasonalSplashView(
+        enabled = state.user != null && !state.welcome.isActive && !yearInReviewVisible,
+        onDismissed = {
+            navController.navigateToMainDestination(DiscoverDestination)
+        },
     )
 
     MainYearInReviewView(

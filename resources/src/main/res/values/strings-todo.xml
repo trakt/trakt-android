@@ -10,4 +10,7 @@
   <string name="button_text_comment_translated">Translated</string>
   <string name="header_year_in_review_banner">Your %1$d Year in Review is here!</string>
   <string name="text_year_in_review_banner_tagline">Twelve personas. One of them is you.</string>
+  <string name="header_seasonal_greeting_halloween">Happy Halloween</string>
+  <string name="text_seasonal_greeting_halloween">Spooky picks are waiting for you in Discover.</string>
+  <string name="text_seasonal_greeting_signoff">From all of us at Trakt</string>
 </resources>
