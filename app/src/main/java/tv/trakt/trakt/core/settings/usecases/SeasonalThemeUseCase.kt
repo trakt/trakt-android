@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.SEASONAL_THEME
 import tv.trakt.trakt.ui.theme.model.SeasonalTheme
@@ -22,18 +23,16 @@ internal class SeasonalThemeUseCase(
         )
     }
 
-    fun observeEnabled(season: SeasonalTheme): Flow<Boolean> {
-        return dataStore.data.map { prefs ->
-            prefs[enabledKey(season)] ?: true
-        }
-    }
-
     fun observeActive(): Flow<SeasonalTheme?> {
         return dataStore.data.map { prefs ->
             val season = currentSeason() ?: return@map null
-            val enabled = prefs[enabledKey(season)] ?: true
+            val enabled = prefs[enabledKey(season)] ?: false
             season.takeIf { enabled }
         }
+    }
+
+    suspend fun activeSeason(): SeasonalTheme? {
+        return observeActive().first()
     }
 
     suspend fun setEnabled(

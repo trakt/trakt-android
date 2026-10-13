@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import tv.trakt.trakt.LocalStartAuthorization
@@ -43,6 +42,7 @@ import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.seasonal.SeasonalThemeIcon
 import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewIcon
+import tv.trakt.trakt.ui.theme.LocalSeasonalTheme
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 
@@ -69,9 +69,7 @@ internal fun HeaderBar(
 
     val seasonalThemeUseCase: SeasonalThemeUseCase = koinInject()
     val season = remember { seasonalThemeUseCase.currentSeason() }
-    val seasonEnabled by remember(season) {
-        season?.let(seasonalThemeUseCase::observeEnabled) ?: flowOf(false)
-    }.collectAsStateWithLifecycle(initialValue = true)
+    val seasonEnabled = LocalSeasonalTheme.current != null
 
     HeaderBar(
         modifier = modifier,
@@ -185,7 +183,7 @@ private fun HeaderBar(
                     )
                 }
 
-                if (season != null) {
+                if (season != null && showFilters) {
                     SeasonalThemeIcon(
                         season = season,
                         enabled = seasonEnabled,

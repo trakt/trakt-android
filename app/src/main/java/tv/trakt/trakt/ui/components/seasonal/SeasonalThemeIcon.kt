@@ -28,8 +28,8 @@ internal fun SeasonalThemeIcon(
 ) {
     val tint by animateColorAsState(
         targetValue = when {
-            enabled -> TraktTheme.colors.accent
-            else -> TraktTheme.colors.textSecondary
+            enabled -> TraktTheme.colors.accentPalette.shade400
+            else -> TraktTheme.colors.textPrimary
         },
     )
 
