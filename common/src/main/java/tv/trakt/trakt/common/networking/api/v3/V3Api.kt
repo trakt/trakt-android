@@ -94,7 +94,7 @@ class V3Api(
     // Trivia
 
     suspend fun getShowTrivia(showId: TraktId): V3TriviaResponse {
-        val response = client.get("${baseV3Url}media/show/${showId.value}/info/5/version/1")
+        val response = client.get("${baseV3Url}media/show/${showId.value}/info/5/version/2")
         val body = response.body<V3TriviaResponse>()
         return body.copy(
             items = body.items?.map { it.copy(id = Uuid.random().toHexString()) },
@@ -102,7 +102,7 @@ class V3Api(
     }
 
     suspend fun getMovieTrivia(movieId: TraktId): V3TriviaResponse {
-        val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/5/version/1")
+        val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/5/version/2")
         val body = response.body<V3TriviaResponse>()
         return body.copy(
             items = body.items?.map { it.copy(id = Uuid.random().toHexString()) },

@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.summary.shows.features.trivia.usecases
 
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.extensions.replaceMarkdown
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.trivia.Trivia
 import tv.trakt.trakt.common.model.trivia.TriviaFact
@@ -21,14 +20,13 @@ internal class GetShowTriviaUseCase(
         return Trivia(
             summary = summary
                 .take(SUMMARY_LIMIT)
-                .map { it.replaceMarkdown() }
                 .toImmutableList(),
             facts = items
                 .map {
                     TriviaFact(
                         id = it.id,
                         category = it.category,
-                        text = it.text.replaceMarkdown(),
+                        text = it.text,
                         order = it.order,
                         spoiler = it.spoiler,
                     )
