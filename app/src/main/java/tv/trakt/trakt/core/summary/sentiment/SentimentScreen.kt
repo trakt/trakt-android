@@ -59,6 +59,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
@@ -170,8 +171,11 @@ private fun SentimentContent(
             val sentiments = state.sentiments
             if (sentiments.analysis.isNotBlank()) {
                 item {
+                    val linkColor = TraktTheme.colors.textPrimary
                     Text(
-                        text = sentiments.analysis,
+                        text = remember(sentiments.analysis, linkColor) {
+                            sentiments.analysis.toMarkdownText(linkColor)
+                        },
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
                         modifier = Modifier.padding(top = 16.dp),
@@ -263,8 +267,9 @@ internal fun HighlightsCard(
                 style = TraktTheme.typography.heading5,
             )
 
+            val linkColor = TraktTheme.colors.textPrimary
             Text(
-                text = text,
+                text = remember(text, linkColor) { text.toMarkdownText(linkColor) },
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
             )

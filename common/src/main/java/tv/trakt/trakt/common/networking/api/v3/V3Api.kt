@@ -83,12 +83,12 @@ class V3Api(
     // Sentiment
 
     suspend fun getMovieSentiment(movieId: TraktId): V3SentimentResponse? {
-        val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/0/version/1")
+        val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/0/version/2")
         return response.body()
     }
 
     suspend fun getShowSentiment(showId: TraktId): V3SentimentResponse? {
-        val response = client.get("${baseV3Url}media/show/${showId.value}/info/0/version/1")
+        val response = client.get("${baseV3Url}media/show/${showId.value}/info/0/version/2")
         return response.body()
     }
 
