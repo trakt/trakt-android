@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Jetzt leeren</string>
   <string name="button_text_comment_likes">%d Likes</string>
   <string name="button_text_comment_replies">%d Antworten</string>
+  <string name="button_text_comment_translated">Übersetzt</string>
   <string name="button_text_connect">Verbinden</string>
   <string name="button_text_continue">Weiter</string>
   <string name="button_text_convert">Umwandeln</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Altersfreigabe</string>
   <string name="header_clear_data">Daten löschen</string>
   <string name="header_comment_reactions">Rezensionsreaktionen</string>
+  <string name="header_comment_translation_download">Sprache herunterladen?</string>
+  <string name="header_comment_translation_download_ai">Gemini-Modell herunterladen?</string>
   <string name="header_community_sentiment">Stimmung</string>
   <string name="header_country">Land</string>
   <string name="header_create_smart_list">Smart List erstellen</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Tracking</string>
   <string name="header_settings_translations">Übersetzungen</string>
   <string name="header_skipped_items">%s übersprungene Elemente</string>
+  <string name="header_smart_list_compare_current">Ihre Liste</string>
+  <string name="header_smart_list_compare_proposed">Als Smart List</string>
   <string name="header_stats_contributions">Beiträge</string>
   <string name="header_stats_graph_peak">Stoßzeiten</string>
   <string name="header_stats_graph_screen_time_daily">Tägliche Aufschlüsselung</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Auf Kreditkarte wechseln</string>
   <string name="header_vip_streak">VIP-Serie</string>
   <string name="header_writer">Autor</string>
+  <string name="header_year_in_review_banner">Dein %d Jahresrückblick ist da!</string>
   <string name="heading_blocked_users">Blockierte Benutzer</string>
   <string name="heading_branding_alternative_logos">Alternative Logos</string>
   <string name="heading_branding_dark_background">Dunkler Hintergrund</string>
@@ -1046,6 +1052,9 @@
   <string name="input_prompt_username">Wie soll Ihr Benutzername lauten?</string>
   <string name="label_add_from_lists_source">Quellliste</string>
   <string name="label_date_picker_time">Uhrzeit</string>
+  <string name="label_delete_account_stat_hours">Gesehene Stunden</string>
+  <string name="label_delete_account_stat_plays">Aufgezeichnete Wiedergaben</string>
+  <string name="label_delete_account_stat_years">Jahre dabei</string>
   <string name="label_drag_image_to_adjust">Bild zum Anpassen ziehen</string>
   <string name="label_favorites">Favoriten</string>
   <string name="label_genres_drawer_all">Alle Genres</string>
@@ -1107,6 +1116,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Zu kurz</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Wählen Sie, welche Version angezeigt werden soll</string>
   <string name="label_stats_active_days">Aktive Tage</string>
   <string name="label_stats_average">Durchschn.</string>
   <string name="label_stats_avg_per_day">Tagesdurchschnitt</string>
@@ -1210,6 +1220,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s und höher</string>
   <string name="list_summary_range_labeled_up_to">%1$s bis zu %2$s</string>
   <string name="list_summary_range_up_to">Bis zu %s</string>
+  <string name="list_summary_released_within_days">Veröffentlicht in den letzten %s Tagen</string>
+  <string name="list_summary_votes_between">%1$s bis %2$s %3$s Stimmen</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s Stimmen</string>
   <string name="list_title_activity">Aktivität</string>
   <string name="list_title_actors">Darsteller</string>
   <string name="list_title_all_titles">Alle Titel</string>
@@ -1353,6 +1366,7 @@
   <string name="page_title_automatic_tracking">Automatische Verfolgung</string>
   <string name="page_title_branding">Markenrichtlinien</string>
   <string name="page_title_calendar">Kalender</string>
+  <string name="page_title_convert_smart_list">In eine Smart List umwandeln</string>
   <string name="page_title_create_list">Liste erstellen</string>
   <string name="page_title_create_smart_list">Smart List erstellen</string>
   <string name="page_title_discover">Entdecken</string>
@@ -1587,6 +1601,11 @@
   <string name="text_clear_source_ratings">Bewertungen</string>
   <string name="text_clear_source_watchlist">Merkliste</string>
   <string name="text_clear_watchlist">Watchlist leeren</string>
+  <string name="text_comment_translation_download_ai_metered">Für die Übersetzung dieses Kommentars ist ein einmaliger Download des lokalen KI-Modells erforderlich, das groß sein kann. Sie verwenden mobile Daten, was Ihr Datenvolumen verbrauchen kann.</string>
+  <string name="text_comment_translation_download_metered">Für die Übersetzung dieses Kommentars ist ein einmaliger Sprach-Download erforderlich. Sie verwenden mobile Daten, was Ihr Datenvolumen verbrauchen kann.</string>
+  <string name="text_comment_translation_downloading">Sprache wird heruntergeladen…</string>
+  <string name="text_comment_translation_downloading_ai">Gemini wird heruntergeladen…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Gemini wird heruntergeladen… %d%</string>
   <string name="text_connection_status_cancelled_message">Du kannst %s verbinden, wann immer du bereit bist.</string>
   <string name="text_connection_status_cancelled_title">Verbindung abgebrochen</string>
   <string name="text_connection_status_connected_message">Wir synchronisieren jetzt deinen Verlauf und deine Bewertungen.</string>
@@ -2070,6 +2089,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d Folgen</string>
   <string name="text_watch_until_here_preview_title">Gesehene Zeitstempel</string>
+  <string name="text_year_in_review_banner_tagline">Zwölf Persönlichkeiten. Eine davon bist du.</string>
   <string name="text_younify_status_broken">Defekt</string>
   <string name="text_younify_status_linked">Verknüpft</string>
   <string name="text_younify_status_unlinked">Nicht verknüpft</string>

@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Svuota ora</string>
   <string name="button_text_comment_likes">%d mi piace</string>
   <string name="button_text_comment_replies">%d risposte</string>
+  <string name="button_text_comment_translated">Tradotto</string>
   <string name="button_text_connect">Connetti</string>
   <string name="button_text_continue">Continua</string>
   <string name="button_text_convert">Converti</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Certificazione</string>
   <string name="header_clear_data">Svuota Dati</string>
   <string name="header_comment_reactions">Reazioni alla recensione</string>
+  <string name="header_comment_translation_download">Scaricare la lingua?</string>
+  <string name="header_comment_translation_download_ai">Scaricare il modello Gemini?</string>
   <string name="header_community_sentiment">Sentimento della community</string>
   <string name="header_country">Paese</string>
   <string name="header_create_smart_list">Crea lista intelligente</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Tracciamento</string>
   <string name="header_settings_translations">Traduzioni</string>
   <string name="header_skipped_items">%s elementi saltati</string>
+  <string name="header_smart_list_compare_current">La tua lista</string>
+  <string name="header_smart_list_compare_proposed">Come lista intelligente</string>
   <string name="header_stats_contributions">Contributi</string>
   <string name="header_stats_graph_peak">Ore di punta</string>
   <string name="header_stats_graph_screen_time_daily">Ripartizione giornaliera</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Passa alla carta di credito</string>
   <string name="header_vip_streak">Serie VIP</string>
   <string name="header_writer">Sceneggiatore</string>
+  <string name="header_year_in_review_banner">È arrivato il tuo riepilogo dell\'anno %d!</string>
   <string name="heading_blocked_users">Utenti bloccati</string>
   <string name="heading_branding_alternative_logos">Loghi alternativi</string>
   <string name="heading_branding_dark_background">Sfondo scuro</string>
@@ -1046,6 +1052,9 @@
   <string name="input_prompt_username">Quale dovrebbe essere il tuo nome utente?</string>
   <string name="label_add_from_lists_source">Lista di origine</string>
   <string name="label_date_picker_time">Ora</string>
+  <string name="label_delete_account_stat_hours">Ore guardate</string>
+  <string name="label_delete_account_stat_plays">Riproduzioni registrate</string>
+  <string name="label_delete_account_stat_years">Anni insieme</string>
   <string name="label_drag_image_to_adjust">Trascina l\'immagine per regolare</string>
   <string name="label_favorites">Preferiti</string>
   <string name="label_genres_drawer_all">Tutti i generi</string>
@@ -1107,6 +1116,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Troppo corto</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Scegli quale versione mostrare</string>
   <string name="label_stats_active_days">Giorni attivi</string>
   <string name="label_stats_average">Media</string>
   <string name="label_stats_avg_per_day">Media giornaliera</string>
@@ -1210,6 +1220,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s e oltre</string>
   <string name="list_summary_range_labeled_up_to">%1$s fino a %2$s</string>
   <string name="list_summary_range_up_to">Fino a %s</string>
+  <string name="list_summary_released_within_days">Rilasciato negli ultimi %s giorni</string>
+  <string name="list_summary_votes_between">Da %1$s a %2$s voti %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ voti %2$s</string>
   <string name="list_title_activity">Attività</string>
   <string name="list_title_actors">Attori</string>
   <string name="list_title_all_titles">Tutti i titoli</string>
@@ -1353,6 +1366,7 @@
   <string name="page_title_automatic_tracking">Tracciamento Automatico</string>
   <string name="page_title_branding">Marchio</string>
   <string name="page_title_calendar">Calendario</string>
+  <string name="page_title_convert_smart_list">Converti in lista intelligente</string>
   <string name="page_title_create_list">Crea Lista</string>
   <string name="page_title_create_smart_list">Crea lista intelligente</string>
   <string name="page_title_discover">Scopri</string>
@@ -1587,6 +1601,11 @@
   <string name="text_clear_source_ratings">Valutazioni</string>
   <string name="text_clear_source_watchlist">Watchlist</string>
   <string name="text_clear_watchlist">Svuota watchlist</string>
+  <string name="text_comment_translation_download_ai_metered">La traduzione di questo commento richiede un download una tantum del modello AI sul dispositivo, che può essere di grandi dimensioni. Sei connesso tramite dati mobili, quindi questo potrebbe consumare la tua disponibilità di dati.</string>
+  <string name="text_comment_translation_download_metered">La traduzione di questo commento richiede un download una tantum della lingua. Sei connesso tramite dati mobili, quindi questo potrebbe consumare la tua disponibilità di dati.</string>
+  <string name="text_comment_translation_downloading">Download della lingua in corso…</string>
+  <string name="text_comment_translation_downloading_ai">Download di Gemini in corso…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Download di Gemini in corso… %d%</string>
   <string name="text_connection_status_cancelled_message">Puoi connettere %s quando sei pronto.</string>
   <string name="text_connection_status_cancelled_title">Connessione annullata</string>
   <string name="text_connection_status_connected_message">Stiamo sincronizzando la tua cronologia e le valutazioni.</string>
@@ -2070,6 +2089,7 @@
   <string name="text_vip_veteran_title_veteran">VETERANO</string>
   <string name="text_watch_until_here_episode_count">%d episodi</string>
   <string name="text_watch_until_here_preview_title">Timestamp visti</string>
+  <string name="text_year_in_review_banner_tagline">Dodici personalità. Una di queste sei tu.</string>
   <string name="text_younify_status_broken">Non funzionante</string>
   <string name="text_younify_status_linked">Collegato</string>
   <string name="text_younify_status_unlinked">Non collegato</string>

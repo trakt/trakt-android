@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Wyczyść</string>
   <string name="button_text_comment_likes">%d polubień</string>
   <string name="button_text_comment_replies">%d odp.</string>
+  <string name="button_text_comment_translated">Przetłumaczono</string>
   <string name="button_text_connect">Połącz</string>
   <string name="button_text_continue">Kontynuuj</string>
   <string name="button_text_convert">Konwertuj</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Certyfikacja</string>
   <string name="header_clear_data">Wyczyść dane</string>
   <string name="header_comment_reactions">Reakcje na recenzje</string>
+  <string name="header_comment_translation_download">Pobrać język?</string>
+  <string name="header_comment_translation_download_ai">Pobrać model Gemini?</string>
   <string name="header_community_sentiment">Sentyment</string>
   <string name="header_country">Kraj</string>
   <string name="header_create_smart_list">Utwórz inteligentną listę</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Śledzenie</string>
   <string name="header_settings_translations">Tłumaczenia</string>
   <string name="header_skipped_items">%s pominiętych elementów</string>
+  <string name="header_smart_list_compare_current">Twoja lista</string>
+  <string name="header_smart_list_compare_proposed">Jako inteligentna lista</string>
   <string name="header_stats_contributions">Wkład</string>
   <string name="header_stats_graph_peak">Godziny szczytu</string>
   <string name="header_stats_graph_screen_time_daily">Dzienne podsumowanie</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Przejdź na kartę kredytową</string>
   <string name="header_vip_streak">Seria VIP</string>
   <string name="header_writer">Scenarzysta</string>
+  <string name="header_year_in_review_banner">Twoje podsumowanie %d roku jest już dostępne!</string>
   <string name="heading_blocked_users">Zablokowani użytkownicy</string>
   <string name="heading_branding_alternative_logos">Logo alternatywne</string>
   <string name="heading_branding_dark_background">Ciemne tło</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Zbyt krótka</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Wybierz wersję do wyświetlenia</string>
   <string name="label_stats_active_days">Dni aktywności</string>
   <string name="label_stats_average">Średnia</string>
   <string name="label_stats_avg_per_day">Średnia dzienna</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s i więcej</string>
   <string name="list_summary_range_labeled_up_to">%1$s do %2$s</string>
   <string name="list_summary_range_up_to">Do %s</string>
+  <string name="list_summary_released_within_days">Wydane w ciągu ostatnich %s dni</string>
+  <string name="list_summary_votes_between">od %1$s do %2$s głosów %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ głosów %2$s</string>
   <string name="list_title_activity">Aktywność</string>
   <string name="list_title_actors">Aktorzy</string>
   <string name="list_title_all_titles">Wszystkie tytuły</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">Automatyczne śledzenie</string>
   <string name="page_title_branding">Marka</string>
   <string name="page_title_calendar">Kalendarz</string>
+  <string name="page_title_convert_smart_list">Zmień w inteligentną listę</string>
   <string name="page_title_create_list">Utwórz Listę</string>
   <string name="page_title_create_smart_list">Utwórz inteligentną listę</string>
   <string name="page_title_discover">Odkrywaj</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">Oceny</string>
   <string name="text_clear_source_watchlist">Obserwowane</string>
   <string name="text_clear_watchlist">Wyczyść listę obserwowanych</string>
+  <string name="text_comment_translation_download_ai_metered">Tłumaczenie tego komentarza wymaga jednorazowego pobrania lokalnego modelu AI, który może być duży. Korzystasz z danych mobilnych, więc może to zużyć Twój pakiet danych.</string>
+  <string name="text_comment_translation_download_metered">Tłumaczenie tego komentarza wymaga jednorazowego pobrania języka. Korzystasz z danych mobilnych, więc może to zużyć Twój pakiet danych.</string>
+  <string name="text_comment_translation_downloading">Pobieranie języka…</string>
+  <string name="text_comment_translation_downloading_ai">Pobieranie Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Pobieranie Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Możesz połączyć %s, kiedy tylko będziesz gotowy.</string>
   <string name="text_connection_status_cancelled_title">Połączenie anulowane</string>
   <string name="text_connection_status_connected_message">Teraz synchronizujemy Twoją historię oglądania i oceny.</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">Weteran</string>
   <string name="text_watch_until_here_episode_count">%d odcinków</string>
   <string name="text_watch_until_here_preview_title">Sygnatury czasowe oglądania</string>
+  <string name="text_year_in_review_banner_tagline">Dwanaście osobowości. Jedna z nich to Ty.</string>
   <string name="text_younify_status_broken">Uszkodzony</string>
   <string name="text_younify_status_linked">Połączono</string>
   <string name="text_younify_status_unlinked">Nie połączono</string>

@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">立即清除</string>
   <string name="button_text_comment_likes">%d 个赞</string>
   <string name="button_text_comment_replies">%d 条回复</string>
+  <string name="button_text_comment_translated">已翻译</string>
   <string name="button_text_connect">连接</string>
   <string name="button_text_continue">继续</string>
   <string name="button_text_convert">转换</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">分级</string>
   <string name="header_clear_data">清除数据</string>
   <string name="header_comment_reactions">评论反应</string>
+  <string name="header_comment_translation_download">下载语言包？</string>
+  <string name="header_comment_translation_download_ai">下载 Gemini 模型？</string>
   <string name="header_community_sentiment">社区情绪</string>
   <string name="header_country">国家/地区</string>
   <string name="header_create_smart_list">创建智能列表</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">追踪</string>
   <string name="header_settings_translations">翻译</string>
   <string name="header_skipped_items">%s 个已跳过项目</string>
+  <string name="header_smart_list_compare_current">你的列表</string>
+  <string name="header_smart_list_compare_proposed">作为智能列表</string>
   <string name="header_stats_contributions">贡献</string>
   <string name="header_stats_graph_peak">高峰时段</string>
   <string name="header_stats_graph_screen_time_daily">每日明细</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">切换到信用卡</string>
   <string name="header_vip_streak">VIP 连贯记录</string>
   <string name="header_writer">编剧</string>
+  <string name="header_year_in_review_banner">您的 %d 年度回顾已发布！</string>
   <string name="heading_blocked_users">已屏蔽用户</string>
   <string name="heading_branding_alternative_logos">备用徽标</string>
   <string name="heading_branding_dark_background">深色背景</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">太短</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">选择要显示的版本</string>
   <string name="label_stats_active_days">活跃天数</string>
   <string name="label_stats_average">平均</string>
   <string name="label_stats_avg_per_day">每日平均</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s 及以上</string>
   <string name="list_summary_range_labeled_up_to">%1$s 最高 %2$s</string>
   <string name="list_summary_range_up_to">最高 %s</string>
+  <string name="list_summary_released_within_days">在最近 %s 天内发布</string>
+  <string name="list_summary_votes_between">%1$s 到 %2$s %3$s 票</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s 票</string>
   <string name="list_title_activity">动态</string>
   <string name="list_title_actors">演员</string>
   <string name="list_title_all_titles">所有标题</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">自动追踪</string>
   <string name="page_title_branding">品牌</string>
   <string name="page_title_calendar">日历</string>
+  <string name="page_title_convert_smart_list">转为智能列表</string>
   <string name="page_title_create_list">创建列表</string>
   <string name="page_title_create_smart_list">创建智能列表</string>
   <string name="page_title_discover">发现</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">评分</string>
   <string name="text_clear_source_watchlist">待看列表</string>
   <string name="text_clear_watchlist">清除待看列表</string>
+  <string name="text_comment_translation_download_ai_metered">翻译此评论需要一次性下载设备上的 AI 模型，该模型可能较大。您正在使用移动数据，这可能会消耗您的流量。</string>
+  <string name="text_comment_translation_download_metered">翻译此评论需要一次性下载语言包。您正在使用移动数据，这可能会消耗您的流量。</string>
+  <string name="text_comment_translation_downloading">正在下载语言包…</string>
+  <string name="text_comment_translation_downloading_ai">正在下载 Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">正在下载 Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">您可以随时连接 %s。</string>
   <string name="text_connection_status_cancelled_title">连接已取消</string>
   <string name="text_connection_status_connected_message">我们正在同步您的观看历史和评分。</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">资深</string>
   <string name="text_watch_until_here_episode_count">%d 集</string>
   <string name="text_watch_until_here_preview_title">观看时间戳</string>
+  <string name="text_year_in_review_banner_tagline">十二种观影人格。您是其中之一。</string>
   <string name="text_younify_status_broken">已损坏</string>
   <string name="text_younify_status_linked">已关联</string>
   <string name="text_younify_status_unlinked">未关联</string>

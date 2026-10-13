@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Ryd nu</string>
   <string name="button_text_comment_likes">%d likes</string>
   <string name="button_text_comment_replies">%d svar</string>
+  <string name="button_text_comment_translated">Oversat</string>
   <string name="button_text_connect">Tilslut</string>
   <string name="button_text_continue">Fortsæt</string>
   <string name="button_text_convert">Konverter</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Certificering</string>
   <string name="header_clear_data">Ryd data</string>
   <string name="header_comment_reactions">Anmeldelsesreaktioner</string>
+  <string name="header_comment_translation_download">Download sprog?</string>
+  <string name="header_comment_translation_download_ai">Download Gemini-model?</string>
   <string name="header_community_sentiment">Holdning</string>
   <string name="header_country">Land</string>
   <string name="header_create_smart_list">Opret smart liste</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Sporing</string>
   <string name="header_settings_translations">Oversættelser</string>
   <string name="header_skipped_items">%s Oversprungne Elementer</string>
+  <string name="header_smart_list_compare_current">Din liste</string>
+  <string name="header_smart_list_compare_proposed">Som en smartliste</string>
   <string name="header_stats_contributions">Bidrag</string>
   <string name="header_stats_graph_peak">Spidstimer</string>
   <string name="header_stats_graph_screen_time_daily">Daglig oversigt</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Skift til kreditkort</string>
   <string name="header_vip_streak">VIP-serie</string>
   <string name="header_writer">Forfatter</string>
+  <string name="header_year_in_review_banner">Din %d Årsresume er her!</string>
   <string name="heading_blocked_users">Blokerede brugere</string>
   <string name="heading_branding_alternative_logos">Alternative logoer</string>
   <string name="heading_branding_dark_background">Mørk baggrund</string>
@@ -1046,6 +1052,9 @@
   <string name="input_prompt_username">Hvad skal dit brugernavn være?</string>
   <string name="label_add_from_lists_source">Kildeliste</string>
   <string name="label_date_picker_time">Tid</string>
+  <string name="label_delete_account_stat_hours">Timer set</string>
+  <string name="label_delete_account_stat_plays">Afspilninger logget</string>
+  <string name="label_delete_account_stat_years">År sammen</string>
   <string name="label_drag_image_to_adjust">Træk billedet for at justere</string>
   <string name="label_favorites">Favoritter</string>
   <string name="label_genres_drawer_all">Alle genrer</string>
@@ -1107,6 +1116,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">For kort</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Vælg hvilken version der skal vises</string>
   <string name="label_stats_active_days">Aktive dage</string>
   <string name="label_stats_average">Gns.</string>
   <string name="label_stats_avg_per_day">Dagligt gennemsnit</string>
@@ -1210,6 +1220,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s og opefter</string>
   <string name="list_summary_range_labeled_up_to">%1$s op til %2$s</string>
   <string name="list_summary_range_up_to">Op til %s</string>
+  <string name="list_summary_released_within_days">Udgivet inden for de sidste %s dage</string>
+  <string name="list_summary_votes_between">%1$s til %2$s %3$s stemmer</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s stemmer</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skuespillere</string>
   <string name="list_title_all_titles">Alle titler</string>
@@ -1353,6 +1366,7 @@
   <string name="page_title_automatic_tracking">Automatisk registrering</string>
   <string name="page_title_branding">Branding</string>
   <string name="page_title_calendar">Kalender</string>
+  <string name="page_title_convert_smart_list">Konverter til en smartliste</string>
   <string name="page_title_create_list">Opret liste</string>
   <string name="page_title_create_smart_list">Opret smart liste</string>
   <string name="page_title_discover">Opdag</string>
@@ -1587,6 +1601,11 @@
   <string name="text_clear_source_ratings">Bedømmelser</string>
   <string name="text_clear_source_watchlist">Huskeliste</string>
   <string name="text_clear_watchlist">Ryd huskeliste</string>
+  <string name="text_comment_translation_download_ai_metered">For at oversætte denne kommentar skal der foretages en engangsdownload af den indbyggede AI-model, som kan være stor. Du bruger mobildata, så dette kan bruge af din dataforbrug.</string>
+  <string name="text_comment_translation_download_metered">For at oversætte denne kommentar skal der foretages en engangsdownload af sprog. Du bruger mobildata, så dette kan bruge af din dataforbrug.</string>
+  <string name="text_comment_translation_downloading">Downloader sprog…</string>
+  <string name="text_comment_translation_downloading_ai">Downloader Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Downloader Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Du kan oprette forbindelse til %s, når du er klar.</string>
   <string name="text_connection_status_cancelled_title">Forbindelse annulleret</string>
   <string name="text_connection_status_connected_message">Vi synkroniserer din sete historie og vurderinger nu.</string>
@@ -2070,6 +2089,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d afsnit</string>
   <string name="text_watch_until_here_preview_title">Set-tidspunkter</string>
+  <string name="text_year_in_review_banner_tagline">Tolv personaer. Én af dem er dig.</string>
   <string name="text_younify_status_broken">Brudt</string>
   <string name="text_younify_status_linked">Tilknyttet</string>
   <string name="text_younify_status_unlinked">Ikke tilknyttet</string>

@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">اکنون پاک کن</string>
   <string name="button_text_comment_likes">%d لایک</string>
   <string name="button_text_comment_replies">%d پاسخ</string>
+  <string name="button_text_comment_translated">ترجمه شد</string>
   <string name="button_text_connect">اتصال</string>
   <string name="button_text_continue">ادامه</string>
   <string name="button_text_convert">تبدیل</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">گواهینامه</string>
   <string name="header_clear_data">پاک کردن داده‌ها</string>
   <string name="header_comment_reactions">واکنش‌های بازخورد</string>
+  <string name="header_comment_translation_download">زبان دانلود شود؟</string>
+  <string name="header_comment_translation_download_ai">مدل Gemini دانلود شود؟</string>
   <string name="header_community_sentiment">نظر عمومی</string>
   <string name="header_country">کشور</string>
   <string name="header_create_smart_list">ایجاد لیست هوشمند</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">ردیابی</string>
   <string name="header_settings_translations">ترجمه‌ها</string>
   <string name="header_skipped_items">%s مورد نادیده گرفته شده</string>
+  <string name="header_smart_list_compare_current">لیست شما</string>
+  <string name="header_smart_list_compare_proposed">به عنوان لیست هوشمند</string>
   <string name="header_stats_contributions">مشارکت‌ها</string>
   <string name="header_stats_graph_peak">ساعات اوج</string>
   <string name="header_stats_graph_screen_time_daily">تفکیک روزانه</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">تغییر به کارت اعتباری</string>
   <string name="header_vip_streak">پیوستگی VIP</string>
   <string name="header_writer">نویسنده</string>
+  <string name="header_year_in_review_banner">مرور سال %d شما اینجاست!</string>
   <string name="heading_blocked_users">کاربران مسدود شده</string>
   <string name="heading_branding_alternative_logos">لوگوهای جایگزین</string>
   <string name="heading_branding_dark_background">پس‌زمینه تاریک</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">خیلی کوتاه</string>
   <string name="label_season_short">فصل %s</string>
+  <string name="label_smart_list_compare_view">انتخاب کنید کدام نسخه نمایش داده شود</string>
   <string name="label_stats_active_days">روزهای فعال</string>
   <string name="label_stats_average">میانگین</string>
   <string name="label_stats_avg_per_day">میانگین روزانه</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s و بیشتر</string>
   <string name="list_summary_range_labeled_up_to">%1$s تا %2$s</string>
   <string name="list_summary_range_up_to">تا %s</string>
+  <string name="list_summary_released_within_days">منتشر شده در %s روز گذشته</string>
+  <string name="list_summary_votes_between">%1$s تا %2$s رأی %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ رأی %2$s</string>
   <string name="list_title_activity">فعالیت</string>
   <string name="list_title_actors">بازیگران</string>
   <string name="list_title_all_titles">همه عناوین</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">ردیابی خودکار</string>
   <string name="page_title_branding">برندینگ</string>
   <string name="page_title_calendar">تقویم</string>
+  <string name="page_title_convert_smart_list">تبدیل به لیست هوشمند</string>
   <string name="page_title_create_list">ایجاد لیست</string>
   <string name="page_title_create_smart_list">ایجاد لیست هوشمند</string>
   <string name="page_title_discover">کشف کنید</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">امتیازات</string>
   <string name="text_clear_source_watchlist">لیست تماشا</string>
   <string name="text_clear_watchlist">پاک کردن لیست تماشا</string>
+  <string name="text_comment_translation_download_ai_metered">برای ترجمه این نظر، یک بار دانلود مدل هوش مصنوعی داخلی دستگاه، که ممکن است حجم زیادی داشته باشد، لازم است. شما از داده تلفن همراه استفاده می‌کنید، بنابراین ممکن است از سهمیه داده شما مصرف شود.</string>
+  <string name="text_comment_translation_download_metered">برای ترجمه این نظر، یک بار دانلود زبان لازم است. شما از داده تلفن همراه استفاده می‌کنید، بنابراین ممکن است از سهمیه داده شما مصرف شود.</string>
+  <string name="text_comment_translation_downloading">در حال دانلود زبان…</string>
+  <string name="text_comment_translation_downloading_ai">در حال دانلود Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">در حال دانلود Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">می‌توانید هر زمان که آماده بودید به %s متصل شوید.</string>
   <string name="text_connection_status_cancelled_title">اتصال لغو شد</string>
   <string name="text_connection_status_connected_message">ما در حال همگام‌سازی سابقه تماشا و امتیازات شما هستیم.</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">کهنه‌کار</string>
   <string name="text_watch_until_here_episode_count">%d اپیزود</string>
   <string name="text_watch_until_here_preview_title">مهر زمانی تماشا شده</string>
+  <string name="text_year_in_review_banner_tagline">دوازده شخصیت. یکی از آن‌ها شمایید.</string>
   <string name="text_younify_status_broken">خراب</string>
   <string name="text_younify_status_linked">پیوند داده شده</string>
   <string name="text_younify_status_unlinked">پیوند داده نشده</string>

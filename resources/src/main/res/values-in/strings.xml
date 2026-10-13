@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Hapus sekarang</string>
   <string name="button_text_comment_likes">%d suka</string>
   <string name="button_text_comment_replies">%d balasan</string>
+  <string name="button_text_comment_translated">Diterjemahkan</string>
   <string name="button_text_connect">Hubungkan</string>
   <string name="button_text_continue">Lanjutkan</string>
   <string name="button_text_convert">Konversi</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Sertifikasi</string>
   <string name="header_clear_data">Hapus Data</string>
   <string name="header_comment_reactions">Reaksi ulasan</string>
+  <string name="header_comment_translation_download">Unduh bahasa?</string>
+  <string name="header_comment_translation_download_ai">Unduh model Gemini?</string>
   <string name="header_community_sentiment">Sentimen</string>
   <string name="header_country">Negara</string>
   <string name="header_create_smart_list">Buat Daftar Cerdas</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Pelacakan</string>
   <string name="header_settings_translations">Terjemahan</string>
   <string name="header_skipped_items">%s Item Dilewati</string>
+  <string name="header_smart_list_compare_current">Daftar Anda</string>
+  <string name="header_smart_list_compare_proposed">Sebagai daftar cerdas</string>
   <string name="header_stats_contributions">Kontribusi</string>
   <string name="header_stats_graph_peak">Jam Puncak</string>
   <string name="header_stats_graph_screen_time_daily">Rincian Harian</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Beralih ke kartu kredit</string>
   <string name="header_vip_streak">Streak VIP</string>
   <string name="header_writer">Penulis</string>
+  <string name="header_year_in_review_banner">Kilas Balik Tahunan %d Anda sudah tiba!</string>
   <string name="heading_blocked_users">Pengguna yang Diblokir</string>
   <string name="heading_branding_alternative_logos">Logo Alternatif</string>
   <string name="heading_branding_dark_background">Latar Belakang Gelap</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Terlalu pendek</string>
   <string name="label_season_short">M%s</string>
+  <string name="label_smart_list_compare_view">Pilih versi yang akan ditampilkan</string>
   <string name="label_stats_active_days">Hari Aktif</string>
   <string name="label_stats_average">Rata-rata</string>
   <string name="label_stats_avg_per_day">Rata-rata Harian</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s dan ke atas</string>
   <string name="list_summary_range_labeled_up_to">%1$s hingga %2$s</string>
   <string name="list_summary_range_up_to">Hingga %s</string>
+  <string name="list_summary_released_within_days">Dirilis dalam %s hari terakhir</string>
+  <string name="list_summary_votes_between">%1$s hingga %2$s suara %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ suara %2$s</string>
   <string name="list_title_activity">Aktivitas</string>
   <string name="list_title_actors">Aktor</string>
   <string name="list_title_all_titles">Semua judul</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">Pelacakan Otomatis</string>
   <string name="page_title_branding">Branding</string>
   <string name="page_title_calendar">Kalender</string>
+  <string name="page_title_convert_smart_list">Ubah menjadi daftar cerdas</string>
   <string name="page_title_create_list">Buat Daftar</string>
   <string name="page_title_create_smart_list">Buat Daftar Cerdas</string>
   <string name="page_title_discover">Temukan</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">Peringkat</string>
   <string name="text_clear_source_watchlist">Daftar Tontonan</string>
   <string name="text_clear_watchlist">Hapus daftar tontonan</string>
+  <string name="text_comment_translation_download_ai_metered">Menerjemahkan komentar ini memerlukan unduhan satu kali model AI di perangkat, yang bisa berukuran besar. Anda menggunakan data seluler, jadi ini mungkin menggunakan kuota data Anda.</string>
+  <string name="text_comment_translation_download_metered">Menerjemahkan komentar ini memerlukan unduhan bahasa satu kali. Anda menggunakan data seluler, jadi ini mungkin menggunakan kuota data Anda.</string>
+  <string name="text_comment_translation_downloading">Mengunduh bahasa…</string>
+  <string name="text_comment_translation_downloading_ai">Mengunduh Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Mengunduh Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Anda dapat menghubungkan %s kapan saja Anda siap.</string>
   <string name="text_connection_status_cancelled_title">Koneksi dibatalkan</string>
   <string name="text_connection_status_connected_message">Kami sedang menyinkronkan riwayat tontonan dan rating Anda sekarang.</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d episode</string>
   <string name="text_watch_until_here_preview_title">Waktu Tonton</string>
+  <string name="text_year_in_review_banner_tagline">Dua belas persona. Salah satunya adalah Anda.</string>
   <string name="text_younify_status_broken">Rusak</string>
   <string name="text_younify_status_linked">Tertaut</string>
   <string name="text_younify_status_unlinked">Tidak tertaut</string>

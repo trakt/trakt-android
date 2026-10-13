@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Törlés most</string>
   <string name="button_text_comment_likes">%d kedvelés</string>
   <string name="button_text_comment_replies">%d válasz</string>
+  <string name="button_text_comment_translated">Lefordítva</string>
   <string name="button_text_connect">Csatlakozás</string>
   <string name="button_text_continue">Folytatás</string>
   <string name="button_text_convert">Átalakítás</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Besorolás</string>
   <string name="header_clear_data">Adatok törlése</string>
   <string name="header_comment_reactions">Reakciók az értékelésre</string>
+  <string name="header_comment_translation_download">Nyelv letöltése?</string>
+  <string name="header_comment_translation_download_ai">Gemini modell letöltése?</string>
   <string name="header_community_sentiment">Hangulat</string>
   <string name="header_country">Ország</string>
   <string name="header_create_smart_list">Okos lista létrehozása</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Nyomon követés</string>
   <string name="header_settings_translations">Fordítások</string>
   <string name="header_skipped_items">%s kihagyott elem</string>
+  <string name="header_smart_list_compare_current">Saját lista</string>
+  <string name="header_smart_list_compare_proposed">Okos listaként</string>
   <string name="header_stats_contributions">Hozzájárulások</string>
   <string name="header_stats_graph_peak">Csúcsidő</string>
   <string name="header_stats_graph_screen_time_daily">Napi bontás</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Váltás hitelkártyára</string>
   <string name="header_vip_streak">VIP sorozat</string>
   <string name="header_writer">Író</string>
+  <string name="header_year_in_review_banner">Itt van a(z) %d évértékelőd!</string>
   <string name="heading_blocked_users">Blokkolt felhasználók</string>
   <string name="heading_branding_alternative_logos">Alternatív logók</string>
   <string name="heading_branding_dark_background">Sötét háttér</string>
@@ -1046,6 +1052,9 @@
   <string name="input_prompt_username">Mi legyen a felhasználóneved?</string>
   <string name="label_add_from_lists_source">Forráslista</string>
   <string name="label_date_picker_time">Idő</string>
+  <string name="label_delete_account_stat_hours">Nézett óra</string>
+  <string name="label_delete_account_stat_plays">Naplózott lejátszások</string>
+  <string name="label_delete_account_stat_years">Évek</string>
   <string name="label_drag_image_to_adjust">Húzd a képet az igazításhot</string>
   <string name="label_favorites">Kedvencek</string>
   <string name="label_genres_drawer_all">Összes műfaj</string>
@@ -1107,6 +1116,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Túl rövid</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Válassza ki a megjelenítendő verziót</string>
   <string name="label_stats_active_days">Aktív nap</string>
   <string name="label_stats_average">Átl.</string>
   <string name="label_stats_avg_per_day">Napi átlag</string>
@@ -1210,6 +1220,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s és felette</string>
   <string name="list_summary_range_labeled_up_to">%1$s akár %2$s-ig</string>
   <string name="list_summary_range_up_to">Akár %s-ig</string>
+  <string name="list_summary_released_within_days">Az elmúlt %s napban megjelent</string>
+  <string name="list_summary_votes_between">%1$s-%2$s %3$s szavazat</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s szavazat</string>
   <string name="list_title_activity">Tevékenység</string>
   <string name="list_title_actors">Színészek</string>
   <string name="list_title_all_titles">Minden cím</string>
@@ -1353,6 +1366,7 @@
   <string name="page_title_automatic_tracking">Automatikus követés</string>
   <string name="page_title_branding">Márka</string>
   <string name="page_title_calendar">Naptár</string>
+  <string name="page_title_convert_smart_list">Okoslistává alakítás</string>
   <string name="page_title_create_list">Lista létrehozása</string>
   <string name="page_title_create_smart_list">Okos lista létrehozása</string>
   <string name="page_title_discover">Felfedezés</string>
@@ -1587,6 +1601,11 @@
   <string name="text_clear_source_ratings">Értékelések</string>
   <string name="text_clear_source_watchlist">Megnézendők</string>
   <string name="text_clear_watchlist">Megnézendők listájának törlése</string>
+  <string name="text_comment_translation_download_ai_metered">A hozzászólás fordításához egyszeri alkalommal le kell tölteni az eszközön futó AI modellt, ami nagy méretű lehet. Mobildaton van, így ez felhasználhatja az adatforgalmát.</string>
+  <string name="text_comment_translation_download_metered">A hozzászólás fordításához egyszeri nyelvi letöltés szükséges. Mobildaton van, így ez felhasználhatja az adatforgalmát.</string>
+  <string name="text_comment_translation_downloading">Nyelv letöltése…</string>
+  <string name="text_comment_translation_downloading_ai">Gemini letöltése…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Gemini letöltése… %d%</string>
   <string name="text_connection_status_cancelled_message">Bármikor csatlakozhat a(z) %s szolgáltatáshoz, amikor készen áll.</string>
   <string name="text_connection_status_cancelled_title">Kapcsolat megszakítva</string>
   <string name="text_connection_status_connected_message">Most szinkronizáljuk megtekintett előzményeit és értékeléseit.</string>
@@ -2070,6 +2089,7 @@
   <string name="text_vip_veteran_title_veteran">Veterán</string>
   <string name="text_watch_until_here_episode_count">%d epizód</string>
   <string name="text_watch_until_here_preview_title">Megnézés időpontjai</string>
+  <string name="text_year_in_review_banner_tagline">Tizenkét személyiség. Egyikük te vagy.</string>
   <string name="text_younify_status_broken">Hibás</string>
   <string name="text_younify_status_linked">Összekapcsolva</string>
   <string name="text_younify_status_unlinked">Nincs összekapcsolva</string>

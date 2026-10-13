@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Şimdi temizle</string>
   <string name="button_text_comment_likes">%d beğeni</string>
   <string name="button_text_comment_replies">%d yanıt</string>
+  <string name="button_text_comment_translated">Çevrildi</string>
   <string name="button_text_connect">Bağlan</string>
   <string name="button_text_continue">Devam Et</string>
   <string name="button_text_convert">Dönüştür</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Sertifika</string>
   <string name="header_clear_data">Verileri Temizle</string>
   <string name="header_comment_reactions">Yorum tepkileri</string>
+  <string name="header_comment_translation_download">Dil indirilsin mi?</string>
+  <string name="header_comment_translation_download_ai">Gemini modeli indirilsin mi?</string>
   <string name="header_community_sentiment">Duygu</string>
   <string name="header_country">Ülke</string>
   <string name="header_create_smart_list">Akıllı Liste Oluştur</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Takip</string>
   <string name="header_settings_translations">Çeviriler</string>
   <string name="header_skipped_items">%s Atlanan Öğe</string>
+  <string name="header_smart_list_compare_current">Listeniz</string>
+  <string name="header_smart_list_compare_proposed">Akıllı liste olarak</string>
   <string name="header_stats_contributions">Katkılar</string>
   <string name="header_stats_graph_peak">Yoğun Saatler</string>
   <string name="header_stats_graph_screen_time_daily">Günlük Döküm</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Kredi kartına geç</string>
   <string name="header_vip_streak">VIP serisi</string>
   <string name="header_writer">Yazar</string>
+  <string name="header_year_in_review_banner">%d Yılı Özetin hazır!</string>
   <string name="heading_blocked_users">Engellenen Kullanıcılar</string>
   <string name="heading_branding_alternative_logos">Alternatif Logolar</string>
   <string name="heading_branding_dark_background">Koyu Arka Plan</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Çok kısa</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Hangi sürümü göstereceğinizi seçin</string>
   <string name="label_stats_active_days">Aktif Günler</string>
   <string name="label_stats_average">Ort.</string>
   <string name="label_stats_avg_per_day">Günlük Ortalama</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s ve üzeri</string>
   <string name="list_summary_range_labeled_up_to">%1$s %2$s\'a kadar</string>
   <string name="list_summary_range_up_to">%s\'a kadar</string>
+  <string name="list_summary_released_within_days">Son %s gün içinde yayınlandı</string>
+  <string name="list_summary_votes_between">%1$s ila %2$s %3$s oyu</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s oyu</string>
   <string name="list_title_activity">Etkinlik</string>
   <string name="list_title_actors">Oyuncular</string>
   <string name="list_title_all_titles">Tüm Başlıklar</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">Otomatik Takip</string>
   <string name="page_title_branding">Markalama</string>
   <string name="page_title_calendar">Takvim</string>
+  <string name="page_title_convert_smart_list">Akıllı listeye dönüştür</string>
   <string name="page_title_create_list">Liste Oluştur</string>
   <string name="page_title_create_smart_list">Akıllı Liste Oluştur</string>
   <string name="page_title_discover">Keşfet</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">Derecelendirmeler</string>
   <string name="text_clear_source_watchlist">İzleme Listesi</string>
   <string name="text_clear_watchlist">İzleme listesini temizle</string>
+  <string name="text_comment_translation_download_ai_metered">Bu yorumu çevirmek için cihaz içi yapay zeka modelinin tek seferlik indirilmesi gerekiyor. Bu model büyük olabilir. Mobil veri kullanıyorsunuz, bu da veri limitinizi tüketebilir.</string>
+  <string name="text_comment_translation_download_metered">Bu yorumu çevirmek için tek seferlik bir dil indirmesi gerekiyor. Mobil veri kullanıyorsunuz, bu da veri limitinizi tüketebilir.</string>
+  <string name="text_comment_translation_downloading">Dil indiriliyor…</string>
+  <string name="text_comment_translation_downloading_ai">Gemini indiriliyor…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Gemini indiriliyor… % %d</string>
   <string name="text_connection_status_cancelled_message">Hazır olduğunuzda %s ile bağlantı kurabilirsiniz.</string>
   <string name="text_connection_status_cancelled_title">Bağlantı iptal edildi</string>
   <string name="text_connection_status_connected_message">İzleme geçmişinizi ve puanlarınızı şimdi senkronize ediyoruz.</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">Kıdemli</string>
   <string name="text_watch_until_here_episode_count">%d bölüm</string>
   <string name="text_watch_until_here_preview_title">İzleme zaman damgaları</string>
+  <string name="text_year_in_review_banner_tagline">On iki kişiden biri sizsiniz.</string>
   <string name="text_younify_status_broken">Bozuk</string>
   <string name="text_younify_status_linked">Bağlı</string>
   <string name="text_younify_status_unlinked">Bağlı değil</string>

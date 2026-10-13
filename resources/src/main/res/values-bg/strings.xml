@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Изчисти сега</string>
   <string name="button_text_comment_likes">%d харесвания</string>
   <string name="button_text_comment_replies">%d отговора</string>
+  <string name="button_text_comment_translated">Преведено</string>
   <string name="button_text_connect">Свързване</string>
   <string name="button_text_continue">Продължи</string>
   <string name="button_text_convert">Конвертирай</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Сертификация</string>
   <string name="header_clear_data">Изчисти данните</string>
   <string name="header_comment_reactions">Реакции към рецензия</string>
+  <string name="header_comment_translation_download">Изтегляне на език?</string>
+  <string name="header_comment_translation_download_ai">Изтегляне на модела Gemini?</string>
   <string name="header_community_sentiment">Настроение</string>
   <string name="header_country">Държава</string>
   <string name="header_create_smart_list">Създаване на интелигентен списък</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Проследяване</string>
   <string name="header_settings_translations">Преводи</string>
   <string name="header_skipped_items">%s пропуснати елемента</string>
+  <string name="header_smart_list_compare_current">Вашият списък</string>
+  <string name="header_smart_list_compare_proposed">Като интелигентен списък</string>
   <string name="header_stats_contributions">Приноси</string>
   <string name="header_stats_graph_peak">Пикови часове</string>
   <string name="header_stats_graph_screen_time_daily">Дневна разбивка</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Премини към кредитна карта</string>
   <string name="header_vip_streak">VIP поредица</string>
   <string name="header_writer">Сценарист</string>
+  <string name="header_year_in_review_banner">Вашият %d годишен преглед е тук!</string>
   <string name="heading_blocked_users">Блокирани потребители</string>
   <string name="heading_branding_alternative_logos">Алтернативни лога</string>
   <string name="heading_branding_dark_background">Тъмен фон</string>
@@ -1046,6 +1052,9 @@
   <string name="input_prompt_username">Какво да бъде потребителското ти име?</string>
   <string name="label_add_from_lists_source">Изходен списък</string>
   <string name="label_date_picker_time">Час</string>
+  <string name="label_delete_account_stat_hours">Гледани часове</string>
+  <string name="label_delete_account_stat_plays">Записани гледания</string>
+  <string name="label_delete_account_stat_years">Години заедно</string>
   <string name="label_drag_image_to_adjust">Плъзни изображението за настройка</string>
   <string name="label_favorites">Любими</string>
   <string name="label_genres_drawer_all">Всички жанрове</string>
@@ -1107,6 +1116,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Твърде кратко</string>
   <string name="label_season_short">С%s</string>
+  <string name="label_smart_list_compare_view">Изберете коя версия да покажете</string>
   <string name="label_stats_active_days">Активни дни</string>
   <string name="label_stats_average">Средно</string>
   <string name="label_stats_avg_per_day">Средна дневна стойност</string>
@@ -1210,6 +1220,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s и нагоре</string>
   <string name="list_summary_range_labeled_up_to">%1$s до %2$s</string>
   <string name="list_summary_range_up_to">До %s</string>
+  <string name="list_summary_released_within_days">Издадени през последните %s дни</string>
+  <string name="list_summary_votes_between">%1$s до %2$s гласа от %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ гласа от %2$s</string>
   <string name="list_title_activity">Активност</string>
   <string name="list_title_actors">Актьори</string>
   <string name="list_title_all_titles">Всички заглавия</string>
@@ -1353,6 +1366,7 @@
   <string name="page_title_automatic_tracking">Автоматично проследяване</string>
   <string name="page_title_branding">Брандинг</string>
   <string name="page_title_calendar">Календар</string>
+  <string name="page_title_convert_smart_list">Превърни в интелигентен списък</string>
   <string name="page_title_create_list">Създай списък</string>
   <string name="page_title_create_smart_list">Създаване на интелигентен списък</string>
   <string name="page_title_discover">Открий</string>
@@ -1587,6 +1601,11 @@
   <string name="text_clear_source_ratings">Оценки</string>
   <string name="text_clear_source_watchlist">Списък за гледане</string>
   <string name="text_clear_watchlist">Изчисти списъка за гледане</string>
+  <string name="text_comment_translation_download_ai_metered">Превеждането на този коментар изисква еднократно изтегляне на локалния AI модел, който може да е голям. Използвате мобилни данни, така че това може да изразходва част от вашия абонамент.</string>
+  <string name="text_comment_translation_download_metered">Превеждането на този коментар изисква еднократно изтегляне на език. Използвате мобилни данни, така че това може да изразходва част от вашия абонамент.</string>
+  <string name="text_comment_translation_downloading">Изтегляне на език…</string>
+  <string name="text_comment_translation_downloading_ai">Изтегляне на Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Изтегляне на Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Можете да се свържете с %s, когато сте готови.</string>
   <string name="text_connection_status_cancelled_title">Връзката е отменена</string>
   <string name="text_connection_status_connected_message">В момента синхронизираме историята на гледанията ви и оценките ви.</string>
@@ -2070,6 +2089,7 @@
   <string name="text_vip_veteran_title_veteran">Ветеран</string>
   <string name="text_watch_until_here_episode_count">%d епизода</string>
   <string name="text_watch_until_here_preview_title">Времеви отметки на гледани</string>
+  <string name="text_year_in_review_banner_tagline">Дванадесет персони. Една от тях сте вие.</string>
   <string name="text_younify_status_broken">Счупено</string>
   <string name="text_younify_status_linked">Свързано</string>
   <string name="text_younify_status_unlinked">Не е свързано</string>

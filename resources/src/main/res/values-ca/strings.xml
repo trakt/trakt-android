@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Esborra ara</string>
   <string name="button_text_comment_likes">%d m\'agrada</string>
   <string name="button_text_comment_replies">%d respostes</string>
+  <string name="button_text_comment_translated">Traduït</string>
   <string name="button_text_connect">Connecta</string>
   <string name="button_text_continue">Continua</string>
   <string name="button_text_convert">Converteix</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Certificació</string>
   <string name="header_clear_data">Esborra dades</string>
   <string name="header_comment_reactions">Reaccions a la ressenya</string>
+  <string name="header_comment_translation_download">Baixar idioma?</string>
+  <string name="header_comment_translation_download_ai">Baixar model Gemini?</string>
   <string name="header_community_sentiment">Sentiment</string>
   <string name="header_country">País</string>
   <string name="header_create_smart_list">Crea llista intel·ligent</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Seguiment</string>
   <string name="header_settings_translations">Traduccions</string>
   <string name="header_skipped_items">%s elements omesos</string>
+  <string name="header_smart_list_compare_current">La teva llista</string>
+  <string name="header_smart_list_compare_proposed">Com a llista intel·ligent</string>
   <string name="header_stats_contributions">Contribucions</string>
   <string name="header_stats_graph_peak">Hores punta</string>
   <string name="header_stats_graph_screen_time_daily">Desglossament diari</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Canviar a targeta de crèdit</string>
   <string name="header_vip_streak">Ratxa VIP</string>
   <string name="header_writer">Guionista</string>
+  <string name="header_year_in_review_banner">El teu Resum de l\'any %d ja és aquí!</string>
   <string name="heading_blocked_users">Usuaris bloquejats</string>
   <string name="heading_branding_alternative_logos">Logotips alternatius</string>
   <string name="heading_branding_dark_background">Fons fosc</string>
@@ -1046,6 +1052,9 @@
   <string name="input_prompt_username">Quin hauria de ser el teu nom d\'usuari?</string>
   <string name="label_add_from_lists_source">Llista d\'origen</string>
   <string name="label_date_picker_time">Hora</string>
+  <string name="label_delete_account_stat_hours">Hores vistes</string>
+  <string name="label_delete_account_stat_plays">Reproduccions registrades</string>
+  <string name="label_delete_account_stat_years">Anys junts</string>
   <string name="label_drag_image_to_adjust">Arrossega la imatge per ajustar</string>
   <string name="label_favorites">Preferits</string>
   <string name="label_genres_drawer_all">Tots els gèneres</string>
@@ -1107,6 +1116,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Massa curt</string>
   <string name="label_season_short">T%s</string>
+  <string name="label_smart_list_compare_view">Tria quina versió mostrar</string>
   <string name="label_stats_active_days">Dies actius</string>
   <string name="label_stats_average">Mitj</string>
   <string name="label_stats_avg_per_day">Mitjana diària</string>
@@ -1210,6 +1220,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s i més</string>
   <string name="list_summary_range_labeled_up_to">%1$s fins a %2$s</string>
   <string name="list_summary_range_up_to">Fins a %s</string>
+  <string name="list_summary_released_within_days">Publicat els darrers %s dies</string>
+  <string name="list_summary_votes_between">%1$s a %2$s vots de %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ vots de %2$s</string>
   <string name="list_title_activity">Activitat</string>
   <string name="list_title_actors">Actors</string>
   <string name="list_title_all_titles">Tots els títols</string>
@@ -1353,6 +1366,7 @@
   <string name="page_title_automatic_tracking">Seguiment automàtic</string>
   <string name="page_title_branding">Branding</string>
   <string name="page_title_calendar">Calendari</string>
+  <string name="page_title_convert_smart_list">Converteix en una llista intel·ligent</string>
   <string name="page_title_create_list">Crea llista</string>
   <string name="page_title_create_smart_list">Crea llista intel·ligent</string>
   <string name="page_title_discover">Descobreix</string>
@@ -1587,6 +1601,11 @@
   <string name="text_clear_source_ratings">Valoracions</string>
   <string name="text_clear_source_watchlist">Llista de seguiment</string>
   <string name="text_clear_watchlist">Esborra la llista de seguiment</string>
+  <string name="text_comment_translation_download_ai_metered">Per traduir aquest comentari cal fer una baixada única del model d\'IA al dispositiu, que pot ser gran. Esteu utilitzant dades mòbils, la qual cosa pot consumir la vostra quota de dades.</string>
+  <string name="text_comment_translation_download_metered">Per traduir aquest comentari cal fer una baixada única de l\'idioma. Esteu utilitzant dades mòbils, la qual cosa pot consumir la vostra quota de dades.</string>
+  <string name="text_comment_translation_downloading">S\'està baixant l\'idioma…</string>
+  <string name="text_comment_translation_downloading_ai">S\'està baixant Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">S\'està baixant Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Pots connectar %s quan estiguis preparat.</string>
   <string name="text_connection_status_cancelled_title">Connexió cancel·lada</string>
   <string name="text_connection_status_connected_message">Estem sincronitzant el teu historial vist i les puntuacions ara.</string>
@@ -2070,6 +2089,7 @@
   <string name="text_vip_veteran_title_veteran">Veterà</string>
   <string name="text_watch_until_here_episode_count">%d episodis</string>
   <string name="text_watch_until_here_preview_title">Marques de temps visualitzades</string>
+  <string name="text_year_in_review_banner_tagline">Dotze personalitats. Una d\'elles ets tu.</string>
   <string name="text_younify_status_broken">Trencat</string>
   <string name="text_younify_status_linked">Vinculat</string>
   <string name="text_younify_status_unlinked">No vinculat</string>

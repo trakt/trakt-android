@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Очистити зараз</string>
   <string name="button_text_comment_likes">%d вподобань</string>
   <string name="button_text_comment_replies">%d відповідей</string>
+  <string name="button_text_comment_translated">Перекладено</string>
   <string name="button_text_connect">Підключити</string>
   <string name="button_text_continue">Продовжити</string>
   <string name="button_text_convert">Перетворити</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Сертифікація</string>
   <string name="header_clear_data">Очистити дані</string>
   <string name="header_comment_reactions">Реакції на відгук</string>
+  <string name="header_comment_translation_download">Завантажити мову?</string>
+  <string name="header_comment_translation_download_ai">Завантажити модель Gemini?</string>
   <string name="header_community_sentiment">Настрій</string>
   <string name="header_country">Країна</string>
   <string name="header_create_smart_list">Створити розумний список</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Відстеження</string>
   <string name="header_settings_translations">Переклади</string>
   <string name="header_skipped_items">%s пропущених елементів</string>
+  <string name="header_smart_list_compare_current">Ваш список</string>
+  <string name="header_smart_list_compare_proposed">Як розумний список</string>
   <string name="header_stats_contributions">Внески</string>
   <string name="header_stats_graph_peak">Години піку</string>
   <string name="header_stats_graph_screen_time_daily">Щоденна розбивка</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Перейти на кредитну картку</string>
   <string name="header_vip_streak">Серія VIP</string>
   <string name="header_writer">Сценарист</string>
+  <string name="header_year_in_review_banner">Ваші підсумки %d року вже тут!</string>
   <string name="heading_blocked_users">Заблоковані користувачі</string>
   <string name="heading_branding_alternative_logos">Альтернативні логотипи</string>
   <string name="heading_branding_dark_background">Темний фон</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Занадто короткий</string>
   <string name="label_season_short">С%s</string>
+  <string name="label_smart_list_compare_view">Виберіть, яку версію показати</string>
   <string name="label_stats_active_days">Активні дні</string>
   <string name="label_stats_average">Сер.</string>
   <string name="label_stats_avg_per_day">Середньодобове</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s і вище</string>
   <string name="list_summary_range_labeled_up_to">%1$s до %2$s</string>
   <string name="list_summary_range_up_to">До %s</string>
+  <string name="list_summary_released_within_days">Випущено за останні %s днів</string>
+  <string name="list_summary_votes_between">від %1$s до %2$s голосів %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ голосів %2$s</string>
   <string name="list_title_activity">Активність</string>
   <string name="list_title_actors">Актори</string>
   <string name="list_title_all_titles">Всі назви</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">Автоматичне відстеження</string>
   <string name="page_title_branding">Брендинг</string>
   <string name="page_title_calendar">Календар</string>
+  <string name="page_title_convert_smart_list">Перетворити на розумний список</string>
   <string name="page_title_create_list">Створити список</string>
   <string name="page_title_create_smart_list">Створити розумний список</string>
   <string name="page_title_discover">Відкривайте</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">Рейтинги</string>
   <string name="text_clear_source_watchlist">Список перегляду</string>
   <string name="text_clear_watchlist">Очистити список перегляду</string>
+  <string name="text_comment_translation_download_ai_metered">Для перекладу цього коментаря потрібне одноразове завантаження локальної моделі ШІ, яка може бути великою. Ви використовуєте мобільні дані, тому це може спожити ваш трафік.</string>
+  <string name="text_comment_translation_download_metered">Для перекладу цього коментаря потрібне одноразове завантаження мови. Ви використовуєте мобільні дані, тому це може спожити ваш трафік.</string>
+  <string name="text_comment_translation_downloading">Завантаження мови…</string>
+  <string name="text_comment_translation_downloading_ai">Завантаження Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Завантаження Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Ви можете підключити %s, коли будете готові.</string>
   <string name="text_connection_status_cancelled_title">З\'єднання скасовано</string>
   <string name="text_connection_status_connected_message">Зараз ми синхронізуємо вашу історію переглядів та оцінки.</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">Ветеран</string>
   <string name="text_watch_until_here_episode_count">%d епізодів</string>
   <string name="text_watch_until_here_preview_title">Мітки часу перегляду</string>
+  <string name="text_year_in_review_banner_tagline">Дванадцять образів. Один з них – це ви.</string>
   <string name="text_younify_status_broken">Пошкоджено</string>
   <string name="text_younify_status_linked">Пов\'язано</string>
   <string name="text_younify_status_unlinked">Не пов\'язано</string>

@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Clear now</string>
   <string name="button_text_comment_likes">%d likes</string>
   <string name="button_text_comment_replies">%d replies</string>
+  <string name="button_text_comment_translated">Translated</string>
   <string name="button_text_connect">Connect</string>
   <string name="button_text_continue">Continue</string>
   <string name="button_text_convert">Convert</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Certification</string>
   <string name="header_clear_data">Clear Data</string>
   <string name="header_comment_reactions">Review reactions</string>
+  <string name="header_comment_translation_download">Download language?</string>
+  <string name="header_comment_translation_download_ai">Download Gemini model?</string>
   <string name="header_community_sentiment">Sentiment</string>
   <string name="header_country">Country</string>
   <string name="header_create_smart_list">Create Smart List</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Tracking</string>
   <string name="header_settings_translations">Translations</string>
   <string name="header_skipped_items">%s Skipped Items</string>
+  <string name="header_smart_list_compare_current">Your list</string>
+  <string name="header_smart_list_compare_proposed">As a smart list</string>
   <string name="header_stats_contributions">Contributions</string>
   <string name="header_stats_graph_peak">Peak Hours</string>
   <string name="header_stats_graph_screen_time_daily">Daily Breakdown</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Switch to credit card</string>
   <string name="header_vip_streak">VIP streak</string>
   <string name="header_writer">Writer</string>
+  <string name="header_year_in_review_banner">Your %d Year in Review is here!</string>
   <string name="heading_blocked_users">Blocked Users</string>
   <string name="heading_branding_alternative_logos">Alternative Logos</string>
   <string name="heading_branding_dark_background">Dark Background</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Too short</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Choose which version to show</string>
   <string name="label_stats_active_days">Active Days</string>
   <string name="label_stats_average">Avg</string>
   <string name="label_stats_avg_per_day">Daily Average</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s and up</string>
   <string name="list_summary_range_labeled_up_to">%1$s up to %2$s</string>
   <string name="list_summary_range_up_to">Up to %s</string>
+  <string name="list_summary_released_within_days">Released in the last %s days</string>
+  <string name="list_summary_votes_between">%1$s to %2$s %3$s votes</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s votes</string>
   <string name="list_title_activity">Activity</string>
   <string name="list_title_actors">Actors</string>
   <string name="list_title_all_titles">All titles</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">Automatic Tracking</string>
   <string name="page_title_branding">Branding</string>
   <string name="page_title_calendar">Calendar</string>
+  <string name="page_title_convert_smart_list">Turn into a smart list</string>
   <string name="page_title_create_list">Create List</string>
   <string name="page_title_create_smart_list">Create Smart List</string>
   <string name="page_title_discover">Discover</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">Ratings</string>
   <string name="text_clear_source_watchlist">Watchlist</string>
   <string name="text_clear_watchlist">Clear watchlist</string>
+  <string name="text_comment_translation_download_ai_metered">Translating this comment needs a one-off download of the on-device AI model, which can be large. You\'re on mobile data, so this might use up your data allowance.</string>
+  <string name="text_comment_translation_download_metered">Translating this comment needs a one-off language download. You\'re on mobile data, so this might use up your data allowance.</string>
+  <string name="text_comment_translation_downloading">Downloading language…</string>
+  <string name="text_comment_translation_downloading_ai">Downloading Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Downloading Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">You can connect %s whenever you\'re ready.</string>
   <string name="text_connection_status_cancelled_title">Connection cancelled</string>
   <string name="text_connection_status_connected_message">We\'re syncing your watched history and ratings now.</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d episodes</string>
   <string name="text_watch_until_here_preview_title">Watched timestamps</string>
+  <string name="text_year_in_review_banner_tagline">Twelve personas. One of them\'s you.</string>
   <string name="text_younify_status_broken">Broken</string>
   <string name="text_younify_status_linked">Linked</string>
   <string name="text_younify_status_unlinked">Not linked</string>

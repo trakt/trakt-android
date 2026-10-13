@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Rensa nu</string>
   <string name="button_text_comment_likes">%d gilla</string>
   <string name="button_text_comment_replies">%d svar</string>
+  <string name="button_text_comment_translated">Översatt</string>
   <string name="button_text_connect">Anslut</string>
   <string name="button_text_continue">Fortsätt</string>
   <string name="button_text_convert">Konvertera</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Åldersgräns</string>
   <string name="header_clear_data">Rensa data</string>
   <string name="header_comment_reactions">Recensionsreaktioner</string>
+  <string name="header_comment_translation_download">Ladda ner språk?</string>
+  <string name="header_comment_translation_download_ai">Ladda ner Gemini-modell?</string>
   <string name="header_community_sentiment">Känslor</string>
   <string name="header_country">Land</string>
   <string name="header_create_smart_list">Skapa smart lista</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Spårning</string>
   <string name="header_settings_translations">Översättningar</string>
   <string name="header_skipped_items">%s överhoppade objekt</string>
+  <string name="header_smart_list_compare_current">Din lista</string>
+  <string name="header_smart_list_compare_proposed">Som smart lista</string>
   <string name="header_stats_contributions">Bidrag</string>
   <string name="header_stats_graph_peak">Topptimmar</string>
   <string name="header_stats_graph_screen_time_daily">Daglig översikt</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Byt till kreditkort</string>
   <string name="header_vip_streak">VIP-svit</string>
   <string name="header_writer">Manusförfattare</string>
+  <string name="header_year_in_review_banner">Din %d årsöversikt är här!</string>
   <string name="heading_blocked_users">Blockerade användare</string>
   <string name="heading_branding_alternative_logos">Alternativa logotyper</string>
   <string name="heading_branding_dark_background">Mörk bakgrund</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">För kort</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Välj vilken version som ska visas</string>
   <string name="label_stats_active_days">Aktiva dagar</string>
   <string name="label_stats_average">Snitt</string>
   <string name="label_stats_avg_per_day">Dagligt genomsnitt</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s och uppåt</string>
   <string name="list_summary_range_labeled_up_to">%1$s upp till %2$s</string>
   <string name="list_summary_range_up_to">Upp till %s</string>
+  <string name="list_summary_released_within_days">Släpptes under de senaste %s dagarna</string>
+  <string name="list_summary_votes_between">%1$s till %2$s %3$s röster</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s röster</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skådespelare</string>
   <string name="list_title_all_titles">Alla titlar</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">Automatisk spårning</string>
   <string name="page_title_branding">Varumärke</string>
   <string name="page_title_calendar">Kalender</string>
+  <string name="page_title_convert_smart_list">Gör om till en smart lista</string>
   <string name="page_title_create_list">Skapa lista</string>
   <string name="page_title_create_smart_list">Skapa smart lista</string>
   <string name="page_title_discover">Upptäck</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">Betyg</string>
   <string name="text_clear_source_watchlist">Bevakningslista</string>
   <string name="text_clear_watchlist">Rensa bevakningslista</string>
+  <string name="text_comment_translation_download_ai_metered">Att översätta den här kommentaren kräver en engångsnedladdning av den lokala AI-modellen, som kan vara stor. Du använder mobildata, så detta kan förbruka din datamängd.</string>
+  <string name="text_comment_translation_download_metered">Att översätta den här kommentaren kräver en engångsnedladdning av språk. Du använder mobildata, så detta kan förbruka din datamängd.</string>
+  <string name="text_comment_translation_downloading">Laddar ner språk…</string>
+  <string name="text_comment_translation_downloading_ai">Laddar ner Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Laddar ner Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Du kan ansluta %s när du är redo.</string>
   <string name="text_connection_status_cancelled_title">Anslutning avbruten</string>
   <string name="text_connection_status_connected_message">Vi synkroniserar din visningshistorik och dina betyg nu.</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d avsnitt</string>
   <string name="text_watch_until_here_preview_title">Tittade tidsstämplar</string>
+  <string name="text_year_in_review_banner_tagline">Tolv personligheter. En av dem är du.</string>
   <string name="text_younify_status_broken">Trasig</string>
   <string name="text_younify_status_linked">Länkad</string>
   <string name="text_younify_status_unlinked">Ej länkad</string>

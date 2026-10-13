@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Tøm nå</string>
   <string name="button_text_comment_likes">%d likerklikk</string>
   <string name="button_text_comment_replies">%d svar</string>
+  <string name="button_text_comment_translated">Oversatt</string>
   <string name="button_text_connect">Koble til</string>
   <string name="button_text_continue">Fortsett</string>
   <string name="button_text_convert">Konverter</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Sertifisering</string>
   <string name="header_clear_data">Tøm data</string>
   <string name="header_comment_reactions">Anmeldelsesreaksjoner</string>
+  <string name="header_comment_translation_download">Last ned språk?</string>
+  <string name="header_comment_translation_download_ai">Last ned Gemini-modell?</string>
   <string name="header_community_sentiment">Følelser</string>
   <string name="header_country">Land</string>
   <string name="header_create_smart_list">Opprett smart liste</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Sporing</string>
   <string name="header_settings_translations">Oversettelser</string>
   <string name="header_skipped_items">%s elementer hoppet over</string>
+  <string name="header_smart_list_compare_current">Din liste</string>
+  <string name="header_smart_list_compare_proposed">Som smart liste</string>
   <string name="header_stats_contributions">Bidrag</string>
   <string name="header_stats_graph_peak">Topptimer</string>
   <string name="header_stats_graph_screen_time_daily">Daglig oversikt</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Bytt til kredittkort</string>
   <string name="header_vip_streak">VIP-rekke</string>
   <string name="header_writer">Forfatter</string>
+  <string name="header_year_in_review_banner">Ditt %d år i tilbakeblikk er her!</string>
   <string name="heading_blocked_users">Blokkerte brukere</string>
   <string name="heading_branding_alternative_logos">Alternative logoer</string>
   <string name="heading_branding_dark_background">Mørk bakgrunn</string>
@@ -1107,6 +1113,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">For kort</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Velg hvilken versjon som skal vises</string>
   <string name="label_stats_active_days">Aktive dager</string>
   <string name="label_stats_average">Snitt</string>
   <string name="label_stats_avg_per_day">Dagsgjennomsnitt</string>
@@ -1210,6 +1217,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s og oppover</string>
   <string name="list_summary_range_labeled_up_to">%1$s opp til %2$s</string>
   <string name="list_summary_range_up_to">Opp til %s</string>
+  <string name="list_summary_released_within_days">Utgitt de siste %s dagene</string>
+  <string name="list_summary_votes_between">%1$s til %2$s %3$s stemmer</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s stemmer</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skuespillere</string>
   <string name="list_title_all_titles">Alle titler</string>
@@ -1353,6 +1363,7 @@
   <string name="page_title_automatic_tracking">Automatisk sporing</string>
   <string name="page_title_branding">Merkevare</string>
   <string name="page_title_calendar">Kalender</string>
+  <string name="page_title_convert_smart_list">Gjør om til en smart liste</string>
   <string name="page_title_create_list">Opprett liste</string>
   <string name="page_title_create_smart_list">Opprett smart liste</string>
   <string name="page_title_discover">Oppdag</string>
@@ -1587,6 +1598,11 @@
   <string name="text_clear_source_ratings">Vurderinger</string>
   <string name="text_clear_source_watchlist">Ønskeliste</string>
   <string name="text_clear_watchlist">Tøm overvåkningsliste</string>
+  <string name="text_comment_translation_download_ai_metered">For å oversette denne kommentaren må AI-modellen på enheten lastes ned én gang, og den kan være stor. Du bruker mobildata, så dette kan bruke av datakvoten din.</string>
+  <string name="text_comment_translation_download_metered">For å oversette denne kommentaren må et språk lastes ned én gang. Du bruker mobildata, så dette kan bruke av datakvoten din.</string>
+  <string name="text_comment_translation_downloading">Laster ned språk…</string>
+  <string name="text_comment_translation_downloading_ai">Laster ned Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Laster ned Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Du kan koble til %s når du er klar.</string>
   <string name="text_connection_status_cancelled_title">Tilkobling avbrutt</string>
   <string name="text_connection_status_connected_message">Vi synkroniserer din sett historie og rangeringer nå.</string>
@@ -2070,6 +2086,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d episoder</string>
   <string name="text_watch_until_here_preview_title">Sett tidsstempler</string>
+  <string name="text_year_in_review_banner_tagline">Tolv personligheter. Én av dem er deg.</string>
   <string name="text_younify_status_broken">Ødelagt</string>
   <string name="text_younify_status_linked">Koblet</string>
   <string name="text_younify_status_unlinked">Ikke koblet</string>

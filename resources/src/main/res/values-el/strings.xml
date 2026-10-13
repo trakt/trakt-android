@@ -401,6 +401,7 @@
   <string name="button_text_clear_now">Εκκαθάριση τώρα</string>
   <string name="button_text_comment_likes">%d αρέσκειες</string>
   <string name="button_text_comment_replies">%d απαντήσεις</string>
+  <string name="button_text_comment_translated">Μεταφράστηκε</string>
   <string name="button_text_connect">Σύνδεση</string>
   <string name="button_text_continue">Συνέχεια</string>
   <string name="button_text_convert">Μετατροπή</string>
@@ -804,6 +805,8 @@
   <string name="header_certification">Πιστοποίηση</string>
   <string name="header_clear_data">Εκκαθάριση Δεδομένων</string>
   <string name="header_comment_reactions">Αντιδράσεις κριτικών</string>
+  <string name="header_comment_translation_download">Λήψη γλώσσας;</string>
+  <string name="header_comment_translation_download_ai">Λήψη μοντέλου Gemini;</string>
   <string name="header_community_sentiment">Συναίσθημα</string>
   <string name="header_country">Χώρα</string>
   <string name="header_create_smart_list">Δημιουργία έξυπνης λίστας</string>
@@ -906,6 +909,8 @@
   <string name="header_settings_tracking">Παρακολούθηση</string>
   <string name="header_settings_translations">Μεταφράσεις</string>
   <string name="header_skipped_items">%s Παραλειφθέντα στοιχεία</string>
+  <string name="header_smart_list_compare_current">Η λίστα σας</string>
+  <string name="header_smart_list_compare_proposed">Ως έξυπνη λίστα</string>
   <string name="header_stats_contributions">Συνεισφορές</string>
   <string name="header_stats_graph_peak">Ώρες Αιχμής</string>
   <string name="header_stats_graph_screen_time_daily">Καθημερινή Ανάλυση</string>
@@ -929,6 +934,7 @@
   <string name="header_vip_paypal_switch">Μετάβαση σε πιστωτική κάρτα</string>
   <string name="header_vip_streak">Σερί VIP</string>
   <string name="header_writer">Σεναριογράφος</string>
+  <string name="header_year_in_review_banner">Η Ετήσια Ανασκόπησή σας για το %d είναι εδώ!</string>
   <string name="heading_blocked_users">Αποκλεισμένοι Χρήστες</string>
   <string name="heading_branding_alternative_logos">Εναλλακτικά Λογότυπα</string>
   <string name="heading_branding_dark_background">Σκούρο Φόντο</string>
@@ -1046,6 +1052,9 @@
   <string name="input_prompt_username">Ποιο θα πρέπει να είναι το όνομα χρήστη σας;</string>
   <string name="label_add_from_lists_source">Λίστα πηγής</string>
   <string name="label_date_picker_time">Ώρα</string>
+  <string name="label_delete_account_stat_hours">Ώρες παρακολούθησης</string>
+  <string name="label_delete_account_stat_plays">Καταγεγραμμένες προβολές</string>
+  <string name="label_delete_account_stat_years">Χρόνια μαζί</string>
   <string name="label_drag_image_to_adjust">Σύρετε την εικόνα για προσαρμογή</string>
   <string name="label_favorites">Αγαπημένα</string>
   <string name="label_genres_drawer_all">Όλα τα Είδη</string>
@@ -1107,6 +1116,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Πολύ σύντομο</string>
   <string name="label_season_short">Σ%s</string>
+  <string name="label_smart_list_compare_view">Επιλέξτε ποια έκδοση θα εμφανιστεί</string>
   <string name="label_stats_active_days">Ενεργές Ημέρες</string>
   <string name="label_stats_average">Μέσος</string>
   <string name="label_stats_avg_per_day">Ημερήσιος Μέσος Όρος</string>
@@ -1210,6 +1220,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s και πάνω</string>
   <string name="list_summary_range_labeled_up_to">%1$s έως %2$s</string>
   <string name="list_summary_range_up_to">Έως %s</string>
+  <string name="list_summary_released_within_days">Κυκλοφόρησε τις τελευταίες %s ημέρες</string>
+  <string name="list_summary_votes_between">%1$s έως %2$s ψήφοι %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ ψήφοι %2$s</string>
   <string name="list_title_activity">Δραστηριότητα</string>
   <string name="list_title_actors">Ηθοποιοί</string>
   <string name="list_title_all_titles">Όλοι οι τίτλοι</string>
@@ -1353,6 +1366,7 @@
   <string name="page_title_automatic_tracking">Αυτόματη Παρακολούθηση</string>
   <string name="page_title_branding">Επωνυμία</string>
   <string name="page_title_calendar">Ημερολόγιο</string>
+  <string name="page_title_convert_smart_list">Μετατροπή σε έξυπνη λίστα</string>
   <string name="page_title_create_list">Δημιουργία Λίστας</string>
   <string name="page_title_create_smart_list">Δημιουργία έξυπνης λίστας</string>
   <string name="page_title_discover">Ανακαλύψτε</string>
@@ -1587,6 +1601,11 @@
   <string name="text_clear_source_ratings">Αξιολογήσεις</string>
   <string name="text_clear_source_watchlist">Λίστα παρακολούθησης</string>
   <string name="text_clear_watchlist">Εκκαθάριση λίστας παρακολούθησης</string>
+  <string name="text_comment_translation_download_ai_metered">Για τη μετάφραση αυτού του σχολίου απαιτείται εφάπαξ λήψη του μοντέλου AI της συσκευής, το οποίο μπορεί να είναι μεγάλο. Χρησιμοποιείτε δεδομένα κινητής τηλεφωνίας, επομένως ενδέχεται να καταναλώσετε από το διαθέσιμο όριό σας.</string>
+  <string name="text_comment_translation_download_metered">Για τη μετάφραση αυτού του σχολίου απαιτείται εφάπαξ λήψη γλώσσας. Χρησιμοποιείτε δεδομένα κινητής τηλεφωνίας, επομένως ενδέχεται να καταναλώσετε από το διαθέσιμο όριό σας.</string>
+  <string name="text_comment_translation_downloading">Λήψη γλώσσας…</string>
+  <string name="text_comment_translation_downloading_ai">Λήψη Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Λήψη Gemini… %d%</string>
   <string name="text_connection_status_cancelled_message">Μπορείτε να συνδέσετε την %s όποτε είστε έτοιμοι.</string>
   <string name="text_connection_status_cancelled_title">Η σύνδεση ακυρώθηκε</string>
   <string name="text_connection_status_connected_message">Συγχρονίζουμε το ιστορικό παρακολούθησης και τις αξιολογήσεις σας τώρα.</string>
@@ -2070,6 +2089,7 @@
   <string name="text_vip_veteran_title_veteran">Βετεράνος</string>
   <string name="text_watch_until_here_episode_count">%d επεισόδια</string>
   <string name="text_watch_until_here_preview_title">Χρονοσφραγίδες παρακολούθησης</string>
+  <string name="text_year_in_review_banner_tagline">Δώδεκα προσωπικότητες. Μία από αυτές είστε εσείς.</string>
   <string name="text_younify_status_broken">Χαλασμένο</string>
   <string name="text_younify_status_linked">Συνδεδεμένο</string>
   <string name="text_younify_status_unlinked">Δεν είναι συνδεδεμένο</string>
