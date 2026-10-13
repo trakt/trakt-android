@@ -21,7 +21,7 @@ import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.common.ui.theme.colors.Red400
-import tv.trakt.trakt.core.trivia.helpers.rememberPersonLinkUriHandler
+import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -34,7 +34,7 @@ internal fun TriviaFactCard(
     spoilerVisible: Boolean = false,
     onPersonLinkClick: (SlugId) -> Unit = {},
 ) {
-    val personLinkUriHandler = rememberPersonLinkUriHandler(onPersonLinkClick)
+    val personLinkUriHandler = rememberAppLinkUriHandler(onPersonClick = onPersonLinkClick)
 
     Card(
         modifier = modifier,

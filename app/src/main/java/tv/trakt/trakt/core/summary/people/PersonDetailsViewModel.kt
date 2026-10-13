@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,19 +23,24 @@ import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
+import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 import tv.trakt.trakt.core.summary.people.navigation.PersonDestination
+import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
+import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
 internal class PersonDetailsViewModel(
     analytics: Analytics,
@@ -42,6 +48,8 @@ internal class PersonDetailsViewModel(
     private val sessionManager: SessionManager,
     private val getPersonUseCase: GetPersonUseCase,
     private val getPersonCreditsUseCase: GetPersonCreditsUseCase,
+    private val getShowDetailsUseCase: GetShowDetailsUseCase,
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
@@ -62,6 +70,8 @@ internal class PersonDetailsViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private var mediaLinkJob: Job? = null
 
     init {
         loadUser()
@@ -189,6 +199,42 @@ internal class PersonDetailsViewModel(
         viewModelScope.launch {
             movieLocalDataSource.upsertMovies(listOf(movie))
             navigateMovie.update { movie.ids.trakt }
+        }
+    }
+
+    fun navigateToShow(showSlug: SlugId) {
+        openMediaLink {
+            val show = personShowCreditsState.value
+                ?.values
+                ?.firstNotNullOfOrNull { items -> items.firstOrNull { it.show.ids.slug == showSlug }?.show }
+                ?: getShowDetailsUseCase.getShow(showSlug)
+            navigateToShow(show)
+        }
+    }
+
+    fun navigateToMovie(movieSlug: SlugId) {
+        openMediaLink {
+            val movie = personMovieCreditsState.value
+                ?.values
+                ?.firstNotNullOfOrNull { items -> items.firstOrNull { it.movie.ids.slug == movieSlug }?.movie }
+                ?: getMovieDetailsUseCase.getMovie(movieSlug)
+            navigateToMovie(movie)
+        }
+    }
+
+    // Biography links carry only a slug, while details destinations expect Trakt IDs.
+    private fun openMediaLink(resolve: suspend () -> Unit) {
+        mediaLinkJob?.cancel()
+        mediaLinkJob = viewModelScope.launch {
+            try {
+                resolve()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    if (error.getHttpCode() != HTTP_NOT_FOUND) {
+                        Timber.recordError(error)
+                    }
+                }
+            }
         }
     }
 

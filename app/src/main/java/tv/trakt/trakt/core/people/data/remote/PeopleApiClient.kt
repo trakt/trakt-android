@@ -24,7 +24,7 @@ internal class PeopleApiClient(
     private suspend fun getPersonSummary(id: String): PersonDto {
         val response = peopleApi.getPeopleSummary(
             id = id,
-            extended = "full,cloud9",
+            extended = "full,images,markdown",
         )
         return response.body()
     }
@@ -33,7 +33,7 @@ internal class PeopleApiClient(
         return try {
             peopleApi.getPeopleShows(
                 id = personId.value.toString(),
-                extended = "full,cloud9,colors,streaming_ids",
+                extended = "full,images,colors,streaming_ids",
             ).body()
         } catch (e: Exception) {
             if (e.getHttpCode() == 204) {
@@ -48,7 +48,7 @@ internal class PeopleApiClient(
         return try {
             peopleApi.getPeopleMovies(
                 id = personId.value.toString(),
-                extended = "full,cloud9,colors,streaming_ids",
+                extended = "full,images,colors,streaming_ids",
             ).body()
         } catch (e: Exception) {
             if (e.getHttpCode() == 204) {
@@ -61,7 +61,7 @@ internal class PeopleApiClient(
 
     override suspend fun getBirthdayPeople(): List<PersonDto> {
         val response = peopleExtrasApi.getBirthdayPeople(
-            extended = "full,cloud9",
+            extended = "full,images",
         )
         return response.body()
     }

@@ -49,7 +49,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.model.SlugId
-import tv.trakt.trakt.core.trivia.helpers.rememberPersonLinkUriHandler
+import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.vip.VipChip
@@ -64,7 +64,7 @@ internal fun DetailsTrivia(
     onVipClick: () -> Unit = {},
     onPersonLinkClick: (SlugId) -> Unit = {},
 ) {
-    val personLinkUriHandler = rememberPersonLinkUriHandler(onPersonLinkClick)
+    val personLinkUriHandler = rememberAppLinkUriHandler(onPersonClick = onPersonLinkClick)
     val containerColor = TraktTheme.colors.triviaContainer
     val containerColor2 = TraktTheme.colors.dialogContainer
     val radialGradient = remember {

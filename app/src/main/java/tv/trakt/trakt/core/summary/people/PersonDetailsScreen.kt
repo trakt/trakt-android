@@ -32,6 +32,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +45,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,13 +62,16 @@ import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
+import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.summary.people.ui.HistoryCreditsList
@@ -98,11 +104,17 @@ internal fun PersonDetailsScreen(
     ) {
         state.navigateShow?.let {
             viewModel.clearNavigation()
-            onNavigateToShow(it)
+            when {
+                viewModel.isCurrentMediaId(it) -> onNavigateBack()
+                else -> onNavigateToShow(it)
+            }
         }
         state.navigateMovie?.let {
             viewModel.clearNavigation()
-            onNavigateToMovie(it)
+            when {
+                viewModel.isCurrentMediaId(it) -> onNavigateBack()
+                else -> onNavigateToMovie(it)
+            }
         }
     }
 
@@ -127,6 +139,8 @@ internal fun PersonDetailsScreen(
         onMovieLongClick = {
             contextMovieSheet = it
         },
+        onShowLinkClick = viewModel::navigateToShow,
+        onMovieLinkClick = viewModel::navigateToMovie,
         onBackClick = onNavigateBack,
     )
 
@@ -153,6 +167,8 @@ internal fun PersonDetailsContent(
     onShowLongClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
     onMovieLongClick: ((Movie) -> Unit)? = null,
+    onShowLinkClick: ((SlugId) -> Unit)? = null,
+    onMovieLinkClick: ((SlugId) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
@@ -234,6 +250,8 @@ internal fun PersonDetailsContent(
                         DetailsOverview(
                             loading = state.loadingDetails,
                             overview = person.biography,
+                            onShowLinkClick = onShowLinkClick,
+                            onMovieLinkClick = onMovieLinkClick,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
@@ -425,25 +443,38 @@ private fun DetailsOverview(
     loading: LoadingState,
     modifier: Modifier = Modifier,
     overview: String? = null,
+    onShowLinkClick: ((SlugId) -> Unit)? = null,
+    onMovieLinkClick: ((SlugId) -> Unit)? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
 
-    Text(
-        text = when {
-            loading.isLoading -> ""
-            overview.isNullOrBlank() -> stringResource(R.string.text_overview_placeholder)
-            else -> overview
-        },
-        style = TraktTheme.typography.paragraphSmall,
-        color = TraktTheme.colors.textSecondary,
-        maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
-        textAlign = TextAlign.Start,
-        overflow = Ellipsis,
-        modifier = modifier
-            .onClick {
-                isCollapsed = !isCollapsed
-            },
+    val linkUriHandler = rememberAppLinkUriHandler(
+        onShowClick = onShowLinkClick,
+        onMovieClick = onMovieLinkClick,
     )
+    val placeholder = stringResource(R.string.text_overview_placeholder)
+    val linkColor = TraktTheme.colors.textPrimary
+
+    CompositionLocalProvider(LocalUriHandler provides linkUriHandler) {
+        Text(
+            text = remember(loading.isLoading, overview, placeholder, linkColor) {
+                when {
+                    loading.isLoading -> AnnotatedString("")
+                    overview.isNullOrBlank() -> AnnotatedString(placeholder)
+                    else -> overview.toMarkdownText(linkColor)
+                }
+            },
+            style = TraktTheme.typography.paragraphSmall,
+            color = TraktTheme.colors.textSecondary,
+            maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
+            textAlign = TextAlign.Start,
+            overflow = Ellipsis,
+            modifier = modifier
+                .onClick {
+                    isCollapsed = !isCollapsed
+                },
+        )
+    }
 }
 
 @Composable
@@ -506,7 +537,9 @@ private fun Preview() {
     TraktTheme {
         PersonDetailsContent(
             state = PersonDetailsState(
-                personDetails = PreviewData.person1,
+                personDetails = PreviewData.person1.copy(
+                    biography = "Known for **The Matrix** and [John Wick](https://app.trakt.tv/movies/john-wick-2014).",
+                ),
                 loadingDetails = Done,
             ),
         )
