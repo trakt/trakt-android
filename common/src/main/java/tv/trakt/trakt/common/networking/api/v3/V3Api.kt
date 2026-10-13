@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReaction
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReactionsSummaryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3UserMediaReaction
+import java.util.Locale
 import kotlin.uuid.Uuid
 
 class V3Api(
@@ -93,16 +94,26 @@ class V3Api(
 
     // Trivia
 
-    suspend fun getShowTrivia(showId: TraktId): V3TriviaResponse {
-        val response = client.get("${baseV3Url}media/show/${showId.value}/info/5/version/2")
+    suspend fun getShowTrivia(
+        showId: TraktId,
+        locale: Locale,
+    ): V3TriviaResponse {
+        val response = client.get("${baseV3Url}media/show/${showId.value}/info/5/version/2") {
+            parameter("locale", locale.toLanguageTag())
+        }
         val body = response.body<V3TriviaResponse>()
         return body.copy(
             items = body.items?.map { it.copy(id = Uuid.random().toHexString()) },
         )
     }
 
-    suspend fun getMovieTrivia(movieId: TraktId): V3TriviaResponse {
-        val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/5/version/2")
+    suspend fun getMovieTrivia(
+        movieId: TraktId,
+        locale: Locale,
+    ): V3TriviaResponse {
+        val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/5/version/2") {
+            parameter("locale", locale.toLanguageTag())
+        }
         val body = response.body<V3TriviaResponse>()
         return body.copy(
             items = body.items?.map { it.copy(id = Uuid.random().toHexString()) },
