@@ -14,6 +14,7 @@ import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 
 internal class SeasonalThemeUseCase(
     private val dataStore: DataStore<Preferences>,
+    private val clearDiscoverCaches: ClearSeasonalDiscoverCachesUseCase,
 ) {
     private val remoteConfig = Firebase.remoteConfig
 
@@ -54,6 +55,9 @@ internal class SeasonalThemeUseCase(
         season: SeasonalTheme,
         enabled: Boolean,
     ) {
+        if (enabled) {
+            clearDiscoverCaches.clear()
+        }
         dataStore.edit { prefs ->
             prefs[enabledKey(season)] = enabled
         }

@@ -49,6 +49,14 @@ internal class AnticipatedMoviesStorage(
         }
     }
 
+    override suspend fun clear() {
+        ensureInitialized()
+        mutex.withLock {
+            moviesCache.clear()
+            dataStore.edit { it.remove(KEY_ANTICIPATED_MOVIES) }
+        }
+    }
+
     private suspend fun ensureInitialized() {
         if (!isInitialized) {
             mutex.withLock {

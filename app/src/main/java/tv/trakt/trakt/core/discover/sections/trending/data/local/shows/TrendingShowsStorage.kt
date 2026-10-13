@@ -49,6 +49,14 @@ internal class TrendingShowsStorage(
         }
     }
 
+    override suspend fun clear() {
+        ensureInitialized()
+        mutex.withLock {
+            showsCache.clear()
+            dataStore.edit { it.remove(KEY_TRENDING_SHOWS) }
+        }
+    }
+
     private suspend fun ensureInitialized() {
         if (!isInitialized) {
             mutex.withLock {

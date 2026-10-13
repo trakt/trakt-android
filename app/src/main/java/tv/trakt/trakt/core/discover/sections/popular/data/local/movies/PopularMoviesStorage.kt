@@ -49,6 +49,14 @@ internal class PopularMoviesStorage(
         }
     }
 
+    override suspend fun clear() {
+        ensureInitialized()
+        mutex.withLock {
+            moviesCache.clear()
+            dataStore.edit { it.remove(KEY_POPULAR_MOVIES) }
+        }
+    }
+
     private suspend fun ensureInitialized() {
         if (!isInitialized) {
             mutex.withLock {

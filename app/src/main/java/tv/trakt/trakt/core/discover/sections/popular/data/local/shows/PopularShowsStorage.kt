@@ -49,6 +49,14 @@ internal class PopularShowsStorage(
         }
     }
 
+    override suspend fun clear() {
+        ensureInitialized()
+        mutex.withLock {
+            showsCache.clear()
+            dataStore.edit { it.remove(KEY_POPULAR_SHOWS) }
+        }
+    }
+
     private suspend fun ensureInitialized() {
         if (!isInitialized) {
             mutex.withLock {

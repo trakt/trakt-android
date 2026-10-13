@@ -6,4 +6,6 @@ internal interface TrendingMoviesLocalDataSource {
     suspend fun setMovies(movies: List<DiscoverItem.MovieItem>)
 
     suspend fun getMovies(): List<DiscoverItem.MovieItem>
+
+    suspend fun clear()
 }

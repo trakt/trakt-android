@@ -6,4 +6,6 @@ internal interface AnticipatedShowsLocalDataSource {
     suspend fun setShows(shows: List<DiscoverItem.ShowItem>)
 
     suspend fun getShows(): List<DiscoverItem.ShowItem>
+
+    suspend fun clear()
 }

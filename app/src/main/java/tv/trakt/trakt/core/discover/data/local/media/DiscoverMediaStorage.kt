@@ -42,6 +42,15 @@ internal class DiscoverMediaStorage(
         }
     }
 
+    override suspend fun clear(sections: Collection<DiscoverSection>) {
+        mutex.withLock {
+            sections.forEach(cache::remove)
+            dataStore.edit { prefs ->
+                sections.forEach { prefs.remove(it.storageKey) }
+            }
+        }
+    }
+
     private suspend fun readItems(section: DiscoverSection): List<DiscoverItem> {
         return try {
             dataStore.data.first()[section.storageKey]

@@ -10,4 +10,6 @@ internal interface DiscoverMediaLocalDataSource {
     )
 
     suspend fun getItems(section: DiscoverSection): List<DiscoverItem>
+
+    suspend fun clear(sections: Collection<DiscoverSection>)
 }

@@ -49,6 +49,14 @@ internal class AnticipatedShowsStorage(
         }
     }
 
+    override suspend fun clear() {
+        ensureInitialized()
+        mutex.withLock {
+            showsCache.clear()
+            dataStore.edit { it.remove(KEY_ANTICIPATED_SHOWS) }
+        }
+    }
+
     private suspend fun ensureInitialized() {
         if (!isInitialized) {
             mutex.withLock {

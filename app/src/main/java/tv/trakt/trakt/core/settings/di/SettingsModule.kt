@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -32,6 +33,7 @@ import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsU
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServiceUseCase
+import tv.trakt.trakt.core.settings.usecases.ClearSeasonalDiscoverCachesUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
@@ -83,9 +85,12 @@ internal val settingsModule = module {
         )
     }
 
+    factoryOf(::ClearSeasonalDiscoverCachesUseCase)
+
     factory {
         SeasonalThemeUseCase(
             dataStore = get(named(SETTINGS_PREFERENCES)),
+            clearDiscoverCaches = get(),
         )
     }
 
