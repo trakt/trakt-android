@@ -14,11 +14,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,6 +39,8 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.imageLoader
+import coil3.request.ImageRequest
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
@@ -52,7 +55,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 
 private const val POSTER_RATIO = 2F / 3F
-private const val FLIP_DURATION_MS = 400
+private const val FLIP_DURATION_MS = 200
 
 private const val TAP_EDGE = 0.3F
 private const val HOLD_THRESHOLD_MS = 300L
@@ -192,8 +195,20 @@ private fun TodayFlipPoster(
     isFlipped: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val media = frame.story.media
     val rating = frame.rating10
+
+    // Warm the back face image so it is ready by the time the card flips.
+    val fanartUrl = media.images?.getFanartUrl(Images.Size.MEDIUM)
+    LaunchedEffect(fanartUrl) {
+        if (fanartUrl == null) return@LaunchedEffect
+        context.imageLoader.execute(
+            ImageRequest.Builder(context)
+                .data(fanartUrl)
+                .build(),
+        )
+    }
 
     val rotation by animateFloatAsState(
         targetValue = if (isFlipped) 180F else 0F,
@@ -237,14 +252,14 @@ private fun TodayFlipPoster(
                 .background(TraktTheme.colors.placeholderContainer),
         )
 
-        if (rating != null && !isFlipped) {
-            TodayRatingTag(
-                rating10 = rating,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(8.dp),
-            )
-        }
+//        if (rating != null && !isFlipped) {
+//            TodayRatingTag(
+//                rating10 = rating,
+//                modifier = Modifier
+//                    .align(Alignment.BottomEnd)
+//                    .padding(8.dp),
+//            )
+//        }
     }
 }
 

@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.today.stories
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -19,6 +18,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -82,8 +82,7 @@ import kotlin.math.abs
 
 private const val FRAME_DURATION_MS = 10_000
 private const val BACKDROP_ALPHA = 0.35F
-private const val STORY_TRANSITION_MS = 200
-private const val FRAME_TRANSITION_MS = 200
+private const val STORY_TRANSITION_MS = 150
 
 private val BackdropBlur = 24.dp
 private val SegmentHeight = 3.dp
@@ -93,8 +92,8 @@ private val HeaderButtonSize = 40.dp
 
 // Touch box padding plus the empty space inside each glyph, so the icons line up
 // with the ends of the progress bar.
-private val BackArrowInset = (HeaderButtonSize - HeaderIconSize) / 2 + 4.dp
-private val InfoInset = (HeaderButtonSize - HeaderIconSize) / 2 + 2.dp
+private val BackArrowInset = (HeaderButtonSize - HeaderIconSize) / 2 + 3.dp
+private val InfoInset = (HeaderButtonSize - HeaderIconSize) / 2 + 1.dp
 private val SwipeThreshold = 56.dp
 
 private val PosterTopGap = 24.dp
@@ -254,25 +253,17 @@ private fun TodayStoryPage(
                 modifier = Modifier.padding(bottom = PosterTopGap - 16.dp),
             )
 
-            Crossfade(
-                targetState = frame,
-                animationSpec = tween(FRAME_TRANSITION_MS),
-                label = "todayStoryFrame",
+            TodayStoryFrameContent(
+                frame = frame,
+                isFlipped = isFlipped && frame.key == frame.key,
+                onFlip = { isFlipped = !isFlipped },
+                onNext = onNext,
+                onPrevious = onPrevious,
+                onHeldChange = { isHeld = it },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1F),
-            ) { shown ->
-                TodayStoryFrameContent(
-                    frame = shown,
-                    isFlipped = isFlipped && shown.key == frame.key,
-                    onFlip = { isFlipped = !isFlipped },
-                    onNext = onNext,
-                    onPrevious = onPrevious,
-                    onHeldChange = { isHeld = it },
-                    modifier = Modifier
-                        .fillMaxSize(),
-                )
-            }
+            )
         }
     }
 }
@@ -380,7 +371,7 @@ private fun TodayStoryHeader(
         )
 
         Column(
-            modifier = Modifier.weight(1F),
+            modifier = Modifier.onClick(onClick = onClose),
         ) {
             Text(
                 text = title,
@@ -398,6 +389,8 @@ private fun TodayStoryHeader(
                 maxLines = 1,
             )
         }
+
+        Spacer(modifier = Modifier.weight(1F))
 
         TodayStoryHeaderButton(
             iconRes = R.drawable.ic_info,

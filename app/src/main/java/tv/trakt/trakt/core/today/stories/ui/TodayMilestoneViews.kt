@@ -25,7 +25,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val ChipShape = RoundedCornerShape(50)
-private val ChipIconSize = 13.dp
 
 @Composable
 internal fun TodayMilestoneChip(
@@ -36,18 +35,20 @@ internal fun TodayMilestoneChip(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(4.dp),
+        horizontalArrangement = spacedBy(5.dp),
         modifier = modifier
             .background(Purple500, ChipShape)
             .padding(horizontal = 8.dp, vertical = 6.dp),
     ) {
         Icon(
             painter = painterResource(
-                if (isFinale) R.drawable.ic_flag_checker else R.drawable.ic_start,
+                if (isFinale) R.drawable.ic_flag_checker else R.drawable.ic_clapper,
             ),
             contentDescription = null,
             tint = Color.White,
-            modifier = Modifier.size(ChipIconSize),
+            modifier = Modifier.size(
+                if (isFinale) 16.dp else 12.dp,
+            ),
         )
         Text(
             text = milestoneText(milestone),
