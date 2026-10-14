@@ -28,6 +28,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToVip: () -> Unit,
     onNavigateToCalendar: () -> Unit,
     onNavigateToUser: (User) -> Unit,
+    onNavigateToToday: (groupKey: String) -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
@@ -45,6 +46,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToVip = onNavigateToVip,
             onNavigateToCalendar = onNavigateToCalendar,
             onNavigateToUser = onNavigateToUser,
+            onNavigateToToday = onNavigateToToday,
         )
     }
 }

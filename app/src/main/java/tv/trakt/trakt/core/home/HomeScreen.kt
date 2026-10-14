@@ -77,6 +77,7 @@ internal fun HomeScreen(
     onNavigateToVip: () -> Unit,
     onNavigateToCalendar: () -> Unit,
     onNavigateToUser: (User) -> Unit,
+    onNavigateToToday: (groupKey: String) -> Unit,
 ) {
     val startAuthorization = LocalStartAuthorization.current
 
@@ -114,6 +115,7 @@ internal fun HomeScreen(
         onCalendarClick = onNavigateToCalendar,
         onVipClick = onNavigateToVip,
         onUserClick = onNavigateToUser,
+        onTodayClick = onNavigateToToday,
         onStreakClick = {
             streaksSheet = true
         },

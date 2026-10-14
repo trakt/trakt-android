@@ -96,6 +96,8 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.allShow
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.navigateToAllShowSeasons
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
+import tv.trakt.trakt.core.today.stories.navigation.navigateToTodayStories
+import tv.trakt.trakt.core.today.stories.navigation.todayStoriesScreen
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.trivia.navigation.triviaScreen
 import tv.trakt.trakt.core.userprofile.navigation.navigateToUserProfile
@@ -134,6 +136,11 @@ internal fun NavGraphBuilder.homeScreens(
                     currentUserId = userId,
                 )
             },
+            onNavigateToToday = ::navigateToTodayStories,
+        )
+
+        todayStoriesScreen(
+            onNavigateBack = { popBackStack() },
         )
 
         homeUpNextScreen(

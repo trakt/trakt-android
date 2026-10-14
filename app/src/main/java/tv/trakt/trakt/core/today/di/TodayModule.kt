@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.today.data.local.TodayStorage
 import tv.trakt.trakt.core.today.data.remote.TodayApiClient
 import tv.trakt.trakt.core.today.data.remote.TodayRemoteDataSource
 import tv.trakt.trakt.core.today.pill.TodayPillViewModel
+import tv.trakt.trakt.core.today.stories.TodayStoriesViewModel
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
 
 internal const val TODAY_PREFERENCES = "today_preferences_mobile"
@@ -49,6 +50,7 @@ internal val todayModule = module {
     factoryOf(::GetTodayStoriesUseCase)
 
     viewModelOf(::TodayPillViewModel)
+    viewModelOf(::TodayStoriesViewModel)
 }
 
 private fun createStore(context: Context): DataStore<Preferences> {

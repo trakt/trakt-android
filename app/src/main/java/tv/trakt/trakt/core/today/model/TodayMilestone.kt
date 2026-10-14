@@ -9,7 +9,6 @@ internal data class TodayMilestone(
     val type: Type,
     val season: Int,
 ) {
-    /** Declared weakest to strongest; [strongest] relies on this order. */
     enum class Type {
         SeasonStart,
         SeasonEnd,

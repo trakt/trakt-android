@@ -1,8 +1,10 @@
 package tv.trakt.trakt.core.today.model
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -13,6 +15,9 @@ internal sealed interface TodayMedia {
     val type: MediaType
     val title: String
     val images: Images?
+    val overview: String?
+    val year: Int?
+    val genres: ImmutableList<MediaGenre>
 
     val key: String
         get() = "${type.value}-${ids.trakt.value}"
@@ -25,6 +30,9 @@ internal sealed interface TodayMedia {
         override val type = MediaType.Movie
         override val title = movie.title
         override val images = movie.images
+        override val overview = movie.overview
+        override val year = movie.year
+        override val genres = movie.genres
     }
 
     @Immutable
@@ -35,5 +43,8 @@ internal sealed interface TodayMedia {
         override val type = MediaType.Show
         override val title = show.title
         override val images = show.images
+        override val overview = show.overview
+        override val year = show.year
+        override val genres = show.genres
     }
 }

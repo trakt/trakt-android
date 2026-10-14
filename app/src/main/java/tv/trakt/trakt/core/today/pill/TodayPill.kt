@@ -52,7 +52,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val PillSize = 34.dp
-private val RingWidth = 1.dp
+private val RingWidth = 1.1.dp
 
 private val PosterWidth = 13.dp
 private val PosterHeight = 18.dp
@@ -61,7 +61,7 @@ private val PosterCorner = 2.dp
 private const val POSTER_TILT = 10F
 
 private val BadgeSize = 13.dp
-private val BadgeOffset = 0.66.dp
+private val BadgeOffset = 1.5.dp
 private val BadgePadding = 3.5.dp
 
 private const val POP_CYCLE_MS = 8_000
