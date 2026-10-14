@@ -1,11 +1,15 @@
 package tv.trakt.trakt.core.today.pill
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
@@ -18,7 +22,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,17 +51,17 @@ import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val PillSize = 32.dp
+private val PillSize = 34.dp
 private val RingWidth = 1.dp
 
-private val PosterWidth = 12.dp
-private val PosterHeight = 17.dp
+private val PosterWidth = 13.dp
+private val PosterHeight = 18.dp
 private val PosterOffset = 2.5.dp
 private val PosterCorner = 2.dp
 private const val POSTER_TILT = 10F
 
 private val BadgeSize = 13.dp
-private val BadgeOffset = 2.dp
+private val BadgeOffset = 0.66.dp
 private val BadgePadding = 3.dp
 
 private const val POP_CYCLE_MS = 8_000
@@ -90,6 +96,22 @@ internal fun TodayPillContent(
     val animate = unseen && !rememberAnimationsDisabled()
     val description = stringResource(R.string.button_label_open_today_stories)
 
+    val ringColor by animateColorAsState(
+        targetValue = when {
+            unseen -> TraktTheme.colors.accent
+            else -> TraktTheme.colors.chipContainer
+        },
+        animationSpec = tween(),
+        label = "todayPillRing",
+    )
+
+    // Keeps the last count on screen while the badge fades out after everything is seen.
+    val lastCount = remember { mutableIntStateOf(unseenCount) }
+    SideEffect {
+        if (unseen) lastCount.intValue = unseenCount
+    }
+    val badgeCount = if (unseen) unseenCount else lastCount.intValue
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -105,10 +127,7 @@ internal fun TodayPillContent(
                 .fillMaxSize()
                 .border(
                     width = RingWidth,
-                    color = when {
-                        unseen -> TraktTheme.colors.accent
-                        else -> TraktTheme.colors.chipContainer
-                    },
+                    color = ringColor,
                     shape = CircleShape,
                 ),
         )
@@ -121,9 +140,16 @@ internal fun TodayPillContent(
                 .fillMaxSize(),
         )
 
-        if (unseen) {
+        AnimatedVisibility(
+            visible = unseen,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .offset(x = BadgeOffset, y = -BadgeOffset),
+        ) {
             TodayPillBadge(
-                count = unseenCount,
+                count = badgeCount,
                 animate = animate,
             )
         }
@@ -164,7 +190,7 @@ private fun TodayPillPosters(
 }
 
 @Composable
-private fun BoxScope.TodayPillBadge(
+private fun TodayPillBadge(
     count: Int,
     animate: Boolean,
 ) {
@@ -195,8 +221,6 @@ private fun BoxScope.TodayPillBadge(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .align(Alignment.TopEnd)
-            .offset(x = BadgeOffset, y = -BadgeOffset)
             .graphicsLayer {
                 scaleX = scale.value
                 scaleY = scale.value
