@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import tv.trakt.trakt.LocalStartAuthorization
@@ -35,6 +36,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
+import tv.trakt.trakt.core.today.pill.TodayPillContent
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeButtons
@@ -56,6 +58,7 @@ internal fun HeaderBar(
     showVip: Boolean = false,
     showWhatsNew: Boolean = false,
     userLoading: Boolean = false,
+    todayContent: (@Composable () -> Unit)? = null,
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
     onWhatsNewClick: () -> Unit = {},
@@ -83,6 +86,7 @@ internal fun HeaderBar(
         season = season,
         seasonEnabled = seasonEnabled,
         userLoading = userLoading,
+        todayContent = todayContent,
         onVipClick = onVipClick,
         onFilterClick = onFilterClick,
         onWhatsNewClick = onWhatsNewClick,
@@ -114,6 +118,7 @@ private fun HeaderBar(
     season: SeasonalTheme? = null,
     seasonEnabled: Boolean = false,
     userLoading: Boolean = false,
+    todayContent: (@Composable () -> Unit)? = null,
     onMediaModeSelect: (MediaMode) -> Unit = {},
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
@@ -182,6 +187,8 @@ private fun HeaderBar(
                         onClick = onVipClick,
                     )
                 }
+
+                todayContent?.invoke()
 
                 if (season != null && showFilters) {
                     SeasonalThemeIcon(
@@ -269,6 +276,24 @@ private fun Preview6() {
             showFilters = true,
             season = SeasonalTheme.Halloween,
             seasonEnabled = false,
+        )
+    }
+}
+
+@Preview(widthDp = 400)
+@Composable
+private fun PreviewToday() {
+    TraktTheme {
+        HeaderBar(
+            filter = GlobalFilter.Default,
+            showFilters = true,
+            todayContent = {
+                TodayPillContent(
+                    posters = persistentListOf("a", "b"),
+                    unseenCount = 7,
+                    onClick = {},
+                )
+            },
         )
     }
 }

@@ -53,6 +53,7 @@ import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistView
 import tv.trakt.trakt.core.home.sections.welcome.banner.HomeWelcomeView
+import tv.trakt.trakt.core.today.pill.TodayPill
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -171,6 +172,7 @@ private fun HomeScreenContent(
     onStreakClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onWhatsNewClick: () -> Unit = {},
+    onTodayClick: (groupKey: String) -> Unit = {},
     onUserClick: (user: User) -> Unit = {},
     onDismissWelcomeClick: () -> Unit = {},
 ) {
@@ -349,6 +351,7 @@ private fun HomeScreenContent(
             onVipClick = onVipClick,
             onFiltersClick = onFiltersClick,
             onWhatsNewClick = onWhatsNewClick,
+            onTodayClick = onTodayClick,
         )
     }
 }
@@ -362,6 +365,7 @@ private fun HomeScreenHeader(
     onVipClick: () -> Unit,
     onFiltersClick: () -> Unit,
     onWhatsNewClick: () -> Unit,
+    onTodayClick: (groupKey: String) -> Unit,
 ) {
     val (userLoaded, userLoggedIn) = remember(state.user) {
         val userLoaded = state.user.loading == Done
@@ -376,6 +380,16 @@ private fun HomeScreenHeader(
         showFilters = userLoggedIn,
         showWhatsNew = state.whatsNew != null,
         userLoading = userLoading,
+        todayContent = when {
+            userLoggedIn -> {
+                {
+                    TodayPill(onClick = onTodayClick)
+                }
+            }
+            else -> {
+                null
+            }
+        },
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
         onWhatsNewClick = onWhatsNewClick,

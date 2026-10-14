@@ -14,6 +14,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
@@ -22,6 +23,7 @@ import tv.trakt.trakt.core.today.data.local.TodaySeenStorage
 import tv.trakt.trakt.core.today.data.local.TodayStorage
 import tv.trakt.trakt.core.today.data.remote.TodayApiClient
 import tv.trakt.trakt.core.today.data.remote.TodayRemoteDataSource
+import tv.trakt.trakt.core.today.pill.TodayPillViewModel
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
 
 internal const val TODAY_PREFERENCES = "today_preferences_mobile"
@@ -45,6 +47,8 @@ internal val todayDataModule = module {
 
 internal val todayModule = module {
     factoryOf(::GetTodayStoriesUseCase)
+
+    viewModelOf(::TodayPillViewModel)
 }
 
 private fun createStore(context: Context): DataStore<Preferences> {
