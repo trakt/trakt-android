@@ -10,7 +10,6 @@ object Config {
 
     const val WEB_V3_BASE_URL: String = "https://app.trakt.tv/"
     const val WEB_AUTH_URL: String = "https://auth.trakt.tv/"
-    const val WEB_VIP_URL: String = "https://app.trakt.tv/vip?native_app_mode=true"
     const val WEB_ABOUT_US_URL: String = "https://app.trakt.tv/about?native_app_mode=true"
     const val WEB_TERMS_URL: String = "https://app.trakt.tv/terms?native_app_mode=true"
     const val WEB_PRIVACY_URL: String = "https://app.trakt.tv/privacy?native_app_mode=true"
@@ -20,6 +19,7 @@ object Config {
     const val WEB_SETTINGS_SCROBBLING_URL: String = "https://trakt.tv/settings/scrobblers?native_app_mode=true"
     const val WEB_TRANSLATE_URL: String = "https://crwd.in/trakt-poc/3857d5ea667dd425fbd0cb2e4e80dc192749600"
     const val WEB_DATA_IMPORT_URL: String = "https://app.trakt.tv/settings/data?native_app_mode=true"
+    const val WEB_GAME_RATED_HIGHER_URL: String = "https://app.trakt.tv/play/rated-higher?standalone_mode=true"
 
     const val WEB_SOCIAL_GITHUB_URL: String = "https://github.com/trakt/trakt-android"
     const val WEB_SOCIAL_INSTAGRAM_URL: String = "https://www.instagram.com/trakt_app/"
