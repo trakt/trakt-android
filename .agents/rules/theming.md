@@ -154,7 +154,10 @@ spacing — use tokens, don't hard-code `64.dp`.
 ## Accessibility
 
 - Touch targets ≥ 48dp on phone, ≥ focus-safe size on TV.
-- `Modifier.semantics { contentDescription = "…" }` for non-text composables.
+- **Never add content descriptions or semantics on your own.** No `Modifier.semantics { … }`,
+  `clearAndSetSemantics`, `Role`, or non-null `contentDescription` unless the user explicitly asks.
+  Default to `contentDescription = null` for `Icon` / `Image`. Don't add new strings just to label
+  elements for accessibility.
 - Animations respect reduced motion when system preferences indicate it.
 - Contrast: WCAG AA. Token palette enforces this; don't fight with one-off colours.
 
@@ -168,3 +171,4 @@ spacing — use tokens, don't hard-code `64.dp`.
 - [ ] Images via Coil 3 + `R.drawable.*`, never Glide/Fresco/Picasso
 - [ ] Light / dark variants exist for every new token
 - [ ] Animations honour reduced-motion
+- [ ] No content descriptions or semantics added unless explicitly requested

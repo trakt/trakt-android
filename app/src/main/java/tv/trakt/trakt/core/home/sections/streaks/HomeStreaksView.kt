@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -50,8 +52,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 import java.time.DayOfWeek
 import java.time.LocalDate
-import androidx.compose.runtime.CompositionLocalProvider
-import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 
 private val viewHeight = 72.dp
 private val viewShape = DefaultCardShape
