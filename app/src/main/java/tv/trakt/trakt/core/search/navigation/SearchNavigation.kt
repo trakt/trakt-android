@@ -23,6 +23,7 @@ internal fun NavGraphBuilder.searchScreen(
     onNavigateToPerson: (personId: TraktId) -> Unit,
     onNavigateToList: (list: CustomList) -> Unit,
     onNavigateToUser: (user: User) -> Unit,
+    onNavigateToGame: () -> Unit,
 ) {
     composable<SearchDestination> {
         SearchScreen(
@@ -34,6 +35,7 @@ internal fun NavGraphBuilder.searchScreen(
             onPersonClick = onNavigateToPerson,
             onListClick = onNavigateToList,
             onUserClick = onNavigateToUser,
+            onGameClick = onNavigateToGame,
         )
     }
 }

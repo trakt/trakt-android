@@ -47,6 +47,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
+import tv.trakt.trakt.core.search.features.game.ui.GameSearchCard
 import tv.trakt.trakt.core.search.model.SearchFilter.LISTS
 import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
 import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
@@ -76,6 +77,7 @@ internal fun SearchScreen(
     onPersonClick: ((TraktId) -> Unit),
     onListClick: ((CustomList) -> Unit),
     onUserClick: (User) -> Unit,
+    onGameClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val localCheckInVisibility = LocalCheckInVisibility.current
@@ -147,6 +149,7 @@ internal fun SearchScreen(
         onPersonClick = viewModel::navigateToPerson,
         onListClick = viewModel::navigateToList,
         onUserClick = onUserClick,
+        onGameClick = onGameClick,
     )
 
     ShowContextSheet(
@@ -160,7 +163,6 @@ internal fun SearchScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchScreenContent(
     state: SearchState,
@@ -173,6 +175,7 @@ private fun SearchScreenContent(
     onPersonClick: (Person) -> Unit = {},
     onListClick: (CustomList) -> Unit = {},
     onUserClick: (User) -> Unit = {},
+    onGameClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -193,6 +196,7 @@ private fun SearchScreenContent(
             onPersonClick = onPersonClick,
             onListClick = onListClick,
             onUserClick = onUserClick,
+            onGameClick = onGameClick,
             error = state.error,
         )
     }
@@ -209,6 +213,7 @@ private fun ContentList(
     onPersonClick: (Person) -> Unit,
     onListClick: (CustomList) -> Unit,
     onUserClick: (User) -> Unit,
+    onGameClick: () -> Unit,
     error: Exception? = null,
 ) {
     val topPadding = WindowInsets.statusBars.asPaddingValues()
@@ -262,6 +267,7 @@ private fun ContentList(
                 onPersonClick = onPersonClick,
                 onListClick = onListClick,
                 onUserClick = onUserClick,
+                onGameClick = onGameClick,
             )
         }
 
@@ -361,6 +367,7 @@ private fun LazyGridScope.searchingContent(
     onPersonClick: (Person) -> Unit,
     onListClick: (CustomList) -> Unit,
     onUserClick: (User) -> Unit,
+    onGameClick: () -> Unit,
 ) {
     val resultItems = state.searchResult?.items ?: EmptyImmutableList
 
@@ -374,6 +381,20 @@ private fun LazyGridScope.searchingContent(
                     fadeOutSpec = fadeSpec,
                 ),
         )
+    }
+
+    if (state.showGameCard) {
+        item(key = "game_card") {
+            GameSearchCard(
+                onClick = onGameClick,
+                modifier = Modifier
+                    .padding(bottom = 6.dp)
+                    .animateItem(
+                        fadeInSpec = fadeSpec,
+                        fadeOutSpec = fadeSpec,
+                    ),
+            )
+        }
     }
 
     when {
@@ -466,6 +487,25 @@ private fun Preview() {
     TraktTheme {
         SearchScreenContent(
             state = SearchState(),
+            contentGridState = rememberLazyGridState(),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_9",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    locale = "en",
+)
+@Composable
+private fun GameKeywordPreview() {
+    TraktTheme {
+        SearchScreenContent(
+            state = SearchState(
+                input = SearchInput(query = "game"),
+                searching = true,
+            ),
             contentGridState = rememberLazyGridState(),
         )
     }
