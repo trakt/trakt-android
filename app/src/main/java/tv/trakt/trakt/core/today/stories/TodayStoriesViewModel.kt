@@ -107,6 +107,10 @@ internal class TodayStoriesViewModel(
 
     fun nextGroup() {
         val current = current()
+        if (current.groupIndex >= current.groups.lastIndex) {
+            viewModelScope.launch { events.emit(TodayStoriesEvent.Close) }
+            return
+        }
         showGroup(current.groupIndex + 1, 0)
     }
 
