@@ -156,6 +156,7 @@
   <string name="button_label_login">Σύνδεση</string>
   <string name="button_label_logout">Αποσύνδεση</string>
   <string name="button_label_manage_collaborators">Διαχείριση συνεργατών για %s</string>
+  <string name="button_label_manage_passkey">Διαχείριση κλειδιού πρόσβασης</string>
   <string name="button_label_manage_subscription">Διαχείριση συνδρομής VIP</string>
   <string name="button_label_manage_vip">Διαχείριση Συνδρομής</string>
   <string name="button_label_mark_as_watched">Σήμανση του \"%s\" ως παρακολουθήθηκε</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Παύση %s</string>
   <string name="button_label_pick_match">Εισαγωγή %s.</string>
   <string name="button_label_play_all_stories">Αναπαραγωγή όλων των ιστοριών της ημέρας</string>
+  <string name="button_label_play_game">Παίξτε το \"Βαθμολογήθηκε υψηλότερα;\"</string>
   <string name="button_label_play_story">Αναπαραγωγή της ιστορίας για το %s</string>
   <string name="button_label_play_track">Αναπαραγωγή %s</string>
   <string name="button_label_plex_add_server">Προσθήκη διακομιστή Plex</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Εκκαθάριση τώρα</string>
   <string name="button_text_comment_likes">%d αρέσκειες</string>
   <string name="button_text_comment_replies">%d απαντήσεις</string>
+  <string name="button_text_comment_translated">Μεταφράστηκε</string>
   <string name="button_text_connect">Σύνδεση</string>
   <string name="button_text_continue">Συνέχεια</string>
   <string name="button_text_convert">Μετατροπή</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Αιτήσεις</string>
   <string name="button_text_followers">Ακόλουθοι</string>
   <string name="button_text_following">Ακολουθώντας</string>
+  <string name="button_text_game_close">Κλείσιμο</string>
+  <string name="button_text_game_higher">Υψηλότερο</string>
+  <string name="button_text_game_lower">Χαμηλότερο</string>
+  <string name="button_text_game_play">Παίξτε</string>
+  <string name="button_text_game_play_again">Παίξτε ξανά</string>
   <string name="button_text_get_started">Έναρξη</string>
   <string name="button_text_get_vip">Αποκτήστε</string>
   <string name="button_text_go_to_show">Μετάβαση στην εκπομπή</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Διαχείριση</string>
   <string name="button_text_manage_collaborators">Συνεργάτες</string>
   <string name="button_text_manage_lists">Διαχείριση λιστών</string>
+  <string name="button_text_manage_passkey">Διαχείριση</string>
   <string name="button_text_manage_subscription">Διαχείριση συνδρομής VIP</string>
   <string name="button_text_manage_vip">Διαχείριση</string>
   <string name="button_text_mark_as_watched">Σήμανση ως Παρακολουθήθηκε</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Το Plex δεν αποδέχεται πλέον την πρόσβαση του Trakt. Επανασυνδεθείτε για να συνεχίσετε τον συγχρονισμό.</string>
   <string name="description_media_sync_unreachable">Το Trakt δεν μπορεί να προσεγγίσει αυτόν τον διακομιστή. Δοκιμάστε ξανά μόλις είναι πάλι συνδεδεμένος.</string>
   <string name="description_media_sync_watchlist_only">Δεν χρειάζεται διακομιστής. Συγχρονίζει τη λίστα παρακολούθησης του Plex.</string>
+  <string name="description_passkey">Συνδεθείτε με το δακτυλικό σας αποτύπωμα, το πρόσωπο ή το κλείδωμα οθόνης.</string>
   <string name="description_paused_items">Αυτά τα στοιχεία δεν παρακολουθήθηκαν τουλάχιστον κατά 80%.</string>
   <string name="description_plex_home_users">Οι δικές σας προβολές συγχρονίζονται πάντα. Προσθέστε άλλα ονόματα χρηστών Plex Home για να συγχρονίσετε και τα δικά τους.</string>
   <string name="description_plex_manual_sync">Ενεργοποιήστε έναν άμεσο συγχρονισμό του ιστορικού παρακολούθησης Plex με το Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Απενεργοποίηση</string>
   <string name="filter_toggle_state_on">Ενεργό</string>
   <string name="header_account_details">Στοιχεία λογαριασμού</string>
+  <string name="header_account_security">Ασφάλεια λογαριασμού</string>
   <string name="header_add_from_lists">Προσθήκη στο %s</string>
   <string name="header_age">Ηλικία</string>
   <string name="header_aired">Προβλήθηκε</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Πιστοποίηση</string>
   <string name="header_clear_data">Εκκαθάριση Δεδομένων</string>
   <string name="header_comment_reactions">Αντιδράσεις κριτικών</string>
+  <string name="header_comment_translation_download">Λήψη γλώσσας;</string>
+  <string name="header_comment_translation_download_ai">Λήψη μοντέλου Gemini;</string>
   <string name="header_community_sentiment">Συναίσθημα</string>
   <string name="header_country">Χώρα</string>
   <string name="header_create_smart_list">Δημιουργία έξυπνης λίστας</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Εξαγωγή των δεδομένων σας</string>
   <string name="header_filters">Φίλτρα</string>
   <string name="header_follows_leaderboard">Πίνακας Κατάταξης</string>
+  <string name="header_game_rated_higher">Βαθμολογήθηκε υψηλότερα;</string>
   <string name="header_genre">Είδος</string>
   <string name="header_genres_loved">Είδη που σας Αρέσουν</string>
   <string name="header_get_notified">Ενημερωθείτε!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Παρακολούθηση</string>
   <string name="header_settings_translations">Μεταφράσεις</string>
   <string name="header_skipped_items">%s Παραλειφθέντα στοιχεία</string>
+  <string name="header_smart_list_compare_current">Η λίστα σας</string>
+  <string name="header_smart_list_compare_proposed">Ως έξυπνη λίστα</string>
   <string name="header_stats_contributions">Συνεισφορές</string>
   <string name="header_stats_graph_peak">Ώρες Αιχμής</string>
   <string name="header_stats_graph_screen_time_daily">Καθημερινή Ανάλυση</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Μετάβαση σε πιστωτική κάρτα</string>
   <string name="header_vip_streak">Σερί VIP</string>
   <string name="header_writer">Σεναριογράφος</string>
+  <string name="header_year_in_review_banner">Η Ετήσια Ανασκόπησή σας για το %d είναι εδώ!</string>
   <string name="heading_blocked_users">Αποκλεισμένοι Χρήστες</string>
   <string name="heading_branding_alternative_logos">Εναλλακτικά Λογότυπα</string>
   <string name="heading_branding_dark_background">Σκούρο Φόντο</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Ποιο θα πρέπει να είναι το όνομα χρήστη σας;</string>
   <string name="label_add_from_lists_source">Λίστα πηγής</string>
   <string name="label_date_picker_time">Ώρα</string>
+  <string name="label_delete_account_stat_hours">Ώρες παρακολούθησης</string>
+  <string name="label_delete_account_stat_plays">Καταγεγραμμένες προβολές</string>
+  <string name="label_delete_account_stat_years">Χρόνια μαζί</string>
   <string name="label_drag_image_to_adjust">Σύρετε την εικόνα για προσαρμογή</string>
   <string name="label_favorites">Αγαπημένα</string>
+  <string name="label_game_best">Καλύτερο</string>
+  <string name="label_game_streak">Σερί</string>
   <string name="label_genres_drawer_all">Όλα τα Είδη</string>
   <string name="label_genres_drawer_selected">Επιλεγμένα</string>
   <string name="label_genres_drawer_subtitle_loved">Επιλέξτε έως 5 είδη που θα θέλατε να βλέπετε περισσότερο.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Πολύ σύντομο</string>
   <string name="label_season_short">Σ%s</string>
+  <string name="label_smart_list_compare_view">Επιλέξτε ποια έκδοση θα εμφανιστεί</string>
   <string name="label_stats_active_days">Ενεργές Ημέρες</string>
   <string name="label_stats_average">Μέσος</string>
   <string name="label_stats_avg_per_day">Ημερήσιος Μέσος Όρος</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s και πάνω</string>
   <string name="list_summary_range_labeled_up_to">%1$s έως %2$s</string>
   <string name="list_summary_range_up_to">Έως %s</string>
+  <string name="list_summary_released_within_days">Κυκλοφόρησε τις τελευταίες %s ημέρες</string>
+  <string name="list_summary_votes_between">%1$s έως %2$s ψήφοι %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ ψήφοι %2$s</string>
   <string name="list_title_activity">Δραστηριότητα</string>
   <string name="list_title_actors">Ηθοποιοί</string>
   <string name="list_title_all_titles">Όλοι οι τίτλοι</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Αυτόματη Παρακολούθηση</string>
   <string name="page_title_branding">Επωνυμία</string>
   <string name="page_title_calendar">Ημερολόγιο</string>
+  <string name="page_title_convert_smart_list">Μετατροπή σε έξυπνη λίστα</string>
   <string name="page_title_create_list">Δημιουργία Λίστας</string>
   <string name="page_title_create_smart_list">Δημιουργία έξυπνης λίστας</string>
   <string name="page_title_discover">Ανακαλύψτε</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Άνοιγμα</string>
   <string name="spotlight_input_placeholder">Πού να πάτε;</string>
   <string name="spotlight_no_results">Τίποτα δεν ταιριάζει με το \"%s\"</string>
+  <string name="spotlight_section_games">Παιχνίδια</string>
   <string name="spotlight_section_pages">Σελίδες</string>
   <string name="stat_label_hours">ώρες</string>
   <string name="stat_label_plays">προβολές</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Ενεργοποίηση ή απενεργοποίηση πολλαπλών παρακολουθήσεων</string>
   <string name="switch_label_private">Είναι το προφίλ ιδιωτικό</string>
   <string name="switch_label_rating_prompt">Ενεργοποίηση ή απενεργοποίηση προτροπών αξιολόγησης</string>
+  <string name="switch_label_soundtrack_season_only">Μόνο σεζόν %d</string>
   <string name="switch_label_spoilers">Εμφάνιση spoilers</string>
   <string name="switch_label_toggle_christmas_filters">Εναλλαγή φίλτρων Χριστουγέννων</string>
   <string name="switch_label_toggle_halloween_filters">Εναλλαγή φίλτρων Χαλοουίν</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Αξιολογήσεις</string>
   <string name="text_clear_source_watchlist">Λίστα παρακολούθησης</string>
   <string name="text_clear_watchlist">Εκκαθάριση λίστας παρακολούθησης</string>
+  <string name="text_comment_translation_download_ai_metered">Για τη μετάφραση αυτού του σχολίου απαιτείται εφάπαξ λήψη του μοντέλου AI της συσκευής, το οποίο μπορεί να είναι μεγάλο. Χρησιμοποιείτε δεδομένα κινητής τηλεφωνίας, επομένως ενδέχεται να καταναλώσετε από το διαθέσιμο όριό σας.</string>
+  <string name="text_comment_translation_download_metered">Για τη μετάφραση αυτού του σχολίου απαιτείται εφάπαξ λήψη γλώσσας. Χρησιμοποιείτε δεδομένα κινητής τηλεφωνίας, επομένως ενδέχεται να καταναλώσετε από το διαθέσιμο όριό σας.</string>
+  <string name="text_comment_translation_downloading">Λήψη γλώσσας…</string>
+  <string name="text_comment_translation_downloading_ai">Λήψη Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Λήψη Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">Μπορείτε να συνδέσετε την %s όποτε είστε έτοιμοι.</string>
   <string name="text_connection_status_cancelled_title">Η σύνδεση ακυρώθηκε</string>
   <string name="text_connection_status_connected_message">Συγχρονίζουμε το ιστορικό παρακολούθησης και τις αξιολογήσεις σας τώρα.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Νομικά</string>
   <string name="text_footer_category_platform">Πλατφόρμα</string>
   <string name="text_free">Δωρεάν</string>
+  <string name="text_game_best">Καλύτερο %s</string>
+  <string name="text_game_hint_swipe">Σύρετε προς τα πάνω για υψηλότερο, προς τα κάτω για χαμηλότερο</string>
+  <string name="text_game_intro_again">Ξανά;</string>
+  <string name="text_game_intro_hello">Γεια.</string>
+  <string name="text_game_intro_play">Θέλω να παίξουμε ένα παιχνίδι.</string>
+  <string name="text_game_load_error">Δεν ήταν δυνατή η φόρτωση τίτλων. Ελέγξτε τη σύνδεσή σας και προσπαθήστε ξανά.</string>
+  <string name="text_game_new_best">Νέο καλύτερο</string>
+  <string name="text_game_reveal">%1$s έχει βαθμολογία %2$s</string>
+  <string name="text_game_spoiler">Spoiler: Το %1$s έχει βαθμολογία %2$s</string>
+  <string name="text_game_spotlight_subtitle">Μαντέψτε ποιος τίτλος έχει υψηλότερη βαθμολογία στο Trakt</string>
+  <string name="text_game_versus">ΕΝΑΝΤΙΟΝ</string>
   <string name="text_history_slot_picker_empty">Δεν έχετε ακόμα ιστορικό παρακολούθησης. Αυτή θα είναι η πρώτη σας καταχώριση.</string>
   <string name="text_history_sync_filter">Αναγνωριστικό συγχρονισμού %d</string>
   <string name="text_history_sync_filter_with_source">Αναγνωριστικό συγχρονισμού %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Εγγραφείτε στο Trakt δωρεάν και ανακαλύψτε περισσότερες λειτουργίες που σας περιμένουν.</string>
   <string name="text_onboarding_4_title">Υπάρχουν περισσότερα να ανακαλύψετε.</string>
   <string name="text_overview_placeholder">Η επισκόπηση δεν είναι διαθέσιμη.</string>
+  <string name="text_passkey">Κλειδί πρόσβασης</string>
   <string name="text_people_count">%d άτομα</string>
   <string name="text_person_count">%d άτομο</string>
   <string name="text_personal_note">Προσωπική Σημείωση</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Βετεράνος</string>
   <string name="text_watch_until_here_episode_count">%d επεισόδια</string>
   <string name="text_watch_until_here_preview_title">Χρονοσφραγίδες παρακολούθησης</string>
+  <string name="text_year_in_review_banner_tagline">Δώδεκα προσωπικότητες. Μία από αυτές είστε εσείς.</string>
   <string name="text_younify_status_broken">Χαλασμένο</string>
   <string name="text_younify_status_linked">Συνδεδεμένο</string>
   <string name="text_younify_status_unlinked">Δεν είναι συνδεδεμένο</string>

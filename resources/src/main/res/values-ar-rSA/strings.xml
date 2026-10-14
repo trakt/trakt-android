@@ -156,6 +156,7 @@
   <string name="button_label_login">تسجيل الدخول</string>
   <string name="button_label_logout">تسجيل الخروج</string>
   <string name="button_label_manage_collaborators">إدارة المتعاونين لـ %s</string>
+  <string name="button_label_manage_passkey">إدارة مفتاح المرور</string>
   <string name="button_label_manage_subscription">إدارة اشتراك VIP</string>
   <string name="button_label_manage_vip">إدارة الاشتراك</string>
   <string name="button_label_mark_as_watched">حدِّد \"%s\" كمُشاهَد</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">إيقاف %s مؤقتًا</string>
   <string name="button_label_pick_match">استيراد %s.</string>
   <string name="button_label_play_all_stories">تشغيل جميع قصص اليوم</string>
+  <string name="button_label_play_game">العب مقيّم أعلى؟</string>
   <string name="button_label_play_story">تشغيل قصة %s</string>
   <string name="button_label_play_track">تشغيل %s</string>
   <string name="button_label_plex_add_server">إضافة خادم Plex</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">واضح الآن</string>
   <string name="button_text_comment_likes">%d إعجاب</string>
   <string name="button_text_comment_replies">%d رد</string>
+  <string name="button_text_comment_translated">مُترجَم</string>
   <string name="button_text_connect">تواصل</string>
   <string name="button_text_continue">متابعة</string>
   <string name="button_text_convert">تحويل</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">طلبات</string>
   <string name="button_text_followers">متابعون</string>
   <string name="button_text_following">متابعة</string>
+  <string name="button_text_game_close">إغلاق</string>
+  <string name="button_text_game_higher">أعلى</string>
+  <string name="button_text_game_lower">أقل</string>
+  <string name="button_text_game_play">العب</string>
+  <string name="button_text_game_play_again">العب مرة أخرى</string>
   <string name="button_text_get_started">ابدأ</string>
   <string name="button_text_get_vip">احصل على</string>
   <string name="button_text_go_to_show">انتقال إلى العرض</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">إدارة</string>
   <string name="button_text_manage_collaborators">المتعاونون</string>
   <string name="button_text_manage_lists">إدارة القوائم</string>
+  <string name="button_text_manage_passkey">إدارة</string>
   <string name="button_text_manage_subscription">إدارة اشتراك VIP</string>
   <string name="button_text_manage_vip">إدارة</string>
   <string name="button_text_mark_as_watched">تحديد كمُشاهدة</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">لم يعد Plex يقبل وصول Trakt. أعد الاتصال للاستمرار في المزامنة.</string>
   <string name="description_media_sync_unreachable">لا يمكن لـ Trakt الوصول إلى هذا الخادم. أعد المحاولة عندما يعود للاتصال بالإنترنت.</string>
   <string name="description_media_sync_watchlist_only">لا حاجة لخادم. تتم مزامنة قائمة مشاهدة Plex الخاصة بك.</string>
+  <string name="description_passkey">سجّل الدخول باستخدام بصمة إصبعك أو وجهك أو قفل الشاشة.</string>
   <string name="description_paused_items">لم تتم مشاهدة هذه العناصر بنسبة 80% على الأقل.</string>
   <string name="description_plex_home_users">تتم مزامنة مشاهداتك دائماً. أضف أسماء مستخدمي Plex Home أخرى لمزامنة مشاهداتهم أيضاً.</string>
   <string name="description_plex_manual_sync">قم بتشغيل مزامنة فورية لسجل مشاهدة Plex الخاص بك إلى Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">إيقاف</string>
   <string name="filter_toggle_state_on">تشغيل</string>
   <string name="header_account_details">تفاصيل الحساب</string>
+  <string name="header_account_security">أمان الحساب</string>
   <string name="header_add_from_lists">إضافة إلى %s</string>
   <string name="header_age">العمر</string>
   <string name="header_aired">بثت</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">التصنيف العمري</string>
   <string name="header_clear_data">مسح البيانات</string>
   <string name="header_comment_reactions">ردود الفعل المراجعة</string>
+  <string name="header_comment_translation_download">هل تريد تنزيل اللغة؟</string>
+  <string name="header_comment_translation_download_ai">هل تريد تنزيل نموذج Gemini؟</string>
   <string name="header_community_sentiment">المشاعر</string>
   <string name="header_country">الدولة</string>
   <string name="header_create_smart_list">إنشاء قائمة ذكية</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">تصدير بياناتك</string>
   <string name="header_filters">مرشحات</string>
   <string name="header_follows_leaderboard">لوحة الصدارة</string>
+  <string name="header_game_rated_higher">أعلى تقييماً؟</string>
   <string name="header_genre">التّصنيف</string>
   <string name="header_genres_loved">الأنواع التي تفضلها</string>
   <string name="header_get_notified">الحصول على إخطار!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">تتبع</string>
   <string name="header_settings_translations">الترجمات</string>
   <string name="header_skipped_items">العناصر التي تم تخطيها (%s)</string>
+  <string name="header_smart_list_compare_current">قائمتك</string>
+  <string name="header_smart_list_compare_proposed">كقائمة ذكية</string>
   <string name="header_stats_contributions">المساهمات</string>
   <string name="header_stats_graph_peak">ساعات الذروة</string>
   <string name="header_stats_graph_screen_time_daily">الانهيار اليومي</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">التبديل إلى بطاقة الائتمان</string>
   <string name="header_vip_streak">سجل VIP المتواصل</string>
   <string name="header_writer">الكاتب</string>
+  <string name="header_year_in_review_banner">ملخص عامك %d متوفر الآن!</string>
   <string name="heading_blocked_users">المستخدمون المحظورون</string>
   <string name="heading_branding_alternative_logos">الشعارات البديلة</string>
   <string name="heading_branding_dark_background">خلفية داكنة</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">ماذا ينبغي أن يكون اسم المستخدم الخاص بك؟</string>
   <string name="label_add_from_lists_source">قائمة المصدر</string>
   <string name="label_date_picker_time">الوقت</string>
+  <string name="label_delete_account_stat_hours">ساعات المشاهدة</string>
+  <string name="label_delete_account_stat_plays">مشاهدات مسجلة</string>
+  <string name="label_delete_account_stat_years">سنوات العضوية</string>
   <string name="label_drag_image_to_adjust">اسحب الصورة للضبط</string>
   <string name="label_favorites">المفضلات</string>
+  <string name="label_game_best">الأفضل</string>
+  <string name="label_game_streak">السلسلة</string>
   <string name="label_genres_drawer_all">جميع الأنواع</string>
   <string name="label_genres_drawer_selected">محدد</string>
   <string name="label_genres_drawer_subtitle_loved">اختر ما يصل إلى 5 أنواع ترغب في رؤية المزيد منها.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">قصير جداً</string>
   <string name="label_season_short">س%s</string>
+  <string name="label_smart_list_compare_view">اختر الإصدار المراد عرضه</string>
   <string name="label_stats_active_days">الأيام النشطة</string>
   <string name="label_stats_average">متوسط ​​</string>
   <string name="label_stats_avg_per_day">المتوسط ​​اليومي</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s وما فوق</string>
   <string name="list_summary_range_labeled_up_to">%1$s حتى %2$s</string>
   <string name="list_summary_range_up_to">حتى %s</string>
+  <string name="list_summary_released_within_days">صدر في آخر %s يومًا</string>
+  <string name="list_summary_votes_between">من %1$s إلى %2$s صوت من %3$s</string>
+  <string name="list_summary_votes_from">أكثر من %1$s صوت من %2$s</string>
   <string name="list_title_activity">النشاط</string>
   <string name="list_title_actors">الممثلين</string>
   <string name="list_title_all_titles">كل العناوين</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">التتبع التلقائي</string>
   <string name="page_title_branding">العلامة التجارية</string>
   <string name="page_title_calendar">تقويم</string>
+  <string name="page_title_convert_smart_list">تحويل إلى قائمة ذكية</string>
   <string name="page_title_create_list">إنشاء قائمة</string>
   <string name="page_title_create_smart_list">إنشاء قائمة ذكية</string>
   <string name="page_title_discover">اكتشف</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">فتح</string>
   <string name="spotlight_input_placeholder">إلى أين؟</string>
   <string name="spotlight_no_results">لا يوجد ما يطابق \"%s\"</string>
+  <string name="spotlight_section_games">ألعاب</string>
   <string name="spotlight_section_pages">الصفحات</string>
   <string name="stat_label_hours">ساعات</string>
   <string name="stat_label_plays">مشاهدات</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">تمكين أو تعطيل ساعات متعددة</string>
   <string name="switch_label_private">هل الملف الشخصي خاص</string>
   <string name="switch_label_rating_prompt">تمكين أو تعطيل مطالبات التصنيف</string>
+  <string name="switch_label_soundtrack_season_only">الموسم %d فقط</string>
   <string name="switch_label_spoilers">إظهار الحرق</string>
   <string name="switch_label_toggle_christmas_filters">تبديل فلاتر الكريسماس</string>
   <string name="switch_label_toggle_halloween_filters">تبديل فلاتر الهالوين</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">التقييمات</string>
   <string name="text_clear_source_watchlist">قائمة المشاهدة</string>
   <string name="text_clear_watchlist">مسح قائمة المشاهدة</string>
+  <string name="text_comment_translation_download_ai_metered">تتطلب ترجمة هذا التعليق تنزيلًا لمرة واحدة لنموذج الذكاء الاصطناعي على الجهاز، والذي قد يكون كبيرًا. أنت تستخدم بيانات الجوال، لذا قد يستهلك ذلك من رصيد بياناتك.</string>
+  <string name="text_comment_translation_download_metered">تتطلب ترجمة هذا التعليق تنزيلًا لمرة واحدة للغة. أنت تستخدم بيانات الجوال، لذا قد يستهلك ذلك من رصيد بياناتك.</string>
+  <string name="text_comment_translation_downloading">تنزيل اللغة…</string>
+  <string name="text_comment_translation_downloading_ai">تنزيل Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">تنزيل Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">يمكنك توصيل %s عندما تكون مستعدًا.</string>
   <string name="text_connection_status_cancelled_title">تم إلغاء الاتصال</string>
   <string name="text_connection_status_connected_message">نقوم الآن بمزامنة سجل المشاهدة وتقييماتك.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">قانوني</string>
   <string name="text_footer_category_platform">منصة</string>
   <string name="text_free">مجاني</string>
+  <string name="text_game_best">الأفضل %s</string>
+  <string name="text_game_hint_swipe">اسحب لأعلى للأعلى، ولأسفل للأقل</string>
+  <string name="text_game_intro_again">مرة أخرى؟</string>
+  <string name="text_game_intro_hello">مرحباً.</string>
+  <string name="text_game_intro_play">أريد أن ألعب لعبة.</string>
+  <string name="text_game_load_error">تعذر تحميل العناوين. تحقق من اتصالك وحاول مرة أخرى.</string>
+  <string name="text_game_new_best">رقم قياسي جديد</string>
+  <string name="text_game_reveal">تقييم %1$s هو %2$s</string>
+  <string name="text_game_spoiler">تنبيه حرق: تقييم %1$s هو %2$s</string>
+  <string name="text_game_spotlight_subtitle">خمن أي عنوان تقييمه أعلى في Trakt</string>
+  <string name="text_game_versus">ضد</string>
   <string name="text_history_slot_picker_empty">ليس لديك أي سجل مشاهدة بعد. سيكون هذا هو إدخالك الأول.</string>
   <string name="text_history_sync_filter">معرف المزامنة %d</string>
   <string name="text_history_sync_filter_with_source">معرف المزامنة %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">انضم إلى Trakt مجانًا واكتشف المزيد من الميزات في انتظارك.</string>
   <string name="text_onboarding_4_title">هناك المزيد لاكتشافه.</string>
   <string name="text_overview_placeholder">نظرة عامة غير متوفرة.</string>
+  <string name="text_passkey">مفتاح المرور</string>
   <string name="text_people_count">%d أشخاص</string>
   <string name="text_person_count">%d شخص</string>
   <string name="text_personal_note">ملاحظة شخصية</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">مخضرم</string>
   <string name="text_watch_until_here_episode_count">عدد الحلقات: %d</string>
   <string name="text_watch_until_here_preview_title">الطوابع الزمنية التي تمت مشاهدتها</string>
+  <string name="text_year_in_review_banner_tagline">اثنا عشر شخصية. واحدة منها هي أنت.</string>
   <string name="text_younify_status_broken">مكسور</string>
   <string name="text_younify_status_linked">مرتبط</string>
   <string name="text_younify_status_unlinked">غير مرتبط</string>

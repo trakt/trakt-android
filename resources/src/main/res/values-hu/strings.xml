@@ -156,6 +156,7 @@
   <string name="button_label_login">Bejelentkezés</string>
   <string name="button_label_logout">Kijelentkezés</string>
   <string name="button_label_manage_collaborators">Közreműködők kezelése ehhez: %s</string>
+  <string name="button_label_manage_passkey">Jelszókulcs kezelése</string>
   <string name="button_label_manage_subscription">VIP előfizetés kezelése</string>
   <string name="button_label_manage_vip">Előfizetés kezelése</string>
   <string name="button_label_mark_as_watched">\"%s\" megnézettként jelölése</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">%s szüneteltetése</string>
   <string name="button_label_pick_match">Importálja a(z) %s elemet.</string>
   <string name="button_label_play_all_stories">A mai történetek mindegyikének lejátszása</string>
+  <string name="button_label_play_game">Játssz a Magasabb pontszámú? játékkal</string>
   <string name="button_label_play_story">%s történetének lejátszása</string>
   <string name="button_label_play_track">%s lejátszása</string>
   <string name="button_label_plex_add_server">Plex szerver hozzáadása</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Törlés most</string>
   <string name="button_text_comment_likes">%d kedvelés</string>
   <string name="button_text_comment_replies">%d válasz</string>
+  <string name="button_text_comment_translated">Lefordítva</string>
   <string name="button_text_connect">Csatlakozás</string>
   <string name="button_text_continue">Folytatás</string>
   <string name="button_text_convert">Átalakítás</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Kérelmek</string>
   <string name="button_text_followers">Követők</string>
   <string name="button_text_following">Követettek</string>
+  <string name="button_text_game_close">Bezárás</string>
+  <string name="button_text_game_higher">Magasabb</string>
+  <string name="button_text_game_lower">Alacsonyabb</string>
+  <string name="button_text_game_play">Lejátszás</string>
+  <string name="button_text_game_play_again">Játssz újra</string>
   <string name="button_text_get_started">Kezdés</string>
   <string name="button_text_get_vip">Szerezd be</string>
   <string name="button_text_go_to_show">Ugrás a sorozathoz</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Kezelés</string>
   <string name="button_text_manage_collaborators">Közreműködők</string>
   <string name="button_text_manage_lists">Listák kezelése</string>
+  <string name="button_text_manage_passkey">Kezelés</string>
   <string name="button_text_manage_subscription">VIP előfizetés kezelése</string>
   <string name="button_text_manage_vip">Kezelés</string>
   <string name="button_text_mark_as_watched">Jelölés megtekintettként</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">A Plex többé nem fogadja el a Trakt hozzáférését. Csatlakoztasd újra a szinkronizálás folytatásához.</string>
   <string name="description_media_sync_unreachable">A Trakt nem éri el ezt a szervert. Próbáld újra, miután visszatért online állapotba.</string>
   <string name="description_media_sync_watchlist_only">Nincs szükség szerverre. Szinkronizálja a Plex megnézendők listáját.</string>
+  <string name="description_passkey">Jelentkezzen be ujjlenyomatával, arcával vagy képernyőzárával.</string>
   <string name="description_paused_items">Ezeket az elemeket nem nézték meg legalább 80%-ban.</string>
   <string name="description_plex_home_users">Saját lejátszásai mindig szinkronizálódnak. Adjon hozzá más Plex Otthoni felhasználóneveket is a szinkronizáláshoz.</string>
   <string name="description_plex_manual_sync">Azonnali szinkronizálás indítása a Plex megtekintési előzményeiből a Traktba.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Ki</string>
   <string name="filter_toggle_state_on">Be</string>
   <string name="header_account_details">Fiókadatok</string>
+  <string name="header_account_security">Fiókbiztonság</string>
   <string name="header_add_from_lists">Hozzáadás ehhez: %s</string>
   <string name="header_age">Életkor</string>
   <string name="header_aired">Adásban volt</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Besorolás</string>
   <string name="header_clear_data">Adatok törlése</string>
   <string name="header_comment_reactions">Reakciók az értékelésre</string>
+  <string name="header_comment_translation_download">Nyelv letöltése?</string>
+  <string name="header_comment_translation_download_ai">Gemini modell letöltése?</string>
   <string name="header_community_sentiment">Hangulat</string>
   <string name="header_country">Ország</string>
   <string name="header_create_smart_list">Okos lista létrehozása</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Adataid exportálása</string>
   <string name="header_filters">Szűrők</string>
   <string name="header_follows_leaderboard">Ranglista</string>
+  <string name="header_game_rated_higher">Magasabb pontszámú?</string>
   <string name="header_genre">Műfaj</string>
   <string name="header_genres_loved">Kedvelt műfajok</string>
   <string name="header_get_notified">Értesítést kérek!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Nyomon követés</string>
   <string name="header_settings_translations">Fordítások</string>
   <string name="header_skipped_items">%s kihagyott elem</string>
+  <string name="header_smart_list_compare_current">Saját lista</string>
+  <string name="header_smart_list_compare_proposed">Okos listaként</string>
   <string name="header_stats_contributions">Hozzájárulások</string>
   <string name="header_stats_graph_peak">Csúcsidő</string>
   <string name="header_stats_graph_screen_time_daily">Napi bontás</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Váltás hitelkártyára</string>
   <string name="header_vip_streak">VIP sorozat</string>
   <string name="header_writer">Író</string>
+  <string name="header_year_in_review_banner">Itt van a(z) %d évértékelőd!</string>
   <string name="heading_blocked_users">Blokkolt felhasználók</string>
   <string name="heading_branding_alternative_logos">Alternatív logók</string>
   <string name="heading_branding_dark_background">Sötét háttér</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Mi legyen a felhasználóneved?</string>
   <string name="label_add_from_lists_source">Forráslista</string>
   <string name="label_date_picker_time">Idő</string>
+  <string name="label_delete_account_stat_hours">Nézett óra</string>
+  <string name="label_delete_account_stat_plays">Naplózott lejátszások</string>
+  <string name="label_delete_account_stat_years">Évek</string>
   <string name="label_drag_image_to_adjust">Húzd a képet az igazításhot</string>
   <string name="label_favorites">Kedvencek</string>
+  <string name="label_game_best">Legjobb</string>
+  <string name="label_game_streak">Sorozat</string>
   <string name="label_genres_drawer_all">Összes műfaj</string>
   <string name="label_genres_drawer_selected">Kiválasztott</string>
   <string name="label_genres_drawer_subtitle_loved">Válasszon ki legfeljebb 5 műfajt, amelyekből többet szeretne látni.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Túl rövid</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Válassza ki a megjelenítendő verziót</string>
   <string name="label_stats_active_days">Aktív nap</string>
   <string name="label_stats_average">Átl.</string>
   <string name="label_stats_avg_per_day">Napi átlag</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s és felette</string>
   <string name="list_summary_range_labeled_up_to">%1$s akár %2$s-ig</string>
   <string name="list_summary_range_up_to">Akár %s-ig</string>
+  <string name="list_summary_released_within_days">Az elmúlt %s napban megjelent</string>
+  <string name="list_summary_votes_between">%1$s-%2$s %3$s szavazat</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s szavazat</string>
   <string name="list_title_activity">Tevékenység</string>
   <string name="list_title_actors">Színészek</string>
   <string name="list_title_all_titles">Minden cím</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Automatikus követés</string>
   <string name="page_title_branding">Márka</string>
   <string name="page_title_calendar">Naptár</string>
+  <string name="page_title_convert_smart_list">Okoslistává alakítás</string>
   <string name="page_title_create_list">Lista létrehozása</string>
   <string name="page_title_create_smart_list">Okos lista létrehozása</string>
   <string name="page_title_discover">Felfedezés</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Megnyitás</string>
   <string name="spotlight_input_placeholder">Hová?</string>
   <string name="spotlight_no_results">Nincs találat erre: \"%s\"</string>
+  <string name="spotlight_section_games">Játékok</string>
   <string name="spotlight_section_pages">Oldalak</string>
   <string name="stat_label_hours">órák</string>
   <string name="stat_label_plays">lejátszások</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Újranézések engedélyezése vagy letiltása</string>
   <string name="switch_label_private">Privát profil</string>
   <string name="switch_label_rating_prompt">Értékelési felszólítások engedélyezése vagy letiltása</string>
+  <string name="switch_label_soundtrack_season_only">Csak a(z) %d. évad</string>
   <string name="switch_label_spoilers">Spoilerek megjelenítése</string>
   <string name="switch_label_toggle_christmas_filters">Karácsonyi szűrők be/ki kapcsolása</string>
   <string name="switch_label_toggle_halloween_filters">Halloween szűrők be/ki kapcsolása</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Értékelések</string>
   <string name="text_clear_source_watchlist">Megnézendők</string>
   <string name="text_clear_watchlist">Megnézendők listájának törlése</string>
+  <string name="text_comment_translation_download_ai_metered">A hozzászólás fordításához egyszeri alkalommal le kell tölteni az eszközön futó AI modellt, ami nagy méretű lehet. Mobildaton van, így ez felhasználhatja az adatforgalmát.</string>
+  <string name="text_comment_translation_download_metered">A hozzászólás fordításához egyszeri nyelvi letöltés szükséges. Mobildaton van, így ez felhasználhatja az adatforgalmát.</string>
+  <string name="text_comment_translation_downloading">Nyelv letöltése…</string>
+  <string name="text_comment_translation_downloading_ai">Gemini letöltése…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Gemini letöltése… %d</string>
   <string name="text_connection_status_cancelled_message">Bármikor csatlakozhat a(z) %s szolgáltatáshoz, amikor készen áll.</string>
   <string name="text_connection_status_cancelled_title">Kapcsolat megszakítva</string>
   <string name="text_connection_status_connected_message">Most szinkronizáljuk megtekintett előzményeit és értékeléseit.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Jogi</string>
   <string name="text_footer_category_platform">Platform</string>
   <string name="text_free">Ingyenes</string>
+  <string name="text_game_best">Legjobb: %s</string>
+  <string name="text_game_hint_swipe">Húzza felfelé a magasabbért, lefelé az alacsonyabbért</string>
+  <string name="text_game_intro_again">Újra?</string>
+  <string name="text_game_intro_hello">Helló.</string>
+  <string name="text_game_intro_play">Játszani akarok egy játékot.</string>
+  <string name="text_game_load_error">Nem sikerült betölteni a címeket. Ellenőrizze az internetkapcsolatát, majd próbálja újra.</string>
+  <string name="text_game_new_best">Új legjobb</string>
+  <string name="text_game_reveal">%1$s értékelése %2$s</string>
+  <string name="text_game_spoiler">Spoiler: %1$s értékelése %2$s</string>
+  <string name="text_game_spotlight_subtitle">Találd meg, melyik címnek van magasabb Trakt értékelése</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Még nincs megtekintési előzménye. Ez lesz az első bejegyzése.</string>
   <string name="text_history_sync_filter">Szinkronizálási azonosító: %d</string>
   <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Csatlakozz ingyen a Trakt-hoz, és fedezz fel további funkciókat, amelyek várnak rád.</string>
   <string name="text_onboarding_4_title">Több felfedeznivaló vár.</string>
   <string name="text_overview_placeholder">Az áttekintés nem elérhető.</string>
+  <string name="text_passkey">Jelszókulcs</string>
   <string name="text_people_count">%d személy</string>
   <string name="text_person_count">%d személy</string>
   <string name="text_personal_note">Személyes jegyzet</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Veterán</string>
   <string name="text_watch_until_here_episode_count">%d epizód</string>
   <string name="text_watch_until_here_preview_title">Megnézés időpontjai</string>
+  <string name="text_year_in_review_banner_tagline">Tizenkét személyiség. Egyikük te vagy.</string>
   <string name="text_younify_status_broken">Hibás</string>
   <string name="text_younify_status_linked">Összekapcsolva</string>
   <string name="text_younify_status_unlinked">Nincs összekapcsolva</string>

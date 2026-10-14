@@ -156,6 +156,7 @@
   <string name="button_label_login">Giriş Yap</string>
   <string name="button_label_logout">Çıkış Yap</string>
   <string name="button_label_manage_collaborators">%s için iş birlikçilerini yönet</string>
+  <string name="button_label_manage_passkey">Geçiş anahtarını yönet</string>
   <string name="button_label_manage_subscription">VIP Aboneliğini Yönet</string>
   <string name="button_label_manage_vip">Aboneliği Yönet</string>
   <string name="button_label_mark_as_watched">\"%s\" izlendi olarak işaretle</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">%s duraklat</string>
   <string name="button_label_pick_match">%s İçe Aktar.</string>
   <string name="button_label_play_all_stories">Bugünün tüm hikayelerini oynat</string>
+  <string name="button_label_play_game">Daha Yüksek Puanlıyı Oyna?</string>
   <string name="button_label_play_story">%s hikayesini oynat</string>
   <string name="button_label_play_track">%s oynat</string>
   <string name="button_label_plex_add_server">Bir Plex sunucusu ekle</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Şimdi temizle</string>
   <string name="button_text_comment_likes">%d beğeni</string>
   <string name="button_text_comment_replies">%d yanıt</string>
+  <string name="button_text_comment_translated">Çevrildi</string>
   <string name="button_text_connect">Bağlan</string>
   <string name="button_text_continue">Devam Et</string>
   <string name="button_text_convert">Dönüştür</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">İstekler</string>
   <string name="button_text_followers">Takipçiler</string>
   <string name="button_text_following">Takip Edilenler</string>
+  <string name="button_text_game_close">Kapat</string>
+  <string name="button_text_game_higher">Daha Yüksek</string>
+  <string name="button_text_game_lower">Daha Düşük</string>
+  <string name="button_text_game_play">Oyna</string>
+  <string name="button_text_game_play_again">Tekrar oyna</string>
   <string name="button_text_get_started">Başla</string>
   <string name="button_text_get_vip">Al</string>
   <string name="button_text_go_to_show">Diziye git</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Yönet</string>
   <string name="button_text_manage_collaborators">İş Birlikçileri</string>
   <string name="button_text_manage_lists">Listeleri yönet</string>
+  <string name="button_text_manage_passkey">Yönet</string>
   <string name="button_text_manage_subscription">VIP Aboneliğini Yönet</string>
   <string name="button_text_manage_vip">Yönet</string>
   <string name="button_text_mark_as_watched">İzlendi Olarak İşaretle</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex artık Trakt\'in erişimini kabul etmiyor. Senkronizasyona devam etmek için yeniden bağlanın.</string>
   <string name="description_media_sync_unreachable">Trakt bu sunucuya ulaşamıyor. Tekrar çevrimiçi olduğunda yeniden deneyin.</string>
   <string name="description_media_sync_watchlist_only">Sunucu gerekmez. Plex izleme listenizi senkronize eder.</string>
+  <string name="description_passkey">Parmak iziniz, yüzünüz veya ekran kilidinizle oturum açın.</string>
   <string name="description_paused_items">Bu öğelerin en az %80\'i izlenmedi.</string>
   <string name="description_plex_home_users">Kendi oynatmalarınız her zaman senkronize edilir. Diğer Plex Aile kullanıcı adlarını da senkronize etmek için ekleyin.</string>
   <string name="description_plex_manual_sync">Plex izleme geçmişinizin Trakt ile hemen senkronizasyonunu tetikleyin.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Kapalı</string>
   <string name="filter_toggle_state_on">Açık</string>
   <string name="header_account_details">Hesap detayları</string>
+  <string name="header_account_security">Hesap güvenliği</string>
   <string name="header_add_from_lists">%s listesine ekle</string>
   <string name="header_age">Yaş</string>
   <string name="header_aired">Yayınlandı</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Sertifika</string>
   <string name="header_clear_data">Verileri Temizle</string>
   <string name="header_comment_reactions">Yorum tepkileri</string>
+  <string name="header_comment_translation_download">Dil indirilsin mi?</string>
+  <string name="header_comment_translation_download_ai">Gemini modeli indirilsin mi?</string>
   <string name="header_community_sentiment">Duygu</string>
   <string name="header_country">Ülke</string>
   <string name="header_create_smart_list">Akıllı Liste Oluştur</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Verileriniz dışa aktarılıyor</string>
   <string name="header_filters">Filtreler</string>
   <string name="header_follows_leaderboard">Liderlik Tablosu</string>
+  <string name="header_game_rated_higher">Daha Yüksek Puanlı mı?</string>
   <string name="header_genre">Tür</string>
   <string name="header_genres_loved">Beğendiğiniz Türler</string>
   <string name="header_get_notified">Bildirim Alın!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Takip</string>
   <string name="header_settings_translations">Çeviriler</string>
   <string name="header_skipped_items">%s Atlanan Öğe</string>
+  <string name="header_smart_list_compare_current">Listeniz</string>
+  <string name="header_smart_list_compare_proposed">Akıllı liste olarak</string>
   <string name="header_stats_contributions">Katkılar</string>
   <string name="header_stats_graph_peak">Yoğun Saatler</string>
   <string name="header_stats_graph_screen_time_daily">Günlük Döküm</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Kredi kartına geç</string>
   <string name="header_vip_streak">VIP serisi</string>
   <string name="header_writer">Yazar</string>
+  <string name="header_year_in_review_banner">%d Yılı Özetin hazır!</string>
   <string name="heading_blocked_users">Engellenen Kullanıcılar</string>
   <string name="heading_branding_alternative_logos">Alternatif Logolar</string>
   <string name="heading_branding_dark_background">Koyu Arka Plan</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Kullanıcı adınız ne olmalı?</string>
   <string name="label_add_from_lists_source">Kaynak liste</string>
   <string name="label_date_picker_time">Saat</string>
+  <string name="label_delete_account_stat_hours">İzlenen saatler</string>
+  <string name="label_delete_account_stat_plays">İzlenme Sayısı</string>
+  <string name="label_delete_account_stat_years">Üyelik Süresi</string>
   <string name="label_drag_image_to_adjust">Görseli ayarlamak için sürükleyin</string>
   <string name="label_favorites">Favoriler</string>
+  <string name="label_game_best">En İyi</string>
+  <string name="label_game_streak">Seri</string>
   <string name="label_genres_drawer_all">Tüm Türler</string>
   <string name="label_genres_drawer_selected">Seçilenler</string>
   <string name="label_genres_drawer_subtitle_loved">Daha fazlasını görmek istediğiniz en fazla 5 tür seçin.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Çok kısa</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Hangi sürümü göstereceğinizi seçin</string>
   <string name="label_stats_active_days">Aktif Günler</string>
   <string name="label_stats_average">Ort.</string>
   <string name="label_stats_avg_per_day">Günlük Ortalama</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s ve üzeri</string>
   <string name="list_summary_range_labeled_up_to">%1$s %2$s\'a kadar</string>
   <string name="list_summary_range_up_to">%s\'a kadar</string>
+  <string name="list_summary_released_within_days">Son %s gün içinde yayınlandı</string>
+  <string name="list_summary_votes_between">%1$s ila %2$s %3$s oyu</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s oyu</string>
   <string name="list_title_activity">Etkinlik</string>
   <string name="list_title_actors">Oyuncular</string>
   <string name="list_title_all_titles">Tüm Başlıklar</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Otomatik Takip</string>
   <string name="page_title_branding">Markalama</string>
   <string name="page_title_calendar">Takvim</string>
+  <string name="page_title_convert_smart_list">Akıllı listeye dönüştür</string>
   <string name="page_title_create_list">Liste Oluştur</string>
   <string name="page_title_create_smart_list">Akıllı Liste Oluştur</string>
   <string name="page_title_discover">Keşfet</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Aç</string>
   <string name="spotlight_input_placeholder">Nereye?</string>
   <string name="spotlight_no_results">Hiçbir şey \"%s\" ile eşleşmiyor</string>
+  <string name="spotlight_section_games">Oyunlar</string>
   <string name="spotlight_section_pages">Sayfalar</string>
   <string name="stat_label_hours">saat</string>
   <string name="stat_label_plays">oynatma</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Birden fazla izlemeyi etkinleştir veya devre dışı bırak</string>
   <string name="switch_label_private">Profil gizli mi</string>
   <string name="switch_label_rating_prompt">Derecelendirme istemlerini etkinleştir veya devre dışı bırak</string>
+  <string name="switch_label_soundtrack_season_only">Sezon %d sadece</string>
   <string name="switch_label_spoilers">Spoilerları göster</string>
   <string name="switch_label_toggle_christmas_filters">Yılbaşı filtrelerini aç/kapat</string>
   <string name="switch_label_toggle_halloween_filters">Cadılar Bayramı filtrelerini aç/kapat</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Derecelendirmeler</string>
   <string name="text_clear_source_watchlist">İzleme Listesi</string>
   <string name="text_clear_watchlist">İzleme listesini temizle</string>
+  <string name="text_comment_translation_download_ai_metered">Bu yorumu çevirmek için cihaz içi yapay zeka modelinin tek seferlik indirilmesi gerekiyor. Bu model büyük olabilir. Mobil veri kullanıyorsunuz, bu da veri limitinizi tüketebilir.</string>
+  <string name="text_comment_translation_download_metered">Bu yorumu çevirmek için tek seferlik bir dil indirmesi gerekiyor. Mobil veri kullanıyorsunuz, bu da veri limitinizi tüketebilir.</string>
+  <string name="text_comment_translation_downloading">Dil indiriliyor…</string>
+  <string name="text_comment_translation_downloading_ai">Gemini indiriliyor…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Gemini indiriliyor… %d</string>
   <string name="text_connection_status_cancelled_message">Hazır olduğunuzda %s ile bağlantı kurabilirsiniz.</string>
   <string name="text_connection_status_cancelled_title">Bağlantı iptal edildi</string>
   <string name="text_connection_status_connected_message">İzleme geçmişinizi ve puanlarınızı şimdi senkronize ediyoruz.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Yasal</string>
   <string name="text_footer_category_platform">Platform</string>
   <string name="text_free">Ücretsiz</string>
+  <string name="text_game_best">En İyi %s</string>
+  <string name="text_game_hint_swipe">Yukarı kaydırarak daha yüksek, aşağı kaydırarak daha düşük</string>
+  <string name="text_game_intro_again">Tekrar mı?</string>
+  <string name="text_game_intro_hello">Merhaba.</string>
+  <string name="text_game_intro_play">Bir oyun oynamak istiyorum.</string>
+  <string name="text_game_load_error">Başlıklar yüklenemedi. Bağlantınızı kontrol edin ve tekrar deneyin.</string>
+  <string name="text_game_new_best">Yeni en iyi</string>
+  <string name="text_game_reveal">%1$s %2$s puan aldı</string>
+  <string name="text_game_spoiler">Spoiler: %1$s %2$s puan aldı</string>
+  <string name="text_game_spotlight_subtitle">Hangi başlığın Trakt\'ta daha yüksek puan aldığını tahmin edin</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Henüz izleme geçmişiniz yok. Bu sizin ilk girişiniz olacak.</string>
   <string name="text_history_sync_filter">Senkronizasyon Kimliği %d</string>
   <string name="text_history_sync_filter_with_source">Senkronizasyon Kimliği %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Trakt\'a ücretsiz katılın ve sizi bekleyen daha fazla özelliği keşfedin.</string>
   <string name="text_onboarding_4_title">Keşfedilecek daha çok şey var.</string>
   <string name="text_overview_placeholder">Genel bakış mevcut değil.</string>
+  <string name="text_passkey">Geçiş Anahtarı</string>
   <string name="text_people_count">%d kişi</string>
   <string name="text_person_count">%d kişi</string>
   <string name="text_personal_note">Kişisel Not</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Kıdemli</string>
   <string name="text_watch_until_here_episode_count">%d bölüm</string>
   <string name="text_watch_until_here_preview_title">İzleme zaman damgaları</string>
+  <string name="text_year_in_review_banner_tagline">On iki kişiden biri sizsiniz.</string>
   <string name="text_younify_status_broken">Bozuk</string>
   <string name="text_younify_status_linked">Bağlı</string>
   <string name="text_younify_status_unlinked">Bağlı değil</string>

@@ -156,6 +156,7 @@
   <string name="button_label_login">ログイン</string>
   <string name="button_label_logout">ログアウト</string>
   <string name="button_label_manage_collaborators">%sのコラボレーターを管理</string>
+  <string name="button_label_manage_passkey">パスキーを管理</string>
   <string name="button_label_manage_subscription">VIPサブスクリプションを管理</string>
   <string name="button_label_manage_vip">サブスクリプションを管理</string>
   <string name="button_label_mark_as_watched">「%s」を視聴済みにする</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">%sを一時停止</string>
   <string name="button_label_pick_match">%sをインポートする。</string>
   <string name="button_label_play_all_stories">今日のストーリーをすべて再生</string>
+  <string name="button_label_play_game">「評価は上？」をプレイ</string>
   <string name="button_label_play_story">%sのストーリーを再生</string>
   <string name="button_label_play_track">%sを再生</string>
   <string name="button_label_plex_add_server">Plexサーバーを追加</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">今すぐクリア</string>
   <string name="button_text_comment_likes">いいね%d件</string>
   <string name="button_text_comment_replies">%d件の返信</string>
+  <string name="button_text_comment_translated">翻訳済み</string>
   <string name="button_text_connect">接続</string>
   <string name="button_text_continue">続ける</string>
   <string name="button_text_convert">変換</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">リクエスト</string>
   <string name="button_text_followers">フォロワー</string>
   <string name="button_text_following">フォロー中</string>
+  <string name="button_text_game_close">閉じる</string>
+  <string name="button_text_game_higher">上</string>
+  <string name="button_text_game_lower">下</string>
+  <string name="button_text_game_play">プレイ</string>
+  <string name="button_text_game_play_again">もう一度プレイ</string>
   <string name="button_text_get_started">開始</string>
   <string name="button_text_get_vip">ゲット</string>
   <string name="button_text_go_to_show">作品ページへ</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">管理</string>
   <string name="button_text_manage_collaborators">コラボレーター</string>
   <string name="button_text_manage_lists">リストを管理</string>
+  <string name="button_text_manage_passkey">管理</string>
   <string name="button_text_manage_subscription">VIPサブスクリプションを管理</string>
   <string name="button_text_manage_vip">管理</string>
   <string name="button_text_mark_as_watched">視聴済みにする</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">PlexがTraktのアクセスを受け付けなくなりました。同期を継続するには再接続してください。</string>
   <string name="description_media_sync_unreachable">Traktはこのサーバーに到達できません。オンラインに戻ったら再試行してください。</string>
   <string name="description_media_sync_watchlist_only">サーバーは不要です。Plexウォッチリストを同期します。</string>
+  <string name="description_passkey">指紋、顔認証、または画面ロックでサインインします。</string>
   <string name="description_paused_items">これらのアイテムは80%以上視聴されていません。</string>
   <string name="description_plex_home_users">あなたの視聴履歴は常に同期されます。他のPlex Homeユーザー名を追加すると、そのユーザーの履歴も同期されます。</string>
   <string name="description_plex_manual_sync">Plexの視聴履歴をTraktに今すぐ同期します。</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">オフ</string>
   <string name="filter_toggle_state_on">オン</string>
   <string name="header_account_details">アカウント詳細</string>
+  <string name="header_account_security">アカウントセキュリティ</string>
   <string name="header_add_from_lists">%sに追加</string>
   <string name="header_age">年齢</string>
   <string name="header_aired">放送済み</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">認証</string>
   <string name="header_clear_data">データクリア</string>
   <string name="header_comment_reactions">レビューリアクション</string>
+  <string name="header_comment_translation_download">言語をダウンロードしますか？</string>
+  <string name="header_comment_translation_download_ai">Geminiモデルをダウンロードしますか？</string>
   <string name="header_community_sentiment">コミュニティの評価</string>
   <string name="header_country">国</string>
   <string name="header_create_smart_list">スマートリストを作成</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">データのエクスポート中</string>
   <string name="header_filters">フィルター</string>
   <string name="header_follows_leaderboard">ランキング</string>
+  <string name="header_game_rated_higher">評価は上？</string>
   <string name="header_genre">ジャンル</string>
   <string name="header_genres_loved">お気に入りのジャンル</string>
   <string name="header_get_notified">通知を受け取る！</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">トラッキング</string>
   <string name="header_settings_translations">翻訳</string>
   <string name="header_skipped_items">%s個のスキップ済みアイテム</string>
+  <string name="header_smart_list_compare_current">現在のリスト</string>
+  <string name="header_smart_list_compare_proposed">スマートリストとして</string>
   <string name="header_stats_contributions">貢献度</string>
   <string name="header_stats_graph_peak">ピーク時間</string>
   <string name="header_stats_graph_screen_time_daily">毎日の内訳</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">クレジットカードに切り替える</string>
   <string name="header_vip_streak">VIP連続記録</string>
   <string name="header_writer">脚本家</string>
+  <string name="header_year_in_review_banner">%d年の年間レビューが公開されました！</string>
   <string name="heading_blocked_users">ブロック中のユーザー</string>
   <string name="heading_branding_alternative_logos">代替ロゴ</string>
   <string name="heading_branding_dark_background">暗い背景</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">ユーザー名は何にしますか？</string>
   <string name="label_add_from_lists_source">ソースリスト</string>
   <string name="label_date_picker_time">時間</string>
+  <string name="label_delete_account_stat_hours">視聴時間</string>
+  <string name="label_delete_account_stat_plays">再生回数</string>
+  <string name="label_delete_account_stat_years">利用年数</string>
   <string name="label_drag_image_to_adjust">画像をドラッグして調整</string>
   <string name="label_favorites">お気に入り</string>
+  <string name="label_game_best">ベスト</string>
+  <string name="label_game_streak">連続記録</string>
   <string name="label_genres_drawer_all">すべてのジャンル</string>
   <string name="label_genres_drawer_selected">選択済み</string>
   <string name="label_genres_drawer_subtitle_loved">さらに表示したいジャンルを最大5つ選択してください。</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">短すぎる</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">表示するバージョンを選択</string>
   <string name="label_stats_active_days">アクティブな日数</string>
   <string name="label_stats_average">平均</string>
   <string name="label_stats_avg_per_day">日別平均</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s以上</string>
   <string name="list_summary_range_labeled_up_to">%1$s %2$sまで</string>
   <string name="list_summary_range_up_to">%sまで</string>
+  <string name="list_summary_released_within_days">過去%s日以内にリリース</string>
+  <string name="list_summary_votes_between">%1$s～%2$s件の%3$s票</string>
+  <string name="list_summary_votes_from">%1$s件以上の%2$s票</string>
   <string name="list_title_activity">アクティビティ</string>
   <string name="list_title_actors">俳優</string>
   <string name="list_title_all_titles">全タイトル</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">自動トラッキング</string>
   <string name="page_title_branding">ブランドガイドライン</string>
   <string name="page_title_calendar">カレンダー</string>
+  <string name="page_title_convert_smart_list">スマートリストに変換</string>
   <string name="page_title_create_list">リストを作成</string>
   <string name="page_title_create_smart_list">スマートリストを作成</string>
   <string name="page_title_discover">発見</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">開く</string>
   <string name="spotlight_input_placeholder">どこへ？</string>
   <string name="spotlight_no_results">\"%s\" に一致するものはありません</string>
+  <string name="spotlight_section_games">ゲーム</string>
   <string name="spotlight_section_pages">ページ</string>
   <string name="stat_label_hours">時間</string>
   <string name="stat_label_plays">再生回数</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">複数回視聴を有効または無効にする</string>
   <string name="switch_label_private">プロフィールを非公開にする</string>
   <string name="switch_label_rating_prompt">評価プロンプトを有効または無効にする</string>
+  <string name="switch_label_soundtrack_season_only">シーズン%dのみ</string>
   <string name="switch_label_spoilers">ネタバレを表示</string>
   <string name="switch_label_toggle_christmas_filters">クリスマスフィルターの切り替え</string>
   <string name="switch_label_toggle_halloween_filters">ハロウィンフィルターの切り替え</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">評価</string>
   <string name="text_clear_source_watchlist">ウォッチリスト</string>
   <string name="text_clear_watchlist">ウォッチリストをクリア</string>
+  <string name="text_comment_translation_download_ai_metered">このコメントを翻訳するには、容量の大きいオンデバイスAIモデルの初回ダウンロードが必要です。モバイルデータ通信を使用しているため、データ通信量がかかる場合があります。</string>
+  <string name="text_comment_translation_download_metered">このコメントを翻訳するには、言語の初回ダウンロードが必要です。モバイルデータ通信を使用しているため、データ通信量がかかる場合があります。</string>
+  <string name="text_comment_translation_downloading">言語をダウンロード中…</string>
+  <string name="text_comment_translation_downloading_ai">Geminiをダウンロード中…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Geminiをダウンロード中… %d</string>
   <string name="text_connection_status_cancelled_message">準備ができたらいつでも%sに接続できます。</string>
   <string name="text_connection_status_cancelled_title">接続がキャンセルされました</string>
   <string name="text_connection_status_connected_message">視聴履歴と評価を現在同期しています。</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">法務</string>
   <string name="text_footer_category_platform">プラットフォーム</string>
   <string name="text_free">無料</string>
+  <string name="text_game_best">ベスト %s</string>
+  <string name="text_game_hint_swipe">上にスワイプで上、下にスワイプで下</string>
+  <string name="text_game_intro_again">もう一度？</string>
+  <string name="text_game_intro_hello">こんにちは。</string>
+  <string name="text_game_intro_play">ゲームをしたい。</string>
+  <string name="text_game_load_error">タイトルを読み込めませんでした。接続を確認して、もう一度お試しください。</string>
+  <string name="text_game_new_best">新記録達成</string>
+  <string name="text_game_reveal">%1$sの評価は%2$sです</string>
+  <string name="text_game_spoiler">ネタバレ: %1$sの評価は%2$sです</string>
+  <string name="text_game_spotlight_subtitle">Traktでの評価が高いタイトルを推測しよう</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">まだ視聴履歴がありません。これが最初の登録になります。</string>
   <string name="text_history_sync_filter">同期ID %d</string>
   <string name="text_history_sync_filter_with_source">同期ID %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">無料でTraktに参加して、あなたを待っているさらに多くの機能を発見しましょう。</string>
   <string name="text_onboarding_4_title">さらなる発見があります。</string>
   <string name="text_overview_placeholder">概要は利用できません。</string>
+  <string name="text_passkey">パスキー</string>
   <string name="text_people_count">%d人</string>
   <string name="text_person_count">%d人</string>
   <string name="text_personal_note">個人ノート</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">ベテラン</string>
   <string name="text_watch_until_here_episode_count">%d話</string>
   <string name="text_watch_until_here_preview_title">視聴日時</string>
+  <string name="text_year_in_review_banner_tagline">12種類のペルソナ。そのうちの1つはあなたです。</string>
   <string name="text_younify_status_broken">破損</string>
   <string name="text_younify_status_linked">リンク済み</string>
   <string name="text_younify_status_unlinked">未リンク</string>

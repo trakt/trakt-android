@@ -156,6 +156,7 @@
   <string name="button_label_login">Autentificare</string>
   <string name="button_label_logout">Deconectare</string>
   <string name="button_label_manage_collaborators">Gestionați colaboratorii pentru %s</string>
+  <string name="button_label_manage_passkey">Gestionează cheia de acces</string>
   <string name="button_label_manage_subscription">Gestionează abonamentul VIP</string>
   <string name="button_label_manage_vip">Gestionează abonamentul</string>
   <string name="button_label_mark_as_watched">Marchează \"%s\" ca vizionat</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Pauză %s</string>
   <string name="button_label_pick_match">Importă %s.</string>
   <string name="button_label_play_all_stories">Redă toate povestirile de astăzi</string>
+  <string name="button_label_play_game">Joacă Mai bine cotat?</string>
   <string name="button_label_play_story">Redă povestea pentru %s</string>
   <string name="button_label_play_track">Redă %s</string>
   <string name="button_label_plex_add_server">Adăugați un server Plex</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Șterge acum</string>
   <string name="button_text_comment_likes">%d aprecieri</string>
   <string name="button_text_comment_replies">%d răspunsuri</string>
+  <string name="button_text_comment_translated">Tradus</string>
   <string name="button_text_connect">Conectează</string>
   <string name="button_text_continue">Continuă</string>
   <string name="button_text_convert">Convertește</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Cereri</string>
   <string name="button_text_followers">Urmăritori</string>
   <string name="button_text_following">Urmărește</string>
+  <string name="button_text_game_close">Închide</string>
+  <string name="button_text_game_higher">Mai sus</string>
+  <string name="button_text_game_lower">Mai jos</string>
+  <string name="button_text_game_play">Joacă</string>
+  <string name="button_text_game_play_again">Joacă din nou</string>
   <string name="button_text_get_started">Începe</string>
   <string name="button_text_get_vip">Obține</string>
   <string name="button_text_go_to_show">Mergi la serial</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Gestionează</string>
   <string name="button_text_manage_collaborators">Colaboratori</string>
   <string name="button_text_manage_lists">Gestionează liste</string>
+  <string name="button_text_manage_passkey">Gestionează</string>
   <string name="button_text_manage_subscription">Gestionează abonamentul VIP</string>
   <string name="button_text_manage_vip">Gestionează</string>
   <string name="button_text_mark_as_watched">Marchează ca vizionat</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex nu mai acceptă accesul Trakt. Reconectați-vă pentru a continua sincronizarea.</string>
   <string name="description_media_sync_unreachable">Trakt nu poate accesa acest server. Reîncercați odată ce este din nou online.</string>
   <string name="description_media_sync_watchlist_only">Nu este necesar niciun server. Sincronizează lista de vizionare Plex.</string>
+  <string name="description_passkey">Autentifică-te cu amprenta, fața sau blocarea ecranului.</string>
   <string name="description_paused_items">Aceste elemente nu au fost vizionate cel puțin 80%.</string>
   <string name="description_plex_home_users">Vizionările tale se sincronizează întotdeauna. Adaugă alte nume de utilizator Plex Home pentru a le sincroniza și pe ale lor.</string>
   <string name="description_plex_manual_sync">Declanșează o sincronizare imediată a istoricului tău de vizionări Plex către Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Oprit</string>
   <string name="filter_toggle_state_on">Activat</string>
   <string name="header_account_details">Detalii cont</string>
+  <string name="header_account_security">Securitatea contului</string>
   <string name="header_add_from_lists">Adaugă la %s</string>
   <string name="header_age">Vârstă</string>
   <string name="header_aired">Difuzat</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Certificare</string>
   <string name="header_clear_data">Șterge datele</string>
   <string name="header_comment_reactions">Reacții la recenzie</string>
+  <string name="header_comment_translation_download">Descarci limba?</string>
+  <string name="header_comment_translation_download_ai">Descarci modelul Gemini?</string>
   <string name="header_community_sentiment">Sentiment</string>
   <string name="header_country">Țară</string>
   <string name="header_create_smart_list">Creează o listă inteligentă</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Exportarea datelor tale</string>
   <string name="header_filters">Filtre</string>
   <string name="header_follows_leaderboard">Clasament</string>
+  <string name="header_game_rated_higher">Mai bine cotat?</string>
   <string name="header_genre">Gen</string>
   <string name="header_genres_loved">Genuri care îți plac</string>
   <string name="header_get_notified">Fii notificat!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Urmărire</string>
   <string name="header_settings_translations">Traduceri</string>
   <string name="header_skipped_items">%s Elemente Omise</string>
+  <string name="header_smart_list_compare_current">Lista ta</string>
+  <string name="header_smart_list_compare_proposed">Ca listă inteligentă</string>
   <string name="header_stats_contributions">Contribuții</string>
   <string name="header_stats_graph_peak">Ore de vârf</string>
   <string name="header_stats_graph_screen_time_daily">Defalcare zilnică</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Treci la card de credit</string>
   <string name="header_vip_streak">Serie VIP</string>
   <string name="header_writer">Scenarist</string>
+  <string name="header_year_in_review_banner">Anul tău în Revistă %d este aici!</string>
   <string name="heading_blocked_users">Utilizatori blocați</string>
   <string name="heading_branding_alternative_logos">Logo-uri alternative</string>
   <string name="heading_branding_dark_background">Fundal închis</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Care ar trebui să fie numele tău de utilizator?</string>
   <string name="label_add_from_lists_source">Listă sursă</string>
   <string name="label_date_picker_time">Ora</string>
+  <string name="label_delete_account_stat_hours">Ore vizionate</string>
+  <string name="label_delete_account_stat_plays">Vizionări înregistrate</string>
+  <string name="label_delete_account_stat_years">Ani împreună</string>
   <string name="label_drag_image_to_adjust">Trage imaginea pentru a ajusta</string>
   <string name="label_favorites">Favorite</string>
+  <string name="label_game_best">Record</string>
+  <string name="label_game_streak">Serie</string>
   <string name="label_genres_drawer_all">Toate genurile</string>
   <string name="label_genres_drawer_selected">Selectate</string>
   <string name="label_genres_drawer_subtitle_loved">Selectează până la 5 genuri pe care ai vrea să le vezi mai des.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Prea scurt</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Alege ce versiune să afișezi</string>
   <string name="label_stats_active_days">Zile active</string>
   <string name="label_stats_average">Medie</string>
   <string name="label_stats_avg_per_day">Medie Zilnică</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s și peste</string>
   <string name="list_summary_range_labeled_up_to">%1$s până la %2$s</string>
   <string name="list_summary_range_up_to">Până la %s</string>
+  <string name="list_summary_released_within_days">Lansat în ultimele %s zile</string>
+  <string name="list_summary_votes_between">între %1$s și %2$s voturi %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ voturi %2$s</string>
   <string name="list_title_activity">Activitate</string>
   <string name="list_title_actors">Actori</string>
   <string name="list_title_all_titles">Toate titlurile</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Urmărire automată</string>
   <string name="page_title_branding">Branding</string>
   <string name="page_title_calendar">Calendar</string>
+  <string name="page_title_convert_smart_list">Transformă în listă inteligentă</string>
   <string name="page_title_create_list">Creează listă</string>
   <string name="page_title_create_smart_list">Creează o listă inteligentă</string>
   <string name="page_title_discover">Descoperă</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Deschide</string>
   <string name="spotlight_input_placeholder">Încotro?</string>
   <string name="spotlight_no_results">Nimic nu se potrivește cu \"%s\"</string>
+  <string name="spotlight_section_games">Jocuri</string>
   <string name="spotlight_section_pages">Pagini</string>
   <string name="stat_label_hours">ore</string>
   <string name="stat_label_plays">vizionări</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Activează sau dezactivează vizionările multiple</string>
   <string name="switch_label_private">Profilul este privat</string>
   <string name="switch_label_rating_prompt">Activează sau dezactivează solicitările de evaluare</string>
+  <string name="switch_label_soundtrack_season_only">Sezonul %d doar</string>
   <string name="switch_label_spoilers">Arată spoilere</string>
   <string name="switch_label_toggle_christmas_filters">Activează/dezactivează filtrele de Crăciun</string>
   <string name="switch_label_toggle_halloween_filters">Activează/dezactivează filtrele de Halloween</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Evaluări</string>
   <string name="text_clear_source_watchlist">Listă de vizionare</string>
   <string name="text_clear_watchlist">Șterge lista de vizionare</string>
+  <string name="text_comment_translation_download_ai_metered">Traducerea acestui comentariu necesită o descărcare unică a modelului AI pe dispozitiv, care poate fi mare. Folosești date mobile, așa că acest lucru îți poate consuma din alocația de date.</string>
+  <string name="text_comment_translation_download_metered">Traducerea acestui comentariu necesită o descărcare unică a pachetului lingvistic. Folosești date mobile, așa că acest lucru îți poate consuma din alocația de date.</string>
+  <string name="text_comment_translation_downloading">Se descarcă limba…</string>
+  <string name="text_comment_translation_downloading_ai">Se descarcă Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Se descarcă Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">Poți conecta %s oricând ești gata.</string>
   <string name="text_connection_status_cancelled_title">Conexiune anulată</string>
   <string name="text_connection_status_connected_message">Sincronizăm acum istoricul vizionărilor și evaluările tale.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Platformă</string>
   <string name="text_free">Gratuit</string>
+  <string name="text_game_best">Record %s</string>
+  <string name="text_game_hint_swipe">Glisează în sus pentru mai sus, în jos pentru mai jos</string>
+  <string name="text_game_intro_again">Din nou?</string>
+  <string name="text_game_intro_hello">Salut.</string>
+  <string name="text_game_intro_play">Vreau să joc un joc.</string>
+  <string name="text_game_load_error">Nu s-au putut încărca titlurile. Verifică-ți conexiunea și încearcă din nou.</string>
+  <string name="text_game_new_best">Noul record</string>
+  <string name="text_game_reveal">%1$s este evaluat %2$s</string>
+  <string name="text_game_spoiler">Spoiler: %1$s este evaluat %2$s</string>
+  <string name="text_game_spotlight_subtitle">Ghicește ce titlu este evaluat mai sus de Trakt</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Nu ai încă un istoric de vizionare. Aceasta va fi prima ta înregistrare.</string>
   <string name="text_history_sync_filter">ID sincronizare %d</string>
   <string name="text_history_sync_filter_with_source">ID sincronizare %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Alătură-te Trakt gratuit și descoperă mai multe funcții care te așteaptă.</string>
   <string name="text_onboarding_4_title">Există mai multe de descoperit.</string>
   <string name="text_overview_placeholder">Prezentarea generală nu este disponibilă.</string>
+  <string name="text_passkey">Cheie de acces</string>
   <string name="text_people_count">%d persoane</string>
   <string name="text_person_count">%d persoană</string>
   <string name="text_personal_note">Notă personală</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d episoade</string>
   <string name="text_watch_until_here_preview_title">Marcaje orare vizionate</string>
+  <string name="text_year_in_review_banner_tagline">Douăsprezece personalități. Una dintre ele ești tu.</string>
   <string name="text_younify_status_broken">Defect</string>
   <string name="text_younify_status_linked">Conectat</string>
   <string name="text_younify_status_unlinked">Neconectat</string>

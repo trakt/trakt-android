@@ -156,6 +156,7 @@
   <string name="button_label_login">Logga in</string>
   <string name="button_label_logout">Logga ut</string>
   <string name="button_label_manage_collaborators">Hantera samarbetspartners för %s</string>
+  <string name="button_label_manage_passkey">Hantera Passkey</string>
   <string name="button_label_manage_subscription">Hantera VIP-prenumeration</string>
   <string name="button_label_manage_vip">Hantera prenumeration</string>
   <string name="button_label_mark_as_watched">Markera \"%s\" som sedd</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Pausa %s</string>
   <string name="button_label_pick_match">Importera %s.</string>
   <string name="button_label_play_all_stories">Spela alla dagens berättelser</string>
+  <string name="button_label_play_game">Spela Betygsatt Högre?</string>
   <string name="button_label_play_story">Spela berättelsen för %s</string>
   <string name="button_label_play_track">Spela %s</string>
   <string name="button_label_plex_add_server">Lägg till en Plex-server</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Rensa nu</string>
   <string name="button_text_comment_likes">%d gilla</string>
   <string name="button_text_comment_replies">%d svar</string>
+  <string name="button_text_comment_translated">Översatt</string>
   <string name="button_text_connect">Anslut</string>
   <string name="button_text_continue">Fortsätt</string>
   <string name="button_text_convert">Konvertera</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Förfrågningar</string>
   <string name="button_text_followers">Följare</string>
   <string name="button_text_following">Följer</string>
+  <string name="button_text_game_close">Stäng</string>
+  <string name="button_text_game_higher">Högre</string>
+  <string name="button_text_game_lower">Lägre</string>
+  <string name="button_text_game_play">Spela</string>
+  <string name="button_text_game_play_again">Spela igen</string>
   <string name="button_text_get_started">Kom igång</string>
   <string name="button_text_get_vip">Skaffa</string>
   <string name="button_text_go_to_show">Gå till serie</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Hantera</string>
   <string name="button_text_manage_collaborators">Samarbetspartners</string>
   <string name="button_text_manage_lists">Hantera listor</string>
+  <string name="button_text_manage_passkey">Hantera</string>
   <string name="button_text_manage_subscription">Hantera VIP-prenumeration</string>
   <string name="button_text_manage_vip">Hantera</string>
   <string name="button_text_mark_as_watched">Markera som sedd</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex accepterar inte längre Trakts åtkomst. Återanslut för att fortsätta synkronisera.</string>
   <string name="description_media_sync_unreachable">Trakt kan inte nå den här servern. Försök igen när den är online.</string>
   <string name="description_media_sync_watchlist_only">Ingen server behövs. Synkroniserar din Plex-tittarlista.</string>
+  <string name="description_passkey">Logga in med ditt fingeravtryck, ansikte eller skärmlås.</string>
   <string name="description_paused_items">Dessa objekt tittades inte på minst 80%.</string>
   <string name="description_plex_home_users">Dina egna uppspelningar synkroniseras alltid. Lägg till andra Plex Home-användarnamn för att synkronisera deras också.</string>
   <string name="description_plex_manual_sync">Utlös en omedelbar synkronisering av din Plex-visningshistorik till Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Av</string>
   <string name="filter_toggle_state_on">På</string>
   <string name="header_account_details">Kontouppgifter</string>
+  <string name="header_account_security">Kontosäkerhet</string>
   <string name="header_add_from_lists">Lägg till i %s</string>
   <string name="header_age">Ålder</string>
   <string name="header_aired">Sändes</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Åldersgräns</string>
   <string name="header_clear_data">Rensa data</string>
   <string name="header_comment_reactions">Recensionsreaktioner</string>
+  <string name="header_comment_translation_download">Ladda ner språk?</string>
+  <string name="header_comment_translation_download_ai">Ladda ner Gemini-modell?</string>
   <string name="header_community_sentiment">Känslor</string>
   <string name="header_country">Land</string>
   <string name="header_create_smart_list">Skapa smart lista</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Exporterar dina data</string>
   <string name="header_filters">Filter</string>
   <string name="header_follows_leaderboard">Topplista</string>
+  <string name="header_game_rated_higher">Betygsatt högre?</string>
   <string name="header_genre">Genre</string>
   <string name="header_genres_loved">Genrer du gillar</string>
   <string name="header_get_notified">Bli aviserad!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Spårning</string>
   <string name="header_settings_translations">Översättningar</string>
   <string name="header_skipped_items">%s överhoppade objekt</string>
+  <string name="header_smart_list_compare_current">Din lista</string>
+  <string name="header_smart_list_compare_proposed">Som smart lista</string>
   <string name="header_stats_contributions">Bidrag</string>
   <string name="header_stats_graph_peak">Topptimmar</string>
   <string name="header_stats_graph_screen_time_daily">Daglig översikt</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Byt till kreditkort</string>
   <string name="header_vip_streak">VIP-svit</string>
   <string name="header_writer">Manusförfattare</string>
+  <string name="header_year_in_review_banner">Din %d årsöversikt är här!</string>
   <string name="heading_blocked_users">Blockerade användare</string>
   <string name="heading_branding_alternative_logos">Alternativa logotyper</string>
   <string name="heading_branding_dark_background">Mörk bakgrund</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Vad ska ditt användarnamn vara?</string>
   <string name="label_add_from_lists_source">Källista</string>
   <string name="label_date_picker_time">Tid</string>
+  <string name="label_delete_account_stat_hours">Visade timmar</string>
+  <string name="label_delete_account_stat_plays">Loggade uppspelningar</string>
+  <string name="label_delete_account_stat_years">År som medlem</string>
   <string name="label_drag_image_to_adjust">Dra bilden för att justera</string>
   <string name="label_favorites">Favoriter</string>
+  <string name="label_game_best">Bäst</string>
+  <string name="label_game_streak">Svit</string>
   <string name="label_genres_drawer_all">Alla genrer</string>
   <string name="label_genres_drawer_selected">Valda</string>
   <string name="label_genres_drawer_subtitle_loved">Välj upp till 5 genrer som du vill se mer av.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">För kort</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Välj vilken version som ska visas</string>
   <string name="label_stats_active_days">Aktiva dagar</string>
   <string name="label_stats_average">Snitt</string>
   <string name="label_stats_avg_per_day">Dagligt genomsnitt</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s och uppåt</string>
   <string name="list_summary_range_labeled_up_to">%1$s upp till %2$s</string>
   <string name="list_summary_range_up_to">Upp till %s</string>
+  <string name="list_summary_released_within_days">Släpptes under de senaste %s dagarna</string>
+  <string name="list_summary_votes_between">%1$s till %2$s %3$s röster</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s röster</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skådespelare</string>
   <string name="list_title_all_titles">Alla titlar</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Automatisk spårning</string>
   <string name="page_title_branding">Varumärke</string>
   <string name="page_title_calendar">Kalender</string>
+  <string name="page_title_convert_smart_list">Gör om till en smart lista</string>
   <string name="page_title_create_list">Skapa lista</string>
   <string name="page_title_create_smart_list">Skapa smart lista</string>
   <string name="page_title_discover">Upptäck</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Öppna</string>
   <string name="spotlight_input_placeholder">Vart ska vi?</string>
   <string name="spotlight_no_results">Inget matchar \"%s\"</string>
+  <string name="spotlight_section_games">Spel</string>
   <string name="spotlight_section_pages">Sidor</string>
   <string name="stat_label_hours">timmar</string>
   <string name="stat_label_plays">spelningar</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Aktivera eller inaktivera flera visningar</string>
   <string name="switch_label_private">Är profilen privat</string>
   <string name="switch_label_rating_prompt">Aktivera eller inaktivera betygsfrågor</string>
+  <string name="switch_label_soundtrack_season_only">Säsong %d endast</string>
   <string name="switch_label_spoilers">Visa spoilers</string>
   <string name="switch_label_toggle_christmas_filters">Växla julfilter</string>
   <string name="switch_label_toggle_halloween_filters">Växla halloween-filter</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Betyg</string>
   <string name="text_clear_source_watchlist">Bevakningslista</string>
   <string name="text_clear_watchlist">Rensa bevakningslista</string>
+  <string name="text_comment_translation_download_ai_metered">Att översätta den här kommentaren kräver en engångsnedladdning av den lokala AI-modellen, som kan vara stor. Du använder mobildata, så detta kan förbruka din datamängd.</string>
+  <string name="text_comment_translation_download_metered">Att översätta den här kommentaren kräver en engångsnedladdning av språk. Du använder mobildata, så detta kan förbruka din datamängd.</string>
+  <string name="text_comment_translation_downloading">Laddar ner språk…</string>
+  <string name="text_comment_translation_downloading_ai">Laddar ner Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Laddar ner Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">Du kan ansluta %s när du är redo.</string>
   <string name="text_connection_status_cancelled_title">Anslutning avbruten</string>
   <string name="text_connection_status_connected_message">Vi synkroniserar din visningshistorik och dina betyg nu.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Juridiskt</string>
   <string name="text_footer_category_platform">Plattform</string>
   <string name="text_free">Gratis</string>
+  <string name="text_game_best">Bäst: %s</string>
+  <string name="text_game_hint_swipe">Svep uppåt för högre, nedåt för lägre</string>
+  <string name="text_game_intro_again">Igen?</string>
+  <string name="text_game_intro_hello">Hej.</string>
+  <string name="text_game_intro_play">Jag vill spela ett spel.</string>
+  <string name="text_game_load_error">Kunde inte läsa in titlar. Kontrollera din anslutning och försök igen.</string>
+  <string name="text_game_new_best">Nytt rekord</string>
+  <string name="text_game_reveal">%1$s har betyget %2$s</string>
+  <string name="text_game_spoiler">Spoiler: %1$s har betyget %2$s</string>
+  <string name="text_game_spotlight_subtitle">Gissa vilken titel Trakt har högre betyg på</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Du har ingen tittarhistorik än. Detta blir din första post.</string>
   <string name="text_history_sync_filter">Synkroniserings-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Gå med i Trakt gratis och upptäck fler funktioner som väntar på dig.</string>
   <string name="text_onboarding_4_title">Det finns mer att upptäcka.</string>
   <string name="text_overview_placeholder">Översikt är inte tillgänglig.</string>
+  <string name="text_passkey">Passkey</string>
   <string name="text_people_count">%d personer</string>
   <string name="text_person_count">%d person</string>
   <string name="text_personal_note">Personlig anteckning</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d avsnitt</string>
   <string name="text_watch_until_here_preview_title">Tittade tidsstämplar</string>
+  <string name="text_year_in_review_banner_tagline">Tolv personligheter. En av dem är du.</string>
   <string name="text_younify_status_broken">Trasig</string>
   <string name="text_younify_status_linked">Länkad</string>
   <string name="text_younify_status_unlinked">Ej länkad</string>

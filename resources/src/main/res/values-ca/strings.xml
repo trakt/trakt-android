@@ -156,6 +156,7 @@
   <string name="button_label_login">Inicia sessió</string>
   <string name="button_label_logout">Tanca la sessió</string>
   <string name="button_label_manage_collaborators">Gestiona els col·laboradors de %s</string>
+  <string name="button_label_manage_passkey">Gestionar la clau d\'accés</string>
   <string name="button_label_manage_subscription">Gestiona la subscripció VIP</string>
   <string name="button_label_manage_vip">Gestiona la subscripció</string>
   <string name="button_label_mark_as_watched">Marca \"%s\" com a vist</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Pausa %s</string>
   <string name="button_label_pick_match">Importar %s.</string>
   <string name="button_label_play_all_stories">Reprodueix totes les històries d\'avui</string>
+  <string name="button_label_play_game">Juga a «Puntuat més alt?»</string>
   <string name="button_label_play_story">Reprodueix la història de %s</string>
   <string name="button_label_play_track">Reprodueix %s</string>
   <string name="button_label_plex_add_server">Afegir un servidor Plex</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Esborra ara</string>
   <string name="button_text_comment_likes">%d m\'agrada</string>
   <string name="button_text_comment_replies">%d respostes</string>
+  <string name="button_text_comment_translated">Traduït</string>
   <string name="button_text_connect">Connecta</string>
   <string name="button_text_continue">Continua</string>
   <string name="button_text_convert">Converteix</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Sol·licituds</string>
   <string name="button_text_followers">Seguidors</string>
   <string name="button_text_following">Seguint</string>
+  <string name="button_text_game_close">Tanca</string>
+  <string name="button_text_game_higher">Més alt</string>
+  <string name="button_text_game_lower">Més baix</string>
+  <string name="button_text_game_play">Juga</string>
+  <string name="button_text_game_play_again">Torna a jugar</string>
   <string name="button_text_get_started">Comença</string>
   <string name="button_text_get_vip">Obtén</string>
   <string name="button_text_go_to_show">Anar a la sèrie</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Gestionar</string>
   <string name="button_text_manage_collaborators">Col·laboradors</string>
   <string name="button_text_manage_lists">Gestiona llistes</string>
+  <string name="button_text_manage_passkey">Gestionar</string>
   <string name="button_text_manage_subscription">Gestiona la subscripció VIP</string>
   <string name="button_text_manage_vip">Gestionar</string>
   <string name="button_text_mark_as_watched">Marca com a vist</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex ja no accepta l\'accés de Trakt. Torna a connectar-te per mantenir la sincronització.</string>
   <string name="description_media_sync_unreachable">Trakt no pot accedir a aquest servidor. Torna-ho a intentar quan estigui en línia.</string>
   <string name="description_media_sync_watchlist_only">No cal cap servidor. Sincronitza la teva llista de seguiment de Plex.</string>
+  <string name="description_passkey">Inicia la sessió amb la teva empremta digital, cara o bloqueig de pantalla.</string>
   <string name="description_paused_items">Aquests elements no es van veure almenys un 80%.</string>
   <string name="description_plex_home_users">Les teves reproduccions sempre se sincronitzen. Afegeix altres noms d\'usuari de Plex Home per sincronitzar també les seves.</string>
   <string name="description_plex_manual_sync">Activa una sincronització immediata del teu historial de visualització de Plex amb Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Desactivat</string>
   <string name="filter_toggle_state_on">Activat</string>
   <string name="header_account_details">Detalls del compte</string>
+  <string name="header_account_security">Seguretat del compte</string>
   <string name="header_add_from_lists">Afegeix a %s</string>
   <string name="header_age">Edat</string>
   <string name="header_aired">Emès</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Certificació</string>
   <string name="header_clear_data">Esborra dades</string>
   <string name="header_comment_reactions">Reaccions a la ressenya</string>
+  <string name="header_comment_translation_download">Baixar idioma?</string>
+  <string name="header_comment_translation_download_ai">Baixar model Gemini?</string>
   <string name="header_community_sentiment">Sentiment</string>
   <string name="header_country">País</string>
   <string name="header_create_smart_list">Crea llista intel·ligent</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Exportant les teves dades</string>
   <string name="header_filters">Filtres</string>
   <string name="header_follows_leaderboard">Classificació</string>
+  <string name="header_game_rated_higher">Puntuat més alt?</string>
   <string name="header_genre">Gènere</string>
   <string name="header_genres_loved">Gèneres que t\'agraden</string>
   <string name="header_get_notified">Rep notificacions!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Seguiment</string>
   <string name="header_settings_translations">Traduccions</string>
   <string name="header_skipped_items">%s elements omesos</string>
+  <string name="header_smart_list_compare_current">La teva llista</string>
+  <string name="header_smart_list_compare_proposed">Com a llista intel·ligent</string>
   <string name="header_stats_contributions">Contribucions</string>
   <string name="header_stats_graph_peak">Hores punta</string>
   <string name="header_stats_graph_screen_time_daily">Desglossament diari</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Canviar a targeta de crèdit</string>
   <string name="header_vip_streak">Ratxa VIP</string>
   <string name="header_writer">Guionista</string>
+  <string name="header_year_in_review_banner">El teu Resum de l\'any %d ja és aquí!</string>
   <string name="heading_blocked_users">Usuaris bloquejats</string>
   <string name="heading_branding_alternative_logos">Logotips alternatius</string>
   <string name="heading_branding_dark_background">Fons fosc</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Quin hauria de ser el teu nom d\'usuari?</string>
   <string name="label_add_from_lists_source">Llista d\'origen</string>
   <string name="label_date_picker_time">Hora</string>
+  <string name="label_delete_account_stat_hours">Hores vistes</string>
+  <string name="label_delete_account_stat_plays">Reproduccions registrades</string>
+  <string name="label_delete_account_stat_years">Anys junts</string>
   <string name="label_drag_image_to_adjust">Arrossega la imatge per ajustar</string>
   <string name="label_favorites">Preferits</string>
+  <string name="label_game_best">Millor</string>
+  <string name="label_game_streak">Ratxa</string>
   <string name="label_genres_drawer_all">Tots els gèneres</string>
   <string name="label_genres_drawer_selected">Seleccionats</string>
   <string name="label_genres_drawer_subtitle_loved">Selecciona fins a 5 gèneres dels quals t\'agradaria veure\'n més.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Massa curt</string>
   <string name="label_season_short">T%s</string>
+  <string name="label_smart_list_compare_view">Tria quina versió mostrar</string>
   <string name="label_stats_active_days">Dies actius</string>
   <string name="label_stats_average">Mitj</string>
   <string name="label_stats_avg_per_day">Mitjana diària</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s i més</string>
   <string name="list_summary_range_labeled_up_to">%1$s fins a %2$s</string>
   <string name="list_summary_range_up_to">Fins a %s</string>
+  <string name="list_summary_released_within_days">Publicat els darrers %s dies</string>
+  <string name="list_summary_votes_between">%1$s a %2$s vots de %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ vots de %2$s</string>
   <string name="list_title_activity">Activitat</string>
   <string name="list_title_actors">Actors</string>
   <string name="list_title_all_titles">Tots els títols</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Seguiment automàtic</string>
   <string name="page_title_branding">Branding</string>
   <string name="page_title_calendar">Calendari</string>
+  <string name="page_title_convert_smart_list">Converteix en una llista intel·ligent</string>
   <string name="page_title_create_list">Crea llista</string>
   <string name="page_title_create_smart_list">Crea llista intel·ligent</string>
   <string name="page_title_discover">Descobreix</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Obrir</string>
   <string name="spotlight_input_placeholder">On vols anar?</string>
   <string name="spotlight_no_results">Res coincideix amb \"%s\"</string>
+  <string name="spotlight_section_games">Jocs</string>
   <string name="spotlight_section_pages">Pàgines</string>
   <string name="stat_label_hours">hores</string>
   <string name="stat_label_plays">reproduccions</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Habilita o deshabilita múltiples visualitzacions</string>
   <string name="switch_label_private">El perfil és privat</string>
   <string name="switch_label_rating_prompt">Activa o desactiva les sol·licituds de valoració</string>
+  <string name="switch_label_soundtrack_season_only">Temporada %d només</string>
   <string name="switch_label_spoilers">Mostra spoilers</string>
   <string name="switch_label_toggle_christmas_filters">Activa/desactiva els filtres de Nadal</string>
   <string name="switch_label_toggle_halloween_filters">Activa/desactiva els filtres de Halloween</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Valoracions</string>
   <string name="text_clear_source_watchlist">Llista de seguiment</string>
   <string name="text_clear_watchlist">Esborra la llista de seguiment</string>
+  <string name="text_comment_translation_download_ai_metered">Per traduir aquest comentari cal fer una baixada única del model d\'IA al dispositiu, que pot ser gran. Esteu utilitzant dades mòbils, la qual cosa pot consumir la vostra quota de dades.</string>
+  <string name="text_comment_translation_download_metered">Per traduir aquest comentari cal fer una baixada única de l\'idioma. Esteu utilitzant dades mòbils, la qual cosa pot consumir la vostra quota de dades.</string>
+  <string name="text_comment_translation_downloading">S\'està baixant l\'idioma…</string>
+  <string name="text_comment_translation_downloading_ai">S\'està baixant Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">S\'està baixant Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">Pots connectar %s quan estiguis preparat.</string>
   <string name="text_connection_status_cancelled_title">Connexió cancel·lada</string>
   <string name="text_connection_status_connected_message">Estem sincronitzant el teu historial vist i les puntuacions ara.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Plataforma</string>
   <string name="text_free">Gratis</string>
+  <string name="text_game_best">Millor %s</string>
+  <string name="text_game_hint_swipe">Fes lliscar cap amunt per a més alt, cap avall per a més baix</string>
+  <string name="text_game_intro_again">Un altre cop?</string>
+  <string name="text_game_intro_hello">Hola.</string>
+  <string name="text_game_intro_play">Vull jugar a un joc.</string>
+  <string name="text_game_load_error">No s\'han pogut carregar els títols. Comprova la teva connexió i torna-ho a intentar.</string>
+  <string name="text_game_new_best">Nova millor</string>
+  <string name="text_game_reveal">%1$s té una puntuació de %2$s</string>
+  <string name="text_game_spoiler">Espòiler: %1$s té una puntuació de %2$s</string>
+  <string name="text_game_spotlight_subtitle">Endevina quin títol té una puntuació més alta a Trakt</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Encara no teniu cap historial de reproducció. Aquesta serà la vostra primera entrada.</string>
   <string name="text_history_sync_filter">ID de sincronització %d</string>
   <string name="text_history_sync_filter_with_source">ID de sincronització %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Uneix-te a Trakt de franc i descobreix més funcions que t\'esperen.</string>
   <string name="text_onboarding_4_title">Hi ha més per descobrir.</string>
   <string name="text_overview_placeholder">La sinopsi no està disponible.</string>
+  <string name="text_passkey">Clau d\'accés</string>
   <string name="text_people_count">%d persones</string>
   <string name="text_person_count">%d persona</string>
   <string name="text_personal_note">Nota personal</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Veterà</string>
   <string name="text_watch_until_here_episode_count">%d episodis</string>
   <string name="text_watch_until_here_preview_title">Marques de temps visualitzades</string>
+  <string name="text_year_in_review_banner_tagline">Dotze personalitats. Una d\'elles ets tu.</string>
   <string name="text_younify_status_broken">Trencat</string>
   <string name="text_younify_status_linked">Vinculat</string>
   <string name="text_younify_status_unlinked">No vinculat</string>

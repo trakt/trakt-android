@@ -156,6 +156,7 @@
   <string name="button_label_login">Войти</string>
   <string name="button_label_logout">Выйти из аккаунта</string>
   <string name="button_label_manage_collaborators">Управление соавторами для %s</string>
+  <string name="button_label_manage_passkey">Управление ключом доступа</string>
   <string name="button_label_manage_subscription">Управление VIP-подпиской</string>
   <string name="button_label_manage_vip">Управление подпиской</string>
   <string name="button_label_mark_as_watched">Отметить \"%s\" как просмотренное</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Приостановить %s</string>
   <string name="button_label_pick_match">Импортировать %s.</string>
   <string name="button_label_play_all_stories">Смотреть все истории за сегодня</string>
+  <string name="button_label_play_game">Сыграть в «Рейтинг выше?»</string>
   <string name="button_label_play_story">Смотреть историю для %s</string>
   <string name="button_label_play_track">Воспроизвести %s</string>
   <string name="button_label_plex_add_server">Добавить сервер Plex</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Очистить сейчас</string>
   <string name="button_text_comment_likes">%d лайков</string>
   <string name="button_text_comment_replies">%d ответов</string>
+  <string name="button_text_comment_translated">Переведено</string>
   <string name="button_text_connect">Подключить</string>
   <string name="button_text_continue">Продолжить</string>
   <string name="button_text_convert">Конвертировать</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Запросы</string>
   <string name="button_text_followers">Подписчики</string>
   <string name="button_text_following">Подписки</string>
+  <string name="button_text_game_close">Закрыть</string>
+  <string name="button_text_game_higher">Выше</string>
+  <string name="button_text_game_lower">Ниже</string>
+  <string name="button_text_game_play">Играть</string>
+  <string name="button_text_game_play_again">Сыграть снова</string>
   <string name="button_text_get_started">Начать</string>
   <string name="button_text_get_vip">Получить</string>
   <string name="button_text_go_to_show">Перейти к шоу</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Управление</string>
   <string name="button_text_manage_collaborators">Соавторы</string>
   <string name="button_text_manage_lists">Управление списками</string>
+  <string name="button_text_manage_passkey">Управление</string>
   <string name="button_text_manage_subscription">Управление VIP-подпиской</string>
   <string name="button_text_manage_vip">Управление</string>
   <string name="button_text_mark_as_watched">Отметить как просмотренное</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex больше не принимает доступ Trakt. Переподключитесь для продолжения синхронизации.</string>
   <string name="description_media_sync_unreachable">Trakt не может связаться с этим сервером. Повторите попытку, когда он снова будет в сети.</string>
   <string name="description_media_sync_watchlist_only">Сервер не требуется. Синхронизирует ваш список просмотра Plex.</string>
+  <string name="description_passkey">Войдите с помощью отпечатка пальца, лица или блокировки экрана.</string>
   <string name="description_paused_items">Эти элементы не были просмотрены как минимум на 80%.</string>
   <string name="description_plex_home_users">Ваши просмотры всегда синхронизируются. Добавьте другие имена пользователей Plex Home, чтобы синхронизировать и их.</string>
   <string name="description_plex_manual_sync">Запустите немедленную синхронизацию истории просмотров Plex с Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Выкл.</string>
   <string name="filter_toggle_state_on">Вкл.</string>
   <string name="header_account_details">Данные аккаунта</string>
+  <string name="header_account_security">Безопасность учетной записи</string>
   <string name="header_add_from_lists">Добавить в %s</string>
   <string name="header_age">Возраст</string>
   <string name="header_aired">Вышло</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Сертификация</string>
   <string name="header_clear_data">Очистить данные</string>
   <string name="header_comment_reactions">Реакции на отзывы</string>
+  <string name="header_comment_translation_download">Загрузить язык?</string>
+  <string name="header_comment_translation_download_ai">Загрузить модель Gemini?</string>
   <string name="header_community_sentiment">Настроение сообщества</string>
   <string name="header_country">Страна</string>
   <string name="header_create_smart_list">Создать умный список</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Экспорт ваших данных</string>
   <string name="header_filters">Фильтры</string>
   <string name="header_follows_leaderboard">Таблица лидеров</string>
+  <string name="header_game_rated_higher">Рейтинг выше?</string>
   <string name="header_genre">Жанр</string>
   <string name="header_genres_loved">Любимые жанры</string>
   <string name="header_get_notified">Получайте уведомления!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Отслеживание</string>
   <string name="header_settings_translations">Переводы</string>
   <string name="header_skipped_items">%s пропущенных элементов</string>
+  <string name="header_smart_list_compare_current">Ваш список</string>
+  <string name="header_smart_list_compare_proposed">Как умный список</string>
   <string name="header_stats_contributions">Вклад</string>
   <string name="header_stats_graph_peak">Пиковые часы</string>
   <string name="header_stats_graph_screen_time_daily">Разбивка по дням</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Перейти на оплату картой</string>
   <string name="header_vip_streak">VIP-серия</string>
   <string name="header_writer">Сценарист</string>
+  <string name="header_year_in_review_banner">Ваш обзор года %d уже здесь!</string>
   <string name="heading_blocked_users">Заблокированные пользователи</string>
   <string name="heading_branding_alternative_logos">Альтернативные логотипы</string>
   <string name="heading_branding_dark_background">Темный фон</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Какое имя пользователя вы хотите использовать?</string>
   <string name="label_add_from_lists_source">Исходный список</string>
   <string name="label_date_picker_time">Время</string>
+  <string name="label_delete_account_stat_hours">Часов просмотрено</string>
+  <string name="label_delete_account_stat_plays">Просмотров</string>
+  <string name="label_delete_account_stat_years">Лет вместе</string>
   <string name="label_drag_image_to_adjust">Перетащите изображение для настройки</string>
   <string name="label_favorites">Избранное</string>
+  <string name="label_game_best">Лучший</string>
+  <string name="label_game_streak">Серия</string>
   <string name="label_genres_drawer_all">Все жанры</string>
   <string name="label_genres_drawer_selected">Выбрано</string>
   <string name="label_genres_drawer_subtitle_loved">Выберите до 5 жанров, которые вы хотели бы видеть чаще.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Слишком короткий</string>
   <string name="label_season_short">С%s</string>
+  <string name="label_smart_list_compare_view">Выберите, какую версию показать</string>
   <string name="label_stats_active_days">Активные дни</string>
   <string name="label_stats_average">Сред.</string>
   <string name="label_stats_avg_per_day">Среднее за день</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s от %2$s и выше</string>
   <string name="list_summary_range_labeled_up_to">%1$s до %2$s</string>
   <string name="list_summary_range_up_to">До %s</string>
+  <string name="list_summary_released_within_days">Выпущено за последние %s дней</string>
+  <string name="list_summary_votes_between">От %1$s до %2$s голосов %3$s</string>
+  <string name="list_summary_votes_from">Более %1$s голосов %2$s</string>
   <string name="list_title_activity">Активность</string>
   <string name="list_title_actors">Актеры</string>
   <string name="list_title_all_titles">Все названия</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Автоматическое отслеживание</string>
   <string name="page_title_branding">Брендинг</string>
   <string name="page_title_calendar">Календарь</string>
+  <string name="page_title_convert_smart_list">Превратить в умный список</string>
   <string name="page_title_create_list">Создать список</string>
   <string name="page_title_create_smart_list">Создать умный список</string>
   <string name="page_title_discover">Находите</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Открыть</string>
   <string name="spotlight_input_placeholder">Куда?</string>
   <string name="spotlight_no_results">Ничего не найдено по запросу \"%s\"</string>
+  <string name="spotlight_section_games">Игры</string>
   <string name="spotlight_section_pages">Страницы</string>
   <string name="stat_label_hours">часы</string>
   <string name="stat_label_plays">просмотры</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Включить или отключить несколько просмотров</string>
   <string name="switch_label_private">Профиль приватный</string>
   <string name="switch_label_rating_prompt">Включить или отключить запросы на оценку</string>
+  <string name="switch_label_soundtrack_season_only">Только сезон %d</string>
   <string name="switch_label_spoilers">Показать спойлеры</string>
   <string name="switch_label_toggle_christmas_filters">Включить/выключить рождественские фильтры</string>
   <string name="switch_label_toggle_halloween_filters">Включить/выключить хэллоуинские фильтры</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Рейтинги</string>
   <string name="text_clear_source_watchlist">Буду смотреть</string>
   <string name="text_clear_watchlist">Очистить список просмотра</string>
+  <string name="text_comment_translation_download_ai_metered">Для перевода этого комментария требуется однократная загрузка локальной модели ИИ, которая может быть большой. Вы используете мобильные данные, что может расходовать ваш трафик.</string>
+  <string name="text_comment_translation_download_metered">Для перевода этого комментария требуется однократная загрузка языка. Вы используете мобильные данные, что может расходовать ваш трафик.</string>
+  <string name="text_comment_translation_downloading">Загрузка языка…</string>
+  <string name="text_comment_translation_downloading_ai">Загрузка Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Загрузка Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">Вы можете подключить %s, когда будете готовы.</string>
   <string name="text_connection_status_cancelled_title">Подключение отменено</string>
   <string name="text_connection_status_connected_message">Сейчас мы синхронизируем вашу историю просмотров и оценки.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Право</string>
   <string name="text_footer_category_platform">Платформа</string>
   <string name="text_free">Бесплатно</string>
+  <string name="text_game_best">Лучший: %s</string>
+  <string name="text_game_hint_swipe">Свайп вверх — выше, вниз — ниже</string>
+  <string name="text_game_intro_again">Снова?</string>
+  <string name="text_game_intro_hello">Привет.</string>
+  <string name="text_game_intro_play">Я хочу сыграть в игру.</string>
+  <string name="text_game_load_error">Не удалось загрузить заголовки. Проверьте подключение и повторите попытку.</string>
+  <string name="text_game_new_best">Новый рекорд</string>
+  <string name="text_game_reveal">%1$s имеет рейтинг %2$s</string>
+  <string name="text_game_spoiler">Спойлер: %1$s имеет рейтинг %2$s</string>
+  <string name="text_game_spotlight_subtitle">Угадайте, какой заголовок Trakt оценивает выше</string>
+  <string name="text_game_versus">ВС</string>
   <string name="text_history_slot_picker_empty">У вас еще нет истории просмотров. Это будет ваша первая запись.</string>
   <string name="text_history_sync_filter">Идентификатор синхронизации %d</string>
   <string name="text_history_sync_filter_with_source">Идентификатор синхронизации %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Присоединяйтесь к Trakt бесплатно и откройте для себя больше функций, которые вас ждут.</string>
   <string name="text_onboarding_4_title">Есть еще много чего открыть.</string>
   <string name="text_overview_placeholder">Описание недоступно.</string>
+  <string name="text_passkey">Ключ доступа</string>
   <string name="text_people_count">%d людей</string>
   <string name="text_person_count">%d человек</string>
   <string name="text_personal_note">Личная заметка</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Ветеран</string>
   <string name="text_watch_until_here_episode_count">%d эпизодов</string>
   <string name="text_watch_until_here_preview_title">Временные метки просмотра</string>
+  <string name="text_year_in_review_banner_tagline">Двенадцать персон. Одна из них — вы.</string>
   <string name="text_younify_status_broken">Нарушено</string>
   <string name="text_younify_status_linked">Подключено</string>
   <string name="text_younify_status_unlinked">Не подключено</string>

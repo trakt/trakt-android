@@ -156,6 +156,7 @@
   <string name="button_label_login">Masuk</string>
   <string name="button_label_logout">Keluar</string>
   <string name="button_label_manage_collaborators">Kelola kolaborator untuk %s</string>
+  <string name="button_label_manage_passkey">Kelola Kunci Masuk</string>
   <string name="button_label_manage_subscription">Kelola Langganan VIP</string>
   <string name="button_label_manage_vip">Kelola Langganan</string>
   <string name="button_label_mark_as_watched">Tandai \"%s\" sudah ditonton</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Jeda %s</string>
   <string name="button_label_pick_match">Impor %s.</string>
   <string name="button_label_play_all_stories">Putar semua cerita hari ini</string>
+  <string name="button_label_play_game">Mainkan Nilai Lebih Tinggi?</string>
   <string name="button_label_play_story">Putar cerita untuk %s</string>
   <string name="button_label_play_track">Putar %s</string>
   <string name="button_label_plex_add_server">Tambah server Plex</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Hapus sekarang</string>
   <string name="button_text_comment_likes">%d suka</string>
   <string name="button_text_comment_replies">%d balasan</string>
+  <string name="button_text_comment_translated">Diterjemahkan</string>
   <string name="button_text_connect">Hubungkan</string>
   <string name="button_text_continue">Lanjutkan</string>
   <string name="button_text_convert">Konversi</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Permintaan</string>
   <string name="button_text_followers">Pengikut</string>
   <string name="button_text_following">Mengikuti</string>
+  <string name="button_text_game_close">Tutup</string>
+  <string name="button_text_game_higher">Lebih Tinggi</string>
+  <string name="button_text_game_lower">Lebih Rendah</string>
+  <string name="button_text_game_play">Mainkan</string>
+  <string name="button_text_game_play_again">Main lagi</string>
   <string name="button_text_get_started">Mulai</string>
   <string name="button_text_get_vip">Dapatkan</string>
   <string name="button_text_go_to_show">Buka acara</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Kelola</string>
   <string name="button_text_manage_collaborators">Kolaborator</string>
   <string name="button_text_manage_lists">Kelola daftar</string>
+  <string name="button_text_manage_passkey">Kelola</string>
   <string name="button_text_manage_subscription">Kelola Langganan VIP</string>
   <string name="button_text_manage_vip">Kelola</string>
   <string name="button_text_mark_as_watched">Tandai Sudah Ditonton</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex tidak lagi menerima akses Trakt. Hubungkan kembali untuk terus menyinkronkan.</string>
   <string name="description_media_sync_unreachable">Trakt tidak dapat menjangkau server ini. Coba lagi setelah server kembali daring.</string>
   <string name="description_media_sync_watchlist_only">Tidak perlu server. Menyinkronkan daftar tontonan Plex Anda.</string>
+  <string name="description_passkey">Masuk dengan sidik jari, wajah, atau kunci layar Anda.</string>
   <string name="description_paused_items">Item-item ini tidak ditonton setidaknya 80%.</string>
   <string name="description_plex_home_users">Tayangan Anda sendiri selalu sinkron. Tambahkan nama pengguna Plex Home lainnya untuk menyinkronkan milik mereka juga.</string>
   <string name="description_plex_manual_sync">Picukan sinkronisasi segera riwayat tontonan Plex Anda ke Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Mati</string>
   <string name="filter_toggle_state_on">Aktif</string>
   <string name="header_account_details">Detail Akun</string>
+  <string name="header_account_security">Keamanan Akun</string>
   <string name="header_add_from_lists">Tambahkan ke %s</string>
   <string name="header_age">Usia</string>
   <string name="header_aired">Telah Tayang</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Sertifikasi</string>
   <string name="header_clear_data">Hapus Data</string>
   <string name="header_comment_reactions">Reaksi ulasan</string>
+  <string name="header_comment_translation_download">Unduh bahasa?</string>
+  <string name="header_comment_translation_download_ai">Unduh model Gemini?</string>
   <string name="header_community_sentiment">Sentimen</string>
   <string name="header_country">Negara</string>
   <string name="header_create_smart_list">Buat Daftar Cerdas</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Mengekspor data Anda</string>
   <string name="header_filters">Filter</string>
   <string name="header_follows_leaderboard">Papan Peringkat</string>
+  <string name="header_game_rated_higher">Nilai Lebih Tinggi?</string>
   <string name="header_genre">Genre</string>
   <string name="header_genres_loved">Genre yang Anda Suka</string>
   <string name="header_get_notified">Dapatkan Notifikasi!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Pelacakan</string>
   <string name="header_settings_translations">Terjemahan</string>
   <string name="header_skipped_items">%s Item Dilewati</string>
+  <string name="header_smart_list_compare_current">Daftar Anda</string>
+  <string name="header_smart_list_compare_proposed">Sebagai daftar cerdas</string>
   <string name="header_stats_contributions">Kontribusi</string>
   <string name="header_stats_graph_peak">Jam Puncak</string>
   <string name="header_stats_graph_screen_time_daily">Rincian Harian</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Beralih ke kartu kredit</string>
   <string name="header_vip_streak">Streak VIP</string>
   <string name="header_writer">Penulis</string>
+  <string name="header_year_in_review_banner">Kilas Balik Tahunan %d Anda sudah tiba!</string>
   <string name="heading_blocked_users">Pengguna yang Diblokir</string>
   <string name="heading_branding_alternative_logos">Logo Alternatif</string>
   <string name="heading_branding_dark_background">Latar Belakang Gelap</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Apa nama pengguna Anda?</string>
   <string name="label_add_from_lists_source">Daftar sumber</string>
   <string name="label_date_picker_time">Waktu</string>
+  <string name="label_delete_account_stat_hours">Jam ditonton</string>
+  <string name="label_delete_account_stat_plays">Tontonan dicatat</string>
+  <string name="label_delete_account_stat_years">Tahun bergabung</string>
   <string name="label_drag_image_to_adjust">Seret gambar untuk menyesuaikan</string>
   <string name="label_favorites">Favorit</string>
+  <string name="label_game_best">Terbaik</string>
+  <string name="label_game_streak">Streak</string>
   <string name="label_genres_drawer_all">Semua Genre</string>
   <string name="label_genres_drawer_selected">Terpilih</string>
   <string name="label_genres_drawer_subtitle_loved">Pilih hingga 5 genre yang ingin Anda lihat lebih banyak.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Terlalu pendek</string>
   <string name="label_season_short">M%s</string>
+  <string name="label_smart_list_compare_view">Pilih versi yang akan ditampilkan</string>
   <string name="label_stats_active_days">Hari Aktif</string>
   <string name="label_stats_average">Rata-rata</string>
   <string name="label_stats_avg_per_day">Rata-rata Harian</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s dan ke atas</string>
   <string name="list_summary_range_labeled_up_to">%1$s hingga %2$s</string>
   <string name="list_summary_range_up_to">Hingga %s</string>
+  <string name="list_summary_released_within_days">Dirilis dalam %s hari terakhir</string>
+  <string name="list_summary_votes_between">%1$s hingga %2$s suara %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ suara %2$s</string>
   <string name="list_title_activity">Aktivitas</string>
   <string name="list_title_actors">Aktor</string>
   <string name="list_title_all_titles">Semua judul</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Pelacakan Otomatis</string>
   <string name="page_title_branding">Branding</string>
   <string name="page_title_calendar">Kalender</string>
+  <string name="page_title_convert_smart_list">Ubah menjadi daftar cerdas</string>
   <string name="page_title_create_list">Buat Daftar</string>
   <string name="page_title_create_smart_list">Buat Daftar Cerdas</string>
   <string name="page_title_discover">Temukan</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Buka</string>
   <string name="spotlight_input_placeholder">Ke mana?</string>
   <string name="spotlight_no_results">Tidak ada yang cocok dengan \"%s\"</string>
+  <string name="spotlight_section_games">Game</string>
   <string name="spotlight_section_pages">Halaman</string>
   <string name="stat_label_hours">jam</string>
   <string name="stat_label_plays">tontonan</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Aktifkan atau nonaktifkan beberapa kali tonton</string>
   <string name="switch_label_private">Apakah profil bersifat pribadi</string>
   <string name="switch_label_rating_prompt">Aktifkan atau nonaktifkan prompt peringkat</string>
+  <string name="switch_label_soundtrack_season_only">Musim %d saja</string>
   <string name="switch_label_spoilers">Tampilkan Spoiler</string>
   <string name="switch_label_toggle_christmas_filters">Alihkan filter natal</string>
   <string name="switch_label_toggle_halloween_filters">Alihkan filter halloween</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Peringkat</string>
   <string name="text_clear_source_watchlist">Daftar Tontonan</string>
   <string name="text_clear_watchlist">Hapus daftar tontonan</string>
+  <string name="text_comment_translation_download_ai_metered">Menerjemahkan komentar ini memerlukan unduhan satu kali model AI di perangkat, yang bisa berukuran besar. Anda menggunakan data seluler, jadi ini mungkin menggunakan kuota data Anda.</string>
+  <string name="text_comment_translation_download_metered">Menerjemahkan komentar ini memerlukan unduhan bahasa satu kali. Anda menggunakan data seluler, jadi ini mungkin menggunakan kuota data Anda.</string>
+  <string name="text_comment_translation_downloading">Mengunduh bahasa…</string>
+  <string name="text_comment_translation_downloading_ai">Mengunduh Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Mengunduh Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">Anda dapat menghubungkan %s kapan saja Anda siap.</string>
   <string name="text_connection_status_cancelled_title">Koneksi dibatalkan</string>
   <string name="text_connection_status_connected_message">Kami sedang menyinkronkan riwayat tontonan dan rating Anda sekarang.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Hukum</string>
   <string name="text_footer_category_platform">Platform</string>
   <string name="text_free">Gratis</string>
+  <string name="text_game_best">Rekor %s</string>
+  <string name="text_game_hint_swipe">Geser ke atas untuk lebih tinggi, ke bawah untuk lebih rendah</string>
+  <string name="text_game_intro_again">Lagi?</string>
+  <string name="text_game_intro_hello">Halo.</string>
+  <string name="text_game_intro_play">Aku ingin bermain game.</string>
+  <string name="text_game_load_error">Tidak dapat memuat judul. Periksa koneksi Anda dan coba lagi.</string>
+  <string name="text_game_new_best">Rekor baru</string>
+  <string name="text_game_reveal">%1$s memiliki rating %2$s</string>
+  <string name="text_game_spoiler">Spoiler: %1$s memiliki rating %2$s</string>
+  <string name="text_game_spotlight_subtitle">Tebak judul mana yang Trakt beri rating lebih tinggi</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Anda belum memiliki riwayat tontonan. Ini akan menjadi entri pertama Anda.</string>
   <string name="text_history_sync_filter">ID Sinkronisasi %d</string>
   <string name="text_history_sync_filter_with_source">ID Sinkronisasi %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Bergabunglah dengan Trakt secara gratis dan temukan lebih banyak fitur yang menanti Anda.</string>
   <string name="text_onboarding_4_title">Ada lebih banyak untuk dijelajahi.</string>
   <string name="text_overview_placeholder">Ikhtisar tidak tersedia.</string>
+  <string name="text_passkey">Kunci Masuk</string>
   <string name="text_people_count">%d orang</string>
   <string name="text_person_count">%d orang</string>
   <string name="text_personal_note">Catatan Pribadi</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Veteran</string>
   <string name="text_watch_until_here_episode_count">%d episode</string>
   <string name="text_watch_until_here_preview_title">Waktu Tonton</string>
+  <string name="text_year_in_review_banner_tagline">Dua belas persona. Salah satunya adalah Anda.</string>
   <string name="text_younify_status_broken">Rusak</string>
   <string name="text_younify_status_linked">Tertaut</string>
   <string name="text_younify_status_unlinked">Tidak tertaut</string>

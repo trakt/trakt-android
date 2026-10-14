@@ -156,6 +156,7 @@
   <string name="button_label_login">Вход</string>
   <string name="button_label_logout">Изход</string>
   <string name="button_label_manage_collaborators">Управление на сътрудници за %s</string>
+  <string name="button_label_manage_passkey">Управление на пропускателен ключ</string>
   <string name="button_label_manage_subscription">Управление на VIP абонамент</string>
   <string name="button_label_manage_vip">Управление на абонамент</string>
   <string name="button_label_mark_as_watched">Маркирай \"%s\" като гледано</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Паузирай %s</string>
   <string name="button_label_pick_match">Импортирай %s.</string>
   <string name="button_label_play_all_stories">Пусни всички истории от днес</string>
+  <string name="button_label_play_game">Играй </string>
   <string name="button_label_play_story">Пусни историята за %s</string>
   <string name="button_label_play_track">Пусни %s</string>
   <string name="button_label_plex_add_server">Добавяне на Plex сървър</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Изчисти сега</string>
   <string name="button_text_comment_likes">%d харесвания</string>
   <string name="button_text_comment_replies">%d отговора</string>
+  <string name="button_text_comment_translated">Преведено</string>
   <string name="button_text_connect">Свързване</string>
   <string name="button_text_continue">Продължи</string>
   <string name="button_text_convert">Конвертирай</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Заявки</string>
   <string name="button_text_followers">Последователи</string>
   <string name="button_text_following">Абонирани</string>
+  <string name="button_text_game_close">Затвори</string>
+  <string name="button_text_game_higher">По-високо</string>
+  <string name="button_text_game_lower">По-ниско</string>
+  <string name="button_text_game_play">Играй</string>
+  <string name="button_text_game_play_again">Играй отново</string>
   <string name="button_text_get_started">Започни</string>
   <string name="button_text_get_vip">Вземи</string>
   <string name="button_text_go_to_show">Отиди на сериала</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Управление</string>
   <string name="button_text_manage_collaborators">Сътрудници</string>
   <string name="button_text_manage_lists">Управление на списъци</string>
+  <string name="button_text_manage_passkey">Управление</string>
   <string name="button_text_manage_subscription">Управление на VIP абонамент</string>
   <string name="button_text_manage_vip">Управление</string>
   <string name="button_text_mark_as_watched">Маркирай като гледано</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex вече не приема достъпа на Trakt. Свържете се отново, за да продължите синхронизацията.</string>
   <string name="description_media_sync_unreachable">Trakt не може да достигне този сървър. Опитайте отново, когато е онлайн.</string>
   <string name="description_media_sync_watchlist_only">Не е необходим сървър. Синхронизира вашия Plex списък за гледане.</string>
+  <string name="description_passkey">Влезте с вашия пръстов отпечатък, лице или заключване на екрана.</string>
   <string name="description_paused_items">Тези елементи не са гледани поне 80%.</string>
   <string name="description_plex_home_users">Вашите собствени гледания винаги се синхронизират. Добавете други потребителски имена от Plex Home, за да синхронизирате и техните.</string>
   <string name="description_plex_manual_sync">Задействайте незабавна синхронизация на вашата Plex история на гледанията към Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Изкл.</string>
   <string name="filter_toggle_state_on">Вкл.</string>
   <string name="header_account_details">Детайли на акаунта</string>
+  <string name="header_account_security">Сигурност на профила</string>
   <string name="header_add_from_lists">Добавяне към %s</string>
   <string name="header_age">Възраст</string>
   <string name="header_aired">Излъчен</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Сертификация</string>
   <string name="header_clear_data">Изчисти данните</string>
   <string name="header_comment_reactions">Реакции към рецензия</string>
+  <string name="header_comment_translation_download">Изтегляне на език?</string>
+  <string name="header_comment_translation_download_ai">Изтегляне на модела Gemini?</string>
   <string name="header_community_sentiment">Настроение</string>
   <string name="header_country">Държава</string>
   <string name="header_create_smart_list">Създаване на интелигентен списък</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Експортиране на вашите данни</string>
   <string name="header_filters">Филтри</string>
   <string name="header_follows_leaderboard">Класация</string>
+  <string name="header_game_rated_higher">По-висок рейтинг?</string>
   <string name="header_genre">Жанр</string>
   <string name="header_genres_loved">Жанрове, които харесвате</string>
   <string name="header_get_notified">Получавайте известия!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Проследяване</string>
   <string name="header_settings_translations">Преводи</string>
   <string name="header_skipped_items">%s пропуснати елемента</string>
+  <string name="header_smart_list_compare_current">Вашият списък</string>
+  <string name="header_smart_list_compare_proposed">Като интелигентен списък</string>
   <string name="header_stats_contributions">Приноси</string>
   <string name="header_stats_graph_peak">Пикови часове</string>
   <string name="header_stats_graph_screen_time_daily">Дневна разбивка</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Премини към кредитна карта</string>
   <string name="header_vip_streak">VIP поредица</string>
   <string name="header_writer">Сценарист</string>
+  <string name="header_year_in_review_banner">Вашият %d годишен преглед е тук!</string>
   <string name="heading_blocked_users">Блокирани потребители</string>
   <string name="heading_branding_alternative_logos">Алтернативни лога</string>
   <string name="heading_branding_dark_background">Тъмен фон</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Какво да бъде потребителското ти име?</string>
   <string name="label_add_from_lists_source">Изходен списък</string>
   <string name="label_date_picker_time">Час</string>
+  <string name="label_delete_account_stat_hours">Гледани часове</string>
+  <string name="label_delete_account_stat_plays">Записани гледания</string>
+  <string name="label_delete_account_stat_years">Години заедно</string>
   <string name="label_drag_image_to_adjust">Плъзни изображението за настройка</string>
   <string name="label_favorites">Любими</string>
+  <string name="label_game_best">Най-добро</string>
+  <string name="label_game_streak">Поредица</string>
   <string name="label_genres_drawer_all">Всички жанрове</string>
   <string name="label_genres_drawer_selected">Избрани</string>
   <string name="label_genres_drawer_subtitle_loved">Изберете до 5 жанра, които бихте искали да виждате по-често.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Твърде кратко</string>
   <string name="label_season_short">С%s</string>
+  <string name="label_smart_list_compare_view">Изберете коя версия да покажете</string>
   <string name="label_stats_active_days">Активни дни</string>
   <string name="label_stats_average">Средно</string>
   <string name="label_stats_avg_per_day">Средна дневна стойност</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s и нагоре</string>
   <string name="list_summary_range_labeled_up_to">%1$s до %2$s</string>
   <string name="list_summary_range_up_to">До %s</string>
+  <string name="list_summary_released_within_days">Издадени през последните %s дни</string>
+  <string name="list_summary_votes_between">%1$s до %2$s гласа от %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ гласа от %2$s</string>
   <string name="list_title_activity">Активност</string>
   <string name="list_title_actors">Актьори</string>
   <string name="list_title_all_titles">Всички заглавия</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Автоматично проследяване</string>
   <string name="page_title_branding">Брандинг</string>
   <string name="page_title_calendar">Календар</string>
+  <string name="page_title_convert_smart_list">Превърни в интелигентен списък</string>
   <string name="page_title_create_list">Създай списък</string>
   <string name="page_title_create_smart_list">Създаване на интелигентен списък</string>
   <string name="page_title_discover">Открий</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Отваряне</string>
   <string name="spotlight_input_placeholder">Накъде?</string>
   <string name="spotlight_no_results">Няма съвпадения за \"%s\"</string>
+  <string name="spotlight_section_games">Игри</string>
   <string name="spotlight_section_pages">Страници</string>
   <string name="stat_label_hours">часове</string>
   <string name="stat_label_plays">гледания</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Разрешаване или забраняване на многократно гледане</string>
   <string name="switch_label_private">Профилът е частен</string>
   <string name="switch_label_rating_prompt">Разрешаване или забраняване на подканите за оценка</string>
+  <string name="switch_label_soundtrack_season_only">Само сезон %d</string>
   <string name="switch_label_spoilers">Покажи спойлери</string>
   <string name="switch_label_toggle_christmas_filters">Включване/изключване на филтри за Коледа</string>
   <string name="switch_label_toggle_halloween_filters">Включване/изключване на филтри за Хелоуин</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Оценки</string>
   <string name="text_clear_source_watchlist">Списък за гледане</string>
   <string name="text_clear_watchlist">Изчисти списъка за гледане</string>
+  <string name="text_comment_translation_download_ai_metered">Превеждането на този коментар изисква еднократно изтегляне на локалния AI модел, който може да е голям. Използвате мобилни данни, така че това може да изразходва част от вашия абонамент.</string>
+  <string name="text_comment_translation_download_metered">Превеждането на този коментар изисква еднократно изтегляне на език. Използвате мобилни данни, така че това може да изразходва част от вашия абонамент.</string>
+  <string name="text_comment_translation_downloading">Изтегляне на език…</string>
+  <string name="text_comment_translation_downloading_ai">Изтегляне на Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Изтегляне на Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">Можете да се свържете с %s, когато сте готови.</string>
   <string name="text_connection_status_cancelled_title">Връзката е отменена</string>
   <string name="text_connection_status_connected_message">В момента синхронизираме историята на гледанията ви и оценките ви.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Правни</string>
   <string name="text_footer_category_platform">Платформа</string>
   <string name="text_free">Безплатно</string>
+  <string name="text_game_best">Най-добро %s</string>
+  <string name="text_game_hint_swipe">Плъзнете нагоре за по-високо, надолу за по-ниско</string>
+  <string name="text_game_intro_again">Пак ли?</string>
+  <string name="text_game_intro_hello">Здравейте.</string>
+  <string name="text_game_intro_play">Искам да играем игра.</string>
+  <string name="text_game_load_error">Неуспешно зареждане на заглавията. Проверете връзката си и опитайте отново.</string>
+  <string name="text_game_new_best">Нов рекорд</string>
+  <string name="text_game_reveal">%1$s е с рейтинг %2$s</string>
+  <string name="text_game_spoiler">Спойлер: %1$s е с рейтинг %2$s</string>
+  <string name="text_game_spotlight_subtitle">Познайте кое заглавие Trakt оценява по-високо</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Все още нямате история на гледане. Това ще бъде първият ви запис.</string>
   <string name="text_history_sync_filter">ID на синхронизация %d</string>
   <string name="text_history_sync_filter_with_source">ID на синхронизация %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Присъединете се към Trakt безплатно и открийте още функции, които ви очакват.</string>
   <string name="text_onboarding_4_title">Има още за откриване.</string>
   <string name="text_overview_placeholder">Прегледът не е наличен.</string>
+  <string name="text_passkey">Пропускателен ключ</string>
   <string name="text_people_count">%d души</string>
   <string name="text_person_count">%d човек</string>
   <string name="text_personal_note">Лична бележка</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Ветеран</string>
   <string name="text_watch_until_here_episode_count">%d епизода</string>
   <string name="text_watch_until_here_preview_title">Времеви отметки на гледани</string>
+  <string name="text_year_in_review_banner_tagline">Дванадесет персони. Една от тях сте вие.</string>
   <string name="text_younify_status_broken">Счупено</string>
   <string name="text_younify_status_linked">Свързано</string>
   <string name="text_younify_status_unlinked">Не е свързано</string>

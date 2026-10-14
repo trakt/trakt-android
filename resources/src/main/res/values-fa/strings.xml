@@ -156,6 +156,7 @@
   <string name="button_label_login">ورود</string>
   <string name="button_label_logout">خروج</string>
   <string name="button_label_manage_collaborators">مدیریت همکاران برای %s</string>
+  <string name="button_label_manage_passkey">مدیریت کلید عبور</string>
   <string name="button_label_manage_subscription">مدیریت اشتراک VIP</string>
   <string name="button_label_manage_vip">مدیریت اشتراک</string>
   <string name="button_label_mark_as_watched">\" %s \" را به عنوان تماشا شده علامت‌گذاری کنید</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">مکث %s</string>
   <string name="button_label_pick_match">وارد کردن %s.</string>
   <string name="button_label_play_all_stories">پخش تمام داستان‌های امروز</string>
+  <string name="button_label_play_game">بازی «بالاتر رتبه‌بندی شده؟»</string>
   <string name="button_label_play_story">پخش داستان برای %s</string>
   <string name="button_label_play_track">پخش %s</string>
   <string name="button_label_plex_add_server">افزودن یک سرور پلکس</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">اکنون پاک کن</string>
   <string name="button_text_comment_likes">%d لایک</string>
   <string name="button_text_comment_replies">%d پاسخ</string>
+  <string name="button_text_comment_translated">ترجمه شد</string>
   <string name="button_text_connect">اتصال</string>
   <string name="button_text_continue">ادامه</string>
   <string name="button_text_convert">تبدیل</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">درخواست‌ها</string>
   <string name="button_text_followers">دنبال‌شوندگان</string>
   <string name="button_text_following">دنبال‌کنندگان</string>
+  <string name="button_text_game_close">بستن</string>
+  <string name="button_text_game_higher">بالاتر</string>
+  <string name="button_text_game_lower">پایین‌تر</string>
+  <string name="button_text_game_play">بازی</string>
+  <string name="button_text_game_play_again">بازی دوباره</string>
   <string name="button_text_get_started">شروع کنید</string>
   <string name="button_text_get_vip">دریافت</string>
   <string name="button_text_go_to_show">رفتن به سریال</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">مدیریت</string>
   <string name="button_text_manage_collaborators">همکاران</string>
   <string name="button_text_manage_lists">مدیریت لیست‌ها</string>
+  <string name="button_text_manage_passkey">مدیریت</string>
   <string name="button_text_manage_subscription">مدیریت اشتراک VIP</string>
   <string name="button_text_manage_vip">مدیریت</string>
   <string name="button_text_mark_as_watched">علامت‌گذاری به عنوان تماشا شده</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">پلکس دیگر دسترسی Trakt را نمی‌پذیرد. برای ادامه همگام\n‌سازی دوباره متصل شوید.</string>
   <string name="description_media_sync_unreachable">Trakt نمی‌تواند به این سرور دسترسی پیدا کند. پس از آنلاین شدن دوباره تلاش کنید.</string>
   <string name="description_media_sync_watchlist_only">نیازی به سرور نیست. لیست تماشای پلکس شما را همگام\n‌سازی می‌کند.</string>
+  <string name="description_passkey">با اثر انگشت، چهره یا قفل صفحه خود وارد شوید.</string>
   <string name="description_paused_items">این موارد حداقل ۸۰٪ تماشا نشده‌اند.</string>
   <string name="description_plex_home_users">پخش‌های خودتان همیشه همگام‌سازی می‌شوند. برای همگام‌سازی پخش دیگران، نام‌های کاربری Plex Home آنها را نیز اضافه کنید.</string>
   <string name="description_plex_manual_sync">همگام‌سازی فوری سابقه تماشای Plex خود را با Trakt آغاز کنید.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">خاموش</string>
   <string name="filter_toggle_state_on">روشن</string>
   <string name="header_account_details">جزئیات حساب کاربری</string>
+  <string name="header_account_security">امنیت حساب کاربری</string>
   <string name="header_add_from_lists">افزودن به %s</string>
   <string name="header_age">سن</string>
   <string name="header_aired">پخش شد</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">گواهینامه</string>
   <string name="header_clear_data">پاک کردن داده‌ها</string>
   <string name="header_comment_reactions">واکنش‌های بازخورد</string>
+  <string name="header_comment_translation_download">زبان دانلود شود؟</string>
+  <string name="header_comment_translation_download_ai">مدل Gemini دانلود شود؟</string>
   <string name="header_community_sentiment">نظر عمومی</string>
   <string name="header_country">کشور</string>
   <string name="header_create_smart_list">ایجاد لیست هوشمند</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">در حال صادر کردن داده‌های شما</string>
   <string name="header_filters">فیلترها</string>
   <string name="header_follows_leaderboard">برترین‌ها</string>
+  <string name="header_game_rated_higher">بالاتر رتبه‌بندی شده؟</string>
   <string name="header_genre">ژانر</string>
   <string name="header_genres_loved">ژانرهایی که دوست دارید</string>
   <string name="header_get_notified">مطلع شوید!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">ردیابی</string>
   <string name="header_settings_translations">ترجمه‌ها</string>
   <string name="header_skipped_items">%s مورد نادیده گرفته شده</string>
+  <string name="header_smart_list_compare_current">لیست شما</string>
+  <string name="header_smart_list_compare_proposed">به عنوان لیست هوشمند</string>
   <string name="header_stats_contributions">مشارکت‌ها</string>
   <string name="header_stats_graph_peak">ساعات اوج</string>
   <string name="header_stats_graph_screen_time_daily">تفکیک روزانه</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">تغییر به کارت اعتباری</string>
   <string name="header_vip_streak">پیوستگی VIP</string>
   <string name="header_writer">نویسنده</string>
+  <string name="header_year_in_review_banner">مرور سال %d شما اینجاست!</string>
   <string name="heading_blocked_users">کاربران مسدود شده</string>
   <string name="heading_branding_alternative_logos">لوگوهای جایگزین</string>
   <string name="heading_branding_dark_background">پس‌زمینه تاریک</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">نام کاربری شما چه باید باشد؟</string>
   <string name="label_add_from_lists_source">لیست مبدأ</string>
   <string name="label_date_picker_time">زمان</string>
+  <string name="label_delete_account_stat_hours">ساعات تماشا شده</string>
+  <string name="label_delete_account_stat_plays">پخش‌های ثبت شده</string>
+  <string name="label_delete_account_stat_years">سال‌های حضور</string>
   <string name="label_drag_image_to_adjust">برای تنظیم، تصویر را بکشید</string>
   <string name="label_favorites">علاقه‌مندی‌ها</string>
+  <string name="label_game_best">بهترین</string>
+  <string name="label_game_streak">پیاپی</string>
   <string name="label_genres_drawer_all">همه ژانرها</string>
   <string name="label_genres_drawer_selected">انتخاب‌شده</string>
   <string name="label_genres_drawer_subtitle_loved">حداکثر ۵ ژانر را انتخاب کنید که مایلید بیشتر از آن‌ها را ببینید.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">خیلی کوتاه</string>
   <string name="label_season_short">فصل %s</string>
+  <string name="label_smart_list_compare_view">انتخاب کنید کدام نسخه نمایش داده شود</string>
   <string name="label_stats_active_days">روزهای فعال</string>
   <string name="label_stats_average">میانگین</string>
   <string name="label_stats_avg_per_day">میانگین روزانه</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s و بیشتر</string>
   <string name="list_summary_range_labeled_up_to">%1$s تا %2$s</string>
   <string name="list_summary_range_up_to">تا %s</string>
+  <string name="list_summary_released_within_days">منتشر شده در %s روز گذشته</string>
+  <string name="list_summary_votes_between">%1$s تا %2$s رأی %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ رأی %2$s</string>
   <string name="list_title_activity">فعالیت</string>
   <string name="list_title_actors">بازیگران</string>
   <string name="list_title_all_titles">همه عناوین</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">ردیابی خودکار</string>
   <string name="page_title_branding">برندینگ</string>
   <string name="page_title_calendar">تقویم</string>
+  <string name="page_title_convert_smart_list">تبدیل به لیست هوشمند</string>
   <string name="page_title_create_list">ایجاد لیست</string>
   <string name="page_title_create_smart_list">ایجاد لیست هوشمند</string>
   <string name="page_title_discover">کشف کنید</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">باز کردن</string>
   <string name="spotlight_input_placeholder">به کجا برویم؟</string>
   <string name="spotlight_no_results">چیزی با \"%s\" مطابقت ندارد</string>
+  <string name="spotlight_section_games">بازی‌ها</string>
   <string name="spotlight_section_pages">صفحات</string>
   <string name="stat_label_hours">ساعات</string>
   <string name="stat_label_plays">بازدیدها</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">فعال یا غیرفعال کردن تماشای چندگانه</string>
   <string name="switch_label_private">پروفایل خصوصی است</string>
   <string name="switch_label_rating_prompt">فعال یا غیرفعال کردن درخواست‌های امتیاز</string>
+  <string name="switch_label_soundtrack_season_only">فقط فصل %d</string>
   <string name="switch_label_spoilers">نمایش اسپویلرها</string>
   <string name="switch_label_toggle_christmas_filters">تغییر فیلترهای کریسمس</string>
   <string name="switch_label_toggle_halloween_filters">تغییر فیلترهای هالووین</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">امتیازات</string>
   <string name="text_clear_source_watchlist">لیست تماشا</string>
   <string name="text_clear_watchlist">پاک کردن لیست تماشا</string>
+  <string name="text_comment_translation_download_ai_metered">برای ترجمه این نظر، یک بار دانلود مدل هوش مصنوعی داخلی دستگاه، که ممکن است حجم زیادی داشته باشد، لازم است. شما از داده تلفن همراه استفاده می‌کنید، بنابراین ممکن است از سهمیه داده شما مصرف شود.</string>
+  <string name="text_comment_translation_download_metered">برای ترجمه این نظر، یک بار دانلود زبان لازم است. شما از داده تلفن همراه استفاده می‌کنید، بنابراین ممکن است از سهمیه داده شما مصرف شود.</string>
+  <string name="text_comment_translation_downloading">در حال دانلود زبان…</string>
+  <string name="text_comment_translation_downloading_ai">در حال دانلود Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">در حال دانلود Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">می‌توانید هر زمان که آماده بودید به %s متصل شوید.</string>
   <string name="text_connection_status_cancelled_title">اتصال لغو شد</string>
   <string name="text_connection_status_connected_message">ما در حال همگام‌سازی سابقه تماشا و امتیازات شما هستیم.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">حقوقی</string>
   <string name="text_footer_category_platform">پلتفرم</string>
   <string name="text_free">رایگان</string>
+  <string name="text_game_best">بهترین %s</string>
+  <string name="text_game_hint_swipe">برای بالاتر، به بالا بکشید؛ برای پایین‌تر، به پایین بکشید.</string>
+  <string name="text_game_intro_again">دوباره؟</string>
+  <string name="text_game_intro_hello">سلام.</string>
+  <string name="text_game_intro_play">من می‌خواهم یک بازی کنم.</string>
+  <string name="text_game_load_error">عناوین بارگیری نشدند. اتصال خود را بررسی کرده و دوباره امتحان کنید.</string>
+  <string name="text_game_new_best">بهترین جدید</string>
+  <string name="text_game_reveal">%1$s با امتیاز %2$s رتبه‌بندی شده است</string>
+  <string name="text_game_spoiler">اسپویلر: %1$s با امتیاز %2$s رتبه‌بندی شده است</string>
+  <string name="text_game_spotlight_subtitle">حدس بزنید کدام عنوان در Trakt امتیاز بالاتری دارد</string>
+  <string name="text_game_versus">مقابل</string>
   <string name="text_history_slot_picker_empty">شما هنوز هیچ تاریخچه تماشایی ندارید. این اولین ورودی شما خواهد بود.</string>
   <string name="text_history_sync_filter">شناسه همگام\nA\n سازی %d</string>
   <string name="text_history_sync_filter_with_source">شناسه همگام\nA\n سازی %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">به صورت رایگان به Trakt بپیوندید و ویژگی‌های بیشتری را که در انتظار شما هستند کشف کنید.</string>
   <string name="text_onboarding_4_title">چیزهای بیشتری برای کشف وجود دارد.</string>
   <string name="text_overview_placeholder">نمای کلی در دسترس نیست.</string>
+  <string name="text_passkey">کلید عبور</string>
   <string name="text_people_count">%d نفر</string>
   <string name="text_person_count">%d نفر</string>
   <string name="text_personal_note">یادداشت شخصی</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">کهنه‌کار</string>
   <string name="text_watch_until_here_episode_count">%d اپیزود</string>
   <string name="text_watch_until_here_preview_title">مهر زمانی تماشا شده</string>
+  <string name="text_year_in_review_banner_tagline">دوازده شخصیت. یکی از آن‌ها شمایید.</string>
   <string name="text_younify_status_broken">خراب</string>
   <string name="text_younify_status_linked">پیوند داده شده</string>
   <string name="text_younify_status_unlinked">پیوند داده نشده</string>

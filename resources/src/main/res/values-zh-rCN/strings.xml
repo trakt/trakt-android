@@ -156,6 +156,7 @@
   <string name="button_label_login">登录</string>
   <string name="button_label_logout">退出</string>
   <string name="button_label_manage_collaborators">管理“%s”的协作者</string>
+  <string name="button_label_manage_passkey">管理通行密钥</string>
   <string name="button_label_manage_subscription">管理VIP订阅</string>
   <string name="button_label_manage_vip">管理订阅</string>
   <string name="button_label_mark_as_watched">标记“%s”为已观看</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">暂停 %s</string>
   <string name="button_label_pick_match">导入 %s。</string>
   <string name="button_label_play_all_stories">播放今天的所有故事</string>
+  <string name="button_label_play_game">玩“评分更高？”</string>
   <string name="button_label_play_story">播放 %s 的故事</string>
   <string name="button_label_play_track">播放 %s</string>
   <string name="button_label_plex_add_server">添加Plex服务器</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">立即清除</string>
   <string name="button_text_comment_likes">%d 个赞</string>
   <string name="button_text_comment_replies">%d 条回复</string>
+  <string name="button_text_comment_translated">已翻译</string>
   <string name="button_text_connect">连接</string>
   <string name="button_text_continue">继续</string>
   <string name="button_text_convert">转换</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">请求</string>
   <string name="button_text_followers">关注者</string>
   <string name="button_text_following">正在关注</string>
+  <string name="button_text_game_close">关闭</string>
+  <string name="button_text_game_higher">更高</string>
+  <string name="button_text_game_lower">更低</string>
+  <string name="button_text_game_play">玩</string>
+  <string name="button_text_game_play_again">再玩一次</string>
   <string name="button_text_get_started">开始</string>
   <string name="button_text_get_vip">获取</string>
   <string name="button_text_go_to_show">前往剧集</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">管理</string>
   <string name="button_text_manage_collaborators">协作者</string>
   <string name="button_text_manage_lists">管理列表</string>
+  <string name="button_text_manage_passkey">管理</string>
   <string name="button_text_manage_subscription">管理VIP订阅</string>
   <string name="button_text_manage_vip">管理</string>
   <string name="button_text_mark_as_watched">标记为已观看</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex不再接受Trakt的访问。请重新连接以继续同步。</string>
   <string name="description_media_sync_unreachable">Trakt无法连接此服务器。待其恢复在线后请重试。</string>
   <string name="description_media_sync_watchlist_only">无需服务器。同步您的Plex待看列表。</string>
+  <string name="description_passkey">使用您的指纹、面容或屏幕锁定登录。</string>
   <string name="description_paused_items">这些项目未观看至少80%。</string>
   <string name="description_plex_home_users">您自己的播放记录始终会同步。添加其他 Plex 家庭用户名以同步他们的记录。</string>
   <string name="description_plex_manual_sync">立即将您的Plex观看历史同步到Trakt。</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">关闭</string>
   <string name="filter_toggle_state_on">开</string>
   <string name="header_account_details">账户详情</string>
+  <string name="header_account_security">账户安全</string>
   <string name="header_add_from_lists">添加到 %s</string>
   <string name="header_age">年龄</string>
   <string name="header_aired">已播出</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">分级</string>
   <string name="header_clear_data">清除数据</string>
   <string name="header_comment_reactions">评论反应</string>
+  <string name="header_comment_translation_download">下载语言包？</string>
+  <string name="header_comment_translation_download_ai">下载 Gemini 模型？</string>
   <string name="header_community_sentiment">社区情绪</string>
   <string name="header_country">国家/地区</string>
   <string name="header_create_smart_list">创建智能列表</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">正在导出您的数据</string>
   <string name="header_filters">筛选器</string>
   <string name="header_follows_leaderboard">排行榜</string>
+  <string name="header_game_rated_higher">评分更高？</string>
   <string name="header_genre">类型</string>
   <string name="header_genres_loved">您喜欢的类型</string>
   <string name="header_get_notified">获取通知！</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">追踪</string>
   <string name="header_settings_translations">翻译</string>
   <string name="header_skipped_items">%s 个已跳过项目</string>
+  <string name="header_smart_list_compare_current">你的列表</string>
+  <string name="header_smart_list_compare_proposed">作为智能列表</string>
   <string name="header_stats_contributions">贡献</string>
   <string name="header_stats_graph_peak">高峰时段</string>
   <string name="header_stats_graph_screen_time_daily">每日明细</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">切换到信用卡</string>
   <string name="header_vip_streak">VIP 连贯记录</string>
   <string name="header_writer">编剧</string>
+  <string name="header_year_in_review_banner">您的 %d 年度回顾已发布！</string>
   <string name="heading_blocked_users">已屏蔽用户</string>
   <string name="heading_branding_alternative_logos">备用徽标</string>
   <string name="heading_branding_dark_background">深色背景</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">你的用户名应该是什么？</string>
   <string name="label_add_from_lists_source">源列表</string>
   <string name="label_date_picker_time">时间</string>
+  <string name="label_delete_account_stat_hours">已观看小时数</string>
+  <string name="label_delete_account_stat_plays">已记录播放次数</string>
+  <string name="label_delete_account_stat_years">使用年限</string>
   <string name="label_drag_image_to_adjust">拖动图片调整</string>
   <string name="label_favorites">我的最爱</string>
+  <string name="label_game_best">最佳</string>
+  <string name="label_game_streak">连看</string>
   <string name="label_genres_drawer_all">所有类型</string>
   <string name="label_genres_drawer_selected">已选择</string>
   <string name="label_genres_drawer_subtitle_loved">最多选择 5 种您希望更多看到的类型。</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">太短</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">选择要显示的版本</string>
   <string name="label_stats_active_days">活跃天数</string>
   <string name="label_stats_average">平均</string>
   <string name="label_stats_avg_per_day">每日平均</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s 及以上</string>
   <string name="list_summary_range_labeled_up_to">%1$s 最高 %2$s</string>
   <string name="list_summary_range_up_to">最高 %s</string>
+  <string name="list_summary_released_within_days">在最近 %s 天内发布</string>
+  <string name="list_summary_votes_between">%1$s 到 %2$s %3$s 票</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s 票</string>
   <string name="list_title_activity">动态</string>
   <string name="list_title_actors">演员</string>
   <string name="list_title_all_titles">所有标题</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">自动追踪</string>
   <string name="page_title_branding">品牌</string>
   <string name="page_title_calendar">日历</string>
+  <string name="page_title_convert_smart_list">转为智能列表</string>
   <string name="page_title_create_list">创建列表</string>
   <string name="page_title_create_smart_list">创建智能列表</string>
   <string name="page_title_discover">发现</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">打开</string>
   <string name="spotlight_input_placeholder">去哪里？</string>
   <string name="spotlight_no_results">没有匹配\"%s\"的内容</string>
+  <string name="spotlight_section_games">游戏</string>
   <string name="spotlight_section_pages">页面</string>
   <string name="stat_label_hours">小时</string>
   <string name="stat_label_plays">播放次数</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">启用或禁用多次观看</string>
   <string name="switch_label_private">资料是否私密</string>
   <string name="switch_label_rating_prompt">启用或禁用评分提示</string>
+  <string name="switch_label_soundtrack_season_only">仅第 %d 季</string>
   <string name="switch_label_spoilers">显示剧透</string>
   <string name="switch_label_toggle_christmas_filters">切换圣诞节筛选器</string>
   <string name="switch_label_toggle_halloween_filters">切换万圣节筛选器</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">评分</string>
   <string name="text_clear_source_watchlist">待看列表</string>
   <string name="text_clear_watchlist">清除待看列表</string>
+  <string name="text_comment_translation_download_ai_metered">翻译此评论需要一次性下载设备上的 AI 模型，该模型可能较大。您正在使用移动数据，这可能会消耗您的流量。</string>
+  <string name="text_comment_translation_download_metered">翻译此评论需要一次性下载语言包。您正在使用移动数据，这可能会消耗您的流量。</string>
+  <string name="text_comment_translation_downloading">正在下载语言包…</string>
+  <string name="text_comment_translation_downloading_ai">正在下载 Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">正在下载 Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">您可以随时连接 %s。</string>
   <string name="text_connection_status_cancelled_title">连接已取消</string>
   <string name="text_connection_status_connected_message">我们正在同步您的观看历史和评分。</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">法律</string>
   <string name="text_footer_category_platform">平台</string>
   <string name="text_free">免费</string>
+  <string name="text_game_best">最佳 %s</string>
+  <string name="text_game_hint_swipe">向上滑动表示更高，向下滑动表示更低</string>
+  <string name="text_game_intro_again">再来一次？</string>
+  <string name="text_game_intro_hello">你好。</string>
+  <string name="text_game_intro_play">我想玩个游戏。</string>
+  <string name="text_game_load_error">无法加载内容。请检查您的网络连接，然后重试。</string>
+  <string name="text_game_new_best">新纪录</string>
+  <string name="text_game_reveal">%1$s 评分 %2$s</string>
+  <string name="text_game_spoiler">剧透：%1$s 评分 %2$s</string>
+  <string name="text_game_spotlight_subtitle">猜猜 Trakt 哪部影片评分更高</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">您还没有任何观看历史记录。这将是您的第一个条目。</string>
   <string name="text_history_sync_filter">同步 ID %d</string>
   <string name="text_history_sync_filter_with_source">同步 ID %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">免费加入 Trakt，发现更多功能正等待着您。</string>
   <string name="text_onboarding_4_title">还有更多等待发现。</string>
   <string name="text_overview_placeholder">概览不可用。</string>
+  <string name="text_passkey">通行密钥</string>
   <string name="text_people_count">%d 人</string>
   <string name="text_person_count">%d 人</string>
   <string name="text_personal_note">个人笔记</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">资深</string>
   <string name="text_watch_until_here_episode_count">%d 集</string>
   <string name="text_watch_until_here_preview_title">观看时间戳</string>
+  <string name="text_year_in_review_banner_tagline">十二种观影人格。您是其中之一。</string>
   <string name="text_younify_status_broken">已损坏</string>
   <string name="text_younify_status_linked">已关联</string>
   <string name="text_younify_status_unlinked">未关联</string>

@@ -156,6 +156,7 @@
   <string name="button_label_login">Entrar</string>
   <string name="button_label_logout">Sair</string>
   <string name="button_label_manage_collaborators">Gerenciar colaboradores para %s</string>
+  <string name="button_label_manage_passkey">Gerenciar chave de acesso</string>
   <string name="button_label_manage_subscription">Gerenciar Assinatura VIP</string>
   <string name="button_label_manage_vip">Gerenciar Assinatura</string>
   <string name="button_label_mark_as_watched">Marcar \"%s\" como assistido</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Pausar %s</string>
   <string name="button_label_pick_match">Importar %s.</string>
   <string name="button_label_play_all_stories">Reproduzir todas as histórias de hoje</string>
+  <string name="button_label_play_game">Jogar Avaliado Mais Alto?</string>
   <string name="button_label_play_story">Reproduzir a história de %s</string>
   <string name="button_label_play_track">Reproduzir %s</string>
   <string name="button_label_plex_add_server">Adicionar um servidor Plex</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Limpar agora</string>
   <string name="button_text_comment_likes">%d curtidas</string>
   <string name="button_text_comment_replies">%d respostas</string>
+  <string name="button_text_comment_translated">Traduzido</string>
   <string name="button_text_connect">Conectar</string>
   <string name="button_text_continue">Continuar</string>
   <string name="button_text_convert">Converter</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Solicitações</string>
   <string name="button_text_followers">Seguidores</string>
   <string name="button_text_following">Seguindo</string>
+  <string name="button_text_game_close">Fechar</string>
+  <string name="button_text_game_higher">Mais Alto</string>
+  <string name="button_text_game_lower">Mais Baixo</string>
+  <string name="button_text_game_play">Jogar</string>
+  <string name="button_text_game_play_again">Jogar novamente</string>
   <string name="button_text_get_started">Começar</string>
   <string name="button_text_get_vip">Obter</string>
   <string name="button_text_go_to_show">Ir para a série</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Gerenciar</string>
   <string name="button_text_manage_collaborators">Colaboradores</string>
   <string name="button_text_manage_lists">Gerenciar listas</string>
+  <string name="button_text_manage_passkey">Gerenciar</string>
   <string name="button_text_manage_subscription">Gerenciar Assinatura VIP</string>
   <string name="button_text_manage_vip">Gerenciar</string>
   <string name="button_text_mark_as_watched">Marcar como Assistido</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">O Plex não aceita mais o acesso do Trakt. Reconecte para continuar sincronizando.</string>
   <string name="description_media_sync_unreachable">O Trakt não consegue acessar este servidor. Tente novamente quando ele estiver online.</string>
   <string name="description_media_sync_watchlist_only">Nenhum servidor necessário. Sincroniza sua lista para assistir do Plex.</string>
+  <string name="description_passkey">Faça login com sua impressão digital, rosto ou bloqueio de tela.</string>
   <string name="description_paused_items">Esses itens não foram assistidos em pelo menos 80%.</string>
   <string name="description_plex_home_users">Suas próprias reproduções sempre sincronizam. Adicione outros nomes de usuário do Plex Home para sincronizar as deles também.</string>
   <string name="description_plex_manual_sync">Acione uma sincronização imediata do seu histórico de visualização do Plex para o Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Desativado</string>
   <string name="filter_toggle_state_on">Ativado</string>
   <string name="header_account_details">Detalhes da Conta</string>
+  <string name="header_account_security">Conta e segurança</string>
   <string name="header_add_from_lists">Adicionar a %s</string>
   <string name="header_age">Idade</string>
   <string name="header_aired">Exibido em</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Classificação</string>
   <string name="header_clear_data">Limpar Dados</string>
   <string name="header_comment_reactions">Reações da avaliação</string>
+  <string name="header_comment_translation_download">Baixar idioma?</string>
+  <string name="header_comment_translation_download_ai">Baixar modelo Gemini?</string>
   <string name="header_community_sentiment">Sentimento da Comunidade</string>
   <string name="header_country">País</string>
   <string name="header_create_smart_list">Criar Lista Inteligente</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Exportando seus dados</string>
   <string name="header_filters">Filtros</string>
   <string name="header_follows_leaderboard">Classificação</string>
+  <string name="header_game_rated_higher">Avaliado Mais Alto?</string>
   <string name="header_genre">Gênero</string>
   <string name="header_genres_loved">Gêneros que você gosta</string>
   <string name="header_get_notified">Seja Notificado!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Rastreamento</string>
   <string name="header_settings_translations">Traduções</string>
   <string name="header_skipped_items">%s Itens Ignorados</string>
+  <string name="header_smart_list_compare_current">Sua lista</string>
+  <string name="header_smart_list_compare_proposed">Como lista inteligente</string>
   <string name="header_stats_contributions">Contribuições</string>
   <string name="header_stats_graph_peak">Horários de Pico</string>
   <string name="header_stats_graph_screen_time_daily">Detalhes Diários</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Mudar para cartão de crédito</string>
   <string name="header_vip_streak">Sequência VIP</string>
   <string name="header_writer">Roteirista</string>
+  <string name="header_year_in_review_banner">Sua Retrospectiva de %d chegou!</string>
   <string name="heading_blocked_users">Usuários Bloqueados</string>
   <string name="heading_branding_alternative_logos">Logotipos Alternativos</string>
   <string name="heading_branding_dark_background">Fundo Escuro</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Qual deve ser seu nome de usuário?</string>
   <string name="label_add_from_lists_source">Lista de origem</string>
   <string name="label_date_picker_time">Hora</string>
+  <string name="label_delete_account_stat_hours">Horas assistidas</string>
+  <string name="label_delete_account_stat_plays">Reproduções registradas</string>
+  <string name="label_delete_account_stat_years">Anos juntos</string>
   <string name="label_drag_image_to_adjust">Arraste a imagem para ajustar</string>
   <string name="label_favorites">Favoritos</string>
+  <string name="label_game_best">Melhor</string>
+  <string name="label_game_streak">Em sequência</string>
   <string name="label_genres_drawer_all">Todos os Gêneros</string>
   <string name="label_genres_drawer_selected">Selecionados</string>
   <string name="label_genres_drawer_subtitle_loved">Selecione até 5 gêneros que você gostaria de ver mais.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Muito curto</string>
   <string name="label_season_short">T%s</string>
+  <string name="label_smart_list_compare_view">Escolha qual versão exibir</string>
   <string name="label_stats_active_days">Dias Ativos</string>
   <string name="label_stats_average">Méd.</string>
   <string name="label_stats_avg_per_day">Média Diária</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s e acima</string>
   <string name="list_summary_range_labeled_up_to">%1$s até %2$s</string>
   <string name="list_summary_range_up_to">Até %s</string>
+  <string name="list_summary_released_within_days">Lançado nos últimos %s dias</string>
+  <string name="list_summary_votes_between">%1$s a %2$s votos %3$s</string>
+  <string name="list_summary_votes_from">%1$s+ votos %2$s</string>
   <string name="list_title_activity">Atividade</string>
   <string name="list_title_actors">Atores</string>
   <string name="list_title_all_titles">Todos os títulos</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Acompanhamento Automático</string>
   <string name="page_title_branding">Marca</string>
   <string name="page_title_calendar">Calendário</string>
+  <string name="page_title_convert_smart_list">Converter em lista inteligente</string>
   <string name="page_title_create_list">Criar Lista</string>
   <string name="page_title_create_smart_list">Criar Lista Inteligente</string>
   <string name="page_title_discover">Descobrir</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Abrir</string>
   <string name="spotlight_input_placeholder">Para onde?</string>
   <string name="spotlight_no_results">Nenhum resultado para \"%s\"</string>
+  <string name="spotlight_section_games">Jogos</string>
   <string name="spotlight_section_pages">Páginas</string>
   <string name="stat_label_hours">horas</string>
   <string name="stat_label_plays">reproduções</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Ativar ou desativar múltiplas visualizações</string>
   <string name="switch_label_private">O perfil é privado</string>
   <string name="switch_label_rating_prompt">Ativar ou desativar avisos de avaliação</string>
+  <string name="switch_label_soundtrack_season_only">Temporada %d apenas</string>
   <string name="switch_label_spoilers">Mostrar Spoilers</string>
   <string name="switch_label_toggle_christmas_filters">Alternar filtros de Natal</string>
   <string name="switch_label_toggle_halloween_filters">Alternar filtros de Halloween</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Avaliações</string>
   <string name="text_clear_source_watchlist">Lista para Assistir</string>
   <string name="text_clear_watchlist">Limpar lista de exibição</string>
+  <string name="text_comment_translation_download_ai_metered">A tradução deste comentário exige um download único do modelo de IA no dispositivo, que pode ser grande. Você está usando dados móveis, então isso pode consumir sua franquia de dados.</string>
+  <string name="text_comment_translation_download_metered">A tradução deste comentário exige um download de idioma único. Você está usando dados móveis, então isso pode consumir sua franquia de dados.</string>
+  <string name="text_comment_translation_downloading">Baixando idioma…</string>
+  <string name="text_comment_translation_downloading_ai">Baixando Gemini…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Baixando Gemini… %d</string>
   <string name="text_connection_status_cancelled_message">Você pode conectar %s quando quiser.</string>
   <string name="text_connection_status_cancelled_title">Conexão cancelada</string>
   <string name="text_connection_status_connected_message">Estamos sincronizando seu histórico de assistidos e classificações agora.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Plataforma</string>
   <string name="text_free">Gratuito</string>
+  <string name="text_game_best">Recorde: %s</string>
+  <string name="text_game_hint_swipe">Deslize para cima para mais alto, para baixo para mais baixo</string>
+  <string name="text_game_intro_again">De novo?</string>
+  <string name="text_game_intro_hello">Olá.</string>
+  <string name="text_game_intro_play">Quero jogar um jogo.</string>
+  <string name="text_game_load_error">Não foi possível carregar os títulos. Verifique sua conexão e tente novamente.</string>
+  <string name="text_game_new_best">Novo recorde</string>
+  <string name="text_game_reveal">%1$s é avaliado em %2$s</string>
+  <string name="text_game_spoiler">Spoiler: %1$s é avaliado em %2$s</string>
+  <string name="text_game_spotlight_subtitle">Adivinhe qual título o Trakt avalia como mais alto</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Você ainda não tem histórico de visualização. Esta será sua primeira entrada.</string>
   <string name="text_history_sync_filter">ID da Sincronização %d</string>
   <string name="text_history_sync_filter_with_source">ID da Sincronização %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Junte-se ao Trakt gratuitamente e descubra mais recursos esperando por você.</string>
   <string name="text_onboarding_4_title">Há mais para descobrir.</string>
   <string name="text_overview_placeholder">Visão geral não disponível.</string>
+  <string name="text_passkey">Chave de acesso</string>
   <string name="text_people_count">%d pessoas</string>
   <string name="text_person_count">%d pessoa</string>
   <string name="text_personal_note">Nota Pessoal</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Veterano</string>
   <string name="text_watch_until_here_episode_count">%d episódios</string>
   <string name="text_watch_until_here_preview_title">Registros de horário de exibição</string>
+  <string name="text_year_in_review_banner_tagline">Doze personas. Uma delas é você.</string>
   <string name="text_younify_status_broken">Quebrado</string>
   <string name="text_younify_status_linked">Vinculado</string>
   <string name="text_younify_status_unlinked">Não vinculado</string>

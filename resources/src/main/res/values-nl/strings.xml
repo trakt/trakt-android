@@ -156,6 +156,7 @@
   <string name="button_label_login">Inloggen</string>
   <string name="button_label_logout">Afmelden</string>
   <string name="button_label_manage_collaborators">Beheer medewerkers voor %s</string>
+  <string name="button_label_manage_passkey">Passkey beheren</string>
   <string name="button_label_manage_subscription">VIP-abonnement beheren</string>
   <string name="button_label_manage_vip">Abonnement beheren</string>
   <string name="button_label_mark_as_watched">\"%s\" als bekeken markeren</string>
@@ -189,6 +190,7 @@
   <string name="button_label_pause_track">Pauzeer %s</string>
   <string name="button_label_pick_match">Importeer %s.</string>
   <string name="button_label_play_all_stories">Speel alle verhalen van vandaag af</string>
+  <string name="button_label_play_game">Speel Hoger Beoordeeld?</string>
   <string name="button_label_play_story">Speel het verhaal af voor %s</string>
   <string name="button_label_play_track">Speel %s af</string>
   <string name="button_label_plex_add_server">Een Plex-server toevoegen</string>
@@ -401,6 +403,7 @@
   <string name="button_text_clear_now">Nu wissen</string>
   <string name="button_text_comment_likes">%d likes</string>
   <string name="button_text_comment_replies">%d reacties</string>
+  <string name="button_text_comment_translated">Vertaald</string>
   <string name="button_text_connect">Verbinden</string>
   <string name="button_text_continue">Verder</string>
   <string name="button_text_convert">Omzetten</string>
@@ -438,6 +441,11 @@
   <string name="button_text_follow_requests">Verzoeken</string>
   <string name="button_text_followers">Volgers</string>
   <string name="button_text_following">Volgend</string>
+  <string name="button_text_game_close">Sluiten</string>
+  <string name="button_text_game_higher">Hoger</string>
+  <string name="button_text_game_lower">Lager</string>
+  <string name="button_text_game_play">Spelen</string>
+  <string name="button_text_game_play_again">Opnieuw spelen</string>
   <string name="button_text_get_started">Aan de slag</string>
   <string name="button_text_get_vip">Word</string>
   <string name="button_text_go_to_show">Ga naar serie</string>
@@ -464,6 +472,7 @@
   <string name="button_text_manage">Beheren</string>
   <string name="button_text_manage_collaborators">Medewerkers</string>
   <string name="button_text_manage_lists">Lijsten beheren</string>
+  <string name="button_text_manage_passkey">Beheren</string>
   <string name="button_text_manage_subscription">VIP-abonnement beheren</string>
   <string name="button_text_manage_vip">Beheren</string>
   <string name="button_text_mark_as_watched">Markeren als bekeken</string>
@@ -698,6 +707,7 @@
   <string name="description_media_sync_unauthorized">Plex accepteert Trakt\'s toegang niet langer. Maak opnieuw verbinding om te blijven synchroniseren.</string>
   <string name="description_media_sync_unreachable">Trakt kan deze server niet bereiken. Probeer het opnieuw zodra deze weer online is.</string>
   <string name="description_media_sync_watchlist_only">Geen server nodig. Synchroniseert je Plex-kijklijst.</string>
+  <string name="description_passkey">Meld u aan met uw vingerafdruk, gezicht of schermvergrendeling.</string>
   <string name="description_paused_items">Deze items zijn voor minder dan 80% bekeken.</string>
   <string name="description_plex_home_users">Je eigen afspeelsessies worden altijd gesynchroniseerd. Voeg andere Plex Home-gebruikersnamen toe om die van hen ook te synchroniseren.</string>
   <string name="description_plex_manual_sync">Activeer een onmiddellijke synchronisatie van je Plex-kijkgeschiedenis naar Trakt.</string>
@@ -789,6 +799,7 @@
   <string name="filter_toggle_state_off">Uit</string>
   <string name="filter_toggle_state_on">Aan</string>
   <string name="header_account_details">Accountgegevens</string>
+  <string name="header_account_security">Accountbeveiliging</string>
   <string name="header_add_from_lists">Toevoegen aan %s</string>
   <string name="header_age">Leeftijd</string>
   <string name="header_aired">Uitgezonden</string>
@@ -804,6 +815,8 @@
   <string name="header_certification">Classificatie</string>
   <string name="header_clear_data">Gegevens wissen</string>
   <string name="header_comment_reactions">Recensie reacties</string>
+  <string name="header_comment_translation_download">Taal downloaden?</string>
+  <string name="header_comment_translation_download_ai">Gemini-model downloaden?</string>
   <string name="header_community_sentiment">Sentiment</string>
   <string name="header_country">Land</string>
   <string name="header_create_smart_list">Slimme lijst maken</string>
@@ -828,6 +841,7 @@
   <string name="header_exporting_data">Je gegevens exporteren</string>
   <string name="header_filters">Filters</string>
   <string name="header_follows_leaderboard">Klassement</string>
+  <string name="header_game_rated_higher">Hoger beoordeeld?</string>
   <string name="header_genre">Genre</string>
   <string name="header_genres_loved">Genres die je leuk vindt</string>
   <string name="header_get_notified">Ontvang meldingen!</string>
@@ -906,6 +920,8 @@
   <string name="header_settings_tracking">Bijhouden</string>
   <string name="header_settings_translations">Vertalingen</string>
   <string name="header_skipped_items">%s overgeslagen items</string>
+  <string name="header_smart_list_compare_current">Jouw lijst</string>
+  <string name="header_smart_list_compare_proposed">Als een slimme lijst</string>
   <string name="header_stats_contributions">Bijdragen</string>
   <string name="header_stats_graph_peak">Piekuren</string>
   <string name="header_stats_graph_screen_time_daily">Dagelijkse uitsplitsing</string>
@@ -929,6 +945,7 @@
   <string name="header_vip_paypal_switch">Overschakelen naar creditcard</string>
   <string name="header_vip_streak">VIP-reeks</string>
   <string name="header_writer">Schrijver</string>
+  <string name="header_year_in_review_banner">Uw %d Jaaroverzicht is hier!</string>
   <string name="heading_blocked_users">Geblokkeerde gebruikers</string>
   <string name="heading_branding_alternative_logos">Alternatieve logo\'s</string>
   <string name="heading_branding_dark_background">Donkere achtergrond</string>
@@ -1046,8 +1063,13 @@
   <string name="input_prompt_username">Wat moet je gebruikersnaam zijn?</string>
   <string name="label_add_from_lists_source">Bronlijst</string>
   <string name="label_date_picker_time">Tijd</string>
+  <string name="label_delete_account_stat_hours">Bekeken uren</string>
+  <string name="label_delete_account_stat_plays">Geregistreerde afspeelbeurten</string>
+  <string name="label_delete_account_stat_years">Jaren samen</string>
   <string name="label_drag_image_to_adjust">Sleep de afbeelding om aan te passen</string>
   <string name="label_favorites">Favorieten</string>
+  <string name="label_game_best">Beste</string>
+  <string name="label_game_streak">Reeks</string>
   <string name="label_genres_drawer_all">Alle genres</string>
   <string name="label_genres_drawer_selected">Geselecteerd</string>
   <string name="label_genres_drawer_subtitle_loved">Selecteer maximaal 5 genres waarvan je meer wilt zien.</string>
@@ -1107,6 +1129,7 @@
   <string name="label_report_reason_tmdb">TMDB</string>
   <string name="label_report_reason_too_short">Te kort</string>
   <string name="label_season_short">S%s</string>
+  <string name="label_smart_list_compare_view">Kies welke versie je wilt tonen</string>
   <string name="label_stats_active_days">Actieve dagen</string>
   <string name="label_stats_average">Gem</string>
   <string name="label_stats_avg_per_day">Gemiddelde per dag</string>
@@ -1210,6 +1233,9 @@
   <string name="list_summary_range_labeled_from">%1$s %2$s en hoger</string>
   <string name="list_summary_range_labeled_up_to">%1$s tot %2$s</string>
   <string name="list_summary_range_up_to">Tot %s</string>
+  <string name="list_summary_released_within_days">Uitgebracht in de laatste %s dagen</string>
+  <string name="list_summary_votes_between">%1$s tot %2$s %3$s stemmen</string>
+  <string name="list_summary_votes_from">%1$s+ %2$s stemmen</string>
   <string name="list_title_activity">Activiteit</string>
   <string name="list_title_actors">Acteurs</string>
   <string name="list_title_all_titles">Alle titels</string>
@@ -1353,6 +1379,7 @@
   <string name="page_title_automatic_tracking">Automatisch volgen</string>
   <string name="page_title_branding">Branding</string>
   <string name="page_title_calendar">Kalender</string>
+  <string name="page_title_convert_smart_list">Zet om naar een slimme lijst</string>
   <string name="page_title_create_list">Lijst maken</string>
   <string name="page_title_create_smart_list">Slimme lijst maken</string>
   <string name="page_title_discover">Ontdekken</string>
@@ -1437,6 +1464,7 @@
   <string name="spotlight_hint_select">Openen</string>
   <string name="spotlight_input_placeholder">Waarheen?</string>
   <string name="spotlight_no_results">Niets komt overeen met \"%s\"</string>
+  <string name="spotlight_section_games">Spellen</string>
   <string name="spotlight_section_pages">Pagina\'s</string>
   <string name="stat_label_hours">uren</string>
   <string name="stat_label_plays">bekeken</string>
@@ -1453,6 +1481,7 @@
   <string name="switch_label_multiple_watches">Meerdere kijkbeurten in- of uitschakelen</string>
   <string name="switch_label_private">Is profiel privé</string>
   <string name="switch_label_rating_prompt">Beoordelingsprompts in- of uitschakelen</string>
+  <string name="switch_label_soundtrack_season_only">Alleen seizoen %d</string>
   <string name="switch_label_spoilers">Toon spoilers</string>
   <string name="switch_label_toggle_christmas_filters">Schakel kerstfilters in/uit</string>
   <string name="switch_label_toggle_halloween_filters">Schakel Halloween-filters in/uit</string>
@@ -1587,6 +1616,11 @@
   <string name="text_clear_source_ratings">Beoordelingen</string>
   <string name="text_clear_source_watchlist">Kijklijst</string>
   <string name="text_clear_watchlist">Kijklijst wissen</string>
+  <string name="text_comment_translation_download_ai_metered">Voor het vertalen van deze reactie is een eenmalige download van het on-device AI-model nodig, dat groot kan zijn. U gebruikt mobiele data, dus dit kan uw databundel verbruiken.</string>
+  <string name="text_comment_translation_download_metered">Voor het vertalen van deze reactie is een eenmalige taaldownload nodig. U gebruikt mobiele data, dus dit kan uw databundel verbruiken.</string>
+  <string name="text_comment_translation_downloading">Taal downloaden…</string>
+  <string name="text_comment_translation_downloading_ai">Gemini downloaden…</string>
+  <string name="text_comment_translation_downloading_ai_progress">Gemini downloaden… %d</string>
   <string name="text_connection_status_cancelled_message">Je kunt %s verbinden wanneer je maar wilt.</string>
   <string name="text_connection_status_cancelled_title">Verbinding geannuleerd</string>
   <string name="text_connection_status_connected_message">We synchroniseren nu je kijkgeschiedenis en beoordelingen.</string>
@@ -1667,6 +1701,17 @@
   <string name="text_footer_category_legal">Juridisch</string>
   <string name="text_footer_category_platform">Platform</string>
   <string name="text_free">Gratis</string>
+  <string name="text_game_best">Beste %s</string>
+  <string name="text_game_hint_swipe">Veeg omhoog voor hoger, omlaag voor lager</string>
+  <string name="text_game_intro_again">Opnieuw?</string>
+  <string name="text_game_intro_hello">Hallo.</string>
+  <string name="text_game_intro_play">Ik wil een spel spelen.</string>
+  <string name="text_game_load_error">Kon titels niet laden. Controleer je verbinding en probeer het opnieuw.</string>
+  <string name="text_game_new_best">Nieuw beste</string>
+  <string name="text_game_reveal">%1$s is beoordeeld met %2$s</string>
+  <string name="text_game_spoiler">Spoiler: %1$s is beoordeeld met %2$s</string>
+  <string name="text_game_spotlight_subtitle">Raad welke titel Trakt hoger beoordeelt</string>
+  <string name="text_game_versus">VS</string>
   <string name="text_history_slot_picker_empty">Je hebt nog geen kijkgeschiedenis. Dit wordt je eerste vermelding.</string>
   <string name="text_history_sync_filter">Synchronisatie-ID %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
@@ -1796,6 +1841,7 @@
   <string name="text_onboarding_4_description_2">Word gratis lid van Trakt en ontdek meer functies die op u wachten.</string>
   <string name="text_onboarding_4_title">Er valt meer te ontdekken.</string>
   <string name="text_overview_placeholder">Overzicht is niet beschikbaar.</string>
+  <string name="text_passkey">Passkey</string>
   <string name="text_people_count">%d personen</string>
   <string name="text_person_count">%d persoon</string>
   <string name="text_personal_note">Persoonlijke notitie</string>
@@ -2070,6 +2116,7 @@
   <string name="text_vip_veteran_title_veteran">Veteraan</string>
   <string name="text_watch_until_here_episode_count">%d afleveringen</string>
   <string name="text_watch_until_here_preview_title">Bekeken tijdstippen</string>
+  <string name="text_year_in_review_banner_tagline">Twaalf persona\'s. Eén daarvan bent u.</string>
   <string name="text_younify_status_broken">Verbroken</string>
   <string name="text_younify_status_linked">Gekoppeld</string>
   <string name="text_younify_status_unlinked">Niet gekoppeld</string>
