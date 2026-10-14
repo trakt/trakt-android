@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.search.features.game
 
 import android.annotation.SuppressLint
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.background
@@ -135,6 +137,7 @@ private fun GameWebView(
         modifier = modifier,
         factory = { context ->
             WebView(context).apply {
+                layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                 setBackgroundColor(gameBackgroundColor.toArgb())
                 settings.javaScriptEnabled = true
                 settings.domStorageEnabled = true
