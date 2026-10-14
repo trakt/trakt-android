@@ -44,6 +44,8 @@ import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.Progress
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
 import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalDataSource
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
+import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
+import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal class LogoutUserUseCase(
@@ -60,6 +62,8 @@ internal class LogoutUserUseCase(
     private val localUpcoming: HomeUpcomingLocalDataSource,
     private val localSocial: HomeSocialLocalDataSource,
     private val localPersonal: HomePersonalLocalDataSource,
+    private val localToday: TodayLocalDataSource,
+    private val localTodaySeen: TodaySeenLocalDataSource,
     private val localListsPersonal: ListsPersonalLocalDataSource,
     private val localListsLiked: ListsLikedLocalDataSource,
     private val localListsCollab: ListsCollaborationsLocalDataSource,
@@ -107,6 +111,8 @@ internal class LogoutUserUseCase(
         localUpcoming.clear()
         localSocial.clear()
         localPersonal.clear()
+        localToday.clear()
+        localTodaySeen.clear()
         localListsPersonal.clear()
         localListsLiked.clear()
         localListsCollab.clear()

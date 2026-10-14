@@ -16,6 +16,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.networking.api.v3.model.V3FollowingActivityResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardEntryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
@@ -35,6 +36,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReaction
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReactionsSummaryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3UserMediaReaction
+import java.time.Instant
 import java.util.Locale
 import kotlin.uuid.Uuid
 
@@ -211,6 +213,28 @@ class V3Api(
                 "?page=${pagination.page}" +
                 "&limit=${pagination.limit}",
         )
+        return response.body()
+    }
+
+    /**
+     * @param window Activity window. Without it the API applies its own rolling window.
+     */
+    suspend fun getFollowingActivities(
+        pagination: Pagination,
+        window: ClosedRange<Instant>? = null,
+    ): List<V3FollowingActivityResponse> {
+        val response = client.get("${baseV3Url}users/me/following/activities") {
+            parameter("extended", "full,images")
+            parameter("page", pagination.page)
+            parameter("limit", pagination.limit)
+            window?.let {
+                parameter("start_at", it.start.toString())
+                parameter("end_at", it.endInclusive.toString())
+            }
+        }
+        if (response.status == HttpStatusCode.NoContent) {
+            return emptyList()
+        }
         return response.body()
     }
 

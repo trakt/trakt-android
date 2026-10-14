@@ -88,6 +88,8 @@ import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.summary.social.di.mediaSocialActivityModule
 import tv.trakt.trakt.core.sync.di.syncModule
+import tv.trakt.trakt.core.today.di.todayDataModule
+import tv.trakt.trakt.core.today.di.todayModule
 import tv.trakt.trakt.core.trivia.di.triviaModule
 import tv.trakt.trakt.core.userprofile.di.userProfileModule
 import tv.trakt.trakt.helpers.player.di.youTubePlayerModule
@@ -216,6 +218,8 @@ internal class TraktApplication : Application() {
                 shareModule,
                 widgetsModule,
                 otherDatePickerModule,
+                todayDataModule,
+                todayModule,
             )
         }
     }
