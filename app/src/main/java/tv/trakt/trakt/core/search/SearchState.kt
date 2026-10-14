@@ -31,7 +31,7 @@ internal data class SearchState(
     val error: Exception? = null,
 ) {
     val showGameCard: Boolean
-        get() = input.filter in GameCardFilters && isGameKeyword(input.query)
+        get() = input.filter in GameCardFilters && isGameKeyword(input.query) && !searchResult?.items.isNullOrEmpty()
 
     data class UserState(
         val user: User? = null,

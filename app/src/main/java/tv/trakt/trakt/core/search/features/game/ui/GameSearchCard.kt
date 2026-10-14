@@ -43,7 +43,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
-// Poster art palette and geometry mirror the web game poster (300x450 viewBox).
 private val PosterGlow = Color(0xFF7A1F9E)
 private val PosterGlowMid = Color(0xFF2A0B33)
 private val PosterBase = Color(0xFF0B080D)
@@ -56,7 +55,7 @@ private val PosterAccent = Color(0xFFC26CE8)
 private const val POSTER_WIDTH = 300F
 
 private val CardShape = RoundedCornerShape(15.dp)
-private val BorderGap = 5.dp
+private val BorderGap = 6.dp
 private val CoverShape = RoundedCornerShape(15.dp - BorderGap)
 
 @Composable
@@ -74,7 +73,7 @@ internal fun GameSearchCard(
                 .fillMaxWidth()
                 .aspectRatio(VerticalImageAspectRatio)
                 .border(
-                    width = 2.dp,
+                    width = 3.dp,
                     color = TraktTheme.colors.accent,
                     shape = CardShape,
                 )
