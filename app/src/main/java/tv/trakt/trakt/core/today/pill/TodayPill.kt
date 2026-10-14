@@ -62,7 +62,7 @@ private const val POSTER_TILT = 10F
 
 private val BadgeSize = 13.dp
 private val BadgeOffset = 0.66.dp
-private val BadgePadding = 3.dp
+private val BadgePadding = 3.5.dp
 
 private const val POP_CYCLE_MS = 8_000
 private const val POP_DELAY_MS = 3000L
@@ -101,7 +101,7 @@ internal fun TodayPillContent(
             unseen -> TraktTheme.colors.accent
             else -> TraktTheme.colors.chipContainer
         },
-        animationSpec = tween(),
+        animationSpec = tween(durationMillis = 200),
         label = "todayPillRing",
     )
 
