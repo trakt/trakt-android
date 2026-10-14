@@ -9,25 +9,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.today.model.FollowingActivity.Detail
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val MAX_LINES = 4
 
 private val GifHeight = 120.dp
+private val GifOnlyPadding = 10.dp
+private val BubbleElevation = 2.dp
 
-// Square top-start corner points the bubble at the friend in the footer.
 private val BubbleShape = RoundedCornerShape(
-    topStart = 4.dp,
+    topStart = 16.dp,
     topEnd = 16.dp,
     bottomEnd = 16.dp,
     bottomStart = 16.dp,
@@ -38,29 +44,43 @@ internal fun TodayCommentBubble(
     comment: Detail.Comment,
     modifier: Modifier = Modifier,
 ) {
+    val hasText = comment.text.isNotBlank()
+    val isGifOnly = !hasText && comment.gifUrl != null && !comment.isSpoiler
+
     Column(
-        verticalArrangement = spacedBy(6.dp),
+        verticalArrangement = spacedBy(10.dp),
         modifier = modifier
             .fillMaxWidth()
+            .shadow(
+                elevation = BubbleElevation,
+                shape = BubbleShape,
+                ambientColor = Color.Black,
+                spotColor = Color.Black,
+            )
             .background(TraktTheme.colors.commentContainer, BubbleShape)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(
+                horizontal = if (isGifOnly) GifOnlyPadding else 16.dp,
+                vertical = if (isGifOnly) GifOnlyPadding else 12.dp,
+            ),
     ) {
         if (comment.isSpoiler) {
             Text(
                 text = stringResource(R.string.text_spoiler).uppercase(),
                 style = TraktTheme.typography.meta,
-                color = TraktTheme.colors.accent,
+                color = Red500,
             )
             return@Column
         }
 
-        Text(
-            text = comment.text,
-            style = TraktTheme.typography.paragraphSmall,
-            color = TraktTheme.colors.textPrimary,
-            maxLines = MAX_LINES,
-            overflow = TextOverflow.Ellipsis,
-        )
+        if (hasText) {
+            Text(
+                text = comment.text.trim(),
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textPrimary,
+                maxLines = MAX_LINES,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
 
         comment.gifUrl?.let {
             AsyncImage(
@@ -68,6 +88,7 @@ internal fun TodayCommentBubble(
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
                     .height(GifHeight)
                     .clip(RoundedCornerShape(8.dp)),
             )
@@ -75,36 +96,129 @@ internal fun TodayCommentBubble(
     }
 }
 
-@Preview
+private val previewComment = Detail.Comment(
+    id = 1,
+    text = "That finale was something else. Did not see the twist coming at all.",
+    gifUrl = null,
+    isSpoiler = false,
+    isReview = false,
+    likeCount = 0,
+    replyCount = 0,
+)
+
+private const val PREVIEW_GIF_URL = "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+
 @Composable
-private fun Preview() {
-    TraktTheme {
+private fun PreviewColumn(content: @Composable () -> Unit) {
+    TraktThemeLightDark {
         Column(
             verticalArrangement = spacedBy(12.dp),
             modifier = Modifier.padding(16.dp),
         ) {
-            TodayCommentBubble(
-                comment = Detail.Comment(
-                    id = 1,
-                    text = "That finale was something else. Did not see the twist coming at all.",
-                    gifUrl = null,
-                    isSpoiler = false,
-                    isReview = false,
-                    likeCount = 0,
-                    replyCount = 0,
-                ),
-            )
-            TodayCommentBubble(
-                comment = Detail.Comment(
-                    id = 2,
-                    text = "",
-                    gifUrl = null,
-                    isSpoiler = true,
-                    isReview = false,
-                    likeCount = 0,
-                    replyCount = 0,
-                ),
-            )
+            content()
         }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    widthDp = 360,
+)
+@Composable
+private fun Preview() {
+    PreviewColumn {
+        TodayCommentBubble(comment = previewComment)
+        TodayCommentBubble(comment = previewComment.copy(isSpoiler = true))
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    widthDp = 360,
+)
+@Composable
+private fun LengthPreview() {
+    PreviewColumn {
+        TodayCommentBubble(comment = previewComment.copy(text = "Wow."))
+        TodayCommentBubble(
+            comment = previewComment.copy(
+                text = "Every episode this season has been building to this and it paid off. " +
+                    "The writing, the score, the last ten minutes in particular. I had to sit " +
+                    "in silence for a while after the credits rolled. Easily one of the best " +
+                    "hours of television this year, and I will be thinking about it for weeks.",
+            ),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    widthDp = 360,
+)
+@Composable
+private fun GifPreview() {
+    PreviewColumn {
+        TodayCommentBubble(
+            comment = previewComment.copy(gifUrl = PREVIEW_GIF_URL),
+        )
+        TodayCommentBubble(
+            comment = previewComment.copy(text = "", gifUrl = PREVIEW_GIF_URL),
+        )
+        TodayCommentBubble(
+            comment = previewComment.copy(isSpoiler = true, gifUrl = PREVIEW_GIF_URL),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    widthDp = 360,
+)
+@Composable
+private fun ReviewPreview() {
+    PreviewColumn {
+        TodayCommentBubble(
+            comment = previewComment.copy(
+                isReview = true,
+                likeCount = 42,
+                replyCount = 7,
+                text = "A slow first act gives way to one of the most confident endings the " +
+                    "genre has seen in years. The cast carries the quieter scenes well.",
+            ),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    widthDp = 360,
+    fontScale = 1.5F,
+)
+@Composable
+private fun LargeFontPreview() {
+    PreviewColumn {
+        TodayCommentBubble(comment = previewComment)
+        TodayCommentBubble(comment = previewComment.copy(isSpoiler = true))
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    widthDp = 360,
+    locale = "ar-rSA",
+)
+@Composable
+private fun RtlPreview() {
+    PreviewColumn {
+        TodayCommentBubble(
+            comment = previewComment.copy(text = "كانت الحلقة الأخيرة رائعة حقاً. لم أتوقع هذه النهاية."),
+        )
+        TodayCommentBubble(comment = previewComment.copy(isSpoiler = true))
     }
 }

@@ -97,6 +97,8 @@ private val BackArrowInset = (HeaderButtonSize - HeaderIconSize) / 2 + 4.dp
 private val InfoInset = (HeaderButtonSize - HeaderIconSize) / 2 + 2.dp
 private val SwipeThreshold = 56.dp
 
+private val PosterTopGap = 24.dp
+
 @Composable
 internal fun TodayStoriesScreen(
     viewModel: TodayStoriesViewModel,
@@ -228,7 +230,7 @@ private fun TodayStoryPage(
                 )
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 8.dp,
-                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 24.dp,
+                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
@@ -249,6 +251,7 @@ private fun TodayStoryPage(
                 ),
                 onDetailsClick = { isFlipped = !isFlipped },
                 onClose = onClose,
+                modifier = Modifier.padding(bottom = PosterTopGap - 16.dp),
             )
 
             Crossfade(
@@ -266,14 +269,14 @@ private fun TodayStoryPage(
                     onNext = onNext,
                     onPrevious = onPrevious,
                     onHeldChange = { isHeld = it },
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                 )
             }
         }
     }
 }
 
-/** Horizontal swipe jumps between stories, the way taps on the edges move between frames. */
 @Composable
 private fun Modifier.storySwipe(
     onNextGroup: () -> Unit,
@@ -363,11 +366,12 @@ private fun TodayStoryHeader(
     position: String,
     onDetailsClick: () -> Unit,
     onClose: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(4.dp),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         TodayStoryHeaderButton(
             iconRes = R.drawable.ic_back_arrow,

@@ -29,10 +29,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -52,12 +54,12 @@ import java.time.Instant
 private const val POSTER_RATIO = 2F / 3F
 private const val FLIP_DURATION_MS = 400
 
-// Edge share of the poster that pages back / forward; the centre flips the poster.
 private const val TAP_EDGE = 0.3F
 private const val HOLD_THRESHOLD_MS = 300L
 
 private val PosterShape = RoundedCornerShape(16.dp)
-private val PosterElevation = 3.dp
+private val FooterMinGap = 16.dp
+private val PosterElevation = 2.dp
 
 @Composable
 internal fun TodayStoryFrameContent(
@@ -69,34 +71,54 @@ internal fun TodayStoryFrameContent(
     onPrevious: () -> Unit,
     onHeldChange: (Boolean) -> Unit,
 ) {
-    Column(
-        verticalArrangement = spacedBy(16.dp),
-        modifier = modifier,
-    ) {
-        TodayStoryPoster(
-            frame = frame,
-            isFlipped = isFlipped,
-            onFlip = onFlip,
-            onNext = onNext,
-            onPrevious = onPrevious,
-            onHeldChange = onHeldChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1F),
-        )
+    Layout(
+        content = {
+            TodayStoryPoster(
+                frame = frame,
+                isFlipped = isFlipped,
+                onFlip = onFlip,
+                onNext = onNext,
+                onPrevious = onPrevious,
+                onHeldChange = onHeldChange,
+            )
 
-        if (frame is TodayStoryFrame.Friend) {
-            frame.action.comment?.let {
-                TodayCommentBubble(comment = it)
+            Column(
+                verticalArrangement = spacedBy(16.dp),
+            ) {
+                if (frame is TodayStoryFrame.Friend) {
+                    frame.action.comment?.let {
+                        TodayCommentBubble(comment = it)
+                    }
+                }
+
+                TodayStoryFooter(
+                    frame = frame,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 64.dp),
+                )
             }
-        }
+        },
+        modifier = modifier,
+    ) { measurables, constraints ->
+        val width = constraints.maxWidth
+        val height = constraints.maxHeight
+        val minGap = FooterMinGap.roundToPx()
 
-        TodayStoryFooter(
-            frame = frame,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 64.dp),
+        val footer = measurables[1].measure(
+            constraints.copy(minWidth = width, maxWidth = width, minHeight = 0),
         )
+
+        // The poster takes what the footer leaves, then the footer centres in the space below it.
+        val posterSpace = (height - footer.height - minGap * 2).coerceAtLeast(0)
+        val posterWidth = minOf(width, (posterSpace * POSTER_RATIO).toInt())
+        val posterHeight = (posterWidth / POSTER_RATIO).toInt()
+        val poster = measurables[0].measure(Constraints.fixed(width, posterHeight))
+
+        layout(width, height) {
+            poster.place(0, 0)
+            footer.place(0, posterHeight + (height - posterHeight - footer.height) / 2)
+        }
     }
 }
 
@@ -320,8 +342,7 @@ private fun Preview() {
             onPrevious = {},
             onHeldChange = {},
             modifier = Modifier
-                .background(TraktTheme.colors.backgroundPrimary)
-                .padding(16.dp),
+                .background(TraktTheme.colors.backgroundPrimary),
         )
     }
 }
