@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Show
 
 @Immutable
@@ -18,6 +19,7 @@ internal sealed interface TodayMedia {
     val overview: String?
     val year: Int?
     val genres: ImmutableList<MediaGenre>
+    val rating: Rating
 
     val key: String
         get() = "${type.value}-${ids.trakt.value}"
@@ -33,6 +35,7 @@ internal sealed interface TodayMedia {
         override val overview = movie.overview
         override val year = movie.year
         override val genres = movie.genres
+        override val rating = movie.rating
     }
 
     @Immutable
@@ -46,5 +49,6 @@ internal sealed interface TodayMedia {
         override val overview = show.overview
         override val year = show.year
         override val genres = show.genres
+        override val rating = show.rating
     }
 }

@@ -42,6 +42,8 @@ import coil3.compose.AsyncImage
 import coil3.imageLoader
 import coil3.request.ImageRequest
 import kotlinx.collections.immutable.persistentListOf
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.core.today.model.FollowingActivity
@@ -50,6 +52,8 @@ import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.model.TodayMilestone
 import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayTitleStory
+import tv.trakt.trakt.core.today.stories.details.TodayPosterDetails
+import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -199,6 +203,12 @@ private fun TodayFlipPoster(
     val media = frame.story.media
     val rating = frame.rating10
 
+    // Created with the front face so ratings and sentiment load before the card flips.
+    val detailsViewModel: TodayPosterDetailsViewModel = koinViewModel(
+        key = "today-details-${media.key}",
+        parameters = { parametersOf(media) },
+    )
+
     // Warm the back face image so it is ready by the time the card flips.
     val fanartUrl = media.images?.getFanartUrl(Images.Size.MEDIUM)
     LaunchedEffect(fanartUrl) {
@@ -234,6 +244,7 @@ private fun TodayFlipPoster(
         if (isBackVisible) {
             TodayPosterDetails(
                 media = media,
+                viewModel = detailsViewModel,
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer { rotationY = 180F }
