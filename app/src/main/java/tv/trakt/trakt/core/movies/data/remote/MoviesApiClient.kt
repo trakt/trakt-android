@@ -237,7 +237,7 @@ internal class MoviesApiClient(
         return try {
             moviesApi.getMoviesPeople(
                 id = movieId.value.toString(),
-                extended = "cloud9",
+                extended = "cloud9,full,markdown",
             ).body()
         } catch (error: Exception) {
             if (error.getHttpCode() == 204) {

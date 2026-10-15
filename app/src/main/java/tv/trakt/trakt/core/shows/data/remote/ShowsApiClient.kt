@@ -279,7 +279,7 @@ internal class ShowsApiClient(
         return try {
             showsApi.getShowsPeople(
                 id = showId.value.toString(),
-                extended = if (guestStars) "cloud9,full,guest_stars" else "cloud9,full",
+                extended = if (guestStars) "cloud9,full,guest_stars,markdown" else "cloud9,full,markdown",
             ).body()
         } catch (error: Exception) {
             if (error.getHttpCode() == 204) {

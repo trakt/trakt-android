@@ -35,7 +35,7 @@ interface SearchRemoteDataSource {
     suspend fun getPeople(
         query: String,
         limit: Int,
-        extended: String = "full,cloud9",
+        extended: String = "full,cloud9,markdown",
     ): List<SearchItemDto>
 
     suspend fun getImdbLookup(imdbId: String): List<SearchItemDto>

@@ -61,7 +61,7 @@ internal class PeopleApiClient(
 
     override suspend fun getBirthdayPeople(): List<PersonDto> {
         val response = peopleExtrasApi.getBirthdayPeople(
-            extended = "full,images",
+            extended = "full,images,markdown",
         )
         return response.body()
     }

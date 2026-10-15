@@ -103,7 +103,7 @@ internal class EpisodesApiClient(
             id = showId.value.toString(),
             season = season,
             episode = episode,
-            extended = if (guestStars) "cloud9,full,guest_stars" else "cloud9,full",
+            extended = if (guestStars) "cloud9,full,guest_stars,markdown" else "cloud9,full,markdown",
         )
         return response.body()
     }
@@ -115,7 +115,7 @@ internal class EpisodesApiClient(
         val response = showsApi.getShowsSeasonPeople(
             id = showId.value.toString(),
             season = season,
-            extended = "cloud9,full",
+            extended = "cloud9,full,markdown",
         )
         return response.body()
     }
