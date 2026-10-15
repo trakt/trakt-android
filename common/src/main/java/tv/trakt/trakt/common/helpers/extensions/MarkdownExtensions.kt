@@ -108,6 +108,7 @@ private fun AnnotatedString.Builder.appendInline(
             strike != null -> withStyle(SpanStyle(textDecoration = TextDecoration.LineThrough)) {
                 appendInline(strike, style, links)
             }
+            italic != null && !links -> appendInline(italic, style, links)
             italic != null -> withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
                 appendInline(italic, style, links)
             }
@@ -127,7 +128,12 @@ private fun AnnotatedString.Builder.appendLink(
         append(label)
         return
     }
-    val linkStyle = SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline)
+    val linkStyle = SpanStyle(
+        color = linkColor,
+        fontWeight = Bold,
+        fontStyle = FontStyle.Normal,
+        textDecoration = TextDecoration.Underline,
+    )
     withLink(LinkAnnotation.Url(url, TextLinkStyles(style = linkStyle))) {
         appendInline(label, style, links = false)
     }
