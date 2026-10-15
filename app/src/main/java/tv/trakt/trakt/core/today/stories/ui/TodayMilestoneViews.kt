@@ -88,7 +88,9 @@ private fun TodayMilestoneChipContent(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(5.dp),
+        horizontalArrangement = spacedBy(
+            if (isFinale) 3.dp else 6.dp,
+        ),
         modifier = modifier
             .background(Purple500, ChipShape)
             .padding(horizontal = 8.dp, vertical = 6.dp),

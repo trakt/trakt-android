@@ -274,7 +274,7 @@ private fun TodaySentimentAspects(
                 Text(
                     text = it.value.replaceFirstChar(Char::titlecase),
                     style = TraktTheme.typography.paragraphSmaller,
-                    color = TraktTheme.colors.textPrimary,
+                    color = color,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
