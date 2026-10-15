@@ -24,6 +24,7 @@ private val BULLET = Regex("^\\s*[-*+]\\s+(.*)$")
 private val ORDERED = Regex("^\\s*(\\d+)[.)]\\s+(.*)$")
 private val QUOTE = Regex("^>\\s?(.*)$")
 private val MENTION = Regex("@[a-zA-Z0-9_]+")
+private val LINK = Regex("\\[([^\\]\\n]+)]\\([^)\\s]+\\)")
 
 private val INLINE = Regex(
     "\\\\(?<esc>[\\\\`*_~\\[\\]()#>+.!-])" +
@@ -36,6 +37,11 @@ private val INLINE = Regex(
         "|\\*(?<italic>[^*\\s](?:.*?[^*\\s])?)\\*" +
         "|(?<![\\p{L}\\p{N}_])_(?<italic2>[^_\\s](?:.*?[^_\\s])?)_(?![\\p{L}\\p{N}_])",
 )
+
+/** Replaces `[label](url)` links with their label. */
+fun String.stripMarkdownLinks(): String {
+    return replace(LINK, "$1")
+}
 
 /**
  * Links are limited to http(s) and are rendered as plain text when [linkColor] is null.

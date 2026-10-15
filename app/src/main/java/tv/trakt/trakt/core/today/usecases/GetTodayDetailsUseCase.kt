@@ -1,5 +1,8 @@
 package tv.trakt.trakt.core.today.usecases
 
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.stripMarkdownLinks
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.core.summary.movies.features.sentiment.usecases.GetMovieSentimentUseCase
@@ -27,6 +30,16 @@ internal class GetTodayDetailsUseCase(
             is TodayMedia.ShowMedia -> getShowSentimentUseCase.getSentiments(media.ids.trakt)
         }
 
-        return sentiment.takeUnless { it.isEmpty }
+        if (sentiment.isEmpty) return null
+
+        return sentiment.copy(
+            highlight = sentiment.highlight.stripMarkdownLinks(),
+            pros = sentiment.pros.stripMarkdownLinks(),
+            cons = sentiment.cons.stripMarkdownLinks(),
+        )
+    }
+
+    private fun List<Sentiments.Theme>.stripMarkdownLinks(): ImmutableList<Sentiments.Theme> {
+        return map { it.copy(value = it.value.stripMarkdownLinks()) }.toImmutableList()
     }
 }
