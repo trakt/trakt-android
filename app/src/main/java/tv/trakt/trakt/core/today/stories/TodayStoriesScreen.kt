@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.today.stories
 
+import android.os.SystemClock
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.EnterTransition
@@ -66,6 +67,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -311,15 +313,31 @@ private fun TodayStoryProgress(
     val finished by rememberUpdatedState(onFinished)
     val currentKey = frameKeys.getOrNull(currentIndex)
     val progress = remember(currentKey) { Animatable(0F) }
+    val animationsDisabled = rememberAnimationsDisabled()
 
     LaunchedEffect(currentKey, isPaused) {
         if (isPaused) return@LaunchedEffect
 
-        val remaining = ((1F - progress.value) * FRAME_DURATION_MS).toInt()
-        progress.animateTo(
-            targetValue = 1F,
-            animationSpec = tween(durationMillis = remaining, easing = LinearEasing),
-        )
+        val remaining = ((1F - progress.value) * FRAME_DURATION_MS).toLong()
+
+        // With animations off a tween ends instantly, so time the frame with a plain delay.
+        if (animationsDisabled) {
+            val startedAt = SystemClock.uptimeMillis()
+            val startProgress = progress.value
+            try {
+                delay(remaining)
+            } finally {
+                val elapsed = SystemClock.uptimeMillis() - startedAt
+                progress.snapTo(
+                    (startProgress + elapsed.toFloat() / FRAME_DURATION_MS).coerceAtMost(1F),
+                )
+            }
+        } else {
+            progress.animateTo(
+                targetValue = 1F,
+                animationSpec = tween(durationMillis = remaining.toInt(), easing = LinearEasing),
+            )
+        }
         finished()
     }
 

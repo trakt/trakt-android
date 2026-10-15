@@ -32,11 +32,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -76,6 +71,7 @@ internal fun TodayPill(
     onClick: (groupKey: String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    if (!state.isVisible) return
 
     TodayPillContent(
         posters = state.posters,
@@ -94,7 +90,6 @@ internal fun TodayPillContent(
 ) {
     val unseen = unseenCount > 0
     val animate = unseen && !rememberAnimationsDisabled()
-    val description = stringResource(R.string.button_label_open_today_stories)
 
     val ringColor by animateColorAsState(
         targetValue = when {
@@ -116,10 +111,6 @@ internal fun TodayPillContent(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(PillSize)
-            .semantics {
-                contentDescription = description
-                role = Role.Button
-            }
             .onClick(onClick = onClick),
     ) {
         Box(
