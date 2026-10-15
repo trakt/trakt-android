@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.today.stories.ui
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -9,8 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -20,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.today.model.FollowingActivity.Detail
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -31,21 +39,41 @@ private const val MAX_LINES = 4
 private val GifHeight = 120.dp
 private val GifOnlyPadding = 10.dp
 private val BubbleElevation = 2.dp
+private val SpoilerBlur = 6.dp
 
-private val BubbleShape = RoundedCornerShape(
-    topStart = 16.dp,
-    topEnd = 16.dp,
-    bottomEnd = 16.dp,
-    bottomStart = 16.dp,
-)
+private val BubbleShape = RoundedCornerShape(16.dp)
 
 @Composable
 internal fun TodayCommentBubble(
     comment: Detail.Comment,
     modifier: Modifier = Modifier,
 ) {
+    var isRevealed by remember(comment.id) { mutableStateOf(false) }
+
+    TodayCommentBubbleContent(
+        comment = comment,
+        isSpoilerHidden = comment.isSpoiler && !isRevealed,
+        onReveal = { isRevealed = true },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun TodayCommentBubbleContent(
+    comment: Detail.Comment,
+    isSpoilerHidden: Boolean,
+    modifier: Modifier = Modifier,
+    onReveal: () -> Unit,
+) {
     val hasText = comment.text.isNotBlank()
-    val isGifOnly = !hasText && comment.gifUrl != null && !comment.isSpoiler
+    val isGifOnly = !hasText && comment.gifUrl != null && !isSpoilerHidden
+
+    // Blur needs Android 12. Older versions keep the content out until revealed.
+    val isBlurSupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val showContent = !isSpoilerHidden || isBlurSupported
+    // Unbounded so the blur spreads past the text bounds instead of ending in a hard edge.
+    val textBlur = if (isSpoilerHidden) Modifier.blur(SpoilerBlur, BlurredEdgeTreatment.Unbounded) else Modifier
+    val gifBlur = if (isSpoilerHidden) Modifier.blur(SpoilerBlur) else Modifier
 
     Column(
         verticalArrangement = spacedBy(10.dp),
@@ -58,19 +86,25 @@ internal fun TodayCommentBubble(
                 spotColor = Color.Black,
             )
             .background(TraktTheme.colors.commentContainer, BubbleShape)
+            .clip(BubbleShape)
+            .onClick(
+                enabled = isSpoilerHidden,
+                onClick = onReveal,
+            )
             .padding(
                 horizontal = if (isGifOnly) GifOnlyPadding else 16.dp,
                 vertical = if (isGifOnly) GifOnlyPadding else 12.dp,
             ),
     ) {
-        if (comment.isSpoiler) {
+        if (isSpoilerHidden) {
             Text(
                 text = stringResource(R.string.text_spoiler).uppercase(),
                 style = TraktTheme.typography.meta,
                 color = Red500,
             )
-            return@Column
         }
+
+        if (!showContent) return@Column
 
         if (hasText) {
             Text(
@@ -79,6 +113,7 @@ internal fun TodayCommentBubble(
                 color = TraktTheme.colors.textPrimary,
                 maxLines = MAX_LINES,
                 overflow = TextOverflow.Ellipsis,
+                modifier = textBlur,
             )
         }
 
@@ -90,7 +125,8 @@ internal fun TodayCommentBubble(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .height(GifHeight)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .clip(RoundedCornerShape(8.dp))
+                    .then(gifBlur),
             )
         }
     }
@@ -169,6 +205,31 @@ private fun GifPreview() {
         )
         TodayCommentBubble(
             comment = previewComment.copy(isSpoiler = true, gifUrl = PREVIEW_GIF_URL),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    widthDp = 360,
+)
+@Composable
+private fun SpoilerPreview() {
+    val spoiler = previewComment.copy(isSpoiler = true)
+
+    PreviewColumn {
+        TodayCommentBubbleContent(comment = spoiler, isSpoilerHidden = true, onReveal = {})
+        TodayCommentBubbleContent(comment = spoiler, isSpoilerHidden = false, onReveal = {})
+        TodayCommentBubbleContent(
+            comment = spoiler.copy(text = "", gifUrl = PREVIEW_GIF_URL),
+            isSpoilerHidden = true,
+            onReveal = {},
+        )
+        TodayCommentBubbleContent(
+            comment = spoiler.copy(text = "", gifUrl = PREVIEW_GIF_URL),
+            isSpoilerHidden = false,
+            onReveal = {},
         )
     }
 }
