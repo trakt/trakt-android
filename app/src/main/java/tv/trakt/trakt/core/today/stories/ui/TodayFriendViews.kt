@@ -213,7 +213,7 @@ internal fun TodayRatingTag(
 private fun TodayInlineRating(rating10: Float) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(2.dp),
+        horizontalArrangement = spacedBy(1.5.dp),
     ) {
         Text(
             text = starsText(rating10),
