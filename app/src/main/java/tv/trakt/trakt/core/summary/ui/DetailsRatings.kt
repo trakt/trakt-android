@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.ui
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +44,9 @@ internal fun DetailsRatings(
     hidden: Boolean = false,
     rottenEnabled: Boolean = true,
     malEnabled: Boolean = false,
+    animated: Boolean = true,
 ) {
+    val ratingSpec = if (animated) tween<Float>(delayMillis = 50) else snap()
     val grayFilter = remember {
         ColorFilter.colorMatrix(
             ColorMatrix().apply {
@@ -106,7 +109,7 @@ internal fun DetailsRatings(
             val imdbRating = externalRatings?.imdb?.rating ?: 0F
             Crossfade(
                 targetState = (imdbRating > 0 && !hidden),
-                animationSpec = tween(delayMillis = 50),
+                animationSpec = ratingSpec,
             ) { hasRating ->
                 ExternalRatingItem(
                     painter = painterResource(R.drawable.ic_imdb_color),
@@ -129,7 +132,7 @@ internal fun DetailsRatings(
                 val malRating = externalRatings?.mal?.rating ?: 0F
                 Crossfade(
                     targetState = (malRating > 0 && !hidden),
-                    animationSpec = tween(delayMillis = 50),
+                    animationSpec = ratingSpec,
                     modifier = Modifier.graphicsLayer {
                         translationX = 1.5.dp.toPx()
                     },
@@ -155,7 +158,7 @@ internal fun DetailsRatings(
                 val rottenRating = externalRatings?.rotten?.rating?.toInt() ?: 0
                 Crossfade(
                     targetState = (rottenRating > 0 && !hidden),
-                    animationSpec = tween(delayMillis = 50),
+                    animationSpec = ratingSpec,
                 ) { hasRating ->
                     ExternalRatingItem(
                         painter = painterResource(
@@ -182,7 +185,7 @@ internal fun DetailsRatings(
                 val rottenRatingAud = externalRatings?.rotten?.userRating ?: 0
                 Crossfade(
                     targetState = (rottenRatingAud > 0 && !hidden),
-                    animationSpec = tween(delayMillis = 50),
+                    animationSpec = ratingSpec,
                     modifier = Modifier.graphicsLayer {
                         translationX = (-2).dp.toPx()
                     },

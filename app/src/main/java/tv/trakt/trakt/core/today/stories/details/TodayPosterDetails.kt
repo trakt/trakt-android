@@ -1,7 +1,5 @@
 package tv.trakt.trakt.core.today.stories.details
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -46,15 +44,14 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val MAX_GENRES = 3
-private const val OVERVIEW_LINES = 5
-private const val HIGHLIGHT_LINES = 3
+private const val OVERVIEW_LINES = 4
+private const val HIGHLIGHT_LINES = 4
 private const val ASPECTS_LIMIT = 4
 private const val HEADER_RATIO = 2F
 
 private val AspectIconSize = 14.dp
 private val VerdictShape = RoundedCornerShape(50)
 
-/** Back face of the flipped story poster. */
 @Composable
 internal fun TodayPosterDetails(
     media: TodayMedia,
@@ -90,6 +87,7 @@ private fun TodayPosterDetailsContent(
                 externalRatings = state.ratings,
                 chevron = false,
                 malEnabled = MediaGenre.Anime in media.genres,
+                animated = false,
             )
 
             media.overview?.let {
@@ -102,15 +100,11 @@ private fun TodayPosterDetailsContent(
                 )
             }
 
-            AnimatedVisibility(
-                visible = state.sentiment != null,
-                enter = fadeIn(),
-                modifier = Modifier
-                    .padding(top = 4.dp),
-            ) {
-                state.sentiment?.let {
-                    TodaySentiment(sentiment = it)
-                }
+            state.sentiment?.let {
+                TodaySentiment(
+                    sentiment = it,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
             }
         }
     }
@@ -166,7 +160,10 @@ private fun TodayDetailsHeader(media: TodayMedia) {
 }
 
 @Composable
-private fun TodaySentiment(sentiment: Sentiments) {
+private fun TodaySentiment(
+    sentiment: Sentiments,
+    modifier: Modifier = Modifier,
+) {
     val pros = when (sentiment.overall) {
         Overall.Positive -> sentiment.pros.take(ASPECTS_LIMIT)
         Overall.Mixed -> sentiment.pros.take(ASPECTS_LIMIT / 2)
@@ -180,6 +177,7 @@ private fun TodaySentiment(sentiment: Sentiments) {
 
     Column(
         verticalArrangement = spacedBy(8.dp),
+        modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

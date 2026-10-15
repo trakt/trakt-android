@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -241,17 +242,17 @@ private fun TodayFlipPoster(
                 spotColor = Color.Black,
             ),
     ) {
-        if (isBackVisible) {
-            TodayPosterDetails(
-                media = media,
-                viewModel = detailsViewModel,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer { rotationY = 180F }
-                    .clip(PosterShape),
-            )
-            return@Box
-        }
+        TodayPosterDetails(
+            media = media,
+            viewModel = detailsViewModel,
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    rotationY = 180F
+                    alpha = if (isBackVisible) 1F else 0F
+                }
+                .clip(PosterShape),
+        )
 
         AsyncImage(
             model = media.images?.getPosterUrl(Images.Size.MEDIUM),
@@ -259,6 +260,7 @@ private fun TodayFlipPoster(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
+                .alpha(if (isBackVisible) 0F else 1F)
                 .clip(PosterShape)
                 .background(TraktTheme.colors.placeholderContainer),
         )
