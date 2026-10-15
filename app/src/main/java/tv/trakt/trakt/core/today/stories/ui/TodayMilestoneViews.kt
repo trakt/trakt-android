@@ -7,9 +7,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults.rememberTooltipPositionProvider
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.today.model.TodayMilestone
@@ -25,9 +33,54 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val ChipShape = RoundedCornerShape(50)
+private val TooltipShape = RoundedCornerShape(8.dp)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TodayMilestoneChip(
+    milestone: TodayMilestone,
+    modifier: Modifier = Modifier,
+) {
+    val scope = rememberCoroutineScope()
+    val tooltipState = rememberTooltipState(isPersistent = true)
+
+    TooltipBox(
+        state = tooltipState,
+        positionProvider = rememberTooltipPositionProvider(
+            positioning = TooltipAnchorPosition.Above,
+        ),
+        tooltip = {
+            Text(
+                text = milestoneTooltip(milestone),
+                style = TraktTheme.typography.meta,
+                color = TraktTheme.colors.tooltipContent,
+                modifier = Modifier
+                    .background(TraktTheme.colors.tooltipContainer, TooltipShape)
+                    .padding(horizontal = 10.dp, vertical = 6.dp),
+            )
+        },
+        // Focusable so a tap on the chip while shown only dismisses instead of also reopening.
+        focusable = true,
+        enableUserInput = false,
+        modifier = modifier,
+    ) {
+        TodayMilestoneChipContent(
+            milestone = milestone,
+            modifier = Modifier.onClick {
+                if (tooltipState.isVisible) {
+                    tooltipState.dismiss()
+                    return@onClick
+                }
+                scope.launch {
+                    tooltipState.show()
+                }
+            },
+        )
+    }
+}
+
+@Composable
+private fun TodayMilestoneChipContent(
     milestone: TodayMilestone,
     modifier: Modifier = Modifier,
 ) {
@@ -69,6 +122,16 @@ private fun milestoneText(milestone: TodayMilestone): String {
         Type.SeasonStart,
         Type.SeasonEnd,
         -> stringResource(R.string.text_season_number, milestone.season)
+    }
+}
+
+@Composable
+private fun milestoneTooltip(milestone: TodayMilestone): String {
+    return when (milestone.type) {
+        Type.SeriesStart -> stringResource(R.string.tag_text_today_started_show)
+        Type.SeriesEnd -> stringResource(R.string.tag_text_today_finished_show)
+        Type.SeasonStart -> stringResource(R.string.tag_text_today_started_season, milestone.season)
+        Type.SeasonEnd -> stringResource(R.string.tag_text_today_finished_season, milestone.season)
     }
 }
 
