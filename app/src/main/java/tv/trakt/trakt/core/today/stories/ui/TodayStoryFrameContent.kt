@@ -153,7 +153,9 @@ private fun TodayStoryPoster(
         val posterWidth = minOf(maxWidth, maxHeight * POSTER_RATIO)
         val edge = (maxWidth - posterWidth) / 2 + posterWidth * TAP_EDGE
 
+        // The poster is a child so its scrollable back face and these taps both get events.
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxSize()
                 .pointerInput(edge, isRtl) {
@@ -184,13 +186,13 @@ private fun TodayStoryPoster(
                         },
                     )
                 },
-        )
-
-        TodayFlipPoster(
-            frame = frame,
-            isFlipped = isFlipped,
-            modifier = Modifier.width(posterWidth),
-        )
+        ) {
+            TodayFlipPoster(
+                frame = frame,
+                isFlipped = isFlipped,
+                modifier = Modifier.width(posterWidth),
+            )
+        }
     }
 }
 
