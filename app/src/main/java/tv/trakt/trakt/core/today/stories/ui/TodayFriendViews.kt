@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -50,11 +51,11 @@ import java.util.Locale
 
 private const val MAX_FACES = 5
 
-private val AvatarSize = 46.dp
+private val AvatarSize = 52.dp
 private val FaceSize = 36.dp
 private val FaceOverlap = 12.dp
 private val AvatarBorder = 2.dp
-private val InlineStarSize = 12.dp
+private val InlineStarSize = 14.dp
 
 @Composable
 internal fun TodayFriendFooter(
@@ -63,7 +64,7 @@ internal fun TodayFriendFooter(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(10.dp),
+        horizontalArrangement = spacedBy(12.dp),
         modifier = modifier,
     ) {
         TodayAvatar(
@@ -78,7 +79,9 @@ internal fun TodayFriendFooter(
         ) {
             Text(
                 text = action.user.displayName,
-                style = TraktTheme.typography.cardTitle,
+                style = TraktTheme.typography.cardTitle.copy(
+                    fontSize = 14.sp,
+                ),
                 color = TraktTheme.colors.textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -89,7 +92,9 @@ internal fun TodayFriendFooter(
             ) {
                 Text(
                     text = friendActionLabel(action),
-                    style = TraktTheme.typography.cardTitle,
+                    style = TraktTheme.typography.cardTitle.copy(
+                        fontSize = 14.sp,
+                    ),
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -208,11 +213,13 @@ internal fun TodayRatingTag(
 private fun TodayInlineRating(rating10: Float) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(1.dp),
+        horizontalArrangement = spacedBy(2.dp),
     ) {
         Text(
             text = starsText(rating10),
-            style = TraktTheme.typography.cardTitle,
+            style = TraktTheme.typography.cardTitle.copy(
+                fontSize = 14.sp,
+            ),
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
         )

@@ -87,7 +87,7 @@ private const val STORY_TRANSITION_MS = 150
 private val BackdropBlur = 24.dp
 private val SegmentHeight = 3.dp
 private val SegmentSpace = 4.dp
-private val HeaderIconSize = 22.dp
+private val HeaderIconSize = 23.dp
 private val HeaderButtonSize = 40.dp
 
 // Touch box padding plus the empty space inside each glyph, so the icons line up
