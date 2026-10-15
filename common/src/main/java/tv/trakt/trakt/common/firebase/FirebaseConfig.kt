@@ -7,6 +7,7 @@ class FirebaseConfig {
         const val MOBILE_THIS_MONTH_IMAGE_URL = "mobile_this_month_image_url"
         const val MOBILE_EMPTY_IMAGE_1 = "mobile_empty_image_1"
         const val MOBILE_EMPTY_IMAGE_2 = "mobile_empty_image_2"
+        const val MOBILE_SHOW_ENDING_ENABLED = "mobile_show_ending_enabled"
         const val MOBILE_EMPTY_IMAGE_3 = "mobile_empty_image_3"
         const val MOBILE_EMPTY_IMAGE_4 = "mobile_empty_image_4"
         const val MOBILE_EMPTY_IMAGE_5 = "mobile_empty_image_5"

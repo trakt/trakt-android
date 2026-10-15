@@ -14,12 +14,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_SHOW_ENDING_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
@@ -37,6 +41,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.PostCreditsScene
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.ShowEnding
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.people.model.crewJobStringRes
 import tv.trakt.trakt.resources.R
@@ -70,6 +75,7 @@ internal fun DetailsMetaInfo(
         runtime = show.runtime,
         totalRuntime = show.totalRuntime,
         status = show.status,
+        ending = rememberShowEnding(show),
         languages = show.languages,
         titleOriginal = show.titleOriginal?.takeIf { it.isNotBlank() && it != show.title },
         country = show.country,
@@ -144,6 +150,7 @@ private fun DetailsMetaInfo(
     runtime: Duration? = null,
     totalRuntime: Duration? = null,
     status: MediaStatus? = null,
+    ending: ShowEnding? = null,
     country: String? = null,
     airs: String? = null,
     networks: List<String> = EmptyImmutableList,
@@ -214,6 +221,10 @@ private fun DetailsMetaInfo(
     val statusCell = MetaCell(
         title = stringResource(R.string.header_status),
         values = listOfNotNull(status?.let { stringResource(it.displayStringRes) }),
+    )
+    val endingCell = MetaCell(
+        title = stringResource(R.string.header_ending),
+        values = listOfNotNull(ending?.let { stringResource(it.displayStringRes) }),
     )
     val languageCell = MetaCell(stringResource(R.string.header_language), languagesStrings)
     val countryCell = MetaCell(stringResource(R.string.header_country), listOfNotNull(countryString))
@@ -288,6 +299,7 @@ private fun DetailsMetaInfo(
             airsCell,
             releasedCell,
             statusCell,
+            endingCell,
             runtimeCell,
             totalRuntimeCell,
             networkCell,
@@ -352,6 +364,15 @@ private fun rememberAirsText(show: Show): String? {
         airing.dayOfWeek.getDisplayName(TextStyle.FULL, formatter.locale)
     }
     return stringResource(R.string.text_airs_day_time, day, airing.format(formatter))
+}
+
+@Composable
+private fun rememberShowEnding(show: Show): ShowEnding? {
+    val inspection = LocalInspectionMode.current
+    val enabled = remember(inspection) {
+        !inspection && Firebase.remoteConfig.getBoolean(MOBILE_SHOW_ENDING_ENABLED)
+    }
+    return show.ending.takeIf { enabled }
 }
 
 private enum class DetailsLayout {
