@@ -144,6 +144,7 @@ internal class HomeHistoryViewModel(
                 UpNextUpdates.Source.Default,
                 UpNextUpdates.Source.Home,
                 UpNextUpdates.Source.Widget,
+                UpNextUpdates.Source.Today,
             ),
             watchlistUpdates.observeUpdates(Default),
             watchlistUpdates.observeUpdates(AllWatchlist),

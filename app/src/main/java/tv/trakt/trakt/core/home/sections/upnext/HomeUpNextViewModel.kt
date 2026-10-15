@@ -163,6 +163,7 @@ internal class HomeUpNextViewModel(
         upNextUpdates.observeUpdates(
             UpNextUpdates.Source.Default,
             Widget,
+            UpNextUpdates.Source.Today,
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)

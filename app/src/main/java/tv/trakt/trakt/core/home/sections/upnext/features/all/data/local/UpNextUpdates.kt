@@ -12,5 +12,6 @@ internal interface UpNextUpdates {
         Default,
         Home,
         Widget,
+        Today,
     }
 }
