@@ -12,5 +12,10 @@ internal interface TodayLocalDataSource {
 
     suspend fun getForYou(): List<TodayForYouItem>
 
+    suspend fun setForYouWatched(
+        key: String,
+        watched: Boolean,
+    )
+
     fun clear()
 }

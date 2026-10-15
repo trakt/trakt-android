@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
@@ -37,6 +38,7 @@ internal class TodayPillViewModel(
     seenSource: TodaySeenLocalDataSource,
     private val getTodayStoriesUseCase: GetTodayStoriesUseCase,
     private val sessionManager: SessionManager,
+    private val upNextUpdates: UpNextUpdates,
 ) : ViewModel() {
     private val initialState = TodayPillState()
 
@@ -48,6 +50,20 @@ internal class TodayPillViewModel(
     init {
         loadData()
         observeUser()
+        observeTodayUpdates()
+    }
+
+    // Reads storage only, so marking something watched costs no extra API calls.
+    private fun observeTodayUpdates() {
+        viewModelScope.launch {
+            upNextUpdates.observeUpdates(UpNextUpdates.Source.Today)
+                .debounce(200.milliseconds)
+                .collect {
+                    groupsState.update {
+                        getTodayStoriesUseCase.getLocalStories(MediaMode.Media)
+                    }
+                }
+        }
     }
 
     private fun observeUser() {

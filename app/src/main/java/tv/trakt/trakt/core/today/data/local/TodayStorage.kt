@@ -10,6 +10,9 @@ internal class TodayStorage : TodayLocalDataSource {
     private var storage: List<FollowingActivity> = emptyList()
     private var forYouStorage: List<TodayForYouItem> = emptyList()
 
+    // Watched items stay hidden until the next fetch, which no longer returns them.
+    private var watchedForYouKeys: Set<String> = emptySet()
+
     override suspend fun setActivities(activities: List<FollowingActivity>) {
         mutex.withLock {
             storage = activities
@@ -25,17 +28,31 @@ internal class TodayStorage : TodayLocalDataSource {
     override suspend fun setForYou(items: List<TodayForYouItem>) {
         mutex.withLock {
             forYouStorage = items
+            watchedForYouKeys = emptySet()
         }
     }
 
     override suspend fun getForYou(): List<TodayForYouItem> {
         return mutex.withLock {
-            forYouStorage
+            forYouStorage.filterNot { it.key in watchedForYouKeys }
+        }
+    }
+
+    override suspend fun setForYouWatched(
+        key: String,
+        watched: Boolean,
+    ) {
+        mutex.withLock {
+            watchedForYouKeys = when {
+                watched -> watchedForYouKeys + key
+                else -> watchedForYouKeys - key
+            }
         }
     }
 
     override fun clear() {
         storage = emptyList()
         forYouStorage = emptyList()
+        watchedForYouKeys = emptySet()
     }
 }

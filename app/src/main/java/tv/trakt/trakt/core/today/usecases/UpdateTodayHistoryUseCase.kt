@@ -7,9 +7,11 @@ import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Sou
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
+import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
 import tv.trakt.trakt.core.today.model.TodayForYouItem
 import tv.trakt.trakt.core.today.model.TodayMedia
 
@@ -23,6 +25,8 @@ internal class UpdateTodayHistoryUseCase(
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val watchlistUpdates: WatchlistUpdates,
+    private val upNextUpdates: UpNextUpdates,
+    private val todayLocalSource: TodayLocalDataSource,
 ) {
     suspend fun addToWatched(item: TodayForYouItem) {
         when (item) {
@@ -34,6 +38,9 @@ internal class UpdateTodayHistoryUseCase(
                 addMediaToWatched(item.media)
             }
         }
+
+        todayLocalSource.setForYouWatched(key = item.key, watched = true)
+        notifyHistoryUpdate()
     }
 
     suspend fun removeFromWatched(item: TodayForYouItem) {
@@ -46,6 +53,13 @@ internal class UpdateTodayHistoryUseCase(
                 removeMediaFromWatched(item.media)
             }
         }
+
+        todayLocalSource.setForYouWatched(key = item.key, watched = false)
+        notifyHistoryUpdate()
+    }
+
+    private fun notifyHistoryUpdate() {
+        upNextUpdates.notifyUpdate(UpNextUpdates.Source.Today)
     }
 
     private suspend fun addMediaToWatched(media: TodayMedia) {
