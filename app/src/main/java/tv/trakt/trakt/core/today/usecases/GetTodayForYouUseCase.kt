@@ -23,7 +23,6 @@ private const val WATCHLIST_EXTENDED = "full,cloud9,colors"
 
 private val TodayWindow = 24.hours
 
-/** New episodes in Up Next and watchlist titles released in the last 24 hours, matching web. */
 internal class GetTodayForYouUseCase(
     private val showsSyncSource: ShowsSyncRemoteDataSource,
     private val watchlistSource: UserWatchlistRemoteDataSource,
@@ -34,11 +33,10 @@ internal class GetTodayForYouUseCase(
 
         return coroutineScope {
             val upNext = async { getUpNext(window) }
-            val shows = async { getWatchlistShows(window) }
-            val movies = async { getWatchlistMovies(window) }
+            val watchlist = async { getWatchlist(window) }
 
-            upNext.await() + (shows.await() + movies.await())
-                .sortedByDescending { it.releasedAt }
+            val results = upNext.await() + watchlist.await()
+            results
         }
     }
 
@@ -47,8 +45,8 @@ internal class GetTodayForYouUseCase(
             limit = RELEASES_LIMIT,
             page = 1,
             intent = "continue",
-            sortBy = "released",
-            sortHow = "desc",
+            sortHow = null,
+            sortBy = null,
             filters = null,
         ).mapNotNull { item ->
             val episode = item.progress.nextEpisode ?: return@mapNotNull null
@@ -60,31 +58,21 @@ internal class GetTodayForYouUseCase(
         }
     }
 
-    private suspend fun getWatchlistShows(window: ClosedRange<Instant>): List<TodayForYouItem> {
-        return watchlistSource.getWatchlistShows(
+    private suspend fun getWatchlist(window: ClosedRange<Instant>): List<TodayForYouItem> {
+        return watchlistSource.getWatchlist(
             page = 1,
             limit = RELEASES_LIMIT,
             extended = WATCHLIST_EXTENDED,
             sorting = releasedSorting,
             hide = "unreleased",
-        ).mapNotNull {
-            TodayForYouItem.startWatching(
-                media = TodayMedia.ShowMedia(Show.fromDto(it.show)),
-                window = window,
-            )
-        }
-    }
+            filters = null,
+        ).mapNotNull { item ->
+            val media = item.movie?.let { TodayMedia.MovieMedia(Movie.fromDto(it)) }
+                ?: item.show?.let { TodayMedia.ShowMedia(Show.fromDto(it)) }
+                ?: return@mapNotNull null
 
-    private suspend fun getWatchlistMovies(window: ClosedRange<Instant>): List<TodayForYouItem> {
-        return watchlistSource.getWatchlistMovies(
-            page = 1,
-            limit = RELEASES_LIMIT,
-            extended = WATCHLIST_EXTENDED,
-            sorting = releasedSorting,
-            hide = "unreleased",
-        ).mapNotNull {
             TodayForYouItem.startWatching(
-                media = TodayMedia.MovieMedia(Movie.fromDto(it.movie)),
+                media = media,
                 window = window,
             )
         }

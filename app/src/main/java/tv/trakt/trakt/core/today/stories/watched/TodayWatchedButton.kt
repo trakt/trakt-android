@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.today.model.TodayForYouItem
 import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.stories.ui.showTodaySnack
@@ -39,6 +40,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val ButtonSize = 32.dp
 private val IconSize = 24.dp
+private val LoadingSize = 18.dp
 
 private enum class WatchedConfirm {
     Add,
@@ -82,11 +84,11 @@ internal fun TodayWatchedButton(
         onDispose { confirmVisibleChange(false) }
     }
 
-    // Marking a whole show is the risky case, so only that one asks first.
     val isWholeShow = item is TodayForYouItem.StartWatching && item.media is TodayMedia.ShowMedia
 
     TodayWatchedButtonContent(
         isWatched = state.isWatched,
+        loading = state.loading.isLoading,
         modifier = modifier,
         onClick = {
             when {
@@ -133,18 +135,35 @@ private fun TodayForYouItem.historyTitle(): String {
 private fun TodayWatchedButtonContent(
     isWatched: Boolean,
     modifier: Modifier = Modifier,
+    loading: Boolean = false,
     onClick: () -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(ButtonSize)
-            .onClick(onClick = onClick),
+            .onClick(
+                enabled = !loading,
+                onClick = onClick,
+            ),
     ) {
+        if (loading) {
+            FilmProgressIndicator(
+                size = LoadingSize,
+                color = TraktTheme.colors.textPrimary,
+            )
+            return@Box
+        }
+
         Icon(
-            painter = painterResource(R.drawable.ic_check_2),
+            painter = painterResource(
+                if (isWatched) R.drawable.ic_check_double else R.drawable.ic_check_2,
+            ),
             contentDescription = null,
-            tint = if (isWatched) TraktTheme.colors.accent else TraktTheme.colors.textPrimary,
+            tint = when {
+                isWatched -> TraktTheme.colors.textPrimary
+                else -> TraktTheme.colors.accent
+            },
             modifier = Modifier.size(IconSize),
         )
     }
@@ -163,6 +182,7 @@ private fun Preview() {
         ) {
             TodayWatchedButtonContent(isWatched = false, onClick = {})
             TodayWatchedButtonContent(isWatched = true, onClick = {})
+            TodayWatchedButtonContent(isWatched = false, loading = true, onClick = {})
         }
     }
 }

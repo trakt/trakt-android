@@ -35,7 +35,10 @@ internal fun TodayForYouFooter(
                 },
             ).uppercase(),
             style = TraktTheme.typography.meta,
-            color = TraktTheme.colors.accent,
+            color = when (TraktTheme.colors.isLight) {
+                true -> TraktTheme.colors.accent
+                false -> TraktTheme.colors.accentPalette.shade400
+            },
             maxLines = 1,
         )
 

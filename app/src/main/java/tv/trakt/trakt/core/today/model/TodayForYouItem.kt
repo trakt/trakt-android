@@ -6,14 +6,12 @@ import tv.trakt.trakt.common.model.Show
 import java.time.Instant
 import java.time.ZoneId
 
-/** Something of the user's own released in the Today window. */
 @Immutable
 internal sealed interface TodayForYouItem {
     val key: String
     val media: TodayMedia
     val releasedAt: Instant
 
-    /** The next episode of a show in progress. */
     @Immutable
     data class UpNext(
         val show: Show,
@@ -24,7 +22,6 @@ internal sealed interface TodayForYouItem {
         override val key = "up-next-${show.ids.trakt.value}-${episode.ids.trakt.value}"
     }
 
-    /** A watchlisted title not started yet. */
     @Immutable
     data class StartWatching(
         override val media: TodayMedia,
@@ -55,7 +52,6 @@ internal sealed interface TodayForYouItem {
             return StartWatching(media = media, releasedAt = releasedAt)
         }
 
-        // Movies carry a release day, not a moment, so they count from the start of that day.
         private val TodayMedia.releasedAt: Instant?
             get() = when (this) {
                 is TodayMedia.MovieMedia -> {

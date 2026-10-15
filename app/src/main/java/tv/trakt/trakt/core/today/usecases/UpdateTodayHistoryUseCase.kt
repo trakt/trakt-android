@@ -48,7 +48,6 @@ internal class UpdateTodayHistoryUseCase(
         }
     }
 
-    // Watching a title takes it off the watchlist, as on the movie and show screens.
     private suspend fun addMediaToWatched(media: TodayMedia) {
         val id = media.ids.trakt
 

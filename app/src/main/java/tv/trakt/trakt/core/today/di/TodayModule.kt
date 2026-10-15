@@ -24,13 +24,17 @@ import tv.trakt.trakt.core.today.data.local.TodaySeenStorage
 import tv.trakt.trakt.core.today.data.local.TodayStorage
 import tv.trakt.trakt.core.today.data.remote.TodayApiClient
 import tv.trakt.trakt.core.today.data.remote.TodayRemoteDataSource
+import tv.trakt.trakt.core.today.model.TodayForYouItem
 import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.pill.TodayPillViewModel
 import tv.trakt.trakt.core.today.stories.TodayStoriesViewModel
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel
+import tv.trakt.trakt.core.today.stories.watched.TodayWatchedViewModel
 import tv.trakt.trakt.core.today.stories.watchlist.TodayWatchlistViewModel
 import tv.trakt.trakt.core.today.usecases.GetTodayDetailsUseCase
+import tv.trakt.trakt.core.today.usecases.GetTodayForYouUseCase
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
+import tv.trakt.trakt.core.today.usecases.UpdateTodayHistoryUseCase
 import tv.trakt.trakt.core.today.usecases.UpdateTodayWatchlistUseCase
 
 internal const val TODAY_PREFERENCES = "today_preferences_mobile"
@@ -56,6 +60,8 @@ internal val todayModule = module {
     factoryOf(::GetTodayStoriesUseCase)
     factoryOf(::GetTodayDetailsUseCase)
     factoryOf(::UpdateTodayWatchlistUseCase)
+    factoryOf(::GetTodayForYouUseCase)
+    factoryOf(::UpdateTodayHistoryUseCase)
 
     viewModelOf(::TodayPillViewModel)
     viewModelOf(::TodayStoriesViewModel)
@@ -63,6 +69,13 @@ internal val todayModule = module {
         TodayPosterDetailsViewModel(
             media = media,
             getTodayDetailsUseCase = get(),
+        )
+    }
+    viewModel { (item: TodayForYouItem) ->
+        TodayWatchedViewModel(
+            item = item,
+            updateHistoryUseCase = get(),
+            analytics = get(),
         )
     }
     viewModel { (media: TodayMedia) ->

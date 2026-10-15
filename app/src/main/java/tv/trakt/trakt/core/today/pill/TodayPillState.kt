@@ -27,7 +27,7 @@ internal data class TodayPillState(
     val targetKey: String? = (unseenGroups.firstOrNull() ?: groups.firstOrNull())?.key
 
     val posters: ImmutableList<String> = groups
-        .mapNotNull { it.story.media.images?.getPosterUrl() }
+        .mapNotNull { it.media.images?.getPosterUrl() }
         .distinct()
         .take(MAX_POSTERS)
         .toImmutableList()

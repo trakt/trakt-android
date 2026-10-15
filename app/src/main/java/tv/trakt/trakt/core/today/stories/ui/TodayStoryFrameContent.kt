@@ -57,6 +57,7 @@ import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayTitleStory
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetails
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel
+import tv.trakt.trakt.core.today.stories.watched.TodayWatchedButton
 import tv.trakt.trakt.core.today.stories.watchlist.TodayWatchlistButton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -210,7 +211,7 @@ private fun TodayFlipPoster(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val media = frame.story.media
+    val media = frame.media
     val rating = frame.rating10
 
     // Created with the front face so ratings and sentiment load before the card flips.
@@ -298,7 +299,7 @@ private fun TodayStoryFooter(
     modifier: Modifier = Modifier,
     onConfirmVisibleChange: (Boolean) -> Unit,
 ) {
-    val media = frame.story.media
+    val media = frame.media
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -314,16 +315,30 @@ private fun TodayStoryFooter(
                 action = frame.action,
                 modifier = Modifier.weight(1F),
             )
+            is TodayStoryFrame.ForYou -> TodayForYouFooter(
+                item = frame.item,
+                modifier = Modifier.weight(1F),
+            )
         }
 
-        TodayWatchlistButton(
-            media = media,
-            viewModel = koinViewModel(
-                key = "today-watchlist-${media.key}",
-                parameters = { parametersOf(media) },
-            ),
-            onConfirmVisibleChange = onConfirmVisibleChange,
-        )
+        when (frame) {
+            is TodayStoryFrame.Title -> TodayWatchlistButton(
+                media = media,
+                viewModel = koinViewModel(
+                    key = "today-watchlist-${media.key}",
+                    parameters = { parametersOf(media) },
+                ),
+                onConfirmVisibleChange = onConfirmVisibleChange,
+            )
+            is TodayStoryFrame.ForYou -> TodayWatchedButton(
+                item = frame.item,
+                viewModel = koinViewModel(
+                    key = "today-watched-${frame.item.key}",
+                    parameters = { parametersOf(frame.item) },
+                ),
+                onConfirmVisibleChange = onConfirmVisibleChange,
+            )
+        }
     }
 }
 
@@ -363,12 +378,14 @@ private val TodayStoryFrame.milestone: TodayMilestone?
     get() = when (this) {
         is TodayStoryFrame.Friend -> action.milestone
         is TodayStoryFrame.Summary -> story.milestone
+        is TodayStoryFrame.ForYou -> null
     }
 
 private val TodayStoryFrame.rating10: Float?
     get() = when (this) {
         is TodayStoryFrame.Friend -> action.rating?.toFloat()
         is TodayStoryFrame.Summary -> story.averageRating
+        is TodayStoryFrame.ForYou -> null
     }
 
 @Preview(heightDp = 720)

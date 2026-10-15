@@ -25,19 +25,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.today.model.TodayMedia
+import tv.trakt.trakt.core.today.stories.ui.showTodaySnack
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
-import kotlin.time.Duration.Companion.seconds
 
 private val ButtonSize = 32.dp
 private val IconSize = 24.dp
-private val SnackDuration = 1.5.seconds
+private val LoadingSize = 18.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,16 +55,14 @@ internal fun TodayWatchlistButton(
         viewModel.events.collect { event ->
             haptic.performHapticFeedback(Confirm)
             this@LaunchedEffect.launch {
-                withTimeoutOrNull(SnackDuration) {
-                    snack.showSnackbar(
-                        resources.getString(
-                            when (event) {
-                                TodayWatchlistEvent.Added -> R.string.text_info_watchlist_added
-                                TodayWatchlistEvent.Removed -> R.string.text_info_watchlist_removed
-                            },
-                        ),
-                    )
-                }
+                snack.showTodaySnack(
+                    resources.getString(
+                        when (event) {
+                            TodayWatchlistEvent.Added -> R.string.text_info_watchlist_added
+                            TodayWatchlistEvent.Removed -> R.string.text_info_watchlist_removed
+                        },
+                    ),
+                )
             }
         }
     }
@@ -82,6 +80,7 @@ internal fun TodayWatchlistButton(
 
     TodayWatchlistButtonContent(
         isWatchlisted = isWatchlisted,
+        loading = state.loading.isLoading,
         modifier = modifier,
         onClick = {
             if (isWatchlisted) {
@@ -111,14 +110,26 @@ internal fun TodayWatchlistButton(
 private fun TodayWatchlistButtonContent(
     isWatchlisted: Boolean,
     modifier: Modifier = Modifier,
+    loading: Boolean = false,
     onClick: () -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(ButtonSize)
-            .onClick(onClick = onClick),
+            .onClick(
+                enabled = !loading,
+                onClick = onClick,
+            ),
     ) {
+        if (loading) {
+            FilmProgressIndicator(
+                size = LoadingSize,
+                color = TraktTheme.colors.textPrimary,
+            )
+            return@Box
+        }
+
         Icon(
             painter = painterResource(
                 if (isWatchlisted) R.drawable.ic_bookmark_on else R.drawable.ic_bookmark_off,
@@ -142,6 +153,7 @@ private fun Preview() {
         ) {
             TodayWatchlistButtonContent(isWatchlisted = false, onClick = {})
             TodayWatchlistButtonContent(isWatchlisted = true, onClick = {})
+            TodayWatchlistButtonContent(isWatchlisted = false, loading = true, onClick = {})
         }
     }
 }

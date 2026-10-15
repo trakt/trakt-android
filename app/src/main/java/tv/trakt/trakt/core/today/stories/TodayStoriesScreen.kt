@@ -208,7 +208,7 @@ private fun TodayStoryPage(
             .background(background),
     ) {
         AsyncImage(
-            model = group.story.media.images?.getPosterUrl(Images.Size.MEDIUM),
+            model = frame.media.images?.getPosterUrl(Images.Size.MEDIUM),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -243,7 +243,10 @@ private fun TodayStoryPage(
             )
 
             TodayStoryHeader(
-                title = group.story.media.title,
+                title = when (group) {
+                    is TodayStoryGroup.Title -> group.media.title
+                    is TodayStoryGroup.ForYou -> stringResource(R.string.text_today_for_you)
+                },
                 position = stringResource(
                     R.string.text_today_story_position,
                     state.groupIndex + 1,
@@ -454,7 +457,10 @@ private fun Preview() {
     TraktTheme {
         TodayStoriesContent(
             state = TodayStoriesState(
-                groups = persistentListOf(TodayStoryGroup.fromStory(story)),
+                groups = TodayStoryGroup.from(
+                    forYou = emptyList(),
+                    stories = listOf(story),
+                ),
             ),
             modifier = Modifier.background(Color.Black),
         )
