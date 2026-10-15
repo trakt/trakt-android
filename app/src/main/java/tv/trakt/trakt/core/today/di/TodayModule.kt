@@ -28,8 +28,10 @@ import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.pill.TodayPillViewModel
 import tv.trakt.trakt.core.today.stories.TodayStoriesViewModel
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel
+import tv.trakt.trakt.core.today.stories.watchlist.TodayWatchlistViewModel
 import tv.trakt.trakt.core.today.usecases.GetTodayDetailsUseCase
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
+import tv.trakt.trakt.core.today.usecases.UpdateTodayWatchlistUseCase
 
 internal const val TODAY_PREFERENCES = "today_preferences_mobile"
 
@@ -53,6 +55,7 @@ internal val todayDataModule = module {
 internal val todayModule = module {
     factoryOf(::GetTodayStoriesUseCase)
     factoryOf(::GetTodayDetailsUseCase)
+    factoryOf(::UpdateTodayWatchlistUseCase)
 
     viewModelOf(::TodayPillViewModel)
     viewModelOf(::TodayStoriesViewModel)
@@ -60,6 +63,16 @@ internal val todayModule = module {
         TodayPosterDetailsViewModel(
             media = media,
             getTodayDetailsUseCase = get(),
+        )
+    }
+    viewModel { (media: TodayMedia) ->
+        TodayWatchlistViewModel(
+            media = media,
+            updateWatchlistUseCase = get(),
+            watchlistUpdates = get(),
+            sessionManager = get(),
+            errorsManager = get(),
+            analytics = get(),
         )
     }
 }

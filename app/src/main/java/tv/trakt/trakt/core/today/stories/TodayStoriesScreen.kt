@@ -195,9 +195,10 @@ private fun TodayStoryPage(
 
     var isFlipped by remember(frame.key) { mutableStateOf(false) }
     var isHeld by remember { mutableStateOf(false) }
+    var isConfirming by remember { mutableStateOf(false) }
 
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
-    val isPaused = !isActive || isHeld || isFlipped || !lifecycle.isAtLeast(Lifecycle.State.RESUMED)
+    val isPaused = !isActive || isHeld || isFlipped || isConfirming || !lifecycle.isAtLeast(Lifecycle.State.RESUMED)
 
     val background = TraktTheme.colors.backgroundPrimary
 
@@ -260,6 +261,7 @@ private fun TodayStoryPage(
                 onNext = onNext,
                 onPrevious = onPrevious,
                 onHeldChange = { isHeld = it },
+                onConfirmVisibleChange = { isConfirming = it },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1F),

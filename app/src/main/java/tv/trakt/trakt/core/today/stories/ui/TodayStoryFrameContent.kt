@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayTitleStory
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetails
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel
+import tv.trakt.trakt.core.today.stories.watchlist.TodayWatchlistButton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -79,6 +80,7 @@ internal fun TodayStoryFrameContent(
     onNext: () -> Unit,
     onPrevious: () -> Unit,
     onHeldChange: (Boolean) -> Unit,
+    onConfirmVisibleChange: (Boolean) -> Unit,
 ) {
     Layout(
         content = {
@@ -102,6 +104,7 @@ internal fun TodayStoryFrameContent(
 
                 TodayStoryFooter(
                     frame = frame,
+                    onConfirmVisibleChange = onConfirmVisibleChange,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 1.dp)
@@ -284,10 +287,13 @@ private fun TodayFlipPoster(
 private fun TodayStoryFooter(
     frame: TodayStoryFrame,
     modifier: Modifier = Modifier,
+    onConfirmVisibleChange: (Boolean) -> Unit,
 ) {
+    val media = frame.story.media
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(16.dp),
+        horizontalArrangement = spacedBy(10.dp),
         modifier = modifier,
     ) {
         when (frame) {
@@ -300,6 +306,15 @@ private fun TodayStoryFooter(
                 modifier = Modifier.weight(1F),
             )
         }
+
+        TodayWatchlistButton(
+            media = media,
+            viewModel = koinViewModel(
+                key = "today-watchlist-${media.key}",
+                parameters = { parametersOf(media) },
+            ),
+            onConfirmVisibleChange = onConfirmVisibleChange,
+        )
     }
 }
 
@@ -373,6 +388,7 @@ private fun Preview() {
             onNext = {},
             onPrevious = {},
             onHeldChange = {},
+            onConfirmVisibleChange = {},
             modifier = Modifier
                 .background(TraktTheme.colors.backgroundPrimary),
         )
