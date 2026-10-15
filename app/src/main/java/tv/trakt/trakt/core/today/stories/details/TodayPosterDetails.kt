@@ -39,7 +39,6 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall
-import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.core.summary.ui.DetailsRatings
 import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.resources.R
@@ -190,7 +189,7 @@ private fun TodaySentiment(
             Text(
                 text = stringResource(R.string.header_community_sentiment).uppercase(),
                 style = TraktTheme.typography.meta,
-                color = Purple300,
+                color = TraktTheme.colors.accentPalette.shade300,
                 maxLines = 1,
                 modifier = Modifier.weight(1F),
             )

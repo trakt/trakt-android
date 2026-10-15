@@ -25,14 +25,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.today.model.TodayMilestone
 import tv.trakt.trakt.core.today.model.TodayMilestone.Type
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-internal val MilestoneColor = Purple500
 
 private val ChipShape = RoundedCornerShape(50)
 private val TooltipShape = RoundedCornerShape(8.dp)
@@ -94,7 +92,7 @@ private fun TodayMilestoneChipContent(
             if (isFinale) 3.dp else 6.dp,
         ),
         modifier = modifier
-            .background(MilestoneColor, ChipShape)
+            .background(TraktTheme.colors.accent, ChipShape)
             .padding(horizontal = 8.dp, vertical = 6.dp),
     ) {
         Icon(
@@ -102,7 +100,7 @@ private fun TodayMilestoneChipContent(
                 if (isFinale) R.drawable.ic_flag_checker else R.drawable.ic_clapper,
             ),
             contentDescription = null,
-            tint = Color.White,
+            tint = TraktTheme.colors.textPrimaryOnAccent,
             modifier = Modifier.size(
                 if (isFinale) 16.dp else 12.dp,
             ),
@@ -110,7 +108,7 @@ private fun TodayMilestoneChipContent(
         Text(
             text = milestoneText(milestone),
             style = TraktTheme.typography.meta,
-            color = Color.White,
+            color = TraktTheme.colors.textPrimaryOnAccent,
             maxLines = 1,
         )
     }
@@ -169,6 +167,17 @@ private fun Preview() {
 @Composable
 private fun LightPreview() {
     TraktTheme(colors = LightColors) {
+        PreviewChips()
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun HalloweenPreview() {
+    TraktTheme(colors = HalloweenDarkColors) {
         PreviewChips()
     }
 }

@@ -253,7 +253,7 @@ private fun TodayFlipPoster(
             )
             .then(
                 if (frame.milestone != null) {
-                    Modifier.border(MilestoneBorder, MilestoneColor, PosterShape)
+                    Modifier.border(MilestoneBorder, TraktTheme.colors.accent, PosterShape)
                 } else {
                     Modifier
                 },

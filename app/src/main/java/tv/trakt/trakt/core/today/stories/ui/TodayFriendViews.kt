@@ -35,7 +35,6 @@ import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.today.model.FollowingActivity.Detail
 import tv.trakt.trakt.core.today.model.FollowingActivity.Target
 import tv.trakt.trakt.core.today.model.TodayFriendAction
@@ -70,7 +69,7 @@ internal fun TodayFriendFooter(
         TodayAvatar(
             user = action.user,
             size = AvatarSize,
-            borderColor = Purple500,
+            borderColor = TraktTheme.colors.accent,
         )
 
         Column(
