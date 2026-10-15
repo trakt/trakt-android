@@ -15,6 +15,7 @@ interface UserWatchlistRemoteDataSource {
         limit: Int? = null,
         extended: String? = null,
         sorting: Sorting? = null,
+        hide: String? = null,
         filters: GlobalFilter?,
     ): List<WatchlistItemDto>
 

@@ -23,6 +23,7 @@ class UserWatchlistApiClient(
         limit: Int?,
         extended: String?,
         sorting: Sorting?,
+        hide: String?,
         filters: GlobalFilter?,
     ): List<WatchlistItemDto> {
         val response = usersApi.getUsersWatchlistAll(
@@ -38,7 +39,7 @@ class UserWatchlistApiClient(
             ratings = filters?.rating?.let { "${it.first}-${it.second}" },
             startDate = null,
             endDate = null,
-            hide = null,
+            hide = hide,
             sortBy = sorting?.type?.value ?: SortType.Default.value,
             sortHow = sorting?.order?.value,
             runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
