@@ -4,6 +4,7 @@ import android.os.SystemClock
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -70,6 +71,7 @@ private const val HOLD_THRESHOLD_MS = 300L
 private val PosterShape = RoundedCornerShape(16.dp)
 private val FooterMinGap = 16.dp
 private val PosterElevation = 2.dp
+private val MilestoneBorder = 2.dp
 
 @Composable
 internal fun TodayStoryFrameContent(
@@ -247,6 +249,13 @@ private fun TodayFlipPoster(
                 shape = PosterShape,
                 ambientColor = Color.Black,
                 spotColor = Color.Black,
+            )
+            .then(
+                if (frame.milestone != null) {
+                    Modifier.border(MilestoneBorder, MilestoneColor, PosterShape)
+                } else {
+                    Modifier
+                },
             ),
     ) {
         TodayPosterDetails(
@@ -349,6 +358,12 @@ private fun TodaySummaryFooter(
         }
     }
 }
+
+private val TodayStoryFrame.milestone: TodayMilestone?
+    get() = when (this) {
+        is TodayStoryFrame.Friend -> action.milestone
+        is TodayStoryFrame.Summary -> story.milestone
+    }
 
 private val TodayStoryFrame.rating10: Float?
     get() = when (this) {

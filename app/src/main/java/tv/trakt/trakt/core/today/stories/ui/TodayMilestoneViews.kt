@@ -32,6 +32,8 @@ import tv.trakt.trakt.core.today.model.TodayMilestone.Type
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+internal val MilestoneColor = Purple500
+
 private val ChipShape = RoundedCornerShape(50)
 private val TooltipShape = RoundedCornerShape(8.dp)
 
@@ -92,7 +94,7 @@ private fun TodayMilestoneChipContent(
             if (isFinale) 3.dp else 6.dp,
         ),
         modifier = modifier
-            .background(Purple500, ChipShape)
+            .background(MilestoneColor, ChipShape)
             .padding(horizontal = 8.dp, vertical = 6.dp),
     ) {
         Icon(
