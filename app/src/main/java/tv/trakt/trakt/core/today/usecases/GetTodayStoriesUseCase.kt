@@ -45,6 +45,18 @@ internal class GetTodayStoriesUseCase(
         }
     }
 
+    /** Refetches only the user's own releases, reusing the stored friend activity. */
+    suspend fun refreshForYou(mode: MediaMode): ImmutableList<TodayStoryGroup> {
+        val forYou = getForYouUseCase.getForYou()
+        localSource.setForYou(forYou)
+
+        return toStoryGroups(
+            forYou = forYou,
+            activities = localSource.getActivities(),
+            mode = mode,
+        )
+    }
+
     private suspend fun getForYou(): List<TodayForYouItem> {
         return try {
             getForYouUseCase.getForYou()
