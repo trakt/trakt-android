@@ -36,7 +36,7 @@ Hold across every layer. Lifted from Now in Android's `ArchitectureLearningJourn
 │ Data                                     │  Repositories, local stores
 │   - Repository                           │  Flow<T> reads, suspend writes
 │   - Local (DataStore, entity caches)     │
-│   - Remote (Ktor + OpenAPI client)       │
+│   - Remote (<Feature>RemoteSource)       │
 └──────────────────────────────────────────┘
 ```
 
@@ -112,6 +112,7 @@ Avoid one-line `UseCase` wrappers around repository calls.
 - **Reads return `Flow<T>`.** Local + remote sources flow through repository unified by `data` layer; ViewModel sees only unified stream.
 - **Writes are `suspend fun` returning `Result<…>`** (or domain-specific sealed result type).
 - **Mapping** lives on the domain model as `companion object { fun fromDto(...) }`. No separate mapper files. Pure, no I/O. See `networking.md`.
+- **Remote sources** are shared public classes `common/.../core/<feature>/data/remote/<Feature>RemoteSource.kt`, no interface, bound once per feature in a `:common` `<feature>RemoteModule`. Phone and TV inject the same class. See "Remote sources" in `networking.md`.
 
 ## Navigation
 
@@ -168,7 +169,7 @@ Scopes:
 DSL form:
 
 - **Default to the constructor-reference DSL (`singleOf`, `factoryOf`, `viewModelOf`, `workerOf`)** — `singleOf(::Foo)` replaces `single { Foo(get(), get()) }`; Koin resolves params by type.
-- **Bind interfaces with `bind`**: `singleOf(::FooRepositoryImpl) bind FooRepository::class`.
+- **Bind interfaces with `bind`**: `singleOf(::FooRepositoryImpl) bind FooRepository::class`. Remote sources have no interface: plain `singleOf(::FooRemoteSource)`.
 - **Lambda form (`single { … }`) only when `Of` can't express it**: parametrised definitions (`viewModel { (id) -> … }`), qualified/named params, `get(named(…))`, or inline-built values. See `core/lists/di/ListsModule.kt`.
 
 ## Background sync
