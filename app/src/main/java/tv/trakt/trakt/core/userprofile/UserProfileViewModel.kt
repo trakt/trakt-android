@@ -156,8 +156,12 @@ internal class UserProfileViewModel(
 
     private suspend fun loadDetails() {
         try {
+            val details = getUserProfileUseCase.getUserProfileDetails(user.ids.trakt)
             userState.update {
-                getUserProfileUseCase.getUserProfileDetails(user.ids.trakt)
+                when {
+                    it.hasAvatar -> details.copy(images = it.images)
+                    else -> details
+                }
             }
         } catch (error: Exception) {
             error.rethrowCancellation {
