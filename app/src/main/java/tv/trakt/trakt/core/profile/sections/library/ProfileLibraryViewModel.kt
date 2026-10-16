@@ -83,7 +83,7 @@ internal class ProfileLibraryViewModel(
                                 when (filter) {
                                     null -> true
                                     LibraryFilter.CUSTOM -> it.availableOn.isEmpty()
-                                    LibraryFilter.PLEX -> it.availableOn.contains(filter.value)
+                                    LibraryFilter.DIGITAL -> it.availableOn.contains(filter.value)
                                 }
                             }
                             .take(LIBRARY_SECTION_LIMIT)
@@ -105,7 +105,7 @@ internal class ProfileLibraryViewModel(
                             when (filter) {
                                 null -> true
                                 LibraryFilter.CUSTOM -> it.availableOn.isEmpty()
-                                LibraryFilter.PLEX -> it.availableOn.contains(filter.value)
+                                LibraryFilter.DIGITAL -> it.availableOn.contains(filter.value)
                             }
                         }
                         .take(LIBRARY_SECTION_LIMIT)

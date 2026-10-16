@@ -112,7 +112,7 @@ internal fun ProfileLibraryContent(
         ) {
             val subtitleStyle = TraktTheme.typography.meta.copy(
                 fontWeight = W400,
-                fontSize = 12.sp,
+                fontSize = 11.sp,
                 lineHeight = 1.2.em,
             )
             Text(
