@@ -14,7 +14,7 @@ Part of the `trakt-android` monorepo. Root rules apply — see
     search, profile, billing). Each owns `Screen`, `State`,
     `ViewModel`, `di/<Feature>Module.kt`.
   - `Trakt/ui/` — app-level theme glue, snackbar host, extensions.
-  - `Trakt/helpers/`, `Trakt/analytics/`.
+  - `Trakt/helpers/`.
 - **Architecture**: MVVM + UDF. `koinViewModel()` retrieves
   ViewModels. `NavigationStack(path:)`-equivalent via Compose
   Navigation typed routes. See `../.agents/rules/architecture.md`.
