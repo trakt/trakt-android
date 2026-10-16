@@ -89,7 +89,6 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
-    implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
 
     implementation(project.dependencies.platform(libs.koin.bom))
@@ -108,4 +107,6 @@ dependencies {
     api(libs.youtube.player.ui)
 
     debugImplementation(libs.androidx.compose.tooling)
+
+    testImplementation(libs.junit)
 }
