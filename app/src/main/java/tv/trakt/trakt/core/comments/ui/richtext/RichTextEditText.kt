@@ -249,6 +249,19 @@ internal class RichTextEditText(
         publish()
     }
 
+    // TextView scrolls to the cursor before the parent shrinks it, so the cursor ends up hidden
+    // once the sheet reaches its max height. Re-scroll after every resize.
+    override fun onSizeChanged(
+        width: Int,
+        height: Int,
+        oldWidth: Int,
+        oldHeight: Int,
+    ) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight)
+        if (!hasFocus()) return
+        post { bringPointIntoView(selectionEnd) }
+    }
+
     override fun onTextContextMenuItem(id: Int): Boolean {
         val plainId = if (id == android.R.id.paste) android.R.id.pasteAsPlainText else id
         return super.onTextContextMenuItem(plainId)
