@@ -5,9 +5,9 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow.Progress
-import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Episode
@@ -23,7 +23,7 @@ internal class GetShowsUpNextUseCase(
         page: Int = 1,
         limit: Int = HOME_SECTION_LIMIT,
     ): ImmutableList<ProgressShow> {
-        val remoteItems = remoteShowsSource.getUpNextProgress(
+        val remoteItems = remoteShowsSource.getUpNext(
             limit = limit,
             page = page,
             intent = "continue",

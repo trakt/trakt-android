@@ -2,8 +2,8 @@ package tv.trakt.trakt.app.core.details.show.usecases.collection
 
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.app.core.sync.model.WatchedShow
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show

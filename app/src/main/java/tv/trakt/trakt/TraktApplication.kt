@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.core.people.di.peopleRemoteModule
 import tv.trakt.trakt.common.core.shows.di.showsRemoteModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
+import tv.trakt.trakt.common.core.sync.di.syncRemoteModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
@@ -185,6 +186,7 @@ internal class TraktApplication : Application() {
                 profileDataModule,
                 peopleDataModule,
                 peopleRemoteModule,
+                syncRemoteModule,
                 episodesRemoteModule,
                 showsRemoteModule,
                 moviesRemoteModule,

@@ -1,12 +1,12 @@
 package tv.trakt.trakt.core.home.sections.upnext.usecases
 
 import timber.log.Timber
+import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 
 internal class DropPlaybackUseCase(
     private val remoteMovieSyncSource: MoviesSyncRemoteDataSource,

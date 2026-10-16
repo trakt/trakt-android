@@ -1,7 +1,10 @@
-package tv.trakt.trakt.core.sync.data.remote.movies
+package tv.trakt.trakt.common.core.sync.data.remote.movies
 
+import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SyncApi
+import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.apis.WatchedApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
 import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
@@ -11,13 +14,19 @@ import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressMovieDto
+import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class MoviesSyncApiClient(
     private val syncApi: SyncApi,
     private val recommendationsApi: RecommendationsApi,
     private val cacheMarker: CacheMarkerProvider,
+    private val usersApi: UsersApi,
+    private val watchedApi: WatchedApi,
+    private val collectionApi: CollectionApi,
 ) : MoviesSyncRemoteDataSource {
     override suspend fun getPlaybackProgress(
         limit: Int,
@@ -161,5 +170,73 @@ internal class MoviesSyncApiClient(
         )
         syncApi.postSyncFavoritesRemove(request)
         cacheMarker.invalidate()
+    }
+
+    override suspend fun getWatchlist(
+        sorting: Sorting,
+        page: Int?,
+        limit: Int?,
+        extended: String?,
+        hide: String?,
+    ): List<WatchlistMovieDto> {
+        val response = usersApi.getUsersWatchlistMovies(
+            id = "me",
+            sort = "",
+            extended = extended,
+            page = page,
+            limit = limit,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            subgenres = null,
+            hide = hide,
+            runtimes = null,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
+            countries = null,
+            certifications = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getWatched(): Map<String, List<String>> {
+        val result = mutableMapOf<String, List<String>>()
+        var page = 1
+
+        while (true) {
+            val pageResponse = watchedApi.getUsersWatchedMinimalMovies(
+                id = "me",
+                extended = "min",
+                page = page,
+                limit = 100,
+            ).body()
+
+            if (pageResponse.isEmpty()) {
+                break
+            }
+
+            result.putAll(pageResponse)
+            page++
+        }
+
+        return result
+    }
+
+    /** Example:
+     * {
+     *     "696075": "2025-06-11T08:37:33.000Z"
+     * }
+     */
+    override suspend fun getPlexCollection(): Map<TraktId, String> {
+        val response = collectionApi.getSyncCollectionMinimalMovies(
+            availableOn = "digital",
+        )
+        return response.body()
+            .map { it.key.toInt().toTraktId() to it.value }
+            .toMap()
     }
 }
