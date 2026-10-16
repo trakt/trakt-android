@@ -26,13 +26,14 @@ class UserSocialApiClient(
         limit: Int,
         type: String,
         filters: GlobalFilter?,
+        extended: String,
     ): List<SocialActivityItemDto> {
         val response = usersApi.getUsersActivities(
             id = "me",
             type = type,
             page = page,
             limit = limit,
-            extended = "full,cloud9,colors,rating,vip",
+            extended = extended,
             watchnow = filters?.availability?.joinToString(",") { it.slug },
             genres = filters?.genre?.joinToString(",") { it.slug },
             subgenres = filters?.subgenre?.joinToString(","),

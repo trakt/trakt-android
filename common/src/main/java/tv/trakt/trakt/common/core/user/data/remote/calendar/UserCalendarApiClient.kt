@@ -13,12 +13,13 @@ class UserCalendarApiClient(
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter?,
+        extended: String,
     ): List<CalendarShowDto> {
         val response = calendarsApi.getCalendarsShows(
             target = "my",
             startDate = startDate.toString(),
             days = days,
-            extended = "full,cloud9,colors",
+            extended = extended,
             watchnow = filters?.availability?.joinToString(",") { it.slug },
             genres = filters?.genre?.joinToString(",") { it.slug },
             subgenres = filters?.subgenre?.joinToString(","),
@@ -42,12 +43,13 @@ class UserCalendarApiClient(
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter?,
+        extended: String,
     ): List<CalendarMovieDto> {
         val response = calendarsApi.getCalendarsMovies(
             target = "my",
             startDate = startDate.toString(),
             days = days,
-            extended = "full,cloud9,colors",
+            extended = extended,
             watchnow = filters?.availability?.joinToString(",") { it.slug },
             genres = filters?.genre?.joinToString(",") { it.slug },
             subgenres = filters?.subgenre?.joinToString(","),

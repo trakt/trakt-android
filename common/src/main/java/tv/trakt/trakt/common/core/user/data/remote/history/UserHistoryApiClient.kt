@@ -19,10 +19,11 @@ class UserHistoryApiClient(
         from: Instant?,
         to: Instant?,
         userId: String,
+        extended: String,
     ): List<SyncHistoryItemDto> {
         val response = historyApi.getUsersHistoryAll(
             id = userId,
-            extended = "full,cloud9,colors",
+            extended = extended,
             startAt = from?.toString(),
             endAt = to?.toString(),
             page = page,

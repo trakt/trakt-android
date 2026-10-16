@@ -6,16 +6,17 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
-import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetPersonalListItemsUseCase(
-    private val remoteSource: ProfileRemoteDataSource,
+    private val remoteSource: UserPersonalListsRemoteDataSource,
     private val localShowSource: ShowLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {
@@ -25,11 +26,12 @@ internal class GetPersonalListItemsUseCase(
     ): ImmutableList<PersonalListItem> {
         return coroutineScope {
             val showsAsync = async {
-                remoteSource.getUserShowListItems(
+                remoteSource.getPersonalListShowItems(
                     listId = listId,
                     limit = PERSONAL_LIST_PAGE_LIMIT,
                     page = page,
                     extended = "full,cloud9,streaming_ids",
+                    sorting = Sorting.Default,
                 ).map {
                     PersonalListItem(
                         type = "show",
@@ -40,11 +42,12 @@ internal class GetPersonalListItemsUseCase(
             }
 
             val moviesAsync = async {
-                remoteSource.getUserMovieListItems(
+                remoteSource.getPersonalListMovieItems(
                     listId = listId,
                     limit = PERSONAL_LIST_PAGE_LIMIT,
                     page = page,
                     extended = "full,cloud9,streaming_ids",
+                    sorting = Sorting.Default,
                 ).map {
                     PersonalListItem(
                         type = "movie",
