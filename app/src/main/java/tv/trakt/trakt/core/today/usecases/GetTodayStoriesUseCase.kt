@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
-import tv.trakt.trakt.common.core.today.data.remote.TodayRemoteDataSource
+import tv.trakt.trakt.common.core.today.data.remote.TodayRemoteSource
 import tv.trakt.trakt.common.core.today.model.FollowingActivity
 import tv.trakt.trakt.common.core.today.model.FollowingActivity.Target
 import tv.trakt.trakt.common.core.today.model.TodayMedia
@@ -17,7 +17,7 @@ import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.model.TodayTitleStory
 
 internal class GetTodayStoriesUseCase(
-    private val remoteSource: TodayRemoteDataSource,
+    private val remoteSource: TodayRemoteSource,
     private val localSource: TodayLocalDataSource,
     private val getForYouUseCase: GetTodayForYouUseCase,
 ) {

@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -78,7 +78,7 @@ internal class DefaultRatePromptManager(
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val userFavoritesUseCase: LoadUserFavoritesUseCase,
     private val updateUserSettingsUseCase: UpdateUserSettingsUseCase,
-    private val userHistoryDataSource: UserHistoryRemoteDataSource,
+    private val userHistoryDataSource: UserHistoryRemoteSource,
     private val isShowRatingCandidateUseCase: IsShowRatingCandidateUseCase,
     private val ratingsUpdates: RatingsUpdates,
     private val favoritesUpdates: FavoritesUpdates,

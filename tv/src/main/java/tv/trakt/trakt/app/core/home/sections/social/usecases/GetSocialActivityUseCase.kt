@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.EPISODE
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.MOVIE
 import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
-import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Episode
@@ -15,7 +15,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 
 internal class GetSocialActivityUseCase(
-    private val remoteProfileSource: UserSocialRemoteDataSource,
+    private val remoteProfileSource: UserSocialRemoteSource,
 ) {
     suspend fun getSocialActivity(limit: Int): ImmutableList<SocialActivityItem> {
         val items = remoteProfileSource.getSocialActivity(

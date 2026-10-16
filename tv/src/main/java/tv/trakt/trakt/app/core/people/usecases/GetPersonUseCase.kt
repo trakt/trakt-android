@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.people.usecases
 
 import tv.trakt.trakt.app.core.people.data.local.PeopleLocalDataSource
-import tv.trakt.trakt.common.core.people.data.remote.PeopleRemoteDataSource
+import tv.trakt.trakt.common.core.people.data.remote.PeopleRemoteSource
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
@@ -10,7 +10,7 @@ private const val PERSON_EXTENDED = "full,cloud9"
 
 internal class GetPersonUseCase(
     private val peopleLocalSource: PeopleLocalDataSource,
-    private val peopleRemoteSource: PeopleRemoteDataSource,
+    private val peopleRemoteSource: PeopleRemoteSource,
 ) {
     suspend fun getPerson(personId: TraktId): Person {
         val person = peopleLocalSource.getPerson(personId)

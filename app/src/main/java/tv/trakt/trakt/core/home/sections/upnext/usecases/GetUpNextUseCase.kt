@@ -9,8 +9,8 @@ import tv.trakt.trakt.common.core.home.model.UpNextShow
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
@@ -22,8 +22,8 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 
 internal class GetUpNextUseCase(
-    private val remoteShowsSyncSource: ShowsSyncRemoteDataSource,
-    private val remoteMoviesSyncSource: MoviesSyncRemoteDataSource,
+    private val remoteShowsSyncSource: ShowsSyncRemoteSource,
+    private val remoteMoviesSyncSource: MoviesSyncRemoteSource,
     private val localDataSource: HomeUpNextLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,

@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.lists.sections.smart.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.lists.SmartList
@@ -16,7 +16,7 @@ private val supportedSources = SmartListSource.entries
     .map { it.value }
 
 internal class GetSmartListsUseCase(
-    private val remoteSource: UserSmartListsRemoteDataSource,
+    private val remoteSource: UserSmartListsRemoteSource,
     private val localSource: ListsSmartLocalDataSource,
 ) {
     suspend fun getLocalSmartLists(pagination: Pagination? = null): ImmutableList<SmartList> {

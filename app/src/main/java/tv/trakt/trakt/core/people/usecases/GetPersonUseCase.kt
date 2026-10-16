@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.people.usecases
 
-import tv.trakt.trakt.common.core.people.data.remote.PeopleRemoteDataSource
+import tv.trakt.trakt.common.core.people.data.remote.PeopleRemoteSource
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
@@ -9,7 +9,7 @@ import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 
 internal class GetPersonUseCase(
     private val peopleLocalSource: PeopleLocalDataSource,
-    private val peopleRemoteSource: PeopleRemoteDataSource,
+    private val peopleRemoteSource: PeopleRemoteSource,
 ) {
     suspend fun getPerson(personId: TraktId): Person {
         val person = peopleLocalSource.getPerson(personId)

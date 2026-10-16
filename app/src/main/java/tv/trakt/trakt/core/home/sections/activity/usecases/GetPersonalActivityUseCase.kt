@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.EPISODE
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.MOVIE
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
@@ -21,7 +21,7 @@ import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePerson
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 
 internal class GetPersonalActivityUseCase(
-    private val remoteUserSource: UserHistoryRemoteDataSource,
+    private val remoteUserSource: UserHistoryRemoteSource,
     private val localDataSource: HomePersonalLocalDataSource,
 ) {
     suspend fun getLocalPersonalActivity(

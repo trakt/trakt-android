@@ -2,12 +2,12 @@ package tv.trakt.trakt.core.summary.movies.features.extras.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteDataSource
+import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.TraktId
 
 internal class GetMovieExtrasUseCase(
-    private val remoteSource: MoviesRemoteDataSource,
+    private val remoteSource: MoviesRemoteSource,
 ) {
     suspend fun getExtraVideos(movieId: TraktId): ImmutableList<ExtraVideo> {
         return remoteSource.getExtras(movieId)

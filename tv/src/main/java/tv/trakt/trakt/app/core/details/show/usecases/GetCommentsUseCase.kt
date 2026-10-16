@@ -2,12 +2,12 @@ package tv.trakt.trakt.app.core.details.show.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
 
 internal class GetCommentsUseCase(
-    private val remoteSource: ShowsRemoteDataSource,
+    private val remoteSource: ShowsRemoteSource,
 ) {
     suspend fun getComments(showId: TraktId): ImmutableList<Comment> {
         val remoteComments = remoteSource.getComments(

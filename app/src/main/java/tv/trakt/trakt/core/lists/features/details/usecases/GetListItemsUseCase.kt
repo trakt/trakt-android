@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.lists.features.details.usecases
 
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
+import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
@@ -20,7 +20,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal class GetListItemsUseCase(
-    private val remoteSource: ListsRemoteDataSource,
+    private val remoteSource: ListsRemoteSource,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
 ) {
     suspend fun getItems(

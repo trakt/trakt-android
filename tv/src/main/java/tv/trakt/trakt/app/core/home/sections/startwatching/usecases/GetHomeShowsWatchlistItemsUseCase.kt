@@ -2,7 +2,7 @@ package tv.trakt.trakt.app.core.home.sections.startwatching.usecases
 
 import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
@@ -18,7 +18,7 @@ private val SortComparator =
         .thenByDescending { it.listedAt }
 
 internal class GetHomeShowsWatchlistItemsUseCase(
-    private val remoteSyncSource: ShowsSyncRemoteDataSource,
+    private val remoteSyncSource: ShowsSyncRemoteSource,
     private val localShowsSource: ShowLocalDataSource,
 ) {
     suspend fun getItems(pagination: Pagination): List<WatchlistItem> {

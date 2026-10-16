@@ -2,14 +2,14 @@ package tv.trakt.trakt.core.lists.sections.liked.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 
 internal class GetLikedListsUseCase(
-    private val remoteSource: UserOtherListsRemoteDataSource,
+    private val remoteSource: UserOtherListsRemoteSource,
     private val localSource: ListsLikedLocalDataSource,
 ) {
     suspend fun getLocalLists(pagination: Pagination): ImmutableList<CustomList> {

@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
 
-import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
+import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -9,7 +9,7 @@ import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsC
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 
 internal class AddPersonalListItemUseCase(
-    private val remoteSource: ListsRemoteDataSource,
+    private val remoteSource: ListsRemoteSource,
     private val listsLocalDataSource: ListsPersonalLocalDataSource,
     private val collabListsLocalDataSource: ListsCollaborationsLocalDataSource,
 ) {

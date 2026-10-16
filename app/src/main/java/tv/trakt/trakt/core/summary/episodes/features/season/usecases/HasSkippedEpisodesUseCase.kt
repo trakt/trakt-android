@@ -1,13 +1,13 @@
 package tv.trakt.trakt.core.summary.episodes.features.season.usecases
 
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.core.sync.model.ProgressItem
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 
 internal class HasSkippedEpisodesUseCase(
-    private val remoteShowsSource: ShowsRemoteDataSource,
+    private val remoteShowsSource: ShowsRemoteSource,
 ) {
     // Specials excluded to match what GetWatchedUntilEpisodesUseCase marks.
     suspend fun hasSkippedEpisodes(

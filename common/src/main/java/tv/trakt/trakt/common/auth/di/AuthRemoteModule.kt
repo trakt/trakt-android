@@ -4,12 +4,11 @@ import io.ktor.client.HttpClientConfig
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.Config.WEB_AUTH_URL
-import tv.trakt.trakt.common.auth.data.remote.AuthApiClient
-import tv.trakt.trakt.common.auth.data.remote.AuthRemoteDataSource
+import tv.trakt.trakt.common.auth.data.remote.AuthRemoteSource
 
 val authRemoteModule = module {
-    single<AuthRemoteDataSource> {
-        AuthApiClient(
+    single {
+        AuthRemoteSource(
             baseUrl = WEB_AUTH_URL,
             oauthApi = get(),
             httpClientEngine = get(),

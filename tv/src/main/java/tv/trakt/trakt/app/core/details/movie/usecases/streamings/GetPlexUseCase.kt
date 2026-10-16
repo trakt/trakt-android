@@ -5,9 +5,9 @@ import com.google.firebase.remoteconfig.remoteConfig
 import timber.log.Timber
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.common.core.plex.data.remote.PlexRemoteDataSource
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
+import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.core.plex.data.remote.PlexRemoteSource
+import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.PLEX_PLAY_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.MediaType
@@ -18,9 +18,9 @@ import tv.trakt.trakt.common.model.fromDto
 import kotlin.coroutines.cancellation.CancellationException
 
 internal class GetPlexUseCase(
-    private val remoteSyncSource: MoviesSyncRemoteDataSource,
-    private val remoteMovieSource: MoviesRemoteDataSource,
-    private val remotePlexSource: PlexRemoteDataSource,
+    private val remoteSyncSource: MoviesSyncRemoteSource,
+    private val remoteMovieSource: MoviesRemoteSource,
+    private val remotePlexSource: PlexRemoteSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {
     suspend fun getPlexStatus(movieId: TraktId): Result {

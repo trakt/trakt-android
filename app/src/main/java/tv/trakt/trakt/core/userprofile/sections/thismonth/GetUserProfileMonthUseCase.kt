@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.userprofile.sections.thismonth
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -12,7 +12,7 @@ import java.time.ZoneOffset.UTC
 import kotlin.time.toKotlinInstant
 
 internal class GetUserProfileMonthUseCase(
-    private val remoteUserSource: UserHistoryRemoteDataSource,
+    private val remoteUserSource: UserHistoryRemoteSource,
 ) {
     suspend fun getMonthStats(userId: TraktId): ProfileStats {
         return coroutineScope {

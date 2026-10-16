@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
-import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -12,7 +12,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
 
 internal class GetSmartListItemsUseCase(
-    private val remoteSource: UserSmartListsRemoteDataSource,
+    private val remoteSource: UserSmartListsRemoteSource,
 ) {
     suspend fun getListItems(
         listId: TraktId,

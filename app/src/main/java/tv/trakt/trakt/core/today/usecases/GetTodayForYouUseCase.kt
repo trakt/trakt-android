@@ -2,9 +2,9 @@ package tv.trakt.trakt.core.today.usecases
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.core.today.model.TodayMedia
-import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -24,8 +24,8 @@ private const val WATCHLIST_EXTENDED = "full,cloud9,colors"
 private val TodayWindow = 24.hours
 
 internal class GetTodayForYouUseCase(
-    private val showsSyncSource: ShowsSyncRemoteDataSource,
-    private val watchlistSource: UserWatchlistRemoteDataSource,
+    private val showsSyncSource: ShowsSyncRemoteSource,
+    private val watchlistSource: UserWatchlistRemoteSource,
 ) {
     suspend fun getForYou(): List<TodayForYouItem> {
         val now = nowUtcInstant()

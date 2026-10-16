@@ -8,7 +8,7 @@ import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.profile.sections.library.model.LibraryItem
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -18,7 +18,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 
 internal class GetProfileLibraryUseCase(
-    private val remoteSource: UserRemoteDataSource,
+    private val remoteSource: UserRemoteSource,
     private val localMoviesSource: MovieLocalDataSource,
     private val localEpisodesSource: EpisodeLocalDataSource,
 ) {

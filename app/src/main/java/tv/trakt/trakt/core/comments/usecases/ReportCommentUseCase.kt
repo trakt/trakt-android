@@ -1,9 +1,9 @@
 package tv.trakt.trakt.core.comments.usecases
 
-import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
+import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteSource
 
 internal class ReportCommentUseCase(
-    private val remoteSource: CommentsRemoteDataSource,
+    private val remoteSource: CommentsRemoteSource,
 ) {
     suspend fun reportComment(
         commentId: Int,

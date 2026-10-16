@@ -3,16 +3,16 @@ package tv.trakt.trakt.core.comments.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
-import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.core.comments.model.CommentMention
 import tv.trakt.trakt.core.comments.model.MentionSource
 
 internal class GetCommentMentionsUseCase(
-    private val moviesSource: MoviesRemoteDataSource,
-    private val showsSource: ShowsRemoteDataSource,
-    private val episodesSource: EpisodesRemoteDataSource,
+    private val moviesSource: MoviesRemoteSource,
+    private val showsSource: ShowsRemoteSource,
+    private val episodesSource: EpisodesRemoteSource,
 ) {
     suspend fun getMentions(source: MentionSource): ImmutableList<CommentMention> {
         val castCrew = when (source) {

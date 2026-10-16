@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.people.data.remote.PeopleRemoteDataSource
+import tv.trakt.trakt.common.core.people.data.remote.PeopleRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -13,7 +13,7 @@ import tv.trakt.trakt.common.model.fromDto
 private const val CREDITS_EXTENDED = "full,cloud9,colors,streaming_ids"
 
 internal class GetPersonCreditsUseCase(
-    private val peopleRemoteSource: PeopleRemoteDataSource,
+    private val peopleRemoteSource: PeopleRemoteSource,
     private val showLocalSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
 ) {

@@ -16,7 +16,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.klipy.data.remote.GifsRemoteDataSource
+import tv.trakt.trakt.common.core.klipy.data.remote.GifsRemoteSource
 import tv.trakt.trakt.common.core.klipy.model.GIFS_DEFAULT_PER_PAGE
 import tv.trakt.trakt.common.core.klipy.model.GifPage
 import tv.trakt.trakt.common.core.klipy.model.GifsQuery
@@ -34,7 +34,7 @@ private val SEARCH_DEBOUNCE = 350.milliseconds
 @Suppress("UNCHECKED_CAST")
 internal class GifPickerViewModel(
     private val defaultQuery: String?,
-    private val remoteSource: GifsRemoteDataSource,
+    private val remoteSource: GifsRemoteSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = GifPickerState()
