@@ -8,20 +8,18 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind.Progress
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind.Watchlist
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -33,8 +31,7 @@ class CollectionStateProvider(
     private val sessionManager: SessionManager,
     private val userWatchlistUseCase: LoadUserWatchlistUseCase,
     private val userProgressUseCase: LoadUserProgressUseCase,
-    private val progressUpdates: ProgressUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
 ) {
     private val _stateFlow = MutableStateFlow(UserCollectionState.Default)
     val stateFlow = _stateFlow.asStateFlow()
@@ -42,12 +39,7 @@ class CollectionStateProvider(
     private val loadingLock = Mutex()
 
     fun launchIn(scope: CoroutineScope) {
-        merge(
-            progressUpdates.observeUpdates(),
-            watchlistUpdates.observeUpdates(Source.Default),
-            watchlistUpdates.observeUpdates(Source.AllWatchlist),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Progress, Watchlist)
             .onStart { loadData() }
             .onEach { loadData() }
             .launchIn(scope)

@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -32,7 +32,7 @@ private const val ANALYTICS_SOURCE = "today_stories"
 internal class TodayWatchlistViewModel(
     private val media: TodayMedia,
     private val updateWatchlistUseCase: UpdateTodayWatchlistUseCase,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
@@ -70,7 +70,7 @@ internal class TodayWatchlistViewModel(
 
     private fun observeUpdates() {
         viewModelScope.launch {
-            watchlistUpdates.observeUpdates(Default).collect {
+            dataChanges.observe(Kind.Watchlist).collect {
                 if (loadingState.value.isLoading) return@collect
                 loadData()
             }

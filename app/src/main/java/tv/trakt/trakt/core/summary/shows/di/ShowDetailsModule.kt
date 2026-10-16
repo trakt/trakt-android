@@ -11,8 +11,6 @@ import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowStorage
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdatesStorage
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsViewModel
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsUseCase
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowCreatorUseCase
@@ -51,8 +49,6 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 
 internal val showDetailsDataModule = module {
     singleOf(::ShowStorage) { bind<ShowLocalDataSource>() }
-
-    singleOf(::ShowDetailsUpdatesStorage) { bind<ShowDetailsUpdates>() }
 }
 
 internal val showDetailsModule = module {
@@ -94,13 +90,10 @@ internal val showDetailsModule = module {
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
             loadUserRatingsUseCase = get(),
-            reactionsUpdates = get(),
-            ratingsUpdates = get(),
+            dataChanges = get(),
             loadUserProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
             episodeLocalDataSource = get(),
-            showDetailsUpdates = get(),
-            episodeDetailsUpdates = get(),
             sessionManager = get(),
             analytics = get(),
             translationsStore = get(),
@@ -138,11 +131,7 @@ internal val showDetailsModule = module {
             userWatchlistMinLocalSource = get(),
             userFavoritesLocalSource = get(),
             episodeLocalDataSource = get(),
-            showDetailsUpdates = get(),
-            ratingsUpdates = get(),
-            episodeDetailsUpdates = get(),
-            favoritesUpdates = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             errorsManager = get(),
             analytics = get(),
@@ -158,9 +147,8 @@ internal val showDetailsModule = module {
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
-            reactionsUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
-            commentsUpdates = get(),
             collapsingManager = get(),
             translationsStore = get(),
         )

@@ -25,6 +25,9 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -34,13 +37,11 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.core.comments.data.CommentsUpdates
-import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
 import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent.OpenExternalTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
+import tv.trakt.trakt.core.reactions.data.ReactionSource
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
@@ -54,10 +55,11 @@ internal class CommentDetailsViewModel(
     private val getRepliesUseCase: GetCommentRepliesUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
-    private val commentsUpdates: CommentsUpdates,
+    private val dataChanges: DataChanges,
     private val translationsStore: CommentTranslationsStore,
 ) : ViewModel() {
     private val initialState = CommentDetailsState()
+    private val origin = ChangeOrigin.unique()
 
     private val commentState = MutableStateFlow(comment)
     private val commentReplies = MutableStateFlow(initialState.replies)
@@ -131,7 +133,7 @@ internal class CommentDetailsViewModel(
 
     fun updateComment(comment: Comment) {
         commentState.update { comment }
-        commentsUpdates.notifyUpdate(COMMENT_DETAILS)
+        dataChanges.notify(Kind.Comments, origin = origin)
     }
 
     fun toggleTranslation(comment: Comment) {
@@ -149,7 +151,7 @@ internal class CommentDetailsViewModel(
             mutable.toImmutableList()
         }
 
-        commentsUpdates.notifyUpdate(COMMENT_DETAILS)
+        dataChanges.notify(Kind.Comments, origin = origin)
     }
 
     fun deleteReply(replyId: Int) {
@@ -157,7 +159,7 @@ internal class CommentDetailsViewModel(
             current?.filterNot { it.id == replyId }?.toImmutableList()
         }
 
-        commentsUpdates.notifyUpdate(COMMENT_DETAILS)
+        dataChanges.notify(Kind.Comments, origin = origin)
     }
 
     fun loadReactions(commentId: Int) {
@@ -261,7 +263,8 @@ internal class CommentDetailsViewModel(
             appContext = appContext,
             commentId = commentId,
             reaction = reaction,
-            source = Source.COMMENT_DETAILS,
+            source = ReactionSource.CommentDetails,
+            origin = origin,
         )
     }
 
@@ -273,7 +276,8 @@ internal class CommentDetailsViewModel(
         DeleteReactionWorker.scheduleOneTime(
             appContext = appContext,
             commentId = commentId,
-            source = Source.COMMENT_DETAILS,
+            source = ReactionSource.CommentDetails,
+            origin = origin,
         )
     }
 

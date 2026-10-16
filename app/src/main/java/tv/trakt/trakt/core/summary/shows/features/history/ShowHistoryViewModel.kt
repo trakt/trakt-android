@@ -17,9 +17,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -28,6 +26,9 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -46,11 +47,6 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.features.history.navigation.ShowHistoryDestination
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.HISTORY_PAGE_LIMIT
@@ -72,12 +68,12 @@ internal class ShowHistoryViewModel(
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val episodeDetailsUpdates: EpisodeDetailsUpdates,
-    private val showDetailsUpdates: ShowDetailsUpdates,
-    private val ratingsUpdates: RatingsUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
+    private val origin = ChangeOrigin.unique()
+
     private val destination = savedStateHandle.toRoute<ShowHistoryDestination>()
 
     private val initialState = ShowHistoryState(
@@ -115,10 +111,7 @@ internal class ShowHistoryViewModel(
     }
 
     private fun observeLists() {
-        merge(
-            episodeDetailsUpdates.observeUpdates(Progress),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -127,10 +120,7 @@ internal class ShowHistoryViewModel(
     }
 
     private fun observeRatings() {
-        merge(
-            ratingsUpdates.observeUpdates(),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings)
             .debounce(200.milliseconds)
             .onEach {
                 loadUserRatingData(ignoreErrors = true)
@@ -263,7 +253,7 @@ internal class ShowHistoryViewModel(
 
                 updateHistoryUseCase.removePlayFromHistory(item.id)
                 loadProgressUseCase.loadShowsProgress()
-                episodeDetailsUpdates.notifyUpdate(History)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update { items ->
                     (items ?: emptyMap())
@@ -323,8 +313,7 @@ internal class ShowHistoryViewModel(
 
                 updateShowHistoryUseCase.removeAllFromHistory(destination.showId.toTraktId())
                 loadProgressUseCase.loadShowsProgress()
-                episodeDetailsUpdates.notifyUpdate(History)
-                showDetailsUpdates.notifyUpdate(ShowDetailsUpdates.Source.Progress)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update { persistentMapOf() }
                 hasMoreData = false

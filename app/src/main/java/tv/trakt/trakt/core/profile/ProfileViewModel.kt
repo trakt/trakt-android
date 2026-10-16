@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -31,7 +33,6 @@ import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardU
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
-import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdates
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
@@ -41,7 +42,7 @@ internal class ProfileViewModel(
     private val getLeaderboardUseCase: GetLeaderboardUseCase,
     private val logoutUseCase: LogoutUserUseCase,
     private val checkInManager: CheckInManager,
-    private val socialUpdates: SocialUpdates,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProfileState()
@@ -96,8 +97,7 @@ internal class ProfileViewModel(
     }
 
     private fun observeSocial() {
-        socialUpdates.observeUpdates()
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Social)
             .debounce(200.milliseconds)
             .onEach { loadLeaderboard() }
             .launchIn(viewModelScope)

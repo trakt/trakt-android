@@ -10,15 +10,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -34,7 +33,7 @@ import kotlin.time.Duration.Companion.milliseconds
 internal class ProfileScreenTimeViewModel(
     private val getScreenTimeUseCase: GetScreenTimeUseCase,
     private val collapsingManager: CollapsingManager,
-    private val progressUpdates: ProgressUpdates,
+    private val dataChanges: DataChanges,
 ) : ViewModel() {
     private val initialState = ProfileScreenTimeState(
         rangeStart = nowLocalDay().minusDays(6),
@@ -52,9 +51,7 @@ internal class ProfileScreenTimeViewModel(
     }
 
     private fun observeProgress() {
-        progressUpdates.observeUpdates()
-            .distinctUntilChanged()
-            .filterNotNull()
+        dataChanges.observe(Kind.Progress)
             .debounce(300.milliseconds)
             .onEach { loadData() }
             .launchIn(viewModelScope)

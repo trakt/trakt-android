@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -33,10 +32,10 @@ import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -58,8 +57,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
@@ -81,14 +78,14 @@ internal class AllHomeWatchlistViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val filterManager: GlobalFilterManager,
-    private val checkInUpdates: CheckInUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val checkInManager: CheckInManager,
     private val sessionManager: SessionManager,
     private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllHomeWatchlistState()
+    private val origin = ChangeOrigin.unique()
     private val initialMode = filterManager.getFilter()
 
     private val itemsState = MutableStateFlow(initialState.items)
@@ -137,12 +134,7 @@ internal class AllHomeWatchlistViewModel(
     }
 
     private fun observeData() {
-        merge(
-            watchlistUpdates.observeUpdates(Default),
-            checkInUpdates.observeUpdates()
-                .filter { it.first != Source.AllHomeWatchlist },
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Watchlist, Kind.CheckIn, exclude = origin)
             .debounce(200)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
@@ -437,7 +429,7 @@ internal class AllHomeWatchlistViewModel(
                 checkInManager.startEpisode(
                     showId = showId,
                     seasonEpisode = seasonEpisode,
-                    source = Source.AllHomeWatchlist,
+                    origin = origin,
                     context = appContext,
                 )
 
@@ -486,7 +478,7 @@ internal class AllHomeWatchlistViewModel(
 
                 checkInManager.startMovie(
                     movieId = movieId,
-                    source = Source.AllHomeWatchlist,
+                    origin = origin,
                     context = appContext,
                 )
                 removeItem(currentItems[itemIndex], notify = false)
@@ -533,7 +525,7 @@ internal class AllHomeWatchlistViewModel(
             }
 
             if (notify) {
-                watchlistUpdates.notifyUpdate(AllWatchlist)
+                dataChanges.notify(Kind.Watchlist, origin = origin)
             }
         }
     }

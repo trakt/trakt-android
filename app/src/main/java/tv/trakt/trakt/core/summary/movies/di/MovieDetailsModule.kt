@@ -11,8 +11,6 @@ import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieStorage
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdatesStorage
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsViewModel
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieActorsUseCase
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
@@ -43,8 +41,6 @@ import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 
 internal val movieDetailsDataModule = module {
     singleOf(::MovieStorage) { bind<MovieLocalDataSource>() }
-
-    singleOf(::MovieDetailsUpdatesStorage) { bind<MovieDetailsUpdates>() }
 }
 
 internal val movieDetailsModule = module {
@@ -85,11 +81,7 @@ internal val movieDetailsModule = module {
             userWatchlistLocalSource = get(),
             userWatchlistMinLocalSource = get(),
             userFavoritesLocalSource = get(),
-            movieDetailsUpdates = get(),
-            ratingsUpdates = get(),
-            favoritesUpdates = get(),
-            checkInUpdates = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             checkInManager = get(),
             errorsManager = get(),
@@ -179,9 +171,8 @@ internal val movieDetailsModule = module {
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
-            reactionsUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
-            commentsUpdates = get(),
             collapsingManager = get(),
             translationsStore = get(),
         )
@@ -202,7 +193,7 @@ internal val movieDetailsModule = module {
             loadListsUseCase = get(),
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
-            detailsUpdates = get(),
+            dataChanges = get(),
             errorsManager = get(),
         )
     }

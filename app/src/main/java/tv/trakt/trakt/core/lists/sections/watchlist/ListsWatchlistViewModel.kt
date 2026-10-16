@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -25,11 +24,10 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -59,7 +57,7 @@ internal class ListsWatchlistViewModel(
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
@@ -114,11 +112,7 @@ internal class ListsWatchlistViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeWatchlist() {
-        merge(
-            watchlistUpdates.observeUpdates(Default),
-            watchlistUpdates.observeUpdates(AllWatchlist),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Watchlist)
             .debounce(200)
             .onEach {
                 loadData(ignoreErrors = true)

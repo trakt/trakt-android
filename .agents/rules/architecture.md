@@ -113,6 +113,34 @@ Avoid one-line `UseCase` wrappers around repository calls.
 - **Writes are `suspend fun` returning `Result<…>`** (or domain-specific sealed result type).
 - **Mapping** lives on the domain model as `companion object { fun fromDto(...) }`. No separate mapper files. Pure, no I/O. See `networking.md`.
 
+## Cross-screen refresh signals
+
+When a user action changes data that other screens show, publish it on `DataChanges`
+(`common/.../core/sync/changes/`). Do not add per-feature `*Updates` interfaces or `Source` enums.
+
+```kotlin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+
+private val origin = ChangeOrigin.unique()
+
+// producer: say what changed, after the write (and any local cache refresh) finished
+dataChanges.notify(Kind.Watched, Kind.Watchlist, origin = origin)
+
+// consumer: subscribe to kinds, skip own changes
+dataChanges.observe(Kind.Watched, Kind.CheckIn, exclude = origin)
+    .debounce(200.milliseconds)
+    .onEach { loadData(ignoreErrors = true) }
+    .launchIn(viewModelScope)
+```
+
+- Pick kinds by **what changed**, never by which screen should react.
+- Notify only from user actions or workers, never from a load path that observers trigger (loops).
+- `exclude = origin` only when the screen already updated itself; otherwise let it reload.
+- `targetId` carries an entity id (comment id, list id); filter on it when a screen shows one entity.
+- Workers receive the origin through input data (`origin.key`). Shared fixed origins live on
+  `ChangeOrigin`'s companion (`RatePrompt`, `TodayStories`).
+- Loads triggered by a change must cancel and restart the in-flight load, not skip it.
+
 ## Navigation
 
 Single-activity, single `NavHost` in `app/`, mirror in `tv/`. Typed routes via `@Serializable` data classes (Compose Navigation 2.9+):

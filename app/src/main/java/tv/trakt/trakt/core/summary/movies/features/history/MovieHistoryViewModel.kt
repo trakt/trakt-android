@@ -17,15 +17,16 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -41,10 +42,6 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates.Source.History
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates.Source.Progress
 import tv.trakt.trakt.core.summary.movies.features.history.navigation.MovieHistoryDestination
 import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
 import tv.trakt.trakt.core.summary.movies.features.history.usecases.HISTORY_PAGE_LIMIT
@@ -62,11 +59,12 @@ internal class MovieHistoryViewModel(
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val updateHistoryUseCase: UpdateMovieHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val movieDetailsUpdates: MovieDetailsUpdates,
-    private val ratingsUpdates: RatingsUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
+    private val origin = ChangeOrigin.unique()
+
     private val destination = savedStateHandle.toRoute<MovieHistoryDestination>()
 
     private val initialState = MovieHistoryState(
@@ -102,10 +100,7 @@ internal class MovieHistoryViewModel(
     }
 
     private fun observeLists() {
-        merge(
-            movieDetailsUpdates.observeUpdates(Progress),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -114,10 +109,7 @@ internal class MovieHistoryViewModel(
     }
 
     private fun observeRatings() {
-        merge(
-            ratingsUpdates.observeUpdates(),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings)
             .debounce(200.milliseconds)
             .onEach {
                 loadUserRatingData(ignoreErrors = true)
@@ -250,7 +242,7 @@ internal class MovieHistoryViewModel(
 
                 updateHistoryUseCase.removePlayFromHistory(item.id)
                 loadProgressUseCase.loadMoviesProgress()
-                movieDetailsUpdates.notifyUpdate(History)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update { items ->
                     (items ?: emptyMap())
@@ -289,7 +281,7 @@ internal class MovieHistoryViewModel(
 
                 updateHistoryUseCase.removeAllFromHistory(destination.movieId.toTraktId())
                 loadProgressUseCase.loadMoviesProgress()
-                movieDetailsUpdates.notifyUpdate(History)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update { persistentMapOf() }
                 hasMoreData = false

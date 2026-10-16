@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.core.klipy.di.gifsDataModule
 import tv.trakt.trakt.common.core.media.di.mediaDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
+import tv.trakt.trakt.common.core.sync.changes.di.dataChangesModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
@@ -45,7 +46,6 @@ import tv.trakt.trakt.core.checkin.di.checkInModule
 import tv.trakt.trakt.core.comments.di.commentsDataModule
 import tv.trakt.trakt.core.comments.di.commentsModule
 import tv.trakt.trakt.core.discover.di.discoverModule
-import tv.trakt.trakt.core.favorites.di.favoritesDataModule
 import tv.trakt.trakt.core.filters.di.filtersModule
 import tv.trakt.trakt.core.home.di.homeDataModule
 import tv.trakt.trakt.core.home.di.homeModule
@@ -166,6 +166,7 @@ internal class TraktApplication : Application() {
                 homeDataModule,
                 discoverModule,
                 mediaDataModule,
+                dataChangesModule,
                 showsModule,
                 showsDataModule,
                 showDetailsModule,
@@ -199,7 +200,6 @@ internal class TraktApplication : Application() {
                 parentalGuideDataModule,
                 ratingsDataModule,
                 ratingsModule,
-                favoritesDataModule,
                 syncModule,
                 notificationsModule,
                 settingsModule,

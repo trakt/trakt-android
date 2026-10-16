@@ -16,8 +16,6 @@ import org.openapitools.client.models.PostScrobbleStartRequestOneOf1Episode
 import org.openapitools.client.models.PostScrobbleStartRequestOneOfMovie
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import timber.log.Timber
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_START_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -31,7 +29,6 @@ internal class PostScrobbleStartWorker(
     workerParams: WorkerParameters,
     private val sessionManager: SessionManager,
     private val scrobbleApi: ScrobbleApi,
-    private val scrobbleUpdates: ScrobbleUpdates,
     private val cacheMarker: CacheMarkerProvider,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
@@ -108,7 +105,6 @@ internal class PostScrobbleStartWorker(
                     ),
                 )
                 cacheMarker.invalidate()
-                scrobbleUpdates.notifyUpdate(SCROBBLE_START_WORKER)
             }
 
             if (mediaType == MediaType.Episode) {
@@ -125,7 +121,6 @@ internal class PostScrobbleStartWorker(
                     ),
                 )
                 cacheMarker.invalidate()
-                scrobbleUpdates.notifyUpdate(SCROBBLE_START_WORKER)
             }
         } catch (error: Exception) {
             if (error is CancellationException) {

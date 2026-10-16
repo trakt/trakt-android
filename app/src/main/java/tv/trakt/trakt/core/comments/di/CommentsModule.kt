@@ -28,8 +28,6 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.CommentsViewModel
-import tv.trakt.trakt.core.comments.data.CommentsUpdates
-import tv.trakt.trakt.core.comments.data.CommentsUpdatesStorage
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentViewModel
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsViewModel
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentViewModel
@@ -67,7 +65,6 @@ internal val commentsDataModule = module {
         )
     }
 
-    singleOf(::CommentsUpdatesStorage) { bind<CommentsUpdates>() }
     singleOf(::GeminiNanoCommentTranslator)
     singleOf(::MlKitCommentTranslator)
     single {
@@ -118,8 +115,7 @@ internal val commentsModule = module {
             getCommentRepliesUseCase = get(),
             sessionManager = get(),
             loadUserReactionsUseCase = get(),
-            reactionsUpdates = get(),
-            commentsUpdates = get(),
+            dataChanges = get(),
             translationsStore = get(),
         )
     }
@@ -132,7 +128,7 @@ internal val commentsModule = module {
             getRepliesUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
-            commentsUpdates = get(),
+            dataChanges = get(),
             translationsStore = get(),
         )
     }

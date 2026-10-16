@@ -52,7 +52,6 @@ import tv.trakt.trakt.core.auth.usecase.authRedirectUriKey
 import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
@@ -428,10 +427,7 @@ internal class MainViewModel(
     fun dismissCheckIn() {
         viewModelScope.launch {
             try {
-                checkInManager.stop(
-                    source = Source.Default,
-                    context = appContext,
-                )
+                checkInManager.stop(context = appContext)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

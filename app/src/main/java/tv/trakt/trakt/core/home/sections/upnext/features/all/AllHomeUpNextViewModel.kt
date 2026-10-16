@@ -12,9 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -23,6 +21,9 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.home.model.UpNextMovie
 import tv.trakt.trakt.common.core.home.model.UpNextShow
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -41,22 +42,12 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.AllHomeUpNext
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates.Source.Default
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class AllHomeUpNextViewModel(
@@ -64,17 +55,14 @@ internal class AllHomeUpNextViewModel(
     private val getUpNextUseCase: GetUpNextUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val upNextUpdates: UpNextUpdates,
-    private val showUpdates: ShowDetailsUpdates,
-    private val episodeUpdates: EpisodeDetailsUpdates,
-    private val movieUpdates: MovieDetailsUpdates,
-    private val checkInUpdates: CheckInUpdates,
+    private val dataChanges: DataChanges,
     private val checkInManager: CheckInManager,
     private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllHomeUpNextState()
+    private val origin = ChangeOrigin.unique()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -114,19 +102,12 @@ internal class AllHomeUpNextViewModel(
     }
 
     private fun observeData() {
-        merge(
-            showUpdates.observeUpdates(Source.Progress),
-            showUpdates.observeUpdates(Source.Seasons),
-            showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(Progress),
-            episodeUpdates.observeUpdates(Season),
-            episodeUpdates.observeUpdates(History),
-            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
-            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
-            checkInUpdates.observeUpdates().filterNot { it.first == AllHomeUpNext },
+        dataChanges.observe(
+            Kind.History,
+            Kind.CheckIn,
+            exclude = origin,
         )
-            .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
     }
@@ -351,7 +332,7 @@ internal class AllHomeUpNextViewModel(
                     } ?: items
                 }
 
-                upNextUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.History, origin = origin)
                 loadUserProgress()
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
@@ -391,7 +372,7 @@ internal class AllHomeUpNextViewModel(
                     context = appContext,
                     showId = showId,
                     seasonEpisode = seasonEpisode,
-                    source = AllHomeUpNext,
+                    origin = origin,
                 )
 
                 analytics.progress.logAddWatchedMedia(

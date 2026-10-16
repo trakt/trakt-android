@@ -1,18 +1,18 @@
 package tv.trakt.trakt.widgets.widget.continuewatching.usecases
 
 import timber.log.Timber
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates.Source.Widget
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 
 internal class WidgetAddToHistoryUseCase(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val upNextUpdates: UpNextUpdates,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) {
     suspend fun addToHistory(episodeId: TraktId) {
@@ -24,7 +24,7 @@ internal class WidgetAddToHistoryUseCase(
             date = null,
         )
 
-        upNextUpdates.notifyUpdate(Widget)
+        dataChanges.notify(Kind.History)
 
         loadUserProgress()
     }
