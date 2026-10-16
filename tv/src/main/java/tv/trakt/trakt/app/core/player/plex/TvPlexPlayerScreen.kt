@@ -251,6 +251,10 @@ internal fun TvPlexPlayerScreen(
                     val seekPositionMs = (videoProgress / 100f * player.duration).toLong()
                     player.seekTo(seekPositionMs)
                 }
+
+                if (playbackState == Player.STATE_ENDED) {
+                    reportTimeline(State.Stopped)
+                }
             }
 
             override fun onPlayerError(error: PlaybackException) {
