@@ -27,7 +27,6 @@ internal class PlexTimelineClient(
         Stopped,
     }
 
-    /** One playback snapshot. [baseUrl] is the server base of whichever stream URL is currently playing. */
     data class Snapshot(
         val baseUrl: String,
         val position: Long,
@@ -35,7 +34,6 @@ internal class PlexTimelineClient(
         val state: State,
     )
 
-    // Bare client on purpose: the authorised Trakt config would send Trakt auth headers to the Plex server.
     private val httpClient = HttpClient(httpClientEngine) {
         // A redirect would forward X-Plex-Token to whatever host the server names.
         followRedirects = false
