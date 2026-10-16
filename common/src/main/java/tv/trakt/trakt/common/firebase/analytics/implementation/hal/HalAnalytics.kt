@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.firebase.analytics.implementation
+package tv.trakt.trakt.common.firebase.analytics.implementation.hal
 
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 
@@ -48,7 +48,6 @@ internal fun halUserType(vip: String?): String {
 
 internal class HalAnalytics(
     private val events: HalEvents,
-    private val setCrashlyticsUserId: (String) -> Unit,
     override val reactions: Analytics.Reactions,
     override val ratings: Analytics.Ratings,
     override val comments: Analytics.Comments,
@@ -56,9 +55,7 @@ internal class HalAnalytics(
     override val trivia: Analytics.Trivia,
     override val playback: Analytics.Playback,
 ) : Analytics {
-    override fun setUserId(userId: String?) {
-        userId?.let(setCrashlyticsUserId)
-    }
+    override fun setUserId(userId: String?) = Unit
 
     override fun setUserProperty(
         key: String,

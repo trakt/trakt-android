@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.firebase.analytics.implementation
+package tv.trakt.trakt.common.firebase.analytics.implementation.hal.data.remote
 
 internal enum class HalDeviceKind {
     Phone,

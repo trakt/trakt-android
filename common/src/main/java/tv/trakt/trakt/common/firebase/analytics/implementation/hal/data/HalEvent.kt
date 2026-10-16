@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.firebase.analytics.implementation
+package tv.trakt.trakt.common.firebase.analytics.implementation.hal.data
 
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject

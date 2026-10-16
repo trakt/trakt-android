@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.firebase.analytics.implementation
+package tv.trakt.trakt.common.firebase.analytics.implementation.debug
 
 import timber.log.Timber
 import tv.trakt.trakt.common.firebase.analytics.Analytics
