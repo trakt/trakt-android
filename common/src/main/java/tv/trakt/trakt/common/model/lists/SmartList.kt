@@ -86,7 +86,9 @@ enum class SmartListSource(
     Popular("popular", R.string.list_title_most_popular),
     Anticipated("anticipated", R.string.list_title_most_anticipated),
     Recommendations("recommendations", R.string.list_title_recommended),
-    Discover("discover", R.string.page_title_discover),
+    Watchlist("watchlist", R.string.list_title_watchlist),
+    Library("library", R.string.list_title_library),
+    Discover("discover", R.string.list_title_all_titles),
     Unknown("", R.string.text_unknown),
     ;
 
@@ -135,12 +137,6 @@ data class SmartListFilters(
     val ignoreWatched: Boolean = false,
     val ignoreWatchlisted: Boolean = false,
 ) {
-    init {
-        require(media == MediaMode.Shows || media == MediaMode.Movies) {
-            "Media must be either Shows or Movies"
-        }
-    }
-
     fun toSummaryParts(
         resources: Resources,
         locale: Locale,
@@ -171,10 +167,6 @@ data class SmartListFilters(
         return values + ranges + flags
     }
 
-    /**
-     * Clears every filter field back to its default, keeping only [media] and [source].
-     * Used when switching between simple and advanced filter modes.
-     */
     fun cleared(): SmartListFilters =
         SmartListFilters(
             media = media,
@@ -183,7 +175,7 @@ data class SmartListFilters(
 
     companion object {
         val Default = SmartListFilters(
-            media = MediaMode.Shows,
+            media = MediaMode.Media,
             source = SmartListSource.Trending,
         )
 
@@ -193,6 +185,7 @@ data class SmartListFilters(
                 source = SmartListSource.fromApiValue(dto.source),
                 media = when (dto.mediaType) {
                     "movies" -> MediaMode.Movies
+                    "media" -> MediaMode.Media
                     else -> MediaMode.Shows
                 },
                 genres = filters.genres.orEmpty()

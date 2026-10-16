@@ -67,12 +67,16 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource.Anticipated
+import tv.trakt.trakt.common.model.lists.SmartListSource.Discover
+import tv.trakt.trakt.common.model.lists.SmartListSource.Library
 import tv.trakt.trakt.common.model.lists.SmartListSource.Popular
 import tv.trakt.trakt.common.model.lists.SmartListSource.Trending
+import tv.trakt.trakt.common.model.lists.SmartListSource.Watchlist
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
@@ -89,7 +93,7 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val SHEET_PEEK_FRACTION = 0.15f
+private const val SHEET_PEEK_FRACTION = 0.2f
 private const val SHEET_EXPANDED_FRACTION = 0.75f
 private const val SHEET_SCRIM_ALPHA = 0.66f
 
@@ -418,15 +422,21 @@ private fun TitleBar(
                     Trending -> stringResource(R.string.list_title_trending_shows)
                     Popular -> stringResource(R.string.list_title_popular_shows)
                     Anticipated -> stringResource(R.string.list_title_anticipated_shows)
+                    Watchlist -> stringResource(R.string.list_title_watchlist_shows)
+                    Library -> stringResource(R.string.list_title_library)
+                    Discover -> stringResource(R.string.list_title_all_titles)
                     else -> stringResource(R.string.page_title_smart_lists)
                 }
                 Movies -> when (state.filters.source) {
                     Trending -> stringResource(R.string.list_title_trending_movies)
                     Popular -> stringResource(R.string.list_title_popular_movies)
                     Anticipated -> stringResource(R.string.list_title_anticipated_movies)
+                    Watchlist -> stringResource(R.string.list_title_watchlist_movies)
+                    Library -> stringResource(R.string.list_title_library)
+                    Discover -> stringResource(R.string.list_title_all_titles)
                     else -> stringResource(R.string.page_title_smart_lists)
                 }
-                else -> throw IllegalStateException("Unsupported media type: ${state.filters.media}")
+                Media -> stringResource(state.filters.source.displayRes)
             },
             subtitle = stringResource(R.string.tag_text_smart_list_preview),
         )

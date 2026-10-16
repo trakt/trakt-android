@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.user.data.remote.smartlists
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.CreateSmartListRequestDto
 import tv.trakt.trakt.common.networking.SmartListDto
@@ -21,6 +22,12 @@ interface UserSmartListsRemoteDataSource {
 
     suspend fun getSmartListItems(
         listId: TraktId,
+        pagination: Pagination = Pagination(),
+        extended: String = "full,images,colors",
+    ): List<SmartListItemDto>
+
+    suspend fun getSmartListPreviewItems(
+        filters: SmartListFilters,
         pagination: Pagination = Pagination(),
         extended: String = "full,images,colors",
     ): List<SmartListItemDto>
