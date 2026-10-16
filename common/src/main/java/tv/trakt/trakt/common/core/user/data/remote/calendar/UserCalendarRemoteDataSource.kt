@@ -10,11 +10,13 @@ interface UserCalendarRemoteDataSource {
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter? = null,
+        extended: String = "full,cloud9,colors",
     ): List<CalendarShowDto>
 
     suspend fun getMoviesCalendar(
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter? = null,
+        extended: String = "full,cloud9,colors",
     ): List<CalendarMovieDto>
 }

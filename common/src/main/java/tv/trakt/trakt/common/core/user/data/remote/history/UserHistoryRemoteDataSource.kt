@@ -16,6 +16,7 @@ interface UserHistoryRemoteDataSource {
         from: Instant? = null,
         to: Instant? = null,
         userId: String = "me",
+        extended: String = "full,cloud9,colors",
     ): List<SyncHistoryItemDto>
 
     suspend fun getEpisodesHistory(

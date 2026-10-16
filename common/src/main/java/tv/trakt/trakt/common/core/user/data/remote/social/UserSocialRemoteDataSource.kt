@@ -17,6 +17,7 @@ interface UserSocialRemoteDataSource {
         limit: Int,
         type: String,
         filters: GlobalFilter?,
+        extended: String = "full,cloud9,colors,rating,vip",
     ): List<SocialActivityItemDto>
 
     suspend fun getFollowing(

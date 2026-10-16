@@ -5,10 +5,10 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -25,7 +25,7 @@ private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 14
 
 internal class GetUpcomingUseCase(
-    private val remoteUserSource: ProfileRemoteDataSource,
+    private val remoteUserSource: UserCalendarRemoteDataSource,
     private val localShowSource: ShowLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
     private val localEpisodeSource: EpisodeLocalDataSource,
@@ -57,9 +57,10 @@ internal class GetUpcomingUseCase(
     }
 
     private suspend fun getShows(): List<HomeUpcomingItem.EpisodeItem> {
-        val remoteShows = remoteUserSource.getUserShowsCalendar(
+        val remoteShows = remoteUserSource.getShowsCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
+            extended = "full,cloud9,colors,streaming_ids",
         )
 
         val now = nowLocal().truncatedTo(DAYS)
@@ -92,9 +93,10 @@ internal class GetUpcomingUseCase(
     }
 
     private suspend fun getMovies(): List<HomeUpcomingItem.MovieItem> {
-        val remoteMovies = remoteUserSource.getUserMoviesCalendar(
+        val remoteMovies = remoteUserSource.getMoviesCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
+            extended = "full,cloud9,colors,streaming_ids",
         )
 
         val today = nowLocalDay()

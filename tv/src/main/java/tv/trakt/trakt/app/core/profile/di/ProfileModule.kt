@@ -8,8 +8,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.profile.ProfileViewModel
-import tv.trakt.trakt.app.core.profile.data.remote.ProfileApiClient
-import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
 import tv.trakt.trakt.app.core.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.app.core.profile.sections.favorites.usecases.GetFavoriteMoviesUseCase
 import tv.trakt.trakt.app.core.profile.sections.favorites.usecases.GetFavoriteShowsUseCase
@@ -55,14 +53,6 @@ import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdatesStorage
 
 internal val profileDataModule = module {
-    single<ProfileRemoteDataSource> {
-        ProfileApiClient(
-            usersApi = get(),
-            calendarsApi = get(named("authorizedCalendarsApi")),
-            historyApi = get(),
-        )
-    }
-
     single<UserRemoteDataSource> {
         UserApiClient(
             usersApi = get(),
@@ -134,7 +124,6 @@ internal val profileDataModule = module {
 }
 
 internal val profileModule = module {
-
     factory {
         LogoutProfileUseCase(
             apiClients = get(named("apiClients")),
