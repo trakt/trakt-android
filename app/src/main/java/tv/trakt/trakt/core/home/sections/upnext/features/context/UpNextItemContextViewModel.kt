@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -19,15 +21,13 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates.Source.Default
 import tv.trakt.trakt.core.home.sections.upnext.usecases.DropPlaybackUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 
 internal class UpNextItemContextViewModel(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val dropPlaybackUseCase: DropPlaybackUseCase,
-    private val upNextUpdates: UpNextUpdates,
+    private val dataChanges: DataChanges,
     private val upNextLocalDataSource: HomeUpNextLocalDataSource,
     private val upcomingLocalDataSource: HomeUpcomingLocalDataSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -55,7 +55,7 @@ internal class UpNextItemContextViewModel(
                     notify = true,
                 )
 
-                upNextUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.History)
 
                 loadUserShowsProgress()
             } catch (error: Exception) {
@@ -81,7 +81,7 @@ internal class UpNextItemContextViewModel(
                     ids = listOf(movieId),
                 )
 
-                upNextUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.History)
 
                 loadUserMoviesProgress()
             } catch (error: Exception) {

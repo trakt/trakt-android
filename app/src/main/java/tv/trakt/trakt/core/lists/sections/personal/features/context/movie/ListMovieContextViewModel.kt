@@ -15,10 +15,10 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
@@ -37,7 +37,6 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.MovieContext
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
@@ -55,7 +54,7 @@ internal class ListMovieContextViewModel(
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistMinUseCase: LoadUserWatchlistUseCase,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
     private val ratePromptManager: RatePromptManager,
@@ -150,7 +149,7 @@ internal class ListMovieContextViewModel(
                     movies = setOf(movie.ids.trakt),
                 )
 
-                watchlistUpdates.notifyUpdate(Source.Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "movie",
@@ -194,7 +193,7 @@ internal class ListMovieContextViewModel(
                 userWatchlistMinLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
-                watchlistUpdates.notifyUpdate(Source.Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "movie",
@@ -233,7 +232,7 @@ internal class ListMovieContextViewModel(
                 userWatchlistMinLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
-                watchlistUpdates.notifyUpdate(Source.Default)
+                dataChanges.notify(Kind.History, Kind.Watchlist)
                 ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
@@ -292,7 +291,6 @@ internal class ListMovieContextViewModel(
 
                 checkInManager.startMovie(
                     movieId = movie.ids.trakt,
-                    source = MovieContext,
                     context = appContext,
                 )
                 userWatchlistLocalSource.removeMovies(
@@ -301,7 +299,7 @@ internal class ListMovieContextViewModel(
                 userWatchlistMinLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
-                watchlistUpdates.notifyUpdate(Source.Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",

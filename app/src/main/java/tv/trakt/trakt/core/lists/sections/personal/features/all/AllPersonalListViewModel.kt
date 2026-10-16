@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -25,6 +25,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -46,7 +48,6 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
-import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
@@ -64,7 +65,7 @@ internal class AllPersonalListViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
-    private val reorderUpdates: ReorderUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsPersonalDestination>()
@@ -109,8 +110,8 @@ internal class AllPersonalListViewModel(
     }
 
     private fun observeReorder() {
-        reorderUpdates.observeUpdates(destination.listId.toTraktId())
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Lists)
+            .filter { it.targetId == destination.listId.toTraktId().value }
             .debounce(250.milliseconds)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)

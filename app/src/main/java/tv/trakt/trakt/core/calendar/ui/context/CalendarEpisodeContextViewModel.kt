@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
@@ -36,9 +36,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
@@ -51,14 +48,12 @@ internal class CalendarEpisodeContextViewModel(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val upNextLocalDataSource: HomeUpNextLocalDataSource,
     private val upcomingLocalDataSource: HomeUpcomingLocalDataSource,
-    private val upNextUpdates: UpNextUpdates,
+    private val dataChanges: DataChanges,
     private val userProgressLocalSource: UserProgressLocalDataSource,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val episodeUpdates: EpisodeDetailsUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
@@ -153,7 +148,7 @@ internal class CalendarEpisodeContextViewModel(
                     customDate = customDate,
                 )
                 loadProgressUseCase.loadShowsProgress()
-                episodeUpdates.notifyUpdate(Progress)
+                dataChanges.notify(Kind.History)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
@@ -185,7 +180,7 @@ internal class CalendarEpisodeContextViewModel(
                     updateHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
                 }
                 loadProgressUseCase.loadShowsProgress()
-                episodeUpdates.notifyUpdate(Progress)
+                dataChanges.notify(Kind.History)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "episode",
@@ -223,7 +218,7 @@ internal class CalendarEpisodeContextViewModel(
                     ),
                 )
                 userWatchlistMinLocalSource.addShows(shows = setOf(showId))
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "show",
@@ -261,7 +256,7 @@ internal class CalendarEpisodeContextViewModel(
                 updateWatchlistUseCase.removeFromWatchlist(showId = showId)
                 userWatchlistLocalSource.removeShows(ids = setOf(showId))
                 userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "show",
@@ -294,7 +289,7 @@ internal class CalendarEpisodeContextViewModel(
                     showIds = listOf(showId),
                     notify = true,
                 )
-                upNextUpdates.notifyUpdate(UpNextUpdates.Source.Default)
+                dataChanges.notify(Kind.History)
                 loadProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {

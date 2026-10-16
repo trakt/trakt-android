@@ -13,10 +13,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.reactions.Reaction
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
+import tv.trakt.trakt.core.reactions.data.ReactionSource
 import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
@@ -29,7 +32,7 @@ internal class PostReactionWorker(
     val sessionManager: SessionManager,
     val postReactionUseCase: PostCommentReactionUseCase,
     val loadUserReactionsUseCase: LoadUserReactionsUseCase,
-    val reactionsUpdates: ReactionsUpdates,
+    val dataChanges: DataChanges,
     val analytics: Analytics,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
@@ -37,14 +40,16 @@ internal class PostReactionWorker(
             appContext: Context,
             commentId: Int,
             reaction: Reaction,
-            source: ReactionsUpdates.Source,
+            source: ReactionSource,
+            origin: ChangeOrigin? = null,
         ) {
             val workRequest = OneTimeWorkRequestBuilder<PostReactionWorker>()
                 .setInputData(
                     Data.Builder()
                         .putInt("commentId", commentId)
                         .putString("reaction", reaction.name)
-                        .putString("source", source.name)
+                        .putString("source", source.analyticsName)
+                        .putString("origin", origin?.key)
                         .build(),
                 )
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 3, SECONDS)
@@ -75,6 +80,7 @@ internal class PostReactionWorker(
             val commentId = inputData.getInt("commentId", -1)
             val reactionValue = inputData.getString("reaction")
             val reactionSource = inputData.getString("source") ?: "unknown"
+            val origin = inputData.getString("origin")?.let(::ChangeOrigin)
 
             if (commentId == -1) {
                 Timber.d("Invalid comment ID, cannot post reaction")
@@ -101,13 +107,11 @@ internal class PostReactionWorker(
 
                 loadUserReactionsUseCase.loadReactions()
 
-                if (reactionSource.isNotBlank()) {
-                    val source = ReactionsUpdates.Source.valueOf(reactionSource)
-                    reactionsUpdates.notifyUpdate(
-                        commentId = commentId,
-                        source = source,
-                    )
-                }
+                dataChanges.notify(
+                    Kind.Reactions,
+                    origin = origin,
+                    targetId = commentId,
+                )
             }
         } catch (error: Exception) {
             if (error is CancellationException) {

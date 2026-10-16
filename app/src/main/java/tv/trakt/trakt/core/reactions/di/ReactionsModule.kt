@@ -8,8 +8,6 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdatesStorage
 import tv.trakt.trakt.core.reactions.data.remote.ReactionsApiClient
 import tv.trakt.trakt.core.reactions.data.remote.ReactionsRemoteDataSource
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
@@ -26,7 +24,6 @@ import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
 
 internal val reactionsDataModule = module {
     singleOf(::ReactionsApiClient) { bind<ReactionsRemoteDataSource>() }
-    singleOf(::ReactionsUpdatesStorage) { bind<ReactionsUpdates>() }
     singleOf(::MediaReactionsApiClient) { bind<MediaReactionsRemoteDataSource>() }
 }
 
@@ -57,7 +54,7 @@ internal val reactionsModule = module {
             workerParams = get(),
             postReactionUseCase = get(),
             loadUserReactionsUseCase = get(),
-            reactionsUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             analytics = get(),
         )
@@ -69,7 +66,7 @@ internal val reactionsModule = module {
             workerParams = get(),
             deleteReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
-            reactionsUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             analytics = get(),
         )

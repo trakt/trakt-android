@@ -19,9 +19,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,6 +28,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -40,9 +42,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.core.comments.data.CommentsUpdates
-import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
-import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
 import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent.OpenExternalTranslation
@@ -50,8 +49,7 @@ import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslatio
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
+import tv.trakt.trakt.core.reactions.data.ReactionSource
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
@@ -71,12 +69,12 @@ internal class ShowCommentsViewModel(
     private val getCommentsUseCase: GetShowCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
-    private val reactionsUpdates: ReactionsUpdates,
-    private val commentsUpdates: CommentsUpdates,
+    private val dataChanges: DataChanges,
     private val collapsingManager: CollapsingManager,
     private val translationsStore: CommentTranslationsStore,
 ) : ViewModel() {
     private val initialState = ShowCommentsState()
+    private val origin = ChangeOrigin.unique()
 
     private val showState = MutableStateFlow<Show?>(show)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -98,22 +96,13 @@ internal class ShowCommentsViewModel(
     }
 
     private fun observeData() {
-        merge(
-            reactionsUpdates.observeUpdates(Source.COMMENT_DETAILS),
-            reactionsUpdates.observeUpdates(Source.ALL_COMMENTS),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Reactions, exclude = origin)
             .debounce(200.milliseconds)
-            .onEach {
-                updateReactions(it.first)
-            }
+            .mapNotNull { it.targetId }
+            .onEach(::updateReactions)
             .launchIn(viewModelScope)
 
-        merge(
-            commentsUpdates.observeUpdates(ALL_COMMENTS),
-            commentsUpdates.observeUpdates(COMMENT_DETAILS),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Comments, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData()
@@ -345,7 +334,8 @@ internal class ShowCommentsViewModel(
             appContext = appContext,
             commentId = commentId,
             reaction = reaction,
-            source = Source.SHOW_COMMENTS,
+            source = ReactionSource.ShowComments,
+            origin = origin,
         )
     }
 
@@ -357,7 +347,8 @@ internal class ShowCommentsViewModel(
         DeleteReactionWorker.scheduleOneTime(
             appContext = appContext,
             commentId = commentId,
-            source = Source.SHOW_COMMENTS,
+            source = ReactionSource.ShowComments,
+            origin = origin,
         )
     }
 

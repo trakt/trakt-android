@@ -19,8 +19,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -46,15 +44,14 @@ import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
@@ -93,8 +90,7 @@ internal class ShowDetailsViewModel(
     private val watchlistUseCase: ChangeWatchlistUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val watchlistUpdates: WatchlistUpdates,
-    private val progressUpdates: ProgressUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val tutorialsManager: TutorialsManager,
 ) : ViewModel() {
@@ -124,9 +120,7 @@ internal class ShowDetailsViewModel(
     }
 
     private fun observeProgress() {
-        progressUpdates.observeUpdates()
-            .distinctUntilChanged()
-            .filterNotNull()
+        dataChanges.observe(Kind.Progress)
             .debounce(300.milliseconds)
             .onEach {
                 loadSeasons(show.showId.toTraktId())
@@ -456,7 +450,7 @@ internal class ShowDetailsViewModel(
                 )
 
                 loadUserProgressUseCase.loadShowsProgress()
-                progressUpdates.notifyUpdate()
+                dataChanges.notify(Kind.History, Kind.Progress)
 
                 showCollectionState.update {
                     it.copy(
@@ -490,7 +484,7 @@ internal class ShowDetailsViewModel(
                 historyUseCase.removeFromHistory(show.showId.toTraktId())
 
                 loadUserProgressUseCase.loadShowsProgress()
-                progressUpdates.notifyUpdate()
+                dataChanges.notify(Kind.History, Kind.Progress)
 
                 showCollectionState.update {
                     it.copy(
@@ -534,7 +528,7 @@ internal class ShowDetailsViewModel(
                 }
 
                 loadUserWatchlistUseCase.loadWatchlist()
-                watchlistUpdates.notifyUpdate(Source.Default)
+                dataChanges.notify(Kind.Watchlist)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))

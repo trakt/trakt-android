@@ -14,14 +14,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -37,10 +38,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.ShowMedia
@@ -80,8 +78,7 @@ internal class DefaultRatePromptManager(
     private val updateUserSettingsUseCase: UpdateUserSettingsUseCase,
     private val userHistoryDataSource: UserHistoryRemoteDataSource,
     private val isShowRatingCandidateUseCase: IsShowRatingCandidateUseCase,
-    private val ratingsUpdates: RatingsUpdates,
-    private val favoritesUpdates: FavoritesUpdates,
+    private val dataChanges: DataChanges,
 ) : RatePromptManager {
     private val state = MutableStateFlow<RatePromptState>(Idle)
     private val heldMedia = MutableStateFlow<Set<String>>(emptySet())
@@ -89,14 +86,12 @@ internal class DefaultRatePromptManager(
 
     @OptIn(FlowPreview::class)
     override fun observeLibraryChanges(): Flow<Unit> {
-        val ratingsChanges = ratingsUpdates.observeUpdates()
-            .filter { (source, _) -> source != Source.RatePrompt }
-        val favoritesChanges = FavoritesUpdates.Source.entries
-            .filter { it != FavoritesUpdates.Source.RATE_PROMPT }
-            .map(favoritesUpdates::observeUpdates)
-            .merge()
-
-        return merge(ratingsChanges, favoritesChanges)
+        return dataChanges
+            .observe(
+                Kind.Ratings,
+                Kind.Favorites,
+                exclude = ChangeOrigin.RatePrompt,
+            )
             .debounce(200.milliseconds)
             .map { refreshFromLibrary() }
     }

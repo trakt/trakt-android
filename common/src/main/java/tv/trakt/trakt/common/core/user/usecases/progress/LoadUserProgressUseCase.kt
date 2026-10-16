@@ -4,10 +4,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.sync.model.ProgressItem
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.MovieProgress
@@ -18,7 +19,7 @@ import tv.trakt.trakt.common.model.toTraktId
 class LoadUserProgressUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserProgressLocalDataSource,
-    private val progressUpdates: ProgressUpdates,
+    private val dataChanges: DataChanges,
 ) {
     suspend fun loadLocalShows(): ImmutableList<ProgressItem.ShowItem> {
         return localSource.getShows()
@@ -84,7 +85,7 @@ class LoadUserProgressUseCase(
             .toImmutableList()
             .also {
                 if (notifyUpdate) {
-                    progressUpdates.notifyUpdate()
+                    dataChanges.notify(Kind.Progress)
                 }
             }
     }
@@ -138,7 +139,7 @@ class LoadUserProgressUseCase(
             .toImmutableList()
             .also {
                 if (notifyUpdate) {
-                    progressUpdates.notifyUpdate()
+                    dataChanges.notify(Kind.Progress)
                 }
             }
     }
@@ -151,7 +152,7 @@ class LoadUserProgressUseCase(
             showsAsync.await()
             moviesAsync.await()
 
-            progressUpdates.notifyUpdate()
+            dataChanges.notify(Kind.Progress)
         }
     }
 }

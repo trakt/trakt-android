@@ -9,15 +9,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -32,13 +33,6 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.AllSeasons
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Seasons
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WatchedUntil
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons.Helpers.markWatchedEpisodes
@@ -56,13 +50,13 @@ internal class ShowSeasonsViewModel(
     private val getSeasonsUseCase: GetShowSeasonsUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val showDetailsUpdates: ShowDetailsUpdates,
-    private val episodeDetailsUpdates: EpisodeDetailsUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowSeasonsState()
+    private val origin = ChangeOrigin.unique()
 
     private val showState = MutableStateFlow(show)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -81,15 +75,7 @@ internal class ShowSeasonsViewModel(
     }
 
     private fun observeData() {
-        merge(
-            showDetailsUpdates.observeUpdates(Progress),
-            showDetailsUpdates.observeUpdates(AllSeasons),
-            showDetailsUpdates.observeUpdates(WatchedUntil),
-            episodeDetailsUpdates.observeUpdates(Source.Progress),
-            episodeDetailsUpdates.observeUpdates(Source.Season),
-            episodeDetailsUpdates.observeUpdates(Source.History),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -260,7 +246,7 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Seasons)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
@@ -328,7 +314,7 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Seasons)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
@@ -387,7 +373,7 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Seasons)
+                dataChanges.notify(Kind.History, origin = origin)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }
@@ -443,7 +429,7 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Seasons)
+                dataChanges.notify(Kind.History, origin = origin)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

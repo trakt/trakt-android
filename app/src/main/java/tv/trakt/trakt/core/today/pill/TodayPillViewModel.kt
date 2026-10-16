@@ -15,13 +15,16 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -29,12 +32,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
@@ -46,13 +44,8 @@ internal class TodayPillViewModel(
     seenSource: TodaySeenLocalDataSource,
     private val getTodayStoriesUseCase: GetTodayStoriesUseCase,
     private val sessionManager: SessionManager,
-    private val upNextUpdates: UpNextUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
-    private val showUpdates: ShowDetailsUpdates,
-    private val episodeUpdates: EpisodeDetailsUpdates,
-    private val movieUpdates: MovieDetailsUpdates,
-    private val checkInUpdates: CheckInUpdates,
 ) : ViewModel() {
     private val initialState = TodayPillState()
 
@@ -71,25 +64,13 @@ internal class TodayPillViewModel(
     private fun observeHistoryUpdates() {
         viewModelScope.launch {
             merge(
-                upNextUpdates.observeUpdates(
-                    UpNextUpdates.Source.Default,
-                    UpNextUpdates.Source.Home,
-                    UpNextUpdates.Source.Widget,
+                dataChanges.observe(Kind.Watchlist),
+                dataChanges.observe(
+                    Kind.History,
+                    Kind.CheckIn,
+                    exclude = ChangeOrigin.TodayStories,
                 ),
-                watchlistUpdates.observeUpdates(WatchlistUpdates.Source.Default),
-                watchlistUpdates.observeUpdates(WatchlistUpdates.Source.AllWatchlist),
                 homePersonalActivitySource.observeUpdates(),
-                showUpdates.observeUpdates(ShowDetailsUpdates.Source.Progress),
-                showUpdates.observeUpdates(ShowDetailsUpdates.Source.Seasons),
-                showUpdates.observeUpdates(ShowDetailsUpdates.Source.WatchedUntil),
-                episodeUpdates.observeUpdates(EpisodeDetailsUpdates.Source.Progress),
-                episodeUpdates.observeUpdates(EpisodeDetailsUpdates.Source.Season),
-                episodeUpdates.observeUpdates(EpisodeDetailsUpdates.Source.Home),
-                episodeUpdates.observeUpdates(EpisodeDetailsUpdates.Source.Calendar),
-                episodeUpdates.observeUpdates(EpisodeDetailsUpdates.Source.History),
-                movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
-                movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
-                checkInUpdates.observeUpdates(),
             )
                 .debounce(200.milliseconds)
                 .collectLatest { refreshForYou() }
@@ -112,7 +93,8 @@ internal class TodayPillViewModel(
 
     private fun observeTodayUpdates() {
         viewModelScope.launch {
-            upNextUpdates.observeUpdates(UpNextUpdates.Source.Today)
+            dataChanges.observe(Kind.History)
+                .filter { it.origin == ChangeOrigin.TodayStories }
                 .debounce(200.milliseconds)
                 .collect {
                     groupsState.update {

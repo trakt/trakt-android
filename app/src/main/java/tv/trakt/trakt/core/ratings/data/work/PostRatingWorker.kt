@@ -14,6 +14,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.extensions.isOnline
@@ -23,7 +26,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.io.IOException
@@ -40,7 +42,7 @@ internal class PostRatingWorker(
     val postRatingUseCase: PostRatingUseCase,
     val deleteRatingUseCase: DeleteRatingUseCase,
     val loadUserRatingUseCase: LoadUserRatingsUseCase,
-    val ratingsUpdates: RatingsUpdates,
+    val dataChanges: DataChanges,
     val ratePromptManager: RatePromptManager,
     val errorsManager: GlobalErrorsManager,
     val analytics: Analytics,
@@ -51,7 +53,7 @@ internal class PostRatingWorker(
             mediaId: TraktId,
             mediaType: MediaType,
             rating: Int,
-            source: RatingsUpdates.Source,
+            origin: ChangeOrigin? = null,
         ) {
             val workRequest = OneTimeWorkRequestBuilder<PostRatingWorker>()
                 .setInputData(
@@ -59,7 +61,7 @@ internal class PostRatingWorker(
                         .putInt("mediaId", mediaId.value)
                         .putString("mediaType", mediaType.name)
                         .putInt("rating", rating)
-                        .putString("source", source.name)
+                        .putString("origin", origin?.key)
                         .build(),
                 )
                 .setInitialDelay(300.milliseconds.toJavaDuration())
@@ -85,9 +87,7 @@ internal class PostRatingWorker(
         val mediaId = inputData.getInt("mediaId", -1)
         val mediaType = MediaType.entries.find { it.name == inputData.getString("mediaType") }
         val ratingValue = inputData.getInt("rating", -1)
-        val source = RatingsUpdates.Source.entries
-            .find { it.name == inputData.getString("source") }
-            ?: RatingsUpdates.Source.Default
+        val origin = inputData.getString("origin")?.let(::ChangeOrigin)
 
         if (mediaId == -1) {
             Timber.d("Invalid media ID, cannot post rating")
@@ -131,7 +131,7 @@ internal class PostRatingWorker(
             return failPosting(error)
         }
 
-        if (ratingValue > 0 && source != RatingsUpdates.Source.RatePrompt) {
+        if (ratingValue > 0 && origin != ChangeOrigin.RatePrompt) {
             ratePromptManager.onMediaRated(
                 mediaId = mediaId.toTraktId(),
                 mediaType = mediaType,
@@ -148,7 +148,7 @@ internal class PostRatingWorker(
                     MediaType.Season -> loadUserRatingUseCase.loadSeasons()
                 }
             }
-            ratingsUpdates.notifyUpdate(source)
+            dataChanges.notify(Kind.Ratings, origin = origin)
         } catch (error: Exception) {
             if (error is CancellationException) {
                 return Result.failure()
@@ -163,7 +163,7 @@ internal class PostRatingWorker(
 
     private fun failPosting(error: Exception): Result {
         // The local ratings were never updated, so a refresh reverts optimistic UI updates.
-        ratingsUpdates.notifyUpdate(RatingsUpdates.Source.Default)
+        dataChanges.notify(Kind.Ratings)
         errorsManager.tryEmit(PostRatingException(error))
         return Result.failure()
     }

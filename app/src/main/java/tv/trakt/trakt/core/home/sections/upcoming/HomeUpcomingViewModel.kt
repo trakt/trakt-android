@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -25,9 +24,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -47,10 +45,7 @@ import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -65,9 +60,7 @@ internal class HomeUpcomingViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val watchlistUpdates: WatchlistUpdates,
-    private val episodeUpdates: EpisodeDetailsUpdates,
-    private val upNextUpdates: UpNextUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -124,18 +117,7 @@ internal class HomeUpcomingViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeUpdates() {
-        merge(
-            upNextUpdates.observeUpdates(
-                UpNextUpdates.Source.Default,
-                UpNextUpdates.Source.Home,
-                UpNextUpdates.Source.Widget,
-                UpNextUpdates.Source.Today,
-            ),
-            watchlistUpdates.observeUpdates(Default),
-            watchlistUpdates.observeUpdates(AllWatchlist),
-            episodeUpdates.observeUpdates(Calendar),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, Kind.Watchlist)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)

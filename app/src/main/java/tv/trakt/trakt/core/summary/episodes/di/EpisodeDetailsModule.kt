@@ -12,8 +12,6 @@ import tv.trakt.trakt.common.core.media.episodes.local.EpisodeStorage
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsViewModel
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdatesStorage
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeActorsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeDirectorUseCase
@@ -36,8 +34,6 @@ import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
 
 internal val episodeDetailsDataModule = module {
     singleOf(::EpisodeStorage) { bind<EpisodeLocalDataSource>() }
-
-    singleOf(::EpisodeDetailsUpdatesStorage) { bind<EpisodeDetailsUpdates>() }
 }
 
 internal val episodeDetailsModule = module {
@@ -66,13 +62,10 @@ internal val episodeDetailsModule = module {
             loadProgressUseCase = get(),
             loadRatingUseCase = get(),
             updateHistoryUseCase = get(),
-            showUpdatesSource = get(),
-            episodeUpdatesSource = get(),
-            ratingsUpdates = get(),
+            dataChanges = get(),
             episodeLocalDataSource = get(),
             sessionManager = get(),
             checkInManager = get(),
-            checkInUpdates = get(),
             analytics = get(),
         )
     }
@@ -105,9 +98,8 @@ internal val episodeDetailsModule = module {
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
-            reactionsUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
-            commentsUpdates = get(),
             collapsingManager = get(),
             translationsStore = get(),
         )
@@ -122,8 +114,7 @@ internal val episodeDetailsModule = module {
             getSeasonDetailsUseCase = get(),
             loadUserProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
-            showDetailsUpdates = get(),
-            episodeDetailsUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             analytics = get(),
             collapsingManager = get(),

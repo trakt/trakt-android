@@ -18,10 +18,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -41,17 +38,17 @@ import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetPlexUseCas
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetEpisodeTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StaticStringResource
@@ -94,10 +91,10 @@ internal class EpisodeDetailsViewModel(
     private val getTranslationsUseCase: GetEpisodeTranslationsUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
-    private val scrobbleUpdates: ScrobbleUpdates,
-    private val progressUpdates: ProgressUpdates,
+    private val dataChanges: DataChanges,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
+    private val origin = ChangeOrigin.unique()
 
     private val userState = MutableStateFlow(initialState.user)
     private val showDetailsState = MutableStateFlow(initialState.showDetails)
@@ -183,10 +180,7 @@ internal class EpisodeDetailsViewModel(
     }
 
     private fun observeData() {
-        merge(
-            scrobbleUpdates.observeUpdates(SCROBBLE_STOP_WORKER),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(300.milliseconds)
             .onEach {
                 val show = showDetailsState.value ?: return@onEach
@@ -203,9 +197,7 @@ internal class EpisodeDetailsViewModel(
     }
 
     private fun observeProgress() {
-        progressUpdates.observeUpdates()
-            .distinctUntilChanged()
-            .filterNotNull()
+        dataChanges.observe(Kind.Progress)
             .debounce(300.milliseconds)
             .onEach {
                 loadSeason(
@@ -446,7 +438,7 @@ internal class EpisodeDetailsViewModel(
                 val episodes = getHistoryUseCase.getEpisodeHistory(episodeId, nowUtc())
 
                 loadUserProgressUseCase.loadShowsProgress()
-                progressUpdates.notifyUpdate()
+                dataChanges.notify(Kind.History, Kind.Progress, origin = origin)
 
                 episodeHistoryState.update {
                     it.copy(
@@ -479,7 +471,7 @@ internal class EpisodeDetailsViewModel(
                 val episodes = getHistoryUseCase.getEpisodeHistory(episodeId, nowUtc())
 
                 loadUserProgressUseCase.loadShowsProgress()
-                progressUpdates.notifyUpdate()
+                dataChanges.notify(Kind.History, Kind.Progress, origin = origin)
 
                 episodeHistoryState.update {
                     it.copy(
@@ -511,7 +503,7 @@ internal class EpisodeDetailsViewModel(
                 val episodes = getHistoryUseCase.getEpisodeHistory(episodeId, nowUtc())
 
                 loadUserProgressUseCase.loadShowsProgress()
-                progressUpdates.notifyUpdate()
+                dataChanges.notify(Kind.History, Kind.Progress, origin = origin)
 
                 episodeHistoryState.update {
                     it.copy(

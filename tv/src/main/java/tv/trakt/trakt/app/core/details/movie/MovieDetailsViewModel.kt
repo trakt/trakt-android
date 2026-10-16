@@ -16,9 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -39,20 +37,18 @@ import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlist
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StaticStringResource
@@ -91,15 +87,14 @@ internal class MovieDetailsViewModel(
     private val historyUseCase: ChangeHistoryUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val getTranslationsUseCase: GetMovieTranslationsUseCase,
-    private val watchlistUpdates: WatchlistUpdates,
-    private val progressUpdates: ProgressUpdates,
+    private val dataChanges: DataChanges,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val scrobbleUpdates: ScrobbleUpdates,
     private val sessionManager: SessionManager,
     private val tutorialsManager: TutorialsManager,
 ) : ViewModel() {
     private val initialState = MovieDetailsState()
+    private val origin = ChangeOrigin.unique()
 
     private val movieDetailsState = MutableStateFlow(initialState.movieDetails)
     private val movieRatingsState = MutableStateFlow(initialState.movieRatings)
@@ -158,10 +153,7 @@ internal class MovieDetailsViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeData() {
-        merge(
-            scrobbleUpdates.observeUpdates(SCROBBLE_STOP_WORKER),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(250.milliseconds)
             .onEach {
                 val movie = movieDetailsState.value ?: return@onEach
@@ -388,7 +380,7 @@ internal class MovieDetailsViewModel(
                     customDate = customDate,
                 )
                 loadUserProgressUseCase.loadMoviesProgress()
-                progressUpdates.notifyUpdate()
+                dataChanges.notify(Kind.History, Kind.Progress, origin = origin)
 
                 movieCollectionState.update {
                     it.copy(
@@ -420,7 +412,7 @@ internal class MovieDetailsViewModel(
 
                 historyUseCase.removeFromHistory(movie.movieId.toTraktId())
                 loadUserProgressUseCase.loadMoviesProgress()
-                progressUpdates.notifyUpdate()
+                dataChanges.notify(Kind.History, Kind.Progress, origin = origin)
 
                 movieCollectionState.update {
                     it.copy(
@@ -464,7 +456,7 @@ internal class MovieDetailsViewModel(
                 }
 
                 loadUserWatchlistUseCase.loadWatchlist()
-                watchlistUpdates.notifyUpdate(Source.Default)
+                dataChanges.notify(Kind.Watchlist)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))

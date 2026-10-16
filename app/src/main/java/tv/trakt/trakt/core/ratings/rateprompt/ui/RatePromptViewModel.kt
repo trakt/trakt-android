@@ -21,6 +21,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -29,9 +32,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.favorites.FavoritesUpdates
-import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
@@ -47,7 +47,7 @@ internal class RatePromptViewModel(
     private val ratePromptManager: RatePromptManager,
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
-    private val favoritesUpdates: FavoritesUpdates,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = RatePromptUiState()
@@ -112,7 +112,7 @@ internal class RatePromptViewModel(
                 mediaId = media.id,
                 mediaType = media.mediaType,
                 rating = newRating,
-                source = RatingsUpdates.Source.RatePrompt,
+                origin = ChangeOrigin.RatePrompt,
             )
         }
     }
@@ -138,7 +138,7 @@ internal class RatePromptViewModel(
                 mediaId = media.id,
                 mediaType = media.mediaType,
                 rating = 0, // A rating of 0 indicates removal of rating
-                source = RatingsUpdates.Source.RatePrompt,
+                origin = ChangeOrigin.RatePrompt,
             )
         }
     }
@@ -167,7 +167,7 @@ internal class RatePromptViewModel(
                         ),
                     ),
                 )
-                favoritesUpdates.notifyUpdate(RATE_PROMPT)
+                dataChanges.notify(Kind.Favorites, origin = ChangeOrigin.RatePrompt)
 
                 favoriteState.update { true }
 
@@ -201,7 +201,7 @@ internal class RatePromptViewModel(
                 delay(300) // Small delay to allow UI to settle.
                 updateMovieFavoritesUseCase.removeFromFavorites(movie.ids.trakt)
                 userFavoritesLocalSource.removeMovies(setOf(movie.ids.trakt))
-                favoritesUpdates.notifyUpdate(RATE_PROMPT)
+                dataChanges.notify(Kind.Favorites, origin = ChangeOrigin.RatePrompt)
 
                 favoriteState.update { false }
             } catch (error: Exception) {

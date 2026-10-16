@@ -8,14 +8,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -23,7 +24,6 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsState
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
@@ -41,7 +41,7 @@ internal class SeasonRatingController(
     private val appContext: Context,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val sessionManager: SessionManager,
-    ratingsUpdates: RatingsUpdates,
+    dataChanges: DataChanges,
     private val currentSeason: () -> Season?,
 ) {
     private val seasonUserRatingState =
@@ -51,11 +51,10 @@ internal class SeasonRatingController(
         seasonUserRatingState.asStateFlow()
 
     private var ratingJob: Job? = null
+    private val origin = ChangeOrigin.unique()
 
     init {
-        ratingsUpdates.observeUpdates()
-            .filterNot { it.first == RatingsUpdates.Source.SeasonDetails }
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 refreshSeasonUserRating()
@@ -137,7 +136,7 @@ internal class SeasonRatingController(
                 mediaId = season.ids.trakt,
                 mediaType = MediaType.Season,
                 rating = newRating,
-                source = RatingsUpdates.Source.SeasonDetails,
+                origin = origin,
             )
         }
     }
@@ -170,7 +169,7 @@ internal class SeasonRatingController(
                 mediaId = season.ids.trakt,
                 mediaType = MediaType.Season,
                 rating = 0, // A rating of 0 indicates removal of rating
-                source = RatingsUpdates.Source.SeasonDetails,
+                origin = origin,
             )
         }
     }

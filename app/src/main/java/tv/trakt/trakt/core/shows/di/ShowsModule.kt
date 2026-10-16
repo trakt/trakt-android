@@ -173,8 +173,7 @@ internal val showsModule = module {
             sessionManager = get(),
             analytics = get(),
             errorsManager = get(),
-            progressUpdates = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
         )
     }
 }

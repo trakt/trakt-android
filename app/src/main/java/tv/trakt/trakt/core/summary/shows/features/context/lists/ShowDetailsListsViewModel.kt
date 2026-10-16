@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
@@ -27,8 +29,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 
 internal class ShowDetailsListsViewModel(
     private val show: Show,
@@ -36,7 +36,7 @@ internal class ShowDetailsListsViewModel(
     private val loadListsUseCase: LoadUserListsUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
-    private val detailsUpdates: ShowDetailsUpdates,
+    private val dataChanges: DataChanges,
     private val errorsManager: GlobalErrorsManager,
 ) : ViewModel() {
     private val initialState = ShowDetailsListsState()
@@ -114,7 +114,7 @@ internal class ShowDetailsListsViewModel(
                     )
                 }
                 setListed(list.id, listed = !listed)
-                detailsUpdates.notifyUpdate(Source.Lists)
+                dataChanges.notify(Kind.Lists)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     when (error.getHttpCode()) {

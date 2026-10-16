@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -22,8 +24,6 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WatchedUntil
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.helpers.computeWatchedTimestamps
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.usecases.GetWatchedUntilEpisodesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
@@ -36,7 +36,7 @@ internal class WatchedUntilViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val getWatchedUntilUseCase: GetWatchedUntilEpisodesUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val showDetailsUpdates: ShowDetailsUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -117,7 +117,7 @@ internal class WatchedUntilViewModel(
                 )
                 loadUserProgressUseCase.loadShowsProgress()
 
-                showDetailsUpdates.notifyUpdate(WatchedUntil)
+                dataChanges.notify(Kind.History)
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "watched_until",
