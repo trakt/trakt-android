@@ -8,5 +8,5 @@ enum class LibraryFilter(
     @param:StringRes val displayRes: Int,
 ) {
     CUSTOM("other", R.string.translated_value_library_custom),
-    PLEX("plex", R.string.translated_value_library_plex),
+    PLEX("plex", R.string.translated_value_library_digital),
 }

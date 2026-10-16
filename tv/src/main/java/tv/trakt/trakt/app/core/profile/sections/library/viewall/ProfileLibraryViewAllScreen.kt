@@ -132,7 +132,7 @@ private fun ProfileLibraryViewAllContent(
                         .focusable(),
                 ) {
                     Text(
-                        text = stringResource(R.string.translated_value_library_plex),
+                        text = stringResource(R.string.translated_value_library_digital),
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.heading4,
                         overflow = TextOverflow.Ellipsis,
