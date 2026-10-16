@@ -66,6 +66,9 @@ internal data class PlexStreamDto(
     @SerialName("stream_url")
     val streamUrl: String?,
     val connections: List<Connection>?,
+    @SerialName("rating_key")
+    val ratingKey: String? = null,
+    val token: String? = null,
 ) {
     @Serializable
     data class Connection(

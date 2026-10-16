@@ -75,6 +75,8 @@ internal class GetPlexUseCase(
                             primaryUrl.replace(baseUrl, conn.uri)
                         }.orEmpty(),
                     progress = movieProgress,
+                    ratingKey = result.ratingKey,
+                    token = result.token,
                 )
             }
         } catch (error: Exception) {
@@ -98,5 +100,7 @@ internal class GetPlexUseCase(
         val primaryUrl: String,
         val secondaryUrls: List<String>,
         val progress: Float,
+        val ratingKey: String? = null,
+        val token: String? = null,
     )
 }

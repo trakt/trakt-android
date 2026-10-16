@@ -34,14 +34,14 @@ internal class GetPlexUseCase(
         // If we don't have the show, or it doesn't have a Plex ID, fetch details from remote and update.
         if (show == null || show.ids.plex == null) {
             show = remoteShowSource.getShowDetails(showId)
-                ?.let { Show.fromDto(it) }
-                ?.also { localShowSource.upsertShows(listOf(it)) }
+                .let { Show.fromDto(it) }
+                .also { localShowSource.upsertShows(listOf(it)) }
         }
 
         val result = remoteSyncSource.getEpisodesPlexCollection()
         return Result(
-            isPlex = result.containsKey(episodeId) && show?.ids?.plex != null,
-            plexSlug = show?.ids?.plex,
+            isPlex = result.containsKey(episodeId) && show.ids.plex != null,
+            plexSlug = show.ids.plex,
         )
     }
 
@@ -83,10 +83,12 @@ internal class GetPlexUseCase(
                     secondaryUrls = result.connections
                         ?.filter { it.uri != baseUrl }
                         ?.map { conn ->
-                            // Replace the base URL in the stream URL with the conn's URI.
+                            // Replace the base URL in the stream URL with the connection URI.
                             primaryUrl.replace(baseUrl, conn.uri)
                         }.orEmpty(),
                     progress = episodeProgress,
+                    ratingKey = result.ratingKey,
+                    token = result.token,
                 )
             }
         } catch (error: Exception) {
@@ -110,5 +112,7 @@ internal class GetPlexUseCase(
         val primaryUrl: String,
         val secondaryUrls: List<String>,
         val progress: Float,
+        val ratingKey: String? = null,
+        val token: String? = null,
     )
 }

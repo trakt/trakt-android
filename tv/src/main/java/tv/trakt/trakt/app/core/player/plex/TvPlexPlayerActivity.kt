@@ -16,6 +16,8 @@ private const val EXTRA_PLEX_VIDEO_SECONDARY_URLS = "extra_plex_video_secondary_
 private const val EXTRA_PLEX_VIDEO_TITLE = "extra_plex_video_title"
 private const val EXTRA_PLEX_VIDEO_SUBTITLE = "extra_plex_video_subtitle"
 private const val EXTRA_PLEX_VIDEO_PROGRESS = "extra_plex_video_progress"
+private const val EXTRA_PLEX_RATING_KEY = "extra_plex_rating_key"
+private const val EXTRA_PLEX_TOKEN = "extra_plex_token"
 private const val EXTRA_PLEX_MEDIA_ID = "extra_plex_media_id"
 private const val EXTRA_PLEX_MEDIA_TYPE = "extra_plex_media_type"
 
@@ -30,8 +32,12 @@ class TvPlexPlayerActivity : ComponentActivity() {
             videoTitle: String,
             videoSubtitle: String?,
             videoProgress: Float?,
+            ratingKey: String?,
+            token: String?,
         ): Intent {
             return Intent(context, TvPlexPlayerActivity::class.java).apply {
+                putExtra(EXTRA_PLEX_RATING_KEY, ratingKey)
+                putExtra(EXTRA_PLEX_TOKEN, token)
                 putExtra(EXTRA_PLEX_MEDIA_ID, mediaId.value)
                 putExtra(EXTRA_PLEX_MEDIA_TYPE, mediaType.name)
                 putExtra(EXTRA_PLEX_VIDEO_URL, primaryVideoUrl)
@@ -56,6 +62,8 @@ class TvPlexPlayerActivity : ComponentActivity() {
         val videoTitle = intent.getStringExtra(EXTRA_PLEX_VIDEO_TITLE) ?: ""
         val videoSubtitle = intent.getStringExtra(EXTRA_PLEX_VIDEO_SUBTITLE)
         val videoProgress = intent.getFloatExtra(EXTRA_PLEX_VIDEO_PROGRESS, 0f)
+        val ratingKey = intent.getStringExtra(EXTRA_PLEX_RATING_KEY)
+        val token = intent.getStringExtra(EXTRA_PLEX_TOKEN)
 
         if (videoUrl.isNullOrEmpty()) {
             // No video URL, finish activity
@@ -81,6 +89,8 @@ class TvPlexPlayerActivity : ComponentActivity() {
                     videoProgress = videoProgress,
                     mediaId = mediaId,
                     mediaType = mediaType,
+                    ratingKey = ratingKey,
+                    token = token,
                 )
             }
         }
