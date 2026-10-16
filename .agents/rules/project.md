@@ -22,8 +22,8 @@ Trakt Android codebase. Phone + Android TV, Compose-first, Kotlin 2.x, Gradle KT
 - **Persistence**: DataStore (Preferences) + entity caches. No SharedPreferences in new code, no Realm, no SQLDelight.
 - **Images**: Coil 3 (`io.coil-kt.coil3`) with Ktor 3 engine adapter and SVG decoder.
 - **Serialization**: kotlinx.serialization for protobuf and typed navigation routes; Moshi for OpenAPI-generated DTOs.
-- **Firebase**: Crashlytics, Remote Config (feature flags).
-- **Analytics**: HAL (`hal.trakt.tv/e`), first-party, no user or device id.
+- **Firebase**: Crashlytics, Analytics, Remote Config (feature flags).
+- **Analytics**: Firebase Analytics and HAL (`hal.trakt.tv/e`, first-party, no user or device id) run in parallel. HAL events queue in memory and a WorkManager worker delivers them.
 - **Media**: Media3 (ExoPlayer) for video; `youtube-player` (thirdspark) for embedded trailers.
 - **Logging**: Timber.
 
