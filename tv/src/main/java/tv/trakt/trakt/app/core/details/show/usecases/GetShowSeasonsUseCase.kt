@@ -3,7 +3,7 @@ package tv.trakt.trakt.app.core.details.show.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
-import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.sync.model.ProgressItem.ShowItem
@@ -49,7 +49,7 @@ internal class GetShowSeasonsUseCase(
 
         if (selectedSeason != null) {
             val episodes = remoteEpisodesSource
-                .getEpisodeSeason(showId, selectedSeason.season.number)
+                .getSeason(showId, selectedSeason.season.number)
                 .asyncMap {
                     val episode = Episode.fromDto(it)
                     ShowSeasons.EpisodeItem(
@@ -87,7 +87,7 @@ internal class GetShowSeasonsUseCase(
             it.showId == showId
         }
 
-        return remoteEpisodesSource.getEpisodeSeason(showId, season)
+        return remoteEpisodesSource.getSeason(showId, season)
             .asyncMap {
                 val episode = Episode.fromDto(it)
                 ShowSeasons.EpisodeItem(

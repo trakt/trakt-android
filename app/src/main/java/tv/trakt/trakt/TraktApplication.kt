@@ -19,6 +19,7 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.core.episodes.di.episodesRemoteModule
 import tv.trakt.trakt.common.core.klipy.di.gifsDataModule
 import tv.trakt.trakt.common.core.media.di.mediaDataModule
 import tv.trakt.trakt.common.core.movies.di.moviesRemoteModule
@@ -184,6 +185,7 @@ internal class TraktApplication : Application() {
                 profileDataModule,
                 peopleDataModule,
                 peopleRemoteModule,
+                episodesRemoteModule,
                 showsRemoteModule,
                 moviesRemoteModule,
                 peopleModule,

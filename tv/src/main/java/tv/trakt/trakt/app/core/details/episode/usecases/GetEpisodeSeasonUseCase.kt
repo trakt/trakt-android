@@ -2,7 +2,7 @@ package tv.trakt.trakt.app.core.details.episode.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Episode
@@ -18,7 +18,7 @@ internal class GetEpisodeSeasonUseCase(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
     ): ImmutableList<Episode> {
-        val episodes = remoteSource.getEpisodeSeason(
+        val episodes = remoteSource.getSeason(
             showId = showId,
             season = seasonEpisode.season,
         )

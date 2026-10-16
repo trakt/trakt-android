@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.episodes.data.remote
+package tv.trakt.trakt.common.core.episodes.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
@@ -8,8 +8,9 @@ import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeStatsDto
 import tv.trakt.trakt.common.networking.ExternalSeasonRatingsDto
 import tv.trakt.trakt.common.networking.ExternalShowRatingsDto
+import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 
-internal interface EpisodesRemoteDataSource {
+interface EpisodesRemoteDataSource {
     /**
      * Retrieves the details for a specific episode of a show.
      *
@@ -59,6 +60,7 @@ internal interface EpisodesRemoteDataSource {
         limit: Int = 20,
         sort: String = "likes",
         language: String? = null,
+        extended: String = "full,images,vip",
     ): List<CommentDto>
 
     /**
@@ -87,6 +89,7 @@ internal interface EpisodesRemoteDataSource {
         season: Int,
         episode: Int,
         guestStars: Boolean = false,
+        extended: String? = null,
     ): CastCrewDto
 
     /**
@@ -105,4 +108,9 @@ internal interface EpisodesRemoteDataSource {
         season: Int,
         episode: Int,
     ): EpisodeStatsDto
+
+    /**
+     * Retrieves the current user's watch history for a specific episode.
+     */
+    suspend fun getEpisodeHistory(episodeId: TraktId): List<SyncHistoryEpisodeItemDto>
 }

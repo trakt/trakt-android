@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -11,7 +12,6 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 
 internal class GetWatchedUntilEpisodesUseCase(
     private val remoteShowsSource: ShowsRemoteDataSource,
