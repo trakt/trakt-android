@@ -47,7 +47,7 @@ internal data class MediaSocialActivity(
         @Immutable
         data class Commented(
             val id: TraktId,
-            val comment: String,
+            val comment: String?,
             val spoiler: Boolean,
             val review: Boolean,
             val createdAt: Instant,

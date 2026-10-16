@@ -42,7 +42,7 @@ data class V3MediaSocialResponse(
         data class Commented(
             @SerialName("ids")
             val id: CommentedId,
-            val comment: String,
+            val comment: String?,
             val spoiler: Boolean,
             val review: Boolean,
             @SerialName("created_at")
