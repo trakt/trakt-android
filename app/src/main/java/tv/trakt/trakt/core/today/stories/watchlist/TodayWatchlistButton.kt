@@ -43,6 +43,7 @@ private val LoadingSize = 18.dp
 @Composable
 internal fun TodayWatchlistButton(
     media: TodayMedia,
+    frameType: String,
     viewModel: TodayWatchlistViewModel,
     modifier: Modifier = Modifier,
     onConfirmVisibleChange: (Boolean) -> Unit,
@@ -86,7 +87,7 @@ internal fun TodayWatchlistButton(
             if (isWatchlisted) {
                 confirmRemove = true
             } else {
-                viewModel.addToWatchlist()
+                viewModel.addToWatchlist(frameType)
             }
         },
     )
@@ -95,7 +96,7 @@ internal fun TodayWatchlistButton(
         active = confirmRemove,
         onYes = {
             confirmRemove = false
-            viewModel.removeFromWatchlist()
+            viewModel.removeFromWatchlist(frameType)
         },
         onNo = { confirmRemove = false },
         title = stringResource(R.string.button_text_watchlist),

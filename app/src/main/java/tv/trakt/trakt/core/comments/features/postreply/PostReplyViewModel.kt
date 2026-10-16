@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.comments.features.postreply
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -23,11 +24,11 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.helpers.commentAnalyticsContent
 import tv.trakt.trakt.core.comments.model.CommentMention
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.usecases.GetCommentMentionsUseCase
 import tv.trakt.trakt.core.comments.usecases.PostReplyUseCase
-import kotlin.time.Duration.Companion.seconds
 
 @Suppress("UNCHECKED_CAST")
 internal class PostReplyViewModel(
@@ -105,7 +106,9 @@ internal class PostReplyViewModel(
                     )
                 }
 
-                analytics.comments.logReplyAdd()
+                analytics.comments.logReplyAdd(
+                    content = commentAnalyticsContent(reply, gif),
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

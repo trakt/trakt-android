@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -21,6 +22,7 @@ import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
 internal class EditListViewModel(
     private val editListUseCase: EditListUseCase,
     private val userListsLocalDataSource: UserListsLocalDataSource,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = EditListState()
 
@@ -48,6 +50,7 @@ internal class EditListViewModel(
                     description = description,
                     privacy = privacy,
                 )
+                analytics.lists.logListEdit()
 
                 loadingEditState.update { Done }
             } catch (error: Exception) {
@@ -71,6 +74,7 @@ internal class EditListViewModel(
                 editListUseCase.deleteList(
                     listId = id,
                 )
+                analytics.lists.logListDelete()
 
                 // Clear cached lists to force refresh next time lists are accessed.
                 userListsLocalDataSource.clear()

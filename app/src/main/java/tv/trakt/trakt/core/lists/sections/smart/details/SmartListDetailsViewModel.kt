@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -44,6 +45,7 @@ internal class SmartListDetailsViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<SmartListDetailsDestination>()
     private val destinationList = Json.decodeFromString<SmartList>(destination.listJson)
@@ -152,6 +154,7 @@ internal class SmartListDetailsViewModel(
             try {
                 deletingState.update { Loading }
                 deleteSmartListUseCase.deleteList(destinationList.ids.trakt)
+                analytics.lists.logSmartListDelete()
                 deletedState.update { true }
             } catch (error: Exception) {
                 error.rethrowCancellation {

@@ -8,7 +8,7 @@ internal data class HalEvent(
     val name: String,
     val at: Long,
     val dims: Map<String, String>,
-    val metrics: Map<String, Int>,
+    val metrics: Map<String, Long>,
 )
 
 private fun Map<String, String>.toDimsJson() =
@@ -16,7 +16,7 @@ private fun Map<String, String>.toDimsJson() =
         forEach { (key, value) -> put(key, value) }
     }
 
-private fun Map<String, Int>.toMetricsJson() =
+private fun Map<String, Long>.toMetricsJson() =
     buildJsonObject {
         forEach { (key, value) -> put(key, value) }
     }

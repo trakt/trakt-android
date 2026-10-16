@@ -11,6 +11,8 @@ internal class CompositeAnalytics(
     override val progress: Analytics.Progress = CompositeProgress(targets.map(Analytics::progress))
     override val trivia: Analytics.Trivia = CompositeTrivia(targets.map(Analytics::trivia))
     override val playback: Analytics.Playback = CompositePlayback(targets.map(Analytics::playback))
+    override val lists: Analytics.Lists = CompositeLists(targets.map(Analytics::lists))
+    override val today: Analytics.Today = CompositeToday(targets.map(Analytics::today))
 
     override fun setUserId(userId: String?) {
         targets.forEach { it.setUserId(userId) }
@@ -48,6 +50,14 @@ internal class CompositeAnalytics(
         result: String,
     ) {
         targets.forEach { it.logShareArrival(type, result) }
+    }
+
+    override fun logSearch(mode: String) {
+        targets.forEach { it.logSearch(mode) }
+    }
+
+    override fun logVipUpgrade(plan: String) {
+        targets.forEach { it.logVipUpgrade(plan) }
     }
 }
 
@@ -90,6 +100,13 @@ private class CompositeRatings(
         targets.forEach { it.logRatingAdd(rating, mediaType) }
     }
 
+    override fun logRatingChange(
+        rating: Int,
+        mediaType: String,
+    ) {
+        targets.forEach { it.logRatingChange(rating, mediaType) }
+    }
+
     override fun logRatingRemove(mediaType: String) {
         targets.forEach { it.logRatingRemove(mediaType) }
     }
@@ -109,16 +126,23 @@ private class CompositeRatings(
 private class CompositeComments(
     private val targets: List<Analytics.Comments>,
 ) : Analytics.Comments {
-    override fun logCommentAdd(mediaType: String) {
-        targets.forEach { it.logCommentAdd(mediaType) }
+    override fun logCommentAdd(
+        mediaType: String,
+        content: Analytics.CommentContent,
+    ) {
+        targets.forEach { it.logCommentAdd(mediaType, content) }
     }
 
     override fun logCommentRemove() {
         targets.forEach { it.logCommentRemove() }
     }
 
-    override fun logReplyAdd() {
-        targets.forEach { it.logReplyAdd() }
+    override fun logReplyAdd(content: Analytics.CommentContent) {
+        targets.forEach { it.logReplyAdd(content) }
+    }
+
+    override fun logCommentEdit(content: Analytics.CommentContent) {
+        targets.forEach { it.logCommentEdit(content) }
     }
 
     override fun logReplyRemove() {
@@ -161,6 +185,14 @@ private class CompositeProgress(
     ) {
         targets.forEach { it.logRemoveWatchlistMedia(mediaType, source) }
     }
+
+    override fun logCheckInStart(mediaType: String) {
+        targets.forEach { it.logCheckInStart(mediaType) }
+    }
+
+    override fun logCheckInStop(mediaType: String) {
+        targets.forEach { it.logCheckInStop(mediaType) }
+    }
 }
 
 private class CompositeTrivia(
@@ -180,5 +212,79 @@ private class CompositePlayback(
 
     override fun logPlaybackStop(mediaType: String) {
         targets.forEach { it.logPlaybackStop(mediaType) }
+    }
+}
+
+private class CompositeLists(
+    private val targets: List<Analytics.Lists>,
+) : Analytics.Lists {
+    override fun logListItemAdd() {
+        targets.forEach { it.logListItemAdd() }
+    }
+
+    override fun logListItemRemove() {
+        targets.forEach { it.logListItemRemove() }
+    }
+
+    override fun logListCreate() {
+        targets.forEach { it.logListCreate() }
+    }
+
+    override fun logListEdit() {
+        targets.forEach { it.logListEdit() }
+    }
+
+    override fun logListDelete() {
+        targets.forEach { it.logListDelete() }
+    }
+
+    override fun logListLike(liked: Boolean) {
+        targets.forEach { it.logListLike(liked) }
+    }
+
+    override fun logSmartListCreate() {
+        targets.forEach { it.logSmartListCreate() }
+    }
+
+    override fun logSmartListDelete() {
+        targets.forEach { it.logSmartListDelete() }
+    }
+}
+
+private class CompositeToday(
+    private val targets: List<Analytics.Today>,
+) : Analytics.Today {
+    override fun logOpen(
+        source: String,
+        hasUnseen: Boolean,
+    ) {
+        targets.forEach { it.logOpen(source, hasUnseen) }
+    }
+
+    override fun logStory(type: String) {
+        targets.forEach { it.logStory(type) }
+    }
+
+    override fun logClose(
+        reason: String,
+        durationMs: Long,
+        frames: Int,
+        groups: Int,
+    ) {
+        targets.forEach {
+            it.logClose(
+                reason = reason,
+                durationMs = durationMs,
+                frames = frames,
+                groups = groups,
+            )
+        }
+    }
+
+    override fun logAction(
+        action: String,
+        frame: String,
+    ) {
+        targets.forEach { it.logAction(action, frame) }
     }
 }

@@ -4,12 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import java.time.Duration
+import java.time.Instant
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,8 +27,16 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
+import tv.trakt.trakt.core.today.model.analyticsType
 import tv.trakt.trakt.core.today.stories.navigation.TodayStoriesDestination
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
+
+// The stories viewer opens from the Today pill in the home header, the Android twin of the web navbar pill.
+private const val OPEN_SOURCE = "navbar"
+
+private const val CLOSE_REASON_CLOSE = "close"
+private const val CLOSE_REASON_END = "end"
+private const val CLOSE_REASON_LEAVE = "leave"
 
 internal sealed interface TodayStoriesEvent {
     data object Close : TodayStoriesEvent
@@ -36,7 +47,7 @@ internal class TodayStoriesViewModel(
     savedStateHandle: SavedStateHandle,
     private val getTodayStoriesUseCase: GetTodayStoriesUseCase,
     private val seenSource: TodaySeenLocalDataSource,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<TodayStoriesDestination>()
     private val initialState = TodayStoriesState(
@@ -46,6 +57,10 @@ internal class TodayStoriesViewModel(
     private val groupsState = MutableStateFlow(initialState.groups)
     private val positionState = MutableStateFlow(initialState.position)
     private val loadingState = MutableStateFlow(initialState.loading)
+
+    private var openedAt: Instant? = null
+    private var shownFrames = emptySet<String>()
+    private var shownGroups = emptySet<String>()
 
     val events: Flow<TodayStoriesEvent>
         field = MutableSharedFlow<TodayStoriesEvent>(replay = 0)
@@ -76,6 +91,10 @@ internal class TodayStoriesViewModel(
                     events.emit(TodayStoriesEvent.Close)
                     return@launch
                 }
+
+                val seenAt = seenSource.observeSeen().first()
+                startTracking(hasUnseen = groups.any { !it.isSeen(seenAt) })
+                enterGroup(group)
                 markSeen(group.key)
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -95,7 +114,7 @@ internal class TodayStoriesViewModel(
         when {
             current.frameIndex < group.frames.lastIndex -> showFrame(current.frameIndex + 1)
             current.groupIndex < current.groups.lastIndex -> showGroup(current.groupIndex + 1, 0)
-            else -> viewModelScope.launch { events.emit(TodayStoriesEvent.Close) }
+            else -> close(CLOSE_REASON_END)
         }
     }
 
@@ -114,7 +133,7 @@ internal class TodayStoriesViewModel(
     fun nextGroup() {
         val current = current()
         if (current.groupIndex >= current.groups.lastIndex) {
-            viewModelScope.launch { events.emit(TodayStoriesEvent.Close) }
+            close(CLOSE_REASON_END)
             return
         }
         showGroup(current.groupIndex + 1, 0)
@@ -123,14 +142,25 @@ internal class TodayStoriesViewModel(
     fun previousGroup() {
         val current = current()
         if (current.groupIndex <= 0) {
-            viewModelScope.launch { events.emit(TodayStoriesEvent.Close) }
+            close(CLOSE_REASON_CLOSE)
             return
         }
         showGroup(current.groupIndex - 1, 0)
     }
 
+    /** Called before navigating out of the viewer, e.g. to a user profile. */
+    fun leave() {
+        finishTracking(CLOSE_REASON_LEAVE)
+    }
+
+    private fun close(reason: String) {
+        finishTracking(reason)
+        viewModelScope.launch { events.emit(TodayStoriesEvent.Close) }
+    }
+
     private fun showFrame(index: Int) {
         positionState.update { it.copy(frameIndex = index) }
+        noteShown()
     }
 
     private fun showGroup(
@@ -145,7 +175,49 @@ internal class TodayStoriesViewModel(
                 frameIndex = frameIndex,
             )
         }
+        enterGroup(group)
         markSeen(group.key)
+    }
+
+    private fun startTracking(hasUnseen: Boolean) {
+        openedAt = nowUtcInstant()
+        analytics.today.logOpen(
+            source = OPEN_SOURCE,
+            hasUnseen = hasUnseen,
+        )
+    }
+
+    private fun enterGroup(group: TodayStoryGroup) {
+        if (openedAt == null) return
+
+        analytics.today.logStory(type = group.analyticsType)
+        noteShown()
+    }
+
+    private fun noteShown() {
+        val current = current()
+        val group = current.group ?: return
+        val frame = current.frame ?: return
+
+        shownGroups = shownGroups + group.key
+        shownFrames = shownFrames + frame.key
+    }
+
+    private fun finishTracking(reason: String) {
+        val opened = openedAt ?: return
+        openedAt = null
+
+        analytics.today.logClose(
+            reason = reason,
+            durationMs = Duration.between(opened, nowUtcInstant()).toMillis(),
+            frames = shownFrames.size,
+            groups = shownGroups.size,
+        )
+    }
+
+    override fun onCleared() {
+        finishTracking(CLOSE_REASON_CLOSE)
+        super.onCleared()
     }
 
     private fun markSeen(key: String) {

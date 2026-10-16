@@ -10,6 +10,8 @@ interface Analytics {
     val progress: Progress
     val trivia: Trivia
     val playback: Playback
+    val lists: Lists
+    val today: Today
 
     /**
      * Sets the user ID for analytics.
@@ -59,6 +61,24 @@ interface Analytics {
         type: String,
         result: String,
     )
+
+    /**
+     * Logs a search that returned results.
+     * @param mode The searched catalogue (media, show, movie, people, lists).
+     */
+    fun logSearch(mode: String)
+
+    /**
+     * Logs the start of a VIP purchase flow.
+     * @param plan The plan duration (monthly, yearly, two_years).
+     */
+    fun logVipUpgrade(plan: String)
+
+    enum class CommentContent {
+        Text,
+        Gif,
+        TextAndGif,
+    }
 
     interface Trivia {
         /**
@@ -113,6 +133,14 @@ interface Analytics {
         fun logRatingRemove(mediaType: String)
 
         /**
+         * Logs replacing an existing rating with a new value.
+         */
+        fun logRatingChange(
+            rating: Int,
+            mediaType: String,
+        )
+
+        /**
          * Logs the removal of a favorite media.
          */
         fun logFavoriteAdd(mediaType: String)
@@ -130,7 +158,10 @@ interface Analytics {
         /**
          * Logs the addition of a comment.
          */
-        fun logCommentAdd(mediaType: String)
+        fun logCommentAdd(
+            mediaType: String,
+            content: CommentContent,
+        )
 
         /**
          * Logs the removal of a comment.
@@ -140,7 +171,12 @@ interface Analytics {
         /**
          * Logs the addition of a reply to a comment.
          */
-        fun logReplyAdd()
+        fun logReplyAdd(content: CommentContent)
+
+        /**
+         * Logs editing an existing comment or reply.
+         */
+        fun logCommentEdit(content: CommentContent)
 
         /**
          * Logs the removal of a reply to a comment.
@@ -186,6 +222,102 @@ interface Analytics {
         fun logRemoveWatchlistMedia(
             mediaType: String,
             source: String,
+        )
+
+        /**
+         * Logs starting a check-in.
+         * @param mediaType The checked-in media type (movie, episode).
+         */
+        fun logCheckInStart(mediaType: String)
+
+        /**
+         * Logs stopping an active check-in.
+         * @param mediaType The checked-in media type (movie, episode).
+         */
+        fun logCheckInStop(mediaType: String)
+    }
+
+    interface Lists {
+        /**
+         * Logs adding a media item to a personal list.
+         */
+        fun logListItemAdd()
+
+        /**
+         * Logs removing a media item from a personal list.
+         */
+        fun logListItemRemove()
+
+        /**
+         * Logs creating a personal list.
+         */
+        fun logListCreate()
+
+        /**
+         * Logs editing a personal list.
+         */
+        fun logListEdit()
+
+        /**
+         * Logs deleting a personal list.
+         */
+        fun logListDelete()
+
+        /**
+         * Logs liking or unliking a list.
+         */
+        fun logListLike(liked: Boolean)
+
+        /**
+         * Logs creating a smart list.
+         */
+        fun logSmartListCreate()
+
+        /**
+         * Logs deleting a smart list.
+         */
+        fun logSmartListDelete()
+    }
+
+    interface Today {
+        /**
+         * Logs opening the Today stories viewer.
+         * @param source Where the viewer was opened from (navbar, overview, link).
+         * @param hasUnseen Whether any story was unseen when opened.
+         */
+        fun logOpen(
+            source: String,
+            hasUnseen: Boolean,
+        )
+
+        /**
+         * Logs entering a story group.
+         * @param type The group type (for-you, title).
+         */
+        fun logStory(type: String)
+
+        /**
+         * Logs closing the Today stories viewer.
+         * @param reason Why it closed (close, end, leave).
+         * @param durationMs How long the viewer was open.
+         * @param frames Distinct frames shown.
+         * @param groups Distinct groups shown.
+         */
+        fun logClose(
+            reason: String,
+            durationMs: Long,
+            frames: Int,
+            groups: Int,
+        )
+
+        /**
+         * Logs an action taken on a story frame.
+         * @param action The action (watchlist, mark-as-watched, view-all).
+         * @param frame The frame type (for-you, summary, friend).
+         */
+        fun logAction(
+            action: String,
+            frame: String,
         )
     }
 

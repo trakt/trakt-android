@@ -132,7 +132,10 @@ internal fun TodayStoriesScreen(
         onPrevious = viewModel::previous,
         onNextGroup = viewModel::nextGroup,
         onPreviousGroup = viewModel::previousGroup,
-        onUserClick = onNavigateToUser,
+        onUserClick = { user ->
+            viewModel.leave()
+            onNavigateToUser(user)
+        },
         onClose = onNavigateBack,
     )
 }

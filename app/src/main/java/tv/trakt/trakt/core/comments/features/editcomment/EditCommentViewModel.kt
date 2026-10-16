@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
+import tv.trakt.trakt.core.comments.helpers.commentAnalyticsContent
 import tv.trakt.trakt.core.comments.model.CommentMention
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.usecases.EditCommentUseCase
@@ -29,6 +31,7 @@ internal class EditCommentViewModel(
     private val editCommentUseCase: EditCommentUseCase,
     private val mentionSource: MentionSource?,
     private val getCommentMentionsUseCase: GetCommentMentionsUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = EditCommentState()
 
@@ -77,6 +80,9 @@ internal class EditCommentViewModel(
                         gif = gif,
                     )
                 }
+                analytics.comments.logCommentEdit(
+                    content = commentAnalyticsContent(text, gif),
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

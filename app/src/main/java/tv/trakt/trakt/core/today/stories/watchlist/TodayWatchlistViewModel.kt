@@ -27,6 +27,7 @@ import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.usecases.UpdateTodayWatchlistUseCase
 
 private const val ANALYTICS_SOURCE = "today_stories"
+private const val TODAY_ACTION = "watchlist"
 
 @Suppress("UNCHECKED_CAST")
 internal class TodayWatchlistViewModel(
@@ -77,7 +78,7 @@ internal class TodayWatchlistViewModel(
         }
     }
 
-    fun addToWatchlist() {
+    fun addToWatchlist(frameType: String) {
         if (loadingState.value.isLoading) return
 
         viewModelScope.launch {
@@ -91,6 +92,7 @@ internal class TodayWatchlistViewModel(
                     mediaType = media.type.value,
                     source = ANALYTICS_SOURCE,
                 )
+                analytics.today.logAction(action = TODAY_ACTION, frame = frameType)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     isWatchlistedState.update { false }
@@ -105,7 +107,7 @@ internal class TodayWatchlistViewModel(
         }
     }
 
-    fun removeFromWatchlist() {
+    fun removeFromWatchlist(frameType: String) {
         if (loadingState.value.isLoading) return
 
         viewModelScope.launch {
@@ -119,6 +121,7 @@ internal class TodayWatchlistViewModel(
                     mediaType = media.type.value,
                     source = ANALYTICS_SOURCE,
                 )
+                analytics.today.logAction(action = TODAY_ACTION, frame = frameType)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     isWatchlistedState.update { true }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.json.Json
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 
@@ -20,6 +21,7 @@ private val KEY_FILTERS_MODE = stringPreferencesKey("key_global_filters_mode_2")
 internal class DefaultGlobalFilterManager(
     scope: CoroutineScope,
     private val dataStore: DataStore<Preferences>,
+    private val analytics: Analytics,
 ) : GlobalFilterManager {
     private val modeState = dataStore.data
         .map { prefs ->
@@ -39,7 +41,12 @@ internal class DefaultGlobalFilterManager(
         .shareIn(scope, SharingStarted.Eagerly, replay = 0)
 
     override suspend fun setFilter(filter: GlobalFilter) {
+        val previousMode = filtersState.value.mode
         dataStore.edit { it[KEY_FILTERS] = Json.encodeToString(filter) }
+
+        if (filter.mode != previousMode) {
+            analytics.logMediaModeClick(mode = filter.mode.name)
+        }
     }
 
     override suspend fun setMode(mode: GlobalFilterMode) {

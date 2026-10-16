@@ -64,7 +64,7 @@ internal class ListsViewModel(
     private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
     private val localSmartListsSource: ListsSmartLocalDataSource,
     private val getFilterUseCase: GetListsFilterUseCase,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()
 
@@ -218,6 +218,7 @@ internal class ListsViewModel(
         viewModelScope.launch {
             try {
                 deleteSmartListUseCase.deleteList(listId)
+                analytics.lists.logSmartListDelete()
                 infoState.update {
                     DynamicStringResource(R.string.text_info_list_deleted)
                 }

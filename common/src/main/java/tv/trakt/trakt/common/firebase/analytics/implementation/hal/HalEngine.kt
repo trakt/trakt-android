@@ -9,7 +9,7 @@ internal interface HalEvents {
     fun track(
         name: String,
         dims: Map<String, String> = emptyMap(),
-        metrics: Map<String, Int> = emptyMap(),
+        metrics: Map<String, Long> = emptyMap(),
     )
 
     fun setUserType(userType: String?)
@@ -30,7 +30,7 @@ internal class HalEngine(
     override fun track(
         name: String,
         dims: Map<String, String>,
-        metrics: Map<String, Int>,
+        metrics: Map<String, Long>,
     ) {
         val currentUserType = userType
         val event = HalEvent(

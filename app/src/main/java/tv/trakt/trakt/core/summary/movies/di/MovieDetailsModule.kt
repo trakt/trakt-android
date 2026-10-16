@@ -204,6 +204,7 @@ internal val movieDetailsModule = module {
             removeListItemUseCase = get(),
             detailsUpdates = get(),
             errorsManager = get(),
+            analytics = get(),
         )
     }
 }
