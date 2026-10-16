@@ -39,6 +39,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.episodes.features.season.usecases.GetEpisodeSeasonUseCase
+import tv.trakt.trakt.core.summary.episodes.features.season.usecases.HasSkippedEpisodesUseCase
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Progress
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Seasons
@@ -54,6 +55,7 @@ internal class EpisodeSeasonViewModel(
     private val show: Show,
     private val episode: Episode,
     private val getSeasonDetailsUseCase: GetEpisodeSeasonUseCase,
+    private val hasSkippedEpisodesUseCase: HasSkippedEpisodesUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val showDetailsUpdates: ShowDetailsUpdates,
@@ -72,6 +74,7 @@ internal class EpisodeSeasonViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_SEASON))
+    private val watchedUntilPromptState = MutableStateFlow(initialState.watchedUntilPrompt)
 
     private var collapseJob: Job? = null
 
@@ -171,6 +174,12 @@ internal class EpisodeSeasonViewModel(
         if (loadingState.value.isLoading || loadingEpisodeState.value.isLoading) {
             return
         }
+
+        val seasonEpisodes = episodesState.value
+        val wasWatched = seasonEpisodes
+            .firstOrNull { it.episode.ids.trakt == episodeToAdd.ids.trakt }
+            ?.isWatched == true
+
         viewModelScope.launch {
             val authenticated = sessionManager.isAuthenticated()
             if (!authenticated) {
@@ -201,6 +210,11 @@ internal class EpisodeSeasonViewModel(
                 }
 
                 episodeDetailsUpdates.notifyUpdate(Source.Season)
+
+                if (!wasWatched) {
+                    promptWatchedUntil(episodeToAdd, seasonEpisodes, progress)
+                }
+
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
@@ -270,6 +284,28 @@ internal class EpisodeSeasonViewModel(
         }
     }
 
+    private suspend fun promptWatchedUntil(
+        episodeToAdd: Episode,
+        seasonEpisodes: List<EpisodeItem>,
+        progress: ProgressItem.ShowItem?,
+    ) {
+        try {
+            val hasSkipped = hasSkippedEpisodesUseCase.hasSkippedEpisodes(
+                showId = show.ids.trakt,
+                episode = episodeToAdd,
+                seasonEpisodes = seasonEpisodes,
+                progress = progress,
+            )
+            if (hasSkipped) {
+                watchedUntilPromptState.update { episodeToAdd }
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+        }
+    }
+
     private suspend fun setLoadingEpisode(episodeToSet: Episode) {
         episodesState.update {
             it.asyncMap { e ->
@@ -300,6 +336,10 @@ internal class EpisodeSeasonViewModel(
         infoState.update { null }
     }
 
+    fun clearWatchedUntilPrompt() {
+        watchedUntilPromptState.update { null }
+    }
+
     fun setCollapsed(collapsed: Boolean) {
         collapseState.update { collapsed }
         collapseJob?.cancel()
@@ -321,6 +361,7 @@ internal class EpisodeSeasonViewModel(
         infoState,
         errorState,
         collapseState,
+        watchedUntilPromptState,
     ) { state ->
         EpisodeSeasonState(
             episode = state[0] as Episode,
@@ -331,6 +372,7 @@ internal class EpisodeSeasonViewModel(
             info = state[5] as StringResource?,
             error = state[6] as Exception?,
             collapsed = state[7] as Boolean,
+            watchedUntilPrompt = state[8] as Episode?,
         )
     }.stateIn(
         scope = viewModelScope,

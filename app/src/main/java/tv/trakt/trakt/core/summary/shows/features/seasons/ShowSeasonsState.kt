@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.shows.features.seasons
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 
@@ -16,4 +17,5 @@ internal data class ShowSeasonsState(
     val info: StringResource? = null,
     val error: Exception? = null,
     val collapsed: Boolean? = null,
+    val watchedUntilPrompt: Episode? = null,
 )

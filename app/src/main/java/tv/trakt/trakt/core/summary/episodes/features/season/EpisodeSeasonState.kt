@@ -19,4 +19,5 @@ internal data class EpisodeSeasonState(
     val info: StringResource? = null,
     val error: Exception? = null,
     val collapsed: Boolean? = null,
+    val watchedUntilPrompt: Episode? = null,
 )

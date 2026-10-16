@@ -132,6 +132,7 @@ internal class AllShowSeasonsViewModel(
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+    private val watchedUntilPromptState = MutableStateFlow(initialState.watchedUntilPrompt)
 
     private val reactions = SeasonReactionsController(
         scope = viewModelScope,
@@ -561,6 +562,8 @@ internal class AllShowSeasonsViewModel(
             return
         }
 
+        val promptWatchedUntil = itemsState.value.shouldPromptWatchedUntil(episode)
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) return@launch
 
@@ -591,6 +594,10 @@ internal class AllShowSeasonsViewModel(
 
                 showDetailsUpdates.notifyUpdate(Seasons)
                 showDetailsUpdates.notifyUpdate(AllSeasons)
+
+                if (promptWatchedUntil) {
+                    watchedUntilPromptState.update { episode }
+                }
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
                 analytics.progress.logAddWatchedMedia(
@@ -813,6 +820,10 @@ internal class AllShowSeasonsViewModel(
         navigateEpisode.update { null }
     }
 
+    fun clearWatchedUntilPrompt() {
+        watchedUntilPromptState.update { null }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val events: Flow<CommentTranslationEvent>
         field = MutableSharedFlow<CommentTranslationEvent>(replay = 0)
@@ -836,6 +847,7 @@ internal class AllShowSeasonsViewModel(
         rating.rating,
         commentsLanguageState,
         translationsStore.translations,
+        watchedUntilPromptState,
     ) { state ->
         AllShowSeasonsState(
             show = state[0] as Show?,
@@ -856,6 +868,7 @@ internal class AllShowSeasonsViewModel(
             seasonUserRating = state[15] as AllShowSeasonsState.UserRatingState,
             commentsLanguage = state[16] as String?,
             translations = state[17] as CommentTranslations,
+            watchedUntilPrompt = state[18] as Episode?,
         )
     }.stateIn(
         scope = viewModelScope,

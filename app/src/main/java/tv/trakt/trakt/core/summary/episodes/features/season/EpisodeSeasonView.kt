@@ -44,6 +44,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -69,7 +70,8 @@ internal fun EpisodeSeasonView(
     var confirmRemoveSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var dateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var contextSheet by remember { mutableStateOf<EpisodeItem?>(null) }
-    var watchedUntilSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var watchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
+    var confirmWatchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
 
     EpisodeSeasonContent(
         state = state,
@@ -96,7 +98,7 @@ internal fun EpisodeSeasonView(
             dateSheet = it
         },
         onWatchedUntilClick = {
-            watchedUntilSheet = it
+            watchedUntilSheet = it.episode
         },
         onRemoveClick = {
             confirmRemoveSheet = it
@@ -108,10 +110,25 @@ internal fun EpisodeSeasonView(
 
     WatchedUntilSheet(
         show = state.show,
-        episode = watchedUntilSheet?.episode,
+        episode = watchedUntilSheet,
         onDismiss = {
             watchedUntilSheet = null
         },
+    )
+
+    ConfirmationSheet(
+        active = confirmWatchedUntilSheet != null,
+        title = stringResource(R.string.button_text_watched_until_here),
+        message = stringResource(
+            R.string.button_label_watched_until_here,
+            confirmWatchedUntilSheet?.title.orEmpty(),
+        ),
+        yesText = stringResource(R.string.button_text_watched_until_here),
+        onYes = {
+            watchedUntilSheet = confirmWatchedUntilSheet
+            confirmWatchedUntilSheet = null
+        },
+        onNo = { confirmWatchedUntilSheet = null },
     )
 
     RemoveConfirmationSheet(
@@ -146,6 +163,13 @@ internal fun EpisodeSeasonView(
             dateSheet = null
         },
     )
+
+    LaunchedEffect(state.watchedUntilPrompt) {
+        state.watchedUntilPrompt?.let {
+            confirmWatchedUntilSheet = it
+            viewModel.clearWatchedUntilPrompt()
+        }
+    }
 
     LaunchedEffect(state.info) {
         if (state.info == null) {
