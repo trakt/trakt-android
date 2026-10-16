@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.Config.KLIPY_BASE_URL
 import tv.trakt.trakt.common.Config.WEB_AUTH_URL
 import tv.trakt.trakt.common.networking.api.klipy.KlipyApi
 import tv.trakt.trakt.common.networking.api.people.PeopleExtrasApi
+import tv.trakt.trakt.common.networking.api.plex.PlexStreamApi
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
@@ -251,6 +252,14 @@ val networkingApiModule = module {
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+        )
+    }
+
+    single<PlexStreamApi> {
+        PlexStreamApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
     }
 

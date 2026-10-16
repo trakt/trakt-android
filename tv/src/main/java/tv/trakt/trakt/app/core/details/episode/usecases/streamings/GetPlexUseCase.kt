@@ -3,9 +3,9 @@ package tv.trakt.trakt.app.core.details.episode.usecases.streamings
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import timber.log.Timber
-import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.plex.data.remote.PlexRemoteDataSource
 import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
 import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource

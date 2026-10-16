@@ -1,8 +1,8 @@
-package tv.trakt.trakt.app.core.plex.data
+package tv.trakt.trakt.common.core.plex.data.remote
 
-import tv.trakt.trakt.app.core.plex.PlexStreamApi
-import tv.trakt.trakt.app.core.plex.PlexStreamDto
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.networking.api.plex.PlexStreamApi
+import tv.trakt.trakt.common.networking.api.plex.PlexStreamDto
 
 internal class PlexApiClient(
     private val api: PlexStreamApi,
