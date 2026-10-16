@@ -193,6 +193,8 @@ platform :android do
 
   desc "Build internal release APK for arm64-v8a devices only (CI artifact)"
   lane :build_apk do
+    # Generated OpenAPI client lives in build/ and is not checked in
+    gradle(task: "openApiGenerate")
     gradle(
       task: "app:assembleInternalRelease",
       properties: {
