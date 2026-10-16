@@ -1344,7 +1344,7 @@
   <string name="match_label_soulmates">Seelenverwandte</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Übereinstimmung:</string>
-  <string name="match_pill_aria_label">%1$d% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
+  <string name="match_pill_aria_label">%1$d%% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
   <string name="match_pill_loading_aria_label">Übereinstimmungswert wird berechnet</string>
   <string name="mir_banner_body">Ihr monatlicher Rückblick ist fertig. Hier ist, was Sie im %s gesehen haben.</string>
   <string name="mir_banner_body_short">Ihr %s-Rückblick ist fertig.</string>
@@ -1542,7 +1542,7 @@
   <string name="tag_media_sync_run_running">Wird synchronisiert</string>
   <string name="tag_media_sync_webhook_only">Nur Webhook</string>
   <string name="tag_mixtape_different_mood">Andere Stimmung</string>
-  <string name="tag_mixtape_match">%s% Übereinstimmung</string>
+  <string name="tag_mixtape_match">%s%% Übereinstimmung</string>
   <string name="tag_mixtape_on_watchlist">Auf der Watchlist</string>
   <string name="tag_mixtape_tap_details">Für Details tippen</string>
   <string name="tag_text_blocked_user">Blockiert</string>
@@ -2681,7 +2681,7 @@
   <string name="yir_2026_preview_runner_none">Keine (kein Hybrid)</string>
   <string name="yir_2026_preview_runner_up">Zweitplatzierter</string>
   <string name="yir_2026_preview_title">Persona-Vorschau</string>
-  <string name="yir_2026_rarity">Nur %1$d% sind %2$s</string>
+  <string name="yir_2026_rarity">Nur %1$d%% sind %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Ein bisschen %s</string>
   <string name="yir_2026_reel_and_you_are">Und du bist</string>
   <string name="yir_2026_reel_but_mostly">Aber hauptsächlich</string>
