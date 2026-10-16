@@ -100,8 +100,8 @@ init {
 2. Implement it in **every** backend:
    - `DebugAnalytics`: `Timber.d` with the parameters.
    - `FirebaseAnalytics`: event name built with `eventName(…)` (`av3_` prefix). The full name must
-     be ≤ 40 characters. Add a `require` check in `init` for new long constants. Events added for
-     HAL parity may be `= Unit` here; Firebase is the legacy backend.
+     be ≤ 40 characters. Add a `require` check in `init` for new long constants. Name new events
+     `<area>_<action>` in snake_case (`lists_item_add`, `today_close`).
    - `HalAnalytics` / `HalAnalyticsGroups`: use the constants in `HalContract.kt`. Reuse the web
      event name and dim values from trakt-web `AnalyticsEvent.ts` / `AnalyticsEventDataMap.ts`
      so both platforms land in the same rows. Dims are strings, metrics are `Long`. Implement as

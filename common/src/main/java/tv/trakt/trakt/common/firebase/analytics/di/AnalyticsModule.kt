@@ -8,7 +8,6 @@ import com.google.firebase.crashlytics.crashlytics
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
-import kotlin.time.Duration.Companion.seconds
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.workerOf
 import org.koin.core.module.dsl.singleOf
@@ -52,6 +51,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.data.remote.K
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.data.remote.halUserAgent
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.data.work.HalSendWorker
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
+import kotlin.time.Duration.Companion.seconds
 
 private const val HAL_ENDPOINT = "https://hal.trakt.tv/e"
 private const val TABLET_MIN_WIDTH_DP = 600
@@ -124,8 +124,8 @@ private fun firebaseAnalytics(): Analytics {
         progress = FirebaseAnalyticsProgress(analytics),
         trivia = FirebaseAnalyticsTrivia(analytics),
         playback = FirebaseAnalyticsPlayback(analytics),
-        lists = FirebaseAnalyticsLists(),
-        today = FirebaseAnalyticsToday(),
+        lists = FirebaseAnalyticsLists(analytics),
+        today = FirebaseAnalyticsToday(analytics),
     )
 }
 
