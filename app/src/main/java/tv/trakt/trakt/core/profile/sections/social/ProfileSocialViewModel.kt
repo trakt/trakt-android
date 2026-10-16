@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -22,6 +21,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -37,7 +38,6 @@ import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCa
 import tv.trakt.trakt.core.user.model.UserFollowRequest
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialRequestsUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
-import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdates
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -46,7 +46,7 @@ internal class ProfileSocialViewModel(
     private val loadSocialUseCase: LoadUserSocialUseCase,
     private val loadRequestsUseCase: LoadUserSocialRequestsUseCase,
     private val getFilterUseCase: GetSocialFilterUseCase,
-    private val socialUpdates: SocialUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -68,8 +68,7 @@ internal class ProfileSocialViewModel(
     }
 
     private fun observeData() {
-        socialUpdates.observeUpdates()
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Social)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(refreshRequests = true)

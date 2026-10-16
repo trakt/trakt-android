@@ -16,10 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,12 +26,13 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
 import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
@@ -66,15 +64,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.favorites.FavoritesUpdates
-import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
 import tv.trakt.trakt.core.summary.shows.ShowDetailsState.UserRatingsState
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowCreatorUseCase
 import tv.trakt.trakt.core.summary.shows.features.socials.GetShowSocialsUseCase
 import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
@@ -111,11 +102,7 @@ internal class ShowDetailsViewModel(
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val showDetailsUpdates: ShowDetailsUpdates,
-    private val ratingsUpdates: RatingsUpdates,
-    private val episodeDetailsUpdates: EpisodeDetailsUpdates,
-    private val favoritesUpdates: FavoritesUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
@@ -124,6 +111,7 @@ internal class ShowDetailsViewModel(
     private val showId = destination.showId.toTraktId()
 
     private val initialState = ShowDetailsState()
+    private val origin = ChangeOrigin.unique()
 
     private val showState = MutableStateFlow(initialState.show)
     private val showRatingsState = MutableStateFlow(initialState.showRatings)
@@ -158,9 +146,7 @@ internal class ShowDetailsViewModel(
     }
 
     private fun observeRatings() {
-        ratingsUpdates.observeUpdates()
-            .filterNot { it.first == RatingsUpdates.Source.MediaDetails }
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 refreshUserRating()
@@ -169,12 +155,7 @@ internal class ShowDetailsViewModel(
     }
 
     private fun observeData() {
-        merge(
-            showDetailsUpdates.observeUpdates(Source.Seasons),
-            showDetailsUpdates.observeUpdates(Source.WatchedUntil),
-            episodeDetailsUpdates.observeUpdates(History),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadProgressData(
@@ -185,8 +166,7 @@ internal class ShowDetailsViewModel(
     }
 
     private fun observeLists() {
-        showDetailsUpdates.observeUpdates(Source.Lists)
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Lists)
             .debounce(200.milliseconds)
             .onEach {
                 refreshLists()
@@ -487,7 +467,7 @@ internal class ShowDetailsViewModel(
                 userWatchlistLocalSource.removeShows(ids = setOf(showId))
                 userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
 
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 showProgressState.update {
                     it?.copy(
@@ -498,7 +478,7 @@ internal class ShowDetailsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Source.Progress)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
@@ -548,7 +528,7 @@ internal class ShowDetailsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Source.Progress)
+                dataChanges.notify(Kind.History, origin = origin)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }
@@ -607,7 +587,7 @@ internal class ShowDetailsViewModel(
                     shows = setOf(showId),
                 )
 
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 showProgressState.update {
                     it?.copy(
@@ -653,7 +633,7 @@ internal class ShowDetailsViewModel(
 
                 userWatchlistLocalSource.removeShows(ids = setOf(showId))
                 userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 refreshLists()
 
@@ -743,7 +723,7 @@ internal class ShowDetailsViewModel(
                         ),
                     ),
                 )
-                favoritesUpdates.notifyUpdate(DETAILS)
+                dataChanges.notify(Kind.Favorites)
 
                 showUserRatingsState.update {
                     it?.copy(
@@ -784,7 +764,7 @@ internal class ShowDetailsViewModel(
                 delay(300.milliseconds) // Small delay to allow UI to settle.
                 updateShowFavoritesUseCase.removeFromFavorites(showId)
                 userFavoritesLocalSource.removeShows(setOf(showId))
-                favoritesUpdates.notifyUpdate(DETAILS)
+                dataChanges.notify(Kind.Favorites)
 
                 showUserRatingsState.update {
                     it?.copy(
@@ -845,7 +825,7 @@ internal class ShowDetailsViewModel(
                 mediaId = showId,
                 mediaType = Show,
                 rating = newRating,
-                source = RatingsUpdates.Source.MediaDetails,
+                origin = origin,
             )
         }
     }
@@ -879,7 +859,7 @@ internal class ShowDetailsViewModel(
                 mediaId = showId,
                 mediaType = Show,
                 rating = 0, // A rating of 0 indicates removal of rating
-                source = RatingsUpdates.Source.MediaDetails,
+                origin = origin,
             )
         }
     }

@@ -29,9 +29,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -44,23 +43,12 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -74,13 +62,7 @@ internal class HomeHistoryViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val watchlistUpdates: WatchlistUpdates,
-    private val showUpdates: ShowDetailsUpdates,
-    private val movieUpdates: MovieDetailsUpdates,
-    private val episodeUpdates: EpisodeDetailsUpdates,
-    private val ratingsUpdates: RatingsUpdates,
-    private val checkInUpdates: CheckInUpdates,
-    private val upNextUpdates: UpNextUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
@@ -140,37 +122,16 @@ internal class HomeHistoryViewModel(
 
     private fun observeUpdates() {
         merge(
-            upNextUpdates.observeUpdates(
-                UpNextUpdates.Source.Default,
-                UpNextUpdates.Source.Home,
-                UpNextUpdates.Source.Widget,
-                UpNextUpdates.Source.Today,
-            ),
-            watchlistUpdates.observeUpdates(Default),
-            watchlistUpdates.observeUpdates(AllWatchlist),
+            dataChanges.observe(Kind.History, Kind.Watchlist, Kind.CheckIn),
             allActivitySource.observeUpdates(),
-            showUpdates.observeUpdates(Source.Progress),
-            showUpdates.observeUpdates(Source.Seasons),
-            showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(Progress),
-            episodeUpdates.observeUpdates(Season),
-            episodeUpdates.observeUpdates(Calendar),
-            episodeUpdates.observeUpdates(History),
-            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
-            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
-            checkInUpdates.observeUpdates(),
         )
-            .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
     }
 
     private fun observeRatings() {
-        merge(
-            ratingsUpdates.observeUpdates(),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings)
             .debounce(200.milliseconds)
             .onEach {
                 loadUserRatingData(ignoreErrors = true)

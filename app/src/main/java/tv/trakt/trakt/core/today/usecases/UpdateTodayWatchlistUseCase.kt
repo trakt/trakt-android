@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.today.usecases
 
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -17,7 +17,7 @@ internal class UpdateTodayWatchlistUseCase(
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
 ) {
     suspend fun isWatchlisted(media: TodayMedia): Boolean {
         if (!loadWatchlistUseCase.isLoaded()) {
@@ -60,7 +60,7 @@ internal class UpdateTodayWatchlistUseCase(
             }
         }
 
-        watchlistUpdates.notifyUpdate(Default)
+        dataChanges.notify(Kind.Watchlist)
     }
 
     suspend fun removeFromWatchlist(media: TodayMedia) {
@@ -77,6 +77,6 @@ internal class UpdateTodayWatchlistUseCase(
             }
         }
 
-        watchlistUpdates.notifyUpdate(Default)
+        dataChanges.notify(Kind.Watchlist)
     }
 }

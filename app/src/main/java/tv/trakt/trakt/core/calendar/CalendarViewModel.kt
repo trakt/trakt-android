@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -26,6 +25,9 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -48,14 +50,6 @@ import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.resources.R
@@ -77,11 +71,11 @@ internal class CalendarViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val showUpdates: ShowDetailsUpdates,
-    private val episodeUpdates: EpisodeDetailsUpdates,
-    private val movieUpdates: MovieDetailsUpdates,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
+    private val origin = ChangeOrigin.unique()
+
     private val initialState = CalendarState(
         selectedStartDay = LocalDate.now().with(MONDAY),
     )
@@ -136,17 +130,7 @@ internal class CalendarViewModel(
     }
 
     private fun observeData() {
-        merge(
-            showUpdates.observeUpdates(Source.Progress),
-            showUpdates.observeUpdates(Source.Seasons),
-            showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(Progress),
-            episodeUpdates.observeUpdates(Season),
-            episodeUpdates.observeUpdates(History),
-            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
-            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData()
@@ -295,7 +279,7 @@ internal class CalendarViewModel(
                     customDate = customDate,
                 )
                 loadUserProgressUseCase.loadShowsProgress()
-                episodeUpdates.notifyUpdate(Calendar)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -354,7 +338,7 @@ internal class CalendarViewModel(
                     customDate = customDate,
                 )
                 loadUserProgressUseCase.loadMoviesProgress()
-                episodeUpdates.notifyUpdate(Calendar)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -409,7 +393,7 @@ internal class CalendarViewModel(
             try {
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
                 loadUserProgressUseCase.loadShowsProgress()
-                episodeUpdates.notifyUpdate(Calendar)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -461,7 +445,7 @@ internal class CalendarViewModel(
             try {
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
                 loadUserProgressUseCase.loadMoviesProgress()
-                episodeUpdates.notifyUpdate(Calendar)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it

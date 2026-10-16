@@ -21,6 +21,8 @@ import timber.log.Timber
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.blocking.BlockUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.blocking.GetBlockedUsersUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowRequestUserUseCase
@@ -41,7 +43,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.user.model.UserFollowRequest
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialRequestsUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
-import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdates
 import tv.trakt.trakt.core.userprofile.UserProfileState.UserFollowRequestState
 import tv.trakt.trakt.core.userprofile.navigation.UserProfileDestination
 import tv.trakt.trakt.core.userprofile.sections.thismonth.GetUserProfileMonthUseCase
@@ -61,7 +62,7 @@ internal class UserProfileViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val socialUpdates: SocialUpdates,
+    private val dataChanges: DataChanges,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<UserProfileDestination>()
     private val user = Json.decodeFromString<User>(destination.userJson)
@@ -365,7 +366,7 @@ internal class UserProfileViewModel(
                         loading = false,
                     )
                 }
-                socialUpdates.notifyUpdate()
+                dataChanges.notify(Kind.Social)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     userRequestState.update { it.copy(loading = false) }

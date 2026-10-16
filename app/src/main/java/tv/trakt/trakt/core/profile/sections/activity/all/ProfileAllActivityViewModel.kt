@@ -14,9 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -26,6 +24,9 @@ import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -40,11 +41,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.core.comments.data.CommentsUpdates
-import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
-import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
-import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.PROFILE_ACTIVITY
-import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.PROFILE_ALL_ACTIVITY
 import tv.trakt.trakt.core.lists.ListsConfig.ACTIVITY_PAGE_LIMIT
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Comments
@@ -54,7 +50,6 @@ import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileCommentsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileAllActivityViewModel(
@@ -65,10 +60,10 @@ internal class ProfileAllActivityViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val ratingsUpdates: RatingsUpdates,
-    private val commentsUpdates: CommentsUpdates,
+    private val dataChanges: DataChanges,
 ) : ViewModel() {
     private val initialState = ProfileAllActivityState()
+    private val origin = ChangeOrigin.unique()
 
     private val userState = MutableStateFlow(initialState.user)
     private val ratingItemsState = MutableStateFlow(initialState.ratingItems)
@@ -97,8 +92,7 @@ internal class ProfileAllActivityViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeRatings() {
-        ratingsUpdates.observeUpdates()
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -108,12 +102,7 @@ internal class ProfileAllActivityViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeComments() {
-        merge(
-            commentsUpdates.observeUpdates(ALL_COMMENTS),
-            commentsUpdates.observeUpdates(COMMENT_DETAILS),
-            commentsUpdates.observeUpdates(PROFILE_ACTIVITY),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Comments, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -273,14 +262,14 @@ internal class ProfileAllActivityViewModel(
                 if (item.comment.id == comment.id) item.withComment(comment) else item
             }?.toImmutableList()
         }
-        commentsUpdates.notifyUpdate(PROFILE_ALL_ACTIVITY)
+        dataChanges.notify(Kind.Comments, origin = origin)
     }
 
     fun deleteComment(commentId: TraktId) {
         commentItemsState.update { items ->
             items?.filterNot { it.comment.id == commentId.value }?.toImmutableList()
         }
-        commentsUpdates.notifyUpdate(PROFILE_ALL_ACTIVITY)
+        dataChanges.notify(Kind.Comments, origin = origin)
     }
 
     fun setFilter(newFilter: ProfileActivityFilter) {

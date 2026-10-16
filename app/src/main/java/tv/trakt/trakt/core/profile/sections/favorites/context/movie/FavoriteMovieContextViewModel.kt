@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -21,8 +23,6 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.favorites.FavoritesUpdates
-import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieFavoritesUseCase
 
 internal class FavoriteMovieContextViewModel(
@@ -30,7 +30,7 @@ internal class FavoriteMovieContextViewModel(
     private val sessionManager: SessionManager,
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
-    private val favoritesUpdates: FavoritesUpdates,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = FavoriteMovieContextState()
@@ -70,7 +70,7 @@ internal class FavoriteMovieContextViewModel(
 
                 updateMovieFavoritesUseCase.removeFromFavorites(movie.ids.trakt)
                 userFavoritesLocalSource.removeMovies(setOf(movie.ids.trakt))
-                favoritesUpdates.notifyUpdate(CONTEXT_SHEET)
+                dataChanges.notify(Kind.Favorites)
 
                 analytics.ratings.logFavoriteRemove(
                     mediaType = MediaType.Movie.value,

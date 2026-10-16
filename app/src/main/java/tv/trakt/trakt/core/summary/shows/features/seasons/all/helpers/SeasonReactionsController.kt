@@ -11,20 +11,22 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source.ALL_COMMENTS
+import tv.trakt.trakt.core.reactions.data.ReactionSource
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
@@ -44,8 +46,10 @@ internal class SeasonReactionsController(
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val sessionManager: SessionManager,
-    reactionsUpdates: ReactionsUpdates,
+    dataChanges: DataChanges,
 ) {
+    private val origin = ChangeOrigin.unique()
+
     private val commentReactionsState = MutableStateFlow<ImmutableMap<Int, ReactionsSummary>>(persistentMapOf())
     private val userReactionsState = MutableStateFlow<ImmutableMap<Int, Reaction?>>(persistentMapOf())
 
@@ -55,12 +59,10 @@ internal class SeasonReactionsController(
     private var reactionJob: Job? = null
 
     init {
-        reactionsUpdates.observeUpdates(ALL_COMMENTS)
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Reactions, exclude = origin)
             .debounce(200.milliseconds)
-            .onEach {
-                updateSeasonCommentReactions(it.first)
-            }
+            .mapNotNull { it.targetId }
+            .onEach(::updateSeasonCommentReactions)
             .launchIn(scope)
     }
 
@@ -204,7 +206,8 @@ internal class SeasonReactionsController(
             appContext = appContext,
             commentId = commentId,
             reaction = reaction,
-            source = ALL_COMMENTS,
+            source = ReactionSource.AllComments,
+            origin = origin,
         )
     }
 
@@ -215,7 +218,8 @@ internal class SeasonReactionsController(
         DeleteReactionWorker.scheduleOneTime(
             appContext = appContext,
             commentId = commentId,
-            source = ALL_COMMENTS,
+            source = ReactionSource.AllComments,
+            origin = origin,
         )
     }
 }

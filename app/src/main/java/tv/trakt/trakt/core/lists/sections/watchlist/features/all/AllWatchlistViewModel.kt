@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -25,11 +24,11 @@ import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.analytics.logListSort
@@ -59,10 +58,6 @@ import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistU
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
@@ -79,15 +74,13 @@ internal class AllWatchlistViewModel(
     private val collectionStateProvider: CollectionStateProvider,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val showUpdatesSource: ShowDetailsUpdates,
-    private val episodeUpdatesSource: EpisodeDetailsUpdates,
-    private val movieDetailsUpdates: MovieDetailsUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllWatchlistState()
+    private val origin = ChangeOrigin.unique()
     private val initialMode = filterManager.getFilter()
 
     private val userState = MutableStateFlow(initialState.user)
@@ -122,17 +115,9 @@ internal class AllWatchlistViewModel(
 
     private fun observeData() {
         merge(
-            showUpdatesSource.observeUpdates(Source.Progress),
-            showUpdatesSource.observeUpdates(Source.Seasons),
-            showUpdatesSource.observeUpdates(Source.WatchedUntil),
-            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.Progress),
-            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.Season),
-            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.History),
-            movieDetailsUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
-            movieDetailsUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
-            watchlistUpdates.observeUpdates(Default),
+            dataChanges.observe(Kind.History),
+            dataChanges.observe(Kind.Watchlist, exclude = origin),
         )
-            .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -445,7 +430,7 @@ internal class AllWatchlistViewModel(
                 .toImmutableList()
         }
 
-        watchlistUpdates.notifyUpdate(AllWatchlist)
+        dataChanges.notify(Kind.Watchlist, origin = origin)
     }
 
     fun loadUserProgress() {

@@ -16,9 +16,9 @@ import org.openapitools.client.models.PostScrobbleStartRequestOneOf1Episode
 import org.openapitools.client.models.PostScrobbleStartRequestOneOfMovie
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import timber.log.Timber
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -31,7 +31,7 @@ internal class PostScrobbleStopWorker(
     workerParams: WorkerParameters,
     private val sessionManager: SessionManager,
     private val scrobbleApi: ScrobbleApi,
-    private val scrobbleUpdates: ScrobbleUpdates,
+    private val dataChanges: DataChanges,
     private val cacheMarker: CacheMarkerProvider,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
@@ -108,7 +108,7 @@ internal class PostScrobbleStopWorker(
                     ),
                 )
                 cacheMarker.invalidate()
-                scrobbleUpdates.notifyUpdate(SCROBBLE_STOP_WORKER)
+                dataChanges.notify(Kind.History)
             }
 
             if (mediaType == MediaType.Episode) {
@@ -125,7 +125,7 @@ internal class PostScrobbleStopWorker(
                     ),
                 )
                 cacheMarker.invalidate()
-                scrobbleUpdates.notifyUpdate(SCROBBLE_STOP_WORKER)
+                dataChanges.notify(Kind.History)
             }
         } catch (error: Exception) {
             if (error is CancellationException) {

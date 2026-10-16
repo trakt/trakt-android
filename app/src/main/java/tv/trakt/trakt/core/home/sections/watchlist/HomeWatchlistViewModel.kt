@@ -18,12 +18,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -33,10 +31,10 @@ import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -58,8 +56,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
@@ -84,14 +80,14 @@ internal class HomeWatchlistViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val filterManager: GlobalFilterManager,
     private val checkInManager: CheckInManager,
-    private val checkInUpdates: CheckInUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
     private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
+    private val origin = ChangeOrigin.unique()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(filterManager.getFilter())
@@ -142,13 +138,9 @@ internal class HomeWatchlistViewModel(
 
     private fun observeData() {
         merge(
-            watchlistUpdates.observeUpdates(Default),
-            watchlistUpdates.observeUpdates(AllWatchlist),
-            checkInUpdates.observeUpdates()
-                .filterNot { it.first == Source.HomeWatchlist }
-                .takeWhile { dataJob == null },
+            dataChanges.observe(Kind.Watchlist),
+            dataChanges.observe(Kind.CheckIn, exclude = origin),
         )
-            .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach {
                 loadData(
@@ -268,7 +260,7 @@ internal class HomeWatchlistViewModel(
                     seasonEpisode = SeasonEpisode(1, 1),
                     customDate = customDate,
                 )
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
@@ -321,7 +313,7 @@ internal class HomeWatchlistViewModel(
                     movieId = movieId,
                     customDate = customDate,
                 )
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -367,7 +359,7 @@ internal class HomeWatchlistViewModel(
 
                 checkInManager.startMovie(
                     movieId = movieId,
-                    source = Source.HomeWatchlist,
+                    origin = origin,
                     context = appContext,
                 )
 
@@ -419,7 +411,7 @@ internal class HomeWatchlistViewModel(
                 checkInManager.startEpisode(
                     showId = showId,
                     seasonEpisode = seasonEpisode,
-                    source = Source.HomeWatchlist,
+                    origin = origin,
                     context = appContext,
                 )
 

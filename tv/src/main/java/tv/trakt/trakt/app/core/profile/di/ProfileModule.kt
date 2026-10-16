@@ -29,8 +29,6 @@ import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlis
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdatesStorage
 
 internal val profileDataModule = module {
     single<UserLikedListsLocalDataSource> {
@@ -38,7 +36,6 @@ internal val profileDataModule = module {
     }
 
     singleOf(::UserWatchlistMinimalStorage) { bind<UserWatchlistMinimalLocalDataSource>() }
-    singleOf(::ProgressUpdatesStorage) { bind<ProgressUpdates>() }
     singleOf(::UserProgressStorage) { bind<UserProgressLocalDataSource>() }
 }
 
@@ -114,7 +111,7 @@ internal val profileModule = module {
         ProfileHistoryViewModel(
             getHistoryCase = get(),
             syncHistoryCase = get(),
-            scrobbleUpdates = get(),
+            dataChanges = get(),
             appLifecycleProvider = get(),
         )
     }

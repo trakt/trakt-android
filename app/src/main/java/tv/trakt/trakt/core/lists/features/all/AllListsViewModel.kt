@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -23,6 +24,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -39,7 +42,6 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.ListsSorting
 import tv.trakt.trakt.core.lists.ListsConfig
 import tv.trakt.trakt.core.lists.features.all.navigation.AllListsDestination
-import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
@@ -69,7 +71,7 @@ internal class AllListsViewModel(
     private val localLikedListsSource: ListsLikedLocalDataSource,
     private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
     private val localSmartListsSource: ListsSmartLocalDataSource,
-    private val reorderUpdates: ReorderUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllListsDestination>()
@@ -117,17 +119,12 @@ internal class AllListsViewModel(
 
     private fun observeReorder(listIds: List<TraktId>) {
         reorderJob?.cancel()
-        reorderJob = viewModelScope.launch {
-            reorderUpdates.clear()
-            listIds.forEach { listId ->
-                launch {
-                    reorderUpdates.observeUpdates(listId)
-                        .distinctUntilChanged()
-                        .debounce(200.milliseconds)
-                        .collect { loadData(reload = true) }
-                }
-            }
-        }
+        val ids = listIds.map { it.value }.toSet()
+        reorderJob = dataChanges.observe(Kind.Lists)
+            .filter { it.targetId in ids }
+            .debounce(200.milliseconds)
+            .onEach { loadData(reload = true) }
+            .launchIn(viewModelScope)
     }
 
     fun loadUser() {

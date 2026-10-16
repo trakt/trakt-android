@@ -21,6 +21,7 @@ import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
+import tv.trakt.trakt.common.core.sync.changes.di.dataChangesModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
@@ -43,7 +44,6 @@ import tv.trakt.trakt.core.checkin.di.checkInModule
 import tv.trakt.trakt.core.comments.di.commentsDataModule
 import tv.trakt.trakt.core.comments.di.commentsModule
 import tv.trakt.trakt.core.discover.di.discoverModule
-import tv.trakt.trakt.core.favorites.di.favoritesDataModule
 import tv.trakt.trakt.core.filters.di.filtersModule
 import tv.trakt.trakt.core.home.di.homeDataModule
 import tv.trakt.trakt.core.home.di.homeModule
@@ -64,7 +64,6 @@ import tv.trakt.trakt.core.profile.di.profileDataModule
 import tv.trakt.trakt.core.profile.di.profileModule
 import tv.trakt.trakt.core.ratings.di.ratingsDataModule
 import tv.trakt.trakt.core.ratings.di.ratingsModule
-import tv.trakt.trakt.core.reactions.di.reactionsDataModule
 import tv.trakt.trakt.core.reactions.di.reactionsModule
 import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
@@ -162,6 +161,7 @@ internal class TraktApplication : Application() {
                 homeModule,
                 homeDataModule,
                 discoverModule,
+                dataChangesModule,
                 showsModule,
                 showsDataModule,
                 showDetailsModule,
@@ -191,11 +191,9 @@ internal class TraktApplication : Application() {
                 allCreditsModule,
                 listsModule,
                 listsDataModule,
-                reactionsDataModule,
                 reactionsModule,
                 ratingsDataModule,
                 ratingsModule,
-                favoritesDataModule,
                 syncModule,
                 notificationsModule,
                 settingsModule,

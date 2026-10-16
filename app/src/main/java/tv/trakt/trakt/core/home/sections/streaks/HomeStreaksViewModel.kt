@@ -8,14 +8,13 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
@@ -25,7 +24,7 @@ import kotlin.time.Duration.Companion.milliseconds
 internal class HomeStreaksViewModel(
     private val streaksManager: StreaksManager,
     private val filtersManager: GlobalFilterManager,
-    private val progressUpdates: ProgressUpdates,
+    private val dataChanges: DataChanges,
 ) : ViewModel() {
     private var dataJob: Job? = null
 
@@ -36,9 +35,7 @@ internal class HomeStreaksViewModel(
     }
 
     private fun observeProgress() {
-        progressUpdates.observeUpdates()
-            .distinctUntilChanged()
-            .filterNotNull()
+        dataChanges.observe(Kind.Progress)
             .debounce(300.milliseconds)
             .onEach { loadData() }
             .launchIn(viewModelScope)

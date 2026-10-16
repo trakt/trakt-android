@@ -18,8 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -29,12 +27,13 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
 import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
@@ -65,15 +64,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.MovieDetails
-import tv.trakt.trakt.core.favorites.FavoritesUpdates
-import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
 import tv.trakt.trakt.core.summary.movies.features.socials.GetMovieSocialsUseCase
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
@@ -108,11 +100,7 @@ internal class MovieDetailsViewModel(
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
-    private val movieDetailsUpdates: MovieDetailsUpdates,
-    private val ratingsUpdates: RatingsUpdates,
-    private val favoritesUpdates: FavoritesUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
-    private val checkInUpdates: CheckInUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
     private val errorsManager: GlobalErrorsManager,
@@ -122,6 +110,7 @@ internal class MovieDetailsViewModel(
     private val movieId = destination.movieId.toTraktId()
 
     private val initialState = MovieDetailsState()
+    private val origin = ChangeOrigin.unique()
 
     private val movieState = MutableStateFlow(initialState.movie)
     private val movieRatingsState = MutableStateFlow(initialState.movieRatings)
@@ -158,10 +147,8 @@ internal class MovieDetailsViewModel(
     }
 
     private fun observeCheckIn() {
-        checkInUpdates.observeUpdates()
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.CheckIn, exclude = origin)
             .debounce(200.milliseconds)
-            .filterNot { it.first == MovieDetails }
             .onEach {
                 loadUserProgressData(force = true)
             }
@@ -169,8 +156,7 @@ internal class MovieDetailsViewModel(
     }
 
     private fun observeHistory() {
-        movieDetailsUpdates.observeUpdates(Source.History)
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadUserProgressData(force = true)
@@ -179,9 +165,7 @@ internal class MovieDetailsViewModel(
     }
 
     private fun observeRatings() {
-        ratingsUpdates.observeUpdates()
-            .filterNot { it.first == RatingsUpdates.Source.MediaDetails }
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 refreshUserRating()
@@ -190,8 +174,7 @@ internal class MovieDetailsViewModel(
     }
 
     private fun observeLists() {
-        movieDetailsUpdates.observeUpdates(Source.Lists)
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Lists)
             .debounce(200.milliseconds)
             .onEach {
                 refreshLists()
@@ -471,7 +454,7 @@ internal class MovieDetailsViewModel(
 
                 checkInManager.startMovie(
                     movieId = movieId,
-                    source = MovieDetails,
+                    origin = origin,
                     context = appContext,
                 )
 
@@ -480,8 +463,8 @@ internal class MovieDetailsViewModel(
                 userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
                 userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
 
-                watchlistUpdates.notifyUpdate(Default)
-                movieDetailsUpdates.notifyUpdate(Source.Progress)
+                dataChanges.notify(Kind.Watchlist)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 movieProgressState.update {
                     it?.copy(
@@ -534,8 +517,8 @@ internal class MovieDetailsViewModel(
                 userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
                 userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
 
-                watchlistUpdates.notifyUpdate(Default)
-                movieDetailsUpdates.notifyUpdate(Source.Progress)
+                dataChanges.notify(Kind.Watchlist)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 if (response.added.movies != 0) {
                     movieProgressState.update {
@@ -589,7 +572,7 @@ internal class MovieDetailsViewModel(
                         plays = 0,
                     )
                 }
-                movieDetailsUpdates.notifyUpdate(Source.Progress)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
@@ -649,7 +632,7 @@ internal class MovieDetailsViewModel(
                     movies = setOf(movieId),
                 )
 
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 movieProgressState.update {
                     it?.copy(
@@ -696,7 +679,7 @@ internal class MovieDetailsViewModel(
                 userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
                 userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
 
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 refreshLists()
 
@@ -789,7 +772,7 @@ internal class MovieDetailsViewModel(
                         ),
                     ),
                 )
-                favoritesUpdates.notifyUpdate(DETAILS)
+                dataChanges.notify(Kind.Favorites)
 
                 movieUserRatingsState.update {
                     it?.copy(
@@ -835,7 +818,7 @@ internal class MovieDetailsViewModel(
                 delay(300.milliseconds) // Small delay to allow UI to settle.
                 updateMovieFavoritesUseCase.removeFromFavorites(movieId)
                 userFavoritesLocalSource.removeMovies(setOf(movieId))
-                favoritesUpdates.notifyUpdate(DETAILS)
+                dataChanges.notify(Kind.Favorites)
 
                 movieUserRatingsState.update {
                     it?.copy(
@@ -898,7 +881,7 @@ internal class MovieDetailsViewModel(
                 mediaId = movieId,
                 mediaType = Movie,
                 rating = newRating,
-                source = RatingsUpdates.Source.MediaDetails,
+                origin = origin,
             )
         }
     }
@@ -932,7 +915,7 @@ internal class MovieDetailsViewModel(
                 mediaId = movieId,
                 mediaType = Movie,
                 rating = 0, // A rating of 0 indicates removal of rating
-                source = RatingsUpdates.Source.MediaDetails,
+                origin = origin,
             )
         }
     }

@@ -14,14 +14,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -48,8 +47,7 @@ internal class ShowContextViewModel(
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val progressUpdates: ProgressUpdates,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
@@ -151,7 +149,7 @@ internal class ShowContextViewModel(
                     shows = setOf(show.ids.trakt),
                 )
 
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "show",
@@ -194,7 +192,7 @@ internal class ShowContextViewModel(
                     ids = setOf(show.ids.trakt),
                 )
 
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "show",
@@ -233,7 +231,7 @@ internal class ShowContextViewModel(
                     ids = setOf(show.ids.trakt),
                 )
 
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "show",
@@ -263,7 +261,7 @@ internal class ShowContextViewModel(
 
                 updateHistoryUseCase.removeAllFromHistory(show.ids.trakt)
                 userProgressLocalSource.removeShows(ids = setOf(show.ids.trakt))
-                progressUpdates.notifyUpdate()
+                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "show",
