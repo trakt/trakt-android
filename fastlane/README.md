@@ -87,6 +87,14 @@ Promote PlayStore Closed Beta Track to Production
 
 Upload to PlayStore Internal Track and promote to Closed Beta and Production
 
+### android build_apk
+
+```sh
+[bundle exec] fastlane android build_apk
+```
+
+Build internal release APK for arm64-v8a devices only (CI artifact)
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

@@ -90,7 +90,7 @@ internal fun TodayFriendFooter(
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(3.dp),
+                horizontalArrangement = spacedBy(4.dp),
             ) {
                 Text(
                     text = friendActionLabel(action),
@@ -217,6 +217,13 @@ private fun TodayInlineRating(rating10: Float) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(1.5.dp),
     ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_star_trakt_on),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier.size(InlineStarSize),
+        )
+
         Text(
             text = starsText(rating10),
             style = TraktTheme.typography.cardTitle.copy(
@@ -224,13 +231,6 @@ private fun TodayInlineRating(rating10: Float) {
             ),
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
-        )
-
-        Icon(
-            painter = painterResource(R.drawable.ic_star_trakt_on),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier.size(InlineStarSize),
         )
     }
 }
