@@ -39,6 +39,10 @@ import tv.trakt.trakt.common.core.sync.di.syncRemoteModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
+import tv.trakt.trakt.common.core.user.di.commentsRemoteModule
+import tv.trakt.trakt.common.core.user.di.listsRemoteModule
+import tv.trakt.trakt.common.core.user.di.searchRemoteModule
+import tv.trakt.trakt.common.core.user.di.userRemoteModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.coil.coilModule
@@ -192,6 +196,10 @@ internal class TraktApplication : Application() {
                 profileDataModule,
                 peopleDataModule,
                 peopleRemoteModule,
+                listsRemoteModule,
+                searchRemoteModule,
+                commentsRemoteModule,
+                userRemoteModule,
                 authRemoteModule,
                 billingRemoteModule,
                 checkInRemoteModule,

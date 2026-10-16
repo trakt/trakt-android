@@ -17,13 +17,10 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
-import tv.trakt.trakt.app.core.auth.di.authDataModule
 import tv.trakt.trakt.app.core.auth.di.authModule
-import tv.trakt.trakt.app.core.comments.di.commentsDataModule
 import tv.trakt.trakt.app.core.comments.di.commentsModule
 import tv.trakt.trakt.app.core.details.episode.di.episodeDetailsModule
 import tv.trakt.trakt.app.core.details.lists.details.media.di.customListMediaModule
-import tv.trakt.trakt.app.core.details.lists.module.customListsDataModule
 import tv.trakt.trakt.app.core.details.movie.di.movieDetailsModule
 import tv.trakt.trakt.app.core.details.show.di.showDetailsModule
 import tv.trakt.trakt.app.core.episodes.di.episodesDataModule
@@ -59,6 +56,10 @@ import tv.trakt.trakt.common.core.sync.di.syncRemoteModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
+import tv.trakt.trakt.common.core.user.di.commentsRemoteModule
+import tv.trakt.trakt.common.core.user.di.listsRemoteModule
+import tv.trakt.trakt.common.core.user.di.searchRemoteModule
+import tv.trakt.trakt.common.core.user.di.userRemoteModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.coil.coilModule
@@ -126,7 +127,6 @@ class TvActivity : ComponentActivity() {
                     tutorialsModule,
                     homeModule,
                     authModule,
-                    authDataModule,
                     commonAuthModule,
                     showsModule,
                     showsDataModule,
@@ -139,9 +139,12 @@ class TvActivity : ComponentActivity() {
                     episodeDetailsModule,
                     listsModule,
                     commentsModule,
-                    commentsDataModule,
                     peopleDataModule,
                     peopleRemoteModule,
+                    listsRemoteModule,
+                    searchRemoteModule,
+                    commentsRemoteModule,
+                    userRemoteModule,
                     plexRemoteModule,
                     authRemoteModule,
                     syncRemoteModule,
@@ -149,7 +152,6 @@ class TvActivity : ComponentActivity() {
                     showsRemoteModule,
                     moviesRemoteModule,
                     personDetailsModule,
-                    customListsDataModule,
                     customListMediaModule,
                     profileDataModule,
                     profileModule,

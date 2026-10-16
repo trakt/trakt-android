@@ -19,8 +19,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.lists.data.remote.ListsApiClient
-import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdatesStorage
 import tv.trakt.trakt.common.model.Movie
@@ -77,7 +75,6 @@ import tv.trakt.trakt.core.lists.usecases.GetListsFilterUseCase
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
 
 internal val listsDataModule = module {
-    singleOf(::ListsApiClient) { bind<ListsRemoteDataSource>() }
     singleOf(::ListsPersonalStorage) { bind<ListsPersonalLocalDataSource>() }
     singleOf(::ListsLikedStorage) { bind<ListsLikedLocalDataSource>() }
     singleOf(::ListsCollaborationsStorage) { bind<ListsCollaborationsLocalDataSource>() }
