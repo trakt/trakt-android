@@ -64,6 +64,8 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.CaptionStyleCompat
 import androidx.media3.ui.SubtitleView
 import androidx.media3.ui.compose.ContentFrame
+import io.ktor.http.Url
+import io.ktor.http.protocolWithAuthority
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -101,8 +103,8 @@ internal fun TvPlexPlayerScreen(
     videoProgress: Float,
     mediaId: TraktId,
     mediaType: MediaType,
-    ratingKey: String? = null,
-    token: String? = null,
+    ratingKey: String?,
+    token: String?,
 ) {
     val activity = LocalActivity.current
     val appContext = LocalContext.current.applicationContext
@@ -177,9 +179,11 @@ internal fun TvPlexPlayerScreen(
         fun reportTimeline(state: State) {
             // Before the resume seek lands the position is 0, which would reset the server's view offset.
             if (videoProgress > 0f && !initialSeekDone) return
+            val baseUrl = runCatching { Url(allUrls[currentUrlIndex.intValue]).protocolWithAuthority }
+                .getOrNull() ?: return
             timelines.trySend(
                 Snapshot(
-                    baseUrl = allUrls[currentUrlIndex.intValue].substringBefore("/library/"),
+                    baseUrl = baseUrl,
                     position = player.currentPosition,
                     duration = player.duration,
                     state = state,
@@ -728,6 +732,8 @@ fun Preview() {
             videoProgress = 33f,
             mediaId = TraktId(0),
             mediaType = MediaType.Movie,
+            ratingKey = null,
+            token = null,
         )
     }
 }
