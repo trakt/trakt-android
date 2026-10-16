@@ -3,8 +3,6 @@ package tv.trakt.trakt.app.core.movies.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.movies.MoviesViewModel
-import tv.trakt.trakt.app.core.movies.data.remote.MoviesApiClient
-import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.movies.features.anticipated.MoviesAnticipatedViewAllViewModel
 import tv.trakt.trakt.app.core.movies.features.popular.MoviesPopularViewAllViewModel
 import tv.trakt.trakt.app.core.movies.features.releases.MoviesReleasesViewAllViewModel
@@ -18,14 +16,6 @@ import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieStorage
 
 internal val moviesDataModule = module {
-    single<MoviesRemoteDataSource> {
-        MoviesApiClient(
-            api = get(),
-            recommendationsApi = get(),
-            calendarsApi = get(),
-        )
-    }
-
     single<MovieLocalDataSource> {
         MovieStorage()
     }

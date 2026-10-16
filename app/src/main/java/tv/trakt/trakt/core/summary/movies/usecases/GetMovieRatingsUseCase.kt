@@ -1,9 +1,9 @@
 package tv.trakt.trakt.core.summary.movies.usecases
 
+import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExternalRating.TraktRating
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
 internal class GetMovieRatingsUseCase(
     private val remoteSource: MoviesRemoteDataSource,
