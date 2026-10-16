@@ -69,7 +69,9 @@ class LoadUserLibraryUseCase(
                 } ?: throw Error("Unknown library item type")
             }
             .also {
+                // Filtered pages would replace the full library cache with a subset.
                 when {
+                    availableOn != null -> Unit
                     page == 1 -> localSource.setItems(it)
                     else -> localSource.addItems(it)
                 }

@@ -60,7 +60,7 @@ internal class ProfileLibraryViewModel(
                 itemsState.update {
                     getLibraryUseCase.getLibrary(
                         limit = PROFILE_LIBRARY_SECTION_LIMIT,
-                        availableOn = "plex",
+                        availableOn = "digital",
                     )
                 }
 

@@ -162,7 +162,7 @@ internal class MoviesSyncApiClient(
      */
     override suspend fun getPlexCollection(): Map<TraktId, String> {
         val response = collectionApi.getSyncCollectionMinimalMovies(
-            availableOn = "plex",
+            availableOn = "digital",
         )
         return response.body()
             .map { it.key.toInt().toTraktId() to it.value }

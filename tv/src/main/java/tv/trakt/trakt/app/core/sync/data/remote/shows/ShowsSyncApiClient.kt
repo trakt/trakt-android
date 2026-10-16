@@ -192,7 +192,7 @@ internal class ShowsSyncApiClient(
 
     override suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, Map<TraktId, String>>> {
         val response = collectionApi.getSyncCollectionMinimalShows(
-            availableOn = "plex",
+            availableOn = "digital",
         )
 
         return response.body()
@@ -212,7 +212,7 @@ internal class ShowsSyncApiClient(
 
     override suspend fun getEpisodesPlexCollection(): Map<TraktId, String> {
         val response = collectionApi.getSyncCollectionMinimalEpisodes(
-            availableOn = "plex",
+            availableOn = "digital",
         )
         return response.body()
             .map { it.key.toInt().toTraktId() to it.value }

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,7 +34,6 @@ import tv.trakt.trakt.core.profile.sections.library.model.LibraryFilter
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
-@OptIn(FlowPreview::class)
 internal class ProfileLibraryViewModel(
     private val loadLibraryUseCase: LoadUserLibraryUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -74,18 +72,17 @@ internal class ProfileLibraryViewModel(
                 val localItems = when {
                     isLoaded -> loadLibraryUseCase.loadLocalMedia(LIBRARY_PAGE_LIMIT).items
                     else -> EmptyImmutableList
+                }.filter {
+                    when (filter) {
+                        null -> true
+                        LibraryFilter.CUSTOM -> it.availableOn.isEmpty()
+                        LibraryFilter.DIGITAL -> it.availableOn.contains(filter.value)
+                    }
                 }
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update {
                         localItems
-                            .filter {
-                                when (filter) {
-                                    null -> true
-                                    LibraryFilter.CUSTOM -> it.availableOn.isEmpty()
-                                    LibraryFilter.PLEX -> it.availableOn.contains(filter.value)
-                                }
-                            }
                             .take(LIBRARY_SECTION_LIMIT)
                             .toImmutableList()
                     }
@@ -98,14 +95,14 @@ internal class ProfileLibraryViewModel(
                     loadLibraryUseCase.loadMedia(
                         page = 1,
                         limit = LIBRARY_PAGE_LIMIT,
-                        availableOn = null,
+                        availableOn = filter?.requestValue,
                     )
                         .items
                         .filter {
                             when (filter) {
                                 null -> true
                                 LibraryFilter.CUSTOM -> it.availableOn.isEmpty()
-                                LibraryFilter.PLEX -> it.availableOn.contains(filter.value)
+                                LibraryFilter.DIGITAL -> it.availableOn.contains(filter.value)
                             }
                         }
                         .take(LIBRARY_SECTION_LIMIT)
