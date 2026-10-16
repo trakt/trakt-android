@@ -107,6 +107,4 @@ dependencies {
     api(libs.youtube.player.ui)
 
     debugImplementation(libs.androidx.compose.tooling)
-
-    testImplementation(libs.junit)
 }
