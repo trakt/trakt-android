@@ -46,6 +46,7 @@ import tv.trakt.trakt.app.core.streamings.di.plexDataModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.core.episodes.di.episodesRemoteModule
 import tv.trakt.trakt.common.core.media.di.mediaDataModule
 import tv.trakt.trakt.common.core.movies.di.moviesRemoteModule
 import tv.trakt.trakt.common.core.people.di.peopleRemoteModule
@@ -138,6 +139,7 @@ class TvActivity : ComponentActivity() {
                     commentsDataModule,
                     peopleDataModule,
                     peopleRemoteModule,
+                    episodesRemoteModule,
                     showsRemoteModule,
                     moviesRemoteModule,
                     personDetailsModule,

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.episodes.features.comments.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.SeasonEpisode
@@ -10,7 +11,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsFilter.Popular
 import tv.trakt.trakt.core.comments.model.CommentsFilter.Recent
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 
 internal class GetEpisodeCommentsUseCase(
     private val remoteSource: EpisodesRemoteDataSource,

@@ -12,9 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -35,8 +33,6 @@ import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingS
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.DefaultGetTrendingShowsUseCase
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesApiClient
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsStorage
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
@@ -47,8 +43,6 @@ import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 private const val SHOWS_PREFERENCES = "shows_preferences"
 
 internal val showsDataModule = module {
-    singleOf(::EpisodesApiClient) { bind<EpisodesRemoteDataSource>() }
-
     single<TrendingShowsLocalDataSource> {
         TrendingShowsStorage(
             dataStore = get(named(SHOWS_PREFERENCES)),

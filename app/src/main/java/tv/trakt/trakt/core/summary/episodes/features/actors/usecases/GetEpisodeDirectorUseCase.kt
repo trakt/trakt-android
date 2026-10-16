@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.summary.episodes.features.actors.usecases
 
+import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 
 internal class GetEpisodeDirectorUseCase(
