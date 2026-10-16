@@ -3,10 +3,10 @@ package tv.trakt.trakt.app.core.details.movie.usecases.streamings
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import timber.log.Timber
-import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteDataSource
+import tv.trakt.trakt.common.core.plex.data.remote.PlexRemoteDataSource
 import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.PLEX_PLAY_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
