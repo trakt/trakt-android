@@ -21,6 +21,7 @@ import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.core.klipy.di.gifsDataModule
 import tv.trakt.trakt.common.core.media.di.mediaDataModule
+import tv.trakt.trakt.common.core.people.di.peopleRemoteModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
@@ -180,6 +181,7 @@ internal class TraktApplication : Application() {
                 profileModule,
                 profileDataModule,
                 peopleDataModule,
+                peopleRemoteModule,
                 peopleModule,
                 personDetailsModule,
                 searchModule,
