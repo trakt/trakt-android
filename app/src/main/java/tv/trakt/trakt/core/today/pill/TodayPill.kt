@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.today.pill
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.keyframes
@@ -43,8 +44,8 @@ import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
-import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
 private val PillSize = 34.dp
 private val RingWidth = 1.1.dp
@@ -71,14 +72,19 @@ internal fun TodayPill(
     onClick: (groupKey: String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    if (!state.isVisible) return
 
-    TodayPillContent(
-        posters = state.posters,
-        unseenCount = state.unseenCount,
-        onClick = { state.targetKey?.let(onClick) },
+    AnimatedVisibility(
+        visible = state.isVisible,
+        enter = fadeIn(tween(200)),
+        exit = ExitTransition.None,
         modifier = modifier,
-    )
+    ) {
+        TodayPillContent(
+            posters = state.posters,
+            unseenCount = state.unseenCount,
+            onClick = { state.targetKey?.let(onClick) },
+        )
+    }
 }
 
 @Composable
@@ -193,7 +199,7 @@ private fun TodayPillBadge(
             return@LaunchedEffect
         }
 
-        delay(POP_DELAY_MS)
+        delay(POP_DELAY_MS.milliseconds)
         repeat(POP_COUNT) {
             scale.animateTo(
                 targetValue = 1F,

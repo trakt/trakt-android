@@ -72,6 +72,7 @@ import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.model.TodayTitleStory
@@ -103,6 +104,7 @@ private val PosterTopGap = 24.dp
 @Composable
 internal fun TodayStoriesScreen(
     viewModel: TodayStoriesViewModel,
+    onNavigateToUser: (User) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val bottomBarVisibility = LocalBottomBarVisibility.current
@@ -130,6 +132,7 @@ internal fun TodayStoriesScreen(
         onPrevious = viewModel::previous,
         onNextGroup = viewModel::nextGroup,
         onPreviousGroup = viewModel::previousGroup,
+        onUserClick = onNavigateToUser,
         onClose = onNavigateBack,
     )
 }
@@ -142,6 +145,7 @@ private fun TodayStoriesContent(
     onPrevious: () -> Unit = {},
     onNextGroup: () -> Unit = {},
     onPreviousGroup: () -> Unit = {},
+    onUserClick: (User) -> Unit = {},
     onClose: () -> Unit = {},
 ) {
     val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
@@ -178,6 +182,7 @@ private fun TodayStoriesContent(
             isActive = transition.targetState == EnterExitState.Visible,
             onNext = onNext,
             onPrevious = onPrevious,
+            onUserClick = onUserClick,
             onClose = onClose,
         )
     }
@@ -190,6 +195,7 @@ private fun TodayStoryPage(
     isActive: Boolean,
     onNext: () -> Unit,
     onPrevious: () -> Unit,
+    onUserClick: (User) -> Unit,
     onClose: () -> Unit,
 ) {
     val group = state.group ?: return
@@ -266,6 +272,7 @@ private fun TodayStoryPage(
                 onNext = onNext,
                 onPrevious = onPrevious,
                 onHeldChange = { isHeld = it },
+                onUserClick = onUserClick,
                 onConfirmVisibleChange = { isConfirming = it },
                 modifier = Modifier
                     .fillMaxWidth()

@@ -57,7 +57,9 @@ internal sealed interface TodayStoryGroup {
         }
 
         private fun fromStory(story: TodayTitleStory): TodayStoryGroup {
-            val friendFrames = story.actions.map { TodayStoryFrame.Friend(story, it) }
+            val friendFrames = story.actions
+                .sortedBy { it.activityAt }
+                .map { TodayStoryFrame.Friend(story, it) }
             val frames = when {
                 story.users.size < 2 -> friendFrames
                 else -> persistentListOf(TodayStoryFrame.Summary(story)) + friendFrames

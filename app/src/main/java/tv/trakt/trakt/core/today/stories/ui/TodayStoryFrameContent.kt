@@ -49,6 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.today.model.FollowingActivity
 import tv.trakt.trakt.core.today.model.TodayFriendAction
 import tv.trakt.trakt.core.today.model.TodayMedia
@@ -83,6 +84,7 @@ internal fun TodayStoryFrameContent(
     onNext: () -> Unit,
     onPrevious: () -> Unit,
     onHeldChange: (Boolean) -> Unit,
+    onUserClick: (User) -> Unit,
     onConfirmVisibleChange: (Boolean) -> Unit,
 ) {
     Layout(
@@ -107,6 +109,7 @@ internal fun TodayStoryFrameContent(
 
                 TodayStoryFooter(
                     frame = frame,
+                    onUserClick = onUserClick,
                     onConfirmVisibleChange = onConfirmVisibleChange,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -297,6 +300,7 @@ private fun TodayFlipPoster(
 private fun TodayStoryFooter(
     frame: TodayStoryFrame,
     modifier: Modifier = Modifier,
+    onUserClick: (User) -> Unit,
     onConfirmVisibleChange: (Boolean) -> Unit,
 ) {
     val media = frame.media
@@ -313,6 +317,7 @@ private fun TodayStoryFooter(
             )
             is TodayStoryFrame.Friend -> TodayFriendFooter(
                 action = frame.action,
+                onUserClick = onUserClick,
                 modifier = Modifier.weight(1F),
             )
             is TodayStoryFrame.ForYou -> TodayForYouFooter(
@@ -420,6 +425,7 @@ private fun Preview() {
             onNext = {},
             onPrevious = {},
             onHeldChange = {},
+            onUserClick = {},
             onConfirmVisibleChange = {},
             modifier = Modifier
                 .background(TraktTheme.colors.backgroundPrimary),

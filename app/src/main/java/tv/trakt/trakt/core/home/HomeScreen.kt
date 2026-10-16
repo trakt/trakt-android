@@ -382,14 +382,9 @@ private fun HomeScreenHeader(
         showFilters = userLoggedIn,
         showWhatsNew = state.whatsNew != null,
         userLoading = userLoading,
-        todayContent = when {
-            userLoggedIn -> {
-                {
-                    TodayPill(onClick = onTodayClick)
-                }
-            }
-            else -> {
-                null
+        todayContent = {
+            if (userLoggedIn) {
+                TodayPill(onClick = onTodayClick)
             }
         },
         onVipClick = onVipClick,

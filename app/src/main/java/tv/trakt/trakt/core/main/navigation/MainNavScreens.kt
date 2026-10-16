@@ -140,6 +140,12 @@ internal fun NavGraphBuilder.homeScreens(
         )
 
         todayStoriesScreen(
+            onNavigateToUser = { user ->
+                navigateToUserProfile(
+                    user = user,
+                    currentUserId = userId,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
 

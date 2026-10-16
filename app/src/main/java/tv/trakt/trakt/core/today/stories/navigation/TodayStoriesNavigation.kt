@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.today.stories.TodayStoriesScreen
 
 @Serializable
@@ -12,10 +13,14 @@ internal data class TodayStoriesDestination(
     val startKey: String,
 )
 
-internal fun NavGraphBuilder.todayStoriesScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.todayStoriesScreen(
+    onNavigateToUser: (User) -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     composable<TodayStoriesDestination> {
         TodayStoriesScreen(
             viewModel = koinViewModel(),
+            onNavigateToUser = onNavigateToUser,
             onNavigateBack = onNavigateBack,
         )
     }

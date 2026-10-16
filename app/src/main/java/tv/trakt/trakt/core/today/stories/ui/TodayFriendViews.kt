@@ -31,6 +31,7 @@ import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -60,6 +61,7 @@ private val InlineStarSize = 14.dp
 internal fun TodayFriendFooter(
     action: TodayFriendAction,
     modifier: Modifier = Modifier,
+    onUserClick: (User) -> Unit = {},
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -70,6 +72,7 @@ internal fun TodayFriendFooter(
             user = action.user,
             size = AvatarSize,
             borderColor = TraktTheme.colors.accent,
+            modifier = Modifier.onClick { onUserClick(action.user) },
         )
 
         Column(
