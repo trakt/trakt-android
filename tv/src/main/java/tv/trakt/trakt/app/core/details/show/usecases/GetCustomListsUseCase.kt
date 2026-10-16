@@ -2,7 +2,7 @@ package tv.trakt.trakt.app.core.details.show.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
@@ -20,7 +20,7 @@ internal class GetCustomListsUseCase(
         type: Type,
         limit: Int,
     ): ImmutableList<CustomList> {
-        return remoteSource.getShowLists(
+        return remoteSource.getLists(
             showId = showId,
             type = type.value,
             limit = limit,

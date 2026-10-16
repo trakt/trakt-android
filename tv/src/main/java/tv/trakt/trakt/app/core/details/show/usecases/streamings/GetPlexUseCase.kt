@@ -1,8 +1,8 @@
 package tv.trakt.trakt.app.core.details.show.usecases.streamings
 
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
@@ -19,8 +19,8 @@ internal class GetPlexUseCase(
         // If we don't have the show or it doesn't have a Plex ID, fetch details from remote and update.
         if (show == null || show.ids.plex == null) {
             show = remoteShowSource.getShowDetails(showId)
-                ?.let { Show.fromDto(it) }
-                ?.also { localShowSource.upsertShows(listOf(it)) }
+                .let { Show.fromDto(it) }
+                .also { localShowSource.upsertShows(listOf(it)) }
         }
 
         val result = remoteSyncSource.getShowsPlexCollection()

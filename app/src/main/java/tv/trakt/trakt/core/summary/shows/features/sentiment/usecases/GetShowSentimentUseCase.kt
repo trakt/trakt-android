@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.summary.shows.features.sentiment.usecases
 
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetShowSentimentUseCase(
     private val remoteSource: ShowsRemoteDataSource,

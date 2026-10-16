@@ -4,8 +4,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.sync.model.ProgressItem.ShowItem
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -21,7 +21,7 @@ internal class GetShowSeasonsUseCase(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) {
     suspend fun getAllSeasons(showId: TraktId): ShowSeasons {
-        val remoteSeasons = remoteShowsSource.getShowSeasons(showId)
+        val remoteSeasons = remoteShowsSource.getSeasons(showId)
             .asyncMap { Season.fromDto(it) }
             .filter { (it.episodeCount ?: 0) > 0 }
             .sortedBy { it.number }
