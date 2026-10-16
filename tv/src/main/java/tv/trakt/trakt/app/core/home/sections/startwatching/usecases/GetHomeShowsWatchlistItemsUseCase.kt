@@ -1,8 +1,8 @@
 package tv.trakt.trakt.app.core.home.sections.startwatching.usecases
 
 import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
-import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime

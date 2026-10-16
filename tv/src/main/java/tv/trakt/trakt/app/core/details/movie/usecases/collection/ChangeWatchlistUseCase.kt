@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.details.movie.usecases.collection
 
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.TraktId
 

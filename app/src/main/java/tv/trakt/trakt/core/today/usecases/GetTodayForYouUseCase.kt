@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.today.usecases
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Episode
@@ -11,7 +12,6 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.core.today.model.TodayForYouItem
 import tv.trakt.trakt.core.today.model.TodayMedia
 import java.time.Instant

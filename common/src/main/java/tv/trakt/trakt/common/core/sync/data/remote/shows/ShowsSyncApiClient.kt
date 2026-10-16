@@ -1,7 +1,8 @@
-package tv.trakt.trakt.core.sync.data.remote.shows
+package tv.trakt.trakt.common.core.sync.data.remote.shows
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
@@ -13,7 +14,11 @@ import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
+import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
+import tv.trakt.trakt.common.networking.WatchlistShowDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class ShowsSyncApiClient(
@@ -21,6 +26,7 @@ internal class ShowsSyncApiClient(
     private val usersApi: UsersApi,
     private val recommendationsApi: RecommendationsApi,
     private val cacheMarker: CacheMarkerProvider,
+    private val collectionApi: CollectionApi,
 ) : ShowsSyncRemoteDataSource {
     override suspend fun getUpNext(
         limit: Int,
@@ -54,7 +60,7 @@ internal class ShowsSyncApiClient(
     override suspend fun addToWatched(
         showId: TraktId,
         watchedAt: String,
-    ) {
+    ): SyncAddHistoryResponseDto {
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
@@ -71,8 +77,9 @@ internal class ShowsSyncApiClient(
                 ),
             ),
         )
-        syncApi.postSyncHistoryAdd(request)
+        val response = syncApi.postSyncHistoryAdd(request)
         cacheMarker.invalidate()
+        return response.body()
     }
 
     override suspend fun removeAllFromHistory(showId: TraktId) {
@@ -211,5 +218,90 @@ internal class ShowsSyncApiClient(
         )
         syncApi.postSyncFavoritesRemove(request)
         cacheMarker.invalidate()
+    }
+
+    override suspend fun getWatchlist(
+        sorting: Sorting,
+        page: Int?,
+        limit: Int?,
+        extended: String?,
+        hide: String?,
+    ): List<WatchlistShowDto> {
+        val response = usersApi.getUsersWatchlistShows(
+            id = "me",
+            sort = "",
+            extended = extended,
+            page = page,
+            limit = limit,
+            watchnow = null,
+            genres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            subgenres = null,
+            hide = hide,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
+            runtimes = null,
+            countries = null,
+            certifications = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getWatched(): Map<String, Map<String, Map<String, List<String>>>> {
+        val result = mutableMapOf<String, Map<String, Map<String, List<String>>>>()
+        var page = 1
+
+        while (true) {
+            val pageResponse = usersApi.getUsersWatchedMinimalShows(
+                id = "me",
+                extended = "min",
+                specials = true,
+                seasonNumbers = true,
+                page = page,
+                limit = 100,
+            ).body()
+
+            if (pageResponse.isEmpty()) {
+                break
+            }
+
+            result.putAll(pageResponse)
+            page++
+        }
+
+        return result
+    }
+
+    override suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, Map<TraktId, String>>> {
+        val response = collectionApi.getSyncCollectionMinimalShows(
+            availableOn = "digital",
+        )
+
+        return response.body()
+            .map {
+                val showId = it.key.toInt().toTraktId()
+                showId to it.value.map { season ->
+                    val seasonId = season.key.toInt().toTraktId()
+                    val episodes = season.value.map { episode ->
+                        val episodeId = episode.key.toInt().toTraktId()
+                        episodeId to episode.value
+                    }.toMap()
+                    seasonId to episodes
+                }.toMap()
+            }
+            .toMap()
+    }
+
+    override suspend fun getEpisodesPlexCollection(): Map<TraktId, String> {
+        val response = collectionApi.getSyncCollectionMinimalEpisodes(
+            availableOn = "digital",
+        )
+        return response.body()
+            .map { it.key.toInt().toTraktId() to it.value }
+            .toMap()
     }
 }

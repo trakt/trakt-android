@@ -1,8 +1,8 @@
 package tv.trakt.trakt.app.core.details.show.usecases.collection
 
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.app.core.sync.model.WatchedShow
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult
@@ -22,7 +22,7 @@ internal class ChangeHistoryUseCase(
         val watchedAt = customDate?.dateString
             ?: nowUtcInstant().toString()
 
-        val response = remoteSource.addToHistory(
+        val response = remoteSource.addToWatched(
             showId = showId,
             watchedAt = watchedAt,
         )
@@ -48,7 +48,7 @@ internal class ChangeHistoryUseCase(
     }
 
     suspend fun removeFromHistory(showId: TraktId) {
-        remoteSource.removeFromHistory(showId = showId)
+        remoteSource.removeAllFromHistory(showId = showId)
         syncLocalSource.removeWatched(setOf(showId))
     }
 }
