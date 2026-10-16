@@ -1,13 +1,13 @@
 package tv.trakt.trakt.core.sync.usecases
 
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.TraktId
 
 internal class UpdateMovieHistoryUseCase(
-    private val remoteSource: MoviesSyncRemoteDataSource,
+    private val remoteSource: MoviesSyncRemoteSource,
 ) {
     suspend fun addToWatched(
         movieId: TraktId,

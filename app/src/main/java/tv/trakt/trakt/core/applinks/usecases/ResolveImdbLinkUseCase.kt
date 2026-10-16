@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.applinks.usecases
 
 import org.openapitools.client.models.GetSearchQuery200ResponseInner.Type
-import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
+import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.core.applinks.AppLinkEvent
@@ -34,7 +34,7 @@ internal fun mapToAppLinkEvent(item: SearchItemDto): AppLinkEvent? {
 }
 
 internal class ResolveImdbLinkUseCase(
-    private val remoteSource: SearchRemoteDataSource,
+    private val remoteSource: SearchRemoteSource,
 ) {
     suspend fun resolve(imdbId: String): AppLinkEvent {
         return remoteSource

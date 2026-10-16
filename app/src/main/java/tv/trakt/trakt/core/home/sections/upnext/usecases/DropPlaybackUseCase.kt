@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.home.sections.upnext.usecases
 
 import timber.log.Timber
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
@@ -9,7 +9,7 @@ import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class DropPlaybackUseCase(
-    private val remoteMovieSyncSource: MoviesSyncRemoteDataSource,
+    private val remoteMovieSyncSource: MoviesSyncRemoteSource,
     private val remoteScrobbleSource: ScrobbleExtrasApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) {

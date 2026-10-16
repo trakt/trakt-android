@@ -3,7 +3,7 @@ package tv.trakt.trakt.common.core.streamings.usecase
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.local.cacheSourcesIfNeeded
-import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteDataSource
+import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteSource
 import tv.trakt.trakt.common.core.streamings.helpers.PriorityStreamingServiceProvider
 import tv.trakt.trakt.common.core.streamings.helpers.toStreamingService
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
@@ -17,7 +17,7 @@ import tv.trakt.trakt.common.networking.StreamingDto
  * picked from the subscriptions available in their own country.
  */
 class GetPriorityStreamingUseCase(
-    private val remoteStreamingSource: StreamingRemoteDataSource,
+    private val remoteStreamingSource: StreamingRemoteSource,
     private val localStreamingSource: StreamingLocalDataSource,
     private val priorityStreamingProvider: PriorityStreamingServiceProvider,
 ) {

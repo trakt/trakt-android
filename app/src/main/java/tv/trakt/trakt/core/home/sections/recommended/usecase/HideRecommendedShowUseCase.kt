@@ -1,13 +1,13 @@
 package tv.trakt.trakt.core.home.sections.recommended.usecase
 
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalDataSource
 import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalDataSource
 
 internal class HideRecommendedShowUseCase(
-    private val remoteSource: ShowsSyncRemoteDataSource,
+    private val remoteSource: ShowsSyncRemoteSource,
     private val localRecommendedSource: RecommendedShowsLocalDataSource,
     private val localRecommendedMediaSource: RecommendedMediaLocalDataSource,
 ) {

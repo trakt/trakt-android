@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.discover.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.data.remote.MediaRemoteDataSource
+import tv.trakt.trakt.common.core.media.data.remote.MediaRemoteSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.model.Movie
@@ -26,7 +26,7 @@ import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommende
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
 internal class GetDiscoverMediaUseCase(
-    private val remoteSource: MediaRemoteDataSource,
+    private val remoteSource: MediaRemoteSource,
     private val localMediaSource: DiscoverMediaLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,

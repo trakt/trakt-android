@@ -1,16 +1,16 @@
 package tv.trakt.trakt.app.core.details.show.usecases.streamings
 
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 
 internal class GetPlexUseCase(
-    private val remoteSyncSource: ShowsSyncRemoteDataSource,
-    private val remoteShowSource: ShowsRemoteDataSource,
+    private val remoteSyncSource: ShowsSyncRemoteSource,
+    private val remoteShowSource: ShowsRemoteSource,
     private val localShowSource: ShowLocalDataSource,
 ) {
     suspend fun getPlexStatus(showId: TraktId): Result {

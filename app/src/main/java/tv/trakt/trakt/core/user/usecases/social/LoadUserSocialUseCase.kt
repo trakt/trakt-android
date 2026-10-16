@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
-import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -15,7 +15,7 @@ import tv.trakt.trakt.common.model.toTraktId
  * Loads the user's socials from the remote source and updates the local cache.
  */
 internal class LoadUserSocialUseCase(
-    private val remoteSource: UserSocialRemoteDataSource,
+    private val remoteSource: UserSocialRemoteSource,
 ) {
     suspend fun loadFollowingIds(): ImmutableSet<TraktId> {
         return remoteSource.getFollowing(

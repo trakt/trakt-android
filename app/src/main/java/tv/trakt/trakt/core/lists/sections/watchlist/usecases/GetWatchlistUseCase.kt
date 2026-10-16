@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
@@ -17,7 +17,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.sections.watchlist.model.getWatchlistSorting
 
 internal class GetWatchlistUseCase(
-    private val remoteSource: UserWatchlistRemoteDataSource,
+    private val remoteSource: UserWatchlistRemoteSource,
     private val userWatchlistLocalDataSource: UserWatchlistLocalDataSource,
 ) {
     suspend fun getLocalWatchlist(

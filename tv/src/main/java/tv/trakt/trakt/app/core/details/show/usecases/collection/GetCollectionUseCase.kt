@@ -3,7 +3,7 @@ package tv.trakt.trakt.app.core.details.show.usecases.collection
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.model.WatchedShow
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show
@@ -12,7 +12,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 
 internal class GetCollectionUseCase(
-    private val remoteSource: ShowsSyncRemoteDataSource,
+    private val remoteSource: ShowsSyncRemoteSource,
     private val syncLocalSource: ShowsSyncLocalDataSource,
 ) {
     suspend fun getWatchedShow(show: Show): WatchedShow? {

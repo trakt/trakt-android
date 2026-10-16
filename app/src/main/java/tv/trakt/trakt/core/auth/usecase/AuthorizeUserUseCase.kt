@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.TokenProvider
-import tv.trakt.trakt.common.auth.data.remote.AuthRemoteDataSource
+import tv.trakt.trakt.common.auth.data.remote.AuthRemoteSource
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
@@ -32,7 +32,7 @@ internal val authRedirectUriKey = stringPreferencesKey("auth_redirect_uri")
 internal val forceLoginKey = booleanPreferencesKey("force_login")
 
 internal class AuthorizeUserUseCase(
-    private val remoteSource: AuthRemoteDataSource,
+    private val remoteSource: AuthRemoteSource,
     private val tokenProvider: TokenProvider,
 ) {
     suspend fun authorizeByCode(

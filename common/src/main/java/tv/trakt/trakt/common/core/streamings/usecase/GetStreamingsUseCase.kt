@@ -8,7 +8,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.local.cacheSourcesIfNeeded
-import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteDataSource
+import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteSource
 import tv.trakt.trakt.common.core.streamings.helpers.popularServicesComparator
 import tv.trakt.trakt.common.core.streamings.helpers.toStreamingService
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
@@ -29,7 +29,7 @@ import tv.trakt.trakt.common.networking.StreamingDto
  * "Where to Watch" row.
  */
 class GetStreamingsUseCase(
-    private val remoteStreamingSource: StreamingRemoteDataSource,
+    private val remoteStreamingSource: StreamingRemoteSource,
     private val localStreamingSource: StreamingLocalDataSource,
 ) {
     suspend fun getStreamings(

@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.user.usecases.reactions
 
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.common.core.reactions.data.remote.ReactionsRemoteDataSource
+import tv.trakt.trakt.common.core.reactions.data.remote.ReactionsRemoteSource
 import tv.trakt.trakt.common.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.common.model.reactions.Reaction
 
@@ -10,7 +10,7 @@ private val supportedReactions = Reaction.entries
     .map { it.name.uppercase() }
 
 internal class LoadUserReactionsUseCase(
-    private val remoteSource: ReactionsRemoteDataSource,
+    private val remoteSource: ReactionsRemoteSource,
     private val localSource: UserReactionsLocalDataSource,
 ) {
     suspend fun isLoaded(): Boolean {

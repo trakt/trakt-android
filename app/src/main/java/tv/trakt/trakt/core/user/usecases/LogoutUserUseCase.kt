@@ -9,7 +9,7 @@ import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.billing.data.remote.BillingRemoteDataSource
+import tv.trakt.trakt.common.core.billing.data.remote.BillingRemoteSource
 import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
@@ -21,7 +21,7 @@ import tv.trakt.trakt.common.core.user.data.local.reactions.UserMediaReactionsLo
 import tv.trakt.trakt.common.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
-import tv.trakt.trakt.common.core.younify.data.remote.YounifyRemoteDataSource
+import tv.trakt.trakt.common.core.younify.data.remote.YounifyRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
@@ -55,8 +55,8 @@ internal class LogoutUserUseCase(
     private val collapsingManager: CollapsingManager,
     private val checkInManager: CheckInManager,
     private val apiClients: Array<ApiClient>,
-    private val younifyApiClient: YounifyRemoteDataSource,
-    private val billingApiClient: BillingRemoteDataSource,
+    private val younifyRemoteSource: YounifyRemoteSource,
+    private val billingRemoteSource: BillingRemoteSource,
     private val localUpNext: HomeUpNextLocalDataSource,
     private val localWatchlistUpNext: HomeWatchlistLocalDataSource,
     private val localUpcoming: HomeUpcomingLocalDataSource,
@@ -102,8 +102,8 @@ internal class LogoutUserUseCase(
             .forEach { api ->
                 api.client.authProvider<BearerAuthProvider>()?.clearToken()
             }.also {
-                younifyApiClient.clear()
-                billingApiClient.clear()
+                younifyRemoteSource.clear()
+                billingRemoteSource.clear()
             }
 
         localUpNext.clear()

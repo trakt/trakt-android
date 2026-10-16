@@ -8,7 +8,7 @@ import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONA
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetPersonalListItemsUseCase(
-    private val remoteSource: UserPersonalListsRemoteDataSource,
+    private val remoteSource: UserPersonalListsRemoteSource,
     private val localShowSource: ShowLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {

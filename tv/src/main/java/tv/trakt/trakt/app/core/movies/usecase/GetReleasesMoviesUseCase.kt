@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteDataSource
+import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Movie
@@ -16,7 +16,7 @@ private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 14
 
 internal class GetReleasesMoviesUseCase(
-    private val remoteSource: MoviesRemoteDataSource,
+    private val remoteSource: MoviesRemoteSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {
     suspend fun getReleases(

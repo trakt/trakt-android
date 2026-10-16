@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.search.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.people.data.remote.PeopleRemoteDataSource
+import tv.trakt.trakt.common.core.people.data.remote.PeopleRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalDataSource
 
 internal class GetBirthdayPeopleUseCase(
-    private val remoteSource: PeopleRemoteDataSource,
+    private val remoteSource: PeopleRemoteSource,
     private val localSource: SearchPeopleLocalDataSource,
 ) {
     suspend fun isLocalPeopleValid(): Boolean {

@@ -6,7 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
-import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.MediaMode
@@ -18,7 +18,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal class GetUserProfileFavoritesUseCase(
-    private val remoteSource: UserFavoritesRemoteDataSource,
+    private val remoteSource: UserFavoritesRemoteSource,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
 ) {
     suspend fun getUserFavorites(

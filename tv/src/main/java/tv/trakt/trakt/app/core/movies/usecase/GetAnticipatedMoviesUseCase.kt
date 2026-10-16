@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteDataSource
+import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Movie
@@ -13,7 +13,7 @@ import tv.trakt.trakt.common.model.fromDto
 import java.time.temporal.ChronoUnit.DAYS
 
 internal class GetAnticipatedMoviesUseCase(
-    private val remoteSource: MoviesRemoteDataSource,
+    private val remoteSource: MoviesRemoteSource,
     private val localSource: MovieLocalDataSource,
 ) {
     suspend fun getAnticipatedMovies(

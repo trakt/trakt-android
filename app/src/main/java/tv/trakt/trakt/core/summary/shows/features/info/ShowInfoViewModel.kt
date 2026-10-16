@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.common.core.parentalguide.data.remote.ParentalGuideRemoteDataSource
+import tv.trakt.trakt.common.core.parentalguide.data.remote.ParentalGuideRemoteSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -36,7 +36,7 @@ internal class ShowInfoViewModel(
     private val getStudiosUseCase: GetShowStudiosUseCase,
     private val getNetworksUseCase: GetShowNetworksUseCase,
     private val getCrewUseCase: GetShowCrewUseCase,
-    private val parentalGuideSource: ParentalGuideRemoteDataSource,
+    private val parentalGuideSource: ParentalGuideRemoteSource,
 ) : ViewModel() {
     private val initialState = ShowInfoState()
 

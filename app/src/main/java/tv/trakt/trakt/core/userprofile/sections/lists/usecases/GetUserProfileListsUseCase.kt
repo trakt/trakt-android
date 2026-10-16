@@ -2,15 +2,15 @@ package tv.trakt.trakt.core.userprofile.sections.lists.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteSource
+import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 
 internal class GetUserProfileListsUseCase(
-    private val personalListsSource: UserPersonalListsRemoteDataSource,
-    private val otherListsSource: UserOtherListsRemoteDataSource,
+    private val personalListsSource: UserPersonalListsRemoteSource,
+    private val otherListsSource: UserOtherListsRemoteSource,
 ) {
     suspend fun getPersonalLists(
         userId: TraktId,

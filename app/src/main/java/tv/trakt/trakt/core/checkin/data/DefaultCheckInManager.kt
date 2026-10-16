@@ -15,8 +15,8 @@ import kotlinx.coroutines.sync.withLock
 import org.openapitools.client.models.PostCheckinStart200Response
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.checkin.data.remote.CheckInRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.checkin.data.remote.CheckInRemoteSource
+import tv.trakt.trakt.common.core.user.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -52,8 +52,8 @@ private val ACTIVE_CHECK_COOLDOWN = 10.seconds
 internal class DefaultCheckInManager(
     private val sessionManager: SessionManager,
     private val checkInUpdates: CheckInUpdates,
-    private val checkInRemoteDataSource: CheckInRemoteDataSource,
-    private val userRemoteDataSource: UserRemoteDataSource,
+    private val checkInRemoteSource: CheckInRemoteSource,
+    private val userRemoteSource: UserRemoteSource,
     private val cacheMarkerProvider: CacheMarkerProvider,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistMinUseCase: LoadUserWatchlistUseCase,
@@ -104,7 +104,7 @@ internal class DefaultCheckInManager(
 
         var checkIn: PostCheckinStart200Response? = null
         try {
-            checkIn = checkInRemoteDataSource.postEpisodeCheckIn(
+            checkIn = checkInRemoteSource.postEpisodeCheckIn(
                 showId = showId,
                 season = seasonEpisode.season,
                 episode = seasonEpisode.episode,
@@ -112,11 +112,11 @@ internal class DefaultCheckInManager(
             cacheMarkerProvider.invalidate()
 
             delay(300.milliseconds)
-            var watching = userRemoteDataSource.getWatchingNow()
+            var watching = userRemoteSource.getWatchingNow()
             if (watching == null) {
                 // Wait a bit longer for the check-in to be reflected in replica.
                 delay(2.seconds)
-                watching = userRemoteDataSource.getWatchingNow()
+                watching = userRemoteSource.getWatchingNow()
                 if (watching == null) {
                     throw Exception("Oops! No active watching now found after check-in.")
                 }
@@ -193,15 +193,15 @@ internal class DefaultCheckInManager(
 
         var checkIn: PostCheckinStart200Response? = null
         try {
-            checkIn = checkInRemoteDataSource.postMovieCheckIn(movieId)
+            checkIn = checkInRemoteSource.postMovieCheckIn(movieId)
             cacheMarkerProvider.invalidate()
 
             delay(300.milliseconds)
-            var watching = userRemoteDataSource.getWatchingNow()
+            var watching = userRemoteSource.getWatchingNow()
             if (watching == null) {
                 // Wait a bit longer for the check-in to be reflected in replica.
                 delay(2.seconds)
-                watching = userRemoteDataSource.getWatchingNow()
+                watching = userRemoteSource.getWatchingNow()
                 if (watching == null) {
                     throw Exception("Oops! No active watching now found after check-in.")
                 }
@@ -277,7 +277,7 @@ internal class DefaultCheckInManager(
         }
 
         try {
-            val response = userRemoteDataSource.getWatchingNow()
+            val response = userRemoteSource.getWatchingNow()
             if (response == null) {
                 cacheMarkerProvider.invalidate()
 
@@ -370,7 +370,7 @@ internal class DefaultCheckInManager(
         state.update { CheckInState.Idle }
 
         try {
-            checkInRemoteDataSource.deleteAll()
+            checkInRemoteSource.deleteAll()
             cacheMarkerProvider.invalidate()
 
             if (currentState != CheckInState.Idle) {

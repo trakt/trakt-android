@@ -1,9 +1,9 @@
 package tv.trakt.trakt.core.sync.usecases
 
-import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.common.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.core.sync.data.remote.episodes.EpisodesSyncRemoteSource
+import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -14,10 +14,10 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.widgets.data.WidgetsUpdater
 
 internal class UpdateShowHistoryUseCase(
-    private val remoteSource: ShowsSyncRemoteDataSource,
-    private val remoteEpisodesSyncSource: EpisodesSyncRemoteDataSource,
-    private val remoteShowsSource: ShowsRemoteDataSource,
-    private val remoteEpisodesSource: EpisodesRemoteDataSource,
+    private val remoteSource: ShowsSyncRemoteSource,
+    private val remoteEpisodesSyncSource: EpisodesSyncRemoteSource,
+    private val remoteShowsSource: ShowsRemoteSource,
+    private val remoteEpisodesSource: EpisodesRemoteSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val widgetsUpdater: WidgetsUpdater,
 ) {

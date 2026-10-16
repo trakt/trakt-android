@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.search.usecase.popular
 
-import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
+import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -20,7 +20,7 @@ private const val POPULAR_LISTS_SEARCH_LIMIT = 50
 private const val POPULAR_VALID_PERIOD_HOURS = 12L
 
 internal class GetPopularSearchUseCase(
-    private val remoteSource: SearchRemoteDataSource,
+    private val remoteSource: SearchRemoteSource,
     private val localSource: PopularSearchLocalDataSource,
 ) {
     suspend fun isLocalShowsValid(): Boolean {
