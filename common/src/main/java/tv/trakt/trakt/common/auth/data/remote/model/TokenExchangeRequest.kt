@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.auth.data.remote.model
+package tv.trakt.trakt.common.auth.data.remote.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
  * spec does not yet describe the PKCE `code_verifier` field (RFC 7636).
  */
 @Serializable
-internal data class TokenExchangeRequest(
+data class TokenExchangeRequest(
     @SerialName("code")
     val code: String,
     @SerialName("client_id")

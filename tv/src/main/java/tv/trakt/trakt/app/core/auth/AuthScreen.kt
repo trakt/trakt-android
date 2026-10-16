@@ -59,9 +59,9 @@ import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.LOADING
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.REJECTED
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.SUCCESS
-import tv.trakt.trakt.app.core.auth.model.AuthDeviceCode
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.auth.model.AuthDeviceCode
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import java.util.Locale

@@ -1,8 +1,8 @@
-package tv.trakt.trakt.app.core.auth.model
+package tv.trakt.trakt.common.auth.model
 
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 
-internal sealed interface AuthDeviceTokenState {
+sealed interface AuthDeviceTokenState {
     data class Success(
         val token: TraktAccessToken,
     ) : AuthDeviceTokenState

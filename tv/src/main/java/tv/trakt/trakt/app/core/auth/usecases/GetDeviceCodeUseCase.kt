@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.auth.usecases
 
-import tv.trakt.trakt.app.core.auth.data.remote.AuthRemoteDataSource
-import tv.trakt.trakt.app.core.auth.model.AuthDeviceCode
+import tv.trakt.trakt.common.auth.data.remote.AuthRemoteDataSource
+import tv.trakt.trakt.common.auth.model.AuthDeviceCode
 
 internal class GetDeviceCodeUseCase(
     private val remoteSource: AuthRemoteDataSource,

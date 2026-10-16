@@ -1,11 +1,11 @@
-package tv.trakt.trakt.app.core.auth.model
+package tv.trakt.trakt.common.auth.model
 
 /**
  * Represents the state of an OAuth device token during the authentication process.
  *
  * @property value The HTTP status code associated with this state.
  */
-internal enum class AuthDeviceTokenCode(
+enum class AuthDeviceTokenCode(
     val value: Int,
 ) {
     PENDING(400),
