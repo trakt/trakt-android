@@ -46,6 +46,9 @@ android {
 
         ndk {
             debugSymbolLevel = "SYMBOL_TABLE"
+            providers.gradleProperty("abiFilters").orNull?.let { filters ->
+                abiFilters += filters.split(",").map(String::trim)
+            }
         }
     }
 

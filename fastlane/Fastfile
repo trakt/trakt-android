@@ -190,4 +190,14 @@ platform :android do
         skip_upload_screenshots: true
       )
   end
+
+  desc "Build internal release APK for arm64-v8a devices only (CI artifact)"
+  lane :build_apk do
+    gradle(
+      task: "app:assembleInternalRelease",
+      properties: {
+        "abiFilters" => "arm64-v8a"
+      }
+    )
+  end
 end
