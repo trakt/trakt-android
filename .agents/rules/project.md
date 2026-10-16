@@ -23,7 +23,7 @@ Trakt Android codebase. Phone + Android TV, Compose-first, Kotlin 2.x, Gradle KT
 - **Images**: Coil 3 (`io.coil-kt.coil3`) with Ktor 3 engine adapter and SVG decoder.
 - **Serialization**: kotlinx.serialization for protobuf and typed navigation routes; Moshi for OpenAPI-generated DTOs.
 - **Firebase**: Crashlytics, Analytics, Remote Config (feature flags).
-- **Analytics**: Firebase Analytics and HAL (`hal.trakt.tv/e`, first-party, no user or device id) run in parallel. HAL events queue in memory and a WorkManager worker delivers them.
+- **Analytics**: Firebase Analytics and HAL (`hal.trakt.tv/e`, first-party, no user or device id) run in parallel. HAL events queue in memory and a WorkManager worker delivers them. See `analytics.md`.
 - **Media**: Media3 (ExoPlayer) for video; `youtube-player` (thirdspark) for embedded trailers.
 - **Logging**: Timber.
 
@@ -35,8 +35,7 @@ trakt-android/
 │   └── src/main/java/tv/trakt/trakt/
 │       ├── core/<feature>/  # feature folders: home, calendar, search, …
 │       ├── ui/              # theme, components, snackbar, extensions
-│       ├── helpers/
-│       └── analytics/
+│       └── helpers/
 ├── tv/                  # com.android.library — Android TV variant
 │   └── src/main/java/tv/trakt/trakt/app/
 │       ├── core/<feature>/  # TV-specific feature flows
@@ -44,7 +43,7 @@ trakt-android/
 ├── common/              # com.android.library — domain, networking, DI
 │   └── src/main/java/tv/trakt/trakt/common/
 │       ├── networking/      # Ktor client factory, interceptors
-│       ├── firebase/
+│       ├── firebase/        # Crashlytics, Remote Config, analytics (see analytics.md)
 │       ├── helpers/
 │       ├── di/              # Koin modules wired in TraktApplication
 │       └── ui/              # cross-platform Compose primitives
