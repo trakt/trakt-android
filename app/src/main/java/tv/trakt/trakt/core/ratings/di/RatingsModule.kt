@@ -26,8 +26,6 @@ import tv.trakt.trakt.core.ratings.allratings.AllRatingsViewModel
 import tv.trakt.trakt.core.ratings.allratings.usecases.GetSeasonRatingsUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdatesStorage
-import tv.trakt.trakt.core.ratings.data.remote.RatingsApiClient
-import tv.trakt.trakt.core.ratings.data.remote.RatingsRemoteDataSource
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.ratings.rateprompt.DefaultRatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
@@ -38,8 +36,6 @@ import tv.trakt.trakt.core.ratings.rateprompt.usecases.IsShowRatingCandidateUseC
 internal const val RATINGS_PREFERENCES = "ratings_preferences"
 
 internal val ratingsDataModule = module {
-    singleOf(::RatingsApiClient) { bind<RatingsRemoteDataSource>() }
-
     single<DataStore<Preferences>>(named(RATINGS_PREFERENCES)) {
         createStore(
             context = androidApplication(),

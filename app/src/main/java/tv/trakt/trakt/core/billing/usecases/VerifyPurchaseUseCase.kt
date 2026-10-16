@@ -2,8 +2,8 @@ package tv.trakt.trakt.core.billing.usecases
 
 import com.android.billingclient.api.Purchase
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
-import tv.trakt.trakt.core.billing.data.remote.model.VerifyPurchaseRequest
+import tv.trakt.trakt.common.core.billing.data.remote.BillingRemoteDataSource
+import tv.trakt.trakt.common.core.billing.data.remote.model.VerifyPurchaseRequest
 import tv.trakt.trakt.core.billing.model.PendingPurchaseProduct
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant

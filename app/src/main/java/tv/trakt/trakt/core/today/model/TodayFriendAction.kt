@@ -1,11 +1,12 @@
 package tv.trakt.trakt.core.today.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.core.today.model.FollowingActivity
+import tv.trakt.trakt.common.core.today.model.FollowingActivity.Detail
+import tv.trakt.trakt.common.core.today.model.FollowingActivity.Target
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.today.model.FollowingActivity.Detail
-import tv.trakt.trakt.core.today.model.FollowingActivity.Target
 import java.time.Instant
 
 /**
