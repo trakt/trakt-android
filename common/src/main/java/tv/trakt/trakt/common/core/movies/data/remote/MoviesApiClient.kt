@@ -1,7 +1,10 @@
-package tv.trakt.trakt.core.movies.data.remote
+package tv.trakt.trakt.common.core.movies.data.remote
 
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.MoviesApi
+import org.openapitools.client.apis.RecommendationsApi
+import tv.trakt.trakt.common.core.movies.data.remote.model.AnticipatedMovieDto
+import tv.trakt.trakt.common.core.movies.data.remote.model.TrendingMovieDto
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
@@ -14,12 +17,11 @@ import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
+import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
-import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
-import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
 import java.time.Instant
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -27,6 +29,7 @@ internal class MoviesApiClient(
     private val moviesApi: MoviesApi,
     private val calendarsApi: CalendarsApi,
     private val v3Api: V3Api,
+    private val recommendationsApi: RecommendationsApi,
 ) : MoviesRemoteDataSource {
     override suspend fun getTrending(
         page: Int,
@@ -118,6 +121,29 @@ internal class MoviesApiClient(
                 ignoreCollected = true,
             ),
         )
+    }
+
+    override suspend fun getRecommendedV2(limit: Int): List<RecommendedMovieDto> {
+        val response = recommendationsApi.getRecommendationsMoviesRecommend(
+            extended = "full,streaming_ids,cloud9,colors",
+            limit = limit,
+            watchWindow = 25,
+            ignoreWatched = true,
+            ignoreCollected = true,
+            ignoreWatchlisted = true,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
+        )
+
+        return response.body()
     }
 
     override suspend fun getAnticipated(
@@ -233,11 +259,14 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getCastCrew(movieId: TraktId): CastCrewDto {
+    override suspend fun getCastCrew(
+        movieId: TraktId,
+        extended: String,
+    ): CastCrewDto {
         return try {
             moviesApi.getMoviesPeople(
                 id = movieId.value.toString(),
-                extended = "cloud9,full,markdown",
+                extended = extended,
             ).body()
         } catch (error: Exception) {
             if (error.getHttpCode() == 204) {
@@ -247,11 +276,14 @@ internal class MoviesApiClient(
         }
     }
 
-    override suspend fun getRelated(movieId: TraktId): List<MovieCalendarDto> {
+    override suspend fun getRelated(
+        movieId: TraktId,
+        limit: Int,
+    ): List<MovieCalendarDto> {
         val response = moviesApi.getMoviesRelated(
             id = movieId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             page = null,
         )
         return response.body()
@@ -274,11 +306,12 @@ internal class MoviesApiClient(
         limit: Int,
         sort: String,
         language: String?,
+        extended: String,
     ): List<CommentDto> {
         val response = moviesApi.getMoviesComments(
             id = movieId.value.toString(),
             sort = sort,
-            extended = "full,images,vip",
+            extended = extended,
             page = null,
             limit = limit.toString(),
             language = language,

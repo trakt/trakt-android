@@ -1,11 +1,11 @@
 package tv.trakt.trakt.core.summary.movies.usecases
 
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
 internal class GetMovieDetailsUseCase(
     private val remoteSource: MoviesRemoteDataSource,
