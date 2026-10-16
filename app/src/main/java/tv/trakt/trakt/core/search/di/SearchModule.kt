@@ -16,8 +16,6 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.search.data.remote.SearchApiClient
-import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.SearchViewModel
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalDataSource
@@ -31,13 +29,6 @@ import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
 private const val SEARCH_PREFERENCES = "search_preferences"
 
 internal val searchDataModule = module {
-    single<SearchRemoteDataSource> {
-        SearchApiClient(
-            api = get(),
-            authorizedApi = get(named("authorizedSearchApi")),
-        )
-    }
-
     single<SearchPeopleLocalDataSource> {
         SearchPeopleStorage(
             dataStore = get(named(SEARCH_PREFERENCES)),

@@ -8,9 +8,6 @@ import tv.trakt.trakt.app.core.auth.usecases.GetDeviceTokenUseCase
 import tv.trakt.trakt.app.core.auth.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.auth.TokenProvider
 
-internal val authDataModule = module {
-}
-
 internal val authModule = module {
     factory {
         GetDeviceCodeUseCase(

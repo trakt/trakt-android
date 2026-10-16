@@ -19,8 +19,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.comments.data.remote.CommentsApiClient
-import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.model.Comment
@@ -53,14 +51,6 @@ import tv.trakt.trakt.core.comments.usecases.ReportCommentUseCase
 internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
 
 internal val commentsDataModule = module {
-    single<CommentsRemoteDataSource> {
-        CommentsApiClient(
-            api = get(),
-            authorizedApi = get(named("authorizedCommentsApi")),
-            cacheMarker = get(),
-        )
-    }
-
     single<DataStore<Preferences>>(named(COMMENTS_PREFERENCES)) {
         createStore(
             context = androidApplication(),
