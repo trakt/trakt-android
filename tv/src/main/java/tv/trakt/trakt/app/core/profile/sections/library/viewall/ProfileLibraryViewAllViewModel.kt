@@ -45,7 +45,7 @@ internal class ProfileLibraryViewAllViewModel(
                 itemsState.update {
                     getLibraryUseCase.getLibrary(
                         limit = LIBRARY_ALL_PAGE_LIMIT,
-                        availableOn = "plex",
+                        availableOn = "digital",
                     )
                 }
                 nextDataPage += 1
@@ -70,7 +70,7 @@ internal class ProfileLibraryViewAllViewModel(
                 val items = getLibraryUseCase.getLibrary(
                     page = nextDataPage,
                     limit = LIBRARY_ALL_PAGE_LIMIT,
-                    availableOn = "plex",
+                    availableOn = "digital",
                 )
 
                 itemsState.update { current ->

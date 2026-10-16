@@ -94,7 +94,7 @@ internal class AllLibraryViewModel(
                 val remoteItems = loadLibraryUseCase.loadMedia(
                     page = page,
                     limit = LIBRARY_PAGE_LIMIT,
-                    availableOn = filterState.value?.value,
+                    availableOn = filterState.value?.requestValue,
                 )
                 itemsState.update {
                     remoteItems.items.toImmutableList()
@@ -130,7 +130,7 @@ internal class AllLibraryViewModel(
                 val nextData = loadLibraryUseCase.loadMedia(
                     page = page + 1,
                     limit = LIBRARY_PAGE_LIMIT,
-                    availableOn = filterState.value?.value,
+                    availableOn = filterState.value?.requestValue,
                 )
 
                 itemsState.update { items ->
