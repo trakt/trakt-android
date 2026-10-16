@@ -3,8 +3,6 @@ package tv.trakt.trakt.app.core.shows.di
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.shows.ShowsViewModel
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsApiClient
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.shows.features.anticipated.ShowsAnticipatedViewAllViewModel
 import tv.trakt.trakt.app.core.shows.features.popular.ShowsPopularViewAllViewModel
 import tv.trakt.trakt.app.core.shows.features.releases.ShowsReleasesViewAllViewModel
@@ -18,14 +16,6 @@ import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowStorage
 
 internal val showsDataModule = module {
-    single<ShowsRemoteDataSource> {
-        ShowsApiClient(
-            api = get(),
-            recommendationsApi = get(),
-            calendarsApi = get(),
-        )
-    }
-
     single<ShowLocalDataSource> {
         ShowStorage()
     }

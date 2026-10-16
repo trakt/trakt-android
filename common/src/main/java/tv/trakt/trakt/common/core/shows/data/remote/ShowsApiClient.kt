@@ -1,7 +1,10 @@
-package tv.trakt.trakt.core.shows.data.remote
+package tv.trakt.trakt.common.core.shows.data.remote
 
 import org.openapitools.client.apis.CalendarsApi
+import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
+import tv.trakt.trakt.common.core.shows.data.remote.model.AnticipatedShowDto
+import tv.trakt.trakt.common.core.shows.data.remote.model.TrendingShowDto
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
@@ -9,9 +12,11 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.CastCrewDto
+import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalShowRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
+import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
@@ -19,8 +24,6 @@ import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
-import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
-import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
 import java.time.Instant
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -28,6 +31,7 @@ internal class ShowsApiClient(
     private val showsApi: ShowsApi,
     private val calendarsApi: CalendarsApi,
     private val v3Api: V3Api,
+    private val recommendationsApi: RecommendationsApi,
 ) : ShowsRemoteDataSource {
     override suspend fun getTrending(
         page: Int,
@@ -118,6 +122,29 @@ internal class ShowsApiClient(
                 ignoreCollected = true,
             ),
         )
+    }
+
+    override suspend fun getRecommendedV2(limit: Int): List<RecommendedShowDto> {
+        val response = recommendationsApi.getRecommendationsShowsRecommend(
+            extended = "full,streaming_ids,cloud9,colors",
+            limit = limit,
+            watchWindow = 25,
+            ignoreWatched = true,
+            ignoreCollected = true,
+            ignoreWatchlisted = true,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
+        )
+
+        return response.body()
     }
 
     override suspend fun getAnticipated(
@@ -275,11 +302,12 @@ internal class ShowsApiClient(
     override suspend fun getCastCrew(
         showId: TraktId,
         guestStars: Boolean,
+        extended: String?,
     ): CastCrewDto {
         return try {
             showsApi.getShowsPeople(
                 id = showId.value.toString(),
-                extended = if (guestStars) "cloud9,full,guest_stars,markdown" else "cloud9,full,markdown",
+                extended = extended ?: if (guestStars) "cloud9,full,guest_stars,markdown" else "cloud9,full,markdown",
             ).body()
         } catch (error: Exception) {
             if (error.getHttpCode() == 204) {
@@ -301,11 +329,14 @@ internal class ShowsApiClient(
         }
     }
 
-    override suspend fun getRelated(showId: TraktId): List<ShowCalendarsDto> {
+    override suspend fun getRelated(
+        showId: TraktId,
+        limit: Int,
+    ): List<ShowCalendarsDto> {
         val response = showsApi.getShowsRelated(
             id = showId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
-            limit = 30,
+            limit = limit,
             page = null,
         )
         return response.body()
@@ -333,11 +364,12 @@ internal class ShowsApiClient(
         limit: Int,
         sort: String,
         language: String?,
-    ): List<tv.trakt.trakt.common.networking.CommentDto> {
+        extended: String,
+    ): List<CommentDto> {
         val response = showsApi.getShowsComments(
             id = showId.value.toString(),
             sort = sort,
-            extended = "full,images,vip",
+            extended = extended,
             page = null,
             limit = limit.toString(),
             language = language,

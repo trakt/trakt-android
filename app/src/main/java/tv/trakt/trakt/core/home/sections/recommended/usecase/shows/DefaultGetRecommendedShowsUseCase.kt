@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase.shows
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -12,7 +13,6 @@ import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShows
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class DefaultGetRecommendedShowsUseCase(
     private val remoteSource: ShowsRemoteDataSource,

@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.details.show.usecases
 
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
@@ -17,7 +17,7 @@ internal class GetShowDetailsUseCase(
         }
 
         return remoteSource.getShowDetails(showId)
-            ?.let { Show.fromDto(it) }
-            ?.also { localSource.upsertShows(listOf(it)) }
+            .let { Show.fromDto(it) }
+            .also { localSource.upsertShows(listOf(it)) }
     }
 }

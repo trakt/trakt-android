@@ -2,12 +2,12 @@ package tv.trakt.trakt.core.summary.shows.features.actors.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetShowActorsUseCase(
     private val remoteSource: ShowsRemoteDataSource,

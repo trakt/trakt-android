@@ -42,23 +42,12 @@ import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShows
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
-import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 
 private const val SHOWS_PREFERENCES = "shows_preferences"
 
 internal val showsDataModule = module {
-
     singleOf(::EpisodesApiClient) { bind<EpisodesRemoteDataSource>() }
-
-    single<ShowsRemoteDataSource> {
-        ShowsApiClient(
-            showsApi = get(),
-            calendarsApi = get(),
-            v3Api = get(),
-        )
-    }
 
     single<TrendingShowsLocalDataSource> {
         TrendingShowsStorage(
