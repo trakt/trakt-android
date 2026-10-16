@@ -16,6 +16,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.networking.SmartListItemDto
 import tv.trakt.trakt.common.networking.api.v3.model.V3FollowingActivityResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardEntryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaRecommendationResponse
@@ -80,6 +81,18 @@ class V3Api(
     suspend fun getShowMeLists(showId: TraktId): List<Int> {
         val response = client.get("${baseV3Url}shows/${showId.value}/me/lists")
         return response.body<List<Int>>()
+    }
+
+    suspend fun getSmartListPreviewItems(
+        params: Map<String, String>,
+        pagination: Pagination,
+    ): List<SmartListItemDto> {
+        val response = client.get("${baseUrl}smart-lists/preview/items") {
+            params.forEach { (key, value) -> parameter(key, value) }
+            parameter("page", pagination.page)
+            parameter("limit", pagination.limit)
+        }
+        return response.body()
     }
 
     // Sentiment

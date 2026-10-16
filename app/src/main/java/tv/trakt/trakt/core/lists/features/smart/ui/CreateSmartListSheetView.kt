@@ -33,12 +33,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
-import tv.trakt.trakt.common.model.MediaMode.Movies
-import tv.trakt.trakt.common.model.MediaMode.Shows
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource
-import tv.trakt.trakt.common.model.lists.SmartListSource.Discover
 import tv.trakt.trakt.common.model.lists.SmartListSource.Unknown
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownOption
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownView
@@ -85,7 +83,10 @@ internal fun CreateSmartListSheetView(
         Column(
             verticalArrangement = spacedBy(24.dp),
             modifier = Modifier
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(
+                    rememberScrollState(),
+                    overscrollEffect = null,
+                ),
         ) {
             Row(
                 horizontalArrangement = spacedBy(32.dp),
@@ -167,7 +168,7 @@ internal fun CreateSmartListSheetView(
                                 translationY = 10.dp.toPx()
                             },
                     ) {
-                        for (filter in remember { arrayOf(Shows, Movies) }) {
+                        for (filter in MediaMode.entries) {
                             FilterChip(
                                 selected = state.filters.media == filter,
                                 animated = true,
@@ -255,7 +256,7 @@ private fun TargetFilter(
     )
 
     val options = SmartListSource.entries
-        .filter { it != Unknown && it != Discover }
+        .filter { it != Unknown }
         .map {
             DropdownOption(
                 raw = it,
@@ -284,6 +285,19 @@ private fun Preview() {
     TraktTheme {
         CreateSmartListSheetView(
             state = CreateSmartListState(),
+            nameState = TextFieldState(),
+        )
+    }
+}
+
+@DeviceSheetPreview
+@Composable
+private fun MediaPreview() {
+    TraktTheme {
+        CreateSmartListSheetView(
+            state = CreateSmartListState(
+                filters = SmartListFilters.Default.copy(media = MediaMode.Media),
+            ),
             nameState = TextFieldState(),
         )
     }
