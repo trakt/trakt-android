@@ -334,6 +334,7 @@ internal class ListMovieContextViewModel(
                     ownerId = list.user.ids.trakt,
                     movieId = movie.ids.trakt,
                 )
+                analytics.lists.logListItemRemove()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

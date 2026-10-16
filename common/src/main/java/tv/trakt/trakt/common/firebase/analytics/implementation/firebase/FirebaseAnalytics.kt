@@ -33,6 +33,8 @@ internal class FirebaseAnalytics(
     override val progress: Analytics.Progress,
     override val trivia: Analytics.Trivia,
     override val playback: Analytics.Playback,
+    override val lists: Analytics.Lists,
+    override val today: Analytics.Today,
 ) : Analytics {
     companion object Event {
         const val LOGOUT = "logout"
@@ -109,6 +111,10 @@ internal class FirebaseAnalytics(
             ),
         )
     }
+
+    override fun logSearch(mode: String) = Unit
+
+    override fun logVipUpgrade(plan: String) = Unit
 }
 
 internal class FirebaseAnalyticsReactions(
@@ -207,6 +213,12 @@ internal class FirebaseAnalyticsRatings(
         )
     }
 
+    // Firebase has always counted rating changes as additions.
+    override fun logRatingChange(
+        rating: Int,
+        mediaType: String,
+    ) = logRatingAdd(rating, mediaType)
+
     override fun logRatingRemove(mediaType: String) {
         firebase.logEvent(
             eventName(RATINGS_REMOVE),
@@ -254,7 +266,10 @@ internal class FirebaseAnalyticsComments(
         require(eventName(COMMENTS_TRANSLATE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
-    override fun logCommentAdd(mediaType: String) {
+    override fun logCommentAdd(
+        mediaType: String,
+        content: Analytics.CommentContent,
+    ) {
         firebase.logEvent(
             eventName(COMMENTS_ADD),
             bundleOf(
@@ -263,12 +278,14 @@ internal class FirebaseAnalyticsComments(
         )
     }
 
-    override fun logReplyAdd() {
+    override fun logReplyAdd(content: Analytics.CommentContent) {
         firebase.logEvent(
             eventName(COMMENTS_ADD),
             null,
         )
     }
+
+    override fun logCommentEdit(content: Analytics.CommentContent) = Unit
 
     override fun logCommentRemove() {
         firebase.logEvent(
@@ -364,6 +381,10 @@ internal class FirebaseAnalyticsProgress(
             ),
         )
     }
+
+    override fun logCheckInStart(mediaType: String) = Unit
+
+    override fun logCheckInStop(mediaType: String) = Unit
 }
 
 internal class FirebaseAnalyticsTrivia(
@@ -408,4 +429,43 @@ internal class FirebaseAnalyticsPlayback(
             ),
         )
     }
+}
+
+internal class FirebaseAnalyticsLists : Analytics.Lists {
+    override fun logListItemAdd() = Unit
+
+    override fun logListItemRemove() = Unit
+
+    override fun logListCreate() = Unit
+
+    override fun logListEdit() = Unit
+
+    override fun logListDelete() = Unit
+
+    override fun logListLike(liked: Boolean) = Unit
+
+    override fun logSmartListCreate() = Unit
+
+    override fun logSmartListDelete() = Unit
+}
+
+internal class FirebaseAnalyticsToday : Analytics.Today {
+    override fun logOpen(
+        source: String,
+        hasUnseen: Boolean,
+    ) = Unit
+
+    override fun logStory(type: String) = Unit
+
+    override fun logClose(
+        reason: String,
+        durationMs: Long,
+        frames: Int,
+        groups: Int,
+    ) = Unit
+
+    override fun logAction(
+        action: String,
+        frame: String,
+    ) = Unit
 }

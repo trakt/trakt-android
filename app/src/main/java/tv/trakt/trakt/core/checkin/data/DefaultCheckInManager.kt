@@ -2,6 +2,10 @@ package tv.trakt.trakt.core.checkin.data
 
 import android.content.Context
 import com.google.firebase.crashlytics.CustomKeysAndValues
+import kotlin.time.Clock.System.now
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -18,6 +22,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -42,10 +47,6 @@ import tv.trakt.trakt.core.checkin.model.id
 import tv.trakt.trakt.core.checkin.model.startedAt
 import tv.trakt.trakt.core.checkin.model.type
 import tv.trakt.trakt.resources.R
-import kotlin.time.Clock.System.now
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.Instant
 
 private val ACTIVE_CHECK_COOLDOWN = 10.seconds
 
@@ -57,6 +58,7 @@ internal class DefaultCheckInManager(
     private val cacheMarkerProvider: CacheMarkerProvider,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistMinUseCase: LoadUserWatchlistUseCase,
+    private val analytics: Analytics,
 ) : CheckInManager {
     private val state = MutableStateFlow<CheckInState>(CheckInState.Idle)
     private var lastCheckAt: Instant? = null
@@ -133,6 +135,7 @@ internal class DefaultCheckInManager(
                 state.update { activeState }
                 checkInUpdates.notifyUpdate(source)
                 startForegroundService(context, activeState)
+                analytics.progress.logCheckInStart(mediaType = "episode")
 
                 coroutineScope {
                     val progressAsync = async { loadProgressIfNeeded(activeState) }
@@ -217,6 +220,7 @@ internal class DefaultCheckInManager(
                 state.update { activeState }
                 checkInUpdates.notifyUpdate(source)
                 startForegroundService(context, activeState)
+                analytics.progress.logCheckInStart(mediaType = "movie")
 
                 coroutineScope {
                     val progressAsync = async { loadProgressIfNeeded(activeState) }
@@ -376,6 +380,7 @@ internal class DefaultCheckInManager(
             if (currentState != CheckInState.Idle) {
                 checkInUpdates.notifyUpdate(source)
             }
+            currentState.analyticsType()?.let(analytics.progress::logCheckInStop)
             CheckInService.stop(context.applicationContext)
 
             loadProgressIfNeeded(currentState)
@@ -485,5 +490,13 @@ internal class DefaultCheckInManager(
             .putLong("checkin_history_id", checkIn?.id ?: -1)
             .putString("checkin_watched_at", checkIn?.watchedAt ?: "none")
             .putString("checkin_device_time", now().toString())
+    }
+}
+
+private fun CheckInState.analyticsType(): String? {
+    return when (this) {
+        is ActiveMovie -> "movie"
+        is ActiveEpisode -> "episode"
+        CheckInState.Idle, CheckInState.Loading, is CheckInState.Error -> null
     }
 }

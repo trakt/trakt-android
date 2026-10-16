@@ -59,7 +59,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 internal class AllListsViewModel(
     savedStateHandle: SavedStateHandle,
-    analytics: Analytics,
+    private val analytics: Analytics,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
     private val getLikedListsUseCase: GetLikedListsUseCase,
     private val getCollaborationsListsUseCase: GetCollaborationsListsUseCase,
@@ -285,6 +285,7 @@ internal class AllListsViewModel(
         viewModelScope.launch {
             try {
                 deleteSmartListUseCase.deleteList(listId)
+                analytics.lists.logSmartListDelete()
                 infoState.update {
                     DynamicStringResource(R.string.text_info_list_deleted)
                 }

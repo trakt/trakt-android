@@ -285,6 +285,7 @@ internal class ListShowContextViewModel(
                     ownerId = list.user.ids.trakt,
                     showId = show.ids.trakt,
                 )
+                analytics.lists.logListItemRemove()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

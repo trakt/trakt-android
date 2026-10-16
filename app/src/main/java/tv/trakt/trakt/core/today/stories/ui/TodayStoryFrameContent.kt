@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.imageLoader
 import coil3.request.ImageRequest
+import java.time.Instant
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -56,13 +57,13 @@ import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.model.TodayMilestone
 import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayTitleStory
+import tv.trakt.trakt.core.today.model.analyticsType
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetails
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel
 import tv.trakt.trakt.core.today.stories.watched.TodayWatchedButton
 import tv.trakt.trakt.core.today.stories.watchlist.TodayWatchlistButton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 
 private const val POSTER_RATIO = 2F / 3F
 private const val FLIP_DURATION_MS = 200
@@ -329,6 +330,7 @@ private fun TodayStoryFooter(
         when (frame) {
             is TodayStoryFrame.Title -> TodayWatchlistButton(
                 media = media,
+                frameType = frame.analyticsType,
                 viewModel = koinViewModel(
                     key = "today-watchlist-${media.key}",
                     parameters = { parametersOf(media) },

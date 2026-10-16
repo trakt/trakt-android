@@ -1,50 +1,20 @@
 package tv.trakt.trakt.common.firebase.analytics.implementation.hal
 
 import tv.trakt.trakt.common.firebase.analytics.Analytics
-
-private const val EVENT_PAGE_VIEW = "page_view"
-private const val EVENT_DISCOVER_MODE = "discover-mode"
-private const val EVENT_SHARE_ARRIVAL = "share.arrival"
-private const val EVENT_REACT = "action.react"
-private const val EVENT_RATE = "media-action.rate"
-private const val EVENT_ADD_COMMENT = "media-action.add-comment"
-private const val EVENT_DELETE_COMMENT = "media-action.delete-comment"
-private const val EVENT_MARK_AS_WATCHED = "media-action.mark-as-watched"
-private const val EVENT_WATCHLIST = "media-action.watchlist"
-
-private const val DIM_ROUTE = "route"
-private const val DIM_SOURCE = "source"
-private const val DIM_MODE = "mode"
-private const val DIM_TYPE = "type"
-private const val DIM_OUTCOME = "outcome"
-private const val DIM_ACTION = "action"
-private const val DIM_RATING = "rating"
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_MODE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_OUTCOME
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_PLAN
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ROUTE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SOURCE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TYPE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DISCOVER_MODE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_PAGE_VIEW
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SEARCH
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE_ARRIVAL
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPGRADE
 
 private const val MEDIA_MODE_TOGGLE_SOURCE = "media-mode-toggle"
 private const val USER_PROPERTY_VIP = "vip"
-
-private val ROUTE_INVALID_CHARACTERS = Regex("[^a-z0-9_.-]")
-
-internal fun halRoute(screenName: String): String {
-    return "/" + screenName.lowercase().replace(ROUTE_INVALID_CHARACTERS, "_")
-}
-
-internal fun halMediaMode(mode: String): String? {
-    return when (mode.lowercase()) {
-        "media" -> "media"
-        "show", "shows" -> "show"
-        "movie", "movies" -> "movie"
-        else -> null
-    }
-}
-
-internal fun halUserType(vip: String?): String {
-    return when (vip?.lowercase()) {
-        "true" -> "vip"
-        "false" -> "standard"
-        else -> "anonymous"
-    }
-}
 
 internal class HalAnalytics(
     private val events: HalEvents,
@@ -54,6 +24,8 @@ internal class HalAnalytics(
     override val progress: Analytics.Progress,
     override val trivia: Analytics.Trivia,
     override val playback: Analytics.Playback,
+    override val lists: Analytics.Lists,
+    override val today: Analytics.Today,
 ) : Analytics {
     override fun setUserId(userId: String?) = Unit
 
@@ -98,128 +70,13 @@ internal class HalAnalytics(
             ),
         )
     }
-}
 
-internal class HalAnalyticsReactions(
-    private val events: HalEvents,
-) : Analytics.Reactions {
-    override fun logReactionAdd(
-        reaction: String,
-        source: String,
-    ) = react(ACTION_ADD, TYPE_COMMENT)
-
-    override fun logReactionRemove(source: String) = react(ACTION_REMOVE, TYPE_COMMENT)
-
-    override fun logMediaReactionAdd(
-        reaction: String,
-        mediaType: String,
-    ) = react(ACTION_ADD, mediaType.lowercase())
-
-    override fun logMediaReactionRemove(
-        reaction: String,
-        mediaType: String,
-    ) = react(ACTION_REMOVE, mediaType.lowercase())
-
-    private fun react(
-        action: String,
-        type: String,
-    ) {
-        events.track(EVENT_REACT, dims = mapOf(DIM_ACTION to action, DIM_TYPE to type))
+    override fun logSearch(mode: String) {
+        val searchMode = halSearchMode(mode) ?: return
+        events.track(EVENT_SEARCH, dims = mapOf(DIM_MODE to searchMode))
     }
 
-    private companion object {
-        const val ACTION_ADD = "add"
-        const val ACTION_REMOVE = "remove"
-        const val TYPE_COMMENT = "comment"
+    override fun logVipUpgrade(plan: String) {
+        events.track(EVENT_VIP_UPGRADE, dims = mapOf(DIM_PLAN to plan.lowercase()))
     }
-}
-
-internal class HalAnalyticsRatings(
-    private val events: HalEvents,
-) : Analytics.Ratings {
-    override fun logRatingAdd(
-        rating: Int,
-        mediaType: String,
-    ) {
-        events.track(
-            EVENT_RATE,
-            dims = mapOf(DIM_ACTION to "added", DIM_RATING to rating.toString()),
-            metrics = mapOf(DIM_RATING to rating),
-        )
-    }
-
-    override fun logRatingRemove(mediaType: String) {
-        events.track(EVENT_RATE, dims = mapOf(DIM_ACTION to "removed"))
-    }
-
-    override fun logFavoriteAdd(mediaType: String) = Unit
-
-    override fun logFavoriteRemove(
-        mediaType: String,
-        source: String,
-    ) = Unit
-}
-
-internal class HalAnalyticsComments(
-    private val events: HalEvents,
-) : Analytics.Comments {
-    override fun logCommentAdd(mediaType: String) = addComment("post")
-
-    override fun logReplyAdd() = addComment("reply")
-
-    override fun logCommentRemove() = deleteComment()
-
-    override fun logReplyRemove() = deleteComment()
-
-    override fun logCommentTranslate(characters: Int) = Unit
-
-    private fun addComment(action: String) {
-        events.track(EVENT_ADD_COMMENT, dims = mapOf(DIM_ACTION to action, DIM_TYPE to "text"))
-    }
-
-    private fun deleteComment() {
-        events.track(EVENT_DELETE_COMMENT)
-    }
-}
-
-internal class HalAnalyticsProgress(
-    private val events: HalEvents,
-) : Analytics.Progress {
-    override fun logAddWatchedMedia(
-        mediaType: String,
-        source: String,
-        date: String?,
-    ) = track(EVENT_MARK_AS_WATCHED, "add")
-
-    override fun logRemoveWatchedMedia(
-        mediaType: String,
-        source: String,
-    ) = track(EVENT_MARK_AS_WATCHED, "remove")
-
-    override fun logAddWatchlistMedia(
-        mediaType: String,
-        source: String,
-    ) = track(EVENT_WATCHLIST, "add")
-
-    override fun logRemoveWatchlistMedia(
-        mediaType: String,
-        source: String,
-    ) = track(EVENT_WATCHLIST, "remove")
-
-    private fun track(
-        event: String,
-        action: String,
-    ) {
-        events.track(event, dims = mapOf(DIM_ACTION to action))
-    }
-}
-
-internal class HalAnalyticsTrivia : Analytics.Trivia {
-    override fun logScreenView(source: String) = Unit
-}
-
-internal class HalAnalyticsPlayback : Analytics.Playback {
-    override fun logPlaybackStart(mediaType: String) = Unit
-
-    override fun logPlaybackStop(mediaType: String) = Unit
 }
