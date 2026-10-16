@@ -1,9 +1,9 @@
-package tv.trakt.trakt.app.core.auth.model
+package tv.trakt.trakt.common.auth.model
 
 import java.time.ZonedDateTime
 import kotlin.time.Duration
 
-internal data class AuthDeviceCode(
+data class AuthDeviceCode(
     val url: String,
     val userCode: String,
     val deviceCode: String,

@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.auth
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.app.core.auth.model.AuthDeviceCode
+import tv.trakt.trakt.common.auth.model.AuthDeviceCode
 
 @Immutable
 internal data class AuthState(

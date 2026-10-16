@@ -18,6 +18,7 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
+import tv.trakt.trakt.common.auth.di.authRemoteModule
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.core.episodes.di.episodesRemoteModule
 import tv.trakt.trakt.common.core.klipy.di.gifsDataModule
@@ -186,6 +187,7 @@ internal class TraktApplication : Application() {
                 profileDataModule,
                 peopleDataModule,
                 peopleRemoteModule,
+                authRemoteModule,
                 syncRemoteModule,
                 episodesRemoteModule,
                 showsRemoteModule,
