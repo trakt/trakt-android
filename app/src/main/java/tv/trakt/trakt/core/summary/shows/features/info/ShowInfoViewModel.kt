@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.core.parentalguide.data.remote.ParentalGuideRemoteDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -24,7 +25,6 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.parentalguide.ParentalGuide
 import tv.trakt.trakt.common.networking.ShowStatsDto
-import tv.trakt.trakt.core.parentalguide.data.remote.ParentalGuideRemoteDataSource
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowCrewUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowNetworksUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStatsUseCase

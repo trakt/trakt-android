@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.stories.ui.showTodaySnack
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R

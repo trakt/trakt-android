@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.today.usecases
 
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
@@ -13,7 +14,6 @@ import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
 import tv.trakt.trakt.core.today.model.TodayForYouItem
-import tv.trakt.trakt.core.today.model.TodayMedia
 
 internal class UpdateTodayHistoryUseCase(
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,

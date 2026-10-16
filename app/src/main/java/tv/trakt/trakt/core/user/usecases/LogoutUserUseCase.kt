@@ -9,6 +9,7 @@ import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.billing.data.remote.BillingRemoteDataSource
 import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
@@ -20,10 +21,10 @@ import tv.trakt.trakt.common.core.user.data.local.reactions.UserMediaReactionsLo
 import tv.trakt.trakt.common.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
+import tv.trakt.trakt.common.core.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
-import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
@@ -43,7 +44,6 @@ import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.Progre
 import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedLocalDataSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
 import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalDataSource
-import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
 import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager

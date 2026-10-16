@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.today.usecases
 
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
@@ -9,7 +10,6 @@ import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
-import tv.trakt.trakt.core.today.model.TodayMedia
 
 internal class UpdateTodayWatchlistUseCase(
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,

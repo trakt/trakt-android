@@ -25,6 +25,13 @@ import tv.trakt.trakt.common.core.klipy.di.gifsDataModule
 import tv.trakt.trakt.common.core.media.di.mediaDataModule
 import tv.trakt.trakt.common.core.movies.di.moviesRemoteModule
 import tv.trakt.trakt.common.core.people.di.peopleRemoteModule
+import tv.trakt.trakt.common.core.remote.di.billingRemoteModule
+import tv.trakt.trakt.common.core.remote.di.checkInRemoteModule
+import tv.trakt.trakt.common.core.remote.di.parentalGuideRemoteModule
+import tv.trakt.trakt.common.core.remote.di.ratingsRemoteModule
+import tv.trakt.trakt.common.core.remote.di.reactionsRemoteModule
+import tv.trakt.trakt.common.core.remote.di.todayRemoteModule
+import tv.trakt.trakt.common.core.remote.di.younifyRemoteModule
 import tv.trakt.trakt.common.core.shows.di.showsRemoteModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
@@ -44,7 +51,6 @@ import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.applinks.di.appLinksModule
 import tv.trakt.trakt.core.auth.di.authModule
-import tv.trakt.trakt.core.billing.di.billingDataModule
 import tv.trakt.trakt.core.billing.di.billingModule
 import tv.trakt.trakt.core.calendar.di.calendarModule
 import tv.trakt.trakt.core.checkin.di.checkInModule
@@ -66,7 +72,6 @@ import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.CHECK_IN
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.MEDIA
 import tv.trakt.trakt.core.notifications.di.notificationsModule
-import tv.trakt.trakt.core.parentalguide.di.parentalGuideDataModule
 import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.people.di.peopleModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
@@ -188,6 +193,13 @@ internal class TraktApplication : Application() {
                 peopleDataModule,
                 peopleRemoteModule,
                 authRemoteModule,
+                billingRemoteModule,
+                checkInRemoteModule,
+                parentalGuideRemoteModule,
+                ratingsRemoteModule,
+                reactionsRemoteModule,
+                todayRemoteModule,
+                younifyRemoteModule,
                 syncRemoteModule,
                 episodesRemoteModule,
                 showsRemoteModule,
@@ -208,7 +220,6 @@ internal class TraktApplication : Application() {
                 listsDataModule,
                 reactionsDataModule,
                 reactionsModule,
-                parentalGuideDataModule,
                 ratingsDataModule,
                 ratingsModule,
                 favoritesDataModule,
@@ -217,7 +228,6 @@ internal class TraktApplication : Application() {
                 settingsModule,
                 settingsDataModule,
                 billingModule,
-                billingDataModule,
                 checkInModule,
                 inAppReviewModule,
                 analyticsModule,

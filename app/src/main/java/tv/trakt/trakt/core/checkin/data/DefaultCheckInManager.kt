@@ -15,6 +15,7 @@ import kotlinx.coroutines.sync.withLock
 import org.openapitools.client.models.PostCheckinStart200Response
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.checkin.data.remote.CheckInRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
@@ -28,7 +29,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import tv.trakt.trakt.core.checkin.data.remote.CheckInRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.service.CheckInService
 import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates

@@ -18,14 +18,12 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
 import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
 import tv.trakt.trakt.core.today.data.local.TodaySeenStorage
 import tv.trakt.trakt.core.today.data.local.TodayStorage
-import tv.trakt.trakt.core.today.data.remote.TodayApiClient
-import tv.trakt.trakt.core.today.data.remote.TodayRemoteDataSource
 import tv.trakt.trakt.core.today.model.TodayForYouItem
-import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.pill.TodayPillViewModel
 import tv.trakt.trakt.core.today.stories.TodayStoriesViewModel
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel
@@ -46,7 +44,6 @@ internal val todayDataModule = module {
         )
     }
 
-    singleOf(::TodayApiClient) { bind<TodayRemoteDataSource>() }
     singleOf(::TodayStorage) { bind<TodayLocalDataSource>() }
 
     single<TodaySeenLocalDataSource> {
