@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.imageLoader
 import coil3.request.ImageRequest
-import java.time.Instant
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -64,6 +63,7 @@ import tv.trakt.trakt.core.today.stories.watched.TodayWatchedButton
 import tv.trakt.trakt.core.today.stories.watchlist.TodayWatchlistButton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 
 private const val POSTER_RATIO = 2F / 3F
 private const val FLIP_DURATION_MS = 200
