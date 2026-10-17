@@ -2,15 +2,15 @@ package tv.trakt.trakt.core.billing.usecases
 
 import com.android.billingclient.api.Purchase
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
-import tv.trakt.trakt.core.billing.data.remote.model.VerifyPurchaseRequest
+import tv.trakt.trakt.common.data.remote.BillingRemoteSource
+import tv.trakt.trakt.common.data.request.VerifyPurchaseRequest
 import tv.trakt.trakt.core.billing.model.PendingPurchaseProduct
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 internal class VerifyPurchaseUseCase(
-    private val remoteSource: BillingRemoteDataSource,
+    private val remoteSource: BillingRemoteSource,
     private val sessionManager: SessionManager,
 ) {
     suspend fun verifyPurchase(

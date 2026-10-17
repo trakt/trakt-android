@@ -1,12 +1,12 @@
 package tv.trakt.trakt.app.core.auth.usecases
 
-import tv.trakt.trakt.app.core.auth.data.remote.AuthRemoteDataSource
-import tv.trakt.trakt.app.core.auth.model.AuthDeviceTokenState
-import tv.trakt.trakt.app.core.auth.model.AuthDeviceTokenState.Success
 import tv.trakt.trakt.common.auth.TokenProvider
+import tv.trakt.trakt.common.auth.model.AuthDeviceTokenState
+import tv.trakt.trakt.common.auth.model.AuthDeviceTokenState.Success
+import tv.trakt.trakt.common.data.remote.AuthRemoteSource
 
 internal class GetDeviceTokenUseCase(
-    private val remoteSource: AuthRemoteDataSource,
+    private val remoteSource: AuthRemoteSource,
     private val tokenProvider: TokenProvider,
 ) {
     suspend fun getDeviceToken(deviceCode: String): AuthDeviceTokenState {

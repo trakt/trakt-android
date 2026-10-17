@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.reactions.usecases
 
+import tv.trakt.trakt.common.data.remote.ReactionsRemoteSource
 import tv.trakt.trakt.common.model.reactions.Reaction
-import tv.trakt.trakt.core.reactions.data.remote.ReactionsRemoteDataSource
 
 internal class PostCommentReactionUseCase(
-    private val remoteSource: ReactionsRemoteDataSource,
+    private val remoteSource: ReactionsRemoteSource,
 ) {
     suspend fun postReaction(
         commentId: Int,

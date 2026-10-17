@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
@@ -23,7 +23,7 @@ import kotlin.time.toKotlinInstant
 internal const val WAKING_HOURS_PER_DAY = 16
 
 internal class GetScreenTimeUseCase(
-    private val remoteSource: UserHistoryRemoteDataSource,
+    private val remoteSource: UserHistoryRemoteSource,
     private val localDataSource: ProfileScreenTimeLocalDataSource,
 ) {
     suspend fun getLocalScreenTimeData(): ScreenTimeData? {

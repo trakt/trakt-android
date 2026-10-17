@@ -1,11 +1,11 @@
 package tv.trakt.trakt.core.summary.episodes.usecases
 
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 
 internal class GetEpisodeRatingsUseCase(
-    private val remoteSource: EpisodesRemoteDataSource,
+    private val remoteSource: EpisodesRemoteSource,
 ) {
     suspend fun getExternalRatings(
         showId: TraktId,

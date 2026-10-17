@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.comments.usecases
 
-import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.CommentsRemoteSource
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.MediaType
@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 
 internal class PostCommentUseCase(
-    private val remoteSource: CommentsRemoteDataSource,
+    private val remoteSource: CommentsRemoteSource,
 ) {
     suspend fun postComment(
         type: MediaType,

@@ -31,13 +31,13 @@ import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.today.model.FollowingActivity.Detail
+import tv.trakt.trakt.common.core.today.model.FollowingActivity.Target
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.today.model.FollowingActivity.Detail
-import tv.trakt.trakt.core.today.model.FollowingActivity.Target
 import tv.trakt.trakt.core.today.model.TodayFriendAction
 import tv.trakt.trakt.core.today.model.TodayMilestone
 import tv.trakt.trakt.resources.R

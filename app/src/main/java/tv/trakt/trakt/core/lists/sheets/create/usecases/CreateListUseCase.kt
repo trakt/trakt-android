@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.lists.sheets.create.usecases
 
-import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.model.lists.CustomList
 
 internal class CreateListUseCase(
-    private val remoteSource: ListsRemoteDataSource,
+    private val remoteSource: ListsRemoteSource,
 ) {
     suspend fun createList(
         name: String,

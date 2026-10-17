@@ -3,11 +3,11 @@ package tv.trakt.trakt.app.core.details.show.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
-import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.sync.model.ProgressItem.ShowItem
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
@@ -15,13 +15,13 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 
 internal class GetShowSeasonsUseCase(
-    private val remoteShowsSource: ShowsRemoteDataSource,
-    private val remoteEpisodesSource: EpisodesRemoteDataSource,
+    private val remoteShowsSource: ShowsRemoteSource,
+    private val remoteEpisodesSource: EpisodesRemoteSource,
     private val localEpisodeSource: EpisodeLocalDataSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) {
     suspend fun getAllSeasons(showId: TraktId): ShowSeasons {
-        val remoteSeasons = remoteShowsSource.getShowSeasons(showId)
+        val remoteSeasons = remoteShowsSource.getSeasons(showId)
             .asyncMap { Season.fromDto(it) }
             .filter { (it.episodeCount ?: 0) > 0 }
             .sortedBy { it.number }
@@ -49,7 +49,7 @@ internal class GetShowSeasonsUseCase(
 
         if (selectedSeason != null) {
             val episodes = remoteEpisodesSource
-                .getEpisodeSeason(showId, selectedSeason.season.number)
+                .getSeason(showId, selectedSeason.season.number)
                 .asyncMap {
                     val episode = Episode.fromDto(it)
                     ShowSeasons.EpisodeItem(
@@ -87,7 +87,7 @@ internal class GetShowSeasonsUseCase(
             it.showId == showId
         }
 
-        return remoteEpisodesSource.getEpisodeSeason(showId, season)
+        return remoteEpisodesSource.getSeason(showId, season)
             .asyncMap {
                 val episode = Episode.fromDto(it)
                 ShowSeasons.EpisodeItem(

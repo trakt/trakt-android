@@ -38,22 +38,11 @@ import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMovi
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
-import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 
 private const val MOVIES_PREFERENCES = "movies_preferences"
 
 internal val moviesDataModule = module {
-
-    single<MoviesRemoteDataSource> {
-        MoviesApiClient(
-            moviesApi = get(),
-            calendarsApi = get(),
-            v3Api = get(),
-        )
-    }
-
     single<PopularMoviesLocalDataSource> {
         PopularMoviesStorage(
             dataStore = get(named(MOVIES_PREFERENCES)),

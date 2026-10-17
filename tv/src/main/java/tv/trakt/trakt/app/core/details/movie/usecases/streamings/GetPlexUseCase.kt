@@ -3,11 +3,11 @@ package tv.trakt.trakt.app.core.details.movie.usecases.streamings
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import timber.log.Timber
-import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
-import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.PlexRemoteSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.PLEX_PLAY_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.MediaType
@@ -18,9 +18,9 @@ import tv.trakt.trakt.common.model.fromDto
 import kotlin.coroutines.cancellation.CancellationException
 
 internal class GetPlexUseCase(
-    private val remoteSyncSource: MoviesSyncRemoteDataSource,
-    private val remoteMovieSource: MoviesRemoteDataSource,
-    private val remotePlexSource: PlexRemoteDataSource,
+    private val remoteSyncSource: MoviesSyncRemoteSource,
+    private val remoteMovieSource: MoviesRemoteSource,
+    private val remotePlexSource: PlexRemoteSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {
     suspend fun getPlexStatus(movieId: TraktId): Result {
@@ -28,7 +28,7 @@ internal class GetPlexUseCase(
 
         // If we don't have the movie or it doesn't have a Plex ID, fetch details from remote and update.
         if (movie == null || movie.ids.plex == null) {
-            movie = remoteMovieSource.getMovieDetails(movieId)
+            movie = remoteMovieSource.getDetails(movieId)
                 .let { Movie.fromDto(it) }
                 .also { localMovieSource.upsertMovies(listOf(it)) }
         }

@@ -17,13 +17,10 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
-import tv.trakt.trakt.app.core.auth.di.authDataModule
 import tv.trakt.trakt.app.core.auth.di.authModule
-import tv.trakt.trakt.app.core.comments.di.commentsDataModule
 import tv.trakt.trakt.app.core.comments.di.commentsModule
 import tv.trakt.trakt.app.core.details.episode.di.episodeDetailsModule
 import tv.trakt.trakt.app.core.details.lists.details.media.di.customListMediaModule
-import tv.trakt.trakt.app.core.details.lists.module.customListsDataModule
 import tv.trakt.trakt.app.core.details.movie.di.movieDetailsModule
 import tv.trakt.trakt.app.core.details.show.di.showDetailsModule
 import tv.trakt.trakt.app.core.episodes.di.episodesDataModule
@@ -46,12 +43,12 @@ import tv.trakt.trakt.app.core.streamings.di.plexDataModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.auth.di.commonAuthModule
-import tv.trakt.trakt.common.core.media.di.mediaDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
+import tv.trakt.trakt.common.data.remote.di.remoteSourcesModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.coil.coilModule
@@ -119,23 +116,20 @@ class TvActivity : ComponentActivity() {
                     tutorialsModule,
                     homeModule,
                     authModule,
-                    authDataModule,
                     commonAuthModule,
                     showsModule,
                     showsDataModule,
                     showDetailsModule,
                     moviesModule,
                     moviesDataModule,
-                    mediaDataModule,
                     movieDetailsModule,
                     episodesDataModule,
                     episodeDetailsModule,
                     listsModule,
                     commentsModule,
-                    commentsDataModule,
                     peopleDataModule,
+                    remoteSourcesModule,
                     personDetailsModule,
-                    customListsDataModule,
                     customListMediaModule,
                     profileDataModule,
                     profileModule,

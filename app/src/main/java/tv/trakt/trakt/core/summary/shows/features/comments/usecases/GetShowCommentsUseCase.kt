@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.shows.features.comments.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
@@ -9,10 +10,9 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsFilter.Popular
 import tv.trakt.trakt.core.comments.model.CommentsFilter.Recent
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetShowCommentsUseCase(
-    private val remoteSource: ShowsRemoteDataSource,
+    private val remoteSource: ShowsRemoteSource,
 ) {
     suspend fun getComments(
         showId: TraktId,

@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.profile.sections.activity.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -13,7 +13,7 @@ import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.Profile
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
 
 internal class GetProfileCommentsUseCase(
-    private val remoteSource: UserRemoteDataSource,
+    private val remoteSource: UserRemoteSource,
     private val localDataSource: ProfileCommentsLocalDataSource,
 ) {
     suspend fun getLocalComments(limit: Int): ImmutableList<ProfileCommentItem> {

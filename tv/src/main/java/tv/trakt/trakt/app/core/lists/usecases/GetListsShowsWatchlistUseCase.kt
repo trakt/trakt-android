@@ -2,15 +2,15 @@ package tv.trakt.trakt.app.core.lists.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetListsShowsWatchlistUseCase(
-    private val remoteSyncSource: ShowsSyncRemoteDataSource,
+    private val remoteSyncSource: ShowsSyncRemoteSource,
     private val localShowSource: ShowLocalDataSource,
 ) {
     suspend fun getShows(
@@ -20,7 +20,7 @@ internal class GetListsShowsWatchlistUseCase(
         val shows = remoteSyncSource.getWatchlist(
             page = page,
             limit = limit,
-            extended = "full,cloud9,colors,streaming_ids",
+            extended = "full,images,colors,streaming_ids",
             sorting = Sorting.RecentlyAdded,
         ).asyncMap {
             Show.fromDto(it.show)

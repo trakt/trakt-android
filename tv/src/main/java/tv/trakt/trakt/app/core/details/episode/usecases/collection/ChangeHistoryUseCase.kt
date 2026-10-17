@@ -1,12 +1,12 @@
 package tv.trakt.trakt.app.core.details.episode.usecases.collection
 
-import tv.trakt.trakt.app.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
+import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.TraktId
 
 internal class ChangeHistoryUseCase(
-    private val remoteSource: EpisodesSyncRemoteDataSource,
+    private val remoteSource: EpisodesSyncRemoteSource,
 ) {
     suspend fun addToHistory(
         episodeId: TraktId,
@@ -22,10 +22,10 @@ internal class ChangeHistoryUseCase(
     }
 
     suspend fun removeFromHistory(episodePlayId: Long) {
-        remoteSource.removeFromHistory(episodePlayId = episodePlayId)
+        remoteSource.removePlayFromHistory(playId = episodePlayId)
     }
 
     suspend fun removeEpisodeFromHistory(episodeId: TraktId) {
-        remoteSource.removeEpisodeFromHistory(episodeId = episodeId)
+        remoteSource.removeEpisodeFromHistory(episodeId = episodeId.value)
     }
 }

@@ -2,20 +2,20 @@ package tv.trakt.trakt.core.summary.shows.features.seasons.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 
 internal class GetShowSeasonsUseCase(
-    private val remoteShowsSource: ShowsRemoteDataSource,
-    private val remoteEpisodesSource: EpisodesRemoteDataSource,
+    private val remoteShowsSource: ShowsRemoteSource,
+    private val remoteEpisodesSource: EpisodesRemoteSource,
 ) {
     suspend fun getAllSeasons(
         showId: TraktId,

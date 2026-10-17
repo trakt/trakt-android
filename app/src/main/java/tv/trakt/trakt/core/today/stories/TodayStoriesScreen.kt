@@ -69,11 +69,11 @@ import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.LocalBottomBarVisibility
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.model.TodayTitleStory
 import tv.trakt.trakt.core.today.stories.ui.TodayStoryFrameContent

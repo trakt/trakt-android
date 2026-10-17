@@ -8,7 +8,6 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import io.ktor.client.HttpClientConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,7 +16,6 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
@@ -27,8 +25,6 @@ import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersViewModel
 import tv.trakt.trakt.core.settings.features.cover.CoverImageViewModel
 import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
-import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyApiClient
-import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
@@ -53,18 +49,9 @@ internal val settingsDataModule = module {
             context = androidApplication(),
         )
     }
-
-    single<YounifyRemoteDataSource> {
-        YounifyApiClient(
-            baseUrl = API_BASE_URL,
-            httpClientEngine = get(),
-            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
-        )
-    }
 }
 
 internal val settingsModule = module {
-
     factory {
         UpdateUserSettingsUseCase(
             remoteSource = get(),

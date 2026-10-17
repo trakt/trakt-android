@@ -3,6 +3,8 @@ package tv.trakt.trakt.core.today.model
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.today.model.FollowingActivity
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.model.User
 import java.time.Instant
 

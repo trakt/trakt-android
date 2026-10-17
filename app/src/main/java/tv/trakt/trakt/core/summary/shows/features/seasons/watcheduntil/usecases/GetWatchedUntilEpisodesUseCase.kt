@@ -4,19 +4,19 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetWatchedUntilEpisodesUseCase(
-    private val remoteShowsSource: ShowsRemoteDataSource,
-    private val remoteEpisodesSource: EpisodesRemoteDataSource,
-    private val remoteHistorySource: UserHistoryRemoteDataSource,
+    private val remoteShowsSource: ShowsRemoteSource,
+    private val remoteEpisodesSource: EpisodesRemoteSource,
+    private val remoteHistorySource: UserHistoryRemoteSource,
 ) {
     suspend fun getEpisodes(
         show: Show,

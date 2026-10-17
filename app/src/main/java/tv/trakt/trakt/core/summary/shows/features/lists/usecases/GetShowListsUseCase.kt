@@ -2,14 +2,14 @@ package tv.trakt.trakt.core.summary.shows.features.lists.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Type
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetShowListsUseCase(
-    private val remoteSource: ShowsRemoteDataSource,
+    private val remoteSource: ShowsRemoteSource,
 ) {
     suspend fun getOfficialLists(showId: TraktId) =
         getLists(

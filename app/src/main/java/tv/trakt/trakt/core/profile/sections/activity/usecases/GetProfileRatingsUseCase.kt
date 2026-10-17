@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.profile.sections.activity.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserRatingsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -14,7 +14,7 @@ import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileR
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 
 internal class GetProfileRatingsUseCase(
-    private val remoteSource: UserRatingsRemoteDataSource,
+    private val remoteSource: UserRatingsRemoteSource,
     private val localDataSource: ProfileRatingsLocalDataSource,
 ) {
     suspend fun getLocalRatings(limit: Int): ImmutableList<ProfileRatingItem> {

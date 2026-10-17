@@ -3,12 +3,12 @@ package tv.trakt.trakt.app.core.details.episode.usecases.streamings
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import timber.log.Timber
-import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.app.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
-import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.PlexRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.PLEX_PLAY_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.MediaType
@@ -19,10 +19,10 @@ import tv.trakt.trakt.common.model.fromDto
 import kotlin.coroutines.cancellation.CancellationException
 
 internal class GetPlexUseCase(
-    private val remoteSyncSource: ShowsSyncRemoteDataSource,
-    private val remoteEpisodeSyncSource: EpisodesSyncRemoteDataSource,
-    private val remoteShowSource: ShowsRemoteDataSource,
-    private val remotePlexSource: PlexRemoteDataSource,
+    private val remoteSyncSource: ShowsSyncRemoteSource,
+    private val remoteEpisodeSyncSource: EpisodesSyncRemoteSource,
+    private val remoteShowSource: ShowsRemoteSource,
+    private val remotePlexSource: PlexRemoteSource,
     private val localShowSource: ShowLocalDataSource,
 ) {
     suspend fun getPlexStatus(

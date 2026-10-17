@@ -3,18 +3,21 @@ package tv.trakt.trakt.app.core.details.show.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.people.data.local.PeopleLocalDataSource
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 
 internal class GetCastCrewUseCase(
-    private val remoteSource: ShowsRemoteDataSource,
+    private val remoteSource: ShowsRemoteSource,
     private val peopleLocalSource: PeopleLocalDataSource,
 ) {
     suspend fun getCastCrew(showId: TraktId): ImmutableList<CastPerson> {
-        val castCrew = remoteSource.getShowCastCrew(showId)
+        val castCrew = remoteSource.getCastCrew(
+            showId = showId,
+            extended = "images",
+        )
 
         val cast = (castCrew.cast ?: emptyList())
             .take(30)

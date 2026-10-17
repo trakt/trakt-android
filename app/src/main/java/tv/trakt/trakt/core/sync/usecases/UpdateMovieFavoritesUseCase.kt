@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.sync.usecases
 
+import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 
 internal class UpdateMovieFavoritesUseCase(
-    private val remoteSource: MoviesSyncRemoteDataSource,
+    private val remoteSource: MoviesSyncRemoteSource,
 ) {
     suspend fun addToFavorites(movieId: TraktId) {
         remoteSource.addToFavorites(

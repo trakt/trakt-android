@@ -3,15 +3,15 @@ package tv.trakt.trakt.core.summary.shows.features.info.usecase
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
 internal class GetShowCrewUseCase(
-    private val remoteSource: ShowsRemoteDataSource,
+    private val remoteSource: ShowsRemoteSource,
     private val peopleLocalSource: PeopleLocalDataSource,
 ) {
     suspend fun getCrew(showId: TraktId): Result {

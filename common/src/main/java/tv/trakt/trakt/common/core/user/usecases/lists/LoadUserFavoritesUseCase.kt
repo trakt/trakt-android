@@ -7,7 +7,7 @@ import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
 import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserFavoritesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
@@ -19,7 +19,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
  * Loads the user's favorites from the remote source and updates the local cache.
  */
 class LoadUserFavoritesUseCase(
-    private val remoteSource: UserFavoritesRemoteDataSource,
+    private val remoteSource: UserFavoritesRemoteSource,
     private val localSource: UserFavoritesLocalDataSource,
 ) {
     suspend fun loadLocalAll(): ImmutableList<FavoriteItem> {
@@ -62,7 +62,7 @@ class LoadUserFavoritesUseCase(
     suspend fun loadShows(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return remoteSource.getFavoriteShows(
             sorting = sort,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
             FavoriteItem.ShowItem(
@@ -79,7 +79,7 @@ class LoadUserFavoritesUseCase(
     suspend fun loadMovies(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return remoteSource.getFavoriteMovies(
             sorting = sort,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
             FavoriteItem.MovieItem(

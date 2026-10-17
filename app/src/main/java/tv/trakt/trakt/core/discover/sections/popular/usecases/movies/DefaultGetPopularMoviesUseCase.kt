@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.discover.sections.popular.usecases.movies
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
@@ -11,11 +12,10 @@ import tv.trakt.trakt.core.discover.DiscoverConfig
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
-import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
 internal class DefaultGetPopularMoviesUseCase(
-    private val remoteSource: MoviesRemoteDataSource,
+    private val remoteSource: MoviesRemoteSource,
     private val localPopularSource: PopularMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
     private val seasonalThemeUseCase: SeasonalThemeUseCase,
