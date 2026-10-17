@@ -17,6 +17,7 @@ import androidx.compose.ui.text.withStyle
 
 private class MarkdownStyle(
     val linkColor: Color?,
+    val linkWeight: FontWeight,
     val mentionColor: Color?,
 )
 
@@ -51,9 +52,10 @@ fun String.stripMarkdownLinks(): String {
  */
 fun String.toMarkdownText(
     linkColor: Color? = null,
+    linkWeight: FontWeight = FontWeight.Medium,
     mentionColor: Color? = null,
 ): AnnotatedString {
-    val style = MarkdownStyle(linkColor, mentionColor)
+    val style = MarkdownStyle(linkColor, linkWeight, mentionColor)
     return buildAnnotatedString {
         lines().forEachIndexed { index, line ->
             if (index > 0) append('\n')
@@ -141,7 +143,7 @@ private fun AnnotatedString.Builder.appendLink(
     }
     val linkStyle = SpanStyle(
         color = linkColor,
-        fontWeight = FontWeight.Medium,
+        fontWeight = style.linkWeight,
         fontStyle = FontStyle.Normal,
     )
     withLink(LinkAnnotation.Url(url, TextLinkStyles(style = linkStyle))) {
