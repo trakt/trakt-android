@@ -8,6 +8,7 @@ import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextDecoration
@@ -30,6 +31,7 @@ private val INLINE = Regex(
     "\\\\(?<esc>[\\\\`*_~\\[\\]()#>+.!-])" +
         "|`(?<code>[^`]+)`" +
         "|\\[(?<label>[^\\]]+)]\\((?<href>https?://(?:[^\\s()]|\\([^\\s()]*\\))+)\\)" +
+        "(?<possessive>['’]s(?![\\p{L}\\p{N}]))?" +
         "|(?<url>https?://(?:[^\\s<>()]|\\([^\\s<>()]*\\))*(?:[^\\s<>().,;:!?]|\\([^\\s<>()]*\\)))" +
         "|\\*\\*(?<bold>.+?)\\*\\*" +
         "|__(?<bold2>.+?)__" +
@@ -100,6 +102,7 @@ private fun AnnotatedString.Builder.appendInline(
         val code = groups["code"]?.value
         val label = groups["label"]?.value
         val href = groups["href"]?.value
+        val possessive = groups["possessive"]?.value.orEmpty()
         val url = groups["url"]?.value
         val bold = groups["bold"]?.value ?: groups["bold2"]?.value
         val strike = groups["strike"]?.value
@@ -108,7 +111,7 @@ private fun AnnotatedString.Builder.appendInline(
         when {
             escaped != null -> append(escaped)
             code != null -> withStyle(SpanStyle(fontFamily = FontFamily.Monospace)) { append(code) }
-            label != null && href != null -> appendLink(label, href, style, links)
+            label != null && href != null -> appendLink(label, href, style, links, possessive)
             url != null -> appendLink(url, url, style, links)
             bold != null -> withStyle(SpanStyle(fontWeight = Bold)) { appendInline(bold, style, links) }
             strike != null -> withStyle(SpanStyle(textDecoration = TextDecoration.LineThrough)) {
@@ -128,19 +131,22 @@ private fun AnnotatedString.Builder.appendLink(
     url: String,
     style: MarkdownStyle,
     linksEnabled: Boolean,
+    possessive: String = "",
 ) {
     val linkColor = style.linkColor
     if (!linksEnabled || linkColor == null) {
         append(label)
+        append(possessive)
         return
     }
     val linkStyle = SpanStyle(
         color = linkColor,
-        fontWeight = Bold,
+        fontWeight = FontWeight.Medium,
         fontStyle = FontStyle.Normal,
     )
     withLink(LinkAnnotation.Url(url, TextLinkStyles(style = linkStyle))) {
         appendInline(label, style, links = false)
+        append(possessive)
     }
 }
 
