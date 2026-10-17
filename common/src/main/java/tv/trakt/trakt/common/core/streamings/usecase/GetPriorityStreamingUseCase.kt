@@ -3,10 +3,10 @@ package tv.trakt.trakt.common.core.streamings.usecase
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.local.cacheSourcesIfNeeded
-import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteSource
 import tv.trakt.trakt.common.core.streamings.helpers.PriorityStreamingServiceProvider
 import tv.trakt.trakt.common.core.streamings.helpers.toStreamingService
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.data.remote.StreamingRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService

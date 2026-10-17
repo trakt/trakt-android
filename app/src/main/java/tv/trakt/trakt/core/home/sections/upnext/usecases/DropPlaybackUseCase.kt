@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.home.sections.upnext.usecases
 
 import timber.log.Timber
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter

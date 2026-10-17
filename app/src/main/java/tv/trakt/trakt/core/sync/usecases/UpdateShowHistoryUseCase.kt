@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.sync.usecases
 
-import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteSource
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
-import tv.trakt.trakt.common.core.sync.data.remote.episodes.EpisodesSyncRemoteSource
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult

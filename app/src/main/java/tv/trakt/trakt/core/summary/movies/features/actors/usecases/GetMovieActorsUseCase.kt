@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.summary.movies.features.actors.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId

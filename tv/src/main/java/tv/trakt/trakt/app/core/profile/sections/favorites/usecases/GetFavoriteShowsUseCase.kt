@@ -3,7 +3,7 @@ package tv.trakt.trakt.app.core.profile.sections.favorites.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteSource
+import tv.trakt.trakt.common.data.remote.UserFavoritesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto

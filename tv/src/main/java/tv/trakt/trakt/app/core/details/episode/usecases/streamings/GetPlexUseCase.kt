@@ -5,10 +5,10 @@ import com.google.firebase.remoteconfig.remoteConfig
 import timber.log.Timber
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.plex.data.remote.PlexRemoteSource
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
-import tv.trakt.trakt.common.core.sync.data.remote.episodes.EpisodesSyncRemoteSource
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.PlexRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.PLEX_PLAY_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.MediaType

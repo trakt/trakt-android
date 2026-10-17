@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.summary.shows.features.info.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 
 internal class GetShowStudiosUseCase(

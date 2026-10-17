@@ -2,8 +2,8 @@ package tv.trakt.trakt.core.userprofile.sections.lists.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteSource
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserOtherListsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination

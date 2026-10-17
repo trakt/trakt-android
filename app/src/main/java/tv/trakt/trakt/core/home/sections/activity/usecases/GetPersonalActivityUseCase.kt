@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.EPISODE
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.MOVIE
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteSource
+import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode

@@ -15,7 +15,9 @@ applyTo: 'common/src/main/**/*.kt'
 | Generated API client (DTOs)   | `build/generate-resources/.../main/src/main/kotlin/`       |
 | Ktor client + interceptors    | `common/.../networking/`                                   |
 | Hand-written extra APIs       | `common/.../networking/api/<feature>/`                     |
-| Remote sources                | `common/.../core/<feature>/data/remote/<Feature>RemoteSource.kt` |
+| Remote sources                | `common/.../data/remote/<Feature>RemoteSource.kt`          |
+| Hand-written response DTOs    | `common/.../data/dto/`                                     |
+| Hand-written request bodies   | `common/.../data/request/`                                 |
 | DTO → domain mapping          | `fromDto` companion on the domain model in `common/.../model/` |
 | Repositories                  | feature-local `core/<feature>/data/` or `common/.../<entity>/` |
 
@@ -47,10 +49,11 @@ Rules:
 ## Remote sources
 
 A remote source wraps the generated OpenAPI APIs for one feature. Phone and TV share the same
-classes; all of them live in `:common`.
+classes; all of them live in one flat package, `common/.../data/remote/`. Remote sources are the
+one exception to feature folders.
 
 ```kotlin
-// common/.../core/people/data/remote/PeopleRemoteSource.kt
+// common/.../data/remote/PeopleRemoteSource.kt
 class PeopleRemoteSource(
     private val peopleExtrasApi: PeopleExtrasApi,
     private val peopleApi: PeopleApi,
@@ -61,9 +64,10 @@ class PeopleRemoteSource(
     ): PersonDto { … }
 }
 
-// common/.../core/people/di/PeopleModule.kt
-val peopleRemoteModule = module {
+// common/.../data/remote/di/RemoteSourcesModule.kt
+val remoteSourcesModule = module {
     singleOf(::PeopleRemoteSource)
+    // …
 }
 ```
 
@@ -72,20 +76,22 @@ Rules:
 - **One public `class <Feature>RemoteSource` per feature. No interface.** A single-implementation
   interface + `*ApiClient` pair adds a file and a Koin `bind` for nothing. Introduce an interface
   only when a second implementation actually exists.
-- **Never in `:app` or `:tv`.** New endpoints go into the shared class, even when only one platform
-  calls them today.
-- **Platform differences are parameters with the phone default** (`extended: String = "full,images"`).
+- **Never in `:app`, `:tv` or a feature folder.** New endpoints go into the shared class in
+  `data/remote/`, even when only one platform calls them today.
+- **Hand-written DTOs** (endpoints the OpenAPI spec lacks) go to `data/dto/` for responses and
+  `data/request/` for request bodies. Never next to the remote source.
+- **Platform differences are parameters with the phone default** (`extended: String = "full,images,markdown"`).
   TV passes its own value (`"full,images"`) at the call site; extract repeated values into a
   `private const val` in the calling use-case.
 - **Images use `extended=images`.** `cloud9` is legacy; do not add it back.
 - **API instances come from `networkingApiModule`** (`common/.../networking/di/NetworkingModule.kt`).
   Never construct `PeopleApi(...)` inside a feature module.
-- **One `<feature>RemoteModule` per feature in `:common`**, registered in both
-  `TraktApplication.setupKoin()` and `TvActivity`. Platform-only modules are registered only where
-  used.
+- **All remote sources bind in one `remoteSourcesModule`**, registered in both
+  `TraktApplication.setupKoin()` and `TvActivity`. Koin singletons are created lazily, so binding a
+  phone-only source in TV costs nothing.
 - **Bind with `singleOf(::XRemoteSource)`.** Use `single { XRemoteSource(get(named(…))) }` only when
   a param needs a qualifier (`authorizedClientConfig`, `authorizedCommentsApi`, …). See
-  `core/user/di/SharedRemoteModule.kt`.
+  `data/remote/di/RemoteSourcesModule.kt`.
 - Remote sources return DTOs. Mapping to domain happens above them, in repositories or use-cases.
   When a remote source catches errors, it must not swallow `CancellationException`
   (`rethrowCancellation`).
@@ -228,7 +234,7 @@ Never cache for `Duration.INFINITE`.
 ## Quick checklist
 
 - [ ] DTO from generated OpenAPI client (or documented exception)
-- [ ] Endpoint added to shared `<Feature>RemoteSource` in `:common`, no interface, no `:app`/`:tv` copy
+- [ ] Endpoint added to shared `<Feature>RemoteSource` in `data/remote/`, no interface, no `:app`/`:tv` copy
 - [ ] Platform differences expressed as parameters with phone defaults
 - [ ] DTO mapped via `companion object { fun fromDto }` on the domain model, pure, no mapper files
 - [ ] Repository exposes `Flow<…>` reads and `suspend` writes

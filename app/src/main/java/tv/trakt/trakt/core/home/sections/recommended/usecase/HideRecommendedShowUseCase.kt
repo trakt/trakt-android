@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.home.sections.recommended.usecase
 
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalDataSource

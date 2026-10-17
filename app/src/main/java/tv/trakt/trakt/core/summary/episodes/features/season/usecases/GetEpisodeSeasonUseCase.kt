@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.summary.episodes.features.season.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId

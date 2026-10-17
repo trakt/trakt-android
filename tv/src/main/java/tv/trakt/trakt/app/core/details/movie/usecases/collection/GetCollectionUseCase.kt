@@ -2,7 +2,7 @@ package tv.trakt.trakt.app.core.details.movie.usecases.collection
 
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.model.WatchedMovie
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.TraktId

@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.summary.shows.usecases
 
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.TraktId
 

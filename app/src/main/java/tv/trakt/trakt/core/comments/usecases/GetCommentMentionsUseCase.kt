@@ -3,9 +3,9 @@ package tv.trakt.trakt.core.comments.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
-import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteSource
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.core.comments.model.CommentMention
 import tv.trakt.trakt.core.comments.model.MentionSource
 

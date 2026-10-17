@@ -3,8 +3,8 @@ package tv.trakt.trakt.core.profile.sections.leaderboard.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteSource
-import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteSource
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
+import tv.trakt.trakt.common.data.remote.UserSocialRemoteSource
 import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.common.model.leaderboard.LeaderboardEntry
 import tv.trakt.trakt.common.model.pagination.Pagination

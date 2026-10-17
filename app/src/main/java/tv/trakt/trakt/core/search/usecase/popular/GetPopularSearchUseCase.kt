@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.search.usecase.popular
 
-import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteSource
+import tv.trakt.trakt.common.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant

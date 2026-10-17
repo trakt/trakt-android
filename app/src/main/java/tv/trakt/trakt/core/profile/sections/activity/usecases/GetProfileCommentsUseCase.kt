@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.profile.sections.activity.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteSource
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie

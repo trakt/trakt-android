@@ -2,9 +2,9 @@ package tv.trakt.trakt.core.today.usecases
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.sync.data.remote.shows.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.core.today.model.TodayMedia
-import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie

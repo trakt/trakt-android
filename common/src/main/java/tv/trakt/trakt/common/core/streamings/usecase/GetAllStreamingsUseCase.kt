@@ -5,13 +5,13 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
 import tv.trakt.trakt.common.core.streamings.data.local.cacheSourcesIfNeeded
-import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteSource
 import tv.trakt.trakt.common.core.streamings.helpers.popularCountriesComparator
 import tv.trakt.trakt.common.core.streamings.helpers.popularServicesComparator
 import tv.trakt.trakt.common.core.streamings.helpers.toStreamingService
 import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
 import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.data.remote.StreamingRemoteSource
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingSource

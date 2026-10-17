@@ -6,13 +6,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.translations.data.local.TranslationsLocalDataSource
 import tv.trakt.trakt.common.core.translations.data.local.TranslationsStorage
-import tv.trakt.trakt.common.core.translations.data.remote.TranslationsRemoteSource
 import tv.trakt.trakt.common.core.translations.usecase.GetEpisodeTranslationsUseCase
 import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
 import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
 
 val translationsDataModule = module {
-    singleOf(::TranslationsRemoteSource)
     singleOf(::TranslationsStorage) { bind<TranslationsLocalDataSource>() }
 }
 

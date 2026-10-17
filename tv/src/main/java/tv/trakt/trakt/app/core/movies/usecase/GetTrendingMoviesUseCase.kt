@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto

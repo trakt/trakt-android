@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.TokenProvider
-import tv.trakt.trakt.common.auth.data.remote.AuthRemoteSource
+import tv.trakt.trakt.common.data.remote.AuthRemoteSource
 import kotlin.time.Duration.Companion.milliseconds
 
 /**

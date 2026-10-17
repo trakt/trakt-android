@@ -3,7 +3,7 @@ package tv.trakt.trakt.app.core.lists.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto

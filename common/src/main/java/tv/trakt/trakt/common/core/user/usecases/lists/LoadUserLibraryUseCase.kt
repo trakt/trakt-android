@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.library.LibraryItem
 import tv.trakt.trakt.common.core.user.data.local.library.UserLibraryLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteSource
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant

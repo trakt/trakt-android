@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.userprofile.usecases
 
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteSource
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 

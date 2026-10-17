@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.applinks.usecases
 
 import org.openapitools.client.models.GetSearchQuery200ResponseInner.Type
-import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteSource
+import tv.trakt.trakt.common.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.core.applinks.AppLinkEvent

@@ -2,7 +2,7 @@ package tv.trakt.trakt.common.core.comments.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteSource
+import tv.trakt.trakt.common.data.remote.CommentsRemoteSource
 import tv.trakt.trakt.common.model.Comment
 
 class GetCommentRepliesUseCase(

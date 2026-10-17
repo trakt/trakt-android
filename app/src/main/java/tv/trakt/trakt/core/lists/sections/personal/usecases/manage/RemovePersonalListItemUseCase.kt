@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
 
-import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteSource
+import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource

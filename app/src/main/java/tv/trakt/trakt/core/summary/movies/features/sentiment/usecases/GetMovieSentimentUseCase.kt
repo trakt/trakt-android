@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.summary.movies.features.sentiment.usecases
 
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId

@@ -3,7 +3,7 @@ package tv.trakt.trakt.common.core.search.usecase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
-import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteSource
+import tv.trakt.trakt.common.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.networking.SearchItemDto
 import kotlin.coroutines.cancellation.CancellationException

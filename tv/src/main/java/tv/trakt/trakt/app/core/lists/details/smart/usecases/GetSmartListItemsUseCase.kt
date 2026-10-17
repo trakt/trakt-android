@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
-import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId

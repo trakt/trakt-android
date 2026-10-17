@@ -2,7 +2,7 @@ package tv.trakt.trakt.app.core.details.movie.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.TraktId
 

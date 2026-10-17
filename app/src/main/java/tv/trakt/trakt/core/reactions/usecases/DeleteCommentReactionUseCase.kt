@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.reactions.usecases
 
-import tv.trakt.trakt.common.core.reactions.data.remote.ReactionsRemoteSource
+import tv.trakt.trakt.common.data.remote.ReactionsRemoteSource
 
 internal class DeleteCommentReactionUseCase(
     private val remoteSource: ReactionsRemoteSource,

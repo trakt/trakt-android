@@ -2,8 +2,8 @@ package tv.trakt.trakt.core.summary.shows.features.seasons.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteSource
-import tv.trakt.trakt.common.core.shows.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season

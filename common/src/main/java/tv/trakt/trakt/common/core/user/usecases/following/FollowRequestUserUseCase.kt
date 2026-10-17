@@ -1,6 +1,6 @@
 package tv.trakt.trakt.common.core.user.usecases.following
 
-import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteSource
+import tv.trakt.trakt.common.data.remote.UserSocialRemoteSource
 
 class FollowRequestUserUseCase(
     private val remoteSource: UserSocialRemoteSource,

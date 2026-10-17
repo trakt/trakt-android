@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.summary.movies.features.info.usecase
 
-import tv.trakt.trakt.common.core.movies.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.MovieStatsDto
 

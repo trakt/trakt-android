@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.lists.sections.smart.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
