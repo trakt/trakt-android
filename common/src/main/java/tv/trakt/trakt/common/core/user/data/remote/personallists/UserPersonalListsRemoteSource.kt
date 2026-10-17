@@ -25,7 +25,7 @@ class UserPersonalListsRemoteSource(
     ): List<ListDto> {
         val response = usersApi.getUsersListsPersonal(
             id = userId,
-            extended = "cloud9,images",
+            extended = "images",
             sortBy = sorting?.type?.value,
             sortHow = sorting?.order?.value,
             page = pagination.page,

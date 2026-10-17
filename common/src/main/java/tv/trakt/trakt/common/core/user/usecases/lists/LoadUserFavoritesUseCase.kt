@@ -62,7 +62,7 @@ class LoadUserFavoritesUseCase(
     suspend fun loadShows(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return remoteSource.getFavoriteShows(
             sorting = sort,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
             FavoriteItem.ShowItem(
@@ -79,7 +79,7 @@ class LoadUserFavoritesUseCase(
     suspend fun loadMovies(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return remoteSource.getFavoriteMovies(
             sorting = sort,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
             FavoriteItem.MovieItem(

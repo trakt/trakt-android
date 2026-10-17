@@ -20,7 +20,7 @@ class MediaRemoteSource(
         theme: String? = null,
     ): List<TrendingMediaDto> {
         val response = mediaApi.getMediaTrending(
-            extended = "full,streaming_ids,cloud9,colors",
+            extended = "full,streaming_ids,images,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -50,7 +50,7 @@ class MediaRemoteSource(
         theme: String? = null,
     ): List<PopularMediaDto> {
         val response = mediaApi.getMediaPopular(
-            extended = "full,streaming_ids,cloud9,colors",
+            extended = "full,streaming_ids,images,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -80,7 +80,7 @@ class MediaRemoteSource(
         theme: String? = null,
     ): List<AnticipatedMediaDto> {
         val response = mediaApi.getMediaAnticipated(
-            extended = "full,streaming_ids,cloud9,colors",
+            extended = "full,streaming_ids,images,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -110,7 +110,7 @@ class MediaRemoteSource(
         return v3Api.getMediaRecommendations(
             V3RecommendationsRequest(
                 limit = limit,
-                extended = "full,streaming_ids,cloud9,colors",
+                extended = "full,streaming_ids,images,colors",
                 watchWindow = 25,
                 watchnow = filters.availability?.joinToString(",") { it.slug },
                 genres = filters.genre?.joinToString(",") { it.slug },

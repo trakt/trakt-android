@@ -30,7 +30,7 @@ internal class GetPersonalListItemsUseCase(
                     listId = listId,
                     limit = PERSONAL_LIST_PAGE_LIMIT,
                     page = page,
-                    extended = "full,cloud9,streaming_ids",
+                    extended = "full,images,streaming_ids",
                     sorting = Sorting.Default,
                 ).map {
                     PersonalListItem(
@@ -46,7 +46,7 @@ internal class GetPersonalListItemsUseCase(
                     listId = listId,
                     limit = PERSONAL_LIST_PAGE_LIMIT,
                     page = page,
-                    extended = "full,cloud9,streaming_ids",
+                    extended = "full,images,streaming_ids",
                     sorting = Sorting.Default,
                 ).map {
                     PersonalListItem(

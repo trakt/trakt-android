@@ -75,8 +75,9 @@ Rules:
 - **Never in `:app` or `:tv`.** New endpoints go into the shared class, even when only one platform
   calls them today.
 - **Platform differences are parameters with the phone default** (`extended: String = "full,images"`).
-  TV passes its own value (`"cloud9"`) at the call site; extract repeated values into a `private
-  const val` in the calling use-case.
+  TV passes its own value (`"full,images"`) at the call site; extract repeated values into a
+  `private const val` in the calling use-case.
+- **Images use `extended=images`.** `cloud9` is legacy; do not add it back.
 - **API instances come from `networkingApiModule`** (`common/.../networking/di/NetworkingModule.kt`).
   Never construct `PeopleApi(...)` inside a feature module.
 - **One `<feature>RemoteModule` per feature in `:common`**, registered in both

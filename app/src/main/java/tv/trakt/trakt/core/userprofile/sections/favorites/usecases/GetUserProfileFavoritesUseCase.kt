@@ -32,7 +32,7 @@ internal class GetUserProfileFavoritesUseCase(
                     remoteSource.getFavoriteShows(
                         userId = userId.value.toString(),
                         sorting = sorting,
-                        extended = "full,cloud9,colors",
+                        extended = "full,images,colors",
                     )
                 }
             } else {
@@ -44,7 +44,7 @@ internal class GetUserProfileFavoritesUseCase(
                     remoteSource.getFavoriteMovies(
                         userId = userId.value.toString(),
                         sorting = sorting,
-                        extended = "full,cloud9,colors",
+                        extended = "full,images,colors",
                     )
                 }
             } else {

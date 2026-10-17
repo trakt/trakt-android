@@ -28,7 +28,7 @@ internal class GetProfileHistoryUseCase(
                 page = page,
                 limit = limit,
                 filters = null,
-                extended = "full,cloud9,streaming_ids",
+                extended = "full,images,streaming_ids",
             )
 
             return@coroutineScope remoteHistory

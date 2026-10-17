@@ -17,7 +17,7 @@ class UserOtherListsRemoteSource(
             type = "lists",
             extended = when {
                 minimal -> "min"
-                else -> "cloud9,images"
+                else -> "images"
             },
             page = pagination.page,
             limit = pagination.limit.toString(),
@@ -28,7 +28,7 @@ class UserOtherListsRemoteSource(
     suspend fun getCollaborationLists(userId: String = "me"): List<ListDto> {
         val response = usersApi.getUsersListsCollaborations(
             id = userId,
-            extended = "cloud9,images",
+            extended = "images",
         )
         return response.body()
     }

@@ -10,18 +10,13 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 
-private const val CREDITS_EXTENDED = "full,cloud9,colors,streaming_ids"
-
 internal class GetPersonCreditsUseCase(
     private val peopleRemoteSource: PeopleRemoteSource,
     private val showLocalSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
 ) {
     suspend fun getShowCredits(personId: TraktId): ImmutableList<Show> {
-        val response = peopleRemoteSource.getPersonShowsCredits(
-            personId = personId,
-            extended = CREDITS_EXTENDED,
-        )
+        val response = peopleRemoteSource.getPersonShowsCredits(personId)
         val shows = response.cast
             ?.map { Show.fromDto(it.show) }
             ?.sortedByDescending { it.rating.votes }
@@ -32,10 +27,7 @@ internal class GetPersonCreditsUseCase(
     }
 
     suspend fun getMovieCredits(personId: TraktId): ImmutableList<Movie> {
-        val response = peopleRemoteSource.getPersonMoviesCredits(
-            personId = personId,
-            extended = CREDITS_EXTENDED,
-        )
+        val response = peopleRemoteSource.getPersonMoviesCredits(personId)
         val movies = response.cast
             ?.map { Movie.fromDto(it.movie) }
             ?.sortedByDescending { it.rating.votes }

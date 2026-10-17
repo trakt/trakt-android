@@ -56,7 +56,7 @@ class UserRatingsRemoteSource(
     suspend fun getAllRatings(pagination: Pagination): List<UserRatingDto> {
         val response = usersApi.getUsersRatingsAll(
             id = "me",
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             page = pagination.page,
             limit = pagination.limit,
         )

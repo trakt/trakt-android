@@ -13,7 +13,7 @@ class UserCalendarRemoteSource(
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter? = null,
-        extended: String = "full,cloud9,colors",
+        extended: String = "full,images,colors",
     ): List<CalendarShowDto> {
         val response = calendarsApi.getCalendarsShows(
             target = "my",
@@ -43,7 +43,7 @@ class UserCalendarRemoteSource(
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter? = null,
-        extended: String = "full,cloud9,colors",
+        extended: String = "full,images,colors",
     ): List<CalendarMovieDto> {
         val response = calendarsApi.getCalendarsMovies(
             target = "my",

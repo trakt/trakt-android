@@ -36,7 +36,7 @@ internal class GetListItemsUseCase(
         if (type.size == 1 && type[0] == MediaType.Movie) {
             return remoteSource.getMovieListItems(
                 listId = listId,
-                extended = "full,cloud9,colors",
+                extended = "full,images,colors",
                 sorting = sorting,
                 pagination = pagination,
                 filters = filters?.copy(mode = Movies),
@@ -55,7 +55,7 @@ internal class GetListItemsUseCase(
         if (type.size == 1 && type[0] == MediaType.Show) {
             return remoteSource.getShowListItems(
                 listId = listId,
-                extended = "full,cloud9,colors",
+                extended = "full,images,colors",
                 sorting = sorting,
                 pagination = pagination,
                 filters = filters?.copy(mode = Shows),
@@ -74,7 +74,7 @@ internal class GetListItemsUseCase(
         if (type.containsAll(listOf(MediaType.Movie, MediaType.Show))) {
             return remoteSource.getAllListItems(
                 listId = listId,
-                extended = "full,cloud9,colors",
+                extended = "full,images,colors",
                 sorting = sorting,
                 pagination = pagination,
                 filters = filters,

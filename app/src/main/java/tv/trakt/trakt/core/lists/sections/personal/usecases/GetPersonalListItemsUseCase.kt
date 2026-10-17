@@ -37,7 +37,7 @@ internal class GetPersonalListItemsUseCase(
             listId = listId,
             limit = limit,
             page = 1,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = sorting,
             filters = filter,
         )
@@ -106,7 +106,7 @@ internal class GetPersonalListItemsUseCase(
             listId = listId,
             limit = limit,
             page = page,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = sorting,
             filters = filter,
         ).asyncMap {
@@ -134,7 +134,7 @@ internal class GetPersonalListItemsUseCase(
             listId = listId,
             limit = limit,
             page = page,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = sorting,
             filters = filter,
         ).asyncMap {
@@ -164,7 +164,7 @@ internal class GetPersonalListItemsUseCase(
             listId = listId,
             limit = limit,
             page = page,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = sorting,
             filters = filter,
         )

@@ -42,7 +42,7 @@ internal class GetShowsWatchlistUseCase(
             page = page,
             limit = limit,
             sorting = sorting,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             filters = filters,
         ).asyncMap {
             val mediaId = it.show.ids.trakt.toTraktId()
