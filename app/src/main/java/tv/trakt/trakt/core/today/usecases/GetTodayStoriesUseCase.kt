@@ -4,10 +4,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
-import tv.trakt.trakt.common.core.today.data.remote.TodayRemoteSource
 import tv.trakt.trakt.common.core.today.model.FollowingActivity
 import tv.trakt.trakt.common.core.today.model.FollowingActivity.Target
 import tv.trakt.trakt.common.core.today.model.TodayMedia
+import tv.trakt.trakt.common.data.remote.TodayRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode

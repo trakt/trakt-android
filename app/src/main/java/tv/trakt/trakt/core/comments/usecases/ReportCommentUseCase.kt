@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.comments.usecases
 
-import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteSource
+import tv.trakt.trakt.common.data.remote.CommentsRemoteSource
 
 internal class ReportCommentUseCase(
     private val remoteSource: CommentsRemoteSource,

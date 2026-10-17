@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.user.data.local.ratings.UserRatingsLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserRatingsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId

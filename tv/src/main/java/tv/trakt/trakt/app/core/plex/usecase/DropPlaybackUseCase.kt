@@ -1,8 +1,8 @@
 package tv.trakt.trakt.app.core.plex.usecase
 
 import timber.log.Timber
-import tv.trakt.trakt.common.core.sync.data.remote.episodes.EpisodesSyncRemoteSource
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi

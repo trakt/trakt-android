@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.summary.episodes.features.actors.usecases
 
-import tv.trakt.trakt.common.core.episodes.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId

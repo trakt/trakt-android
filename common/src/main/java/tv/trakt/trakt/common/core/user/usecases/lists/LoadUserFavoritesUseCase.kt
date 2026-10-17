@@ -7,7 +7,7 @@ import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
 import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteSource
+import tv.trakt.trakt.common.data.remote.UserFavoritesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie

@@ -1,6 +1,6 @@
 package tv.trakt.trakt.common.core.streamings.data.local
 
-import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteSource
+import tv.trakt.trakt.common.data.remote.StreamingRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.streamings.StreamingSource
 import tv.trakt.trakt.common.model.streamings.fromDto

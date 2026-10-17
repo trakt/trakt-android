@@ -1,6 +1,6 @@
 package tv.trakt.trakt.common.core.user.usecases.following
 
-import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteSource
+import tv.trakt.trakt.common.data.remote.UserSocialRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_CONFLICT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode

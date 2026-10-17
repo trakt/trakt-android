@@ -1,6 +1,6 @@
 package tv.trakt.trakt.app.core.details.episode.usecases.collection
 
-import tv.trakt.trakt.common.core.sync.data.remote.episodes.EpisodesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.TraktId

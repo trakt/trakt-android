@@ -112,7 +112,7 @@ Avoid one-line `UseCase` wrappers around repository calls.
 - **Reads return `Flow<T>`.** Local + remote sources flow through repository unified by `data` layer; ViewModel sees only unified stream.
 - **Writes are `suspend fun` returning `Result<…>`** (or domain-specific sealed result type).
 - **Mapping** lives on the domain model as `companion object { fun fromDto(...) }`. No separate mapper files. Pure, no I/O. See `networking.md`.
-- **Remote sources** are shared public classes `common/.../core/<feature>/data/remote/<Feature>RemoteSource.kt`, no interface, bound once per feature in a `:common` `<feature>RemoteModule`. Phone and TV inject the same class. See "Remote sources" in `networking.md`.
+- **Remote sources** are shared public classes in one flat package, `common/.../data/remote/<Feature>RemoteSource.kt`, no interface, all bound in `remoteSourcesModule` (`data/remote/di/RemoteSourcesModule.kt`). Phone and TV inject the same class. See "Remote sources" in `networking.md`.
 
 ## Navigation
 

@@ -42,24 +42,13 @@ import tv.trakt.trakt.app.core.streamings.di.allStreamingsModule
 import tv.trakt.trakt.app.core.streamings.di.plexDataModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.auth.di.authRemoteModule
 import tv.trakt.trakt.common.auth.di.commonAuthModule
-import tv.trakt.trakt.common.core.episodes.di.episodesRemoteModule
-import tv.trakt.trakt.common.core.media.di.mediaDataModule
-import tv.trakt.trakt.common.core.movies.di.moviesRemoteModule
-import tv.trakt.trakt.common.core.people.di.peopleRemoteModule
-import tv.trakt.trakt.common.core.plex.di.plexRemoteModule
-import tv.trakt.trakt.common.core.shows.di.showsRemoteModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
-import tv.trakt.trakt.common.core.sync.di.syncRemoteModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
-import tv.trakt.trakt.common.core.user.di.commentsRemoteModule
-import tv.trakt.trakt.common.core.user.di.listsRemoteModule
-import tv.trakt.trakt.common.core.user.di.searchRemoteModule
-import tv.trakt.trakt.common.core.user.di.userRemoteModule
+import tv.trakt.trakt.common.data.remote.di.remoteSourcesModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.coil.coilModule
@@ -133,24 +122,13 @@ class TvActivity : ComponentActivity() {
                     showDetailsModule,
                     moviesModule,
                     moviesDataModule,
-                    mediaDataModule,
                     movieDetailsModule,
                     episodesDataModule,
                     episodeDetailsModule,
                     listsModule,
                     commentsModule,
                     peopleDataModule,
-                    peopleRemoteModule,
-                    listsRemoteModule,
-                    searchRemoteModule,
-                    commentsRemoteModule,
-                    userRemoteModule,
-                    plexRemoteModule,
-                    authRemoteModule,
-                    syncRemoteModule,
-                    episodesRemoteModule,
-                    showsRemoteModule,
-                    moviesRemoteModule,
+                    remoteSourcesModule,
                     personDetailsModule,
                     customListMediaModule,
                     profileDataModule,

@@ -1,7 +1,7 @@
 package tv.trakt.trakt.common.core.comments.usecases
 
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteSource
+import tv.trakt.trakt.common.data.remote.CommentsRemoteSource
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 

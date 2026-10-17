@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.lists.features.reorder.lists.usecase
 
-import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteSource
+import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ALL_PAGE_LIMIT

@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomListMinimal

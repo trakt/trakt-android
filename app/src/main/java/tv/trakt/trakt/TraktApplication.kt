@@ -18,31 +18,13 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
-import tv.trakt.trakt.common.auth.di.authRemoteModule
 import tv.trakt.trakt.common.auth.di.commonAuthModule
-import tv.trakt.trakt.common.core.episodes.di.episodesRemoteModule
-import tv.trakt.trakt.common.core.klipy.di.gifsDataModule
-import tv.trakt.trakt.common.core.media.di.mediaDataModule
-import tv.trakt.trakt.common.core.movies.di.moviesRemoteModule
-import tv.trakt.trakt.common.core.people.di.peopleRemoteModule
-import tv.trakt.trakt.common.core.remote.di.billingRemoteModule
-import tv.trakt.trakt.common.core.remote.di.checkInRemoteModule
-import tv.trakt.trakt.common.core.remote.di.parentalGuideRemoteModule
-import tv.trakt.trakt.common.core.remote.di.ratingsRemoteModule
-import tv.trakt.trakt.common.core.remote.di.reactionsRemoteModule
-import tv.trakt.trakt.common.core.remote.di.todayRemoteModule
-import tv.trakt.trakt.common.core.remote.di.younifyRemoteModule
-import tv.trakt.trakt.common.core.shows.di.showsRemoteModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
-import tv.trakt.trakt.common.core.sync.di.syncRemoteModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
-import tv.trakt.trakt.common.core.user.di.commentsRemoteModule
-import tv.trakt.trakt.common.core.user.di.listsRemoteModule
-import tv.trakt.trakt.common.core.user.di.searchRemoteModule
-import tv.trakt.trakt.common.core.user.di.userRemoteModule
+import tv.trakt.trakt.common.data.remote.di.remoteSourcesModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.coil.coilModule
@@ -180,7 +162,6 @@ internal class TraktApplication : Application() {
                 homeModule,
                 homeDataModule,
                 discoverModule,
-                mediaDataModule,
                 showsModule,
                 showsDataModule,
                 showDetailsModule,
@@ -195,23 +176,7 @@ internal class TraktApplication : Application() {
                 profileModule,
                 profileDataModule,
                 peopleDataModule,
-                peopleRemoteModule,
-                listsRemoteModule,
-                searchRemoteModule,
-                commentsRemoteModule,
-                userRemoteModule,
-                authRemoteModule,
-                billingRemoteModule,
-                checkInRemoteModule,
-                parentalGuideRemoteModule,
-                ratingsRemoteModule,
-                reactionsRemoteModule,
-                todayRemoteModule,
-                younifyRemoteModule,
-                syncRemoteModule,
-                episodesRemoteModule,
-                showsRemoteModule,
-                moviesRemoteModule,
+                remoteSourcesModule,
                 peopleModule,
                 personDetailsModule,
                 searchModule,
@@ -241,7 +206,6 @@ internal class TraktApplication : Application() {
                 analyticsModule,
                 translationsDataModule,
                 translationsModule,
-                gifsDataModule,
                 gifPickerModule,
                 userProfileModule,
                 youTubePlayerModule,

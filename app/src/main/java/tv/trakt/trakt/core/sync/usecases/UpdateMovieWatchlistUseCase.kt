@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.sync.usecases
 
-import tv.trakt.trakt.common.core.sync.data.remote.movies.MoviesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 
 internal class UpdateMovieWatchlistUseCase(

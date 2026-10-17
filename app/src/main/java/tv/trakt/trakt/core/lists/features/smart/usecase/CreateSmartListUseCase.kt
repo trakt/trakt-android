@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.lists.features.smart.usecase
 
 import org.openapitools.client.models.PostUsersListsListConvertToSmartListRequest
-import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
