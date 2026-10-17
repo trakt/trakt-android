@@ -1352,7 +1352,7 @@
   <string name="match_label_soulmates">Almas gemelas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidencia:</string>
-  <string name="match_pill_aria_label">%1$d% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
+  <string name="match_pill_aria_label">%1$d%% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
   <string name="match_pill_loading_aria_label">Calculando puntuación de compatibilidad</string>
   <string name="mir_banner_body">Tu resumen mensual está listo. Esto es lo que viste en %s.</string>
   <string name="mir_banner_body_short">Tu resumen de %s está listo.</string>
@@ -1583,7 +1583,7 @@
   <string name="tag_media_sync_run_running">Sincronizando</string>
   <string name="tag_media_sync_webhook_only">Solo Webhook</string>
   <string name="tag_mixtape_different_mood">Otro ambiente</string>
-  <string name="tag_mixtape_match">%s% de coincidencia</string>
+  <string name="tag_mixtape_match">%s%% de coincidencia</string>
   <string name="tag_mixtape_on_watchlist">En lista de seguimiento</string>
   <string name="tag_mixtape_tap_details">Toca para ver detalles</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
@@ -2731,7 +2731,7 @@
   <string name="yir_2026_preview_runner_none">Ninguno (sin híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo puesto</string>
   <string name="yir_2026_preview_title">Vista previa de personalidad</string>
-  <string name="yir_2026_rarity">Solo el %1$d% son %2$s</string>
+  <string name="yir_2026_rarity">Solo el %1$d%% son %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un poco %s</string>
   <string name="yir_2026_reel_and_you_are">Y eres</string>
   <string name="yir_2026_reel_but_mostly">Pero sobre todo</string>

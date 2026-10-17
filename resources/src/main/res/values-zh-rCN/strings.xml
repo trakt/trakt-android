@@ -1352,7 +1352,7 @@
   <string name="match_label_soulmates">灵魂伴侣</string>
   <string name="match_label_spin_off">衍生作品</string>
   <string name="match_pill_anchor">匹配:</string>
-  <string name="match_pill_aria_label">%1$d% 匹配，%2$s。打开匹配详情。</string>
+  <string name="match_pill_aria_label">%1$d%% 匹配，%2$s。打开匹配详情。</string>
   <string name="match_pill_loading_aria_label">正在计算匹配度</string>
   <string name="mir_banner_body">您的月度回顾已就绪。这是您在 %s 中观看的内容。</string>
   <string name="mir_banner_body_short">您的 %s 回顾已就绪。</string>
@@ -1583,7 +1583,7 @@
   <string name="tag_media_sync_run_running">正在同步</string>
   <string name="tag_media_sync_webhook_only">仅限 Webhook</string>
   <string name="tag_mixtape_different_mood">风格不符</string>
-  <string name="tag_mixtape_match">%s% 匹配</string>
+  <string name="tag_mixtape_match">%s%% 匹配</string>
   <string name="tag_mixtape_on_watchlist">已在待看列表</string>
   <string name="tag_mixtape_tap_details">轻触查看详情</string>
   <string name="tag_text_blocked_user">已屏蔽</string>
@@ -2731,7 +2731,7 @@
   <string name="yir_2026_preview_runner_none">无（非混合）</string>
   <string name="yir_2026_preview_runner_up">第二名</string>
   <string name="yir_2026_preview_title">角色预览</string>
-  <string name="yir_2026_rarity">仅有 %1$d% 是 %2$s</string>
+  <string name="yir_2026_rarity">仅有 %1$d%% 是 %2$s</string>
   <string name="yir_2026_reel_a_little_bit">有点 %s</string>
   <string name="yir_2026_reel_and_you_are">而您是</string>
   <string name="yir_2026_reel_but_mostly">但主要是</string>
