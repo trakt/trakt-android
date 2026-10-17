@@ -19,7 +19,7 @@ class UserHistoryRemoteSource(
         from: Instant? = null,
         to: Instant? = null,
         userId: String = "me",
-        extended: String = "full,cloud9,colors",
+        extended: String = "full,images,colors",
     ): List<SyncHistoryItemDto> {
         val response = historyApi.getUsersHistoryAll(
             id = userId,
@@ -53,7 +53,7 @@ class UserHistoryRemoteSource(
     ): List<SyncHistoryEpisodeItemDto> {
         val response = historyApi.getUsersHistoryEpisodes(
             id = userId,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             startAt = from?.toString(),
             endAt = to?.toString(),
             page = page,
@@ -83,7 +83,7 @@ class UserHistoryRemoteSource(
     ): List<SyncHistoryMovieItemDto> {
         val response = historyApi.getUsersHistoryMovies(
             id = userId,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             startAt = from?.toString(),
             endAt = to?.toString(),
             page = page,
@@ -111,7 +111,7 @@ class UserHistoryRemoteSource(
         val response = historyApi.getUsersHistoryMovie(
             id = "me",
             itemId = movieId.value.toString(),
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             startAt = null,
             endAt = null,
             page = page,
@@ -127,7 +127,7 @@ class UserHistoryRemoteSource(
         val response = historyApi.getUsersHistoryShow(
             id = "me",
             itemId = showId.value.toString(),
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             startAt = null,
             endAt = null,
             page = pagination.page,
@@ -144,7 +144,7 @@ class UserHistoryRemoteSource(
         val response = historyApi.getUsersHistoryEpisode(
             id = "me",
             itemId = episodeId.value.toString(),
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             startAt = null,
             endAt = null,
             page = page,

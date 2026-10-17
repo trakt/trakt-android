@@ -19,7 +19,7 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.toJavaDuration
 
 private const val RELEASES_LIMIT = 25
-private const val WATCHLIST_EXTENDED = "full,cloud9,colors"
+private const val WATCHLIST_EXTENDED = "full,images,colors"
 
 private val TodayWindow = 24.hours
 

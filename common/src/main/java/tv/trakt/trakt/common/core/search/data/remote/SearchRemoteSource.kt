@@ -15,7 +15,7 @@ class SearchRemoteSource(
     suspend fun getPeople(
         query: String,
         limit: Int,
-        extended: String = "full,cloud9,markdown",
+        extended: String = "full,images,markdown",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -34,7 +34,7 @@ class SearchRemoteSource(
     suspend fun getLists(
         query: String,
         limit: Int,
-        extended: String = "full,cloud9",
+        extended: String = "full,images",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -54,7 +54,7 @@ class SearchRemoteSource(
         query: String,
         limit: Int,
         exact: Boolean = false,
-        extended: String = "full,cloud9,colors,streaming_ids",
+        extended: String = "full,images,colors,streaming_ids",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -82,7 +82,7 @@ class SearchRemoteSource(
         query: String,
         limit: Int,
         exact: Boolean = false,
-        extended: String = "full,cloud9,colors,streaming_ids",
+        extended: String = "full,images,colors,streaming_ids",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -111,7 +111,7 @@ class SearchRemoteSource(
         query: String,
         limit: Int,
         exact: Boolean = false,
-        extended: String = "full,cloud9,colors,streaming_ids",
+        extended: String = "full,images,colors,streaming_ids",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -149,7 +149,7 @@ class SearchRemoteSource(
             type = "shows",
             page = 1,
             limit = limit,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             query = null,
         )
 
@@ -161,7 +161,7 @@ class SearchRemoteSource(
             type = "movies",
             page = 1,
             limit = limit,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             query = null,
         )
 
@@ -174,7 +174,7 @@ class SearchRemoteSource(
             query = null,
             page = 1,
             limit = limit,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
         ).response.body()
     }
 

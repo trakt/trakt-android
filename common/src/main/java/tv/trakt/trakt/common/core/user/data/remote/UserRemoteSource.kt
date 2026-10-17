@@ -54,7 +54,7 @@ class UserRemoteSource(
     suspend fun getWatchingNow(): UserWatchingDto? {
         val response = usersApi.getUsersWatching(
             id = "me",
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
         )
         return when {
             response.status == 204 -> null
@@ -211,7 +211,7 @@ class UserRemoteSource(
         val response = usersApi.getUsersHiddenDropped(
             page = page,
             limit = limit,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
         )
         return response.body()
     }
@@ -226,7 +226,7 @@ class UserRemoteSource(
             limit = limit,
             commentType = "all",
             type = "all",
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             includeReplies = null,
         )
         return response.body()

@@ -31,7 +31,7 @@ internal class GetHomeShowsWatchlistItemsUseCase(
             ),
             page = pagination.page,
             limit = pagination.limit,
-            extended = "full,cloud9,colors,streaming_ids",
+            extended = "full,images,colors,streaming_ids",
             hide = "unreleased",
         ).filter {
             !it.show.firstAired.isNullOrBlank() && it.show.firstAired!! <= nowDay

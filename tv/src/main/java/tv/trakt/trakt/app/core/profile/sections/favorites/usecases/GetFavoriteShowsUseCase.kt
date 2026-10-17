@@ -19,7 +19,7 @@ internal class GetFavoriteShowsUseCase(
         limit: Int,
     ): ImmutableList<Show> {
         return remoteUserSource.getFavoriteShows(
-            extended = "full,cloud9,colors,streaming_ids",
+            extended = "full,images,colors,streaming_ids",
             sorting = Sorting.RecentlyAdded,
             pagination = Pagination(page = page, limit = limit),
         )

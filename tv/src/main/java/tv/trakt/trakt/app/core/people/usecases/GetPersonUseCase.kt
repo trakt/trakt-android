@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 
-private const val PERSON_EXTENDED = "full,cloud9"
+private const val PERSON_EXTENDED = "full,images"
 
 internal class GetPersonUseCase(
     private val peopleLocalSource: PeopleLocalDataSource,

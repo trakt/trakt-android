@@ -30,7 +30,7 @@ class EpisodesRemoteSource(
             id = showId.value.toString(),
             season = season,
             episode = episode,
-            extended = "full,cloud9",
+            extended = "full,images",
         )
         return response.body()
     }
@@ -47,7 +47,7 @@ class EpisodesRemoteSource(
         val response = showsApi.getShowsSeasonEpisodes(
             id = showId.value.toString(),
             season = season,
-            extended = "full,cloud9",
+            extended = "full,images",
         )
         return response.body()
     }
@@ -146,7 +146,7 @@ class EpisodesRemoteSource(
             id = showId.value.toString(),
             season = season,
             episode = episode,
-            extended = extended ?: if (guestStars) "cloud9,full,guest_stars,markdown" else "cloud9,full,markdown",
+            extended = extended ?: if (guestStars) "images,full,guest_stars,markdown" else "images,full,markdown",
         )
         return response.body()
     }
@@ -161,7 +161,7 @@ class EpisodesRemoteSource(
         val response = showsApi.getShowsSeasonPeople(
             id = showId.value.toString(),
             season = season,
-            extended = "cloud9,full,markdown",
+            extended = "images,full,markdown",
         )
         return response.body()
     }

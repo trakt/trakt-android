@@ -28,7 +28,7 @@ internal class GetListItemsUseCase(
     ): ImmutableList<ListMediaItem> {
         val dto = remoteSource.getMediaListItems(
             listId = listId,
-            extended = "full,cloud9,streaming_ids",
+            extended = "full,images,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
             sorting = Sorting.Default,
             filters = null,
@@ -65,7 +65,7 @@ internal class GetListItemsUseCase(
     ): ImmutableList<ListMediaItem> {
         return remoteSource.getShowListItems(
             listId = listId,
-            extended = "full,cloud9,streaming_ids",
+            extended = "full,images,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
             sorting = Sorting.Default,
             filters = null,
@@ -87,7 +87,7 @@ internal class GetListItemsUseCase(
     ): ImmutableList<ListMediaItem> {
         return remoteSource.getMovieListItems(
             listId = listId,
-            extended = "full,cloud9,streaming_ids",
+            extended = "full,images,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
             sorting = Sorting.Default,
             filters = null,

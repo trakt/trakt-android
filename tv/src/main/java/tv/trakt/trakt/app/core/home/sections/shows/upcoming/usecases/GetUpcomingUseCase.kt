@@ -60,7 +60,7 @@ internal class GetUpcomingUseCase(
         val remoteShows = remoteUserSource.getShowsCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
-            extended = "full,cloud9,colors,streaming_ids",
+            extended = "full,images,colors,streaming_ids",
         )
 
         val now = nowLocal().truncatedTo(DAYS)
@@ -96,7 +96,7 @@ internal class GetUpcomingUseCase(
         val remoteMovies = remoteUserSource.getMoviesCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
-            extended = "full,cloud9,colors,streaming_ids",
+            extended = "full,images,colors,streaming_ids",
         )
 
         val today = nowLocalDay()
