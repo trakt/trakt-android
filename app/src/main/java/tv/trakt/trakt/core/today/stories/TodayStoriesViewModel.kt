@@ -4,8 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import java.time.Duration
-import java.time.Instant
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,6 +28,8 @@ import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.model.analyticsType
 import tv.trakt.trakt.core.today.stories.navigation.TodayStoriesDestination
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
+import java.time.Duration
+import java.time.Instant
 
 // The stories viewer opens from the Today pill in the home header, the Android twin of the web navbar pill.
 private const val OPEN_SOURCE = "navbar"

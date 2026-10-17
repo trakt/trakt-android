@@ -2,10 +2,6 @@ package tv.trakt.trakt.core.checkin.data
 
 import android.content.Context
 import com.google.firebase.crashlytics.CustomKeysAndValues
-import kotlin.time.Clock.System.now
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.Instant
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -47,6 +43,10 @@ import tv.trakt.trakt.core.checkin.model.id
 import tv.trakt.trakt.core.checkin.model.startedAt
 import tv.trakt.trakt.core.checkin.model.type
 import tv.trakt.trakt.resources.R
+import kotlin.time.Clock.System.now
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 
 private val ACTIVE_CHECK_COOLDOWN = 10.seconds
 
