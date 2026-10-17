@@ -32,11 +32,11 @@ internal class HalEngine(
         dims: Map<String, String>,
         metrics: Map<String, Long>,
     ) {
-        val currentUserType = userType
+        val currentUserType = userType ?: return
         val event = HalEvent(
             name = name,
             at = clock(),
-            dims = if (currentUserType == null) dims else dims + (HAL_USER_TYPE_DIM to currentUserType),
+            dims = dims + (HAL_USER_TYPE_DIM to currentUserType),
             metrics = metrics,
         )
 
