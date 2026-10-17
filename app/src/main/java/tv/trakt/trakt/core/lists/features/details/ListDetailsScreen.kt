@@ -505,7 +505,7 @@ private fun ContentList(
 ) {
     var subtitleCollapsed by remember { mutableStateOf(true) }
 
-    val linkColor = TraktTheme.colors.textPrimary
+    val linkColor = TraktTheme.colors.textLink
     val subtitleMarkdownText = remember(subtitle, linkColor) {
         (subtitle ?: "").toMarkdownText(linkColor)
     }

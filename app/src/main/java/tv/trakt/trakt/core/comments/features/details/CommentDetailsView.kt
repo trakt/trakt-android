@@ -317,7 +317,7 @@ private fun CommentContent(
             modifier = Modifier.padding(top = 5.dp),
         )
 
-        val linkColor = TraktTheme.colors.textPrimary
+        val linkColor = TraktTheme.colors.textLink
         val displayText = translations.displayText(comment)
         val markdownText = remember(displayText, linkColor) {
             displayText.toMarkdownText(linkColor)

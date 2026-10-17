@@ -381,7 +381,7 @@ private fun CommentBody(
     onRevealSpoiler: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val linkColor = TraktTheme.colors.textPrimary
+    val linkColor = TraktTheme.colors.textLink
     val markdownText = remember(text, linkColor) { text.toMarkdownText(linkColor) }
 
     val body = @Composable {

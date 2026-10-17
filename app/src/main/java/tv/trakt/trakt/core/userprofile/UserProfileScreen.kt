@@ -396,7 +396,7 @@ private fun LazyListScope.userProfilePublicContent(
                     maxLines = 1,
                     overflow = Ellipsis,
                 )
-                val linkColor = TraktTheme.colors.textPrimary
+                val linkColor = TraktTheme.colors.textLink
                 Text(
                     text = remember(state.user.about, linkColor) {
                         (state.user.about ?: "").ifEmpty { "-" }.toMarkdownText(linkColor)

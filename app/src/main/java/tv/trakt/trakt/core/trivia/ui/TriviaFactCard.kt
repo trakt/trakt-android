@@ -62,7 +62,7 @@ internal fun TriviaFactCard(
                 )
             }
 
-            val linkColor = TraktTheme.colors.textPrimary
+            val linkColor = TraktTheme.colors.textLink
             CompositionLocalProvider(LocalUriHandler provides personLinkUriHandler) {
                 Text(
                     text = remember(fact.text, linkColor) { fact.text.toMarkdownText(linkColor) },

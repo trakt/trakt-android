@@ -203,10 +203,11 @@ private fun CommentReplyCardContent(
         )
 
         val highlightColor = TraktTheme.colors.textPrimary
+        val linkColor = TraktTheme.colors.textLink
         val displayText = translations.displayText(comment)
-        val markdownText = remember(displayText, highlightColor) {
+        val markdownText = remember(displayText, linkColor, highlightColor) {
             displayText.toMarkdownText(
-                linkColor = highlightColor,
+                linkColor = linkColor,
                 mentionColor = highlightColor,
             )
         }

@@ -138,7 +138,6 @@ private fun AnnotatedString.Builder.appendLink(
         color = linkColor,
         fontWeight = Bold,
         fontStyle = FontStyle.Normal,
-        textDecoration = TextDecoration.Underline,
     )
     withLink(LinkAnnotation.Url(url, TextLinkStyles(style = linkStyle))) {
         appendInline(label, style, links = false)

@@ -179,7 +179,7 @@ private fun SentimentContent(
                 val sentiments = state.sentiments
                 if (sentiments.analysis.isNotBlank()) {
                     item {
-                        val linkColor = TraktTheme.colors.textPrimary
+                        val linkColor = TraktTheme.colors.textLink
                         Text(
                             text = remember(sentiments.analysis, linkColor) {
                                 sentiments.analysis.toMarkdownText(linkColor)
@@ -276,7 +276,7 @@ internal fun HighlightsCard(
                 style = TraktTheme.typography.heading5,
             )
 
-            val linkColor = TraktTheme.colors.textPrimary
+            val linkColor = TraktTheme.colors.textLink
             Text(
                 text = remember(text, linkColor) { text.toMarkdownText(linkColor) },
                 color = TraktTheme.colors.textPrimary,

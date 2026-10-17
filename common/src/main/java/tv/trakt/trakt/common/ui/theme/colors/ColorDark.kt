@@ -11,6 +11,7 @@ val DarkColors: TraktColors = TraktColors(
     textPrimary = White,
     textPrimaryOnAccent = White,
     textSecondary = Shade300,
+    textLink = Purple300,
     skeletonContainer = Shade910,
     skeletonShimmer = Shade900,
     placeholderContainer = Shade800,

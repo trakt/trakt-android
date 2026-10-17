@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.ui.theme.colors
 val HalloweenDarkColors: TraktColors = DarkColors.copy(
     accent = Orange500,
     accentPalette = OrangePalette,
+    textLink = Orange400,
     vipAccent = Orange500,
     navigationContentOn = Orange400,
     dropdownContentActive = Orange500,
@@ -34,6 +35,7 @@ val HalloweenDarkColors: TraktColors = DarkColors.copy(
 val HalloweenLightColors: TraktColors = LightColors.copy(
     accent = Orange500,
     accentPalette = OrangePalette,
+    textLink = Orange600,
     vipAccent = Orange500,
     navigationContentOn = Orange600,
     dropdownContainerActive = Orange500,

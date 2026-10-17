@@ -165,7 +165,7 @@ private fun CommentCardContent(
 
         val body = @Composable {
             if (item.comment.commentNoSpoilers.isNotBlank()) {
-                val linkColor = TraktTheme.colors.textPrimary
+                val linkColor = TraktTheme.colors.textLink
                 Text(
                     text = remember(item.comment.commentNoSpoilers, linkColor) {
                         item.comment.commentNoSpoilers.toMarkdownText(linkColor)

@@ -453,7 +453,7 @@ private fun DetailsOverview(
         onMovieClick = onMovieLinkClick,
     )
     val placeholder = stringResource(R.string.text_overview_placeholder)
-    val linkColor = TraktTheme.colors.textPrimary
+    val linkColor = TraktTheme.colors.textLink
 
     CompositionLocalProvider(LocalUriHandler provides linkUriHandler) {
         Text(
@@ -465,7 +465,7 @@ private fun DetailsOverview(
                 }
             },
             style = TraktTheme.typography.paragraphSmall,
-            color = TraktTheme.colors.textSecondary,
+            color = TraktTheme.colors.textPrimary,
             maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
             textAlign = TextAlign.Start,
             overflow = Ellipsis,
