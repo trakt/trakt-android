@@ -66,11 +66,11 @@ internal fun halSearchMode(mode: String): String? {
     }
 }
 
-internal fun halUserType(vip: String?): String {
+internal fun halUserType(vip: String?): String? {
     return when (vip?.lowercase()) {
         "true" -> "vip"
         "false" -> "standard"
-        else -> "anonymous"
+        else -> null
     }
 }
 

@@ -38,6 +38,9 @@ implementation/
 - HAL events live in memory only. Losing queued events on process death is accepted.
 - HAL is first-party and sends no user id or device id. `setUserId` is a no-op for HAL. Only the
   `vip` user property reaches HAL, as the `user_type` dim.
+- HAL tracks signed-in users only. Events are dropped until the loaded profile sets
+  `setUserProperty("vip", "true" | "false")`. Logout flows must call
+  `setUserProperty("vip", null)` to stop tracking.
 
 ## Calling analytics
 

@@ -19,6 +19,7 @@ internal class LogoutProfileUseCase(
     suspend fun logoutUser() {
         sessionManager.clear()
         analytics.setUserId(null)
+        analytics.setUserProperty("vip", null)
 
         apiClients
             .forEach { api ->
