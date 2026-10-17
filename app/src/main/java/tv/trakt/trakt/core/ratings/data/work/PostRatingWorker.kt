@@ -184,14 +184,37 @@ internal class PostRatingWorker(
             return
         }
 
+        val isChange = hasLocalRating(mediaId, mediaType)
         postRatingUseCase.postRating(
             mediaId = mediaId,
             mediaType = mediaType,
             rating = rating,
         )
-        analytics.ratings.logRatingAdd(
-            rating = rating,
-            mediaType = mediaType.value,
-        )
+
+        if (isChange) {
+            analytics.ratings.logRatingChange(
+                rating = rating,
+                mediaType = mediaType.value,
+            )
+        } else {
+            analytics.ratings.logRatingAdd(
+                rating = rating,
+                mediaType = mediaType.value,
+            )
+        }
+    }
+
+    // Local ratings refresh only after a post, so they still hold the previous value here.
+    private suspend fun hasLocalRating(
+        mediaId: TraktId,
+        mediaType: MediaType,
+    ): Boolean {
+        val ratings = when (mediaType) {
+            MediaType.Show -> loadUserRatingUseCase.loadLocalShows()
+            MediaType.Movie -> loadUserRatingUseCase.loadLocalMovies()
+            MediaType.Episode -> loadUserRatingUseCase.loadLocalEpisodes()
+            MediaType.Season -> loadUserRatingUseCase.loadLocalSeasons()
+        }
+        return ratings.containsKey(mediaId)
     }
 }

@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -70,6 +71,7 @@ internal class ListDetailsViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsDetailsDestination>()
     private val destinationList = Json.decodeFromString<CustomList>(destination.listJson)
@@ -320,6 +322,7 @@ internal class ListDetailsViewModel(
                 }
 
                 likedState.update { LikedInfo(liked = liked) }
+                analytics.lists.logListLike(liked = liked)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -28,6 +29,7 @@ internal class CreateSmartListViewModel(
     private val getSmartListPreviewUseCase: GetSmartListPreviewUseCase,
     private val createSmartListUseCase: CreateSmartListUseCase,
     private val collectionStateProvider: CollectionStateProvider,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = CreateSmartListState()
 
@@ -85,6 +87,7 @@ internal class CreateSmartListViewModel(
                     name = name,
                     filters = filtersState.value,
                 )
+                analytics.lists.logSmartListCreate()
                 successState.update { true }
             } catch (error: Exception) {
                 error.rethrowCancellation {

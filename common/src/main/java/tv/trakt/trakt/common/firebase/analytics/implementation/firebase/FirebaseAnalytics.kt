@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.firebase.analytics.implementation
+package tv.trakt.trakt.common.firebase.analytics.implementation.firebase
 
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -21,8 +21,31 @@ private const val PARAMETER_REACTION = "reaction"
 private const val PARAMETER_RATING = "rating_value"
 private const val PARAMETER_COUNT = "count"
 private const val PARAMETER_RESULT = "result"
+private const val PARAMETER_MODE = "mode"
+private const val PARAMETER_PLAN = "plan"
+private const val PARAMETER_CONTENT = "content_type"
+private const val PARAMETER_TYPE = "type"
+private const val PARAMETER_ACTION = "action"
+private const val PARAMETER_STATE = "state"
+private const val PARAMETER_REASON = "reason"
+private const val PARAMETER_DURATION = "duration_ms"
+private const val PARAMETER_FRAMES = "frames"
+private const val PARAMETER_GROUPS = "groups"
+private const val PARAMETER_FRAME = "frame"
 
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
+
+private fun requireEventNames(vararg names: String) {
+    names.forEach { require(eventName(it).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR } }
+}
+
+private fun Analytics.CommentContent.parameterValue(): String {
+    return when (this) {
+        Analytics.CommentContent.Text -> "text"
+        Analytics.CommentContent.Gif -> "gif"
+        Analytics.CommentContent.TextAndGif -> "text_and_gif"
+    }
+}
 
 internal class FirebaseAnalytics(
     private val firebaseAnalytics: FirebaseAnalytics,
@@ -33,17 +56,22 @@ internal class FirebaseAnalytics(
     override val progress: Analytics.Progress,
     override val trivia: Analytics.Trivia,
     override val playback: Analytics.Playback,
+    override val lists: Analytics.Lists,
+    override val today: Analytics.Today,
 ) : Analytics {
     companion object Event {
         const val LOGOUT = "logout"
         const val MEDIA_MODE = "media_mode"
         const val MEDIA_MODE_CLICK = "media_mode_click"
         const val SHARE_ARRIVAL = "share_arrival"
+        const val SEARCH = "search"
+        const val VIP_UPGRADE = "vip_upgrade"
     }
 
     init {
         require(eventName(LOGOUT).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(SHARE_ARRIVAL).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        requireEventNames(SEARCH, VIP_UPGRADE)
     }
 
     override fun setUserId(userId: String?) {
@@ -107,6 +135,20 @@ internal class FirebaseAnalytics(
                 PARAMETER_MEDIA_TYPE to type.lowercase(),
                 PARAMETER_RESULT to result.lowercase(),
             ),
+        )
+    }
+
+    override fun logSearch(mode: String) {
+        firebaseAnalytics.logEvent(
+            eventName(SEARCH),
+            bundleOf(PARAMETER_MODE to mode.lowercase()),
+        )
+    }
+
+    override fun logVipUpgrade(plan: String) {
+        firebaseAnalytics.logEvent(
+            eventName(VIP_UPGRADE),
+            bundleOf(PARAMETER_PLAN to plan.lowercase()),
         )
     }
 }
@@ -183,6 +225,7 @@ internal class FirebaseAnalyticsRatings(
     companion object Event {
         const val RATINGS_ADD = "ratings_add"
         const val RATINGS_REMOVE = "ratings_remove"
+        const val RATINGS_CHANGE = "ratings_change"
         const val FAVORITES_ADD = "favorites_add"
         const val FAVORITES_REMOVE = "favorites_remove"
     }
@@ -192,6 +235,7 @@ internal class FirebaseAnalyticsRatings(
         require(eventName(RATINGS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(FAVORITES_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(FAVORITES_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        requireEventNames(RATINGS_CHANGE)
     }
 
     override fun logRatingAdd(
@@ -200,6 +244,19 @@ internal class FirebaseAnalyticsRatings(
     ) {
         firebase.logEvent(
             eventName(RATINGS_ADD),
+            bundleOf(
+                PARAMETER_RATING to rating,
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+            ),
+        )
+    }
+
+    override fun logRatingChange(
+        rating: Int,
+        mediaType: String,
+    ) {
+        firebase.logEvent(
+            eventName(RATINGS_CHANGE),
             bundleOf(
                 PARAMETER_RATING to rating,
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
@@ -246,27 +303,40 @@ internal class FirebaseAnalyticsComments(
         const val COMMENTS_ADD = "comments_add"
         const val COMMENTS_REMOVE = "comments_remove"
         const val COMMENTS_TRANSLATE = "comments_translate"
+        const val COMMENTS_EDIT = "comments_edit"
     }
 
     init {
         require(eventName(COMMENTS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(COMMENTS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(COMMENTS_TRANSLATE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        requireEventNames(COMMENTS_EDIT)
     }
 
-    override fun logCommentAdd(mediaType: String) {
+    override fun logCommentAdd(
+        mediaType: String,
+        content: Analytics.CommentContent,
+    ) {
         firebase.logEvent(
             eventName(COMMENTS_ADD),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+                PARAMETER_CONTENT to content.parameterValue(),
             ),
         )
     }
 
-    override fun logReplyAdd() {
+    override fun logReplyAdd(content: Analytics.CommentContent) {
         firebase.logEvent(
             eventName(COMMENTS_ADD),
-            null,
+            bundleOf(PARAMETER_CONTENT to content.parameterValue()),
+        )
+    }
+
+    override fun logCommentEdit(content: Analytics.CommentContent) {
+        firebase.logEvent(
+            eventName(COMMENTS_EDIT),
+            bundleOf(PARAMETER_CONTENT to content.parameterValue()),
         )
     }
 
@@ -302,6 +372,8 @@ internal class FirebaseAnalyticsProgress(
         const val PROGRESS_WATCHED_REMOVE = "progress_watched_remove"
         const val PROGRESS_WATCHLIST_ADD = "progress_watchlist_add"
         const val PROGRESS_WATCHLIST_REMOVE = "progress_watchlist_remove"
+        const val CHECKIN_START = "checkin_start"
+        const val CHECKIN_STOP = "checkin_stop"
     }
 
     init {
@@ -309,6 +381,7 @@ internal class FirebaseAnalyticsProgress(
         require(eventName(PROGRESS_WATCHED_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(PROGRESS_WATCHLIST_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(PROGRESS_WATCHLIST_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
+        requireEventNames(CHECKIN_START, CHECKIN_STOP)
     }
 
     override fun logAddWatchedMedia(
@@ -364,6 +437,20 @@ internal class FirebaseAnalyticsProgress(
             ),
         )
     }
+
+    override fun logCheckInStart(mediaType: String) {
+        firebase.logEvent(
+            eventName(CHECKIN_START),
+            bundleOf(PARAMETER_MEDIA_TYPE to mediaType.lowercase()),
+        )
+    }
+
+    override fun logCheckInStop(mediaType: String) {
+        firebase.logEvent(
+            eventName(CHECKIN_STOP),
+            bundleOf(PARAMETER_MEDIA_TYPE to mediaType.lowercase()),
+        )
+    }
 }
 
 internal class FirebaseAnalyticsTrivia(
@@ -405,6 +492,121 @@ internal class FirebaseAnalyticsPlayback(
             eventName(PLEX_PLAY_STOP),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+            ),
+        )
+    }
+}
+
+internal class FirebaseAnalyticsLists(
+    private val firebase: FirebaseAnalytics,
+) : Analytics.Lists {
+    companion object Event {
+        const val LISTS_ITEM_ADD = "lists_item_add"
+        const val LISTS_ITEM_REMOVE = "lists_item_remove"
+        const val LISTS_CREATE = "lists_create"
+        const val LISTS_EDIT = "lists_edit"
+        const val LISTS_DELETE = "lists_delete"
+        const val LISTS_LIKE = "lists_like"
+        const val LISTS_UNLIKE = "lists_unlike"
+        const val SMART_LISTS_CREATE = "smart_lists_create"
+        const val SMART_LISTS_DELETE = "smart_lists_delete"
+    }
+
+    init {
+        requireEventNames(
+            LISTS_ITEM_ADD,
+            LISTS_ITEM_REMOVE,
+            LISTS_CREATE,
+            LISTS_EDIT,
+            LISTS_DELETE,
+            LISTS_LIKE,
+            LISTS_UNLIKE,
+            SMART_LISTS_CREATE,
+            SMART_LISTS_DELETE,
+        )
+    }
+
+    override fun logListItemAdd() = log(LISTS_ITEM_ADD)
+
+    override fun logListItemRemove() = log(LISTS_ITEM_REMOVE)
+
+    override fun logListCreate() = log(LISTS_CREATE)
+
+    override fun logListEdit() = log(LISTS_EDIT)
+
+    override fun logListDelete() = log(LISTS_DELETE)
+
+    override fun logListLike(liked: Boolean) = log(if (liked) LISTS_LIKE else LISTS_UNLIKE)
+
+    override fun logSmartListCreate() = log(SMART_LISTS_CREATE)
+
+    override fun logSmartListDelete() = log(SMART_LISTS_DELETE)
+
+    private fun log(name: String) {
+        firebase.logEvent(eventName(name), null)
+    }
+}
+
+internal class FirebaseAnalyticsToday(
+    private val firebase: FirebaseAnalytics,
+) : Analytics.Today {
+    companion object Event {
+        const val TODAY_OPEN = "today_open"
+        const val TODAY_STORY = "today_story"
+        const val TODAY_CLOSE = "today_close"
+        const val TODAY_ACTION = "today_action"
+    }
+
+    init {
+        requireEventNames(TODAY_OPEN, TODAY_STORY, TODAY_CLOSE, TODAY_ACTION)
+    }
+
+    override fun logOpen(
+        source: String,
+        hasUnseen: Boolean,
+    ) {
+        firebase.logEvent(
+            eventName(TODAY_OPEN),
+            bundleOf(
+                PARAMETER_SOURCE to source,
+                PARAMETER_STATE to if (hasUnseen) "unseen" else "seen",
+            ),
+        )
+    }
+
+    override fun logStory(type: String) {
+        firebase.logEvent(
+            eventName(TODAY_STORY),
+            bundleOf(PARAMETER_TYPE to type),
+        )
+    }
+
+    override fun logClose(
+        reason: String,
+        durationMs: Long,
+        frames: Int,
+        groups: Int,
+    ) {
+        firebase.logEvent(
+            eventName(TODAY_CLOSE),
+            bundleOf(
+                PARAMETER_REASON to reason,
+                PARAMETER_DURATION to durationMs,
+                PARAMETER_FRAMES to frames,
+                PARAMETER_GROUPS to groups,
+            ),
+        )
+    }
+
+    override fun logAction(
+        action: String,
+        frame: String,
+    ) {
+        firebase.logEvent(
+            eventName(TODAY_ACTION),
+            bundleOf(
+                PARAMETER_ACTION to action,
+                PARAMETER_FRAME to frame,
             ),
         )
     }

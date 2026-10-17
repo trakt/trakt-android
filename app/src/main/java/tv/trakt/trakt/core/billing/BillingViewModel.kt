@@ -57,7 +57,7 @@ import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 
 internal class BillingViewModel(
-    analytics: Analytics,
+    private val analytics: Analytics,
     private val appContext: Context,
     private val sessionManager: SessionManager,
     private val verifyPurchaseUseCase: VerifyPurchaseUseCase,
@@ -304,6 +304,10 @@ internal class BillingViewModel(
                 currencyCode = price?.priceCurrencyCode,
                 price = price?.priceAmountMicros,
             )
+
+            VipBillingProduct.entries
+                .find { it.sku == product.productId }
+                ?.let { analytics.logVipUpgrade(plan = it.plan) }
         }
     }
 

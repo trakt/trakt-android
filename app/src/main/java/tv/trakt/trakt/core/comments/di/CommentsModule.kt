@@ -155,6 +155,7 @@ internal val commentsModule = module {
             editCommentUseCase = get(),
             mentionSource = mentionSource,
             getCommentMentionsUseCase = get(),
+            analytics = get(),
         )
     }
 
