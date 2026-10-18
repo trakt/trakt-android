@@ -10,6 +10,11 @@
 HAL is shared with trakt-web (local checkout: `~/Documents/Android/trakt/trakt-web`). Android and
 web events must land in the same HAL rows, so **any HAL work starts by checking the web repo**:
 
+- **Pull latest web `main` first.** Before any comparison or sync, update the checkout:
+  `git -C ~/Documents/Android/trakt/trakt-web checkout main && git -C ~/Documents/Android/trakt/trakt-web pull --ff-only`.
+  A stale checkout hides new or renamed events. If the checkout has local changes or is on another
+  branch, stop and ask the user instead of discarding work.
+
 - Source of truth on web: `projects/client/src/lib/features/analytics/` -
   `events/AnalyticsEvent.ts` (event names), `events/AnalyticsEventDataMap.ts` (dims, metrics and
   allowed values), `PageView.svelte` (page view routes).
