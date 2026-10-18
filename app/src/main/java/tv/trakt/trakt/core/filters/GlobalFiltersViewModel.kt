@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode.Advanced
@@ -18,6 +19,7 @@ import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 internal class GlobalFiltersViewModel(
     private val options: GlobalFiltersOptions,
     private val filterManager: GlobalFilterManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = GlobalFiltersState(
         mode = filterManager.getMode(),
@@ -28,10 +30,26 @@ internal class GlobalFiltersViewModel(
 
     fun applyFilter(filter: GlobalFilter) {
         viewModelScope.launch {
+            val previous = filterState.value
             filterState.update { filter }
             if (options.global) {
                 filterManager.setFilter(filter)
             }
+            logFilterChanges(previous = previous, current = filter)
+        }
+    }
+
+    private fun logFilterChanges(
+        previous: GlobalFilter,
+        current: GlobalFilter,
+    ) {
+        val mode = modeState.value ?: return
+        current.changesFrom(previous).forEach { change ->
+            analytics.logFilter(
+                id = change.key,
+                set = change.set,
+                mode = mode.name,
+            )
         }
     }
 

@@ -32,6 +32,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.userprofile.sections.favorites.usecases.GetUserProfileFavoritesUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 
 internal class AllUserProfileFavoritesViewModel(
     savedStateHandle: SavedStateHandle,
@@ -39,6 +41,7 @@ internal class AllUserProfileFavoritesViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllUserProfileFavoritesDestination>()
     private val userId = destination.userId.toTraktId()
@@ -130,6 +133,7 @@ internal class AllUserProfileFavoritesViewModel(
             return
         }
         sortingState.update { newSorting }
+        analytics.lists.logListSort(newSorting)
         loadData()
     }
 

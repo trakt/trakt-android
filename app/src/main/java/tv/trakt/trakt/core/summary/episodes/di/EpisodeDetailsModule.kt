@@ -149,6 +149,7 @@ internal val episodeDetailsModule = module {
             sessionManager = get(),
             getStreamingsUseCase = get(),
             collapsingManager = get(),
+            analytics = get(),
         )
     }
 
@@ -158,6 +159,7 @@ internal val episodeDetailsModule = module {
             episode = episode,
             sessionManager = get(),
             getStreamingsUseCase = get(),
+            analytics = get(),
         )
     }
 }

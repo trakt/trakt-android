@@ -167,6 +167,7 @@ internal fun CalendarScreen(
         state = state,
         onTodayClick = viewModel::loadTodayData,
         onLoadWeek = viewModel::loadWeek,
+        onPeriodChange = viewModel::logPeriodChange,
         onLoadMore = viewModel::loadMoreData,
         onShowClick = { item ->
             if (state.loading.isLoading) return@CalendarScreen
@@ -291,6 +292,7 @@ private fun CalendarScreen(
     modifier: Modifier = Modifier,
     onTodayClick: () -> Unit = {},
     onLoadWeek: (LocalDate) -> Unit = {},
+    onPeriodChange: (String) -> Unit = {},
     onLoadMore: () -> Unit = {},
     onShowClick: (EpisodeItem) -> Unit = {},
     onMovieClick: (MovieItem) -> Unit = {},
@@ -552,6 +554,7 @@ private fun CalendarScreen(
                     lastTapFocusedDay = date
                 },
                 onTodayClick = {
+                    onPeriodChange("reset")
                     val today = nowLocalDay()
                     if (state.items?.containsKey(today) == true) {
                         scrollToDay(
@@ -568,6 +571,7 @@ private fun CalendarScreen(
                     }
                 },
                 onNextWeekClick = {
+                    onPeriodChange("next")
                     val target = stripStartDate.plusWeeks(1)
                     if (state.items?.containsKey(target) == true) {
                         scrollToDay(
@@ -585,6 +589,7 @@ private fun CalendarScreen(
                     }
                 },
                 onPreviousWeekClick = {
+                    onPeriodChange("previous")
                     val target = stripStartDate.minusWeeks(1)
                     if (state.items?.containsKey(target) == true) {
                         scrollToDay(

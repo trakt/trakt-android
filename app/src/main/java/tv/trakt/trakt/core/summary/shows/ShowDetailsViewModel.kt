@@ -57,6 +57,8 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
+import tv.trakt.trakt.common.model.ExtraVideo
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -905,12 +907,26 @@ internal class ShowDetailsViewModel(
         }
     }
 
+    fun logTrailer() {
+        val show = showState.value ?: return
+        analytics.playback.logTrailer(show.ids.slug.value)
+    }
+
+    fun logExtra(extra: ExtraVideo) {
+        val show = showState.value ?: return
+        analytics.playback.logExtras(slug = show.ids.slug.value, type = extra.type)
+    }
+
     fun clearInfo() {
         infoState.update { null }
     }
 
     fun clearNavigation() {
         navigateEpisode.update { null }
+    }
+
+    fun logShare() {
+        analytics.logShare(source = "media", type = MediaType.Show.value)
     }
 
     @Suppress("UNCHECKED_CAST")

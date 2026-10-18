@@ -55,6 +55,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 
 private const val PAGE_LIMIT = LISTS_ITEMS_ALL_LIMIT
 
@@ -292,6 +293,7 @@ internal class ListDetailsViewModel(
                 order = newSorting.order,
             )
         }
+        analytics.lists.logListSort(newSorting)
 
         loadData()
     }

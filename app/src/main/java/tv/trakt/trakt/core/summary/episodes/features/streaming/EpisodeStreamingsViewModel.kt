@@ -24,6 +24,8 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.model.streamings.StreamingService
 
 internal class EpisodeStreamingsViewModel(
     private val show: Show,
@@ -31,6 +33,7 @@ internal class EpisodeStreamingsViewModel(
     private val sessionManager: SessionManager,
     private val getStreamingsUseCase: GetStreamingsUseCase,
     private val collapsingManager: CollapsingManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = EpisodeStreamingsState()
 
@@ -87,6 +90,10 @@ internal class EpisodeStreamingsViewModel(
                 else -> collapsingManager.expand(CollapsingKey.EPISODE_WHERE_TO_WATCH)
             }
         }
+    }
+
+    fun logStreamOn(service: StreamingService) {
+        analytics.playback.logStreamOn(service.source)
     }
 
     @Suppress("UNCHECKED_CAST")

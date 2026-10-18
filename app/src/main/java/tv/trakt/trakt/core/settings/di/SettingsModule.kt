@@ -171,6 +171,7 @@ internal val settingsModule = module {
             mediaImage = mediaImage,
             updateUserSettingsUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 }

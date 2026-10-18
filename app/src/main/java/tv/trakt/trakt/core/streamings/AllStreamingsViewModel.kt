@@ -21,11 +21,14 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.streamings.navigation.AllStreamingsDestination
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.model.streamings.StreamingService
 
 internal class AllStreamingsViewModel(
     savedStateHandle: SavedStateHandle,
     private val sessionManager: SessionManager,
     private val getAllStreamingsUseCase: GetAllStreamingsUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val route = savedStateHandle.toRoute<AllStreamingsDestination>()
 
@@ -78,6 +81,10 @@ internal class AllStreamingsViewModel(
                 loadingState.update { Done }
             }
         }
+    }
+
+    fun logStreamOn(service: StreamingService) {
+        analytics.playback.logStreamOn(service.source)
     }
 
     val state = combine(

@@ -31,7 +31,6 @@ import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
 import java.time.Duration
 import java.time.Instant
 
-// The stories viewer opens from the Today pill in the home header, the Android twin of the web navbar pill.
 private const val OPEN_SOURCE = "navbar"
 
 private const val CLOSE_REASON_CLOSE = "close"

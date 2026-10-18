@@ -16,12 +16,15 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.model.streamings.StreamingService
 
 internal class EpisodeDetailsContextViewModel(
     private val show: Show,
     private val episode: Episode,
     private val sessionManager: SessionManager,
     private val getStreamingsUseCase: GetPriorityStreamingUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsContextState()
 
@@ -77,6 +80,10 @@ internal class EpisodeDetailsContextViewModel(
                 streamingsState.update { it.copy(loading = false) }
             }
         }
+    }
+
+    fun logStreamOn(service: StreamingService) {
+        analytics.playback.logStreamOn(service.source)
     }
 
     val state: StateFlow<EpisodeDetailsContextState> = combine(

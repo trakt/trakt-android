@@ -129,7 +129,7 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllSocial = ::navigateToAllActivitySocial,
             onNavigateToAllWatchlist = ::navigateToAllHomeWatchlist,
             onNavigateToAllRecommended = { navigateToDiscoverAll(DiscoverSection.Recommended) },
-            onNavigateToVip = ::navigateToBilling,
+            onNavigateToVip = { navigateToBilling(source = "home") },
             onNavigateToUser = { user ->
                 navigateToUserProfile(
                     user = user,
@@ -211,7 +211,7 @@ internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
                 navigateToAllReleases()
             },
             onNavigateToVip = {
-                navigateToBilling()
+                navigateToBilling(source = "discover")
             },
         )
         discoverAllScreen(
@@ -329,7 +329,7 @@ internal fun NavGraphBuilder.showsScreens(
                     currentUserId = userId,
                 )
             },
-            onNavigateVip = { navigateToBilling() },
+            onNavigateVip = { navigateToBilling(source = "show-details") },
             onNavigateBack = { popBackStack() },
         )
 
@@ -411,7 +411,7 @@ internal fun NavGraphBuilder.episodesScreens(
                     currentUserId = userId,
                 )
             },
-            onNavigateVip = { navigateToBilling() },
+            onNavigateVip = { navigateToBilling(source = "episode-details") },
             onNavigateBack = { popBackStack() },
         )
 
@@ -509,7 +509,7 @@ internal fun NavGraphBuilder.moviesScreens(
                     currentUserId = userId,
                 )
             },
-            onNavigateVip = { navigateToBilling() },
+            onNavigateVip = { navigateToBilling(source = "movie-details") },
             onNavigateBack = { popBackStack() },
         )
 
@@ -550,7 +550,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToSmartList = { navigateToSmartListDetails(it) },
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToAllLists = { navigateToAllLists(it) },
-            onNavigateToVip = { navigateToBilling() },
+            onNavigateToVip = { navigateToBilling(source = "lists") },
             onNavigateToUser = {
                 navigateToUserProfile(
                     user = it,
@@ -833,7 +833,7 @@ internal fun NavGraphBuilder.allCreditsScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.sentimentScreens(controller: NavHostController) {
     with(controller) {
         sentimentScreen(
-            onNavigateVip = { navigateToBilling() },
+            onNavigateVip = { navigateToBilling(source = "sentiment") },
             onNavigateToPerson = { slug, sentiment ->
                 navigateToPerson(
                     personSlug = slug,
@@ -856,7 +856,7 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
         )
 
         younifyScreen(
-            onNavigateToVip = { navigateToBilling() },
+            onNavigateToVip = { navigateToBilling(source = "connected-apps") },
             onNavigateBack = { popBackStack() },
         )
     }

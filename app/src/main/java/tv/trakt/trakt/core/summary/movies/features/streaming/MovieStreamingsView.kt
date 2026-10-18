@@ -85,6 +85,7 @@ internal fun MovieStreamingsView(
         onCollapse = viewModel::setCollapsed,
         onAllStreamingsClick = onAllStreamingsClick,
         onClick = { service ->
+            viewModel.logStreamOn(service)
             openExternalAppLink(
                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
                 packageName = service.source,

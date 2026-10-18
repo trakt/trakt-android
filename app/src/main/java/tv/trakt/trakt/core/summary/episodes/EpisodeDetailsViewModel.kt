@@ -655,6 +655,10 @@ internal class EpisodeDetailsViewModel(
             loadingProgress.value.isLoading
     }
 
+    fun logShare() {
+        analytics.logShare(source = "episode", type = null)
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         showState,

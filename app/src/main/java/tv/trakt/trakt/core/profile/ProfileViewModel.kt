@@ -167,6 +167,10 @@ internal class ProfileViewModel(
         }
     }
 
+    fun logShare() {
+        analytics.logShare(source = "profile", type = "own")
+    }
+
     val state = combine(
         monthStatsState,
         monthBackgroundState,

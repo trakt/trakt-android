@@ -27,6 +27,7 @@ internal val billingModule = module {
 
     viewModel {
         BillingViewModel(
+            savedStateHandle = get(),
             appContext = androidApplication(),
             sessionManager = get(),
             analytics = get(),

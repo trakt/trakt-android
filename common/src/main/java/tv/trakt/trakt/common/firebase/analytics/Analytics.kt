@@ -74,6 +74,63 @@ interface Analytics {
      */
     fun logVipUpgrade(plan: String)
 
+    /**
+     * Logs opening the VIP paywall from an upsell entry point.
+     * @param source The entry point (home, discover, lists, show-details, ...).
+     */
+    fun logVipUpsell(source: String)
+
+    /**
+     * Logs sharing a link through the system share sheet.
+     * @param source The shared surface (media, episode, person, profile, user-list).
+     * @param type The shared media type, or own/other for profiles.
+     */
+    fun logShare(
+        source: String,
+        type: String?,
+    )
+
+    /**
+     * Logs following, unfollowing or cancelling a follow request.
+     * @param action The follow action (follow, unfollow, cancel-follow-request).
+     */
+    fun logFollow(action: String)
+
+    /**
+     * Logs blocking or unblocking a user.
+     */
+    fun logBlock(blocked: Boolean)
+
+    /**
+     * Logs changing the app theme.
+     * @param theme The selected theme (system, light, dark).
+     */
+    fun logTheme(theme: String)
+
+    /**
+     * Logs setting the profile cover image.
+     * @param mediaType The cover image source type (movie, show).
+     */
+    fun logCoverImage(mediaType: String)
+
+    /**
+     * Logs moving the calendar period.
+     * @param action The period change (next, previous, reset).
+     */
+    fun logCalendarPeriod(action: String)
+
+    /**
+     * Logs setting or resetting one discovery filter.
+     * @param id The filter key (genres, years, runtimes, ...).
+     * @param set Whether the filter now has a value.
+     * @param mode The filter sheet mode (simple, advanced).
+     */
+    fun logFilter(
+        id: String,
+        set: Boolean,
+        mode: String,
+    )
+
     enum class CommentContent {
         Text,
         Gif,
@@ -235,6 +292,18 @@ interface Analytics {
          * @param mediaType The checked-in media type (movie, episode).
          */
         fun logCheckInStop(mediaType: String)
+
+        /**
+         * Logs dropping a show or a movie in progress.
+         * @param mediaType The dropped media type (show, movie).
+         */
+        fun logDrop(mediaType: String)
+
+        /**
+         * Logs hiding a recommended show or movie.
+         * @param mediaType The hidden media type (show, movie).
+         */
+        fun logHideRecommendation(mediaType: String)
     }
 
     interface Lists {
@@ -277,6 +346,16 @@ interface Analytics {
          * Logs deleting a smart list.
          */
         fun logSmartListDelete()
+
+        /**
+         * Logs changing the sort of a list.
+         * @param sortBy The sort field (default, added, title, ...).
+         * @param sortHow The sort direction (asc, desc).
+         */
+        fun logListSort(
+            sortBy: String,
+            sortHow: String,
+        )
     }
 
     interface Today {
@@ -331,5 +410,27 @@ interface Analytics {
          * Logs the end of Plex Play media playback.
          */
         fun logPlaybackStop(mediaType: String)
+
+        /**
+         * Logs playing a movie or show trailer.
+         * @param slug The movie or show slug.
+         */
+        fun logTrailer(slug: String)
+
+        /**
+         * Logs playing an extra video.
+         * @param slug The movie or show slug.
+         * @param type The video type (trailer, teaser, clip, ...).
+         */
+        fun logExtras(
+            slug: String,
+            type: String,
+        )
+
+        /**
+         * Logs opening a streaming service from where to watch.
+         * @param source The streaming service source slug.
+         */
+        fun logStreamOn(source: String)
     }
 }

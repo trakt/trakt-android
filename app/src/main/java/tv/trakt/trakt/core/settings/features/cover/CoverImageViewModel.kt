@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -24,6 +25,7 @@ internal class CoverImageViewModel(
     mediaImage: String?,
     private val updateUserSettingsUseCase: UpdateUserSettingsUseCase,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = CoverImageState(
         mediaId = mediaId,
@@ -64,6 +66,7 @@ internal class CoverImageViewModel(
                     mediaId = initialState.mediaId,
                     mediaType = initialState.mediaType,
                 )
+                analytics.logCoverImage(initialState.mediaType.value)
 
                 loadingState.update { LoadingState.Done }
             } catch (error: Exception) {

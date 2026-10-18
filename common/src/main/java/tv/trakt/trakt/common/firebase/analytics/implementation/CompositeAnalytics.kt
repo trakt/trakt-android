@@ -59,6 +59,45 @@ internal class CompositeAnalytics(
     override fun logVipUpgrade(plan: String) {
         targets.forEach { it.logVipUpgrade(plan) }
     }
+
+    override fun logVipUpsell(source: String) {
+        targets.forEach { it.logVipUpsell(source) }
+    }
+
+    override fun logShare(
+        source: String,
+        type: String?,
+    ) {
+        targets.forEach { it.logShare(source, type) }
+    }
+
+    override fun logFollow(action: String) {
+        targets.forEach { it.logFollow(action) }
+    }
+
+    override fun logBlock(blocked: Boolean) {
+        targets.forEach { it.logBlock(blocked) }
+    }
+
+    override fun logTheme(theme: String) {
+        targets.forEach { it.logTheme(theme) }
+    }
+
+    override fun logCoverImage(mediaType: String) {
+        targets.forEach { it.logCoverImage(mediaType) }
+    }
+
+    override fun logCalendarPeriod(action: String) {
+        targets.forEach { it.logCalendarPeriod(action) }
+    }
+
+    override fun logFilter(
+        id: String,
+        set: Boolean,
+        mode: String,
+    ) {
+        targets.forEach { it.logFilter(id, set, mode) }
+    }
 }
 
 private class CompositeReactions(
@@ -193,6 +232,14 @@ private class CompositeProgress(
     override fun logCheckInStop(mediaType: String) {
         targets.forEach { it.logCheckInStop(mediaType) }
     }
+
+    override fun logDrop(mediaType: String) {
+        targets.forEach { it.logDrop(mediaType) }
+    }
+
+    override fun logHideRecommendation(mediaType: String) {
+        targets.forEach { it.logHideRecommendation(mediaType) }
+    }
 }
 
 private class CompositeTrivia(
@@ -212,6 +259,21 @@ private class CompositePlayback(
 
     override fun logPlaybackStop(mediaType: String) {
         targets.forEach { it.logPlaybackStop(mediaType) }
+    }
+
+    override fun logTrailer(slug: String) {
+        targets.forEach { it.logTrailer(slug) }
+    }
+
+    override fun logExtras(
+        slug: String,
+        type: String,
+    ) {
+        targets.forEach { it.logExtras(slug, type) }
+    }
+
+    override fun logStreamOn(source: String) {
+        targets.forEach { it.logStreamOn(source) }
     }
 }
 
@@ -248,6 +310,13 @@ private class CompositeLists(
 
     override fun logSmartListDelete() {
         targets.forEach { it.logSmartListDelete() }
+    }
+
+    override fun logListSort(
+        sortBy: String,
+        sortHow: String,
+    ) {
+        targets.forEach { it.logListSort(sortBy, sortHow) }
     }
 }
 

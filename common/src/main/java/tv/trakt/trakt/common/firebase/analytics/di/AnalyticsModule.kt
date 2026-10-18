@@ -91,7 +91,7 @@ val analyticsModule = module {
     workerOf(::HalSendWorker)
 
     single<Analytics> {
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG || BuildConfig.FLAVOR == "internal") {
             DebugAnalytics(
                 reactions = DebugAnalyticsReactions(),
                 ratings = DebugAnalyticsRatings(),
@@ -142,7 +142,7 @@ private fun Scope.halAnalytics(): Analytics {
         comments = HalAnalyticsComments(engine),
         progress = HalAnalyticsProgress(engine),
         trivia = HalAnalyticsTrivia(),
-        playback = HalAnalyticsPlayback(),
+        playback = HalAnalyticsPlayback(engine),
         lists = HalAnalyticsLists(engine),
         today = HalAnalyticsToday(engine),
     )

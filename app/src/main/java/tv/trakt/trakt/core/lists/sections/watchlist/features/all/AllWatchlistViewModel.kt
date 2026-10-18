@@ -65,6 +65,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 
 @OptIn(FlowPreview::class)
 internal class AllWatchlistViewModel(
@@ -380,6 +381,7 @@ internal class AllWatchlistViewModel(
                 order = newSorting.order,
             )
         }
+        analytics.lists.logListSort(newSorting)
 
         loadData()
     }

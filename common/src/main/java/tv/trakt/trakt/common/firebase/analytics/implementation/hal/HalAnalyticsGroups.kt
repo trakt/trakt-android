@@ -3,28 +3,36 @@ package tv.trakt.trakt.common.firebase.analytics.implementation.hal
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ACTION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FRAME
-import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_RATING
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_REASON
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SLUG
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SORT_BY
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SORT_HOW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SOURCE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_STATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TYPE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_ADD_COMMENT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_CHECK_IN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DELETE_COMMENT
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DROP
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_EXTRAS
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_HIDE_RECOMMENDATION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_CREATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_DELETE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_EDIT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_LIKE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_SORT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_MARK_AS_WATCHED
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_RATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REACT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_CREATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_DELETE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAM_ON
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_ACTION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_CLOSE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_OPEN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_STORY
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TRAILER
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_WATCHLIST
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_DURATION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_FRAMES
@@ -96,7 +104,7 @@ internal class HalAnalyticsRatings(
     ) {
         events.track(
             EVENT_RATE,
-            dims = mapOf(DIM_ACTION to action, DIM_RATING to rating.toString()),
+            dims = mapOf(DIM_ACTION to action),
             metrics = mapOf(METRIC_RATING to rating.toLong()),
         )
     }
@@ -163,6 +171,14 @@ internal class HalAnalyticsProgress(
 
     override fun logCheckInStop(mediaType: String) = checkIn(mediaType, "stop")
 
+    override fun logDrop(mediaType: String) {
+        events.track(EVENT_DROP, dims = mapOf(DIM_TYPE to mediaType.lowercase()))
+    }
+
+    override fun logHideRecommendation(mediaType: String) {
+        events.track(EVENT_HIDE_RECOMMENDATION, dims = mapOf(DIM_TYPE to mediaType.lowercase()))
+    }
+
     private fun track(
         event: String,
         action: String,
@@ -202,6 +218,13 @@ internal class HalAnalyticsLists(
     override fun logSmartListCreate() = events.track(EVENT_SMART_LIST_CREATE)
 
     override fun logSmartListDelete() = events.track(EVENT_SMART_LIST_DELETE)
+
+    override fun logListSort(
+        sortBy: String,
+        sortHow: String,
+    ) {
+        events.track(EVENT_LIST_SORT, dims = mapOf(DIM_SORT_BY to sortBy, DIM_SORT_HOW to sortHow))
+    }
 }
 
 internal class HalAnalyticsToday(
@@ -253,8 +276,25 @@ internal class HalAnalyticsTrivia : Analytics.Trivia {
     override fun logScreenView(source: String) = Unit
 }
 
-internal class HalAnalyticsPlayback : Analytics.Playback {
+internal class HalAnalyticsPlayback(
+    private val events: HalEvents,
+) : Analytics.Playback {
     override fun logPlaybackStart(mediaType: String) = Unit
 
     override fun logPlaybackStop(mediaType: String) = Unit
+
+    override fun logTrailer(slug: String) {
+        events.track(EVENT_TRAILER, dims = mapOf(DIM_SLUG to slug))
+    }
+
+    override fun logExtras(
+        slug: String,
+        type: String,
+    ) {
+        events.track(EVENT_EXTRAS, dims = mapOf(DIM_SLUG to slug, DIM_TYPE to type.lowercase()))
+    }
+
+    override fun logStreamOn(source: String) {
+        events.track(EVENT_STREAM_ON, dims = mapOf(DIM_SOURCE to source))
+    }
 }

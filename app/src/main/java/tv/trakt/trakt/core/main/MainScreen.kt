@@ -184,7 +184,7 @@ internal fun MainScreen(
 
     LaunchedEffect(state.paywall) {
         if (state.paywall == true) {
-            navController.navigateToBilling()
+            navController.navigateToBilling(source = "onboarding")
             viewModel.clearPaywall()
         }
     }
@@ -214,7 +214,7 @@ internal fun MainScreen(
                 message = localRes.getString(R.string.error_text_rating_not_saved),
                 duration = SnackbarDuration.Long,
             )
-            error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT -> navController.navigateToBilling()
+            error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT -> navController.navigateToBilling(source = "vip-limit")
         }
         viewModel.clearError()
     }

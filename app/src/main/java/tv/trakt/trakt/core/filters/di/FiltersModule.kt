@@ -41,6 +41,7 @@ internal val filtersModule = module {
         GlobalFiltersViewModel(
             options = options,
             filterManager = get(),
+            analytics = get(),
         )
     }
 }

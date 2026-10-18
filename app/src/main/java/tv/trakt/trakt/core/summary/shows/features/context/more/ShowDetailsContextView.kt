@@ -70,6 +70,7 @@ internal fun ShowDetailsContextView(
         onCheckClick = onCheckClick,
         onListsClick = onListsClick,
         onCoverClick = onCoverClick,
+        onStreamClick = viewModel::logStreamOn,
         modifier = modifier,
     )
 }
@@ -84,6 +85,7 @@ private fun ShowDetailsContextViewContent(
     onHistoryClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onStreamClick: (StreamingService) -> Unit = {},
 ) {
     val context = LocalContext.current
 
@@ -133,6 +135,7 @@ private fun ShowDetailsContextViewContent(
                     streamingState = state.streamings,
                     onClick = {
                         state.streamings.service?.let { service ->
+                            onStreamClick(service)
                             openExternalAppLink(
                                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
                                 packageName = service.source,

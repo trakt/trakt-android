@@ -197,7 +197,10 @@ internal fun ShowDetailsScreen(
             }
         },
         onShareClick = {
-            state.show?.let { shareShow(it, state.user?.settings?.shareCode, context) }
+            state.show?.let {
+                viewModel.logShare()
+                shareShow(it, state.user?.settings?.shareCode, context)
+            }
         },
         onShareImageClick = {
             state.show?.let { shareSheet = true }
@@ -208,9 +211,13 @@ internal fun ShowDetailsScreen(
             }
         },
         onTrailerClick = {
-            state.show?.trailer?.let { url -> onTrailerClick(url) }
+            state.show?.trailer?.let { url ->
+                viewModel.logTrailer()
+                onTrailerClick(url)
+            }
         },
         onExtraClick = { extra ->
+            viewModel.logExtra(extra)
             onExtraClick(extra)
         },
         onWatchedClick = {

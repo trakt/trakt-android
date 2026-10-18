@@ -56,6 +56,8 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExternalRating
+import tv.trakt.trakt.common.model.ExtraVideo
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
@@ -937,8 +939,22 @@ internal class MovieDetailsViewModel(
 
     // Misc
 
+    fun logTrailer() {
+        val movie = movieState.value ?: return
+        analytics.playback.logTrailer(movie.ids.slug.value)
+    }
+
+    fun logExtra(extra: ExtraVideo) {
+        val movie = movieState.value ?: return
+        analytics.playback.logExtras(slug = movie.ids.slug.value, type = extra.type)
+    }
+
     fun clearInfo() {
         infoState.update { null }
+    }
+
+    fun logShare() {
+        analytics.logShare(source = "media", type = MediaType.Movie.value)
     }
 
     @Suppress("UNCHECKED_CAST")

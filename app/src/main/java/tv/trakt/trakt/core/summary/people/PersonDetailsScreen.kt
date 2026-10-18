@@ -142,6 +142,7 @@ internal fun PersonDetailsScreen(
         onShowLinkClick = viewModel::navigateToShow,
         onMovieLinkClick = viewModel::navigateToMovie,
         onBackClick = onNavigateBack,
+        onShareClick = viewModel::logShare,
     )
 
     ShowContextSheet(
@@ -170,6 +171,7 @@ internal fun PersonDetailsContent(
     onShowLinkClick: ((SlugId) -> Unit)? = null,
     onMovieLinkClick: ((SlugId) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
+    onShareClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
@@ -223,7 +225,10 @@ internal fun PersonDetailsContent(
                     DetailsHeader(
                         person = person,
                         loading = state.loadingDetails.isLoading,
-                        onShareClick = { sharePerson(person, state.user?.settings?.shareCode, context) },
+                        onShareClick = {
+                            onShareClick?.invoke()
+                            sharePerson(person, state.user?.settings?.shareCode, context)
+                        },
                         onBackClick = onBackClick ?: {},
                     )
                 }
