@@ -3,6 +3,25 @@
 > **TL;DR**: Features depend only on the `Analytics` interface, injected through the constructor.
 > Release builds send every call to Firebase Analytics and HAL in parallel. Debug builds only log
 > through Timber. A new event is added to the interface and implemented in all three backends.
+> HAL events must match trakt-web exactly: same event names, dims, metrics, values and routes.
+
+## Web parity (HAL)
+
+HAL is shared with trakt-web (local checkout: `~/Documents/Android/trakt/trakt-web`). Android and
+web events must land in the same HAL rows, so **any HAL work starts by checking the web repo**:
+
+- Source of truth on web: `projects/client/src/lib/features/analytics/` -
+  `events/AnalyticsEvent.ts` (event names), `events/AnalyticsEventDataMap.ts` (dims, metrics and
+  allowed values), `PageView.svelte` (page view routes).
+- **Event names**: reuse the web event name verbatim. Never invent an Android-only name for an
+  action web already tracks.
+- **Dims and metrics**: same keys, same value strings (casing, enum values, `source` names), same
+  types (dims are strings, metrics are `Long`).
+- **Trigger point**: fire at the same moment web does (after success, on open, on checkout start).
+- **Routes**: page views use the web SvelteKit route template via `HalRoutes.kt`.
+- Web has no equivalent: confirm with the user before adding an Android-only event or dim, then
+  add it to trakt-workers `EVENT_CONTRACTS.ts` (see step 3 of "Adding an event").
+- Touching an existing HAL event: re-check it against web and fix any drift in the same change.
 
 ## Pipeline
 
@@ -114,7 +133,6 @@ init {
    or metrics not allowlisted for that event. Any name, dim or metric not yet in trakt-workers
    `src/core/analytics/EVENT_CONTRACTS.ts` (metrics also need `METRIC_SLOTS.ts`) must be added and
    deployed there **before** the Android release that emits it.
-   - `CompositeAnalytics`: forward to every target. The compiler flags a missing override.
 4. Call it from the ViewModel, use-case or worker following the rules above.
 
 ## Quick checklist
@@ -125,6 +143,8 @@ init {
 - [ ] `screenName` lowercase `snake_case`, logged once in `init`
 - [ ] No PII in parameters
 - [ ] New event implemented in Debug, Firebase, HAL and Composite
+- [ ] HAL event name, dims, metrics and values match trakt-web `AnalyticsEvent.ts` /
+  `AnalyticsEventDataMap.ts`
 - [ ] HAL event name and dim keys already in trakt-workers `EVENT_CONTRACTS.ts`
 - [ ] Screen shared with web mapped in `HalRoutes.kt`
 - [ ] Firebase event name ≤ 40 characters including `av3_`
