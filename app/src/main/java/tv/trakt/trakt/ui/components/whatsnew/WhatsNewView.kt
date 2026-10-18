@@ -162,8 +162,7 @@ private fun Preview() {
         WhatsNewView(
             data = WhatsNew(
                 id = 1,
-                versionName = "1.0.0",
-                versionCode = 1,
+                version = "1.0.0",
                 notes = persistentListOf(
                     WhatsNew.WhatsNewNote(
                         title = "New Feature",

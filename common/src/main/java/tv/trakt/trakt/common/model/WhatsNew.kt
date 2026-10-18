@@ -2,7 +2,6 @@ package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 
@@ -10,10 +9,7 @@ import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 @Serializable
 data class WhatsNew(
     val id: Int,
-    @SerialName("version_name")
-    val versionName: String,
-    @SerialName("version_code")
-    val versionCode: Int,
+    val version: String,
     @Serializable(with = ImmutableListSerializer::class)
     val notes: ImmutableList<WhatsNewNote>,
 ) {

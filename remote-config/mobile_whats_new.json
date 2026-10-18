@@ -1,0 +1,42 @@
+[
+  {
+    "id": 27,
+    "version": "3.24.0",
+    "version_code": 444,
+    "version_name": "3.24.0",
+    "notes": [
+      {
+        "title": "Today Stories",
+        "text": "See what your friends watched, rated and commented on in the last 24 hours. Tap Today on Home and flip through it story by story."
+      },
+      {
+        "title": "Smart Lists",
+        "text": "Smart lists can now pull from All titles, your Watchlist or your Library, and mix shows and movies in one list."
+      },
+      {
+        "title": "Misc.",
+        "text": "Checked an episode further ahead? We now offer to mark the skipped ones as watched too and lots of smaller fixes!"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "version": "3.23.0",
+    "version_code": 442,
+    "version_name": "3.23.0",
+    "notes": [
+      {
+        "title": "Media Reactions",
+        "text": "Show everyone how you really feel! React to movies and shows straight from their summary or right after rating them."
+      },
+      {
+        "title": "Comment Translations",
+        "text": "Read comments in your own language. Translate them with a single tap, right on your device."
+      },
+      {
+        "title": "Parental Guide",
+        "text": "Check content advisories in the movie and show info sheets before you press play."
+      }
+    ]
+  }
+]
