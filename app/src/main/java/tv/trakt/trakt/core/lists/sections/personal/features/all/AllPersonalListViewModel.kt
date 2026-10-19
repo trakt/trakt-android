@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -52,7 +53,6 @@ import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.Lists
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import kotlin.time.Duration.Companion.milliseconds
-import tv.trakt.trakt.common.firebase.analytics.logListSort
 
 @OptIn(FlowPreview::class)
 internal class AllPersonalListViewModel(

@@ -14,15 +14,15 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.usecase.GetAllStreamingsUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SeasonEpisode
+import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.streamings.navigation.AllStreamingsDestination
-import tv.trakt.trakt.common.firebase.analytics.Analytics
-import tv.trakt.trakt.common.model.streamings.StreamingService
 
 internal class AllStreamingsViewModel(
     savedStateHandle: SavedStateHandle,

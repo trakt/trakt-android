@@ -12,11 +12,11 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.streamings.StreamingService
 
 internal class EpisodeDetailsContextViewModel(
