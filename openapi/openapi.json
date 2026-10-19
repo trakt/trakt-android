@@ -1141,6 +1141,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -1910,6 +1914,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -2685,6 +2693,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -3454,6 +3466,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -5799,6 +5815,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -6792,6 +6812,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -7517,6 +7541,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -8252,6 +8280,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -8981,6 +9013,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -12217,6 +12253,10 @@
                                         "type": "string",
                                         "nullable": true
                                       },
+                                      "ending": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
                                       "rating": {
                                         "type": "number",
                                         "format": "float",
@@ -12649,6 +12689,10 @@
                                         "nullable": true
                                       },
                                       "status": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "ending": {
                                         "type": "string",
                                         "nullable": true
                                       },
@@ -16667,6 +16711,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -18185,6 +18233,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -19473,6 +19525,10 @@
                               "nullable": true
                             },
                             "status": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "ending": {
                               "type": "string",
                               "nullable": true
                             },
@@ -21445,6 +21501,10 @@
                                   "type": "string",
                                   "nullable": true
                                 },
+                                "ending": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
                                 "rating": {
                                   "type": "number",
                                   "format": "float",
@@ -22138,6 +22198,10 @@
                                   "type": "string",
                                   "nullable": true
                                 },
+                                "ending": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
                                 "rating": {
                                   "type": "number",
                                   "format": "float",
@@ -22758,6 +22822,10 @@
                                     "type": "string",
                                     "nullable": true
                                   },
+                                  "ending": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
                                   "rating": {
                                     "type": "number",
                                     "format": "float",
@@ -23307,6 +23375,10 @@
                                     "nullable": true
                                   },
                                   "status": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "ending": {
                                     "type": "string",
                                     "nullable": true
                                   },
@@ -24602,6 +24674,10 @@
                                   "type": "string",
                                   "nullable": true
                                 },
+                                "ending": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
                                 "rating": {
                                   "type": "number",
                                   "format": "float",
@@ -25295,6 +25371,10 @@
                                   "type": "string",
                                   "nullable": true
                                 },
+                                "ending": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
                                 "rating": {
                                   "type": "number",
                                   "format": "float",
@@ -25915,6 +25995,10 @@
                                     "type": "string",
                                     "nullable": true
                                   },
+                                  "ending": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
                                   "rating": {
                                     "type": "number",
                                     "format": "float",
@@ -26464,6 +26548,10 @@
                                     "nullable": true
                                   },
                                   "status": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "ending": {
                                     "type": "string",
                                     "nullable": true
                                   },
@@ -28270,6 +28358,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -29622,6 +29714,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -30249,6 +30345,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -31155,6 +31255,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -31692,6 +31796,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -32244,6 +32352,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -33574,6 +33686,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -34383,6 +34499,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -35219,6 +35339,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -36017,6 +36141,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -36568,6 +36696,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -36910,6 +37042,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -37423,6 +37559,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -37974,6 +38114,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -38316,6 +38460,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -38829,6 +38977,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -39380,6 +39532,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -39722,6 +39878,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -40235,6 +40395,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -40786,6 +40950,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -41128,6 +41296,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -41659,6 +41831,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -42210,6 +42386,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -42552,6 +42732,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -42951,6 +43135,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -43983,6 +44171,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -44397,6 +44589,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -47791,6 +47987,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -48579,6 +48779,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -49375,6 +49579,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -49764,6 +49972,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -50207,6 +50419,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -51008,6 +51224,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -51397,6 +51617,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -51840,6 +52064,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -60025,6 +60253,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -60381,6 +60613,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -60723,6 +60959,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -68559,6 +68799,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -69372,6 +69616,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -70583,6 +70831,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -71337,6 +71589,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -71760,6 +72016,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -80578,6 +80838,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -81002,6 +81266,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -81753,6 +82021,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -82242,6 +82514,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -82946,6 +83222,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -83370,6 +83650,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -87308,6 +87592,10 @@
                         "type": "string",
                         "nullable": true
                       },
+                      "ending": {
+                        "type": "string",
+                        "nullable": true
+                      },
                       "rating": {
                         "type": "number",
                         "format": "float",
@@ -88308,6 +88596,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -89015,6 +89307,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -89714,6 +90010,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -98238,6 +98538,10 @@
                       "type": "string",
                       "nullable": true
                     },
+                    "ending": {
+                      "type": "string",
+                      "nullable": true
+                    },
                     "rating": {
                       "type": "number",
                       "format": "float",
@@ -100345,6 +100649,10 @@
                         "nullable": true
                       },
                       "status": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "ending": {
                         "type": "string",
                         "nullable": true
                       },
@@ -109212,6 +109520,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -109698,6 +110010,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -110175,6 +110491,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -110661,6 +110981,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -111153,6 +111477,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -111499,6 +111827,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -112036,6 +112368,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -112495,6 +112831,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -112960,6 +113300,10 @@
                         "nullable": true
                       },
                       "status": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "ending": {
                         "type": "string",
                         "nullable": true
                       },
@@ -113433,6 +113777,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -114042,6 +114390,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -115184,6 +115536,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -116330,6 +116686,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -117497,6 +117857,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -119052,6 +119416,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -119348,6 +119716,10 @@
                                   "nullable": true
                                 },
                                 "status": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "ending": {
                                   "type": "string",
                                   "nullable": true
                                 },
@@ -123882,6 +124254,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -124660,6 +125036,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -125446,6 +125826,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -125835,6 +126219,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -126278,6 +126666,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -127069,6 +127461,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "ending": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "rating": {
                                 "type": "number",
                                 "format": "float",
@@ -127458,6 +127854,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -127901,6 +128301,10 @@
                                 "nullable": true
                               },
                               "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "ending": {
                                 "type": "string",
                                 "nullable": true
                               },
@@ -129770,6 +130174,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "rating": {
                             "type": "number",
                             "format": "float",
@@ -129894,6 +130302,872 @@
           }
         ],
         "operationId": "getSmart_listsItems"
+      }
+    },
+    "/smart-lists/templates": {
+      "get": {
+        "description": "#### 🔓 OAuth Optional ✨ Extended Info 😁 Emojis\nReturns the official smart list templates in display order. Each template has a stable `id`, a `source`, a `media_type` and the same `filters` a saved smart list returns, so a client can create a smart list from it as is.\n\nTemplates whose results depend on the viewer have `personal: true`, `total: null` and no `items`. Load their items with `/smart-lists/preview/items` while signed in. The other templates return their `total` and up to 3 `items`. Use `extended=images` to include posters.",
+        "summary": "Get smart list templates",
+        "tags": [
+          "smart_lists"
+        ],
+        "parameters": [
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "media_type": {
+                        "type": "string"
+                      },
+                      "filters": {
+                        "type": "object",
+                        "properties": {
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "genres_operator": {
+                            "type": "string",
+                            "enum": [
+                              "and",
+                              "or"
+                            ]
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "certifications": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "countries": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "statuses": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "networks": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "keywords": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "keywords_operator": {
+                            "type": "string",
+                            "enum": [
+                              "and",
+                              "or"
+                            ]
+                          },
+                          "studios": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "people": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "people_operator": {
+                            "type": "string",
+                            "enum": [
+                              "and",
+                              "or"
+                            ]
+                          },
+                          "people_role": {
+                            "type": "string",
+                            "enum": [
+                              "any",
+                              "cast",
+                              "directing",
+                              "writing",
+                              "producing"
+                            ]
+                          },
+                          "watchnow": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "watchnow_country": {
+                            "type": "string",
+                            "pattern": "^[a-z]{2}$"
+                          },
+                          "years": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "released_within_days": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 3650
+                          },
+                          "ratings": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "runtimes": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "imdb_ratings": {
+                            "type": "array",
+                            "items": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "maxItems": 2
+                          },
+                          "tmdb_ratings": {
+                            "type": "array",
+                            "items": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "maxItems": 2
+                          },
+                          "metascores": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "votes": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "imdb_votes": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "rt_meters": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "rt_user_meters": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "letterboxd_ratings": {
+                            "type": "array",
+                            "items": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "maxItems": 2
+                          },
+                          "mal_ratings": {
+                            "type": "array",
+                            "items": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_nudity": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_violence": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_profanity": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_alcohol": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_frightening": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "maxItems": 2
+                          },
+                          "parental_include_unrated": {
+                            "type": "boolean"
+                          },
+                          "ignore_watched": {
+                            "type": "boolean"
+                          },
+                          "ignore_watchlisted": {
+                            "type": "boolean"
+                          },
+                          "ignore_watching": {
+                            "type": "boolean"
+                          },
+                          "ignore_unreleased": {
+                            "type": "boolean"
+                          },
+                          "ignore_released": {
+                            "type": "boolean"
+                          },
+                          "ignore_ended": {
+                            "type": "boolean"
+                          },
+                          "ignore_airing": {
+                            "type": "boolean"
+                          },
+                          "ignore_no_release_date": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "personal": {
+                        "type": "boolean"
+                      },
+                      "total": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "rank": {
+                              "type": "integer"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "movie": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string"
+                                },
+                                "year": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "trakt": {
+                                      "type": "integer"
+                                    },
+                                    "slug": {
+                                      "type": "string"
+                                    },
+                                    "imdb": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "tmdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "plex": {
+                                      "type": "object",
+                                      "properties": {
+                                        "guid": {
+                                          "type": "string",
+                                          "nullable": true
+                                        },
+                                        "slug": {
+                                          "type": "string",
+                                          "nullable": true
+                                        }
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "trakt",
+                                    "slug"
+                                  ]
+                                },
+                                "images": {
+                                  "type": "object",
+                                  "properties": {
+                                    "fanart": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "poster": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "logo": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "clearart": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "banner": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "thumb": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "fanart",
+                                    "poster",
+                                    "logo",
+                                    "clearart",
+                                    "banner",
+                                    "thumb"
+                                  ],
+                                  "nullable": true
+                                },
+                                "tagline": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "overview": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "released": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "rating": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
+                                "votes": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "comment_count": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "trailer": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "homepage": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "language": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "languages": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "available_translations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "genres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "subgenres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "certification": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "original_title": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "after_credits": {
+                                  "type": "boolean",
+                                  "nullable": true
+                                },
+                                "during_credits": {
+                                  "type": "boolean",
+                                  "nullable": true
+                                },
+                                "colors": {
+                                  "type": "object",
+                                  "properties": {
+                                    "poster": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                },
+                                "social_ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "twitter": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "facebook": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "instagram": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "wikipedia": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "title",
+                                "ids"
+                              ],
+                              "nullable": true
+                            },
+                            "show": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string"
+                                },
+                                "year": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "trakt": {
+                                      "type": "integer"
+                                    },
+                                    "tvdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "imdb": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "tmdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "plex": {
+                                      "type": "object",
+                                      "properties": {
+                                        "guid": {
+                                          "type": "string",
+                                          "nullable": true
+                                        },
+                                        "slug": {
+                                          "type": "string",
+                                          "nullable": true
+                                        }
+                                      },
+                                      "nullable": true
+                                    },
+                                    "slug": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "trakt",
+                                    "slug"
+                                  ]
+                                },
+                                "images": {
+                                  "type": "object",
+                                  "properties": {
+                                    "fanart": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "poster": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "logo": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "clearart": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "banner": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "thumb": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "fanart",
+                                    "poster",
+                                    "logo",
+                                    "clearart",
+                                    "banner",
+                                    "thumb"
+                                  ],
+                                  "nullable": true
+                                },
+                                "aired_episodes": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "tagline": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "overview": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "first_aired": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "last_aired": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "airs": {
+                                  "type": "object",
+                                  "properties": {
+                                    "day": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "time": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "timezone": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                },
+                                "runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "total_runtime": {
+                                  "type": "integer",
+                                  "nullable": true,
+                                  "description": "Total runtime in minutes. When exact runtime data is unavailable, this value may include estimated fallback runtimes and should be treated as an approximation."
+                                },
+                                "certification": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "network": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "ending": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "rating": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
+                                "votes": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "comment_count": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "trailer": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "homepage": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "language": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "languages": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "available_translations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "genres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "subgenres": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "original_title": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "colors": {
+                                  "type": "object",
+                                  "properties": {
+                                    "poster": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                },
+                                "social_ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "twitter": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "facebook": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "instagram": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "wikipedia": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  },
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "title",
+                                "ids"
+                              ],
+                              "nullable": true
+                            }
+                          },
+                          "required": [
+                            "rank",
+                            "type"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "source",
+                      "media_type",
+                      "filters",
+                      "personal",
+                      "items"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getSmart_listsTemplates"
       }
     },
     "/smart-lists/{list_id}/items/{type}/{sort_by}/{sort_how}": {
@@ -130611,6 +131885,10 @@
                             "nullable": true
                           },
                           "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
                             "type": "string",
                             "nullable": true
                           },
@@ -131419,6 +132697,10 @@
                           "nullable": true
                         },
                         "status": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "ending": {
                           "type": "string",
                           "nullable": true
                         },
@@ -136200,6 +137482,10 @@
                               "type": "string",
                               "nullable": true
                             },
+                            "ending": {
+                              "type": "string",
+                              "nullable": true
+                            },
                             "rating": {
                               "type": "number",
                               "format": "float",
@@ -137126,6 +138412,10 @@
                               "type": "string",
                               "nullable": true
                             },
+                            "ending": {
+                              "type": "string",
+                              "nullable": true
+                            },
                             "rating": {
                               "type": "number",
                               "format": "float",
@@ -138049,6 +139339,10 @@
                               "nullable": true
                             },
                             "status": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "ending": {
                               "type": "string",
                               "nullable": true
                             },
