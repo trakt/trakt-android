@@ -221,6 +221,8 @@ Severity-prioritised list:
 
 **Medium:**
 
+- New user-facing feature without HAL usage tracking (`Analytics` call
+  mirroring trakt-web's event, see `analytics.md`).
 - Inline `Spacer(Modifier.height(8.dp))` instead of arrangement
   spacing.
 - Implicit (default) Compose Material colours when a Trakt token

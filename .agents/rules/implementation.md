@@ -23,6 +23,12 @@ applyTo: '**/*.kt'
 - Check if new helper already exists in `common/.../helpers/`, `common/.../ui/`, or another feature.
 - Prefer real files as examples over abstract descriptions.
 
+## Track New Features
+
+- **Every new user-facing feature ships with HAL usage tracking.** Add the event in the same PR as the feature, not as a follow-up.
+- Track meaningful interactions (open, complete, key choices), not every tap.
+- Reuse trakt-web's event when one exists. Follow `analytics.md`.
+
 ## When Establishing New Patterns
 
 - Pattern diverges from conventions → note it so rules can update.
