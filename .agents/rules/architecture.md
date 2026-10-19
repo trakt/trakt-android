@@ -136,6 +136,8 @@ dataChanges.observe(Kind.History, Kind.CheckIn, exclude = origin)
 
 - Pick kinds by **what changed**, never by which screen should react.
 - Notify only from user actions or workers, never from a load path that observers trigger (loops).
+  One exception: `LoadUserProgressUseCase` notifies `Progress` after a remote load. Code that
+  reacts to `Progress` must reload from local storage or pass `notifyUpdate = false`.
 - `exclude = origin` only when the screen already updated itself; otherwise let it reload.
 - `targetId` carries an entity id (comment id, list id); filter on it when a screen shows one entity.
 - Workers receive the origin through input data (`origin.key`). Shared fixed origins live on
