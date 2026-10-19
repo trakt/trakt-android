@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Suflete pereche</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Potrivire:</string>
-  <string name="match_pill_aria_label">%1$d%% potrivire, %2$s. Deschide detaliile potrivirii.</string>
+  <string name="match_pill_aria_label">%1$d% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
   <string name="mir_banner_body">Recapitularea ta lunară este gata. Iată ce ai vizionat în %s.</string>
   <string name="mir_banner_body_short">Recapitularea ta din %s este gata.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">Doar webhook</string>
   <string name="tag_mixtape_different_mood">Atmosferă diferită</string>
   <string name="tag_mixtape_kept">Păstrat</string>
-  <string name="tag_mixtape_match">%s%% potrivire</string>
+  <string name="tag_mixtape_match">%s% potrivire</string>
   <string name="tag_mixtape_tap_details">Atinge pentru detalii</string>
   <string name="tag_text_blocked_user">Blocat</string>
   <string name="tag_text_deal_price">Primii 2 ani</string>
@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Număr vizionări</string>
   <string name="tag_text_watched">Vizionat</string>
   <string name="tag_text_watchlisted">Pe lista de vizionare</string>
+  <string name="tag_today_tap_details">Atingeți mijlocul pentru detalii</string>
   <string name="text_about">Despre mine</string>
   <string name="text_about_tagline">Trakt urmărește automat ce vizionezi pe toate dispozitivele și aplicațiile tale — oferindu-ți un singur loc unde să-ți vezi întregul istoric de vizionare, să descoperi ce urmează și să te conectezi cu o comunitate de milioane de iubitori de filme și seriale din întreaga lume.</string>
   <string name="text_about_user">Despre %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Vizionat %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Vizionat %d episoade</string>
   <string name="text_today_watched_episodes_at">Vizionat %1$d episoade · %2$s</string>
+  <string name="text_today_watched_rated">Vizionat și evaluat</string>
+  <string name="text_today_watched_rated_at">Vizionat și evaluat · %s</string>
+  <string name="text_today_watched_rated_episode">Vizionat și evaluat %s</string>
+  <string name="text_today_watched_rated_episode_at">Vizionat și evaluat %1$s · %2$s</string>
   <string name="text_total_plays">vizionări totale</string>
   <string name="text_trakt_apps_description">și explorează o experiență Trakt mai bogată în funcții pe aplicațiile noastre native</string>
   <string name="text_unavailable">Indisponibil</string>
@@ -2754,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">Niciunul (fără hibrid)</string>
   <string name="yir_2026_preview_runner_up">Locul doi</string>
   <string name="yir_2026_preview_title">Previzualizare persona</string>
-  <string name="yir_2026_rarity">Doar %1$d%% sunt %2$s</string>
+  <string name="yir_2026_rarity">Doar %1$d% sunt %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Puțin %s</string>
   <string name="yir_2026_reel_and_you_are">Și tu ești</string>
   <string name="yir_2026_reel_but_mostly">Dar în mare parte</string>

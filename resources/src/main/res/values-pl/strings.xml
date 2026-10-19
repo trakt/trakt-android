@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Bratnie dusze</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Dopasowanie:</string>
-  <string name="match_pill_aria_label">%1$d%% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
+  <string name="match_pill_aria_label">%1$d% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
   <string name="match_pill_loading_aria_label">Obliczanie wyniku dopasowania</string>
   <string name="mir_banner_body">Twoje miesięczne podsumowanie jest gotowe. Oto, co obejrzałeś(-aś) w %s.</string>
   <string name="mir_banner_body_short">Twoje podsumowanie z %s jest gotowe.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">Tylko Webhook</string>
   <string name="tag_mixtape_different_mood">Inny nastrój</string>
   <string name="tag_mixtape_kept">Zachowane</string>
-  <string name="tag_mixtape_match">%s%% dopasowania</string>
+  <string name="tag_mixtape_match">%s% dopasowania</string>
   <string name="tag_mixtape_tap_details">Stuknij, aby zobaczyć szczegóły</string>
   <string name="tag_text_blocked_user">Zablokowany</string>
   <string name="tag_text_deal_price">Pierwsze 2 lata</string>
@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Liczba obejrzeń</string>
   <string name="tag_text_watched">Obejrzany</string>
   <string name="tag_text_watchlisted">Obserwowane</string>
+  <string name="tag_today_tap_details">Dotknij środek, aby zobaczyć szczegóły</string>
   <string name="text_about">O mnie</string>
   <string name="text_about_tagline">Trakt automatycznie śledzi, co oglądasz na wszystkich Twoich urządzeniach i w aplikacjach — dając Ci jedno miejsce, gdzie widzisz całą historię oglądania, odkrywasz, co obejrzeć dalej, i łączysz się ze społecznością milionów miłośników filmów i seriali z całego świata.</string>
   <string name="text_about_user">O %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Obejrzano %1$s \n%2$s</string>
   <string name="text_today_watched_episodes">Obejrzano %d odcinków</string>
   <string name="text_today_watched_episodes_at">Obejrzano %1$d odcinków \n%2$s</string>
+  <string name="text_today_watched_rated">Obejrzano i oceniono</string>
+  <string name="text_today_watched_rated_at">Obejrzano i oceniono · %s</string>
+  <string name="text_today_watched_rated_episode">Obejrzano i oceniono %s</string>
+  <string name="text_today_watched_rated_episode_at">Obejrzano i oceniono %1$s · %2$s</string>
   <string name="text_total_plays">wszystkie odtworzenia</string>
   <string name="text_trakt_apps_description">i odkryj jeszcze więcej natywnych funkcji i doświadczeń!</string>
   <string name="text_unavailable">Niedostępne</string>
@@ -2754,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">Brak (bez hybrydy)</string>
   <string name="yir_2026_preview_runner_up">Drugie miejsce</string>
   <string name="yir_2026_preview_title">Podgląd persony</string>
-  <string name="yir_2026_rarity">Tylko %1$d%% to %2$s</string>
+  <string name="yir_2026_rarity">Tylko %1$d% to %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Trochę %s</string>
   <string name="yir_2026_reel_and_you_are">A Ty jesteś</string>
   <string name="yir_2026_reel_but_mostly">Ale głównie</string>

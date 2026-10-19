@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">رفقاء الروح</string>
   <string name="match_label_spin_off">عرضية</string>
   <string name="match_pill_anchor">تطابق:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. فتح تفاصيل التطابق.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. فتح تفاصيل التطابق.</string>
   <string name="match_pill_loading_aria_label">جارٍ حساب نتيجة التطابق</string>
   <string name="mir_banner_body">ملخصك الشهري جاهز. إليك ما شاهدته في %s.</string>
   <string name="mir_banner_body_short">ملخص %s جاهز.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">ويب هوك فقط</string>
   <string name="tag_mixtape_different_mood">مزاج مختلف</string>
   <string name="tag_mixtape_kept">محفوظ</string>
-  <string name="tag_mixtape_match">مطابقة بنسبة %s%%</string>
+  <string name="tag_mixtape_match">مطابقة بنسبة %s%</string>
   <string name="tag_mixtape_tap_details">انقر للتفاصيل</string>
   <string name="tag_text_blocked_user">محظور</string>
   <string name="tag_text_deal_price">أول سنتين</string>
@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">عدد المشاهدات</string>
   <string name="tag_text_watched">شاهدت</string>
   <string name="tag_text_watchlisted">قائمة المشاهدة</string>
+  <string name="tag_today_tap_details">اضغط في المنتصف للتفاصيل</string>
   <string name="text_about">عني</string>
   <string name="text_about_tagline">يقوم Trakt تلقائيًا بتتبع ما تشاهده عبر جميع أجهزتك وتطبيقاتك - مما يتيح لك مكانًا واحدًا لرؤية سجل المشاهدة بالكامل، واكتشاف ما هو التالي، والتواصل مع مجتمع يضم الملايين من محبي الأفلام والتلفزيون حول العالم.</string>
   <string name="text_about_user">حول %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">شوهدت %1$s · %2$s</string>
   <string name="text_today_watched_episodes">شوهدت %d حلقة</string>
   <string name="text_today_watched_episodes_at">شوهدت %1$d حلقة · %2$s</string>
+  <string name="text_today_watched_rated">شوهد وتم تقييمه</string>
+  <string name="text_today_watched_rated_at">شوهد وتم تقييمه · %s</string>
+  <string name="text_today_watched_rated_episode">شوهدت وتم تقييم %s</string>
+  <string name="text_today_watched_rated_episode_at">شوهدت وتم تقييم %1$s · %2$s</string>
   <string name="text_total_plays">إجمالي المشاهدات</string>
   <string name="text_trakt_apps_description">واستكشف تجربة مسار أكثر ثراءً بالميزات على تطبيقاتنا الأصلية</string>
   <string name="text_unavailable">غير متاح</string>
@@ -2754,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">لا شيء (لا يوجد هجين)</string>
   <string name="yir_2026_preview_runner_up">الوصيف</string>
   <string name="yir_2026_preview_title">معاينة الشخصية</string>
-  <string name="yir_2026_rarity">فقط %1$d%% هم %2$s</string>
+  <string name="yir_2026_rarity">فقط %1$d% هم %2$s</string>
   <string name="yir_2026_reel_a_little_bit">قليلاً %s</string>
   <string name="yir_2026_reel_and_you_are">وأنت كذلك</string>
   <string name="yir_2026_reel_but_mostly">ولكن غالبًا</string>

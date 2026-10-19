@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Seelenverwandte</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Übereinstimmung:</string>
-  <string name="match_pill_aria_label">%1$d%% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
+  <string name="match_pill_aria_label">%1$d% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
   <string name="match_pill_loading_aria_label">Übereinstimmungswert wird berechnet</string>
   <string name="mir_banner_body">Ihr monatlicher Rückblick ist fertig. Hier ist, was Sie im %s gesehen haben.</string>
   <string name="mir_banner_body_short">Ihr %s-Rückblick ist fertig.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">Nur Webhook</string>
   <string name="tag_mixtape_different_mood">Andere Stimmung</string>
   <string name="tag_mixtape_kept">Behalten</string>
-  <string name="tag_mixtape_match">%s%% Übereinstimmung</string>
+  <string name="tag_mixtape_match">%s% Übereinstimmung</string>
   <string name="tag_mixtape_tap_details">Für Details tippen</string>
   <string name="tag_text_blocked_user">Blockiert</string>
   <string name="tag_text_deal_price">Erste 2 Jahre</string>
@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Gesehen</string>
   <string name="tag_text_watched">Gesehen</string>
   <string name="tag_text_watchlisted">Auf Merkliste</string>
+  <string name="tag_today_tap_details">Tippen Sie auf die Mitte f\n\nr Details</string>
   <string name="text_about">Über mich</string>
   <string name="text_about_tagline">Trakt verfolgt automatisch, was Sie auf all Ihren Geräten und Apps ansehen – und bietet Ihnen einen einzigen Ort, um Ihre gesamte Wiedergabe-Historie zu sehen, Neues zu entdecken und sich mit einer Community von Millionen Film- und Serienliebhabern weltweit zu verbinden.</string>
   <string name="text_about_user">Über %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">%1$s gesehen · %2$s</string>
   <string name="text_today_watched_episodes">%d Folgen gesehen</string>
   <string name="text_today_watched_episodes_at">%1$d Folgen gesehen · %2$s</string>
+  <string name="text_today_watched_rated">Gesehen und bewertet</string>
+  <string name="text_today_watched_rated_at">Gesehen und bewertet · %s</string>
+  <string name="text_today_watched_rated_episode">Gesehen und bewertet %s</string>
+  <string name="text_today_watched_rated_episode_at">Gesehen und bewertet %1$s · %2$s</string>
   <string name="text_total_plays">Gesamtwiedergaben</string>
   <string name="text_trakt_apps_description">und entdecken Sie ein funktionsreicheres Trakt-Erlebnis in unseren nativen Anwendungen</string>
   <string name="text_unavailable">Nicht verfügbar</string>
@@ -2754,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">Keine (kein Hybrid)</string>
   <string name="yir_2026_preview_runner_up">Zweitplatzierter</string>
   <string name="yir_2026_preview_title">Persona-Vorschau</string>
-  <string name="yir_2026_rarity">Nur %1$d%% sind %2$s</string>
+  <string name="yir_2026_rarity">Nur %1$d% sind %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Ein bisschen %s</string>
   <string name="yir_2026_reel_and_you_are">Und du bist</string>
   <string name="yir_2026_reel_but_mostly">Aber hauptsächlich</string>

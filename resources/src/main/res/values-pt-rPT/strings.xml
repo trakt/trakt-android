@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Almas gémeas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Compatibilidade:</string>
-  <string name="match_pill_aria_label">%1$d%% de compatibilidade, %2$s. Abre os detalhes da compatibilidade.</string>
+  <string name="match_pill_aria_label">%1$d% de compatibilidade, %2$s. Abre os detalhes da compatibilidade.</string>
   <string name="match_pill_loading_aria_label">A calcular a compatibilidade</string>
   <string name="mir_banner_body">O teu resumo mensal está pronto. Eis o que viste em %s.</string>
   <string name="mir_banner_body_short">O teu resumo de %s está pronto.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">Apenas webhook</string>
   <string name="tag_mixtape_different_mood">Sensação diferente</string>
   <string name="tag_mixtape_kept">Mantido</string>
-  <string name="tag_mixtape_match">%s%% de compatibilidade</string>
+  <string name="tag_mixtape_match">%s% de compatibilidade</string>
   <string name="tag_mixtape_tap_details">Toca para ver detalhes</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
   <string name="tag_text_deal_price">Primeiros 2 anos</string>
@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">N.º de visualizações</string>
   <string name="tag_text_watched">Visto</string>
   <string name="tag_text_watchlisted">Na lista para ver</string>
+  <string name="tag_today_tap_details">Toca no centro para ver detalhes</string>
   <string name="text_about">Sobre mim</string>
   <string name="text_about_tagline">O Trakt acompanha automaticamente o que estás a ver em todos os teus dispositivos e apps — dando-te um único lugar para veres todo o teu histórico de visualizações, descobrires o que vem a seguir e te ligares a uma comunidade de milhões de amantes de filmes e séries em todo o mundo.</string>
   <string name="text_about_user">Sobre %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Viu %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Viu %d episódios</string>
   <string name="text_today_watched_episodes_at">Viu %1$d episódios · %2$s</string>
+  <string name="text_today_watched_rated">Assistiu e classificou</string>
+  <string name="text_today_watched_rated_at">Assistiu e classificou · %s</string>
+  <string name="text_today_watched_rated_episode">Assistiu e classificou %s</string>
+  <string name="text_today_watched_rated_episode_at">Assistiu e classificou %1$s · %2$s</string>
   <string name="text_total_plays">total de visualizações</string>
   <string name="text_trakt_apps_description">e explora uma experiência Trakt mais completa nas nossas aplicações nativas</string>
   <string name="text_unavailable">Indisponível</string>
@@ -2754,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">Nenhum (sem híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo classificado</string>
   <string name="yir_2026_preview_title">Pré-visualização da persona</string>
-  <string name="yir_2026_rarity">Só %1$d%% são %2$s</string>
+  <string name="yir_2026_rarity">Só %1$d% são %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Um bocadinho %s</string>
   <string name="yir_2026_reel_and_you_are">E tu és</string>
   <string name="yir_2026_reel_but_mostly">Mas sobretudo</string>

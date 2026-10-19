@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Satu Frekuensi</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Cocok:</string>
-  <string name="match_pill_aria_label">Kecocokan %1$d%%, %2$s. Buka detail kecocokan.</string>
+  <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
   <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
   <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">Webhook saja</string>
   <string name="tag_mixtape_different_mood">Nuansa berbeda</string>
   <string name="tag_mixtape_kept">Disimpan</string>
-  <string name="tag_mixtape_match">%s%% cocok</string>
+  <string name="tag_mixtape_match">%s% cocok</string>
   <string name="tag_mixtape_tap_details">Ketuk untuk detail</string>
   <string name="tag_text_blocked_user">Diblokir</string>
   <string name="tag_text_deal_price">2 Tahun Pertama</string>
@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Jumlah tontonan</string>
   <string name="tag_text_watched">Ditonton</string>
   <string name="tag_text_watchlisted">Di Daftar Tontonan</string>
+  <string name="tag_today_tap_details">Ketuk tengah untuk detail</string>
   <string name="text_about">Tentang saya</string>
   <string name="text_about_tagline">Trakt secara otomatis melacak apa yang Anda tonton di semua perangkat dan aplikasi Anda — memberi Anda satu tempat untuk melihat seluruh riwayat tontonan Anda, menemukan apa yang berikutnya, dan terhubung dengan komunitas jutaan pecinta film dan TV di seluruh dunia.</string>
   <string name="text_about_user">Tentang %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Menonton %1$s \n· %2$s</string>
   <string name="text_today_watched_episodes">Menonton %d episode</string>
   <string name="text_today_watched_episodes_at">Menonton %1$d episode \n· %2$s</string>
+  <string name="text_today_watched_rated">Ditonton dan dinilai</string>
+  <string name="text_today_watched_rated_at">Ditonton dan dinilai · %s</string>
+  <string name="text_today_watched_rated_episode">Ditonton dan dinilai %s</string>
+  <string name="text_today_watched_rated_episode_at">Ditonton dan dinilai %1$s · %2$s</string>
   <string name="text_total_plays">total pemutaran</string>
   <string name="text_trakt_apps_description">dan jelajahi pengalaman Trakt yang lebih kaya fitur di aplikasi asli kami</string>
   <string name="text_unavailable">Tidak tersedia</string>
@@ -2754,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">Tidak ada (tanpa hibrida)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Pratinjau Persona</string>
-  <string name="yir_2026_rarity">Hanya %1$d%% adalah %2$s</string>
+  <string name="yir_2026_rarity">Hanya %1$d% adalah %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Sedikit %s</string>
   <string name="yir_2026_reel_and_you_are">Dan Anda adalah</string>
   <string name="yir_2026_reel_but_mostly">Tapi sebagian besar</string>

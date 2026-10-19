@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
   <string name="mir_banner_body_short">%s özetiniz hazır.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s%% eşleşme</string>
+  <string name="tag_mixtape_match">%s% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">İzlenme sayısı</string>
   <string name="tag_text_watched">İzlendi</string>
   <string name="tag_text_watchlisted">İzleme Listesinde</string>
+  <string name="tag_today_tap_details">Ayrıntılar için ortaya dokunun</string>
   <string name="text_about">Hakkımda</string>
   <string name="text_about_tagline">Trakt, tüm cihazlarınız ve uygulamalarınız arasında izlediklerinizi otomatik olarak takip eder; size tüm izleme geçmişinizi görmeniz, sırada ne olduğunu keşfetmeniz ve dünya çapında milyonlarca film ve TV severden oluşan bir toplulukla bağlantı kurmanız için tek bir yer sağlar.</string>
   <string name="text_about_user">%s hakkında</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">%1$s izlendi · %2$s</string>
   <string name="text_today_watched_episodes">%d bölüm izlendi</string>
   <string name="text_today_watched_episodes_at">%1$d bölüm izlendi · %2$s</string>
+  <string name="text_today_watched_rated">İzlendi ve derecelendirildi</string>
+  <string name="text_today_watched_rated_at">İzlendi ve derecelendirildi · %s</string>
+  <string name="text_today_watched_rated_episode">%s izlendi ve derecelendirildi</string>
+  <string name="text_today_watched_rated_episode_at">%1$s izlendi ve derecelendirildi · %2$s</string>
   <string name="text_total_plays">toplam oynatma</string>
   <string name="text_trakt_apps_description">ve yerel uygulamalarımızda daha zengin özelliklere sahip bir Trakt deneyimi keşfedin</string>
   <string name="text_unavailable">Kullanılamıyor</string>
@@ -2754,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Själsfränder</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Matchning:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Öppna matchningsdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Öppna matchningsdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beräknar kompatibilitetspoäng</string>
   <string name="mir_banner_body">Din månatliga sammanfattning är klar. Här är vad du tittade på i %s.</string>
   <string name="mir_banner_body_short">Din sammanfattning för %s är klar.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">Endast Webhook</string>
   <string name="tag_mixtape_different_mood">Annan känsla</string>
   <string name="tag_mixtape_kept">Behållen</string>
-  <string name="tag_mixtape_match">%s%% matchning</string>
+  <string name="tag_mixtape_match">%s% matchning</string>
   <string name="tag_mixtape_tap_details">Tryck för detaljer</string>
   <string name="tag_text_blocked_user">Blockerad</string>
   <string name="tag_text_deal_price">Första 2 åren</string>
@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Visningar</string>
   <string name="tag_text_watched">Sedd</string>
   <string name="tag_text_watchlisted">Bevakad</string>
+  <string name="tag_today_tap_details">Tryck i mitten för detaljer</string>
   <string name="text_about">Om mig</string>
   <string name="text_about_tagline">Trakt spårar automatiskt vad du tittar på över alla dina enheter och appar – vilket ger dig en enda plats att se hela din tittarhistorik, upptäcka vad som kommer härnäst och ansluta till en gemenskap av miljontals film- och TV-älskare runt om i världen.</string>
   <string name="text_about_user">Om %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Sett %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Sett %d avsnitt</string>
   <string name="text_today_watched_episodes_at">Sett %1$d avsnitt · %2$s</string>
+  <string name="text_today_watched_rated">Sett och betygsatt</string>
+  <string name="text_today_watched_rated_at">Sett och betygsatt · %s</string>
+  <string name="text_today_watched_rated_episode">Sett och betygsatt %s</string>
+  <string name="text_today_watched_rated_episode_at">Sett och betygsatt %1$s · %2$s</string>
   <string name="text_total_plays">totala visningar</string>
   <string name="text_trakt_apps_description">och utforska en mer funktionsrik Trakt-upplevelse i våra native-applikationer</string>
   <string name="text_unavailable">Inte tillgänglig</string>
@@ -2754,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ingen hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andraplats</string>
   <string name="yir_2026_preview_title">Personaförhandsvisning</string>
-  <string name="yir_2026_rarity">Endast %1$d%% är %2$s</string>
+  <string name="yir_2026_rarity">Endast %1$d% är %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Litegrann %s</string>
   <string name="yir_2026_reel_and_you_are">Och du är</string>
   <string name="yir_2026_reel_but_mostly">Men mestadels</string>
