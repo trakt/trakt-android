@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Âmes sœurs</string>
   <string name="match_label_spin_off">Dérivé</string>
   <string name="match_pill_anchor">Correspondance:</string>
-  <string name="match_pill_aria_label">%1$d%% de correspondance, %2$s. Ouvrir les détails de la correspondance.</string>
+  <string name="match_pill_aria_label">%1$d% de correspondance, %2$s. Ouvrir les détails de la correspondance.</string>
   <string name="match_pill_loading_aria_label">Calcul du score de compatibilité</string>
   <string name="mir_banner_body">Votre récapitulatif mensuel est prêt. Voici ce que vous avez regardé en %s.</string>
   <string name="mir_banner_body_short">Votre récapitulatif de %s est prêt.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Fond</string>
   <string name="page_title_year_in_review">Bilan de l\'année %s</string>
   <string name="page_title_year_to_date">Année à ce jour</string>
-  <string name="preview_feature_description_calendar_redesign">Un tableau hebdomadaire avec des affiches, une vue mensuelle, une barre latérale ancrée avec un mini-calendrier et des filtres escamotables, et un tiroir journalier sur les téléphones.</string>
   <string name="preview_feature_description_edit_mode">Activez les commandes pour masquer ou afficher les sections configurables dans toute l\'application.</string>
   <string name="preview_feature_description_large_screen_cards">Sur les grands écrans, toutes les listes utilisent les mêmes cartes que le reste de l\'application. En sélectionner une ouvre un aperçu rapide au lieu de quitter la liste.</string>
   <string name="preview_feature_description_rewatch">Démarrez des sessions de revisionnage pour les émissions que vous avez déjà vues, enregistrez-vous ou marquez les épisodes comme vus directement depuis le panneau de session.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Une nouvelle façon d\'annuler VIP : demande la raison, montre les changements et offre un forfait pour rester.</string>
   <string name="preview_feature_description_vip_veteran">Indique depuis combien de temps les membres ont conservé leur statut VIP sans interruption, avec un badge Vétéran ou Légende, un anneau d\'avatar coloré et quelques célébrations sur votre propre profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Votre année 2026 sous forme de bobine défilante avec un profil de spectateur, puis une page de statistiques stylisée pour correspondre.</string>
-  <string name="preview_feature_title_calendar_redesign">Refonte du calendrier</string>
   <string name="preview_feature_title_edit_mode">Mode édition</string>
   <string name="preview_feature_title_large_screen_cards">Cartes grand écran</string>
   <string name="preview_feature_title_rewatch">Revisionnage</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">Webhook seulement</string>
   <string name="tag_mixtape_different_mood">Ambiance différente</string>
   <string name="tag_mixtape_kept">Conservé</string>
-  <string name="tag_mixtape_match">%s%% de correspondance</string>
+  <string name="tag_mixtape_match">%s% de correspondance</string>
   <string name="tag_mixtape_tap_details">Touchez pour les détails</string>
   <string name="tag_text_blocked_user">Bloqué</string>
   <string name="tag_text_deal_price">Les 2 premières années</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Voulez-vous vraiment arrêter de regarder « %s »?</string>
   <string name="warning_prompt_track_show_episode_count">Voulez-vous vraiment marquer « %1$s » comme vue? Cela marquera %2$d épisodes comme vus.</string>
   <string name="warning_prompt_unfollow_user">Voulez-vous vraiment ne plus suivre %s?</string>
-  <string name="warning_prompt_watched_until_here">Marquer « %s » comme vu a laissé des épisodes précédents non vus. Voulez-vous marquer tous les épisodes précédents comme vus également?</string>
   <string name="warning_prompt_younify_unlink">Voulez-vous vraiment dissocier %s?</string>
   <string name="warning_smart_lists_limit">Vous avez atteint votre limite de listes intelligentes</string>
   <string name="welcome_banner_action">Importer vos données</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">Aucun (pas hybride)</string>
   <string name="yir_2026_preview_runner_up">Deuxième</string>
   <string name="yir_2026_preview_title">Aperçu de la personnalité</string>
-  <string name="yir_2026_rarity">Seulement %1$d %% sont %2$s</string>
+  <string name="yir_2026_rarity">Seulement %1$d % sont %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un peu %s</string>
   <string name="yir_2026_reel_and_you_are">Et vous êtes</string>
   <string name="yir_2026_reel_but_mostly">Mais surtout</string>

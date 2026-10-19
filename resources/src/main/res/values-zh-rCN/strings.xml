@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">灵魂伴侣</string>
   <string name="match_label_spin_off">衍生作品</string>
   <string name="match_pill_anchor">匹配:</string>
-  <string name="match_pill_aria_label">%1$d%% 匹配，%2$s。打开匹配详情。</string>
+  <string name="match_pill_aria_label">%1$d% 匹配，%2$s。打开匹配详情。</string>
   <string name="match_pill_loading_aria_label">正在计算匹配度</string>
   <string name="mir_banner_body">您的月度回顾已就绪。这是您在 %s 中观看的内容。</string>
   <string name="mir_banner_body_short">您的 %s 回顾已就绪。</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">背景</string>
   <string name="page_title_year_in_review">%s 年回顾</string>
   <string name="page_title_year_to_date">年至今</string>
-  <string name="preview_feature_description_calendar_redesign">一个带有海报的周视图面板、月视图、带迷你日历和可折叠过滤器的停靠侧边栏，以及手机上的日抽屉。</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">取消 VIP 的新方式：询问原因，显示变更内容并提供挽留优惠。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
-  <string name="preview_feature_title_calendar_redesign">日历改版</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
   <string name="preview_feature_title_rewatch">重温</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">仅限 Webhook</string>
   <string name="tag_mixtape_different_mood">风格不符</string>
   <string name="tag_mixtape_kept">已保留</string>
-  <string name="tag_mixtape_match">%s%% 匹配</string>
+  <string name="tag_mixtape_match">%s% 匹配</string>
   <string name="tag_mixtape_tap_details">轻触查看详情</string>
   <string name="tag_text_blocked_user">已屏蔽</string>
   <string name="tag_text_deal_price">前两年</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">你确定要停止观看“%s”吗？</string>
   <string name="warning_prompt_track_show_episode_count">你确定要将“%1$s”标记为已观看吗？这会标记 %2$d 集为已观看。</string>
   <string name="warning_prompt_unfollow_user">你确定要取消关注 %s 吗？</string>
-  <string name="warning_prompt_watched_until_here">将 “%s” 标记为已看后，之前的剧集仍未观看。是否将它之前的所有剧集也标记为已看？</string>
   <string name="warning_prompt_younify_unlink">你确定要取消关联 %s 吗？</string>
   <string name="warning_smart_lists_limit">您已达到智能列表限制</string>
   <string name="welcome_banner_action">导入您的数据</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">无（非混合）</string>
   <string name="yir_2026_preview_runner_up">第二名</string>
   <string name="yir_2026_preview_title">角色预览</string>
-  <string name="yir_2026_rarity">仅有 %1$d%% 是 %2$s</string>
+  <string name="yir_2026_rarity">仅有 %1$d% 是 %2$s</string>
   <string name="yir_2026_reel_a_little_bit">有点 %s</string>
   <string name="yir_2026_reel_and_you_are">而您是</string>
   <string name="yir_2026_reel_but_mostly">但主要是</string>

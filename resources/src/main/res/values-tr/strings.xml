@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
   <string name="mir_banner_body_short">%s özetiniz hazır.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Arka Plan</string>
   <string name="page_title_year_in_review">%s Yılına Genel Bakış</string>
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
-  <string name="preview_feature_description_calendar_redesign">Posterli bir hafta panosu, ay görünümü, mini takvim ve daraltılabilir filtreler içeren sabit bir kenar çubuğu ve telefonlarda bir gün çekmecesi.</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_large_screen_cards">Daha büyük ekranlarda, tüm listeler uygulamanın geri kalanıyla aynı kartları kullanır. Birini seçmek, listeden ayrılmak yerine hızlı bir bakış açar.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">VIP\'i iptal etmenin yeni bir yolu: nedenini sorar, nelerin değişeceğini gösterir ve kalmak için bir anlaşma sunar.</string>
   <string name="preview_feature_description_vip_veteran">Üyelerin VIP statüsünü ne kadar süre kesintisiz sürdürdüğünü, Kıdemli veya Efsane rozetiyle, renkli bir avatar halkasıyla ve kendi profilinizde birkaç kutlamayla gösterir.</string>
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
-  <string name="preview_feature_title_calendar_redesign">Takvim yeniden tasarımı</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_large_screen_cards">Geniş Ekran Kartları</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s%% eşleşme</string>
+  <string name="tag_mixtape_match">%s% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">\"%s\" izlemeyi durdurmak istediğinizden emin misiniz?</string>
   <string name="warning_prompt_track_show_episode_count">\"%1$s\" öğesini izlendi olarak işaretlemek istediğinizden emin misiniz? Bu, %2$d bölümü izlendi olarak işaretleyecektir.</string>
   <string name="warning_prompt_unfollow_user">%s takibi bırakmak istediğinizden emin misiniz?</string>
-  <string name="warning_prompt_watched_until_here">\"%s\" bölümünü izlendi olarak işaretlediniz. Ancak bu, önceki bölümlerin izlenmemiş kalmasına neden oldu. Bu bölüme kadar olan tüm bölümleri de izlendi olarak işaretleyelim mi?</string>
   <string name="warning_prompt_younify_unlink">%s bağlantısını kesmek istediğinizden emin misiniz?</string>
   <string name="warning_smart_lists_limit">Akıllı liste limitinize ulaştınız</string>
   <string name="welcome_banner_action">Verilerinizi içe aktarın</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Suflete pereche</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Potrivire:</string>
-  <string name="match_pill_aria_label">%1$d%% potrivire, %2$s. Deschide detaliile potrivirii.</string>
+  <string name="match_pill_aria_label">%1$d% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
   <string name="mir_banner_body">Recapitularea ta lunară este gata. Iată ce ai vizionat în %s.</string>
   <string name="mir_banner_body_short">Recapitularea ta din %s este gata.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Fundal</string>
   <string name="page_title_year_in_review">Retrospectiva anului %s</string>
   <string name="page_title_year_to_date">Anul curent</string>
-  <string name="preview_feature_description_calendar_redesign">Un panou săptămânal cu postere, o vizualizare lunară, o bară laterală fixă cu un mini-calendar și filtre restrângibile, și o bară de zi pe telefoane.</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_large_screen_cards">Pe ecrane mai mari, toate listele folosesc aceleași carduri ca și restul aplicației. Selectarea unui card deschide o vizualizare rapidă, în loc să părăsească lista.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">O nouă modalitate de a anula VIP: întreabă de ce, arată ce se schimbă și oferă o înțelegere pentru a rămâne.</string>
   <string name="preview_feature_description_vip_veteran">Arată cât timp au păstrat membrii statutul VIP fără întrerupere, cu o insignă Veteran sau Legendă, un inel colorat de avatar și câteva celebrații pe propriul profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Anul tău 2026 sub forma unui rezumat derulabil cu o persona de spectator, apoi o pagină de statistici stilizată pentru a o egala.</string>
-  <string name="preview_feature_title_calendar_redesign">Redesign calendar</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_large_screen_cards">Carduri pe Ecrane Mari</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">Doar webhook</string>
   <string name="tag_mixtape_different_mood">Atmosferă diferită</string>
   <string name="tag_mixtape_kept">Păstrat</string>
-  <string name="tag_mixtape_match">%s%% potrivire</string>
+  <string name="tag_mixtape_match">%s% potrivire</string>
   <string name="tag_mixtape_tap_details">Atinge pentru detalii</string>
   <string name="tag_text_blocked_user">Blocat</string>
   <string name="tag_text_deal_price">Primii 2 ani</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Ești sigur că vrei să oprești vizionarea \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Ești sigur că vrei să marchezi \"%1$s\" ca vizionat? Aceasta va marca %2$d episoade ca vizionate.</string>
   <string name="warning_prompt_unfollow_user">Ești sigur că vrei să nu-l mai urmărești pe %s?</string>
-  <string name="warning_prompt_watched_until_here">Marcarea \"%s\" ca vizionat a lăsat episoadele anterioare nevăzute. Marchezi și tot ce este până la el ca vizionat?</string>
   <string name="warning_prompt_younify_unlink">Ești sigur că vrei să deconectezi %s?</string>
   <string name="warning_smart_lists_limit">Ai atins limita de liste inteligente</string>
   <string name="welcome_banner_action">Importă-ți datele</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">Niciunul (fără hibrid)</string>
   <string name="yir_2026_preview_runner_up">Locul doi</string>
   <string name="yir_2026_preview_title">Previzualizare persona</string>
-  <string name="yir_2026_rarity">Doar %1$d%% sunt %2$s</string>
+  <string name="yir_2026_rarity">Doar %1$d% sunt %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Puțin %s</string>
   <string name="yir_2026_reel_and_you_are">Și tu ești</string>
   <string name="yir_2026_reel_but_mostly">Dar în mare parte</string>

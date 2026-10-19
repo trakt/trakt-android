@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Сродни души</string>
   <string name="match_label_spin_off">Спин-оф</string>
   <string name="match_pill_anchor">Съвпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
+  <string name="match_pill_aria_label">%1$d% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
   <string name="match_pill_loading_aria_label">Изчисляване на резултат за съвпадение</string>
   <string name="mir_banner_body">Вашият месечен преглед е готов. Ето какво сте гледали през %s.</string>
   <string name="mir_banner_body_short">Вашият преглед за %s е готов.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Фон</string>
   <string name="page_title_year_in_review">%s в преглед</string>
   <string name="page_title_year_to_date">От началото на годината</string>
-  <string name="preview_feature_description_calendar_redesign">Седмичен изглед с плакати, месечен изглед, докирана странична лента с мини календар и свиваеми филтри, и чекмедже за деня на телефони.</string>
   <string name="preview_feature_description_edit_mode">Активирайте контроли за скриване или показване на конфигурируеми секции в цялото приложение.</string>
   <string name="preview_feature_description_large_screen_cards">На по-големи екрани, всички списъци използват същите карти като останалата част от приложението. Избирането на елемент отваря бърз преглед, вместо да напускате списъка.</string>
   <string name="preview_feature_description_rewatch">Започнете сесии за повторно гледане на предавания, които вече сте гледали, отбележете гледани епизоди директно от прозореца на сесията.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Нов начин за отказ от VIP: пита защо, показва какви промени настъпват и предлага сделка за оставане.</string>
   <string name="preview_feature_description_vip_veteran">Показва колко дълго членовете са запазили VIP без прекъсване, с значка Ветеран или Легенда, цветен пръстен на аватара и няколко празненства в профила ви.</string>
   <string name="preview_feature_description_year_in_review_2026">Вашата 2026 като превъртащ се клип с потребителска персона, след което страница със статистика, оформена според нея.</string>
-  <string name="preview_feature_title_calendar_redesign">Преработен календар</string>
   <string name="preview_feature_title_edit_mode">Режим на редактиране</string>
   <string name="preview_feature_title_large_screen_cards">Карти за голям екран</string>
   <string name="preview_feature_title_rewatch">Преглед</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">Само Webhook</string>
   <string name="tag_mixtape_different_mood">Различно усещане</string>
   <string name="tag_mixtape_kept">Запазено</string>
-  <string name="tag_mixtape_match">%s%% съвпадение</string>
+  <string name="tag_mixtape_match">%s% съвпадение</string>
   <string name="tag_mixtape_tap_details">Докоснете за подробности</string>
   <string name="tag_text_blocked_user">Блокиран</string>
   <string name="tag_text_deal_price">Първите 2 години</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Сигурни ли сте, че искате да спрете да гледате \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Сигурни ли сте, че искате да маркирате \"%1$s\" като гледан? Това ще маркира %2$d епизода като гледани.</string>
   <string name="warning_prompt_unfollow_user">Сигурни ли сте, че искате да прекратите следването на %s?</string>
-  <string name="warning_prompt_watched_until_here">Маркирането на \"%s\" като гледан остави по-ранни епизоди негледани. Да маркирам ли и всичко до него като гледано?</string>
   <string name="warning_prompt_younify_unlink">Сигурни ли сте, че искате да откачите %s?</string>
   <string name="warning_smart_lists_limit">Достигнали сте лимита си за интелигентни списъци</string>
   <string name="welcome_banner_action">Импортирайте данните си</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">Няма (без хибрид)</string>
   <string name="yir_2026_preview_runner_up">Подгласник</string>
   <string name="yir_2026_preview_title">Предварителен преглед на персона</string>
-  <string name="yir_2026_rarity">Само %1$d%% са %2$s</string>
+  <string name="yir_2026_rarity">Само %1$d% са %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Малко %s</string>
   <string name="yir_2026_reel_and_you_are">И вие сте</string>
   <string name="yir_2026_reel_but_mostly">Но предимно</string>

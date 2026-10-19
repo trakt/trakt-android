@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Споріднені душі</string>
   <string name="match_label_spin_off">Спін-офф</string>
   <string name="match_pill_anchor">Збіг:</string>
-  <string name="match_pill_aria_label">%1$d%% відповідності, %2$s. Відкрити деталі відповідності.</string>
+  <string name="match_pill_aria_label">%1$d% відповідності, %2$s. Відкрити деталі відповідності.</string>
   <string name="match_pill_loading_aria_label">Обчислення оцінки сумісності</string>
   <string name="mir_banner_body">Ваш щомісячний огляд готовий. Ось що ви переглянули у %s.</string>
   <string name="mir_banner_body_short">Ваш огляд за %s готовий.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Фон</string>
   <string name="page_title_year_in_review">%s в огляді</string>
   <string name="page_title_year_to_date">Рік до сьогодні</string>
-  <string name="preview_feature_description_calendar_redesign">Тижнева дошка з постерами, місячний перегляд, закріплена бічна панель з міні-календарем і фільтрами, що згортаються, та денна панель на телефонах.</string>
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
   <string name="preview_feature_description_large_screen_cards">На великих екранах усі списки використовують ті ж картки, що й решта додатка. Вибір одного відкриває швидкий перегляд, замість того щоб залишати список.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Новий спосіб скасувати VIP: запитує причину, показує зміни та пропонує угоду, щоб залишитися.</string>
   <string name="preview_feature_description_vip_veteran">Показує, як довго учасники зберігали VIP-статус без перерв, з відзнакою «Ветеран» або «Легенда», кольоровим кільцем аватара та кількома святкуваннями у вашому профілі.</string>
   <string name="preview_feature_description_year_in_review_2026">Ваш 2026 рік як прокручуваний ролик з персоною глядача, а потім сторінка статистики, оформлена відповідно до неї.</string>
-  <string name="preview_feature_title_calendar_redesign">Оновлений дизайн календаря</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
   <string name="preview_feature_title_large_screen_cards">Картки для великих екранів</string>
   <string name="preview_feature_title_rewatch">Повторний перегляд</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">Вебхук лише</string>
   <string name="tag_mixtape_different_mood">Інший настрій</string>
   <string name="tag_mixtape_kept">Збережено</string>
-  <string name="tag_mixtape_match">%s%% збіг</string>
+  <string name="tag_mixtape_match">%s% збіг</string>
   <string name="tag_mixtape_tap_details">Торкніться, щоб дізнатися деталі</string>
   <string name="tag_text_blocked_user">Заблоковано</string>
   <string name="tag_text_deal_price">Перші 2 роки</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Ви впевнені, що хочете припинити перегляд \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Ви впевнені, що хочете позначити \"%1$s\" як переглянуте? Це позначить %2$d епізодів як переглянуті.</string>
   <string name="warning_prompt_unfollow_user">Ви впевнені, що хочете відписатися від %s?</string>
-  <string name="warning_prompt_watched_until_here">Позначення \"%s\" як переглянутого залишило попередні епізоди непроглянутими. Позначити все до нього як переглянуте?</string>
   <string name="warning_prompt_younify_unlink">Ви впевнені, що хочете відв\'язати %s?</string>
   <string name="warning_smart_lists_limit">Ви досягли ліміту розумних списків</string>
   <string name="welcome_banner_action">Імпортувати ваші дані</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">Немає (без гібрида)</string>
   <string name="yir_2026_preview_runner_up">Друге місце</string>
   <string name="yir_2026_preview_title">Попередній перегляд персони</string>
-  <string name="yir_2026_rarity">Лише %1$d%% є %2$s</string>
+  <string name="yir_2026_rarity">Лише %1$d% є %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Трохи %s</string>
   <string name="yir_2026_reel_and_you_are">І ви є</string>
   <string name="yir_2026_reel_but_mostly">Але переважно</string>

@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">هم\nروح‌ها</string>
   <string name="match_label_spin_off">اسپین\nآف</string>
   <string name="match_pill_anchor">همخوانی:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
   <string name="match_pill_loading_aria_label">در حال محاسبه امتیاز تطابق</string>
   <string name="mir_banner_body">خلاصه ماهانه شما آماده است. در %s اینها را تماشا کرده‌اید.</string>
   <string name="mir_banner_body_short">خلاصه %s شما آماده است.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">پس‌زمینه</string>
   <string name="page_title_year_in_review">مرور سال %s</string>
   <string name="page_title_year_to_date">سال تا به امروز</string>
-  <string name="preview_feature_description_calendar_redesign">یک تابلوی هفتگی با پوسترها، یک نمای ماهانه، یک نوار کناری ثابت با یک تقویم کوچک و فیلترهای قابل جمع‌شدن، و یک کشوی روزانه در تلفن‌ها.</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_large_screen_cards">در صفحه‌های نمایش بزرگ‌تر، همه لیست‌ها از همان طراحی کارت‌های مورد استفاده در بقیه برنامه بهره می‌برند. با انتخاب هر کدام، به جای ترک لیست، یک نمای کلی سریع نمایش داده می‌شود.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">راهی جدید برای لغو VIP: دلیل را می‌پرسد، تغییرات را نشان می‌دهد و برای ماندن پیشنهاد ویژه‌ای ارائه می‌کند.</string>
   <string name="preview_feature_description_vip_veteran">نشان می‌دهد که اعضا چقدر بدون وقفه اشتراک VIP را حفظ کرده‌اند، با نشان کهنه‌کار یا افسانه، حلقه‌ی آواتار رنگی و چند جشن در پروفایل خودتان.</string>
   <string name="preview_feature_description_year_in_review_2026">سال 2026 شما به صورت یک حلقه قابل پیمایش با یک پرسونای بیننده، و سپس یک صفحه آمار که با آن همخوانی دارد.</string>
-  <string name="preview_feature_title_calendar_redesign">بازطراحی تقویم</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_large_screen_cards">کارت‌های صفحه نمایش بزرگ</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">فقط وب‌هوک</string>
   <string name="tag_mixtape_different_mood">حس و حال متفاوت</string>
   <string name="tag_mixtape_kept">نگه داشته شده</string>
-  <string name="tag_mixtape_match">%s%% تطابق</string>
+  <string name="tag_mixtape_match">%s% تطابق</string>
   <string name="tag_mixtape_tap_details">برای جزئیات ضربه بزنید</string>
   <string name="tag_text_blocked_user">مسدود شده</string>
   <string name="tag_text_deal_price">۲ سال اول</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">آیا مطمئن هستید که می‌خواهید تماشای \"%s\" را متوقف کنید؟</string>
   <string name="warning_prompt_track_show_episode_count">آیا مطمئن هستید که می‌خواهید \"%1$s\" را به عنوان تماشا شده علامت‌گذاری کنید؟ این کار %2$d اپیزود را به عنوان تماشا شده علامت‌گذاری می‌کند.</string>
   <string name="warning_prompt_unfollow_user">آیا مطمئن هستید که می‌خواهید %s را لغو دنبال کنید؟</string>
-  <string name="warning_prompt_watched_until_here">با علامت‌گذاری «%s» به‌عنوان تماشا شده، قسمت‌های قبلی تماشا نشده باقی ماندند. آیا می‌خواهید همه قسمت‌ها تا این نقطه را نیز تماشا شده علامت‌گذاری کنید؟</string>
   <string name="warning_prompt_younify_unlink">آیا مطمئن هستید که می‌خواهید %s را قطع پیوند کنید؟</string>
   <string name="warning_smart_lists_limit">به حداکثر تعداد لیست‌های هوشمند خود رسیده‌اید</string>
   <string name="welcome_banner_action">داده‌های خود را وارد کنید</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">هیچ‌کدام (بدون ترکیب)</string>
   <string name="yir_2026_preview_runner_up">رتبه‌دوم</string>
   <string name="yir_2026_preview_title">پیش‌نمایش پرسونا</string>
-  <string name="yir_2026_rarity">فقط %1$d%% %2$s هستند</string>
+  <string name="yir_2026_rarity">فقط %1$d% %2$s هستند</string>
   <string name="yir_2026_reel_a_little_bit">کمی %s</string>
   <string name="yir_2026_reel_and_you_are">و شما هستید</string>
   <string name="yir_2026_reel_but_mostly">اما بیشتر</string>

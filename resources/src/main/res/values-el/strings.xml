@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Ψυχές Συγγενείς</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Ταίριασμα:</string>
-  <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
+  <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
   <string name="mir_banner_body">Η μηνιαία ανακεφαλαίωσή σου είναι έτοιμη. Δες τι παρακολούθησες τον %s.</string>
   <string name="mir_banner_body_short">Η ανακεφαλαίωση για τον %s είναι έτοιμη.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Φόντο</string>
   <string name="page_title_year_in_review">Ανασκόπηση του %s</string>
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
-  <string name="preview_feature_description_calendar_redesign">Ένας πίνακας εβδομάδας με αφίσες, μια μηνιαία προβολή, μια πλαϊνή γραμμή με ένα μίνι ημερολόγιο και πτυσσόμενα φίλτρα, και ένα συρτάρι ημέρας στα τηλέφωνα.</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
   <string name="preview_feature_description_large_screen_cards">Σε μεγαλύτερες οθόνες, όλες οι λίστες χρησιμοποιούν τις ίδιες κάρτες με την υπόλοιπη εφαρμογή. Η επιλογή μιας ανοίγει μια γρήγορη επισκόπηση αντί να αποχωρήσετε από τη λίστα.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Ένας νέος τρόπος ακύρωσης του VIP: ρωτάει γιατί, δείχνει τι αλλάζει και προσφέρει μια συμφωνία για να παραμείνετε.</string>
   <string name="preview_feature_description_vip_veteran">Δείχνει πόσο καιρό οι χρήστες έχουν διατηρήσει το VIP χωρίς διακοπή, με σήμα Βετεράνου ή Θρύλου, ένα έγχρωμο δαχτυλίδι στο avatar και μερικούς εορτασμούς στο προφίλ σας.</string>
   <string name="preview_feature_description_year_in_review_2026">Το 2026 σας ως μια κυλιόμενη ταινία με ένα προφίλ θεατή, και στη συνέχεια μια σελίδα στατιστικών σχεδιασμένη να ταιριάζει.</string>
-  <string name="preview_feature_title_calendar_redesign">Ανασχεδιασμός ημερολογίου</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_large_screen_cards">Κάρτες Μεγάλης Οθόνης</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">Μόνο Webhook</string>
   <string name="tag_mixtape_different_mood">Διαφορετική διάθεση</string>
   <string name="tag_mixtape_kept">Διατηρήθηκε</string>
-  <string name="tag_mixtape_match">%s%% αντιστοιχία</string>
+  <string name="tag_mixtape_match">%s% αντιστοιχία</string>
   <string name="tag_mixtape_tap_details">Πατήστε για λεπτομέρειες</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
   <string name="tag_text_deal_price">Πρώτα 2 έτη</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Είστε σίγουροι ότι θέλετε να σταματήσετε να παρακολουθείτε το \"%s\";</string>
   <string name="warning_prompt_track_show_episode_count">Είστε σίγουροι ότι θέλετε να σημάνετε το \"%1$s\" ως παρακολουθήθηκε; Αυτό θα σημάνει %2$d επεισόδια ως παρακολουθήθηκαν.</string>
   <string name="warning_prompt_unfollow_user">Είστε σίγουροι ότι θέλετε να διακόψετε την παρακολούθηση του %s;</string>
-  <string name="warning_prompt_watched_until_here">Η επισήμανση του \"%s\" ως παρακολουθημένου άφησε προηγούμενα επεισόδια αθέατα. Να επισημανθούν όλα μέχρι αυτό ως παρακολουθημένα επίσης;</string>
   <string name="warning_prompt_younify_unlink">Είστε σίγουροι ότι θέλετε να αποσυνδέσετε το %s;</string>
   <string name="warning_smart_lists_limit">Έχετε φτάσει το όριο έξυπνων λιστών σας</string>
   <string name="welcome_banner_action">Εισαγωγή των δεδομένων σας</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">Κανένα (όχι υβρίδιο)</string>
   <string name="yir_2026_preview_runner_up">Επιλαχών</string>
   <string name="yir_2026_preview_title">Προεπισκόπηση προφίλ</string>
-  <string name="yir_2026_rarity">Μόνο το %1$d%% είναι %2$s</string>
+  <string name="yir_2026_rarity">Μόνο το %1$d% είναι %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Λίγο %s</string>
   <string name="yir_2026_reel_and_you_are">Και είστε</string>
   <string name="yir_2026_reel_but_mostly">Αλλά κυρίως</string>

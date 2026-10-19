@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Almas Gêmeas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Compatibilidade:</string>
-  <string name="match_pill_aria_label">%1$d%% de compatibilidade, %2$s. Abrir detalhes da compatibilidade.</string>
+  <string name="match_pill_aria_label">%1$d% de compatibilidade, %2$s. Abrir detalhes da compatibilidade.</string>
   <string name="match_pill_loading_aria_label">Calculando pontuação de compatibilidade</string>
   <string name="mir_banner_body">Seu resumo mensal está pronto. Veja o que você assistiu em %s.</string>
   <string name="mir_banner_body_short">Seu resumo de %s está pronto.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Fundo</string>
   <string name="page_title_year_in_review">%s em revisão</string>
   <string name="page_title_year_to_date">Acumulado do Ano</string>
-  <string name="preview_feature_description_calendar_redesign">Um quadro semanal com pôsteres, uma visualização mensal, uma barra lateral acoplada com um mini calendário e filtros recolhíveis, e uma gaveta diária em telefones.</string>
   <string name="preview_feature_description_edit_mode">Ative os controles para ocultar ou exibir seções configuráveis em todo o aplicativo.</string>
   <string name="preview_feature_description_large_screen_cards">Em telas maiores, todas as listas usam os mesmos cards que o restante do aplicativo. Selecionar um abre uma pré-visualização rápida em vez de sair da lista.</string>
   <string name="preview_feature_description_rewatch">Comece sessões de reassistência para séries que você já assistiu, faça check-in ou marque episódios como assistidos diretamente na gaveta da sessão.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Uma nova forma de cancelar o VIP: pergunta o motivo, mostra o que muda e oferece uma oferta para você ficar.</string>
   <string name="preview_feature_description_vip_veteran">Mostra há quanto tempo os membros mantêm o VIP sem interrupção, com um selo de Veterano ou Lenda, um anel de avatar colorido e algumas celebrações no seu próprio perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">Seu 2026 como um rolo de rolagem com uma persona de espectador, e depois uma página de estatísticas estilizada para combinar.</string>
-  <string name="preview_feature_title_calendar_redesign">Redesenho do calendário</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
   <string name="preview_feature_title_large_screen_cards">Cards para Telas Grandes</string>
   <string name="preview_feature_title_rewatch">Reassistir</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">Somente Webhook</string>
   <string name="tag_mixtape_different_mood">Vibe diferente</string>
   <string name="tag_mixtape_kept">Mantido</string>
-  <string name="tag_mixtape_match">%s%% de correspondência</string>
+  <string name="tag_mixtape_match">%s% de correspondência</string>
   <string name="tag_mixtape_tap_details">Toque para detalhes</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
   <string name="tag_text_deal_price">Primeiros 2 Anos</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Tem certeza que deseja parar de assistir \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Tem certeza que deseja marcar \"%1$s\" como assistido? Isso marcará %2$d episódios como assistidos.</string>
   <string name="warning_prompt_unfollow_user">Tem certeza que deseja deixar de seguir %s?</string>
-  <string name="warning_prompt_watched_until_here">Marcar \"%s\" como assistido deixou episódios anteriores não assistidos. Marcar tudo até ele como assistido também?</string>
   <string name="warning_prompt_younify_unlink">Tem certeza que deseja desvincular %s?</string>
   <string name="warning_smart_lists_limit">Você atingiu seu limite de listas inteligentes</string>
   <string name="welcome_banner_action">Importar seus dados</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">Nenhum (sem híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo lugar</string>
   <string name="yir_2026_preview_title">Prévia da persona</string>
-  <string name="yir_2026_rarity">Apenas %1$d%% são %2$s</string>
+  <string name="yir_2026_rarity">Apenas %1$d% são %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Um pouco %s</string>
   <string name="yir_2026_reel_and_you_are">E você é</string>
   <string name="yir_2026_reel_but_mostly">Mas principalmente</string>

@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Satu Frekuensi</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Cocok:</string>
-  <string name="match_pill_aria_label">Kecocokan %1$d%%, %2$s. Buka detail kecocokan.</string>
+  <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
   <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
   <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Latar Belakang</string>
   <string name="page_title_year_in_review">%s dalam tinjauan</string>
   <string name="page_title_year_to_date">Tahun Berjalan</string>
-  <string name="preview_feature_description_calendar_redesign">Papan minggu dengan poster, tampilan bulan, bilah sisi tertambat dengan kalender mini dan filter yang dapat dilipat, serta laci hari di ponsel.</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Cara baru untuk membatalkan VIP: menanyakan alasannya, menunjukkan perubahan apa yang akan terjadi, dan menawarkan penawaran untuk tetap berlangganan.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
-  <string name="preview_feature_title_calendar_redesign">Desain ulang Kalender</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
@@ -1596,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">Webhook saja</string>
   <string name="tag_mixtape_different_mood">Nuansa berbeda</string>
   <string name="tag_mixtape_kept">Disimpan</string>
-  <string name="tag_mixtape_match">%s%% cocok</string>
+  <string name="tag_mixtape_match">%s% cocok</string>
   <string name="tag_mixtape_tap_details">Ketuk untuk detail</string>
   <string name="tag_text_blocked_user">Diblokir</string>
   <string name="tag_text_deal_price">2 Tahun Pertama</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Anda yakin ingin berhenti menonton \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Anda yakin ingin menandai \"%1$s\" sudah ditonton? Ini akan menandai %2$d episode sebagai sudah ditonton.</string>
   <string name="warning_prompt_unfollow_user">Anda yakin ingin berhenti mengikuti %s?</string>
-  <string name="warning_prompt_watched_until_here">Menandai \"%s\" sebagai sudah ditonton menyisakan episode-episode sebelumnya belum ditonton. Tandai semua sampai episode ini sebagai sudah ditonton juga?</string>
   <string name="warning_prompt_younify_unlink">Anda yakin ingin melepaskan tautan %s?</string>
   <string name="warning_smart_lists_limit">Anda telah mencapai batas daftar cerdas Anda</string>
   <string name="welcome_banner_action">Impor data Anda</string>
@@ -2759,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">Tidak ada (tanpa hibrida)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Pratinjau Persona</string>
-  <string name="yir_2026_rarity">Hanya %1$d%% adalah %2$s</string>
+  <string name="yir_2026_rarity">Hanya %1$d% adalah %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Sedikit %s</string>
   <string name="yir_2026_reel_and_you_are">Dan Anda adalah</string>
   <string name="yir_2026_reel_but_mostly">Tapi sebagian besar</string>
