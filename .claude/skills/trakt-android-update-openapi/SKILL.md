@@ -1,5 +1,5 @@
 ---
-name: update-openapi
+name: trakt-android-update-openapi
 description: Refresh the Android OpenAPI spec from the trakt-api repo - fast-forward trakt-api to latest master, run the Bun `generate` script, copy the resulting openapi.json into this repo's `openapi/` folder. Trigger: "update openapi", "refresh openapi spec", "pull latest api spec", "sync openapi.json".
 ---
 
@@ -24,7 +24,7 @@ Set `API=/Users/michal/Documents/Android/trakt/trakt-api` and run every git comm
    - Branch is not `master`: stop and ask the user before switching. They may have work in progress.
    - Working tree dirty: stash it so generation runs on clean `master`.
      ```bash
-     git -C "$API" stash push -u -m "update-openapi skill"
+     git -C "$API" stash push -u -m "trakt-android-update-openapi skill"
      ```
      Remember that a stash was created. Restore it in step 5.
 

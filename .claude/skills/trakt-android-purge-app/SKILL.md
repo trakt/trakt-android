@@ -1,5 +1,5 @@
 ---
-name: purge-app
+name: trakt-android-purge-app
 description:
   Fully purge the Trakt app from a connected Android emulator/device — uninstall, remove leftover install dirs that block future installs, verify clean, report free storage. Trigger: "purge app", "clean uninstall", "app won't install", INSTALL_FAILED errors.
 ---
