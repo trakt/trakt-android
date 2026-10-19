@@ -24,6 +24,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -51,6 +53,7 @@ internal class ProfileProgressViewModel(
     private val localShowSource: ShowLocalDataSource,
     private val collapsingManager: CollapsingManager,
     private val dataChanges: DataChanges,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileProgressState()
 
@@ -68,6 +71,13 @@ internal class ProfileProgressViewModel(
     init {
         loadData()
         observeData()
+        observeForeground()
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     @OptIn(FlowPreview::class)

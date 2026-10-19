@@ -110,6 +110,7 @@ internal val discoverModule = module {
             getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
             getDiscoverMediaUseCase = get(),
             seasonalThemeUseCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 
@@ -121,6 +122,7 @@ internal val discoverModule = module {
             getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
             getDiscoverMediaUseCase = get(),
             seasonalThemeUseCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 
@@ -132,6 +134,7 @@ internal val discoverModule = module {
             getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
             getDiscoverMediaUseCase = get(),
             seasonalThemeUseCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 
@@ -142,6 +145,7 @@ internal val discoverModule = module {
             getReleasesShowsUseCase = get(named("defaultReleasesShowsUseCase")),
             getReleasesMoviesUseCase = get(named("defaultReleasesMoviesUseCase")),
             getReleasesTypeUseCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 

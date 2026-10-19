@@ -33,6 +33,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
@@ -61,6 +63,7 @@ internal class ListsWatchlistViewModel(
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ListsWatchlistState()
 
@@ -84,6 +87,13 @@ internal class ListsWatchlistViewModel(
         observeUser()
         observeWatchlist()
         observeCollection()
+        observeForeground()
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun observeFilter() {

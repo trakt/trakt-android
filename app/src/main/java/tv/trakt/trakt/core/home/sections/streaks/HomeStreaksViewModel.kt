@@ -17,6 +17,8 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
 import kotlin.time.Duration.Companion.milliseconds
@@ -25,13 +27,21 @@ internal class HomeStreaksViewModel(
     private val streaksManager: StreaksManager,
     private val filtersManager: GlobalFilterManager,
     private val dataChanges: DataChanges,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private var dataJob: Job? = null
 
     init {
         observeMode()
         observeProgress()
+        observeForeground()
         loadData()
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData() }
+            .launchIn(viewModelScope)
     }
 
     private fun observeProgress() {

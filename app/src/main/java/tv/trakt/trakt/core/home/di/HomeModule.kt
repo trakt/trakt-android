@@ -123,6 +123,7 @@ internal val homeModule = module {
             collapsingManager = get(),
             ratePromptManager = get(),
             checkInManager = get(),
+            appLifecycleProvider = get(),
             analytics = get(),
         )
     }
@@ -158,6 +159,7 @@ internal val homeModule = module {
             checkInManager = get(),
             ratePromptManager = get(),
             dataChanges = get(),
+            appLifecycleProvider = get(),
             analytics = get(),
         )
     }
@@ -194,6 +196,7 @@ internal val homeModule = module {
             sessionManager = get(),
             filterManager = get(),
             collapsingManager = get(),
+            appLifecycleProvider = get(),
         )
     }
 
@@ -206,6 +209,7 @@ internal val homeModule = module {
             getRecommendedMediaUseCase = get(),
             hideRecommendedShowUseCase = get(),
             hideRecommendedMovieUseCase = get(),
+            appLifecycleProvider = get(),
         )
     }
 }

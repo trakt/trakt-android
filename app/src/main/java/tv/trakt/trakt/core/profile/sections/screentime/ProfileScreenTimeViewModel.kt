@@ -24,6 +24,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
 import tv.trakt.trakt.core.profile.sections.screentime.usecase.GetScreenTimeUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -34,6 +36,7 @@ internal class ProfileScreenTimeViewModel(
     private val getScreenTimeUseCase: GetScreenTimeUseCase,
     private val collapsingManager: CollapsingManager,
     private val dataChanges: DataChanges,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileScreenTimeState(
         rangeStart = nowLocalDay().minusDays(6),
@@ -48,6 +51,13 @@ internal class ProfileScreenTimeViewModel(
     init {
         loadData()
         observeProgress()
+        observeForeground()
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData() }
+            .launchIn(viewModelScope)
     }
 
     private fun observeProgress() {

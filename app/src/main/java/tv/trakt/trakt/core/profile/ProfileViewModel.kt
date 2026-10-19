@@ -26,6 +26,8 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.checkin.data.CheckInManager
@@ -44,6 +46,7 @@ internal class ProfileViewModel(
     private val checkInManager: CheckInManager,
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileState()
 
@@ -64,10 +67,20 @@ internal class ProfileViewModel(
         observeUser()
         observeCheckIn()
         observeSocial()
+        observeForeground()
 
         analytics.logScreenView(
             screenName = "profile",
         )
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach {
+                loadData(showLoading = false)
+                loadLeaderboard()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeUser() {
@@ -108,10 +121,12 @@ internal class ProfileViewModel(
         monthBackgroundState.update { configUrl }
     }
 
-    private fun loadData() {
+    private fun loadData(showLoading: Boolean = true) {
         viewModelScope.launch {
             try {
-                loadingMonthStatsState.update { Loading }
+                if (showLoading) {
+                    loadingMonthStatsState.update { Loading }
+                }
                 monthStatsState.update {
                     getProfileStatsUseCase.getProfileStats()
                 }

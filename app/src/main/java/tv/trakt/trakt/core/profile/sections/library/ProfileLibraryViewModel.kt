@@ -10,6 +10,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,6 +27,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
@@ -40,6 +44,7 @@ internal class ProfileLibraryViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileLibraryState()
 
@@ -56,9 +61,16 @@ internal class ProfileLibraryViewModel(
 
     init {
         loadData()
+        observeForeground()
     }
 
-    fun loadData() {
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
+    }
+
+    fun loadData(ignoreErrors: Boolean = false) {
         loadDataJob?.cancel()
         loadDataJob = viewModelScope.launch {
             try {
@@ -110,7 +122,9 @@ internal class ProfileLibraryViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.recordError(error)
                 }
             } finally {

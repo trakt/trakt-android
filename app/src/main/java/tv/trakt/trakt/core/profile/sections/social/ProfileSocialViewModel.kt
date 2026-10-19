@@ -29,6 +29,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Followers
@@ -49,6 +51,7 @@ internal class ProfileSocialViewModel(
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileSocialState()
 
@@ -65,6 +68,13 @@ internal class ProfileSocialViewModel(
     init {
         loadData()
         observeData()
+        observeForeground()
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun observeData() {

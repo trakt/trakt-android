@@ -47,6 +47,8 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
@@ -85,6 +87,7 @@ internal class HomeWatchlistViewModel(
     private val collapsingManager: CollapsingManager,
     private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
     private val origin = ChangeOrigin.unique()
@@ -109,6 +112,13 @@ internal class HomeWatchlistViewModel(
         observeFilter()
         observeUser()
         observeData()
+        observeForeground()
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun observeUser() {

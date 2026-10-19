@@ -23,6 +23,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
@@ -49,6 +51,7 @@ internal class HomeRecommendedViewModel(
     private val hideRecommendedShowUseCase: HideRecommendedShowUseCase,
     private val hideRecommendedMovieUseCase: HideRecommendedMovieUseCase,
     private val collapsingManager: CollapsingManager,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = HomeRecommendedState()
 
@@ -64,6 +67,13 @@ internal class HomeRecommendedViewModel(
     init {
         loadData()
         observeMode()
+        observeForeground()
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun observeMode() {
@@ -76,7 +86,7 @@ internal class HomeRecommendedViewModel(
             .launchIn(viewModelScope)
     }
 
-    private fun loadData() {
+    private fun loadData(ignoreErrors: Boolean = false) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
@@ -84,7 +94,9 @@ internal class HomeRecommendedViewModel(
                 loadRemoteData()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.recordError(error)
                 }
             } finally {

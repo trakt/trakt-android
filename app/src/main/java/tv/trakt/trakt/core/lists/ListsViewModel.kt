@@ -28,6 +28,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -65,6 +67,7 @@ internal class ListsViewModel(
     private val localSmartListsSource: ListsSmartLocalDataSource,
     private val getFilterUseCase: GetListsFilterUseCase,
     private val analytics: Analytics,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ListsState()
 
@@ -80,10 +83,17 @@ internal class ListsViewModel(
     init {
         observeUser()
         observeLists()
+        observeForeground()
 
         analytics.logScreenView(
             screenName = "lists",
         )
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach { loadData(ignoreErrors = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun observeUser() {
@@ -153,7 +163,7 @@ internal class ListsViewModel(
         }
     }
 
-    fun loadData() {
+    fun loadData(ignoreErrors: Boolean = false) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             loadFilter()
@@ -204,7 +214,9 @@ internal class ListsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    if (!ignoreErrors) {
+                        errorState.update { error }
+                    }
                     Timber.recordError(error)
                 }
             } finally {

@@ -36,6 +36,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
+import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Movies
@@ -72,6 +74,7 @@ internal class HomeUpNextViewModel(
     private val collapsingManager: CollapsingManager,
     private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
+    private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
     private val origin = ChangeOrigin.unique()
@@ -94,6 +97,18 @@ internal class HomeUpNextViewModel(
         observeUser()
         observeData()
         observeMode()
+        observeForeground()
+    }
+
+    private fun observeForeground() {
+        appLifecycleProvider.observeForegroundRefresh()
+            .onEach {
+                loadData(
+                    resetScroll = false,
+                    ignoreErrors = true,
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeMode() {
