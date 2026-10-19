@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.today.model.FollowingActivity.Detail
 import java.time.Instant
 
 /** All friend actions on a single title within the Today window. */
@@ -39,7 +40,7 @@ internal data class TodayTitleStory(
             media: TodayMedia,
             actions: List<TodayFriendAction>,
         ): TodayTitleStory {
-            val merged = mergeEpisodeWatches(actions)
+            val merged = mergeRatings(mergeEpisodeWatches(actions))
 
             return TodayTitleStory(
                 media = media,
@@ -77,6 +78,44 @@ internal data class TodayTitleStory(
                 }
                 .values
                 .sortedByDescending { it.activityAt }
+        }
+
+        /**
+         * Folds each friend rating into their single watch of the same movie or episode, so
+         * watching and rating reads as one action. Binges keep their ratings apart.
+         */
+        private fun mergeRatings(actions: List<TodayFriendAction>): List<TodayFriendAction> {
+            val ratedWatches = actions
+                .filter { it.detail is Detail.Rating }
+                .mapNotNull { rating ->
+                    actions
+                        .firstOrNull { isRatingOfWatch(it, rating) }
+                        ?.let { watch -> watch.key to rating }
+                }
+                .distinctBy { (watchKey, _) -> watchKey }
+                .toMap()
+
+            val foldedRatings = ratedWatches.values.map { it.key }.toSet()
+
+            return actions
+                .filterNot { it.key in foldedRatings }
+                .map { action ->
+                    ratedWatches[action.key]
+                        ?.let { action.copy(watchRating = it.rating) }
+                        ?: action
+                }
+        }
+
+        private fun isRatingOfWatch(
+            watch: TodayFriendAction,
+            rating: TodayFriendAction,
+        ): Boolean {
+            if (watch.detail !is Detail.Watch) return false
+            if (watch.user.ids.trakt != rating.user.ids.trakt) return false
+            if (watch.target::class != rating.target::class) return false
+            if (watch.episodeCount > 1) return false
+
+            return watch.episode?.ids?.trakt == rating.episode?.ids?.trakt
         }
 
         private fun averageRating(actions: List<TodayFriendAction>): Float? {

@@ -251,6 +251,11 @@ private fun friendActionLabel(action: TodayFriendAction): String {
                 R.string.text_today_watched_episodes,
                 action.episodeCount,
             )
+            action.rating != null && item != null -> stringResource(
+                R.string.text_today_watched_rated_episode,
+                item,
+            )
+            action.rating != null -> stringResource(R.string.text_today_watched_rated)
             item != null -> stringResource(R.string.text_today_watched_episode, item)
             else -> stringResource(R.string.text_today_watched)
         }
@@ -306,6 +311,7 @@ private fun previewAction(
     episodeCount: Int = 0,
     milestone: TodayMilestone? = null,
     activityAt: Instant = Instant.now(),
+    watchRating: Int? = null,
 ): TodayFriendAction {
     return TodayFriendAction(
         key = "preview",
@@ -315,6 +321,7 @@ private fun previewAction(
         detail = detail,
         episodeCount = episodeCount,
         milestone = milestone,
+        watchRating = watchRating,
     )
 }
 
@@ -418,6 +425,19 @@ private fun RatingAndCommentPreview() {
         )
         TodayFriendFooter(
             action = previewAction(detail = previewComment.copy(isReview = true)),
+        )
+        TodayFriendFooter(
+            action = previewAction(
+                target = Target.MovieTarget(PreviewData.movie1),
+                watchRating = 9,
+            ),
+        )
+        TodayFriendFooter(
+            action = previewAction(
+                target = Target.EpisodeTarget(PreviewData.show1, PreviewData.episode1),
+                episodeCount = 1,
+                watchRating = 7,
+            ),
         )
     }
 }

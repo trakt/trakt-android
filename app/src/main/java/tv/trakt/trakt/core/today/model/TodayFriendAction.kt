@@ -21,6 +21,7 @@ internal data class TodayFriendAction(
     val detail: Detail,
     val episodeCount: Int,
     val milestone: TodayMilestone?,
+    val watchRating: Int? = null,
 ) {
     val episode: Episode?
         get() = (target as? Target.EpisodeTarget)?.episode
@@ -29,7 +30,7 @@ internal data class TodayFriendAction(
         get() = (target as? Target.SeasonTarget)?.season
 
     val rating: Int?
-        get() = (detail as? Detail.Rating)?.rating
+        get() = (detail as? Detail.Rating)?.rating ?: watchRating
 
     val comment: Detail.Comment?
         get() = detail as? Detail.Comment
@@ -39,7 +40,7 @@ internal data class TodayFriendAction(
 
     /** Rating given to the movie or show itself, not to a season or episode. */
     val isTitleRating: Boolean
-        get() = detail is Detail.Rating &&
+        get() = rating != null &&
             (target is Target.MovieTarget || target is Target.ShowTarget)
 
     companion object {
