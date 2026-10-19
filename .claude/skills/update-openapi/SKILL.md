@@ -1,6 +1,6 @@
 ---
 name: update-openapi
-description: Refresh the Android OpenAPI spec from the trakt-api repo - fast-forward trakt-api to latest master, run the Deno `openapi:generate` task, copy the resulting openapi.json into this repo's `openapi/` folder. Trigger: "update openapi", "refresh openapi spec", "pull latest api spec", "sync openapi.json".
+description: Refresh the Android OpenAPI spec from the trakt-api repo - fast-forward trakt-api to latest master, run the Bun `generate` script, copy the resulting openapi.json into this repo's `openapi/` folder. Trigger: "update openapi", "refresh openapi spec", "pull latest api spec", "sync openapi.json".
 ---
 
 # Update OpenAPI spec
@@ -8,7 +8,7 @@ description: Refresh the Android OpenAPI spec from the trakt-api repo - fast-for
 Pulls the latest API contract from the `trakt-api` repo and drops it into `openapi/openapi.json`.
 
 - API repo: `/Users/michal/Documents/Android/trakt/trakt-api` (default branch is `master`, not `main`)
-- Generator: `projects/openapi/generate.ts`, run via root `deno task openapi:generate`
+- Generator: `projects/openapi/generate.ts`, run via `bun run generate` in `projects/openapi` (repo uses Bun, install with `brew install oven-sh/bun/bun`)
 - Output: `projects/openapi/openapi.json`
 - Destination: `/Users/michal/Documents/Android/trakt/trakt-android-2025/openapi/openapi.json`
 
@@ -39,7 +39,7 @@ Set `API=/Users/michal/Documents/Android/trakt/trakt-api` and run every git comm
 
 3. **Generate.**
    ```bash
-   cd "$API" && deno task openapi:generate
+   cd "$API" && bun install && cd projects/openapi && bun run generate
    ```
    On failure: quote the shortest decisive error line, restore the stash (step 5), stop.
 
