@@ -4,8 +4,6 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdatesStorage
 import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStartWorker
 import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStopWorker
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
@@ -29,10 +27,6 @@ internal val syncModule = module {
         EpisodesSyncStorage()
     }
 
-    single<ScrobbleUpdates> {
-        ScrobbleUpdatesStorage()
-    }
-
     singleOf(::CollectionStateProvider)
 
     worker {
@@ -41,7 +35,6 @@ internal val syncModule = module {
             workerParams = get(),
             sessionManager = get(),
             scrobbleApi = get(),
-            scrobbleUpdates = get(),
             cacheMarker = get(),
         )
     }
@@ -52,7 +45,7 @@ internal val syncModule = module {
             workerParams = get(),
             sessionManager = get(),
             scrobbleApi = get(),
-            scrobbleUpdates = get(),
+            dataChanges = get(),
             cacheMarker = get(),
         )
     }

@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -25,9 +24,9 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.home.model.UpNextMovie
 import tv.trakt.trakt.common.core.home.model.UpNextShow
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
@@ -47,24 +46,12 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.HomeUpNext
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates.Source.Widget
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Home
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -78,11 +65,7 @@ internal class HomeUpNextViewModel(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
-    private val watchlistUpdates: WatchlistUpdates,
-    private val upNextUpdates: UpNextUpdates,
-    private val showUpdates: ShowDetailsUpdates,
-    private val episodeUpdates: EpisodeDetailsUpdates,
-    private val checkInUpdates: CheckInUpdates,
+    private val dataChanges: DataChanges,
     private val checkInManager: CheckInManager,
     private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
@@ -91,6 +74,7 @@ internal class HomeUpNextViewModel(
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
+    private val origin = ChangeOrigin.unique()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapseState = MutableStateFlow(isCollapsed())
@@ -140,36 +124,15 @@ internal class HomeUpNextViewModel(
     @OptIn(FlowPreview::class)
     private fun observeData() {
         merge(
-            watchlistUpdates.observeUpdates(Default),
-            watchlistUpdates.observeUpdates(AllWatchlist),
+            dataChanges.observe(Kind.Watchlist),
+            dataChanges.observe(Kind.History, Kind.CheckIn, exclude = origin),
             homePersonalActivitySource.observeUpdates(),
-            showUpdates.observeUpdates(Source.Progress),
-            showUpdates.observeUpdates(Source.Seasons),
-            showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(Progress),
-            episodeUpdates.observeUpdates(Season),
-            episodeUpdates.observeUpdates(Home),
-            episodeUpdates.observeUpdates(Calendar),
-            episodeUpdates.observeUpdates(History),
-            checkInUpdates.observeUpdates().filterNot { it.first == HomeUpNext },
         )
-            .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }
             .launchIn(viewModelScope)
-
-        upNextUpdates.observeUpdates(
-            UpNextUpdates.Source.Default,
-            Widget,
-            UpNextUpdates.Source.Today,
-        )
-            .distinctUntilChanged()
-            .debounce(200.milliseconds)
-            .onEach {
-                loadData(ignoreErrors = true)
-            }.launchIn(viewModelScope)
     }
 
     fun loadData(
@@ -178,8 +141,9 @@ internal class HomeUpNextViewModel(
         localOnly: Boolean = false,
     ) {
         if (processingJob?.isActive == true) return
-        if (dataJob?.isActive == true) return
 
+        // Restart instead of skipping, so a change during an in-flight load is not lost.
+        dataJob?.cancel()
         dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
@@ -240,7 +204,6 @@ internal class HomeUpNextViewModel(
                 }
             } finally {
                 loadingState.update { Done }
-                dataJob = null
             }
         }
     }
@@ -313,7 +276,7 @@ internal class HomeUpNextViewModel(
                     )
                 }
 
-                upNextUpdates.notifyUpdate(UpNextUpdates.Source.Home)
+                dataChanges.notify(Kind.History, origin = origin)
                 loadUserProgress()
 
                 itemsOrder = itemsState.value.items?.map { "${it.mediaId}-${it.type}" }
@@ -359,7 +322,7 @@ internal class HomeUpNextViewModel(
                     context = appContext,
                     showId = showId,
                     seasonEpisode = seasonEpisode,
-                    source = HomeUpNext,
+                    origin = origin,
                 )
 
                 analytics.progress.logAddWatchedMedia(

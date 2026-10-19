@@ -13,9 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
+import tv.trakt.trakt.core.reactions.data.ReactionSource
 import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
@@ -28,20 +31,22 @@ internal class DeleteReactionWorker(
     val sessionManager: SessionManager,
     val deleteReactionsUseCase: DeleteCommentReactionUseCase,
     val loadUserReactionsUseCase: LoadUserReactionsUseCase,
-    val reactionsUpdates: ReactionsUpdates,
+    val dataChanges: DataChanges,
     val analytics: Analytics,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun scheduleOneTime(
             appContext: Context,
             commentId: Int,
-            source: ReactionsUpdates.Source? = null,
+            source: ReactionSource? = null,
+            origin: ChangeOrigin? = null,
         ) {
             val workRequest = OneTimeWorkRequestBuilder<DeleteReactionWorker>()
                 .setInputData(
                     Data.Builder()
                         .putInt("commentId", commentId)
-                        .putString("source", source?.name)
+                        .putString("source", source?.analyticsName)
+                        .putString("origin", origin?.key)
                         .build(),
                 )
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 3, SECONDS)
@@ -70,6 +75,7 @@ internal class DeleteReactionWorker(
             }
 
             val reactionSource = inputData.getString("source")
+            val origin = inputData.getString("origin")?.let(::ChangeOrigin)
             val commentId = inputData.getInt("commentId", -1)
             if (commentId == -1) {
                 Timber.d("Invalid comment ID, cannot delete reaction")
@@ -87,13 +93,11 @@ internal class DeleteReactionWorker(
 
                 loadUserReactionsUseCase.loadReactions()
 
-                if (!reactionSource.isNullOrBlank()) {
-                    val source = ReactionsUpdates.Source.valueOf(reactionSource)
-                    reactionsUpdates.notifyUpdate(
-                        commentId = commentId,
-                        source = source,
-                    )
-                }
+                dataChanges.notify(
+                    Kind.Reactions,
+                    origin = origin,
+                    targetId = commentId,
+                )
             }
         } catch (error: Exception) {
             if (error is CancellationException) {

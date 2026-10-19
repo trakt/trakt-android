@@ -14,10 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -25,6 +22,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetEpisodeTranslationsUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
@@ -48,22 +48,13 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.EpisodeDetails
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeDirectorUseCase
 import tv.trakt.trakt.core.summary.episodes.features.socials.GetEpisodeSocialsUseCase
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
@@ -85,16 +76,14 @@ internal class EpisodeDetailsViewModel(
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadRatingUseCase: LoadUserRatingsUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val showUpdatesSource: ShowDetailsUpdates,
-    private val episodeUpdatesSource: EpisodeDetailsUpdates,
-    private val ratingsUpdates: RatingsUpdates,
+    private val dataChanges: DataChanges,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
-    private val checkInUpdates: CheckInUpdates,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
+    private val origin = ChangeOrigin.unique()
     private val destination = savedStateHandle.toRoute<EpisodeDetailsDestination>()
 
     private val showId = destination.showId.toTraktId()
@@ -139,9 +128,7 @@ internal class EpisodeDetailsViewModel(
     }
 
     private fun observeRatings() {
-        ratingsUpdates.observeUpdates()
-            .filterNot { it.first == RatingsUpdates.Source.MediaDetails }
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 refreshUserRating()
@@ -150,14 +137,7 @@ internal class EpisodeDetailsViewModel(
     }
 
     private fun observeData() {
-        merge(
-            showUpdatesSource.observeUpdates(Source.Progress),
-            showUpdatesSource.observeUpdates(Source.Seasons),
-            showUpdatesSource.observeUpdates(Source.WatchedUntil),
-            episodeUpdatesSource.observeUpdates(Season),
-            episodeUpdatesSource.observeUpdates(History),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadProgressData(
@@ -168,10 +148,8 @@ internal class EpisodeDetailsViewModel(
     }
 
     private fun observeCheckIn() {
-        checkInUpdates.observeUpdates()
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.CheckIn, exclude = origin)
             .debounce(200.milliseconds)
-            .filterNot { it.first == EpisodeDetails }
             .onEach {
                 loadProgressData(
                     ignoreErrors = true,
@@ -423,7 +401,7 @@ internal class EpisodeDetailsViewModel(
                 checkInManager.startEpisode(
                     showId = showId,
                     seasonEpisode = seasonEpisode,
-                    source = EpisodeDetails,
+                    origin = origin,
                     context = appContext,
                 )
 
@@ -487,7 +465,7 @@ internal class EpisodeDetailsViewModel(
                     state?.copy(plays = progress?.plays?.size)
                 }
 
-                episodeUpdatesSource.notifyUpdate(Progress)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 if (response.added.episodes != 0) {
                     infoState.update { DynamicStringResource(R.string.text_info_history_added) }
@@ -534,7 +512,7 @@ internal class EpisodeDetailsViewModel(
                     state?.copy(plays = 0)
                 }
 
-                episodeUpdatesSource.notifyUpdate(Progress)
+                dataChanges.notify(Kind.History, origin = origin)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }
@@ -584,7 +562,7 @@ internal class EpisodeDetailsViewModel(
                 mediaId = episodeId,
                 mediaType = Episode,
                 rating = newRating,
-                source = RatingsUpdates.Source.MediaDetails,
+                origin = origin,
             )
         }
     }
@@ -618,7 +596,7 @@ internal class EpisodeDetailsViewModel(
                 mediaId = episodeId,
                 mediaType = Episode,
                 rating = 0, // A rating of 0 indicates removal of rating
-                source = RatingsUpdates.Source.MediaDetails,
+                origin = origin,
             )
         }
     }

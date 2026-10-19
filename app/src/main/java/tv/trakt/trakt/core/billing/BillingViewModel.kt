@@ -58,6 +58,7 @@ import tv.trakt.trakt.core.billing.model.VipBillingProduct
 import tv.trakt.trakt.core.billing.navigation.BillingDestination
 import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class BillingViewModel(
     savedStateHandle: SavedStateHandle,
@@ -138,7 +139,7 @@ internal class BillingViewModel(
     private fun observeUser() {
         sessionManager.observeProfile()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { user ->
                 userState.update { user }
             }

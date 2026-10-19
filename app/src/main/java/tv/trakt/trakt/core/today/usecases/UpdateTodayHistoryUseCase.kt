@@ -1,14 +1,13 @@
 package tv.trakt.trakt.core.today.usecases
 
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
@@ -21,11 +20,9 @@ internal class UpdateTodayHistoryUseCase(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val userProgressLocalSource: UserProgressLocalDataSource,
-    private val progressUpdates: ProgressUpdates,
+    private val dataChanges: DataChanges,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
-    private val watchlistUpdates: WatchlistUpdates,
-    private val upNextUpdates: UpNextUpdates,
     private val todayLocalSource: TodayLocalDataSource,
 ) {
     suspend fun addToWatched(item: TodayForYouItem) {
@@ -59,7 +56,7 @@ internal class UpdateTodayHistoryUseCase(
     }
 
     private fun notifyHistoryUpdate() {
-        upNextUpdates.notifyUpdate(UpNextUpdates.Source.Today)
+        dataChanges.notify(Kind.History, origin = ChangeOrigin.TodayStories)
     }
 
     private suspend fun addMediaToWatched(media: TodayMedia) {
@@ -80,7 +77,7 @@ internal class UpdateTodayHistoryUseCase(
             }
         }
 
-        watchlistUpdates.notifyUpdate(Default)
+        dataChanges.notify(Kind.Watchlist)
     }
 
     private suspend fun removeMediaFromWatched(media: TodayMedia) {
@@ -97,6 +94,6 @@ internal class UpdateTodayHistoryUseCase(
             }
         }
 
-        progressUpdates.notifyUpdate()
+        dataChanges.notify(Kind.Progress)
     }
 }

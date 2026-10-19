@@ -116,12 +116,11 @@ internal val showDetailsModule = module {
             getSeasonsUseCase = get(),
             watchlistUseCase = get(),
             historyUseCase = get(),
-            progressUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             tutorialsManager = get(),
             loadUserProgressUseCase = get(),
             loadUserWatchlistUseCase = get(),
-            watchlistUpdates = get(),
         )
     }
 }

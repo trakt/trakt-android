@@ -12,9 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -25,6 +23,8 @@ import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -37,10 +37,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting.Companion.RecentlyAdded
-import tv.trakt.trakt.core.favorites.FavoritesUpdates
-import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
-import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
-import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.lists.ListsConfig.FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -50,7 +46,7 @@ internal class ProfileFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val favoritesUpdates: FavoritesUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -74,12 +70,7 @@ internal class ProfileFavoritesViewModel(
     }
 
     private fun observeData() {
-        merge(
-            favoritesUpdates.observeUpdates(DETAILS),
-            favoritesUpdates.observeUpdates(CONTEXT_SHEET),
-            favoritesUpdates.observeUpdates(RATE_PROMPT),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Favorites)
             .debounce(200)
             .onEach {
                 loadData(

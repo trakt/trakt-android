@@ -19,8 +19,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdatesStorage
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.ListsViewModel
@@ -28,8 +26,6 @@ import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.features.reorder.ListReorderViewModel
-import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
-import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdatesStorage
 import tv.trakt.trakt.core.lists.features.reorder.lists.ListsReorderViewModel
 import tv.trakt.trakt.core.lists.features.reorder.lists.usecase.ReorderPersonalListsUseCase
 import tv.trakt.trakt.core.lists.features.reorder.usecase.ReorderListUseCase
@@ -79,8 +75,6 @@ internal val listsDataModule = module {
     singleOf(::ListsLikedStorage) { bind<ListsLikedLocalDataSource>() }
     singleOf(::ListsCollaborationsStorage) { bind<ListsCollaborationsLocalDataSource>() }
     singleOf(::ListsSmartStorage) { bind<ListsSmartLocalDataSource>() }
-    singleOf(::WatchlistUpdatesStorage) { bind<WatchlistUpdates>() }
-    singleOf(::ReorderUpdatesStorage) { bind<ReorderUpdates>() }
 
     single<DataStore<Preferences>>(named(LISTS_PREFERENCES)) {
         createStore(
@@ -145,7 +139,7 @@ internal val listsModule = module {
             checkInManager = get(),
             ratePromptManager = get(),
             analytics = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
         )
     }
 
@@ -162,7 +156,7 @@ internal val listsModule = module {
             userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),
             loadWatchlistMinUseCase = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             checkInManager = get(),
             ratePromptManager = get(),

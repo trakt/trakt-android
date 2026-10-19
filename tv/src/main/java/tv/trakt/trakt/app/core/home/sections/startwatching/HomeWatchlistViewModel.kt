@@ -13,10 +13,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -28,10 +26,10 @@ import tv.trakt.trakt.app.core.home.HomeConfig.HOME_WATCHLIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
 import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeMoviesWatchlistItemsUseCase
 import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeShowsWatchlistItemsUseCase
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
-import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
@@ -44,7 +42,7 @@ internal class HomeWatchlistViewModel(
     private val getMoviesUseCase: GetHomeMoviesWatchlistItemsUseCase,
     private val localMoviesSyncSource: MoviesSyncLocalDataSource,
     private val localShowsSyncSource: ShowsSyncLocalDataSource,
-    private val scrobbleUpdates: ScrobbleUpdates,
+    private val dataChanges: DataChanges,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
@@ -76,10 +74,7 @@ internal class HomeWatchlistViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeData() {
-        merge(
-            scrobbleUpdates.observeUpdates(SCROBBLE_STOP_WORKER),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History)
             .debounce(250)
             .onEach {
                 loadData(showLoading = false)

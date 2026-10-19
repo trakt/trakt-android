@@ -20,9 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -32,6 +30,9 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -61,15 +62,6 @@ import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslatio
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.AllSeasons
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Seasons
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WatchedUntil
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.helpers.SeasonRatingController
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.helpers.SeasonReactionsController
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.AllShowSeasonsDestination
@@ -102,18 +94,16 @@ internal class AllShowSeasonsViewModel(
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
-    private val reactionsUpdates: ReactionsUpdates,
-    private val ratingsUpdates: RatingsUpdates,
+    private val dataChanges: DataChanges,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val showDetailsUpdates: ShowDetailsUpdates,
-    private val episodeDetailsUpdates: EpisodeDetailsUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
     private val translationsStore: CommentTranslationsStore,
 ) : ViewModel() {
     private val initialState = AllShowSeasonsState()
+    private val origin = ChangeOrigin.unique()
 
     private val destination = savedStateHandle.toRoute<AllShowSeasonsDestination>()
     private val showId = destination.showId.toTraktId()
@@ -140,7 +130,7 @@ internal class AllShowSeasonsViewModel(
         getCommentReactionsUseCase = getCommentReactionsUseCase,
         loadUserReactionsUseCase = loadUserReactionsUseCase,
         sessionManager = sessionManager,
-        reactionsUpdates = reactionsUpdates,
+        dataChanges = dataChanges,
     )
 
     private val rating = SeasonRatingController(
@@ -148,7 +138,7 @@ internal class AllShowSeasonsViewModel(
         appContext = appContext,
         loadUserRatingsUseCase = loadUserRatingsUseCase,
         sessionManager = sessionManager,
-        ratingsUpdates = ratingsUpdates,
+        dataChanges = dataChanges,
         currentSeason = { itemsState.value.selectedSeason },
     )
 
@@ -162,14 +152,7 @@ internal class AllShowSeasonsViewModel(
     }
 
     private fun observeData() {
-        merge(
-            showDetailsUpdates.observeUpdates(Progress),
-            showDetailsUpdates.observeUpdates(WatchedUntil),
-            episodeDetailsUpdates.observeUpdates(Source.Progress),
-            episodeDetailsUpdates.observeUpdates(Source.Season),
-            episodeDetailsUpdates.observeUpdates(Source.History),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -592,8 +575,7 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Seasons)
-                showDetailsUpdates.notifyUpdate(AllSeasons)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 if (promptWatchedUntil) {
                     watchedUntilPromptState.update { episode }
@@ -658,8 +640,7 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Seasons)
-                showDetailsUpdates.notifyUpdate(AllSeasons)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
                 analytics.progress.logAddWatchedMedia(
@@ -711,8 +692,7 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Seasons)
-                showDetailsUpdates.notifyUpdate(AllSeasons)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_removed) }
                 analytics.progress.logRemoveWatchedMedia(
@@ -762,8 +742,7 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Seasons)
-                showDetailsUpdates.notifyUpdate(AllSeasons)
+                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_removed) }
                 analytics.progress.logRemoveWatchedMedia(

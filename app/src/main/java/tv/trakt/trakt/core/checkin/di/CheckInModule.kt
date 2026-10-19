@@ -5,10 +5,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.DefaultCheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdatesStorage
 
 val checkInModule = module {
     singleOf(::DefaultCheckInManager) { bind<CheckInManager>() }
-    singleOf(::CheckInUpdatesStorage) { bind<CheckInUpdates>() }
 }

@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -28,6 +27,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -40,20 +41,11 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
-import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -67,11 +59,7 @@ internal class ProfileHistoryViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
-    private val showUpdates: ShowDetailsUpdates,
-    private val movieUpdates: MovieDetailsUpdates,
-    private val episodeUpdates: EpisodeDetailsUpdates,
-    private val ratingsUpdates: RatingsUpdates,
-    private val checkInUpdate: CheckInUpdates,
+    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -101,18 +89,9 @@ internal class ProfileHistoryViewModel(
 
     private fun observeData() {
         merge(
+            dataChanges.observe(Kind.History, Kind.CheckIn),
             allActivitySource.observeUpdates(),
-            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
-            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
-            showUpdates.observeUpdates(Source.Progress),
-            showUpdates.observeUpdates(Source.Seasons),
-            showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(Progress),
-            episodeUpdates.observeUpdates(Season),
-            episodeUpdates.observeUpdates(History),
-            checkInUpdate.observeUpdates(),
         )
-            .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -120,10 +99,7 @@ internal class ProfileHistoryViewModel(
     }
 
     private fun observeRatings() {
-        merge(
-            ratingsUpdates.observeUpdates(),
-        )
-            .distinctUntilChanged()
+        dataChanges.observe(Kind.Ratings)
             .debounce(200.milliseconds)
             .onEach {
                 loadUserRatingData(ignoreErrors = true)

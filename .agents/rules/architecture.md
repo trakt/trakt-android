@@ -114,6 +114,36 @@ Avoid one-line `UseCase` wrappers around repository calls.
 - **Mapping** lives on the domain model as `companion object { fun fromDto(...) }`. No separate mapper files. Pure, no I/O. See `networking.md`.
 - **Remote sources** are shared public classes in one flat package, `common/.../data/remote/<Feature>RemoteSource.kt`, no interface, all bound in `remoteSourcesModule` (`data/remote/di/RemoteSourcesModule.kt`). Phone and TV inject the same class. See "Remote sources" in `networking.md`.
 
+## Cross-screen refresh signals
+
+When a user action changes data that other screens show, publish it on `DataChanges`
+(`common/.../core/sync/changes/`). Do not add per-feature `*Updates` interfaces or `Source` enums.
+
+```kotlin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+
+private val origin = ChangeOrigin.unique()
+
+// producer: say what changed, after the write (and any local cache refresh) finished
+dataChanges.notify(Kind.History, Kind.Watchlist, origin = origin)
+
+// consumer: subscribe to kinds, skip own changes
+dataChanges.observe(Kind.History, Kind.CheckIn, exclude = origin)
+    .debounce(200.milliseconds)
+    .onEach { loadData(ignoreErrors = true) }
+    .launchIn(viewModelScope)
+```
+
+- Pick kinds by **what changed**, never by which screen should react.
+- Notify only from user actions or workers, never from a load path that observers trigger (loops).
+  One exception: `LoadUserProgressUseCase` notifies `Progress` after a remote load. Code that
+  reacts to `Progress` must reload from local storage or pass `notifyUpdate = false`.
+- `exclude = origin` only when the screen already updated itself; otherwise let it reload.
+- `targetId` carries an entity id (comment id, list id); filter on it when a screen shows one entity.
+- Workers receive the origin through input data (`origin.key`). Shared fixed origins live on
+  `ChangeOrigin`'s companion (`RatePrompt`, `TodayStories`).
+- Loads triggered by a change must cancel and restart the in-flight load, not skip it.
+
 ## Navigation
 
 Single-activity, single `NavHost` in `app/`, mirror in `tv/`. Typed routes via `@Serializable` data classes (Compose Navigation 2.9+):

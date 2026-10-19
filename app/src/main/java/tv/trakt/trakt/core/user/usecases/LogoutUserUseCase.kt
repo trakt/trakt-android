@@ -26,7 +26,6 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
 import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalDataSource
@@ -93,10 +92,7 @@ internal class LogoutUserUseCase(
         sessionManager.clear()
         authPreferences.edit { it[forceLoginKey] = true }
         collapsingManager.clear()
-        checkInManager.stop(
-            source = CheckInUpdates.Source.Default,
-            context = appContext,
-        )
+        checkInManager.stop(context = appContext)
 
         apiClients
             .forEach { api ->

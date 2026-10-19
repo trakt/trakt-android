@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -27,7 +27,6 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
@@ -42,7 +41,7 @@ internal class WatchlistMovieContextViewModel(
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
     private val ratePromptManager: RatePromptManager,
-    private val watchlistUpdates: WatchlistUpdates,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = WatchlistMovieContextState()
@@ -87,6 +86,7 @@ internal class WatchlistMovieContextViewModel(
                 userWatchlistMinLocalSource.removeMovies(setOf(movieId))
 
                 loadProgressUseCase.loadMoviesProgress()
+                dataChanges.notify(Kind.History, Kind.Watchlist)
                 ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
@@ -115,6 +115,8 @@ internal class WatchlistMovieContextViewModel(
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movieId)
                 userWatchlistLocalSource.removeMovies(setOf(movieId))
                 userWatchlistMinLocalSource.removeMovies(setOf(movieId))
+
+                dataChanges.notify(Kind.Watchlist)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -135,7 +137,6 @@ internal class WatchlistMovieContextViewModel(
 
                 checkInManager.startMovie(
                     movieId = movieId,
-                    source = CheckInUpdates.Source.Watchlist,
                     context = appContext,
                 )
                 userWatchlistLocalSource.removeMovies(
@@ -145,7 +146,7 @@ internal class WatchlistMovieContextViewModel(
                     ids = setOf(movieId),
                 )
 
-                watchlistUpdates.notifyUpdate(Default)
+                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",

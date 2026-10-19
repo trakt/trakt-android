@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
@@ -36,6 +38,7 @@ internal class WatchlistShowContextViewModel(
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = WatchlistShowContextState()
@@ -71,6 +74,8 @@ internal class WatchlistShowContextViewModel(
                 updateWatchlistUseCase.removeFromWatchlist(showId = show.ids.trakt)
                 userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
                 userWatchlistMinLocalSource.removeShows(setOf(show.ids.trakt))
+
+                dataChanges.notify(Kind.Watchlist)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -100,6 +105,7 @@ internal class WatchlistShowContextViewModel(
                 userWatchlistMinLocalSource.removeShows(setOf(show.ids.trakt))
 
                 loadProgressUseCase.loadShowsProgress()
+                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "show",
@@ -129,6 +135,7 @@ internal class WatchlistShowContextViewModel(
 
                 updateHistoryUseCase.removeAllFromHistory(show.ids.trakt)
                 userProgressLocalSource.removeShows(setOf(show.ids.trakt))
+                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "show",

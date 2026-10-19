@@ -24,8 +24,6 @@ import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
 import tv.trakt.trakt.core.ratings.allratings.AllRatingsViewModel
 import tv.trakt.trakt.core.ratings.allratings.usecases.GetSeasonRatingsUseCase
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdatesStorage
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.ratings.rateprompt.DefaultRatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
@@ -42,8 +40,6 @@ internal val ratingsDataModule = module {
         )
     }
 
-    singleOf(::RatingsUpdatesStorage) { bind<RatingsUpdates>() }
-
     single<RatePromptManager> {
         DefaultRatePromptManager(
             dataStore = get(named(RATINGS_PREFERENCES)),
@@ -54,8 +50,7 @@ internal val ratingsDataModule = module {
             updateUserSettingsUseCase = get(),
             userHistoryDataSource = get(),
             isShowRatingCandidateUseCase = get(),
-            ratingsUpdates = get(),
-            favoritesUpdates = get(),
+            dataChanges = get(),
         )
     }
 
@@ -71,7 +66,7 @@ internal val ratingsModule = module {
             ratePromptManager = get(),
             updateMovieFavoritesUseCase = get(),
             userFavoritesLocalSource = get(),
-            favoritesUpdates = get(),
+            dataChanges = get(),
             analytics = get(),
         )
     }
@@ -97,7 +92,7 @@ internal val ratingsModule = module {
             postRatingUseCase = get(),
             deleteRatingUseCase = get(),
             loadUserRatingUseCase = get(),
-            ratingsUpdates = get(),
+            dataChanges = get(),
             ratePromptManager = get(),
             errorsManager = get(),
             analytics = get(),

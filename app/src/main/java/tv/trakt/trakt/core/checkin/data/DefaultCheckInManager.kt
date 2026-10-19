@@ -15,6 +15,9 @@ import kotlinx.coroutines.sync.withLock
 import org.openapitools.client.models.PostCheckinStart200Response
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.remote.CheckInRemoteSource
@@ -32,8 +35,6 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.core.checkin.data.service.CheckInService
 import tv.trakt.trakt.core.checkin.data.service.CheckInServiceData
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
@@ -52,7 +53,7 @@ private val ACTIVE_CHECK_COOLDOWN = 10.seconds
 
 internal class DefaultCheckInManager(
     private val sessionManager: SessionManager,
-    private val checkInUpdates: CheckInUpdates,
+    private val dataChanges: DataChanges,
     private val checkInRemoteSource: CheckInRemoteSource,
     private val userRemoteSource: UserRemoteSource,
     private val cacheMarkerProvider: CacheMarkerProvider,
@@ -72,14 +73,14 @@ internal class DefaultCheckInManager(
     override suspend fun startEpisode(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
-        source: Source,
+        origin: ChangeOrigin?,
         context: Context,
     ) {
         mutex.withLock {
             startEpisodeLocked(
                 showId = showId,
                 seasonEpisode = seasonEpisode,
-                source = source,
+                origin = origin,
                 context = context,
             )
         }
@@ -88,7 +89,7 @@ internal class DefaultCheckInManager(
     private suspend fun startEpisodeLocked(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
-        source: Source,
+        origin: ChangeOrigin?,
         context: Context,
     ) {
         if (state.value.isActive()) {
@@ -133,7 +134,6 @@ internal class DefaultCheckInManager(
                 )
 
                 state.update { activeState }
-                checkInUpdates.notifyUpdate(source)
                 startForegroundService(context, activeState)
                 analytics.progress.logCheckInStart(mediaType = "episode")
 
@@ -142,6 +142,7 @@ internal class DefaultCheckInManager(
                     val watchlistAsync = async { loadWatchlistIfNeeded(activeState) }
                     awaitAll(progressAsync, watchlistAsync)
                 }
+                dataChanges.notify(Kind.CheckIn, origin = origin)
 
                 Timber.d("Successfully checked in episode: ${dto.title} S${dto.season}E${dto.number}")
             }
@@ -164,13 +165,13 @@ internal class DefaultCheckInManager(
 
     override suspend fun startMovie(
         movieId: TraktId,
-        source: Source,
+        origin: ChangeOrigin?,
         context: Context,
     ) {
         mutex.withLock {
             startMovieLocked(
                 movieId = movieId,
-                source = source,
+                origin = origin,
                 context = context,
             )
         }
@@ -178,7 +179,7 @@ internal class DefaultCheckInManager(
 
     private suspend fun startMovieLocked(
         movieId: TraktId,
-        source: Source,
+        origin: ChangeOrigin?,
         context: Context,
     ) {
         if (state.value.isActive()) {
@@ -218,7 +219,6 @@ internal class DefaultCheckInManager(
                 )
 
                 state.update { activeState }
-                checkInUpdates.notifyUpdate(source)
                 startForegroundService(context, activeState)
                 analytics.progress.logCheckInStart(mediaType = "movie")
 
@@ -227,6 +227,7 @@ internal class DefaultCheckInManager(
                     val watchlistAsync = async { loadWatchlistIfNeeded(activeState) }
                     awaitAll(progressAsync, watchlistAsync)
                 }
+                dataChanges.notify(Kind.CheckIn, origin = origin)
 
                 Timber.d("Successfully checked in movie: ${dto.title} (${dto.year})")
             }
@@ -287,10 +288,10 @@ internal class DefaultCheckInManager(
 
                 if (state.value.isActive()) {
                     loadProgressIfNeeded(state.value)
-                    checkInUpdates.notifyUpdate(Source.Default)
+                    dataChanges.notify(Kind.CheckIn)
                 }
 
-                stopLocked(Source.Default, context)
+                stopLocked(origin = null, context = context)
                 Timber.d("No active check-ins / scrobbles found.")
                 return
             }
@@ -306,7 +307,6 @@ internal class DefaultCheckInManager(
                 if (state.value !is ActiveMovie || state.value.id != newState.id) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
-                    checkInUpdates.notifyUpdate(Source.Default)
                     startForegroundService(context, newState)
 
                     coroutineScope {
@@ -314,6 +314,7 @@ internal class DefaultCheckInManager(
                         val watchlistAsync = async { loadWatchlistIfNeeded(newState) }
                         awaitAll(progressAsync, watchlistAsync)
                     }
+                    dataChanges.notify(Kind.CheckIn)
 
                     Timber.d("New active movie check-in found: ${dto.title} (${dto.year})")
                 }
@@ -331,7 +332,6 @@ internal class DefaultCheckInManager(
                 if (state.value !is ActiveEpisode || state.value.id != newState.id) {
                     cacheMarkerProvider.invalidate()
                     state.update { newState }
-                    checkInUpdates.notifyUpdate(Source.Default)
                     startForegroundService(context, newState)
 
                     coroutineScope {
@@ -339,6 +339,7 @@ internal class DefaultCheckInManager(
                         val watchlistAsync = async { loadWatchlistIfNeeded(newState) }
                         awaitAll(progressAsync, watchlistAsync)
                     }
+                    dataChanges.notify(Kind.CheckIn)
 
                     Timber.d("New active episode check-in found: ${dto.title} S${dto.season}E${dto.number}")
                 }
@@ -353,16 +354,16 @@ internal class DefaultCheckInManager(
     }
 
     override suspend fun stop(
-        source: Source,
+        origin: ChangeOrigin?,
         context: Context,
     ) {
         mutex.withLock {
-            stopLocked(source, context)
+            stopLocked(origin, context)
         }
     }
 
     private suspend fun stopLocked(
-        source: Source,
+        origin: ChangeOrigin?,
         context: Context,
     ) {
         if (!sessionManager.isAuthenticated()) {
@@ -377,13 +378,13 @@ internal class DefaultCheckInManager(
             checkInRemoteSource.deleteAll()
             cacheMarkerProvider.invalidate()
 
-            if (currentState != CheckInState.Idle) {
-                checkInUpdates.notifyUpdate(source)
-            }
             currentState.analyticsType()?.let(analytics.progress::logCheckInStop)
             CheckInService.stop(context.applicationContext)
 
             loadProgressIfNeeded(currentState)
+            if (currentState != CheckInState.Idle) {
+                dataChanges.notify(Kind.CheckIn, origin = origin)
+            }
 
             Timber.d("Stopped check-in.")
         } catch (error: Exception) {

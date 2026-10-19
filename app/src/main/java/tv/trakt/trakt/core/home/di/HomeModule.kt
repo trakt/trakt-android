@@ -52,8 +52,6 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextViewModel
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdatesStorage
 import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.usecases.DropPlaybackUseCase
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
@@ -68,7 +66,6 @@ internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
 internal val homeDataModule = module {
     singleOf(::HomeUpNextStorage) { bind<HomeUpNextLocalDataSource>() }
-    singleOf(::UpNextUpdatesStorage) { bind<UpNextUpdates>() }
     singleOf(::HomeWatchlistStorage) { bind<HomeWatchlistLocalDataSource>() }
     singleOf(::HomeUpcomingStorage) { bind<HomeUpcomingLocalDataSource>() }
     singleOf(::HomePersonalStorage) { bind<HomePersonalLocalDataSource>() }
@@ -120,11 +117,7 @@ internal val homeModule = module {
             loadUserProgressUseCase = get(),
             appReviewUseCase = get(),
             homePersonalActivitySource = get(),
-            upNextUpdates = get(),
-            showUpdates = get(),
-            episodeUpdates = get(),
-            checkInUpdates = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
             filterManager = get(),
             sessionManager = get(),
             collapsingManager = get(),
@@ -140,11 +133,7 @@ internal val homeModule = module {
             getUpNextUseCase = get(),
             updateHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
-            upNextUpdates = get(),
-            showUpdates = get(),
-            episodeUpdates = get(),
-            movieUpdates = get(),
-            checkInUpdates = get(),
+            dataChanges = get(),
             checkInManager = get(),
             filterManager = get(),
             sessionManager = get(),
@@ -168,8 +157,7 @@ internal val homeModule = module {
             collapsingManager = get(),
             checkInManager = get(),
             ratePromptManager = get(),
-            checkInUpdates = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
             analytics = get(),
         )
     }
@@ -189,8 +177,7 @@ internal val homeModule = module {
             sessionManager = get(),
             checkInManager = get(),
             ratePromptManager = get(),
-            checkInUpdates = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
             analytics = get(),
         )
     }
@@ -203,12 +190,10 @@ internal val homeModule = module {
             showLocalDataSource = get(),
             episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
-            episodeUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             filterManager = get(),
             collapsingManager = get(),
-            watchlistUpdates = get(),
-            upNextUpdates = get(),
         )
     }
 

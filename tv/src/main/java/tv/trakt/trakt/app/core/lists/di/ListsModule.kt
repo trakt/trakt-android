@@ -20,11 +20,8 @@ import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsSmartUseCase
 import tv.trakt.trakt.app.core.lists.usecases.liked.AddLikedListUseCase
 import tv.trakt.trakt.app.core.lists.usecases.liked.RemoveLikedListUseCase
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdatesStorage
 
 internal val listsModule = module {
-    singleOf(::WatchlistUpdatesStorage) { bind<WatchlistUpdates>() }
 
     factory {
         GetListsShowsWatchlistUseCase(

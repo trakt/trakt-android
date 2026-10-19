@@ -1,22 +1,14 @@
 package tv.trakt.trakt.common.core.user.data.local.watchlist.minimal
 
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.TraktId
-import java.time.Instant
 
 class UserWatchlistMinimalStorage : UserWatchlistMinimalLocalDataSource {
     private val mutex = Mutex()
 
     private var moviesStorage: MutableSet<TraktId>? = null
     private var showsStorage: MutableSet<TraktId>? = null
-
-    private val updatedAt = MutableSharedFlow<Instant?>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
 
     override suspend fun setMovies(ids: Set<TraktId>) {
         mutex.withLock {
@@ -122,7 +114,5 @@ class UserWatchlistMinimalStorage : UserWatchlistMinimalLocalDataSource {
 
         moviesStorage = null
         showsStorage = null
-
-        updatedAt.tryEmit(null)
     }
 }

@@ -79,7 +79,7 @@ internal val todayModule = module {
         TodayWatchlistViewModel(
             media = media,
             updateWatchlistUseCase = get(),
-            watchlistUpdates = get(),
+            dataChanges = get(),
             sessionManager = get(),
             errorsManager = get(),
             analytics = get(),
