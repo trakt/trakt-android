@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -66,21 +65,16 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import coil3.compose.AsyncImage
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.LocalBottomBarVisibility
-import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
-import tv.trakt.trakt.core.today.model.TodayTitleStory
 import tv.trakt.trakt.core.today.stories.ui.TodayStoryFrameContent
 import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 import kotlin.math.abs
 
 private const val FRAME_DURATION_MS = 10_000
@@ -413,27 +407,31 @@ private fun TodayStoryHeader(
             modifier = Modifier.pullTowardsEdge(start = BackArrowInset),
         )
 
-        Column(
-            modifier = Modifier.onClick(onClick = onClose),
+        Box(
+            modifier = Modifier
+                .weight(1F)
+                .padding(end = 8.dp),
         ) {
-            Text(
-                text = title,
-                style = TraktTheme.typography.cardTitle.copy(
-                    fontSize = 14.sp,
-                ),
-                color = TraktTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                text = position,
-                style = TraktTheme.typography.cardSubtitle,
-                color = TraktTheme.colors.textSecondary,
-                maxLines = 1,
-            )
+            Column(
+                modifier = Modifier.onClick(onClick = onClose),
+            ) {
+                Text(
+                    text = title,
+                    style = TraktTheme.typography.cardTitle.copy(
+                        fontSize = 14.sp,
+                    ),
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = position,
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textSecondary,
+                    maxLines = 1,
+                )
+            }
         }
-
-        Spacer(modifier = Modifier.weight(1F))
 
         TodayStoryHeaderButton(
             iconRes = R.drawable.ic_info,
@@ -479,33 +477,42 @@ private fun Modifier.pullTowardsEdge(
         val startPx = start.roundToPx()
         val endPx = end.roundToPx()
 
-        layout(placeable.width - startPx - endPx, placeable.height) {
+        layout((placeable.width - startPx - endPx).coerceAtLeast(0), placeable.height) {
             placeable.placeRelative(-startPx, 0)
         }
     }
 }
 
-@Preview
+@Preview(widthDp = 360)
 @Composable
-private fun Preview() {
-    val story = TodayTitleStory(
-        media = TodayMedia.ShowMedia(PreviewData.show1),
-        actions = persistentListOf(),
-        users = persistentListOf(PreviewData.user1, PreviewData.user1),
-        averageRating = 8F,
-        milestone = null,
-        latestAt = Instant.now(),
-    )
-
+private fun PreviewHeader() {
     TraktTheme {
-        TodayStoriesContent(
-            state = TodayStoriesState(
-                groups = TodayStoryGroup.from(
-                    forYou = emptyList(),
-                    stories = listOf(story),
-                ),
-            ),
-            modifier = Modifier.background(Color.Black),
+        TodayStoryHeader(
+            title = "Severance",
+            position = "1 / 12",
+            onDetailsClick = {},
+            onSocialClick = {},
+            onClose = {},
+            modifier = Modifier
+                .background(Color.Black)
+                .padding(horizontal = 16.dp),
+        )
+    }
+}
+
+@Preview(widthDp = 360)
+@Composable
+private fun PreviewHeaderLongTitle() {
+    TraktTheme {
+        TodayStoryHeader(
+            title = "The Lord of the Rings: The Rings of Power - Extended Edition Special",
+            position = "3 / 12",
+            onDetailsClick = {},
+            onSocialClick = {},
+            onClose = {},
+            modifier = Modifier
+                .background(Color.Black)
+                .padding(horizontal = 16.dp),
         )
     }
 }
