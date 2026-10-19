@@ -3,7 +3,7 @@ package tv.trakt.trakt.app.core.movies.usecase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
@@ -17,7 +17,7 @@ private const val DAYS_RANGE = 14
 
 internal class GetReleasesMoviesUseCase(
     private val remoteSource: MoviesRemoteSource,
-    private val localMovieSource: MovieLocalDataSource,
+    private val localMovieSource: MovieLocalSource,
 ) {
     suspend fun getReleases(
         limit: Int,

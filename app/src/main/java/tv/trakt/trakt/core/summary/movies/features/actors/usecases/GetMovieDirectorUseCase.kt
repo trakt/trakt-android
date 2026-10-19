@@ -1,14 +1,14 @@
 package tv.trakt.trakt.core.summary.movies.features.actors.usecases
 
+import tv.trakt.trakt.common.data.local.PeopleLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 
 internal class GetMovieDirectorUseCase(
     private val remoteSource: MoviesRemoteSource,
-    private val peopleLocalSource: PeopleLocalDataSource,
+    private val peopleLocalSource: PeopleLocalSource,
 ) {
     suspend fun getDirector(movieId: TraktId): Person {
         return remoteSource.getCastCrew(movieId).crew

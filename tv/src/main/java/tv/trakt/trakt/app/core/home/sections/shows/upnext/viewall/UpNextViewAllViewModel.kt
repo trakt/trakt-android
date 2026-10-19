@@ -18,8 +18,8 @@ import timber.log.Timber
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetMoviesUpNextUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetShowsUpNextUseCase
-import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
@@ -27,8 +27,8 @@ import java.time.ZonedDateTime
 internal class UpNextViewAllViewModel(
     private val getShowsUpNextUseCase: GetShowsUpNextUseCase,
     private val getMoviesUpNextUseCase: GetMoviesUpNextUseCase,
-    private val localShowsSyncSource: ShowsSyncLocalDataSource,
-    private val localEpisodesSyncSource: EpisodesSyncLocalDataSource,
+    private val localShowsSyncSource: ShowsSyncLocalSource,
+    private val localEpisodesSyncSource: EpisodesSyncLocalSource,
 ) : ViewModel() {
     private val initialState = UpNextViewAllState()
 

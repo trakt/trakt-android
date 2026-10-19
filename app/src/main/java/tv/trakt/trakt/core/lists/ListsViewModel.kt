@@ -19,6 +19,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
+import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
+import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
+import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -34,18 +38,14 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsState.UserState
-import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
-import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
-import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartLocalDataSource
 import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListsUseCase
 import tv.trakt.trakt.core.lists.usecases.GetListsFilterUseCase
@@ -61,10 +61,10 @@ internal class ListsViewModel(
     private val getCollaborationsListsUseCase: GetCollaborationsListsUseCase,
     private val getSmartListsUseCase: GetSmartListsUseCase,
     private val deleteSmartListUseCase: DeleteSmartListUseCase,
-    private val localListsSource: ListsPersonalLocalDataSource,
-    private val localLikedListsSource: ListsLikedLocalDataSource,
-    private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
-    private val localSmartListsSource: ListsSmartLocalDataSource,
+    private val localListsSource: ListsPersonalLocalSource,
+    private val localLikedListsSource: ListsLikedLocalSource,
+    private val localCollaborationsListsSource: ListsCollaborationsLocalSource,
+    private val localSmartListsSource: ListsSmartLocalSource,
     private val getFilterUseCase: GetListsFilterUseCase,
     private val analytics: Analytics,
     private val appLifecycleProvider: AppLifecycleProvider,

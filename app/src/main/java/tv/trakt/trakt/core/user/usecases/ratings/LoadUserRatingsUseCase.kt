@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.user.data.local.ratings.UserRatingsLocalDataSource
+import tv.trakt.trakt.common.data.local.UserRatingsLocalSource
 import tv.trakt.trakt.common.data.remote.UserRatingsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.MediaType
@@ -14,7 +14,7 @@ import tv.trakt.trakt.common.model.toTraktId
 
 internal class LoadUserRatingsUseCase(
     private val remoteSource: UserRatingsRemoteSource,
-    private val localSource: UserRatingsLocalDataSource,
+    private val localSource: UserRatingsLocalSource,
 ) {
     suspend fun loadLocalShows(): ImmutableMap<TraktId, UserRating> {
         return localSource.getShows()

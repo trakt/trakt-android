@@ -4,8 +4,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_SECTION_LIMIT
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
@@ -20,8 +20,8 @@ private const val DAYS_RANGE = 14
 
 internal class GetReleasesShowsUseCase(
     private val remoteSource: ShowsRemoteSource,
-    private val localShowSource: ShowLocalDataSource,
-    private val localEpisodeSource: EpisodeLocalDataSource,
+    private val localShowSource: ShowLocalSource,
+    private val localEpisodeSource: EpisodeLocalSource,
 ) {
     suspend fun getReleases(
         limit: Int = SHOWS_SECTION_LIMIT,

@@ -14,9 +14,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcomingUseCase
-import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
@@ -25,9 +25,9 @@ import java.time.ZonedDateTime
 
 internal class HomeUpcomingViewModel(
     private val getUpcomingUseCase: GetUpcomingUseCase,
-    private val localShowsSyncSource: ShowsSyncLocalDataSource,
-    private val localMoviesSyncSource: MoviesSyncLocalDataSource,
-    private val localEpisodesSyncSource: EpisodesSyncLocalDataSource,
+    private val localShowsSyncSource: ShowsSyncLocalSource,
+    private val localMoviesSyncSource: MoviesSyncLocalSource,
+    private val localEpisodesSyncSource: EpisodesSyncLocalSource,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = HomeUpcomingState()

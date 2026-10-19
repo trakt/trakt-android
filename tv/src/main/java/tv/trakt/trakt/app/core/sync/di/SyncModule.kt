@@ -6,27 +6,15 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStartWorker
 import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStopWorker
-import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncStorage
-import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncStorage
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncStorage
+import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 
 internal val syncModule = module {
-    single<ShowsSyncLocalDataSource> {
-        ShowsSyncStorage()
-    }
-
-    single<MoviesSyncLocalDataSource> {
-        MoviesSyncStorage()
-    }
-
-    single<EpisodesSyncLocalDataSource> {
-        EpisodesSyncStorage()
-    }
-
+    singleOf(::ShowsSyncLocalSource)
+    singleOf(::MoviesSyncLocalSource)
+    singleOf(::EpisodesSyncLocalSource)
     singleOf(::CollectionStateProvider)
 
     worker {

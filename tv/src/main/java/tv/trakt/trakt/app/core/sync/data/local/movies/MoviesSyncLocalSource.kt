@@ -1,0 +1,127 @@
+package tv.trakt.trakt.app.core.sync.data.local.movies
+
+import io.ktor.util.collections.ConcurrentSet
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.app.core.sync.model.WatchedMovie
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.model.TraktId
+import java.time.ZonedDateTime
+import java.util.concurrent.ConcurrentHashMap
+
+internal class MoviesSyncLocalSource {
+    private val mutex = Mutex()
+
+    private var watchlistCache: MutableSet<TraktId>? = null
+    private var watchedCache: MutableMap<TraktId, WatchedMovie>? = null
+
+    private var watchlistUpdatedAt: ZonedDateTime? = null
+    private var watchedUpdatedAt: ZonedDateTime? = null
+
+    // Watchlist
+
+    suspend fun getWatchlist(): Set<TraktId>? {
+        return mutex.withLock {
+            watchlistCache?.toSet()
+        }
+    }
+
+    suspend fun saveWatchlist(
+        moviesIds: Set<TraktId>,
+        timestamp: ZonedDateTime?,
+    ) {
+        mutex.withLock {
+            if (moviesIds.isEmpty()) {
+                return@withLock
+            }
+
+            if (watchlistCache == null) {
+                watchlistCache = ConcurrentSet()
+            }
+
+            watchlistCache?.addAll(moviesIds)
+            timestamp?.let {
+                watchlistUpdatedAt = it
+            }
+        }
+    }
+
+    suspend fun removeWatchlist(
+        moviesIds: Set<TraktId>,
+        timestamp: ZonedDateTime?,
+    ) {
+        mutex.withLock {
+            if (moviesIds.isEmpty() || watchlistCache == null) {
+                return@withLock
+            }
+            watchlistCache?.removeAll(moviesIds)
+            timestamp?.let {
+                watchlistUpdatedAt = it
+            }
+        }
+    }
+
+    suspend fun getWatchlistUpdatedAt(): ZonedDateTime? {
+        return mutex.withLock {
+            watchlistUpdatedAt
+        }
+    }
+
+    // Watched
+
+    suspend fun getWatched(): Map<TraktId, WatchedMovie>? {
+        return mutex.withLock {
+            watchedCache?.toMap()
+        }
+    }
+
+    suspend fun saveWatched(
+        movies: List<WatchedMovie>,
+        timestamp: ZonedDateTime?,
+    ) {
+        mutex.withLock {
+            if (movies.isEmpty()) {
+                return@withLock
+            }
+
+            if (watchedCache == null) {
+                watchedCache = ConcurrentHashMap<TraktId, WatchedMovie>()
+            }
+
+            watchedCache?.run {
+                val ids = movies.map { m -> m.movieId }
+                entries.removeAll { it.key in ids }
+                putAll(movies.associateBy { it.movieId })
+            }
+            timestamp?.let {
+                watchedUpdatedAt = it
+            }
+        }
+    }
+
+    suspend fun removeWatched(moviesIds: Set<TraktId>) {
+        mutex.withLock {
+            if (moviesIds.isEmpty() || watchedCache == null) {
+                return@withLock
+            }
+            watchedCache?.keys?.removeAll(moviesIds)
+            watchedUpdatedAt = nowUtc()
+        }
+    }
+
+    suspend fun getWatchedUpdatedAt(): ZonedDateTime? {
+        return mutex.withLock {
+            watchedUpdatedAt
+        }
+    }
+
+    suspend fun clear() {
+        mutex.withLock {
+            watchlistCache = null
+            watchedCache = null
+
+            watchlistUpdatedAt = null
+            watchedUpdatedAt = null
+        }
+    }
+}

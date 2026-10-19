@@ -1,13 +1,13 @@
 package tv.trakt.trakt.core.reactions.media.usecases
 
-import tv.trakt.trakt.common.core.user.data.local.reactions.UserMediaReactionsLocalDataSource
+import tv.trakt.trakt.common.data.local.UserMediaReactionsLocalSource
 import tv.trakt.trakt.common.data.remote.MediaReactionsRemoteSource
 import tv.trakt.trakt.common.model.reactions.MediaReaction
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 
 internal class DeleteMediaReactionUseCase(
     private val remoteSource: MediaReactionsRemoteSource,
-    private val localSource: UserMediaReactionsLocalDataSource,
+    private val localSource: UserMediaReactionsLocalSource,
     private val loadUserReactionsUseCase: LoadUserMediaReactionsUseCase,
 ) {
     suspend fun deleteReactions(

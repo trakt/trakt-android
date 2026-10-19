@@ -18,8 +18,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.discover.DiscoverViewModel
-import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalDataSource
-import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaStorage
+import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalSource
 import tv.trakt.trakt.core.discover.sections.all.AllDiscoverViewModel
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
@@ -42,8 +41,8 @@ internal val discoverModule = module {
         )
     }
 
-    single<DiscoverMediaLocalDataSource> {
-        DiscoverMediaStorage(
+    single {
+        DiscoverMediaLocalSource(
             dataStore = get(named(DISCOVER_PREFERENCES)),
         )
     }

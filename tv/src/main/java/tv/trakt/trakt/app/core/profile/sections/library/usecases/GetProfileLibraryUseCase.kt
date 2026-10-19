@@ -6,8 +6,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.profile.sections.library.model.LibraryItem
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -19,8 +19,8 @@ import tv.trakt.trakt.common.model.fromDto
 
 internal class GetProfileLibraryUseCase(
     private val remoteSource: UserRemoteSource,
-    private val localMoviesSource: MovieLocalDataSource,
-    private val localEpisodesSource: EpisodeLocalDataSource,
+    private val localMoviesSource: MovieLocalSource,
+    private val localEpisodesSource: EpisodeLocalSource,
 ) {
     suspend fun getLibrary(
         page: Int = 1,

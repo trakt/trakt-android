@@ -24,12 +24,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -66,8 +66,8 @@ internal class ShowHistoryViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val episodeLocalDataSource: EpisodeLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val episodeLocalSource: EpisodeLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
@@ -285,8 +285,8 @@ internal class ShowHistoryViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            showLocalSource.upsertShows(listOf(show))
+            episodeLocalSource.upsertEpisodes(listOf(episode))
 
             navigateEpisode.update {
                 Pair(show.ids.trakt, episode)

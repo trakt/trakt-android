@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -51,7 +51,7 @@ internal class AllProgressViewModel(
     private val getCompletedUseCase: GetProgressCompleteUseCase,
     private val getDroppedUseCase: GetProgressDroppedUseCase,
     private val getWatchingUseCase: GetProgressWatchingUseCase,
-    private val localShowSource: ShowLocalDataSource,
+    private val localShowSource: ShowLocalSource,
     private val dataChanges: DataChanges,
 ) : ViewModel() {
     private val initialState = AllProgressState()

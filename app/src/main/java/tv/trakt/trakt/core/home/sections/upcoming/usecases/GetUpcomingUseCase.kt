@@ -21,7 +21,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
-import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
+import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalSource
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -39,7 +39,7 @@ private fun List<Episode>.isFullSeason(): Boolean {
 
 internal class GetUpcomingUseCase(
     private val remoteUserSource: UserCalendarRemoteSource,
-    private val localDataSource: HomeUpcomingLocalDataSource,
+    private val localDataSource: HomeUpcomingLocalSource,
 ) {
     suspend fun getLocalUpcoming(
         filter: GlobalFilter,

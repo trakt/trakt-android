@@ -1,6 +1,6 @@
 package tv.trakt.trakt.app.core.details.movie.usecases
 
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.fromDto
 
 internal class GetMovieDetailsUseCase(
     private val remoteSource: MoviesRemoteSource,
-    private val localSource: MovieLocalDataSource,
+    private val localSource: MovieLocalSource,
 ) {
     suspend fun getMovieDetails(movieId: TraktId): Movie? {
         val localMovie = localSource.getMovie(movieId)

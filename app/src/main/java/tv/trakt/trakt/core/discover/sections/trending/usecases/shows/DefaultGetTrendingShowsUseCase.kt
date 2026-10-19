@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.discover.sections.trending.usecases.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
@@ -10,14 +10,14 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
+import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
 internal class DefaultGetTrendingShowsUseCase(
     private val remoteSource: ShowsRemoteSource,
-    private val localTrendingSource: TrendingShowsLocalDataSource,
-    private val localShowSource: ShowLocalDataSource,
+    private val localTrendingSource: TrendingShowsLocalSource,
+    private val localShowSource: ShowLocalSource,
     private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : GetTrendingShowsUseCase {
     override suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {

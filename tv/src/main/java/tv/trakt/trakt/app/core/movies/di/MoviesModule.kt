@@ -12,14 +12,6 @@ import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetReleasesMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieStorage
-
-internal val moviesDataModule = module {
-    single<MovieLocalDataSource> {
-        MovieStorage()
-    }
-}
 
 internal val moviesModule = module {
     factory {

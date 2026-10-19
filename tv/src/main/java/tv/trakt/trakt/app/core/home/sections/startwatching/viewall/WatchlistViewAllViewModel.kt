@@ -18,8 +18,8 @@ import tv.trakt.trakt.app.core.home.HomeConfig.HOME_WATCHLIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
 import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeMoviesWatchlistItemsUseCase
 import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeShowsWatchlistItemsUseCase
-import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -28,8 +28,8 @@ import java.time.ZonedDateTime
 internal class WatchlistViewAllViewModel(
     private val getShowsUseCase: GetHomeShowsWatchlistItemsUseCase,
     private val getMoviesUseCase: GetHomeMoviesWatchlistItemsUseCase,
-    private val localMoviesDataSource: MoviesSyncLocalDataSource,
-    private val localShowsDataSource: ShowsSyncLocalDataSource,
+    private val localMoviesDataSource: MoviesSyncLocalSource,
+    private val localShowsDataSource: ShowsSyncLocalSource,
 ) : ViewModel() {
     private val initialState = WatchlistViewAllState()
 

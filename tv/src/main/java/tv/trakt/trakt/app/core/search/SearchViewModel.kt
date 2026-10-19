@@ -20,11 +20,11 @@ import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.app.core.search.SearchState.SearchResult
 import tv.trakt.trakt.app.core.search.SearchState.State
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -37,8 +37,8 @@ internal class SearchViewModel(
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
-    private val showLocalSource: ShowLocalDataSource,
-    private val movieLocalSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
     private val collectionProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = SearchState()

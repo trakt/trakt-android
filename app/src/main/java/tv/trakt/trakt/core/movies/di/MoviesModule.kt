@@ -17,24 +17,19 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesStorage
+import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalSource
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.DefaultGetAnticipatedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesStorage
+import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.DefaultGetPopularMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesStorage
+import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesLocalSource
 import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.DefaultGetReleasesMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.GetReleasesMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
+import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalSource
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGetTrendingMoviesUseCase
-import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalDataSource
-import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesStorage
+import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
@@ -43,32 +38,32 @@ import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 private const val MOVIES_PREFERENCES = "movies_preferences"
 
 internal val moviesDataModule = module {
-    single<PopularMoviesLocalDataSource> {
-        PopularMoviesStorage(
+    single {
+        PopularMoviesLocalSource(
             dataStore = get(named(MOVIES_PREFERENCES)),
         )
     }
 
-    single<ReleasesMoviesLocalDataSource> {
-        ReleasesMoviesStorage(
+    single {
+        ReleasesMoviesLocalSource(
             dataStore = get(named(MOVIES_PREFERENCES)),
         )
     }
 
-    single<RecommendedMoviesLocalDataSource> {
-        RecommendedMoviesStorage(
+    single {
+        RecommendedMoviesLocalSource(
             dataStore = get(named(MOVIES_PREFERENCES)),
         )
     }
 
-    single<AnticipatedMoviesLocalDataSource> {
-        AnticipatedMoviesStorage(
+    single {
+        AnticipatedMoviesLocalSource(
             dataStore = get(named(MOVIES_PREFERENCES)),
         )
     }
 
-    single<TrendingMoviesLocalDataSource> {
-        TrendingMoviesStorage(
+    single {
+        TrendingMoviesLocalSource(
             dataStore = get(named(MOVIES_PREFERENCES)),
         )
     }
@@ -144,7 +139,7 @@ internal val moviesModule = module {
             updateMovieWatchlistUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),
-            userWatchlistMinLocalDataSource = get(),
+            userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),

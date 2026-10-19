@@ -21,11 +21,11 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -46,8 +46,8 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 @OptIn(FlowPreview::class)
 internal class ProfileFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
@@ -164,7 +164,7 @@ internal class ProfileFavoritesViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShow.update { show.ids.trakt }
         }
     }
@@ -174,7 +174,7 @@ internal class ProfileFavoritesViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            movieLocalDataSource.upsertMovies(listOf(movie))
+            movieLocalSource.upsertMovies(listOf(movie))
             navigateMovie.update { movie.ids.trakt }
         }
     }

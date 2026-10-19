@@ -12,7 +12,7 @@ applyTo: 'common/src/main/**/*.kt'
 | Need                                       | Tool                                            |
 | ------------------------------------------ | ----------------------------------------------- |
 | User preferences (theme, flags, token)     | DataStore — `Preferences` or typed Proto        |
-| Entity caches (recent movies, upcoming)    | Existing entity stores in `common/.../<entity>/`|
+| Entity caches (recent movies, upcoming)    | `<Feature>LocalSource` in `common/.../data/local/` |
 | Ephemeral in-memory cache                  | `MutableStateFlow<…>` inside a `single { }` Koin scope |
 | Auth tokens / sensitive material           | DataStore + Android Keystore-backed encryption  |
 | Files (downloaded artwork, OkHttp cache)   | App cache directory (already wired)             |
@@ -73,6 +73,46 @@ Rules:
 - Migrations via `DataStoreFactory` `produceMigrations` block on schema change.
 - One file per typed store under `common/.../persistence/`.
 
+## Local sources
+
+A local source owns one feature's cached data: an in-memory map, a `MutableStateFlow` or a
+DataStore. Phone and TV share the same classes in one flat package, `common/.../data/local/`.
+
+```kotlin
+// common/.../data/local/MovieLocalSource.kt
+class MovieLocalSource {
+    private val mutex = Mutex()
+    private val storage = mutableMapOf<TraktId, Movie>()
+
+    suspend fun getMovie(movieId: TraktId): Movie? { … }
+
+    suspend fun upsertMovies(movies: List<Movie>) { … }
+}
+
+// common/.../data/local/di/LocalSourcesModule.kt
+val localSourcesModule = module {
+    singleOf(::MovieLocalSource)
+    // …
+}
+```
+
+Rules:
+
+- **One public `class <Feature>LocalSource` per feature. No interface, no `*Storage` impl.** Add an
+  interface only when a second implementation actually exists.
+- **Lives in `common/.../data/local/`** whenever its types live in `:common`, even when only one
+  platform reads it today. A source that stores `:app` or `:tv` models (`DiscoverItem`,
+  `WatchedMovie`) stays in its feature's `data/local/` folder and is bound in that feature's Koin
+  module, still as a plain class.
+- **All shared local sources bind once in `localSourcesModule`**, registered in both
+  `TraktApplication.setupKoin()` and `TvActivity`. Koin singletons are created lazily, so binding a
+  phone-only source in TV costs nothing. Never bind a shared local source again in a feature module.
+- **Bind with `singleOf(::XLocalSource)`.** Use `single { XLocalSource(dataStore = get(named(…))) }`
+  only when a param needs a qualifier. A DataStore backing a shared source is declared next to it in
+  `localSourcesModule`.
+- **Never rename a DataStore file when moving a source.** The file name is the storage key; a new
+  name drops what users already have cached.
+
 ## In-memory caches
 
 State not needing process survival but shared across ViewModels (login session, scrobble queue):
@@ -101,6 +141,8 @@ State not needing process survival but shared across ViewModels (login session, 
 
 ## Quick checklist
 
+- [ ] Local source is one class, no interface, in `common/.../data/local/` unless it stores platform models
+- [ ] Shared local source bound only in `localSourcesModule`
 - [ ] DataStore (not SharedPreferences) for new preferences
 - [ ] Keys typed via `*PreferencesKey` helpers
 - [ ] Reads return `Flow<T>`, writes are `suspend`

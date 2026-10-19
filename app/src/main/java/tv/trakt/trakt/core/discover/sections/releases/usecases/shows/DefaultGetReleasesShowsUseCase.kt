@@ -2,8 +2,8 @@ package tv.trakt.trakt.core.discover.sections.releases.usecases.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
-import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalDataSource
+import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType.All
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType.Finale
@@ -20,9 +20,9 @@ import java.time.Instant
 
 internal class DefaultGetReleasesShowsUseCase(
     private val remoteSource: ShowsRemoteSource,
-    private val localSource: ReleasesShowsLocalDataSource,
-    private val localShowSource: ShowLocalDataSource,
-    private val localEpisodeSource: EpisodeLocalDataSource,
+    private val localSource: ReleasesShowsLocalSource,
+    private val localShowSource: ShowLocalSource,
+    private val localEpisodeSource: EpisodeLocalSource,
 ) : GetReleasesShowsUseCase {
     override suspend fun clearLocal() {
         localSource.clear()

@@ -17,24 +17,19 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsStorage
+import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.DefaultGetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsStorage
+import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.DefaultGetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsStorage
+import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.DefaultGetReleasesShowsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.GetReleasesShowsUseCase
-import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsStorage
+import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.DefaultGetTrendingShowsUseCase
-import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalDataSource
-import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsStorage
+import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
@@ -43,38 +38,32 @@ import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 private const val SHOWS_PREFERENCES = "shows_preferences"
 
 internal val showsDataModule = module {
-    single<TrendingShowsLocalDataSource> {
-        TrendingShowsStorage(
+    single {
+        TrendingShowsLocalSource(
             dataStore = get(named(SHOWS_PREFERENCES)),
         )
     }
 
-    single<ReleasesShowsLocalDataSource> {
-        ReleasesShowsStorage(
+    single {
+        ReleasesShowsLocalSource(
             dataStore = get(named(SHOWS_PREFERENCES)),
         )
     }
 
-    single<RecommendedShowsLocalDataSource> {
-        RecommendedShowsStorage(
+    single {
+        RecommendedShowsLocalSource(
             dataStore = get(named(SHOWS_PREFERENCES)),
         )
     }
 
-    single<PopularShowsLocalDataSource> {
-        PopularShowsStorage(
+    single {
+        PopularShowsLocalSource(
             dataStore = get(named(SHOWS_PREFERENCES)),
         )
     }
 
-    single<AnticipatedShowsLocalDataSource> {
-        AnticipatedShowsStorage(
-            dataStore = get(named(SHOWS_PREFERENCES)),
-        )
-    }
-
-    single<ReleasesShowsLocalDataSource> {
-        ReleasesShowsStorage(
+    single {
+        AnticipatedShowsLocalSource(
             dataStore = get(named(SHOWS_PREFERENCES)),
         )
     }

@@ -1,15 +1,15 @@
 package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
 
+import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
+import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 
 internal class RemovePersonalListItemUseCase(
     private val remoteSource: ListsRemoteSource,
-    private val personalListsLocalDataSource: ListsPersonalLocalDataSource,
-    private val collabListsLocalDataSource: ListsCollaborationsLocalDataSource,
+    private val personalListsLocalSource: ListsPersonalLocalSource,
+    private val collabListsLocalSource: ListsCollaborationsLocalSource,
 ) {
     suspend fun removeShow(
         listId: TraktId,
@@ -22,12 +22,12 @@ internal class RemovePersonalListItemUseCase(
             showId = showId,
         )
 
-        personalListsLocalDataSource.onUpdatedAt(
+        personalListsLocalSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )
 
-        collabListsLocalDataSource.onUpdatedAt(
+        collabListsLocalSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )
@@ -44,12 +44,12 @@ internal class RemovePersonalListItemUseCase(
             movieId = movieId,
         )
 
-        personalListsLocalDataSource.onUpdatedAt(
+        personalListsLocalSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )
 
-        collabListsLocalDataSource.onUpdatedAt(
+        collabListsLocalSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )

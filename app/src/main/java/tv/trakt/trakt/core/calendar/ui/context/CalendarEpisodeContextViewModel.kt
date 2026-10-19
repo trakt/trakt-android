@@ -15,11 +15,12 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
+import tv.trakt.trakt.common.data.local.UserProgressLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -34,8 +35,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.calendar.model.CalendarItem
-import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
@@ -46,12 +46,12 @@ internal class CalendarEpisodeContextViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
-    private val upNextLocalDataSource: HomeUpNextLocalDataSource,
-    private val upcomingLocalDataSource: HomeUpcomingLocalDataSource,
+    private val upNextLocalSource: HomeUpNextLocalSource,
+    private val upcomingLocalSource: HomeUpcomingLocalSource,
     private val dataChanges: DataChanges,
-    private val userProgressLocalSource: UserProgressLocalDataSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
+    private val userProgressLocalSource: UserProgressLocalSource,
+    private val userWatchlistLocalSource: UserWatchlistLocalSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val sessionManager: SessionManager,
@@ -284,8 +284,8 @@ internal class CalendarEpisodeContextViewModel(
                 loadingDropState.update { Loading }
 
                 updateShowHistoryUseCase.dropShow(showId)
-                upNextLocalDataSource.removeShowItems(ids = listOf(showId))
-                upcomingLocalDataSource.removeShowItems(
+                upNextLocalSource.removeShowItems(ids = listOf(showId))
+                upcomingLocalSource.removeShowItems(
                     showIds = listOf(showId),
                     notify = true,
                 )

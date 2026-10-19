@@ -2,13 +2,13 @@ package tv.trakt.trakt.common.core.user.usecases.lists
 
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableSet
-import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 
 class LoadUserWatchlistUseCase(
     private val remoteSource: UserWatchlistRemoteSource,
-    private val localSource: UserWatchlistMinimalLocalDataSource,
+    private val localSource: UserWatchlistMinimalLocalSource,
 ) {
     suspend fun loadLocalShows(): ImmutableSet<TraktId> {
         return localSource.getShows()

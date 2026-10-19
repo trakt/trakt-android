@@ -1,0 +1,133 @@
+package tv.trakt.trakt.core.search.data.local.popular
+
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.byteArrayPreferencesKey
+import androidx.datastore.preferences.core.edit
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.decodeFromByteArray
+import kotlinx.serialization.encodeToByteArray
+import kotlinx.serialization.protobuf.ProtoBuf
+import timber.log.Timber
+import tv.trakt.trakt.core.search.data.local.model.PopularListEntity
+import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
+import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
+
+private val KEY_POPULAR_SEARCH_SHOWS = byteArrayPreferencesKey("key_popular_search_shows_2")
+private val KEY_POPULAR_SEARCH_MOVIES = byteArrayPreferencesKey("key_popular_search_movies_2")
+private val KEY_POPULAR_SEARCH_LISTS = byteArrayPreferencesKey("key_popular_search_lists_2")
+
+@OptIn(ExperimentalSerializationApi::class)
+internal class PopularSearchLocalSource(
+    private val dataStore: DataStore<Preferences>,
+) {
+    private val mutex = Mutex()
+    private var isInitialized = false
+
+    private val showsCache = mutableMapOf<Int, PopularShowEntity>()
+    private val moviesCache = mutableMapOf<Int, PopularMovieEntity>()
+    private val listsCache = mutableMapOf<Int, PopularListEntity>()
+
+    suspend fun setShows(shows: List<PopularShowEntity>) {
+        ensureInitialized()
+        mutex.withLock {
+            showsCache.clear()
+            shows.associateByTo(showsCache) {
+                it.show.ids.trakt.value
+            }
+
+            dataStore.edit {
+                it[KEY_POPULAR_SEARCH_SHOWS] = ProtoBuf.encodeToByteArray(showsCache)
+            }
+        }
+    }
+
+    suspend fun setMovies(movies: List<PopularMovieEntity>) {
+        ensureInitialized()
+        mutex.withLock {
+            moviesCache.clear()
+            movies.associateByTo(moviesCache) {
+                it.movie.ids.trakt.value
+            }
+
+            dataStore.edit {
+                it[KEY_POPULAR_SEARCH_MOVIES] = ProtoBuf.encodeToByteArray(moviesCache)
+            }
+        }
+    }
+
+    suspend fun getShows(): List<PopularShowEntity> {
+        ensureInitialized()
+        return mutex.withLock {
+            showsCache.values.toList()
+        }
+    }
+
+    suspend fun getMovies(): List<PopularMovieEntity> {
+        ensureInitialized()
+        return mutex.withLock {
+            moviesCache.values.toList()
+        }
+    }
+
+    suspend fun setLists(lists: List<PopularListEntity>) {
+        ensureInitialized()
+        mutex.withLock {
+            listsCache.clear()
+            lists.associateByTo(listsCache) {
+                it.list.ids.trakt.value
+            }
+
+            dataStore.edit {
+                it[KEY_POPULAR_SEARCH_LISTS] = ProtoBuf.encodeToByteArray(listsCache)
+            }
+        }
+    }
+
+    suspend fun getLists(): List<PopularListEntity> {
+        ensureInitialized()
+        return mutex.withLock {
+            listsCache.values.toList()
+        }
+    }
+
+    suspend fun clear() {
+        mutex.withLock {
+            showsCache.clear()
+            moviesCache.clear()
+            listsCache.clear()
+            dataStore.edit { it.clear() }
+        }
+    }
+
+    private suspend fun ensureInitialized() {
+        if (!isInitialized) {
+            mutex.withLock {
+                if (!isInitialized) {
+                    try {
+                        with(dataStore.data.first()) {
+                            get(KEY_POPULAR_SEARCH_SHOWS)?.let {
+                                showsCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            }
+                            get(KEY_POPULAR_SEARCH_MOVIES)?.let {
+                                moviesCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            }
+                            get(KEY_POPULAR_SEARCH_LISTS)?.let {
+                                listsCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            }
+                        }
+                    } catch (exception: SerializationException) {
+                        clear()
+                        Timber.e(exception)
+                    } finally {
+                        isInitialized = true
+                    }
+                }
+            }
+        }
+    }
+}

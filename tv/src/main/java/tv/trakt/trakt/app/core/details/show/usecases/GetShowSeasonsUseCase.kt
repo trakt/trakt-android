@@ -3,9 +3,9 @@ package tv.trakt.trakt.app.core.details.show.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.sync.model.ProgressItem.ShowItem
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -17,7 +17,7 @@ import tv.trakt.trakt.common.model.fromDto
 internal class GetShowSeasonsUseCase(
     private val remoteShowsSource: ShowsRemoteSource,
     private val remoteEpisodesSource: EpisodesRemoteSource,
-    private val localEpisodeSource: EpisodeLocalDataSource,
+    private val localEpisodeSource: EpisodeLocalSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) {
     suspend fun getAllSeasons(showId: TraktId): ShowSeasons {

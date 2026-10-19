@@ -19,15 +19,9 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistStorage
 import tv.trakt.trakt.core.home.HomeViewModel
-import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalStorage
-import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialStorage
-import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityStorage
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
+import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalSource
 import tv.trakt.trakt.core.home.sections.activity.features.all.personal.AllActivityPersonalViewModel
 import tv.trakt.trakt.core.home.sections.activity.features.all.social.AllActivitySocialViewModel
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryViewModel
@@ -37,20 +31,16 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseC
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedViewModel
-import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalDataSource
-import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaStorage
+import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.all.StreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.data.DefaultStreaksManager
 import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingViewModel
-import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
-import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingStorage
+import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextStorage
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.usecases.DropPlaybackUseCase
@@ -65,16 +55,13 @@ import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
 internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
 internal val homeDataModule = module {
-    singleOf(::HomeUpNextStorage) { bind<HomeUpNextLocalDataSource>() }
-    singleOf(::HomeWatchlistStorage) { bind<HomeWatchlistLocalDataSource>() }
-    singleOf(::HomeUpcomingStorage) { bind<HomeUpcomingLocalDataSource>() }
-    singleOf(::HomePersonalStorage) { bind<HomePersonalLocalDataSource>() }
-    singleOf(::HomeSocialStorage) { bind<HomeSocialLocalDataSource>() }
-    singleOf(::AllActivityStorage) { bind<AllActivityLocalDataSource>() }
+    singleOf(::HomeUpcomingLocalSource)
+    singleOf(::HomePersonalLocalSource)
+    singleOf(::HomeSocialLocalSource)
     singleOf(::DefaultStreaksManager) { bind<StreaksManager>() }
 
-    single<RecommendedMediaLocalDataSource> {
-        RecommendedMediaStorage(
+    single {
+        RecommendedMediaLocalSource(
             dataStore = get(named(HOME_PREFERENCES)),
         )
     }
@@ -149,8 +136,8 @@ internal val homeModule = module {
             getMoviesUseCase = get(),
             addHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
+            showLocalSource = get(),
+            movieLocalSource = get(),
             userWatchlistMinSource = get(),
             userWatchlistSource = get(),
             filterManager = get(),
@@ -173,8 +160,8 @@ internal val homeModule = module {
             loadUserProgressUseCase = get(),
             userWatchlistSource = get(),
             userWatchlistMinSource = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
+            showLocalSource = get(),
+            movieLocalSource = get(),
             filterManager = get(),
             sessionManager = get(),
             checkInManager = get(),
@@ -189,9 +176,9 @@ internal val homeModule = module {
             appContext = androidApplication(),
             getUpcomingUseCase = get(),
             getCalendarTypeUseCase = get(),
-            showLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            movieLocalDataSource = get(),
+            showLocalSource = get(),
+            episodeLocalSource = get(),
+            movieLocalSource = get(),
             dataChanges = get(),
             sessionManager = get(),
             filterManager = get(),

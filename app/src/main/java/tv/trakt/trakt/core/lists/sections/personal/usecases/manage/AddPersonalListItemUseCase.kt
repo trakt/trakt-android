@@ -1,17 +1,17 @@
 package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
 
+import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
+import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 
 internal class AddPersonalListItemUseCase(
     private val remoteSource: ListsRemoteSource,
-    private val listsLocalDataSource: ListsPersonalLocalDataSource,
-    private val collabListsLocalDataSource: ListsCollaborationsLocalDataSource,
+    private val listsLocalSource: ListsPersonalLocalSource,
+    private val collabListsLocalSource: ListsCollaborationsLocalSource,
 ) {
     suspend fun addShow(
         listId: TraktId,
@@ -24,12 +24,12 @@ internal class AddPersonalListItemUseCase(
             showId = show.ids.trakt,
         )
 
-        listsLocalDataSource.onUpdatedAt(
+        listsLocalSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )
 
-        collabListsLocalDataSource.onUpdatedAt(
+        collabListsLocalSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )
@@ -46,12 +46,12 @@ internal class AddPersonalListItemUseCase(
             movieId = movie.ids.trakt,
         )
 
-        listsLocalDataSource.onUpdatedAt(
+        listsLocalSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )
 
-        collabListsLocalDataSource.onUpdatedAt(
+        collabListsLocalSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )

@@ -6,7 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
-import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
+import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
 import tv.trakt.trakt.common.data.remote.UserFavoritesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
  */
 class LoadUserFavoritesUseCase(
     private val remoteSource: UserFavoritesRemoteSource,
-    private val localSource: UserFavoritesLocalDataSource,
+    private val localSource: UserFavoritesLocalSource,
 ) {
     suspend fun loadLocalAll(): ImmutableList<FavoriteItem> {
         return localSource.getAll()

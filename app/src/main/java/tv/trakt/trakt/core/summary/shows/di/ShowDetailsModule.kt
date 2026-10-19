@@ -1,14 +1,10 @@
 package tv.trakt.trakt.core.summary.shows.di
 
 import org.koin.android.ext.koin.androidApplication
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowStorage
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsViewModel
@@ -46,10 +42,6 @@ import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaViewModel
 import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
-
-internal val showDetailsDataModule = module {
-    singleOf(::ShowStorage) { bind<ShowLocalDataSource>() }
-}
 
 internal val showDetailsModule = module {
     factoryOf(::GetShowDetailsUseCase)
@@ -93,7 +85,7 @@ internal val showDetailsModule = module {
             dataChanges = get(),
             loadUserProgressUseCase = get(),
             updateEpisodeHistoryUseCase = get(),
-            episodeLocalDataSource = get(),
+            episodeLocalSource = get(),
             sessionManager = get(),
             analytics = get(),
             translationsStore = get(),
@@ -130,7 +122,7 @@ internal val showDetailsModule = module {
             userWatchlistLocalSource = get(),
             userWatchlistMinLocalSource = get(),
             userFavoritesLocalSource = get(),
-            episodeLocalDataSource = get(),
+            episodeLocalSource = get(),
             dataChanges = get(),
             sessionManager = get(),
             errorsManager = get(),

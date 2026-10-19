@@ -2,20 +2,20 @@ package tv.trakt.trakt.core.discover.sections.releases.usecases.movies
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
-import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesLocalDataSource
+import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesLocalSource
 import java.time.Instant
 
 internal class DefaultGetReleasesMoviesUseCase(
     private val remoteSource: MoviesRemoteSource,
-    private val localSource: ReleasesMoviesLocalDataSource,
-    private val localMovieSource: MovieLocalDataSource,
+    private val localSource: ReleasesMoviesLocalSource,
+    private val localMovieSource: MovieLocalSource,
 ) : GetReleasesMoviesUseCase {
     override suspend fun clearLocal() {
         localSource.clear()

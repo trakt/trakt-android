@@ -42,7 +42,7 @@ trakt-android/
 │       └── ui/theme/
 ├── common/              # com.android.library — domain, networking, DI
 │   └── src/main/java/tv/trakt/trakt/common/
-│       ├── data/            # remote/ sources, hand-written dto/ and request/ types
+│       ├── data/            # remote/ and local/ sources, hand-written dto/ and request/ types
 │       ├── networking/      # Ktor client factory, interceptors
 │       ├── firebase/        # Crashlytics, Remote Config, analytics (see analytics.md)
 │       ├── helpers/

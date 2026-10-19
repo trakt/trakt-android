@@ -5,9 +5,9 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.UserCalendarRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
@@ -26,9 +26,9 @@ private const val DAYS_RANGE = 14
 
 internal class GetUpcomingUseCase(
     private val remoteUserSource: UserCalendarRemoteSource,
-    private val localShowSource: ShowLocalDataSource,
-    private val localMovieSource: MovieLocalDataSource,
-    private val localEpisodeSource: EpisodeLocalDataSource,
+    private val localShowSource: ShowLocalSource,
+    private val localMovieSource: MovieLocalSource,
+    private val localEpisodeSource: EpisodeLocalSource,
 ) {
     suspend fun getUpcoming(): ImmutableList<HomeUpcomingItem> {
         return coroutineScope {

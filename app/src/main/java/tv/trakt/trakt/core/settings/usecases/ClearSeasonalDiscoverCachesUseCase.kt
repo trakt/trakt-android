@@ -3,26 +3,26 @@ package tv.trakt.trakt.core.settings.usecases
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalDataSource
+import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalSource
 import tv.trakt.trakt.core.discover.model.DiscoverSection
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
+import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalSource
+import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalSource
+import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalSource
+import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalSource
+import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalSource
+import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalSource
 
 /**
  * Clears cached Discover sections whose content depends on the seasonal theme param.
  */
 internal class ClearSeasonalDiscoverCachesUseCase(
-    private val trendingMovies: TrendingMoviesLocalDataSource,
-    private val trendingShows: TrendingShowsLocalDataSource,
-    private val popularMovies: PopularMoviesLocalDataSource,
-    private val popularShows: PopularShowsLocalDataSource,
-    private val anticipatedMovies: AnticipatedMoviesLocalDataSource,
-    private val anticipatedShows: AnticipatedShowsLocalDataSource,
-    private val discoverMedia: DiscoverMediaLocalDataSource,
+    private val trendingMovies: TrendingMoviesLocalSource,
+    private val trendingShows: TrendingShowsLocalSource,
+    private val popularMovies: PopularMoviesLocalSource,
+    private val popularShows: PopularShowsLocalSource,
+    private val anticipatedMovies: AnticipatedMoviesLocalSource,
+    private val anticipatedShows: AnticipatedShowsLocalSource,
+    private val discoverMedia: DiscoverMediaLocalSource,
 ) {
     suspend fun clear() {
         coroutineScope {

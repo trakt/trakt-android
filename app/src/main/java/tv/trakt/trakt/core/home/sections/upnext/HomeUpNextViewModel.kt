@@ -50,7 +50,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
@@ -66,7 +66,7 @@ internal class HomeUpNextViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
-    private val homePersonalActivitySource: HomePersonalLocalDataSource,
+    private val homePersonalActivitySource: HomePersonalLocalSource,
     private val dataChanges: DataChanges,
     private val checkInManager: CheckInManager,
     private val filterManager: GlobalFilterManager,

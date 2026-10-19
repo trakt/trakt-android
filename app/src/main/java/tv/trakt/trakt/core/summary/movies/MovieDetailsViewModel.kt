@@ -32,13 +32,13 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
-import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -97,9 +97,9 @@ internal class MovieDetailsViewModel(
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
-    private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
-    private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
+    private val userWatchlistLocalSource: UserWatchlistLocalSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
+    private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,

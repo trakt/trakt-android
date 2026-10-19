@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.features.smart.usecase
 
 import org.openapitools.client.models.PostUsersListsListConvertToSmartListRequest
+import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
 import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
@@ -18,11 +19,10 @@ import tv.trakt.trakt.common.model.lists.SmartListSource.Unknown
 import tv.trakt.trakt.common.model.lists.SmartListSource.Watchlist
 import tv.trakt.trakt.common.networking.CreateSmartListRequestDto
 import tv.trakt.trakt.common.networking.SmartListFiltersDto
-import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartLocalDataSource
 
 internal class CreateSmartListUseCase(
     private val remoteSource: UserSmartListsRemoteSource,
-    private val localSource: ListsSmartLocalDataSource,
+    private val localSource: ListsSmartLocalSource,
 ) {
     suspend fun createList(
         name: String,

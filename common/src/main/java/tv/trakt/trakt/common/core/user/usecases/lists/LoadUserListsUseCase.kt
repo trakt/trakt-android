@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
+import tv.trakt.trakt.common.data.local.UserListsLocalSource
 import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
@@ -17,7 +17,7 @@ import tv.trakt.trakt.common.model.toTraktId
  */
 class LoadUserListsUseCase(
     private val remoteSource: UserPersonalListsRemoteSource,
-    private val localSource: UserListsLocalDataSource,
+    private val localSource: UserListsLocalSource,
 ) {
     suspend fun isLoaded(): Boolean {
         return localSource.isLoaded()

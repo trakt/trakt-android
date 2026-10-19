@@ -70,7 +70,7 @@ core/<feature>/
 ├── <Feature>State.kt
 ├── <Feature>ViewModel.kt
 ├── components/        # composables specific to this feature
-├── data/              # local stores (remote sources live in common/.../data/remote/)
+├── data/              # local sources tied to feature models (shared ones live in common/.../data/)
 ├── domain/            # use cases, domain models (if needed)
 └── di/<Feature>Module.kt
 ```

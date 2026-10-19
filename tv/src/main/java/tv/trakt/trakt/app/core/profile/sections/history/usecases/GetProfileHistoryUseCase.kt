@@ -4,8 +4,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.common.model.SyncHistoryItem
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
@@ -16,8 +16,8 @@ import tv.trakt.trakt.common.model.fromDto
 
 internal class GetProfileHistoryUseCase(
     private val remoteUserSource: UserHistoryRemoteSource,
-    private val localMoviesSource: MovieLocalDataSource,
-    private val localEpisodesSource: EpisodeLocalDataSource,
+    private val localMoviesSource: MovieLocalSource,
+    private val localEpisodesSource: EpisodeLocalSource,
 ) {
     suspend fun getHistory(
         page: Int = 1,
