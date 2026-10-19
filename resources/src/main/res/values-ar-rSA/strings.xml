@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">عدد المشاهدات</string>
   <string name="tag_text_watched">شاهدت</string>
   <string name="tag_text_watchlisted">قائمة المشاهدة</string>
+  <string name="tag_today_tap_details">اضغط في المنتصف للتفاصيل</string>
   <string name="text_about">عني</string>
   <string name="text_about_tagline">يقوم Trakt تلقائيًا بتتبع ما تشاهده عبر جميع أجهزتك وتطبيقاتك - مما يتيح لك مكانًا واحدًا لرؤية سجل المشاهدة بالكامل، واكتشاف ما هو التالي، والتواصل مع مجتمع يضم الملايين من محبي الأفلام والتلفزيون حول العالم.</string>
   <string name="text_about_user">حول %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">شوهدت %1$s · %2$s</string>
   <string name="text_today_watched_episodes">شوهدت %d حلقة</string>
   <string name="text_today_watched_episodes_at">شوهدت %1$d حلقة · %2$s</string>
+  <string name="text_today_watched_rated">شوهد وتم تقييمه</string>
+  <string name="text_today_watched_rated_at">شوهد وتم تقييمه · %s</string>
+  <string name="text_today_watched_rated_episode">شوهدت وتم تقييم %s</string>
+  <string name="text_today_watched_rated_episode_at">شوهدت وتم تقييم %1$s · %2$s</string>
   <string name="text_total_plays">إجمالي المشاهدات</string>
   <string name="text_trakt_apps_description">واستكشف تجربة مسار أكثر ثراءً بالميزات على تطبيقاتنا الأصلية</string>
   <string name="text_unavailable">غير متاح</string>

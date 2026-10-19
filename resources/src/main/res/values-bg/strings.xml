@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Брой гледания</string>
   <string name="tag_text_watched">Гледано</string>
   <string name="tag_text_watchlisted">В списъка за гледане</string>
+  <string name="tag_today_tap_details">Докоснете средата за подробности</string>
   <string name="text_about">За мен</string>
   <string name="text_about_tagline">Trakt автоматично проследява какво гледате на всичките ви устройства и приложения – като ви дава едно място, където да видите цялата си история на гледане, да откриете какво предстои и да се свържете с общност от милиони любители на филми и телевизия по света.</string>
   <string name="text_about_user">Относно %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Гледан %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Гледани %d епизода</string>
   <string name="text_today_watched_episodes_at">Гледани %1$d епизода · %2$s</string>
+  <string name="text_today_watched_rated">Гледано и оценено</string>
+  <string name="text_today_watched_rated_at">Гледано и оценено · %s</string>
+  <string name="text_today_watched_rated_episode">Гледан и оценен %s</string>
+  <string name="text_today_watched_rated_episode_at">Гледан и оценен %1$s · %2$s</string>
   <string name="text_total_plays">общо гледания</string>
   <string name="text_trakt_apps_description">и изследвайте по-богатото на функции Trakt изживяване в нашите нативни приложения</string>
   <string name="text_unavailable">Недостъпно</string>

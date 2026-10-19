@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">观看次数</string>
   <string name="tag_text_watched">已观看</string>
   <string name="tag_text_watchlisted">已加入待看列表</string>
+  <string name="tag_today_tap_details">轻触中间查看详情</string>
   <string name="text_about">关于我</string>
   <string name="text_about_tagline">Trakt 会自动追踪您在所有设备和应用程序上观看的内容，为您提供一个集中地，查看您的全部观看历史、发现接下来要看什么，并与全球数百万电影和电视爱好者社区建立联系。</string>
   <string name="text_about_user">关于 %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">已观看 %1$s · %2$s</string>
   <string name="text_today_watched_episodes">已观看 %d 集</string>
   <string name="text_today_watched_episodes_at">已观看 %1$d 集 · %2$s</string>
+  <string name="text_today_watched_rated">已观看并评分</string>
+  <string name="text_today_watched_rated_at">已观看并评分 · %s</string>
+  <string name="text_today_watched_rated_episode">已观看并评分 %s</string>
+  <string name="text_today_watched_rated_episode_at">已观看并评分 %1$s · %2$s</string>
   <string name="text_total_plays">总播放量</string>
   <string name="text_trakt_apps_description">并在我们的原生应用中探索更丰富功能的 Trakt 体验</string>
   <string name="text_unavailable">不可用</string>

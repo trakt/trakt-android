@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Compte de vists</string>
   <string name="tag_text_watched">Vist</string>
   <string name="tag_text_watchlisted">A la llista de seguiment</string>
+  <string name="tag_today_tap_details">Toca al centre per a detalls</string>
   <string name="text_about">Sobre mi</string>
   <string name="text_about_tagline">Trakt fa un seguiment automàtic del que veus a tots els teus dispositius i aplicacions, donant-te un únic lloc per veure tot el teu historial de visualització, descobrir les novetats i connectar amb una comunitat de milions d\'amants del cinema i la televisió d\'arreu del món.</string>
   <string name="text_about_user">Sobre %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Vist %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Vists %d episodis</string>
   <string name="text_today_watched_episodes_at">Vistos %1$d episodis · %2$s</string>
+  <string name="text_today_watched_rated">Vist i valorat</string>
+  <string name="text_today_watched_rated_at">Vist i valorat · %s</string>
+  <string name="text_today_watched_rated_episode">Vist i valorat %s</string>
+  <string name="text_today_watched_rated_episode_at">Vist i valorat %1$s · %2$s</string>
   <string name="text_total_plays">reproduccions totals</string>
   <string name="text_trakt_apps_description">i explora una experiència Trakt amb més funcions a les nostres aplicacions natives</string>
   <string name="text_unavailable">No disponible</string>

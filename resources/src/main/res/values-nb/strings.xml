@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Antall sett</string>
   <string name="tag_text_watched">Sett</string>
   <string name="tag_text_watchlisted">Ønskelistet</string>
+  <string name="tag_today_tap_details">Trykk på midten for detaljer</string>
   <string name="text_about">Om meg</string>
   <string name="text_about_tagline">Trakt sporer automatisk hva du ser på tvers av alle enhetene og appene dine – og gir deg ett sted å se hele seerhistorikken din, oppdage hva som kommer videre, og koble deg til et fellesskap av millioner av film- og TV-elskere over hele verden.</string>
   <string name="text_about_user">Om %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Sett %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Sett %d episoder</string>
   <string name="text_today_watched_episodes_at">Sett %1$d episoder · %2$s</string>
+  <string name="text_today_watched_rated">Sett og vurdert</string>
+  <string name="text_today_watched_rated_at">Sett og vurdert · %s</string>
+  <string name="text_today_watched_rated_episode">Sett og vurdert %s</string>
+  <string name="text_today_watched_rated_episode_at">Sett og vurdert %1$s · %2$s</string>
   <string name="text_total_plays">totale avspillinger</string>
   <string name="text_trakt_apps_description">og utforsk en mer funksjonsrik Trakt-opplevelse på våre native apper</string>
   <string name="text_unavailable">Utilgjengelig</string>

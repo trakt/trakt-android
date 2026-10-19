@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Megtekintések száma</string>
   <string name="tag_text_watched">Megnézve</string>
   <string name="tag_text_watchlisted">Megnézendők</string>
+  <string name="tag_today_tap_details">Érintse meg középen a részletekért</string>
   <string name="text_about">Rólam</string>
   <string name="text_about_tagline">A Trakt automatikusan nyomon követi, amit az összes eszközödön és alkalmazásodon nézel — egyetlen helyet biztosítva számodra, ahol láthatod a teljes nézési előzményedet, felfedezheted a következőket, és kapcsolatba léphetsz filmet és TV-t szerető milliók közösségével szerte a világon.</string>
   <string name="text_about_user">Rólam: %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">%1$s megnézve · %2$s</string>
   <string name="text_today_watched_episodes">%d epizód megnézve</string>
   <string name="text_today_watched_episodes_at">%1$d epizód megnézve · %2$s</string>
+  <string name="text_today_watched_rated">Megnézte és értékelte</string>
+  <string name="text_today_watched_rated_at">Megnézte és értékelte · %s</string>
+  <string name="text_today_watched_rated_episode">%s megnézve és értékelve</string>
+  <string name="text_today_watched_rated_episode_at">%1$s megnézve és értékelve · %2$s</string>
   <string name="text_total_plays">összes lejátszás</string>
   <string name="text_trakt_apps_description">és fedezd fel a még több funkciót kínáló, natív élményt!</string>
   <string name="text_unavailable">Nem elérhető</string>

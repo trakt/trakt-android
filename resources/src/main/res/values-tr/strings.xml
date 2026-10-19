@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">İzlenme sayısı</string>
   <string name="tag_text_watched">İzlendi</string>
   <string name="tag_text_watchlisted">İzleme Listesinde</string>
+  <string name="tag_today_tap_details">Ayrıntılar için ortaya dokunun</string>
   <string name="text_about">Hakkımda</string>
   <string name="text_about_tagline">Trakt, tüm cihazlarınız ve uygulamalarınız arasında izlediklerinizi otomatik olarak takip eder; size tüm izleme geçmişinizi görmeniz, sırada ne olduğunu keşfetmeniz ve dünya çapında milyonlarca film ve TV severden oluşan bir toplulukla bağlantı kurmanız için tek bir yer sağlar.</string>
   <string name="text_about_user">%s hakkında</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">%1$s izlendi · %2$s</string>
   <string name="text_today_watched_episodes">%d bölüm izlendi</string>
   <string name="text_today_watched_episodes_at">%1$d bölüm izlendi · %2$s</string>
+  <string name="text_today_watched_rated">İzlendi ve derecelendirildi</string>
+  <string name="text_today_watched_rated_at">İzlendi ve derecelendirildi · %s</string>
+  <string name="text_today_watched_rated_episode">%s izlendi ve derecelendirildi</string>
+  <string name="text_today_watched_rated_episode_at">%1$s izlendi ve derecelendirildi · %2$s</string>
   <string name="text_total_plays">toplam oynatma</string>
   <string name="text_trakt_apps_description">ve yerel uygulamalarımızda daha zengin özelliklere sahip bir Trakt deneyimi keşfedin</string>
   <string name="text_unavailable">Kullanılamıyor</string>

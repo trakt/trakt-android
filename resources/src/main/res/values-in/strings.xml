@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Jumlah tontonan</string>
   <string name="tag_text_watched">Ditonton</string>
   <string name="tag_text_watchlisted">Di Daftar Tontonan</string>
+  <string name="tag_today_tap_details">Ketuk tengah untuk detail</string>
   <string name="text_about">Tentang saya</string>
   <string name="text_about_tagline">Trakt secara otomatis melacak apa yang Anda tonton di semua perangkat dan aplikasi Anda — memberi Anda satu tempat untuk melihat seluruh riwayat tontonan Anda, menemukan apa yang berikutnya, dan terhubung dengan komunitas jutaan pecinta film dan TV di seluruh dunia.</string>
   <string name="text_about_user">Tentang %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Menonton %1$s \n· %2$s</string>
   <string name="text_today_watched_episodes">Menonton %d episode</string>
   <string name="text_today_watched_episodes_at">Menonton %1$d episode \n· %2$s</string>
+  <string name="text_today_watched_rated">Ditonton dan dinilai</string>
+  <string name="text_today_watched_rated_at">Ditonton dan dinilai · %s</string>
+  <string name="text_today_watched_rated_episode">Ditonton dan dinilai %s</string>
+  <string name="text_today_watched_rated_episode_at">Ditonton dan dinilai %1$s · %2$s</string>
   <string name="text_total_plays">total pemutaran</string>
   <string name="text_trakt_apps_description">dan jelajahi pengalaman Trakt yang lebih kaya fitur di aplikasi asli kami</string>
   <string name="text_unavailable">Tidak tersedia</string>

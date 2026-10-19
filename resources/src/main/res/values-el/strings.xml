@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Αριθμός προβολών</string>
   <string name="tag_text_watched">Παρακολουθήθηκε</string>
   <string name="tag_text_watchlisted">Στη λίστα παρακολούθησης</string>
+  <string name="tag_today_tap_details">Πατήστε στη μέση για λεπτομέρειες</string>
   <string name="text_about">Σχετικά με εμένα</string>
   <string name="text_about_tagline">Το Trakt παρακολουθεί αυτόματα τι βλέπετε σε όλες τις συσκευές και τις εφαρμογές σας — δίνοντάς σας ένα ενιαίο μέρος για να δείτε ολόκληρο το ιστορικό παρακολούθησής σας, να ανακαλύψετε τι ακολουθεί και να συνδεθείτε με μια κοινότητα εκατομμυρίων λάτρεις ταινιών και τηλεόρασης σε όλο τον κόσμο.</string>
   <string name="text_about_user">Σχετικά με τον %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Παρακολουθήθηκε %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Παρακολουθήθηκαν %d επεισόδια</string>
   <string name="text_today_watched_episodes_at">Παρακολουθήθηκαν %1$d επεισόδια · %2$s</string>
+  <string name="text_today_watched_rated">Παρακολουθήθηκε και βαθμολογήθηκε</string>
+  <string name="text_today_watched_rated_at">Παρακολουθήθηκε και βαθμολογήθηκε · %s</string>
+  <string name="text_today_watched_rated_episode">Παρακολουθήθηκε και βαθμολογήθηκε %s</string>
+  <string name="text_today_watched_rated_episode_at">Παρακολουθήθηκε και βαθμολογήθηκε %1$s · %2$s</string>
   <string name="text_total_plays">συνολικές προβολές</string>
   <string name="text_trakt_apps_description">και εξερευνήστε μια πιο πλούσια σε λειτουργίες εμπειρία Trakt στις εγγενείς εφαρμογές μας</string>
   <string name="text_unavailable">Μη διαθέσιμο</string>

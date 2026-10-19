@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Conteggio visione</string>
   <string name="tag_text_watched">Visto</string>
   <string name="tag_text_watchlisted">Nella Watchlist</string>
+  <string name="tag_today_tap_details">Tocca il centro per i dettagli</string>
   <string name="text_about">Su di me</string>
   <string name="text_about_tagline">Trakt traccia automaticamente ciò che guardi su tutti i tuoi dispositivi e app — offrendoti un unico posto per vedere la tua intera cronologia di visione, scoprire le prossime uscite e connetterti con una community di milioni di amanti di film e TV in tutto il mondo.</string>
   <string name="text_about_user">Informazioni su %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Guardato %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Guardati %d episodi</string>
   <string name="text_today_watched_episodes_at">Guardati %1$d episodi · %2$s</string>
+  <string name="text_today_watched_rated">Guardato e valutato</string>
+  <string name="text_today_watched_rated_at">Guardato e valutato · %s</string>
+  <string name="text_today_watched_rated_episode">Guardato e valutato %s</string>
+  <string name="text_today_watched_rated_episode_at">Guardato e valutato %1$s · %2$s</string>
   <string name="text_total_plays">riproduzioni totali</string>
   <string name="text_trakt_apps_description">ed esplora un\'esperienza Trakt più ricca di funzionalità sulle nostre applicazioni native</string>
   <string name="text_unavailable">Non disponibile</string>

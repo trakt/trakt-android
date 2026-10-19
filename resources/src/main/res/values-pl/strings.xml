@@ -1657,6 +1657,7 @@
   <string name="tag_text_watch_count">Liczba obejrzeń</string>
   <string name="tag_text_watched">Obejrzany</string>
   <string name="tag_text_watchlisted">Obserwowane</string>
+  <string name="tag_today_tap_details">Dotknij środek, aby zobaczyć szczegóły</string>
   <string name="text_about">O mnie</string>
   <string name="text_about_tagline">Trakt automatycznie śledzi, co oglądasz na wszystkich Twoich urządzeniach i w aplikacjach — dając Ci jedno miejsce, gdzie widzisz całą historię oglądania, odkrywasz, co obejrzeć dalej, i łączysz się ze społecznością milionów miłośników filmów i seriali z całego świata.</string>
   <string name="text_about_user">O %s</string>
@@ -2156,6 +2157,10 @@
   <string name="text_today_watched_episode_at">Obejrzano %1$s \n%2$s</string>
   <string name="text_today_watched_episodes">Obejrzano %d odcinków</string>
   <string name="text_today_watched_episodes_at">Obejrzano %1$d odcinków \n%2$s</string>
+  <string name="text_today_watched_rated">Obejrzano i oceniono</string>
+  <string name="text_today_watched_rated_at">Obejrzano i oceniono · %s</string>
+  <string name="text_today_watched_rated_episode">Obejrzano i oceniono %s</string>
+  <string name="text_today_watched_rated_episode_at">Obejrzano i oceniono %1$s · %2$s</string>
   <string name="text_total_plays">wszystkie odtworzenia</string>
   <string name="text_trakt_apps_description">i odkryj jeszcze więcej natywnych funkcji i doświadczeń!</string>
   <string name="text_unavailable">Niedostępne</string>
