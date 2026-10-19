@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
@@ -43,7 +44,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("UNCHECKED_CAST")
 internal class TodayPillViewModel(
-    seenSource: TodaySeenLocalDataSource,
+    private val seenSource: TodaySeenLocalDataSource,
     private val getTodayStoriesUseCase: GetTodayStoriesUseCase,
     private val sessionManager: SessionManager,
     private val upNextUpdates: UpNextUpdates,
@@ -158,6 +159,21 @@ internal class TodayPillViewModel(
             } finally {
                 loadingState.update { Done }
                 dataJob = null
+            }
+        }
+    }
+
+    fun markAllSeen() {
+        val keys = groupsState.value.map { it.key }
+        if (keys.isEmpty()) return
+
+        viewModelScope.launch {
+            try {
+                seenSource.markSeen(keys = keys, seenAt = nowUtcInstant())
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }

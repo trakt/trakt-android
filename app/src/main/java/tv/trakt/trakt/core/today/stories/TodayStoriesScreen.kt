@@ -105,6 +105,7 @@ private val PosterTopGap = 24.dp
 internal fun TodayStoriesScreen(
     viewModel: TodayStoriesViewModel,
     onNavigateToUser: (User) -> Unit,
+    onNavigateToSocial: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val bottomBarVisibility = LocalBottomBarVisibility.current
@@ -136,6 +137,10 @@ internal fun TodayStoriesScreen(
             viewModel.leave()
             onNavigateToUser(user)
         },
+        onSocialClick = {
+            viewModel.leave()
+            onNavigateToSocial()
+        },
         onClose = onNavigateBack,
     )
 }
@@ -149,6 +154,7 @@ private fun TodayStoriesContent(
     onNextGroup: () -> Unit = {},
     onPreviousGroup: () -> Unit = {},
     onUserClick: (User) -> Unit = {},
+    onSocialClick: () -> Unit = {},
     onClose: () -> Unit = {},
 ) {
     val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
@@ -186,6 +192,7 @@ private fun TodayStoriesContent(
             onNext = onNext,
             onPrevious = onPrevious,
             onUserClick = onUserClick,
+            onSocialClick = onSocialClick,
             onClose = onClose,
         )
     }
@@ -199,6 +206,7 @@ private fun TodayStoryPage(
     onNext: () -> Unit,
     onPrevious: () -> Unit,
     onUserClick: (User) -> Unit,
+    onSocialClick: () -> Unit,
     onClose: () -> Unit,
 ) {
     val group = state.group ?: return
@@ -264,6 +272,7 @@ private fun TodayStoryPage(
                     state.groups.size,
                 ),
                 onDetailsClick = { isFlipped = !isFlipped },
+                onSocialClick = onSocialClick,
                 onClose = onClose,
                 modifier = Modifier.padding(bottom = PosterTopGap - 16.dp),
             )
@@ -389,6 +398,7 @@ private fun TodayStoryHeader(
     title: String,
     position: String,
     onDetailsClick: () -> Unit,
+    onSocialClick: () -> Unit,
     onClose: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -428,6 +438,11 @@ private fun TodayStoryHeader(
         TodayStoryHeaderButton(
             iconRes = R.drawable.ic_info,
             onClick = onDetailsClick,
+        )
+
+        TodayStoryHeaderButton(
+            iconRes = R.drawable.ic_grid,
+            onClick = onSocialClick,
             modifier = Modifier.pullTowardsEdge(end = InfoInset),
         )
     }

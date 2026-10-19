@@ -15,12 +15,14 @@ internal data class TodayStoriesDestination(
 
 internal fun NavGraphBuilder.todayStoriesScreen(
     onNavigateToUser: (User) -> Unit,
+    onNavigateToSocial: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<TodayStoriesDestination> {
         TodayStoriesScreen(
             viewModel = koinViewModel(),
             onNavigateToUser = onNavigateToUser,
+            onNavigateToSocial = onNavigateToSocial,
             onNavigateBack = onNavigateBack,
         )
     }

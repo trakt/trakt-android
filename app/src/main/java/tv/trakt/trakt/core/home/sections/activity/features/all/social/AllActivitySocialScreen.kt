@@ -191,6 +191,11 @@ private fun TitleBar(
         MediaFilterIcon(
             active = isFilterActive,
             onClick = onFiltersClick,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = 2.dp.toPx()
+                    translationY = 2.dp.toPx()
+                },
         )
     }
 }

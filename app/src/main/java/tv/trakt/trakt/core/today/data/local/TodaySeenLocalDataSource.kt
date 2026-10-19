@@ -8,7 +8,7 @@ internal interface TodaySeenLocalDataSource {
     fun observeSeen(): Flow<Map<String, Instant>>
 
     suspend fun markSeen(
-        key: String,
+        keys: Collection<String>,
         seenAt: Instant,
     )
 

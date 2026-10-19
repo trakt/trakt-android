@@ -45,7 +45,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
-import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedView
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksView
 import tv.trakt.trakt.core.home.sections.streaks.all.StreaksSheet
@@ -332,17 +331,17 @@ private fun HomeScreenContent(
                 }
             }
 
-            item {
-                HomeSocialView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onMoreClick = onMoreSocialClick,
-                    onShowClick = onShowClick,
-                    onEpisodeClick = onEpisodeClick,
-                    onMovieClick = onMovieClick,
-                    onUserClick = onUserClick,
-                )
-            }
+//            item {
+//                HomeSocialView(
+//                    headerPadding = sectionPadding,
+//                    contentPadding = sectionPadding,
+//                    onMoreClick = onMoreSocialClick,
+//                    onShowClick = onShowClick,
+//                    onEpisodeClick = onEpisodeClick,
+//                    onMovieClick = onMovieClick,
+//                    onUserClick = onUserClick,
+//                )
+//            }
         }
 
         HomeScreenHeader(
@@ -354,6 +353,7 @@ private fun HomeScreenContent(
             onFiltersClick = onFiltersClick,
             onWhatsNewClick = onWhatsNewClick,
             onTodayClick = onTodayClick,
+            onTodayLongClick = onMoreSocialClick,
         )
     }
 }
@@ -368,6 +368,7 @@ private fun HomeScreenHeader(
     onFiltersClick: () -> Unit,
     onWhatsNewClick: () -> Unit,
     onTodayClick: (groupKey: String) -> Unit,
+    onTodayLongClick: () -> Unit,
 ) {
     val (userLoaded, userLoggedIn) = remember(state.user) {
         val userLoaded = state.user.loading == Done
@@ -384,7 +385,10 @@ private fun HomeScreenHeader(
         userLoading = userLoading,
         todayContent = {
             if (userLoggedIn) {
-                TodayPill(onClick = onTodayClick)
+                TodayPill(
+                    onClick = onTodayClick,
+                    onLongClick = onTodayLongClick,
+                )
             }
         },
         onVipClick = onVipClick,

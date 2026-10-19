@@ -42,7 +42,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
-import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
@@ -70,6 +70,7 @@ internal fun TodayPill(
     modifier: Modifier = Modifier,
     viewModel: TodayPillViewModel = koinViewModel(),
     onClick: (groupKey: String) -> Unit,
+    onLongClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -83,6 +84,10 @@ internal fun TodayPill(
             posters = state.posters,
             unseenCount = state.unseenCount,
             onClick = { state.targetKey?.let(onClick) },
+            onLongClick = {
+                viewModel.markAllSeen()
+                onLongClick()
+            },
         )
     }
 }
@@ -93,6 +98,7 @@ internal fun TodayPillContent(
     unseenCount: Int,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    onLongClick: () -> Unit = {},
 ) {
     val unseen = unseenCount > 0
     val animate = unseen && !rememberAnimationsDisabled()
@@ -117,7 +123,11 @@ internal fun TodayPillContent(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(PillSize)
-            .onClick(onClick = onClick),
+            .onClickCombined(
+                indication = false,
+                onClick = onClick,
+                onLongClick = onLongClick,
+            ),
     ) {
         Box(
             modifier = Modifier

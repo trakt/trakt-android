@@ -222,7 +222,7 @@ internal class TodayStoriesViewModel(
     private fun markSeen(key: String) {
         viewModelScope.launch {
             try {
-                seenSource.markSeen(key = key, seenAt = nowUtcInstant())
+                seenSource.markSeen(keys = listOf(key), seenAt = nowUtcInstant())
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

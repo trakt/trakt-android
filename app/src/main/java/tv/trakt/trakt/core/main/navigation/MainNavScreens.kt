@@ -146,6 +146,10 @@ internal fun NavGraphBuilder.homeScreens(
                     currentUserId = userId,
                 )
             },
+            onNavigateToSocial = {
+                popBackStack()
+                navigateToAllActivitySocial()
+            },
             onNavigateBack = { popBackStack() },
         )
 

@@ -27,7 +27,7 @@ internal class TodaySeenStorage(
     }
 
     override suspend fun markSeen(
-        key: String,
+        keys: Collection<String>,
         seenAt: Instant,
     ) {
         val cutoff = seenAt.minus(SEEN_RETENTION).toEpochMilli()
@@ -35,7 +35,7 @@ internal class TodaySeenStorage(
         dataStore.edit { preferences ->
             val seen = decode(preferences[KEY_SEEN_STORIES])
                 .filterValues { it >= cutoff }
-                .plus(key to seenAt.toEpochMilli())
+                .plus(keys.associateWith { seenAt.toEpochMilli() })
 
             preferences[KEY_SEEN_STORIES] = Json.encodeToString(seen)
         }
