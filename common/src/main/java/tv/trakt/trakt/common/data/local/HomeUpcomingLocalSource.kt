@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.upcoming.data.local
+package tv.trakt.trakt.common.data.local
 
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import java.time.Instant
 
-internal class HomeUpcomingLocalSource {
+class HomeUpcomingLocalSource {
     private val mutex = Mutex()
 
     private val storage = mutableMapOf<TraktId, CalendarItem>()

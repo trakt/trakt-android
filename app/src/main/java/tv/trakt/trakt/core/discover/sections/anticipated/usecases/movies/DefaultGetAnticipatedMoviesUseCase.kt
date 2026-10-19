@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.local.AnticipatedMoviesLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -10,7 +11,6 @@ import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalSource
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 

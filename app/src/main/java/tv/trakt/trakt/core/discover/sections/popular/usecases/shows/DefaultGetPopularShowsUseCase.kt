@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.discover.sections.popular.usecases.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.local.PopularShowsLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -10,7 +11,6 @@ import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig
-import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 

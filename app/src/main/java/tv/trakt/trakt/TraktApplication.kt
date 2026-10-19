@@ -51,7 +51,6 @@ import tv.trakt.trakt.core.klipy.di.gifPickerModule
 import tv.trakt.trakt.core.lists.di.listsDataModule
 import tv.trakt.trakt.core.lists.di.listsModule
 import tv.trakt.trakt.core.main.di.mainModule
-import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup
@@ -69,7 +68,6 @@ import tv.trakt.trakt.core.search.di.searchModule
 import tv.trakt.trakt.core.settings.di.settingsDataModule
 import tv.trakt.trakt.core.settings.di.settingsModule
 import tv.trakt.trakt.core.share.di.shareModule
-import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
 import tv.trakt.trakt.core.streamings.di.allStreamingsModule
 import tv.trakt.trakt.core.summary.credits.di.allCreditsModule
@@ -159,11 +157,9 @@ internal class TraktApplication : Application() {
                 discoverModule,
                 dataChangesModule,
                 showsModule,
-                showsDataModule,
                 showDetailsModule,
                 episodeDetailsModule,
                 moviesModule,
-                moviesDataModule,
                 movieDetailsModule,
                 mediaSocialActivityModule,
                 profileModule,

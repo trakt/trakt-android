@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.local.RecommendedShowsLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -11,7 +12,6 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.common.model.recommended.RecommendedSource
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 
 internal class DefaultGetRecommendedShowsUseCase(

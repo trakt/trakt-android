@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tv.trakt.trakt.core.discover.sections.trending.data.local.movies
+package tv.trakt.trakt.common.data.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.model.discover.DiscoverItem
 
 private val KEY_TRENDING_MOVIES = byteArrayPreferencesKey("key_trending_movies")
 
-internal class TrendingMoviesLocalSource(
+class TrendingMoviesLocalSource(
     private val dataStore: DataStore<Preferences>,
 ) {
     private val mutex = Mutex()

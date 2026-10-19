@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tv.trakt.trakt.core.home.sections.recommended.data.movies
+package tv.trakt.trakt.common.data.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -16,57 +16,44 @@ import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 
-private val KEY_RECOMMENDED_MOVIES = byteArrayPreferencesKey("key_recommended_movies")
+private val KEY_TRENDING_SHOWS = byteArrayPreferencesKey("key_trending_shows")
 
-internal class RecommendedMoviesLocalSource(
+class TrendingShowsLocalSource(
     private val dataStore: DataStore<Preferences>,
 ) {
     private val mutex = Mutex()
     private var isInitialized = false
 
-    private val moviesCache = mutableMapOf<TraktId, RecommendedItem.MovieItem>()
+    private val showsCache = mutableMapOf<TraktId, DiscoverItem.ShowItem>()
 
-    suspend fun setMovies(movies: List<RecommendedItem.MovieItem>) {
+    suspend fun setShows(shows: List<DiscoverItem.ShowItem>) {
         ensureInitialized()
         mutex.withLock {
-            with(moviesCache) {
+            with(showsCache) {
                 clear()
-                putAll(movies.associateBy { it.id })
+                putAll(shows.associateBy { it.id })
             }
 
             dataStore.edit {
-                it[KEY_RECOMMENDED_MOVIES] = ProtoBuf.encodeToByteArray(moviesCache)
+                it[KEY_TRENDING_SHOWS] = ProtoBuf.encodeToByteArray(showsCache)
             }
         }
     }
 
-    suspend fun getMovies(): List<RecommendedItem.MovieItem> {
+    suspend fun getShows(): List<DiscoverItem.ShowItem> {
         ensureInitialized()
         return mutex.withLock {
-            moviesCache.values.toList()
-        }
-    }
-
-    suspend fun removeMovie(id: TraktId) {
-        ensureInitialized()
-        mutex.withLock {
-            if (moviesCache.remove(id) != null) {
-                dataStore.edit {
-                    it[KEY_RECOMMENDED_MOVIES] = ProtoBuf.encodeToByteArray(moviesCache)
-                }
-            }
+            showsCache.values.toList()
         }
     }
 
     suspend fun clear() {
         ensureInitialized()
         mutex.withLock {
-            moviesCache.clear()
-            dataStore.edit {
-                it.remove(KEY_RECOMMENDED_MOVIES)
-            }
+            showsCache.clear()
+            dataStore.edit { it.remove(KEY_TRENDING_SHOWS) }
         }
     }
 
@@ -76,12 +63,12 @@ internal class RecommendedMoviesLocalSource(
                 if (!isInitialized) {
                     try {
                         with(dataStore.data.first()) {
-                            get(KEY_RECOMMENDED_MOVIES)?.let {
-                                moviesCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            get(KEY_TRENDING_SHOWS)?.let {
+                                showsCache.putAll(ProtoBuf.decodeFromByteArray(it))
                             }
                         }
                     } catch (exception: SerializationException) {
-                        moviesCache.clear()
+                        showsCache.clear()
                         dataStore.edit { it.clear() }
                         Timber.e(exception)
                     } finally {

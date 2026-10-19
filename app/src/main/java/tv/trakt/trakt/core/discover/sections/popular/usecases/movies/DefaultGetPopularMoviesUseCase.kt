@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.discover.sections.popular.usecases.movies
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.PopularMoviesLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
@@ -10,7 +11,6 @@ import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig
-import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalSource
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 

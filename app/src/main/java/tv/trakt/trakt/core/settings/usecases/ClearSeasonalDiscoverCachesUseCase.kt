@@ -3,14 +3,14 @@ package tv.trakt.trakt.core.settings.usecases
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.data.local.AnticipatedMoviesLocalSource
+import tv.trakt.trakt.common.data.local.AnticipatedShowsLocalSource
+import tv.trakt.trakt.common.data.local.PopularMoviesLocalSource
+import tv.trakt.trakt.common.data.local.PopularShowsLocalSource
+import tv.trakt.trakt.common.data.local.TrendingMoviesLocalSource
+import tv.trakt.trakt.common.data.local.TrendingShowsLocalSource
 import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalSource
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalSource
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalSource
-import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalSource
-import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalSource
-import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalSource
-import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalSource
 
 /**
  * Clears cached Discover sections whose content depends on the seasonal theme param.

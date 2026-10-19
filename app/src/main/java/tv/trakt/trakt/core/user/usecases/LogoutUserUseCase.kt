@@ -9,12 +9,16 @@ import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.data.local.HomeSocialLocalSource
 import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
+import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.common.data.local.HomeWatchlistLocalSource
 import tv.trakt.trakt.common.data.local.LeaderboardLocalSource
 import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
+import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
+import tv.trakt.trakt.common.data.local.RecommendedShowsLocalSource
 import tv.trakt.trakt.common.data.local.TodaySeenLocalSource
 import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
 import tv.trakt.trakt.common.data.local.UserLibraryLocalSource
@@ -33,10 +37,6 @@ import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
-import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalSource
-import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalSource
-import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalSource
-import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalSource
 import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalSource

@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase.movies
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
@@ -11,7 +12,6 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.common.model.recommended.RecommendedSource
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 
 internal class DefaultGetRecommendedMoviesUseCase(

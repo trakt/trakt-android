@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tv.trakt.trakt.core.discover.sections.popular.data.local.shows
+package tv.trakt.trakt.common.data.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -16,44 +16,44 @@ import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 
-private val KEY_POPULAR_SHOWS = byteArrayPreferencesKey("key_popular_shows")
+private val KEY_RELEASES_MOVIES = byteArrayPreferencesKey("key_releases_movies")
 
-internal class PopularShowsLocalSource(
+class ReleasesMoviesLocalSource(
     private val dataStore: DataStore<Preferences>,
 ) {
     private val mutex = Mutex()
     private var isInitialized = false
 
-    private val showsCache = mutableMapOf<TraktId, DiscoverItem.ShowItem>()
+    private val moviesCache = mutableMapOf<TraktId, CalendarItem.MovieItem>()
 
-    suspend fun setShows(shows: List<DiscoverItem.ShowItem>) {
+    suspend fun setMovies(movies: List<CalendarItem.MovieItem>) {
         ensureInitialized()
         mutex.withLock {
-            with(showsCache) {
+            with(moviesCache) {
                 clear()
-                putAll(shows.associateBy { it.id })
+                putAll(movies.associateBy { it.id })
             }
 
             dataStore.edit {
-                it[KEY_POPULAR_SHOWS] = ProtoBuf.encodeToByteArray(showsCache)
+                it[KEY_RELEASES_MOVIES] = ProtoBuf.encodeToByteArray(moviesCache)
             }
         }
     }
 
-    suspend fun getShows(): List<DiscoverItem.ShowItem> {
+    suspend fun getMovies(): List<CalendarItem.MovieItem> {
         ensureInitialized()
         return mutex.withLock {
-            showsCache.values.toList()
+            moviesCache.values.toList()
         }
     }
 
     suspend fun clear() {
         ensureInitialized()
         mutex.withLock {
-            showsCache.clear()
-            dataStore.edit { it.remove(KEY_POPULAR_SHOWS) }
+            moviesCache.clear()
+            dataStore.edit { it.remove(KEY_RELEASES_MOVIES) }
         }
     }
 
@@ -63,12 +63,12 @@ internal class PopularShowsLocalSource(
                 if (!isInitialized) {
                     try {
                         with(dataStore.data.first()) {
-                            get(KEY_POPULAR_SHOWS)?.let {
-                                showsCache.putAll(ProtoBuf.decodeFromByteArray(it))
+                            get(KEY_RELEASES_MOVIES)?.let {
+                                moviesCache.putAll(ProtoBuf.decodeFromByteArray(it))
                             }
                         }
                     } catch (exception: SerializationException) {
-                        showsCache.clear()
+                        moviesCache.clear()
                         dataStore.edit { it.clear() }
                         Timber.e(exception)
                     } finally {

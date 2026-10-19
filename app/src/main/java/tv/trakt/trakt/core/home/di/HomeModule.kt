@@ -21,7 +21,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.home.HomeViewModel
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
-import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalSource
 import tv.trakt.trakt.core.home.sections.activity.features.all.personal.AllActivityPersonalViewModel
 import tv.trakt.trakt.core.home.sections.activity.features.all.social.AllActivitySocialViewModel
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryViewModel
@@ -38,7 +37,6 @@ import tv.trakt.trakt.core.home.sections.streaks.all.StreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.data.DefaultStreaksManager
 import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingViewModel
-import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextViewModel
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextViewModel
@@ -55,9 +53,7 @@ import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
 internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
 internal val homeDataModule = module {
-    singleOf(::HomeUpcomingLocalSource)
     singleOf(::HomePersonalLocalSource)
-    singleOf(::HomeSocialLocalSource)
     singleOf(::DefaultStreaksManager) { bind<StreaksManager>() }
 
     single {

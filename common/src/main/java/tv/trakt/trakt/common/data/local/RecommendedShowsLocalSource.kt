@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tv.trakt.trakt.core.discover.sections.trending.data.local.shows
+package tv.trakt.trakt.common.data.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -16,19 +16,19 @@ import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
 
-private val KEY_TRENDING_SHOWS = byteArrayPreferencesKey("key_trending_shows")
+private val KEY_RECOMMENDED_SHOWS = byteArrayPreferencesKey("key_recommended_shows")
 
-internal class TrendingShowsLocalSource(
+class RecommendedShowsLocalSource(
     private val dataStore: DataStore<Preferences>,
 ) {
     private val mutex = Mutex()
     private var isInitialized = false
 
-    private val showsCache = mutableMapOf<TraktId, DiscoverItem.ShowItem>()
+    private val showsCache = mutableMapOf<TraktId, RecommendedItem.ShowItem>()
 
-    suspend fun setShows(shows: List<DiscoverItem.ShowItem>) {
+    suspend fun setShows(shows: List<RecommendedItem.ShowItem>) {
         ensureInitialized()
         mutex.withLock {
             with(showsCache) {
@@ -37,15 +37,26 @@ internal class TrendingShowsLocalSource(
             }
 
             dataStore.edit {
-                it[KEY_TRENDING_SHOWS] = ProtoBuf.encodeToByteArray(showsCache)
+                it[KEY_RECOMMENDED_SHOWS] = ProtoBuf.encodeToByteArray(showsCache)
             }
         }
     }
 
-    suspend fun getShows(): List<DiscoverItem.ShowItem> {
+    suspend fun getShows(): List<RecommendedItem.ShowItem> {
         ensureInitialized()
         return mutex.withLock {
             showsCache.values.toList()
+        }
+    }
+
+    suspend fun removeShow(id: TraktId) {
+        ensureInitialized()
+        mutex.withLock {
+            if (showsCache.remove(id) != null) {
+                dataStore.edit {
+                    it[KEY_RECOMMENDED_SHOWS] = ProtoBuf.encodeToByteArray(showsCache)
+                }
+            }
         }
     }
 
@@ -53,7 +64,9 @@ internal class TrendingShowsLocalSource(
         ensureInitialized()
         mutex.withLock {
             showsCache.clear()
-            dataStore.edit { it.remove(KEY_TRENDING_SHOWS) }
+            dataStore.edit {
+                it.remove(KEY_RECOMMENDED_SHOWS)
+            }
         }
     }
 
@@ -63,7 +76,7 @@ internal class TrendingShowsLocalSource(
                 if (!isInitialized) {
                     try {
                         with(dataStore.data.first()) {
-                            get(KEY_TRENDING_SHOWS)?.let {
+                            get(KEY_RECOMMENDED_SHOWS)?.let {
                                 showsCache.putAll(ProtoBuf.decodeFromByteArray(it))
                             }
                         }

@@ -1,10 +1,10 @@
-package tv.trakt.trakt.core.home.sections.activity.data.local.social
+package tv.trakt.trakt.common.data.local
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.activity.HomeActivityItem
 
-internal class HomeSocialLocalSource {
+class HomeSocialLocalSource {
     private val mutex = Mutex()
     private val storage = mutableMapOf<Long, HomeActivityItem>()
 

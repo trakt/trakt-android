@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows
+package tv.trakt.trakt.common.data.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.model.discover.DiscoverItem
 
 private val KEY_ANTICIPATED_SHOWS = byteArrayPreferencesKey("key_anticipated_shows")
 
-internal class AnticipatedShowsLocalSource(
+class AnticipatedShowsLocalSource(
     private val dataStore: DataStore<Preferences>,
 ) {
     private val mutex = Mutex()
