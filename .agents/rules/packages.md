@@ -137,7 +137,7 @@ Lives at root `build.gradle.kts`. Three rules:
 
 - `kotlin.code.style=official` set in `gradle.properties`.
 - `android.useAndroidX=true`, `android.nonTransitiveRClass=true`.
-- `org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8`.
+- `org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=1g -XX:+UseParallelGC -Dfile.encoding=UTF-8`, `kotlin.daemon.jvmargs=-Xmx3g`.
 - KSP over KAPT — new annotation-processed code use KSP.
 
 ## Quick checklist
