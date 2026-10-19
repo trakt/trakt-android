@@ -120,7 +120,7 @@ internal class AllListsViewModel(
     private fun observeReorder(listIds: List<TraktId>) {
         reorderJob?.cancel()
         val ids = listIds.map { it.value }.toSet()
-        reorderJob = dataChanges.observe(Kind.Lists)
+        reorderJob = dataChanges.observe(Kind.ListOrder)
             .filter { it.targetId in ids }
             .debounce(200.milliseconds)
             .onEach { loadData(reload = true) }

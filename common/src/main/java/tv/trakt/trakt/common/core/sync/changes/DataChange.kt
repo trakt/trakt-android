@@ -10,6 +10,7 @@ data class DataChange(
         Progress,
         Watchlist,
         Lists,
+        ListOrder,
         Ratings,
         Favorites,
         CheckIn,

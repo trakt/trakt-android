@@ -111,7 +111,7 @@ internal class AllPersonalListViewModel(
     }
 
     private fun observeReorder() {
-        dataChanges.observe(Kind.Lists)
+        dataChanges.observe(Kind.ListOrder)
             .filter { it.targetId == destination.listId.toTraktId().value }
             .debounce(250.milliseconds)
             .onEach { loadData(ignoreErrors = true) }

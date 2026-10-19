@@ -171,7 +171,7 @@ internal class ListReorderViewModel(
                     itemIds = currentItems.map { it.itemId },
                 )
 
-                dataChanges.notify(Kind.Lists, targetId = listId.value)
+                dataChanges.notify(Kind.ListOrder, targetId = listId.value)
                 doneState.update { true }
             } catch (error: Exception) {
                 error.rethrowCancellation {
