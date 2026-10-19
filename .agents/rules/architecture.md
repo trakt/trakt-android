@@ -125,10 +125,10 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 private val origin = ChangeOrigin.unique()
 
 // producer: say what changed, after the write (and any local cache refresh) finished
-dataChanges.notify(Kind.Watched, Kind.Watchlist, origin = origin)
+dataChanges.notify(Kind.History, Kind.Watchlist, origin = origin)
 
 // consumer: subscribe to kinds, skip own changes
-dataChanges.observe(Kind.Watched, Kind.CheckIn, exclude = origin)
+dataChanges.observe(Kind.History, Kind.CheckIn, exclude = origin)
     .debounce(200.milliseconds)
     .onEach { loadData(ignoreErrors = true) }
     .launchIn(viewModelScope)
