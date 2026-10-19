@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">هم\nروح‌ها</string>
   <string name="match_label_spin_off">اسپین\nآف</string>
   <string name="match_pill_anchor">همخوانی:</string>
-  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
+  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
   <string name="match_pill_loading_aria_label">در حال محاسبه امتیاز تطابق</string>
   <string name="mir_banner_body">خلاصه ماهانه شما آماده است. در %s اینها را تماشا کرده‌اید.</string>
   <string name="mir_banner_body_short">خلاصه %s شما آماده است.</string>
@@ -1594,7 +1594,7 @@
   <string name="tag_media_sync_webhook_only">فقط وب‌هوک</string>
   <string name="tag_mixtape_different_mood">حس و حال متفاوت</string>
   <string name="tag_mixtape_kept">نگه داشته شده</string>
-  <string name="tag_mixtape_match">%s% تطابق</string>
+  <string name="tag_mixtape_match">%s%% تطابق</string>
   <string name="tag_mixtape_tap_details">برای جزئیات ضربه بزنید</string>
   <string name="tag_text_blocked_user">مسدود شده</string>
   <string name="tag_text_deal_price">۲ سال اول</string>
@@ -2756,7 +2756,7 @@
   <string name="yir_2026_preview_runner_none">هیچ‌کدام (بدون ترکیب)</string>
   <string name="yir_2026_preview_runner_up">رتبه‌دوم</string>
   <string name="yir_2026_preview_title">پیش‌نمایش پرسونا</string>
-  <string name="yir_2026_rarity">فقط %1$d% %2$s هستند</string>
+  <string name="yir_2026_rarity">فقط %1$d%% %2$s هستند</string>
   <string name="yir_2026_reel_a_little_bit">کمی %s</string>
   <string name="yir_2026_reel_and_you_are">و شما هستید</string>
   <string name="yir_2026_reel_but_mostly">اما بیشتر</string>
