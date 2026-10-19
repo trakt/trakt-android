@@ -42,7 +42,6 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_PAGE_LIMIT
-import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
@@ -51,6 +50,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
@@ -170,7 +170,7 @@ private fun MoviesAnticipatedContent(
                                         modifier = Modifier.size(16.dp),
                                     )
                                     Text(
-                                        text = rememberThousandsFormat(anticipatedMovie.listCount),
+                                        text = rememberThousandsFormat(anticipatedMovie.count),
                                         style = TraktTheme.typography.cardTitle,
                                         color = TraktTheme.colors.textPrimary,
                                         maxLines = 1,
@@ -237,8 +237,8 @@ private fun MoviesAnticipatedContentPreview() {
         MoviesAnticipatedContent(
             state = MoviesAnticipatedViewAllState(
                 movies = listOf(
-                    AnticipatedMovie(
-                        listCount = 1234,
+                    DiscoverItem.MovieItem(
+                        count = 1234,
                         movie = PreviewData.movie1,
                     ),
                 ).toImmutableList(),

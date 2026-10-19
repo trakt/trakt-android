@@ -16,7 +16,7 @@ import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 
 private val KEY_POPULAR_MOVIES = byteArrayPreferencesKey("key_popular_movies")
 

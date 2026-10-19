@@ -6,9 +6,9 @@ import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesLocalSource
 import java.time.Instant
 

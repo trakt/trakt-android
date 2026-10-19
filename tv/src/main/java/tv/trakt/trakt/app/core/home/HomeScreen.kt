@@ -247,7 +247,7 @@ private fun HomeScreenContent(
                     onNavigateToViewAll = onNavigateToRecommended,
                     onFocused = { item ->
                         focusedSection = "recommended"
-                        focusedImageUrl = item?.fullFanartImage
+                        focusedImageUrl = item?.images?.getFanartUrl(Size.FULL)
                     },
                     onLoaded = { refocusOnLoad("recommended") },
                     modifier = Modifier

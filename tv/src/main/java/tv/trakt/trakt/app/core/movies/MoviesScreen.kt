@@ -46,9 +46,6 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
-import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -62,6 +59,8 @@ import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.calendar.CalendarItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.resources.R
 
 private val sections = listOf(
@@ -251,7 +250,7 @@ private fun MoviesScreenContent(
 @Composable
 private fun TrendingMoviesList(
     header: String,
-    movies: List<TrendingMovie>?,
+    movies: List<DiscoverItem.MovieItem>?,
     collection: UserCollectionState,
     isLoading: Boolean,
     onMovieFocus: (Movie) -> Unit,
@@ -291,7 +290,7 @@ private fun TrendingMoviesList(
                 items(
                     items = movies,
                     key = { item -> item.movie.ids.trakt.value },
-                ) { (watchers, movie) ->
+                ) { (movie, watchers) ->
                     VerticalMediaCard(
                         title = movie.title,
                         watched = collection.isWatched(movie.ids.trakt, Movie, null),
@@ -346,10 +345,10 @@ private fun TrendingMoviesList(
 @Composable
 private fun ReleasesMoviesList(
     header: String,
-    movies: ImmutableList<HomeUpcomingItem.MovieItem>?,
+    movies: ImmutableList<CalendarItem.MovieItem>?,
     isLoading: Boolean,
-    onFocused: (HomeUpcomingItem.MovieItem) -> Unit,
-    onClick: (HomeUpcomingItem.MovieItem) -> Unit,
+    onFocused: (CalendarItem.MovieItem) -> Unit,
+    onClick: (CalendarItem.MovieItem) -> Unit,
     onViewAllClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
     modifier: Modifier = Modifier,
@@ -398,7 +397,7 @@ private fun ReleasesMoviesList(
                                 verticalArrangement = spacedBy(2.dp),
                             ) {
                                 InfoChip(
-                                    text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
+                                    text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                                     iconPainter = when {
                                         item.movie.isReleased -> painterResource(R.drawable.ic_calendar_check)
                                         else -> painterResource(R.drawable.ic_calendar_upcoming)
@@ -536,7 +535,7 @@ private fun StandardMoviesList(
 @Composable
 private fun AnticipatedMoviesList(
     header: String,
-    movies: List<AnticipatedMovie>?,
+    movies: List<DiscoverItem.MovieItem>?,
     collection: UserCollectionState,
     isLoading: Boolean,
     onMovieFocus: (Movie) -> Unit,
@@ -572,7 +571,7 @@ private fun AnticipatedMoviesList(
                 items(
                     items = movies,
                     key = { item -> item.movie.ids.trakt.value },
-                ) { (listCount, movie) ->
+                ) { (movie, listCount) ->
                     VerticalMediaCard(
                         title = movie.title,
                         watched = collection.isWatched(movie.ids.trakt, Movie, null),
@@ -635,12 +634,12 @@ private fun Preview() {
         MoviesScreenContent(
             state = MoviesState(
                 trendingMovies = listOf(
-                    TrendingMovie(
-                        watchers = 12341,
+                    DiscoverItem.MovieItem(
+                        count = 12341,
                         movie = PreviewData.movie1,
                     ),
-                    TrendingMovie(
-                        watchers = 872,
+                    DiscoverItem.MovieItem(
+                        count = 872,
                         movie = PreviewData.movie2,
                     ),
                 ).toImmutableList(),
@@ -665,12 +664,12 @@ private fun Preview2() {
             state = MoviesState(
                 isLoading = true,
                 trendingMovies = listOf(
-                    TrendingMovie(
-                        watchers = 12341,
+                    DiscoverItem.MovieItem(
+                        count = 12341,
                         movie = PreviewData.movie1,
                     ),
-                    TrendingMovie(
-                        watchers = 872,
+                    DiscoverItem.MovieItem(
+                        count = 872,
                         movie = PreviewData.movie2,
                     ),
                 ).toImmutableList(),

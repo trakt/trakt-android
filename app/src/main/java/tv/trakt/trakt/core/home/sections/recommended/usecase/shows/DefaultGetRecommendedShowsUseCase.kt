@@ -8,10 +8,10 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedSource
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalSource
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 
 internal class DefaultGetRecommendedShowsUseCase(

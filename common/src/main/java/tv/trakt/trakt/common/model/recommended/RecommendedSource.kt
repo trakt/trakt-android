@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.recommended.model
+package tv.trakt.trakt.common.model.recommended
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -13,14 +13,14 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationSource
 
 @Immutable
 @Serializable
-internal data class RecommendedSource(
+data class RecommendedSource(
     val type: Type,
     val show: Show? = null,
     val movie: Movie? = null,
     @Serializable(ImmutableListSerializer::class)
     val subgenres: ImmutableList<Subgenre> = persistentListOf(),
 ) {
-    internal enum class Type {
+    enum class Type {
         Favorite,
         Activity,
         Subgenre,
@@ -40,7 +40,7 @@ internal data class RecommendedSource(
 
     @Immutable
     @Serializable
-    internal data class Subgenre(
+    data class Subgenre(
         val id: Long,
         val name: String,
         val slug: String,

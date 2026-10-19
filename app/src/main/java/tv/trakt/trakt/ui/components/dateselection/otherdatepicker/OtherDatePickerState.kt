@@ -3,7 +3,7 @@ package tv.trakt.trakt.ui.components.dateselection.otherdatepicker
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 
 @Immutable
 internal data class OtherDatePickerState(

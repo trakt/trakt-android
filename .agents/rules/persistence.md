@@ -101,9 +101,9 @@ Rules:
 - **One public `class <Feature>LocalSource` per feature. No interface, no `*Storage` impl.** Add an
   interface only when a second implementation actually exists.
 - **Lives in `common/.../data/local/`** whenever its types live in `:common`, even when only one
-  platform reads it today. A source that stores `:app` or `:tv` models (`DiscoverItem`,
-  `WatchedMovie`) stays in its feature's `data/local/` folder and is bound in that feature's Koin
-  module, still as a plain class.
+  platform reads it today. Move its model to `:common` first when the model is not genuinely
+  platform-specific. A source that stores `:app` or `:tv` models stays in its feature's
+  `data/local/` folder and is bound in that feature's Koin module, still as a plain class.
 - **All shared local sources bind once in `localSourcesModule`**, registered in both
   `TraktApplication.setupKoin()` and `TvActivity`. Koin singletons are created lazily, so binding a
   phone-only source in TV costs nothing. Never bind a shared local source again in a feature module.

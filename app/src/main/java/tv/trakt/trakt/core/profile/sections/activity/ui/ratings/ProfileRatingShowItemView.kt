@@ -22,7 +22,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard

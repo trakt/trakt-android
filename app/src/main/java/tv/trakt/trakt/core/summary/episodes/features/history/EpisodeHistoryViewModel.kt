@@ -38,10 +38,10 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.summary.episodes.features.history.navigation.EpisodeHistoryDestination
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.HISTORY_PAGE_LIMIT

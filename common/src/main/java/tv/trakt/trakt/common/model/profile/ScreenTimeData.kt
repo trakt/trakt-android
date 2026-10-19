@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile.sections.screentime.model
+package tv.trakt.trakt.common.model.profile
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
@@ -9,7 +9,7 @@ import java.time.LocalTime
 import kotlin.time.Duration
 
 @Immutable
-internal data class ScreenTimeData(
+data class ScreenTimeData(
     val stats: Stats,
     val dailyHours: ImmutableMap<LocalDate, Duration>,
     val peakHours: ImmutableMap<PeakHour, Int>,

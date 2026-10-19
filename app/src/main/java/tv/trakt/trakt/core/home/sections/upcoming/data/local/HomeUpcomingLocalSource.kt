@@ -8,7 +8,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import java.time.Instant
 
 internal class HomeUpcomingLocalSource {

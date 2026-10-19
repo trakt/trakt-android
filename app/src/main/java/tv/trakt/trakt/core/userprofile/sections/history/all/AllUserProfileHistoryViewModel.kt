@@ -32,11 +32,11 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.userprofile.UserProfileConfig.ALL_PAGE_LIMIT
 import tv.trakt.trakt.core.userprofile.sections.history.usecases.GetUserProfileHistoryUseCase
 import java.time.LocalDate

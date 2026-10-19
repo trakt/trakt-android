@@ -9,10 +9,10 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toLocalTime
+import tv.trakt.trakt.common.model.profile.ScreenTimeData
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalSource
-import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
 import java.time.LocalDate
 import java.time.ZoneOffset.UTC
 import kotlin.math.roundToInt

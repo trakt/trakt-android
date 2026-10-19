@@ -5,9 +5,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.data.local.TodayLocalSource
-import tv.trakt.trakt.core.today.model.TodayForYouItem
 import tv.trakt.trakt.core.today.pill.TodayPillViewModel
 import tv.trakt.trakt.core.today.stories.TodayStoriesViewModel
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel

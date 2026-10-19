@@ -75,11 +75,11 @@ import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityMovieItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage

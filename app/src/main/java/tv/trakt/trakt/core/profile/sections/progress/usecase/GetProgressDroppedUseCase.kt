@@ -7,9 +7,9 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem.ShowItem
 import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedLocalSource
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem.ShowItem
 
 internal class GetProgressDroppedUseCase(
     private val remoteUserSource: UserRemoteSource,

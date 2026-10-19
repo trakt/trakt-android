@@ -1,11 +1,11 @@
-package tv.trakt.trakt.core.search.data.local.model
+package tv.trakt.trakt.common.data.local.model
 
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.Show
 import java.time.Instant
 
 @Serializable
-internal data class PopularShowEntity(
+data class PopularShowEntity(
     val show: Show,
     val rank: Int,
     val createdAt: String,
@@ -13,7 +13,7 @@ internal data class PopularShowEntity(
     companion object
 }
 
-internal fun PopularShowEntity.Companion.create(
+fun PopularShowEntity.Companion.create(
     show: Show,
     rank: Int,
     createdAt: Instant,

@@ -3,8 +3,8 @@ package tv.trakt.trakt.core.settings.usecases
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalSource
-import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalSource
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMoviesLocalSource

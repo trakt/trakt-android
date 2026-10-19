@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile.sections.activity.model
+package tv.trakt.trakt.common.model.profile
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Episode
@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.Show
 import java.time.Instant
 
 @Immutable
-internal sealed interface ProfileRatingItem {
+sealed interface ProfileRatingItem {
     val rating: Int
     val ratedAt: Instant
 

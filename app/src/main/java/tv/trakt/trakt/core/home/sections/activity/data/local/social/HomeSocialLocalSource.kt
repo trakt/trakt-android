@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.home.sections.activity.data.local.social
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 
 internal class HomeSocialLocalSource {
     private val mutex = Mutex()

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.klipy
+package tv.trakt.trakt.common.helpers.extensions
 
 import tv.trakt.trakt.common.model.MediaType
 
@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.model.MediaType
  * Search term the GIF picker uses while the input is empty, e.g. "Ted Lasso show". Season and
  * episode comments belong to a show, so they share the show suffix. Null falls back to trending.
  */
-internal fun MediaType.toGifQuery(title: String?): String? {
+fun MediaType.toGifQuery(title: String?): String? {
     if (title.isNullOrBlank()) return null
 
     val suffix = when (this) {

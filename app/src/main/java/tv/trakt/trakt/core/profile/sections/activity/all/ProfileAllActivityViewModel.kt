@@ -40,13 +40,13 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.lists.ListsConfig.ACTIVITY_PAGE_LIMIT
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Comments
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Ratings
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileCommentsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase

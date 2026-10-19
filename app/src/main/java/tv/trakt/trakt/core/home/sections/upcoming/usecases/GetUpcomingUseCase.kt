@@ -17,9 +17,9 @@ import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalSource
 import java.time.LocalDate

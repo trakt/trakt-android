@@ -13,10 +13,10 @@ import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
+import tv.trakt.trakt.common.data.local.model.PersonEntity
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.search.data.local.model.PersonEntity
 import java.time.Instant
 
 private val KEY_BIRTHDAY_SEARCH_PEOPLE = byteArrayPreferencesKey("key_birthday_search_people_4")

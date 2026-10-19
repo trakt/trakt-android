@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.model.DiscoverSection
+import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.core.discover.sections.all.AllDiscoverScreen
 
 @Serializable

@@ -23,13 +23,13 @@ import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.core.home.sections.social.views.EpisodeSocialItemView
 import tv.trakt.trakt.app.core.home.sections.social.views.MovieSocialItemView
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -38,7 +38,7 @@ internal fun HomeSocialView(
     viewModel: HomeSocialViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (SocialActivityItem?) -> Unit = {},
+    onFocused: (HomeActivityItem?) -> Unit = {},
     onLoaded: () -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToMovie: (movieId: TraktId) -> Unit,
@@ -70,7 +70,7 @@ internal fun HomeSocialContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (SocialActivityItem?) -> Unit = {},
+    onFocused: (HomeActivityItem?) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onMovieClick: (movieId: TraktId) -> Unit = {},
     onViewAllClick: () -> Unit = {},
@@ -119,8 +119,8 @@ internal fun HomeSocialContent(
 
 @Composable
 private fun ContentList(
-    listItems: () -> ImmutableList<SocialActivityItem>,
-    onFocused: (SocialActivityItem?) -> Unit,
+    listItems: () -> ImmutableList<HomeActivityItem>,
+    onFocused: (HomeActivityItem?) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onMovieClick: (TraktId) -> Unit = {},
     onViewAllClick: () -> Unit,
@@ -136,7 +136,7 @@ private fun ContentList(
             key = { it.id },
         ) {
             when (it) {
-                is SocialActivityItem.MovieItem -> {
+                is HomeActivityItem.MovieItem -> {
                     MovieSocialItemView(
                         item = it,
                         onClick = onMovieClick,
@@ -148,7 +148,7 @@ private fun ContentList(
                     )
                 }
 
-                is SocialActivityItem.EpisodeItem -> {
+                is HomeActivityItem.EpisodeItem -> {
                     EpisodeSocialItemView(
                         item = it,
                         onClick = onEpisodeClick,

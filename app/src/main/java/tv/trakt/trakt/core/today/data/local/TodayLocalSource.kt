@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.today.data.local
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.core.today.model.FollowingActivity
-import tv.trakt.trakt.core.today.model.TodayForYouItem
+import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 
 internal class TodayLocalSource {
     private val mutex = Mutex()

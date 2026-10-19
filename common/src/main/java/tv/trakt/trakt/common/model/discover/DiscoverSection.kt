@@ -1,11 +1,11 @@
-package tv.trakt.trakt.core.discover.model
+package tv.trakt.trakt.common.model.discover
 
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import tv.trakt.trakt.resources.R
 
 @Keep
-internal enum class DiscoverSection {
+enum class DiscoverSection {
     Trending,
     Popular,
     Anticipated,

@@ -6,8 +6,8 @@ import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalSource
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
 
 internal class GetProgressCompleteUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteSource,

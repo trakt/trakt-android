@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.profile.sections.activity.data.local.ratings
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 
 internal class ProfileRatingsLocalSource {
     private val mutex = Mutex()

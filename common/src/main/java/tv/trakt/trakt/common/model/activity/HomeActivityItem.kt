@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.activity.model
+package tv.trakt.trakt.common.model.activity
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Episode
@@ -12,7 +12,7 @@ import java.time.Instant
 import kotlin.time.Duration
 
 @Immutable
-internal sealed class HomeActivityItem(
+sealed class HomeActivityItem(
     open val id: Long,
     open val user: User?,
     open val userRating: UserRating?,
@@ -20,7 +20,7 @@ internal sealed class HomeActivityItem(
     open val activityAt: Instant,
 ) {
     @Immutable
-    internal data class MovieItem(
+    data class MovieItem(
         override val id: Long,
         override val user: User?,
         override val userRating: UserRating?,
@@ -30,7 +30,7 @@ internal sealed class HomeActivityItem(
     ) : HomeActivityItem(id, user, userRating, activity, activityAt)
 
     @Immutable
-    internal data class EpisodeItem(
+    data class EpisodeItem(
         override val id: Long,
         override val user: User?,
         override val userRating: UserRating?,

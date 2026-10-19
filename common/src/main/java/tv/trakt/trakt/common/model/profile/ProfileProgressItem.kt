@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.profile.sections.progress.model
+package tv.trakt.trakt.common.model.profile
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.MediaType
@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
 
 @Immutable
-internal sealed interface ProfileProgressItem {
+sealed interface ProfileProgressItem {
     @Immutable
     data class ShowItem(
         val show: Show,

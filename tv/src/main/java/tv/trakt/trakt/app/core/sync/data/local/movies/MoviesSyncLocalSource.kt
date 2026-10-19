@@ -3,9 +3,9 @@ package tv.trakt.trakt.app.core.sync.data.local.movies
 import io.ktor.util.collections.ConcurrentSet
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.app.core.sync.model.WatchedMovie
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sync.WatchedMovie
 import java.time.ZonedDateTime
 import java.util.concurrent.ConcurrentHashMap
 

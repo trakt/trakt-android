@@ -41,8 +41,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager

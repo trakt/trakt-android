@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
+import tv.trakt.trakt.common.model.profile.ScreenTimeData
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.sync.model
+package tv.trakt.trakt.common.model.sync
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.model.TraktId
 import java.time.ZonedDateTime
 
 @Immutable
-internal data class WatchedShow(
+data class WatchedShow(
     val showId: TraktId,
     val episodesPlays: Int,
     val episodesPlaysWithoutSpecials: Int,

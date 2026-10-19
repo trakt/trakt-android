@@ -17,12 +17,12 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalSource
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 
 internal class GetSocialActivityUseCase(
     private val remoteSource: UserSocialRemoteSource,

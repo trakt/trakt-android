@@ -13,9 +13,9 @@ import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
-import tv.trakt.trakt.core.search.data.local.model.PopularListEntity
-import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
-import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
+import tv.trakt.trakt.common.data.local.model.PopularListEntity
+import tv.trakt.trakt.common.data.local.model.PopularMovieEntity
+import tv.trakt.trakt.common.data.local.model.PopularShowEntity
 
 private val KEY_POPULAR_SEARCH_SHOWS = byteArrayPreferencesKey("key_popular_search_shows_2")
 private val KEY_POPULAR_SEARCH_MOVIES = byteArrayPreferencesKey("key_popular_search_movies_2")

@@ -43,7 +43,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityEpisodeItemView
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityMovieItemView
 import tv.trakt.trakt.core.home.views.HomeEmptySocialView

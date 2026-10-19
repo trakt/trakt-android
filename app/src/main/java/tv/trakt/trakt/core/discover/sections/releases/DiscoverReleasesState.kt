@@ -3,8 +3,8 @@ package tv.trakt.trakt.core.discover.sections.releases
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 
 @Immutable

@@ -15,8 +15,8 @@ import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverSection
+import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.discover.DiscoverSection
 
 internal class DiscoverMediaLocalSource(
     private val dataStore: DataStore<Preferences>,

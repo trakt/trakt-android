@@ -7,9 +7,9 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 
 internal const val HISTORY_PAGE_LIMIT = 100
 

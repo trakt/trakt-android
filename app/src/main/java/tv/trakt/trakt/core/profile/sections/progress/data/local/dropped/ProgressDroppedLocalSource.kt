@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.profile.sections.progress.data.local.dropped
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 
 internal class ProgressDroppedLocalSource {
     private val mutex = Mutex()

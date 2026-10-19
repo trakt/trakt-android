@@ -11,13 +11,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.today.model.TodayForYouItem
 import tv.trakt.trakt.core.today.usecases.UpdateTodayHistoryUseCase
 
 private const val ANALYTICS_SOURCE = "today_stories"

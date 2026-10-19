@@ -16,10 +16,10 @@ import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import java.time.DayOfWeek.MONDAY
 import java.time.DayOfWeek.SUNDAY

@@ -34,12 +34,12 @@ import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem.MovieItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem.ShowItem
+import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_ALL_LIMIT
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
-import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.sections.all.navigation.DiscoverDestination
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase

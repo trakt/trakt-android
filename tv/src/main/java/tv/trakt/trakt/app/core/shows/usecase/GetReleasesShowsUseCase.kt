@@ -2,7 +2,6 @@ package tv.trakt.trakt.app.core.shows.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_SECTION_LIMIT
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
@@ -11,6 +10,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.fromDto
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit.DAYS
@@ -26,7 +26,7 @@ internal class GetReleasesShowsUseCase(
     suspend fun getReleases(
         limit: Int = SHOWS_SECTION_LIMIT,
         range: Int = DAYS_RANGE,
-    ): ImmutableList<HomeUpcomingItem.EpisodeItem> {
+    ): ImmutableList<CalendarItem.EpisodeItem> {
         val startDate = nowUtcInstant()
         val startDay = startDate.toLocalDay()
 
@@ -51,14 +51,14 @@ internal class GetReleasesShowsUseCase(
                     .sortedBy { it.number }
                     .toImmutableList()
 
-                HomeUpcomingItem.EpisodeItem(
+                CalendarItem.EpisodeItem(
                     show = entries.first().first,
                     episodes = episodes,
                     isFullSeason = episodes.isFullSeason(),
                 )
             }
             .filter { (it.episode.releasedAt?.toLocalDay() ?: LocalDate.MIN) >= startDay }
-            .sortedBy { it.releaseAt }
+            .sortedBy { it.releasedAt }
             .take(limit)
             .toImmutableList()
             .also { items ->

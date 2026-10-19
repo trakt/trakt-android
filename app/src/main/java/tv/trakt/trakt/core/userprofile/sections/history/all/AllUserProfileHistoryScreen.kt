@@ -55,11 +55,11 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.EpisodeItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityEpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityMovieItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters

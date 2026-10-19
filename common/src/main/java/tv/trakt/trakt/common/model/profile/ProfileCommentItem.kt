@@ -1,18 +1,18 @@
-package tv.trakt.trakt.core.profile.sections.activity.model
+package tv.trakt.trakt.common.model.profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.helpers.extensions.toGifQuery
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.klipy.toGifQuery
 import java.time.Instant
 
 @Immutable
-internal sealed interface ProfileCommentItem {
+sealed interface ProfileCommentItem {
     val comment: Comment
 
     @Immutable

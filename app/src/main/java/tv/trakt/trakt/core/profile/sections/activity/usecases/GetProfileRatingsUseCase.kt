@@ -10,8 +10,8 @@ import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalSource
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 
 internal class GetProfileRatingsUseCase(
     private val remoteSource: UserRatingsRemoteSource,

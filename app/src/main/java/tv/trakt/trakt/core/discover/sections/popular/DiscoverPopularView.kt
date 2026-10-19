@@ -54,9 +54,9 @@ import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem.MovieItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R

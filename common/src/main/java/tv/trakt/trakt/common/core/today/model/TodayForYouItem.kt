@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.today.model
+package tv.trakt.trakt.common.core.today.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.core.today.model.TodayMedia
@@ -8,7 +8,7 @@ import java.time.Instant
 import java.time.ZoneId
 
 @Immutable
-internal sealed interface TodayForYouItem {
+sealed interface TodayForYouItem {
     val key: String
     val media: TodayMedia
     val releasedAt: Instant

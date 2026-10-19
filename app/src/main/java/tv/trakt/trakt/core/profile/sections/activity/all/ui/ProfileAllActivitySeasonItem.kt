@@ -25,7 +25,7 @@ import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size.THUMB
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import java.time.Instant
 
 internal class HomePersonalLocalSource {

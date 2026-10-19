@@ -42,10 +42,10 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase

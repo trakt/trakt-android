@@ -1,12 +1,12 @@
 package tv.trakt.trakt.app.core.details.show.usecases.collection
 
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
-import tv.trakt.trakt.app.core.sync.model.WatchedShow
 import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sync.WatchedShow
 
 internal class ChangeHistoryUseCase(
     private val remoteSource: ShowsSyncRemoteSource,

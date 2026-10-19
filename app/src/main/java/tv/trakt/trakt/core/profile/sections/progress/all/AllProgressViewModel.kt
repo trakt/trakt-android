@@ -30,9 +30,9 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.core.lists.ListsConfig.PROGRESS_PAGE_LIMIT
 import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Dropped
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Ended

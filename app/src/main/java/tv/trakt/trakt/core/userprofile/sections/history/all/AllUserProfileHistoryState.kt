@@ -6,8 +6,8 @@ import kotlinx.collections.immutable.ImmutableMap
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import java.time.LocalDate
 
 @Immutable

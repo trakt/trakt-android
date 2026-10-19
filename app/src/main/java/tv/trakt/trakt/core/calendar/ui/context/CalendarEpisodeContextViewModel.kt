@@ -34,7 +34,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase

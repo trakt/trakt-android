@@ -18,10 +18,10 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.EpisodeItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 

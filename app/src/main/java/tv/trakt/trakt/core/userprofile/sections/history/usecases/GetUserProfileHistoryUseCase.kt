@@ -11,10 +11,10 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 
 internal class GetUserProfileHistoryUseCase(
     private val remoteUserSource: UserHistoryRemoteSource,

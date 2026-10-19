@@ -48,9 +48,6 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
-import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -64,6 +61,8 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.calendar.CalendarItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.resources.R
 
@@ -248,7 +247,7 @@ private fun ShowsScreenContent(
 @Composable
 private fun TrendingShowsList(
     header: String,
-    shows: ImmutableList<TrendingShow>?,
+    shows: ImmutableList<DiscoverItem.ShowItem>?,
     collection: UserCollectionState,
     isLoading: Boolean,
     onShowFocus: (Show) -> Unit,
@@ -288,7 +287,7 @@ private fun TrendingShowsList(
                 items(
                     items = shows,
                     key = { item -> item.show.ids.trakt.value },
-                ) { (watchers, show) ->
+                ) { (show, watchers) ->
                     VerticalMediaCard(
                         title = show.title,
                         watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
@@ -343,10 +342,10 @@ private fun TrendingShowsList(
 @Composable
 private fun ReleasesShowsList(
     header: String,
-    episodes: ImmutableList<HomeUpcomingItem.EpisodeItem>?,
+    episodes: ImmutableList<CalendarItem.EpisodeItem>?,
     isLoading: Boolean,
-    onFocused: (HomeUpcomingItem.EpisodeItem) -> Unit,
-    onClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
+    onFocused: (CalendarItem.EpisodeItem) -> Unit,
+    onClick: (CalendarItem.EpisodeItem) -> Unit,
     onViewAllClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
     modifier: Modifier = Modifier,
@@ -399,7 +398,7 @@ private fun ReleasesShowsList(
                                     ?.let { EpisodeStatusChip(status = it) }
 
                                 InfoChip(
-                                    text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
+                                    text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                                     iconPainter = when {
                                         item.episode.isReleased -> painterResource(R.drawable.ic_calendar_check)
                                         else -> painterResource(R.drawable.ic_calendar_upcoming)
@@ -413,7 +412,7 @@ private fun ReleasesShowsList(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
                                 Text(
-                                    text = item.title,
+                                    text = item.show.title,
                                     style = TraktTheme.typography.cardTitle,
                                     color = TraktTheme.colors.textPrimary,
                                     maxLines = 1,
@@ -467,7 +466,7 @@ private fun ReleasesShowsList(
 @Composable
 private fun AnticipatedShowsList(
     header: String,
-    shows: List<AnticipatedShow>?,
+    shows: List<DiscoverItem.ShowItem>?,
     collection: UserCollectionState,
     isLoading: Boolean,
     onFocusedShow: (Show) -> Unit,
@@ -503,7 +502,7 @@ private fun AnticipatedShowsList(
                 items(
                     items = shows,
                     key = { item -> item.show.ids.trakt.value },
-                ) { (listCount, show) ->
+                ) { (show, listCount) ->
                     VerticalMediaCard(
                         title = show.title,
                         watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
@@ -645,12 +644,12 @@ private fun Preview() {
         ShowsScreenContent(
             state = ShowsState(
                 trendingShows = listOf(
-                    TrendingShow(
-                        watchers = 12341,
+                    DiscoverItem.ShowItem(
+                        count = 12341,
                         show = PreviewData.show1,
                     ),
-                    TrendingShow(
-                        watchers = 872,
+                    DiscoverItem.ShowItem(
+                        count = 872,
                         show = PreviewData.show2,
                     ),
                 ).toImmutableList(),
@@ -676,12 +675,12 @@ private fun Preview2() {
             state = ShowsState(
                 isLoading = true,
                 trendingShows = listOf(
-                    TrendingShow(
-                        watchers = 12341,
+                    DiscoverItem.ShowItem(
+                        count = 12341,
                         show = PreviewData.show1,
                     ),
-                    TrendingShow(
-                        watchers = 872,
+                    DiscoverItem.ShowItem(
+                        count = 872,
                         show = PreviewData.show2,
                     ),
                 ).toImmutableList(),

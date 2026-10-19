@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.profile.ScreenTimeData
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.profile.ProfileViewModel
 import tv.trakt.trakt.core.profile.sections.activity.ProfileActivityViewModel
@@ -56,7 +57,6 @@ import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatching
 import tv.trakt.trakt.core.profile.sections.screentime.ProfileScreenTimeViewModel
 import tv.trakt.trakt.core.profile.sections.screentime.all.ScreenTimeAllViewModel
 import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalSource
-import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
 import tv.trakt.trakt.core.profile.sections.screentime.usecase.GetScreenTimeUseCase
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.all.AllProfileSocialViewModel

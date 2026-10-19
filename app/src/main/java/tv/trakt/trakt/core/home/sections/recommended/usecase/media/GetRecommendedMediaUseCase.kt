@@ -9,11 +9,11 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedSource
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaRecommendationResponse
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalSource
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 
 /**
  * Loads interleaved show and movie recommendations for Media mode.

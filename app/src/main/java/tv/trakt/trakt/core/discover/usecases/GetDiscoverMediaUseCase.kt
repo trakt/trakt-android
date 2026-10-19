@@ -8,20 +8,20 @@ import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.MediaRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.discover.DiscoverSection
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Anticipated
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Popular
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Recommended
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Trending
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.common.networking.AnticipatedMediaDto
 import tv.trakt.trakt.common.networking.PopularMediaDto
 import tv.trakt.trakt.common.networking.TrendingMediaDto
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalSource
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverSection
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Anticipated
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Popular
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Recommended
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Trending
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 

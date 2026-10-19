@@ -3,12 +3,12 @@ package tv.trakt.trakt.app.core.shows.usecase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_SECTION_LIMIT
-import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.fromDto
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -19,15 +19,15 @@ internal class GetAnticipatedShowsUseCase(
     suspend fun getAnticipatedShows(
         limit: Int = SHOWS_SECTION_LIMIT,
         page: Int = 1,
-    ): ImmutableList<AnticipatedShow> {
+    ): ImmutableList<DiscoverItem.ShowItem> {
         return remoteSource.getAnticipated(
             page = page,
             limit = limit,
             endDate = nowUtcInstant().plus(365, DAYS).truncatedTo(DAYS),
         )
             .asyncMap {
-                AnticipatedShow(
-                    listCount = it.listCount,
+                DiscoverItem.ShowItem(
+                    count = it.listCount,
                     show = Show.fromDto(it.show),
                 )
             }

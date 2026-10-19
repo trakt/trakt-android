@@ -17,11 +17,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.helpers.extensions.toGifQuery
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.comments.model.MentionSource
-import tv.trakt.trakt.core.klipy.toGifQuery
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration

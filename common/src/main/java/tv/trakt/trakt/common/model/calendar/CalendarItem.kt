@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.calendar.model
+package tv.trakt.trakt.common.model.calendar
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -14,24 +14,24 @@ import java.time.ZoneOffset.UTC
 
 @Immutable
 @Serializable
-internal sealed class CalendarItem {
+sealed class CalendarItem {
     abstract val watched: Boolean
 
     @Immutable
     @Serializable
-    internal data class MovieItem(
+    data class MovieItem(
         val movie: Movie,
-        override val watched: Boolean,
+        override val watched: Boolean = false,
     ) : CalendarItem()
 
     @Immutable
     @Serializable
-    internal data class EpisodeItem(
+    data class EpisodeItem(
         val show: Show,
         @Serializable(ImmutableListSerializer::class)
         val episodes: ImmutableList<Episode>,
         val isFullSeason: Boolean = false,
-        override val watched: Boolean,
+        override val watched: Boolean = false,
     ) : CalendarItem() {
         val episode: Episode
             get() = episodes.first()
@@ -47,6 +47,12 @@ internal sealed class CalendarItem {
         get() = when (this) {
             is MovieItem -> null
             is EpisodeItem -> show.ids.trakt
+        }
+
+    val key: String
+        get() = when (this) {
+            is MovieItem -> "${id.value}-movie"
+            is EpisodeItem -> "${id.value}-episode"
         }
 
     val title: String

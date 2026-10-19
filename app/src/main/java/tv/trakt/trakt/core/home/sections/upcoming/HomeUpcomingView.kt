@@ -50,7 +50,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.core.calendar.ui.context.sheet.CalendarEpisodeContextSheet
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.home.sections.upcoming.views.EpisodeUpcomingItemView

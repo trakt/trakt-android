@@ -9,8 +9,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem
 import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalSource
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
 
 internal class GetProfileCommentsUseCase(
     private val remoteSource: UserRemoteSource,

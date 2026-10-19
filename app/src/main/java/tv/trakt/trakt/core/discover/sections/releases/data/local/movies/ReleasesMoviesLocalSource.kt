@@ -16,7 +16,7 @@ import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 
 private val KEY_RELEASES_MOVIES = byteArrayPreferencesKey("key_releases_movies")
 

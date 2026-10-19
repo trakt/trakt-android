@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.recommended.model
+package tv.trakt.trakt.common.model.recommended
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -14,12 +14,12 @@ import tv.trakt.trakt.resources.R
 
 @Immutable
 @Serializable
-internal sealed class RecommendedItem {
+sealed class RecommendedItem {
     abstract val sources: ImmutableList<RecommendedSource>
 
     @Immutable
     @Serializable
-    internal data class MovieItem(
+    data class MovieItem(
         val movie: Movie,
         @Serializable(ImmutableListSerializer::class)
         override val sources: ImmutableList<RecommendedSource> = persistentListOf(),
@@ -27,7 +27,7 @@ internal sealed class RecommendedItem {
 
     @Immutable
     @Serializable
-    internal data class ShowItem(
+    data class ShowItem(
         val show: Show,
         @Serializable(ImmutableListSerializer::class)
         override val sources: ImmutableList<RecommendedSource> = persistentListOf(),

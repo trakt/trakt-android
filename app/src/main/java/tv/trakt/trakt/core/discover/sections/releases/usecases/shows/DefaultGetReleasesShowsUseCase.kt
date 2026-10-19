@@ -8,9 +8,9 @@ import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
 import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalSource
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType.All

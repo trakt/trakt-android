@@ -30,7 +30,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.core.home.sections.social.views.EpisodeSocialItemView
 import tv.trakt.trakt.app.core.home.sections.social.views.MovieSocialItemView
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
@@ -38,6 +37,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -67,7 +67,7 @@ private fun SocialViewAllContent(
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onMovieClick: (TraktId) -> Unit,
 ) {
-    var focusedItem by remember { mutableStateOf<SocialActivityItem?>(null) }
+    var focusedItem by remember { mutableStateOf<HomeActivityItem?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<Long?>(null) }
     val focusRequesters = remember { mutableMapOf<Long, FocusRequester>() }
 
@@ -132,7 +132,7 @@ private fun SocialViewAllContent(
             } else if (!state.items.isNullOrEmpty()) {
                 items(
                     count = state.items.size,
-                    key = { index -> "${state.items[index].id}_${state.items[index].type}" },
+                    key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
                     val focusRequester = focusRequesters.getOrPut(item.id) {
@@ -140,7 +140,7 @@ private fun SocialViewAllContent(
                     }
 
                     when (item) {
-                        is SocialActivityItem.MovieItem -> {
+                        is HomeActivityItem.MovieItem -> {
                             MovieSocialItemView(
                                 item = item,
                                 onClick = onMovieClick,
@@ -153,7 +153,7 @@ private fun SocialViewAllContent(
                             )
                         }
 
-                        is SocialActivityItem.EpisodeItem -> {
+                        is HomeActivityItem.EpisodeItem -> {
                             EpisodeSocialItemView(
                                 item = item,
                                 onClick = onEpisodeClick,

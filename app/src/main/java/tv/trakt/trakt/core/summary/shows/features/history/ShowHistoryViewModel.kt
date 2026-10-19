@@ -43,10 +43,10 @@ import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.history.navigation.ShowHistoryDestination
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.HISTORY_PAGE_LIMIT
