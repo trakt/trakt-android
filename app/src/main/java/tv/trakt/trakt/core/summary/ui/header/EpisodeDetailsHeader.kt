@@ -119,16 +119,17 @@ internal fun DetailsHeader(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .alpha(animatedAlpha)
-                    .padding(top = 1.dp),
+                    .padding(top = 2.dp),
             ) {
                 Text(
                     text = "${stringResource(R.string.text_directed_by_short)} ",
-                    color = TraktTheme.colors.textPrimary,
+                    color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.paragraphSmaller,
                 )
 
                 Text(
                     text = (creator?.name ?: "").ifBlank { "-" },
+                    fontWeight = FontWeight.SemiBold,
                     color = when {
                         creator?.name?.isNotBlank() == true -> TraktTheme.colors.textPrimary
                         else -> TraktTheme.colors.textSecondary
