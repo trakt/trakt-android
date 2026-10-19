@@ -1363,7 +1363,7 @@
   <string name="match_label_soulmates">Споріднені душі</string>
   <string name="match_label_spin_off">Спін-офф</string>
   <string name="match_pill_anchor">Збіг:</string>
-  <string name="match_pill_aria_label">%1$d% відповідності, %2$s. Відкрити деталі відповідності.</string>
+  <string name="match_pill_aria_label">%1$d%% відповідності, %2$s. Відкрити деталі відповідності.</string>
   <string name="match_pill_loading_aria_label">Обчислення оцінки сумісності</string>
   <string name="mir_banner_body">Ваш щомісячний огляд готовий. Ось що ви переглянули у %s.</string>
   <string name="mir_banner_body_short">Ваш огляд за %s готовий.</string>
@@ -1596,7 +1596,7 @@
   <string name="tag_media_sync_webhook_only">Вебхук лише</string>
   <string name="tag_mixtape_different_mood">Інший настрій</string>
   <string name="tag_mixtape_kept">Збережено</string>
-  <string name="tag_mixtape_match">%s% збіг</string>
+  <string name="tag_mixtape_match">%s%% збіг</string>
   <string name="tag_mixtape_tap_details">Торкніться, щоб дізнатися деталі</string>
   <string name="tag_text_blocked_user">Заблоковано</string>
   <string name="tag_text_deal_price">Перші 2 роки</string>
@@ -2759,7 +2759,7 @@
   <string name="yir_2026_preview_runner_none">Немає (без гібрида)</string>
   <string name="yir_2026_preview_runner_up">Друге місце</string>
   <string name="yir_2026_preview_title">Попередній перегляд персони</string>
-  <string name="yir_2026_rarity">Лише %1$d% є %2$s</string>
+  <string name="yir_2026_rarity">Лише %1$d%% є %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Трохи %s</string>
   <string name="yir_2026_reel_and_you_are">І ви є</string>
   <string name="yir_2026_reel_but_mostly">Але переважно</string>
