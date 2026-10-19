@@ -2082,7 +2082,7 @@
   <string name="button_label_show_section">Показати {s_section}</string>
   <string name="button_label_hide_section">Приховати {s_section}</string>
   <string name="button_label_edit_mode">Режим редагування</string>
-  <string name="match_pill_aria_label">{n_score}% відповідності, {s_label}. Відкрити деталі відповідності.</string>
+  <string name="match_pill_aria_label">{n_score}%% відповідності, {s_label}. Відкрити деталі відповідності.</string>
   <string name="match_pill_loading_aria_label">Обчислення оцінки сумісності</string>
   <string name="match_pill_anchor">Збіг:</string>
   <string name="match_drawer_title">Розбивка збігу</string>
@@ -2459,7 +2459,7 @@
   <string name="yir_2026_reel_see_stats">Переглянути всю мою статистику</string>
   <string name="yir_2026_reel_jump_back">Повернутися до</string>
   <string name="yir_2026_hybrid">із серією {s_persona}</string>
-  <string name="yir_2026_rarity">Лише {n_percent}% є {s_persona}</string>
+  <string name="yir_2026_rarity">Лише {n_percent}%% є {s_persona}</string>
   <string name="yir_2026_replay">Відтворити ваш 2026 рік</string>
   <string name="yir_2026_watch_reel">Переглянути ролик {s_name}</string>
   <string name="yir_2026_traits">Риси</string>
@@ -2803,7 +2803,7 @@
   <string name="button_text_mixtape_another">Ще</string>
   <string name="text_mixtape_or_swipe">або проведіть</string>
   <string name="tag_mixtape_tap_details">Торкніться, щоб дізнатися деталі</string>
-  <string name="tag_mixtape_match">{match}% збіг</string>
+  <string name="tag_mixtape_match">{match}%% збіг</string>
   <string name="button_label_mixtape_another">Не цей, показати інший</string>
   <string name="button_text_mixtape_show_another">Показати інший</string>
   <string name="button_label_mixtape_show_another_for">Показати інший замість {title}</string>
