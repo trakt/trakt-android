@@ -63,7 +63,7 @@ interface Analytics {
     )
 
     /**
-     * Logs a search that returned results.
+     * Logs a search for a non-empty query, whether or not it returned results.
      * @param mode The searched catalogue (media, show, movie, people, lists).
      */
     fun logSearch(mode: String)

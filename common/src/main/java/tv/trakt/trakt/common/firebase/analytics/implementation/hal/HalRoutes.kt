@@ -28,7 +28,7 @@ private val WEB_ROUTES = mapOf(
     "settings" to "/settings",
     "billing" to "/vip",
     "today_stories" to "/today",
-    "game" to "/play/rated-higher",
+    "game_rated_higher" to "/play/rated-higher",
 )
 
 internal fun halRoute(screenName: String): String {
