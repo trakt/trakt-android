@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.model.TodayMilestone
 import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayTitleStory
+import tv.trakt.trakt.core.today.model.analyticsType
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetails
 import tv.trakt.trakt.core.today.stories.details.TodayPosterDetailsViewModel
 import tv.trakt.trakt.core.today.stories.watched.TodayWatchedButton
@@ -329,6 +330,7 @@ private fun TodayStoryFooter(
         when (frame) {
             is TodayStoryFrame.Title -> TodayWatchlistButton(
                 media = media,
+                frameType = frame.analyticsType,
                 viewModel = koinViewModel(
                     key = "today-watchlist-${media.key}",
                     parameters = { parametersOf(media) },

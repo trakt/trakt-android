@@ -15,11 +15,14 @@ import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.model.streamings.StreamingService
 
 internal class ShowDetailsContextViewModel(
     private val show: Show,
     private val sessionManager: SessionManager,
     private val getStreamingsUseCase: GetPriorityStreamingUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ShowDetailsContextState()
 
@@ -74,6 +77,10 @@ internal class ShowDetailsContextViewModel(
                 streamingsState.update { it.copy(loading = false) }
             }
         }
+    }
+
+    fun logStreamOn(service: StreamingService) {
+        analytics.playback.logStreamOn(service.source)
     }
 
     val state: StateFlow<ShowDetailsContextState> = combine(

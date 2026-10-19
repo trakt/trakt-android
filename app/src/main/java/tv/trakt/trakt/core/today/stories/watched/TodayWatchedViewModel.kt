@@ -21,6 +21,8 @@ import tv.trakt.trakt.core.today.model.TodayForYouItem
 import tv.trakt.trakt.core.today.usecases.UpdateTodayHistoryUseCase
 
 private const val ANALYTICS_SOURCE = "today_stories"
+private const val TODAY_ACTION = "mark-as-watched"
+private const val TODAY_FRAME = "for-you"
 
 /** For You items are unwatched by definition, so the button starts unwatched. */
 @Suppress("UNCHECKED_CAST")
@@ -58,6 +60,7 @@ internal class TodayWatchedViewModel(
                     source = ANALYTICS_SOURCE,
                     date = null,
                 )
+                analytics.today.logAction(action = TODAY_ACTION, frame = TODAY_FRAME)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     isWatchedState.update { false }
@@ -83,6 +86,7 @@ internal class TodayWatchedViewModel(
                     mediaType = mediaType,
                     source = ANALYTICS_SOURCE,
                 )
+                analytics.today.logAction(action = TODAY_ACTION, frame = TODAY_FRAME)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     isWatchedState.update { true }

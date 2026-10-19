@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -54,6 +55,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 
 private const val PAGE_LIMIT = LISTS_ITEMS_ALL_LIMIT
 
@@ -70,6 +72,7 @@ internal class ListDetailsViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsDetailsDestination>()
     private val destinationList = Json.decodeFromString<CustomList>(destination.listJson)
@@ -290,6 +293,7 @@ internal class ListDetailsViewModel(
                 order = newSorting.order,
             )
         }
+        analytics.lists.logListSort(newSorting)
 
         loadData()
     }
@@ -320,6 +324,7 @@ internal class ListDetailsViewModel(
                 }
 
                 likedState.update { LikedInfo(liked = liked) }
+                analytics.lists.logListLike(liked = liked)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

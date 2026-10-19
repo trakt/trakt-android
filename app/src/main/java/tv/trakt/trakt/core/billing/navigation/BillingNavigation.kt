@@ -8,7 +8,9 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.core.billing.BillingScreen
 
 @Serializable
-internal data object BillingDestination
+internal data class BillingDestination(
+    val source: String,
+)
 
 internal fun NavGraphBuilder.billingScreen(onNavigateBack: () -> Unit) {
     composable<BillingDestination> {
@@ -19,6 +21,6 @@ internal fun NavGraphBuilder.billingScreen(onNavigateBack: () -> Unit) {
     }
 }
 
-internal fun NavController.navigateToBilling() {
-    navigate(route = BillingDestination)
+internal fun NavController.navigateToBilling(source: String) {
+    navigate(route = BillingDestination(source = source))
 }

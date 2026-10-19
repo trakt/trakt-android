@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import kotlin.time.Duration.Companion.milliseconds
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 
 @OptIn(FlowPreview::class)
 internal class AllFavoritesViewModel(
@@ -56,7 +57,7 @@ internal class AllFavoritesViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val favoritesUpdates: FavoritesUpdates,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllFavoritesState()
 
@@ -210,6 +211,7 @@ internal class AllFavoritesViewModel(
                 order = newSorting.order,
             )
         }
+        analytics.lists.logListSort(newSorting)
 
         loadData(localOnly = true)
     }

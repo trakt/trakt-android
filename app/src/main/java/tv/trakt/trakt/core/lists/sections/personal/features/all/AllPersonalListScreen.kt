@@ -173,6 +173,7 @@ internal fun AllPersonalListScreen(
             )
         },
         onShareClick = {
+            viewModel.logShare()
             shareList(
                 context = context,
                 user = state.user,

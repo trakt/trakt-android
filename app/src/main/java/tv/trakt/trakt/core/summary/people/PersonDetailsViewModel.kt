@@ -43,7 +43,7 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
 internal class PersonDetailsViewModel(
-    analytics: Analytics,
+    private val analytics: Analytics,
     savedStateHandle: SavedStateHandle,
     private val sessionManager: SessionManager,
     private val getPersonUseCase: GetPersonUseCase,
@@ -245,6 +245,10 @@ internal class PersonDetailsViewModel(
     fun clearNavigation() {
         navigateShow.update { null }
         navigateMovie.update { null }
+    }
+
+    fun logShare() {
+        analytics.logShare(source = "person", type = null)
     }
 
     @Suppress("UNCHECKED_CAST")

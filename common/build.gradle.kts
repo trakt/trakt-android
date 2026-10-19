@@ -74,6 +74,7 @@ dependencies {
 
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.datastore)
+    implementation(libs.androidx.work)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
@@ -95,6 +96,7 @@ dependencies {
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android.compose)
+    implementation(libs.koin.android.work)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)

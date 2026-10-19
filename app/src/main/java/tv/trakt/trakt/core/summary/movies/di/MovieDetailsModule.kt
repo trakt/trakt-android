@@ -113,6 +113,7 @@ internal val movieDetailsModule = module {
             sessionManager = get(),
             getStreamingsUseCase = get(),
             collapsingManager = get(),
+            analytics = get(),
         )
     }
 
@@ -192,6 +193,7 @@ internal val movieDetailsModule = module {
             movie = movie,
             sessionManager = get(),
             getStreamingsUseCase = get(),
+            analytics = get(),
         )
     }
 
@@ -204,6 +206,7 @@ internal val movieDetailsModule = module {
             removeListItemUseCase = get(),
             detailsUpdates = get(),
             errorsManager = get(),
+            analytics = get(),
         )
     }
 }

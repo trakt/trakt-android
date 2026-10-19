@@ -1,10 +1,12 @@
 package tv.trakt.trakt.core.sync.usecases
 
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
@@ -20,6 +22,7 @@ internal class UpdateShowHistoryUseCase(
     private val remoteEpisodesSource: EpisodesRemoteDataSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val widgetsUpdater: WidgetsUpdater,
+    private val analytics: Analytics,
 ) {
     suspend fun addToWatched(
         showId: TraktId,
@@ -66,6 +69,7 @@ internal class UpdateShowHistoryUseCase(
 
     suspend fun dropShow(showId: TraktId) {
         remoteSource.dropShow(showId)
+        analytics.progress.logDrop(MediaType.Show.value)
         widgetsUpdater.refreshInBackground()
     }
 

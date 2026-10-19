@@ -135,6 +135,7 @@ internal fun ProfileScreen(
         onNavigateToSocial = onNavigateToSocial,
         onLeaderboardClick = onNavigateToLeaderboard,
         onShareClick = {
+            viewModel.logShare()
             shareProfile(
                 user = state.user,
                 context = context,

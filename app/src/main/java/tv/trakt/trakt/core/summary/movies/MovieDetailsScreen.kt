@@ -181,7 +181,10 @@ internal fun MovieDetailsScreen(
             }
         },
         onShareClick = {
-            state.movie?.let { shareMovie(it, state.user?.settings?.shareCode, context) }
+            state.movie?.let {
+                viewModel.logShare()
+                shareMovie(it, state.user?.settings?.shareCode, context)
+            }
         },
         onShareImageClick = {
             state.movie?.let { shareSheet = true }
@@ -193,10 +196,12 @@ internal fun MovieDetailsScreen(
         },
         onTrailerClick = {
             state.movie?.trailer?.let { url ->
+                viewModel.logTrailer()
                 onTrailerClick(url)
             }
         },
         onExtraClick = { extra ->
+            viewModel.logExtra(extra)
             onExtraClick(extra)
         },
         onWatchlistClick = {

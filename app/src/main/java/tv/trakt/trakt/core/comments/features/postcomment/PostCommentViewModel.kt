@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.comments.helpers.commentAnalyticsContent
 import tv.trakt.trakt.core.comments.model.CommentMention
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.usecases.GetCommentMentionsUseCase
@@ -109,6 +110,7 @@ internal class PostCommentViewModel(
 
                 analytics.comments.logCommentAdd(
                     mediaType = mediaType.value,
+                    content = commentAnalyticsContent(comment, gif),
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {

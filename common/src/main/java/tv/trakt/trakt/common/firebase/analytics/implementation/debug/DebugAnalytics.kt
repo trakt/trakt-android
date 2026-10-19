@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.firebase.analytics.implementation
+package tv.trakt.trakt.common.firebase.analytics.implementation.debug
 
 import timber.log.Timber
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -10,6 +10,8 @@ internal class DebugAnalytics(
     override val progress: Analytics.Progress,
     override val trivia: Analytics.Trivia,
     override val playback: Analytics.Playback,
+    override val lists: Analytics.Lists,
+    override val today: Analytics.Today,
 ) : Analytics {
     override fun setUserId(userId: String?) {
         Timber.d("setUserId: $userId")
@@ -47,6 +49,53 @@ internal class DebugAnalytics(
         result: String,
     ) {
         Timber.d("logShareArrival: type=%s, result=%s", type, result)
+    }
+
+    override fun logSearch(mode: String) {
+        Timber.d("logSearch: mode=%s", mode)
+    }
+
+    override fun logVipUpgrade(plan: String) {
+        Timber.d("logVipUpgrade: plan=%s", plan)
+    }
+
+    override fun logVipUpsell(source: String) {
+        Timber.d("logVipUpsell: source=%s", source)
+    }
+
+    override fun logShare(
+        source: String,
+        type: String?,
+    ) {
+        Timber.d("logShare: source=%s, type=%s", source, type)
+    }
+
+    override fun logFollow(action: String) {
+        Timber.d("logFollow: action=%s", action)
+    }
+
+    override fun logBlock(blocked: Boolean) {
+        Timber.d("logBlock: blocked=%s", blocked)
+    }
+
+    override fun logTheme(theme: String) {
+        Timber.d("logTheme: theme=%s", theme)
+    }
+
+    override fun logCoverImage(mediaType: String) {
+        Timber.d("logCoverImage: mediaType=%s", mediaType)
+    }
+
+    override fun logCalendarPeriod(action: String) {
+        Timber.d("logCalendarPeriod: action=%s", action)
+    }
+
+    override fun logFilter(
+        id: String,
+        set: Boolean,
+        mode: String,
+    ) {
+        Timber.d("logFilter: id=%s, set=%s, mode=%s", id, set, mode)
     }
 }
 
@@ -89,6 +138,13 @@ internal class DebugAnalyticsRatings : Analytics.Ratings {
         Timber.d("logRatingRemove: mediaType=${mediaType.lowercase()}")
     }
 
+    override fun logRatingChange(
+        rating: Int,
+        mediaType: String,
+    ) {
+        Timber.d("logRatingChange: rating=%d, mediaType=%s", rating, mediaType.lowercase())
+    }
+
     override fun logFavoriteAdd(mediaType: String) {
         Timber.d("logFavoriteAdd: mediaType=${mediaType.lowercase()}")
     }
@@ -102,16 +158,23 @@ internal class DebugAnalyticsRatings : Analytics.Ratings {
 }
 
 internal class DebugAnalyticsComments : Analytics.Comments {
-    override fun logCommentAdd(mediaType: String) {
-        Timber.d("logCommentAdd: mediaType=${mediaType.lowercase()}")
+    override fun logCommentAdd(
+        mediaType: String,
+        content: Analytics.CommentContent,
+    ) {
+        Timber.d("logCommentAdd: mediaType=%s, content=%s", mediaType.lowercase(), content)
     }
 
     override fun logCommentRemove() {
         Timber.d("logCommentRemove")
     }
 
-    override fun logReplyAdd() {
-        Timber.d("logReplyAdd")
+    override fun logReplyAdd(content: Analytics.CommentContent) {
+        Timber.d("logReplyAdd: content=%s", content)
+    }
+
+    override fun logCommentEdit(content: Analytics.CommentContent) {
+        Timber.d("logCommentEdit: content=%s", content)
     }
 
     override fun logReplyRemove() {
@@ -155,6 +218,22 @@ internal class DebugAnalyticsProgress : Analytics.Progress {
     ) {
         Timber.d("logRemoveWatchedMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
     }
+
+    override fun logCheckInStart(mediaType: String) {
+        Timber.d("logCheckInStart: mediaType=%s", mediaType)
+    }
+
+    override fun logCheckInStop(mediaType: String) {
+        Timber.d("logCheckInStop: mediaType=%s", mediaType)
+    }
+
+    override fun logDrop(mediaType: String) {
+        Timber.d("logDrop: mediaType=%s", mediaType)
+    }
+
+    override fun logHideRecommendation(mediaType: String) {
+        Timber.d("logHideRecommendation: mediaType=%s", mediaType)
+    }
 }
 
 internal class DebugAnalyticsTrivia : Analytics.Trivia {
@@ -170,5 +249,90 @@ internal class DebugAnalyticsPlayback : Analytics.Playback {
 
     override fun logPlaybackStop(mediaType: String) {
         Timber.d("logPlaybackStop: mediaType=${mediaType.lowercase()}")
+    }
+
+    override fun logTrailer(slug: String) {
+        Timber.d("logTrailer: slug=%s", slug)
+    }
+
+    override fun logExtras(
+        slug: String,
+        type: String,
+    ) {
+        Timber.d("logExtras: slug=%s, type=%s", slug, type)
+    }
+
+    override fun logStreamOn(source: String) {
+        Timber.d("logStreamOn: source=%s", source)
+    }
+}
+
+internal class DebugAnalyticsLists : Analytics.Lists {
+    override fun logListItemAdd() {
+        Timber.d("logListItemAdd")
+    }
+
+    override fun logListItemRemove() {
+        Timber.d("logListItemRemove")
+    }
+
+    override fun logListCreate() {
+        Timber.d("logListCreate")
+    }
+
+    override fun logListEdit() {
+        Timber.d("logListEdit")
+    }
+
+    override fun logListDelete() {
+        Timber.d("logListDelete")
+    }
+
+    override fun logListLike(liked: Boolean) {
+        Timber.d("logListLike: liked=%s", liked)
+    }
+
+    override fun logSmartListCreate() {
+        Timber.d("logSmartListCreate")
+    }
+
+    override fun logSmartListDelete() {
+        Timber.d("logSmartListDelete")
+    }
+
+    override fun logListSort(
+        sortBy: String,
+        sortHow: String,
+    ) {
+        Timber.d("logListSort: sortBy=%s, sortHow=%s", sortBy, sortHow)
+    }
+}
+
+internal class DebugAnalyticsToday : Analytics.Today {
+    override fun logOpen(
+        source: String,
+        hasUnseen: Boolean,
+    ) {
+        Timber.d("logTodayOpen: source=%s, hasUnseen=%s", source, hasUnseen)
+    }
+
+    override fun logStory(type: String) {
+        Timber.d("logTodayStory: type=%s", type)
+    }
+
+    override fun logClose(
+        reason: String,
+        durationMs: Long,
+        frames: Int,
+        groups: Int,
+    ) {
+        Timber.d("logTodayClose: reason=%s, durationMs=%d, frames=%d, groups=%d", reason, durationMs, frames, groups)
+    }
+
+    override fun logAction(
+        action: String,
+        frame: String,
+    ) {
+        Timber.d("logTodayAction: action=%s, frame=%s", action, frame)
     }
 }

@@ -22,7 +22,8 @@ Part of the `trakt-android` monorepo. Root rules apply — see
   - `common/.../ui/` — cross-platform Compose primitives.
   - `common/.../di/` — Koin modules wired in `TraktApplication`.
   - `common/.../firebase/` — Crashlytics, Analytics, Remote Config
-    wrappers.
+    wrappers. Analytics runs Firebase + HAL in parallel; see
+    `../.agents/rules/analytics.md`.
 - **Generated sources** at `build/generate-resources/...` come from
   the OpenAPI generator — never hand-edited. ktlint already excludes
   them via `.editorconfig`.

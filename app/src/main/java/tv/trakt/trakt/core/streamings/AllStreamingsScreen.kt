@@ -82,6 +82,7 @@ internal fun AllStreamingsScreen(
         modifier = modifier,
         onBackClick = onNavigateBack,
         onServiceClick = { service ->
+            viewModel.logStreamOn(service)
             openExternalAppLink(
                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
                 packageName = service.source,

@@ -102,6 +102,7 @@ internal class SettingsViewModel(
     fun setThemeMode(mode: ThemeMode) {
         viewModelScope.launch {
             themeModeUseCase.setThemeMode(mode)
+            analytics.logTheme(mode.name)
         }
     }
 

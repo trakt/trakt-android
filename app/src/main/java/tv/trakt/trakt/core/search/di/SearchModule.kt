@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalDataSource
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleStorage
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchStorage
+import tv.trakt.trakt.core.search.features.game.GameViewModel
 import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
@@ -64,6 +65,7 @@ internal val searchModule = module {
     factoryOf(::GetBirthdayPeopleUseCase)
 
     viewModelOf(::SearchViewModel)
+    viewModelOf(::GameViewModel)
 }
 
 private fun createStore(context: Context): DataStore<Preferences> {

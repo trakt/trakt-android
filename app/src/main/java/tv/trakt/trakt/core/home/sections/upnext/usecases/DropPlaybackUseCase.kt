@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.home.sections.upnext.usecases
 
 import timber.log.Timber
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
@@ -12,6 +14,7 @@ internal class DropPlaybackUseCase(
     private val remoteMovieSyncSource: MoviesSyncRemoteDataSource,
     private val remoteScrobbleSource: ScrobbleExtrasApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
+    private val analytics: Analytics,
 ) {
     suspend fun dropMoviePlayback(movieId: TraktId) {
         try {
@@ -24,6 +27,7 @@ internal class DropPlaybackUseCase(
             playbackId?.let {
                 remoteScrobbleSource.deleteSyncPlayback(playbackId)
                 cacheMarkerProvider.invalidate()
+                analytics.progress.logDrop(MediaType.Movie.value)
             }
         } catch (error: Exception) {
             error.rethrowCancellation {

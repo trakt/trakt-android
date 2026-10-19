@@ -159,6 +159,7 @@ internal fun EpisodeDetailsScreen(
             }
         },
         onShareClick = {
+            viewModel.logShare()
             shareEpisode(
                 show = state.show,
                 episode = state.episode,
@@ -254,6 +255,7 @@ internal fun EpisodeDetailsScreen(
             }
         },
         onShareClick = {
+            viewModel.logShare()
             shareEpisode(
                 show = state.show,
                 episode = state.episode,

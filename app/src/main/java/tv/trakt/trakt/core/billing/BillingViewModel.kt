@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.billing
 
 import android.app.Activity
 import android.content.Context
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.BillingClient
@@ -55,9 +56,12 @@ import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.core.billing.model.VipBillingProduct
 import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
+import tv.trakt.trakt.core.billing.navigation.BillingDestination
+import androidx.navigation.toRoute
 
 internal class BillingViewModel(
-    analytics: Analytics,
+    savedStateHandle: SavedStateHandle,
+    private val analytics: Analytics,
     private val appContext: Context,
     private val sessionManager: SessionManager,
     private val verifyPurchaseUseCase: VerifyPurchaseUseCase,
@@ -120,6 +124,7 @@ internal class BillingViewModel(
         analytics.logScreenView(
             screenName = "billing",
         )
+        analytics.logVipUpsell(savedStateHandle.toRoute<BillingDestination>().source)
     }
 
     private fun loadUser() {
@@ -304,6 +309,10 @@ internal class BillingViewModel(
                 currencyCode = price?.priceCurrencyCode,
                 price = price?.priceAmountMicros,
             )
+
+            VipBillingProduct.entries
+                .find { it.sku == product.productId }
+                ?.let { analytics.logVipUpgrade(plan = it.plan) }
         }
     }
 

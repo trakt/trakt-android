@@ -12,6 +12,8 @@ actively apply the corresponding rule file for that domain:
 - Networking, Ktor client, OpenAPI mappers (`common/.../networking/`,
   generated OpenAPI sources): apply networking.md
 - Persistence (DataStore, Room entities, file caches): apply persistence.md
+- Analytics events, screen views, `Analytics` interface and backends
+  (`common/.../firebase/analytics/`, any `analytics.*` call): apply analytics.md
 - Localization (`resources/src/main/res/values*/strings.xml`,
   `ValidateStringPlaceholdersTask`): apply localization.md
 - Gradle module boundaries, `build.gradle.kts` edits, version catalog
@@ -38,6 +40,8 @@ All rule files are referenced below.
 @.agents/rules/persistence.md
 
 @.agents/rules/localization.md
+
+@.agents/rules/analytics.md
 
 @.agents/rules/theming.md
 

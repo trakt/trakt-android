@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
@@ -38,6 +39,7 @@ internal class MovieDetailsListsViewModel(
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val detailsUpdates: MovieDetailsUpdates,
     private val errorsManager: GlobalErrorsManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MovieDetailsListsState()
 
@@ -115,6 +117,7 @@ internal class MovieDetailsListsViewModel(
                 }
                 setListed(list.id, listed = !listed)
                 detailsUpdates.notifyUpdate(Source.Lists)
+                if (listed) analytics.lists.logListItemRemove() else analytics.lists.logListItemAdd()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     when (error.getHttpCode()) {

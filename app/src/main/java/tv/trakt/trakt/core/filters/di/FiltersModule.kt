@@ -33,6 +33,7 @@ internal val filtersModule = module {
         DefaultGlobalFilterManager(
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             dataStore = get(named(FILTERS_PREFERENCES)),
+            analytics = get(),
         )
     }
 
@@ -40,6 +41,7 @@ internal val filtersModule = module {
         GlobalFiltersViewModel(
             options = options,
             filterManager = get(),
+            analytics = get(),
         )
     }
 }

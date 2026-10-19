@@ -70,7 +70,7 @@ internal class SearchViewModel(
     private val likedListsLocalDataSource: ListsLikedLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = SearchState()
 
@@ -431,7 +431,8 @@ internal class SearchViewModel(
                 searchingState.update { true }
                 delay(debounce) // Debounce user input
 
-                val results = when (inputState.value.filter) {
+                val filter = inputState.value.filter
+                val results = when (filter) {
                     MEDIA -> getSearchResultsUseCase.getSearchResults(query)
                     SHOWS -> getSearchResultsUseCase.getShowsSearchResults(query)
                     MOVIES -> getSearchResultsUseCase.getMoviesSearchResults(query)
@@ -477,6 +478,7 @@ internal class SearchViewModel(
                             }.toImmutableList(),
                     )
                 }
+                analytics.logSearch(mode = filter.name)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

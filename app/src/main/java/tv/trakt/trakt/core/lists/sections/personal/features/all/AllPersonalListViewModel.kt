@@ -52,12 +52,13 @@ import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.Lists
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import kotlin.time.Duration.Companion.milliseconds
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 
 @OptIn(FlowPreview::class)
 internal class AllPersonalListViewModel(
     savedStateHandle: SavedStateHandle,
     filterManager: GlobalFilterManager,
-    analytics: Analytics,
+    private val analytics: Analytics,
     private val getListUseCase: GetPersonalListsUseCase,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -296,6 +297,7 @@ internal class AllPersonalListViewModel(
                 order = newSorting.order,
             )
         }
+        analytics.lists.logListSort(newSorting)
 
         loadData()
     }
@@ -356,6 +358,10 @@ internal class AllPersonalListViewModel(
         dataJob?.cancel()
         processingJob?.cancel()
         super.onCleared()
+    }
+
+    fun logShare() {
+        analytics.logShare(source = "user-list", type = null)
     }
 
     @Suppress("UNCHECKED_CAST")

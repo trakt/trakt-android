@@ -68,6 +68,7 @@ internal fun EpisodeDetailsContextView(
         onHistoryClick = onHistoryClick,
         onShareClick = onShareClick,
         onCoverClick = onCoverClick,
+        onStreamClick = viewModel::logStreamOn,
         modifier = modifier,
     )
 }
@@ -82,6 +83,7 @@ private fun EpisodeDetailsContextViewContent(
     onHistoryClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onStreamClick: (StreamingService) -> Unit = {},
 ) {
     val context = LocalContext.current
     val isReleased = episode.rememberReleased()
@@ -126,6 +128,7 @@ private fun EpisodeDetailsContextViewContent(
                     streamingState = state.streamings,
                     onClick = {
                         state.streamings.service?.let { service ->
+                            onStreamClick(service)
                             openExternalAppLink(
                                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
                                 packageName = service.source,

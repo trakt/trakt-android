@@ -209,6 +209,10 @@ internal class CalendarViewModel(
         }
     }
 
+    fun logPeriodChange(action: String) {
+        analytics.logCalendarPeriod(action)
+    }
+
     fun loadWeek(day: LocalDate) {
         selectedStartDayState.update { day.with(MONDAY) }
         loadData()
