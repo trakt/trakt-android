@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.model.discover
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.model.Images
@@ -21,6 +22,7 @@ sealed class DiscoverItem {
 
     @Immutable
     @Serializable
+    @SerialName("tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem")
     data class MovieItem(
         val movie: Movie,
         override val count: Int = 0,
@@ -30,6 +32,7 @@ sealed class DiscoverItem {
 
     @Immutable
     @Serializable
+    @SerialName("tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem")
     data class ShowItem(
         val show: Show,
         override val count: Int = 0,

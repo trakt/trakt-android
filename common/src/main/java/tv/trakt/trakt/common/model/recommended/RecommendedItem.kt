@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.model.recommended
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.model.Images
@@ -19,6 +20,7 @@ sealed class RecommendedItem {
 
     @Immutable
     @Serializable
+    @SerialName("tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.MovieItem")
     data class MovieItem(
         val movie: Movie,
         @Serializable(ImmutableListSerializer::class)
@@ -27,6 +29,7 @@ sealed class RecommendedItem {
 
     @Immutable
     @Serializable
+    @SerialName("tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.ShowItem")
     data class ShowItem(
         val show: Show,
         @Serializable(ImmutableListSerializer::class)

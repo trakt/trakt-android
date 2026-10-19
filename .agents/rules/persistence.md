@@ -112,6 +112,9 @@ Rules:
   `localSourcesModule`.
 - **Never rename a DataStore file when moving a source.** The file name is the storage key; a new
   name drops what users already have cached.
+- **Pin serial names when moving a stored sealed type.** A stored `List<Sealed>` writes each subtype's
+  fully qualified name. Add `@SerialName("<old fqcn>")` to every subtype before changing its
+  package, or the old cache fails to decode and is wiped.
 
 ## In-memory caches
 
