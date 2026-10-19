@@ -86,6 +86,7 @@ internal class WatchlistMovieContextViewModel(
                 userWatchlistMinLocalSource.removeMovies(setOf(movieId))
 
                 loadProgressUseCase.loadMoviesProgress()
+                dataChanges.notify(Kind.History, Kind.Watchlist)
                 ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
@@ -114,6 +115,8 @@ internal class WatchlistMovieContextViewModel(
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movieId)
                 userWatchlistLocalSource.removeMovies(setOf(movieId))
                 userWatchlistMinLocalSource.removeMovies(setOf(movieId))
+
+                dataChanges.notify(Kind.Watchlist)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
