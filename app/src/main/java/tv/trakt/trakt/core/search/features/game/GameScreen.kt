@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.Config.WEB_GAME_RATED_HIGHER_URL
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -44,6 +45,7 @@ private val BackButtonInset = (BackButtonTouchSize - BackButtonSize) / 2
 internal fun GameScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: GameViewModel = koinViewModel(),
 ) {
     val bottomBarVisibility = LocalBottomBarVisibility.current
 
