@@ -52,6 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
@@ -469,7 +470,9 @@ private fun DetailsOverview(
                     else -> overview.toMarkdownText(linkColor)
                 }
             },
-            style = TraktTheme.typography.paragraphSmall,
+            style = TraktTheme.typography.paragraphSmall.copy(
+                lineHeight = 1.3.em,
+            ),
             color = TraktTheme.colors.textSecondary,
             maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
             textAlign = TextAlign.Start,

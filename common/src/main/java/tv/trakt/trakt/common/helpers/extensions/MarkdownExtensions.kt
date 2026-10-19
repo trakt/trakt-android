@@ -8,7 +8,9 @@ import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
@@ -16,6 +18,8 @@ import androidx.compose.ui.text.withStyle
 
 private class MarkdownStyle(
     val linkColor: Color?,
+    val linkWeight: FontWeight,
+    val linksBoldOnly: Boolean,
     val mentionColor: Color?,
 )
 
@@ -45,13 +49,21 @@ fun String.stripMarkdownLinks(): String {
 
 /**
  * Links are limited to http(s) and are rendered as plain text when [linkColor] is null.
+ * Set [linksBoldOnly] to render links as non-clickable [linkWeight] text in the surrounding colour.
  * Pass [mentionColor] to also highlight @mentions.
  */
 fun String.toMarkdownText(
     linkColor: Color? = null,
+    linkWeight: FontWeight = ExtraBold,
+    linksBoldOnly: Boolean = false,
     mentionColor: Color? = null,
 ): AnnotatedString {
-    val style = MarkdownStyle(linkColor, mentionColor)
+    val style = MarkdownStyle(
+        linkColor = linkColor,
+        linkWeight = linkWeight,
+        linksBoldOnly = linksBoldOnly,
+        mentionColor = mentionColor,
+    )
     return buildAnnotatedString {
         lines().forEachIndexed { index, line ->
             if (index > 0) append('\n')
@@ -129,16 +141,24 @@ private fun AnnotatedString.Builder.appendLink(
     style: MarkdownStyle,
     linksEnabled: Boolean,
 ) {
+    if (!linksEnabled) {
+        append(label)
+        return
+    }
+    if (style.linksBoldOnly) {
+        withStyle(SpanStyle(fontWeight = style.linkWeight)) { appendInline(label, style, links = false) }
+        return
+    }
     val linkColor = style.linkColor
-    if (!linksEnabled || linkColor == null) {
+    if (linkColor == null) {
         append(label)
         return
     }
     val linkStyle = SpanStyle(
         color = linkColor,
-        fontWeight = Bold,
+        fontWeight = style.linkWeight,
         fontStyle = FontStyle.Normal,
-        textDecoration = TextDecoration.Underline,
+        textDecoration = TextDecoration.None,
     )
     withLink(LinkAnnotation.Url(url, TextLinkStyles(style = linkStyle))) {
         appendInline(label, style, links = false)

@@ -279,8 +279,8 @@ internal fun HighlightsCard(
             val linkColor = TraktTheme.colors.textPrimary
             Text(
                 text = remember(text, linkColor) { text.toMarkdownText(linkColor) },
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.35.em),
             )
         }
     }

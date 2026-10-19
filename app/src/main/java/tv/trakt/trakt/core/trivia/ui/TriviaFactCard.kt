@@ -67,7 +67,7 @@ internal fun TriviaFactCard(
                 Text(
                     text = remember(fact.text, linkColor) { fact.text.toMarkdownText(linkColor) },
                     color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
+                    style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.35.em),
                 )
             }
         }
