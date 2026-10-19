@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.today.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.helpers.extensions.stripMarkdownLinks
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Sentiments
@@ -9,7 +10,6 @@ import tv.trakt.trakt.core.summary.movies.features.sentiment.usecases.GetMovieSe
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
-import tv.trakt.trakt.core.today.model.TodayMedia
 
 internal class GetTodayDetailsUseCase(
     private val getMovieRatingsUseCase: GetMovieRatingsUseCase,

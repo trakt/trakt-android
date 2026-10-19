@@ -20,10 +20,11 @@ import tv.trakt.trakt.common.core.user.data.local.reactions.UserMediaReactionsLo
 import tv.trakt.trakt.common.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
+import tv.trakt.trakt.common.data.remote.BillingRemoteSource
+import tv.trakt.trakt.common.data.remote.YounifyRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
-import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
@@ -43,7 +44,6 @@ import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.Progre
 import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedLocalDataSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
 import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalDataSource
-import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
 import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -55,8 +55,8 @@ internal class LogoutUserUseCase(
     private val collapsingManager: CollapsingManager,
     private val checkInManager: CheckInManager,
     private val apiClients: Array<ApiClient>,
-    private val younifyApiClient: YounifyRemoteDataSource,
-    private val billingApiClient: BillingRemoteDataSource,
+    private val younifyRemoteSource: YounifyRemoteSource,
+    private val billingRemoteSource: BillingRemoteSource,
     private val localUpNext: HomeUpNextLocalDataSource,
     private val localWatchlistUpNext: HomeWatchlistLocalDataSource,
     private val localUpcoming: HomeUpcomingLocalDataSource,
@@ -102,8 +102,8 @@ internal class LogoutUserUseCase(
             .forEach { api ->
                 api.client.authProvider<BearerAuthProvider>()?.clearToken()
             }.also {
-                younifyApiClient.clear()
-                billingApiClient.clear()
+                younifyRemoteSource.clear()
+                billingRemoteSource.clear()
             }
 
         localUpNext.clear()

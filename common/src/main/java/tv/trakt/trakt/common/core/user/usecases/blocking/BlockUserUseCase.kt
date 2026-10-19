@@ -1,6 +1,6 @@
 package tv.trakt.trakt.common.core.user.usecases.blocking
 
-import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserSocialRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.TraktId
 
@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.TraktId
  * Use case for blocking and unblocking users.
  */
 class BlockUserUseCase(
-    private val remoteSource: UserSocialRemoteDataSource,
+    private val remoteSource: UserSocialRemoteSource,
     private val analytics: Analytics,
 ) {
     suspend fun blockUser(userId: TraktId) {

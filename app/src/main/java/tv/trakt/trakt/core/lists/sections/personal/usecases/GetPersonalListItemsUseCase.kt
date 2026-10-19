@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
@@ -24,7 +24,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal class GetPersonalListItemsUseCase(
-    private val remoteSource: UserPersonalListsRemoteDataSource,
+    private val remoteSource: UserPersonalListsRemoteSource,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
 ) {
     suspend fun getItems(
@@ -37,7 +37,7 @@ internal class GetPersonalListItemsUseCase(
             listId = listId,
             limit = limit,
             page = 1,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = sorting,
             filters = filter,
         )
@@ -106,7 +106,7 @@ internal class GetPersonalListItemsUseCase(
             listId = listId,
             limit = limit,
             page = page,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = sorting,
             filters = filter,
         ).asyncMap {
@@ -134,7 +134,7 @@ internal class GetPersonalListItemsUseCase(
             listId = listId,
             limit = limit,
             page = page,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = sorting,
             filters = filter,
         ).asyncMap {
@@ -164,7 +164,7 @@ internal class GetPersonalListItemsUseCase(
             listId = listId,
             limit = limit,
             page = page,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = sorting,
             filters = filter,
         )

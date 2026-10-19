@@ -1,11 +1,11 @@
 package tv.trakt.trakt.core.search.usecase.popular
 
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
+import tv.trakt.trakt.common.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 
 internal class PostUserSearchUseCase(
-    private val remoteSource: SearchRemoteDataSource,
+    private val remoteSource: SearchRemoteSource,
     private val sessionManager: SessionManager,
 ) {
     suspend fun postShowUserSearch(

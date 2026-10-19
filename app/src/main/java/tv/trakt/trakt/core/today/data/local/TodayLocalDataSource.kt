@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.today.data.local
 
-import tv.trakt.trakt.core.today.model.FollowingActivity
+import tv.trakt.trakt.common.core.today.model.FollowingActivity
 import tv.trakt.trakt.core.today.model.TodayForYouItem
 
 internal interface TodayLocalDataSource {

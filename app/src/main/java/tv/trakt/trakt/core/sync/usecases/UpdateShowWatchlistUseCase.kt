@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.sync.usecases
 
+import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 
 internal class UpdateShowWatchlistUseCase(
-    private val remoteSource: ShowsSyncRemoteDataSource,
+    private val remoteSource: ShowsSyncRemoteSource,
     private val widgetsUpdater: tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetUpdater,
 ) {
     suspend fun addToWatchlist(showId: TraktId) {

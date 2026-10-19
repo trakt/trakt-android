@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.settings.features.younify.model
 
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.core.settings.features.younify.data.remote.model.dto.YounifyDetailsDto
+import tv.trakt.trakt.common.data.dto.YounifyDetailsDto
 
 @Serializable
 internal data class YounifyDetails(

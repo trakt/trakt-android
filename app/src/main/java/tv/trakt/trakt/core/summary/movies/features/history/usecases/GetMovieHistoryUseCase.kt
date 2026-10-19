@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.summary.movies.features.history.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
@@ -14,7 +14,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 internal const val HISTORY_PAGE_LIMIT = 100
 
 internal class GetMovieHistoryUseCase(
-    private val remoteSource: UserHistoryRemoteDataSource,
+    private val remoteSource: UserHistoryRemoteSource,
 ) {
     suspend fun getHistory(
         movieId: TraktId,

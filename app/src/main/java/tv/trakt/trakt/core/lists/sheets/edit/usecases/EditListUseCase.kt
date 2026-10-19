@@ -1,12 +1,12 @@
 package tv.trakt.trakt.core.lists.sheets.edit.usecases
 
-import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 
 internal class EditListUseCase(
-    private val remoteSource: ListsRemoteDataSource,
+    private val remoteSource: ListsRemoteSource,
     private val localSource: ListsPersonalLocalDataSource,
 ) {
     suspend fun editList(

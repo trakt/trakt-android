@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
-import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -17,7 +17,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetHomeMoviesWatchlistUseCase(
     private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,
-    private val userRemoteSource: UserWatchlistRemoteDataSource,
+    private val userRemoteSource: UserWatchlistRemoteSource,
 ) {
     suspend fun getLocalWatchlist(limit: Int): ImmutableList<WatchlistItem> {
         return homeWatchlistLocalSource.getMovieItems()
@@ -34,7 +34,7 @@ internal class GetHomeMoviesWatchlistUseCase(
         return userRemoteSource.getWatchlistMovies(
             page = 1,
             limit = limit,
-            extended = "full,cloud9,colors",
+            extended = "full,images,colors",
             sorting = Sorting(
                 type = SortType.Released,
                 order = SortOrder.Desc,

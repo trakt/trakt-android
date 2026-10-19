@@ -2,7 +2,7 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
@@ -12,7 +12,7 @@ import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocal
 import tv.trakt.trakt.core.lists.sections.personal.model.sortPersonalLists
 
 internal class GetPersonalListsUseCase(
-    private val remoteSource: UserPersonalListsRemoteDataSource,
+    private val remoteSource: UserPersonalListsRemoteSource,
     private val localSource: ListsPersonalLocalDataSource,
 ) {
     suspend fun getLocalList(listId: TraktId): CustomList? {

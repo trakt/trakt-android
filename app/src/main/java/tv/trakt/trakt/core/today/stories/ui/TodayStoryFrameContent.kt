@@ -47,12 +47,12 @@ import coil3.request.ImageRequest
 import kotlinx.collections.immutable.persistentListOf
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.common.core.today.model.FollowingActivity
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.today.model.FollowingActivity
 import tv.trakt.trakt.core.today.model.TodayFriendAction
-import tv.trakt.trakt.core.today.model.TodayMedia
 import tv.trakt.trakt.core.today.model.TodayMilestone
 import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayTitleStory

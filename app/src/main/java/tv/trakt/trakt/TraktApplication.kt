@@ -19,13 +19,12 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
-import tv.trakt.trakt.common.core.klipy.di.gifsDataModule
-import tv.trakt.trakt.common.core.media.di.mediaDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
+import tv.trakt.trakt.common.data.remote.di.remoteSourcesModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
 import tv.trakt.trakt.common.helpers.coil.coilModule
@@ -38,7 +37,6 @@ import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
 import tv.trakt.trakt.core.applinks.di.appLinksModule
 import tv.trakt.trakt.core.auth.di.authModule
-import tv.trakt.trakt.core.billing.di.billingDataModule
 import tv.trakt.trakt.core.billing.di.billingModule
 import tv.trakt.trakt.core.calendar.di.calendarModule
 import tv.trakt.trakt.core.checkin.di.checkInModule
@@ -60,7 +58,6 @@ import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.CHECK_IN
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.MEDIA
 import tv.trakt.trakt.core.notifications.di.notificationsModule
-import tv.trakt.trakt.core.parentalguide.di.parentalGuideDataModule
 import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.people.di.peopleModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
@@ -165,7 +162,6 @@ internal class TraktApplication : Application() {
                 homeModule,
                 homeDataModule,
                 discoverModule,
-                mediaDataModule,
                 showsModule,
                 showsDataModule,
                 showDetailsModule,
@@ -180,6 +176,7 @@ internal class TraktApplication : Application() {
                 profileModule,
                 profileDataModule,
                 peopleDataModule,
+                remoteSourcesModule,
                 peopleModule,
                 personDetailsModule,
                 searchModule,
@@ -196,7 +193,6 @@ internal class TraktApplication : Application() {
                 listsDataModule,
                 reactionsDataModule,
                 reactionsModule,
-                parentalGuideDataModule,
                 ratingsDataModule,
                 ratingsModule,
                 favoritesDataModule,
@@ -205,13 +201,11 @@ internal class TraktApplication : Application() {
                 settingsModule,
                 settingsDataModule,
                 billingModule,
-                billingDataModule,
                 checkInModule,
                 inAppReviewModule,
                 analyticsModule,
                 translationsDataModule,
                 translationsModule,
-                gifsDataModule,
                 gifPickerModule,
                 userProfileModule,
                 youTubePlayerModule,

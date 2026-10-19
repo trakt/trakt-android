@@ -3,26 +3,27 @@ package tv.trakt.trakt.app.core.shows.usecase
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_SECTION_LIMIT
-import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import java.time.Year
 
 internal class GetPopularShowsUseCase(
-    private val remoteSource: ShowsRemoteDataSource,
+    private val remoteSource: ShowsRemoteSource,
     private val localSource: ShowLocalDataSource,
 ) {
     suspend fun getPopularShows(
         limit: Int = SHOWS_SECTION_LIMIT,
         page: Int = 1,
     ): ImmutableList<Show> {
-        return remoteSource.getPopularShows(
-            limit = limit,
+        return remoteSource.getPopular(
             page = page,
-            years = getYearsRange(),
+            limit = limit,
+            filters = GlobalFilter.Default.copy(years = getYearsRange().let { it to it }),
         )
             .asyncMap {
                 Show.fromDto(it)

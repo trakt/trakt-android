@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.data.remote.ParentalGuideRemoteSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -24,7 +25,6 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.parentalguide.ParentalGuide
 import tv.trakt.trakt.common.networking.MovieStatsDto
-import tv.trakt.trakt.core.parentalguide.data.remote.ParentalGuideRemoteDataSource
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieCrewUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStudiosUseCase
@@ -34,7 +34,7 @@ internal class MovieInfoViewModel(
     private val getStatsUseCase: GetMovieStatsUseCase,
     private val getStudiosUseCase: GetMovieStudiosUseCase,
     private val getCrewUseCase: GetMovieCrewUseCase,
-    private val parentalGuideSource: ParentalGuideRemoteDataSource,
+    private val parentalGuideSource: ParentalGuideRemoteSource,
 ) : ViewModel() {
     private val initialState = MovieInfoState()
 

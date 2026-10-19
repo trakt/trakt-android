@@ -1,15 +1,15 @@
 package tv.trakt.trakt.core.ratings
 
+import tv.trakt.trakt.common.data.remote.RatingsRemoteSource
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.MediaType.Season
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.ratings.data.remote.RatingsRemoteDataSource
 
 internal class PostRatingUseCase(
-    private val remoteSource: RatingsRemoteDataSource,
+    private val remoteSource: RatingsRemoteSource,
 ) {
     suspend fun postRating(
         mediaId: TraktId,

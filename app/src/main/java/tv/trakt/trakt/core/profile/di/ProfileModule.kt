@@ -40,26 +40,6 @@ import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDa
 import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistStorage
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalStorage
-import tv.trakt.trakt.common.core.user.data.remote.UserApiClient
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarApiClient
-import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesApiClient
-import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryApiClient
-import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsApiClient
-import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsApiClient
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsApiClient
-import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsApiClient
-import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialApiClient
-import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistApiClient
-import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLibraryUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
@@ -126,15 +106,6 @@ import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdatesStorage
 internal const val PROFILE_PREFERENCES = "profile_preferences_mobile"
 
 internal val profileDataModule = module {
-    singleOf(::UserApiClient) { bind<UserRemoteDataSource>() }
-    singleOf(::UserHistoryApiClient) { bind<UserHistoryRemoteDataSource>() }
-    singleOf(::UserWatchlistApiClient) { bind<UserWatchlistRemoteDataSource>() }
-    singleOf(::UserFavoritesApiClient) { bind<UserFavoritesRemoteDataSource>() }
-    singleOf(::UserOtherListsApiClient) { bind<UserOtherListsRemoteDataSource>() }
-    singleOf(::UserRatingsApiClient) { bind<UserRatingsRemoteDataSource>() }
-    singleOf(::UserPersonalListsApiClient) { bind<UserPersonalListsRemoteDataSource>() }
-    singleOf(::UserSmartListsApiClient) { bind<UserSmartListsRemoteDataSource>() }
-    singleOf(::UserSocialApiClient) { bind<UserSocialRemoteDataSource>() }
     singleOf(::UserWatchlistMinimalStorage) { bind<UserWatchlistMinimalLocalDataSource>() }
     singleOf(::UserProgressStorage) { bind<UserProgressLocalDataSource>() }
     singleOf(::UserListsStorage) { bind<UserListsLocalDataSource>() }
@@ -144,11 +115,6 @@ internal val profileDataModule = module {
     singleOf(::UserFavoritesStorage) { bind<UserFavoritesLocalDataSource>() }
     singleOf(::UserLibraryStorage) { bind<UserLibraryLocalDataSource>() }
     singleOf(::UserRatingsStorage) { bind<UserRatingsLocalDataSource>() }
-    single<UserCalendarRemoteDataSource> {
-        UserCalendarApiClient(
-            calendarsApi = get(named("authorizedCalendarsApi")),
-        )
-    }
 
     singleOf(::ProgressCompletedStorage) { bind<ProgressCompletedLocalDataSource>() }
     singleOf(::ProgressWatchingStorage) { bind<ProgressWatchingLocalDataSource>() }
@@ -222,8 +188,8 @@ internal val profileModule = module {
             collapsingManager = get(),
             checkInManager = get(),
             apiClients = get(named("apiClients")),
-            younifyApiClient = get(),
-            billingApiClient = get(),
+            younifyRemoteSource = get(),
+            billingRemoteSource = get(),
             localUpNext = get(),
             localWatchlistUpNext = get(),
             localUpcoming = get(),

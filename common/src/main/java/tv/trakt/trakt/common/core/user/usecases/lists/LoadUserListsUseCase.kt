@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.model.toTraktId
  * Loads the user's lists from the remote source and updates the local cache.
  */
 class LoadUserListsUseCase(
-    private val remoteSource: UserPersonalListsRemoteDataSource,
+    private val remoteSource: UserPersonalListsRemoteSource,
     private val localSource: UserListsLocalDataSource,
 ) {
     suspend fun isLoaded(): Boolean {

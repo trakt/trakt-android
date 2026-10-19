@@ -6,8 +6,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.sync.model.ProgressItem
 import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.MovieProgress
@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 
 class LoadUserProgressUseCase(
-    private val remoteSource: UserRemoteDataSource,
+    private val remoteSource: UserRemoteSource,
     private val localSource: UserProgressLocalDataSource,
     private val progressUpdates: ProgressUpdates,
 ) {

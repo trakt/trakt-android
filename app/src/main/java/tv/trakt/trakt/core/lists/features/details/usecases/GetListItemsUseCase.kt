@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.lists.features.details.usecases
 
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
@@ -20,7 +20,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal class GetListItemsUseCase(
-    private val remoteSource: ListsRemoteDataSource,
+    private val remoteSource: ListsRemoteSource,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
 ) {
     suspend fun getItems(
@@ -36,7 +36,7 @@ internal class GetListItemsUseCase(
         if (type.size == 1 && type[0] == MediaType.Movie) {
             return remoteSource.getMovieListItems(
                 listId = listId,
-                extended = "full,cloud9,colors",
+                extended = "full,images,colors",
                 sorting = sorting,
                 pagination = pagination,
                 filters = filters?.copy(mode = Movies),
@@ -55,7 +55,7 @@ internal class GetListItemsUseCase(
         if (type.size == 1 && type[0] == MediaType.Show) {
             return remoteSource.getShowListItems(
                 listId = listId,
-                extended = "full,cloud9,colors",
+                extended = "full,images,colors",
                 sorting = sorting,
                 pagination = pagination,
                 filters = filters?.copy(mode = Shows),
@@ -74,7 +74,7 @@ internal class GetListItemsUseCase(
         if (type.containsAll(listOf(MediaType.Movie, MediaType.Show))) {
             return remoteSource.getAllListItems(
                 listId = listId,
-                extended = "full,cloud9,colors",
+                extended = "full,images,colors",
                 sorting = sorting,
                 pagination = pagination,
                 filters = filters,

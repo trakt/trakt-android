@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserCalendarRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -38,7 +38,7 @@ private fun List<Episode>.isFullSeason(): Boolean {
 }
 
 internal class GetUpcomingUseCase(
-    private val remoteUserSource: UserCalendarRemoteDataSource,
+    private val remoteUserSource: UserCalendarRemoteSource,
     private val localDataSource: HomeUpcomingLocalDataSource,
 ) {
     suspend fun getLocalUpcoming(

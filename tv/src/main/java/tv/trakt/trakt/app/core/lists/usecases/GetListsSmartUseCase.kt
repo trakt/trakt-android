@@ -3,7 +3,7 @@ package tv.trakt.trakt.app.core.lists.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
-import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Images
@@ -19,7 +19,7 @@ private val supportedSources = SmartListSource.entries
     .map { it.value }
 
 internal class GetListsSmartUseCase(
-    private val remoteSource: UserSmartListsRemoteDataSource,
+    private val remoteSource: UserSmartListsRemoteSource,
 ) {
     suspend fun getLists(): ImmutableList<SmartList> {
         return remoteSource.getSmartLists()

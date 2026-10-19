@@ -2,6 +2,9 @@ package tv.trakt.trakt.core.summary.credits.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.CrewPerson
@@ -9,19 +12,16 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.CastMemberDto
 import tv.trakt.trakt.common.networking.CrewMemberDto
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.summary.credits.model.CreditsSource
 import tv.trakt.trakt.core.summary.credits.model.MediaCredits
 
 private val CREW_DEPARTMENTS = listOf("created by", "directing", "writing")
 
 internal class GetMediaCreditsUseCase(
-    private val moviesSource: MoviesRemoteDataSource,
-    private val showsSource: ShowsRemoteDataSource,
-    private val episodesSource: EpisodesRemoteDataSource,
+    private val moviesSource: MoviesRemoteSource,
+    private val showsSource: ShowsRemoteSource,
+    private val episodesSource: EpisodesRemoteSource,
     private val peopleLocalSource: PeopleLocalDataSource,
 ) {
     suspend fun getCredits(source: CreditsSource): MediaCredits {

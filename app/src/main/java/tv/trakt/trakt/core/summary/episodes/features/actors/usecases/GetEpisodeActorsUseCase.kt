@@ -2,15 +2,15 @@ package tv.trakt.trakt.core.summary.episodes.features.actors.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 
 internal class GetEpisodeActorsUseCase(
-    private val remoteSource: EpisodesRemoteDataSource,
+    private val remoteSource: EpisodesRemoteSource,
     private val peopleLocalSource: PeopleLocalDataSource,
 ) {
     suspend fun getCastCrew(

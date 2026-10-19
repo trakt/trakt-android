@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase.movies
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
@@ -12,10 +13,9 @@ import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMovi
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
 internal class DefaultGetRecommendedMoviesUseCase(
-    private val remoteSource: MoviesRemoteDataSource,
+    private val remoteSource: MoviesRemoteSource,
     private val localRecommendedSource: RecommendedMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) : GetRecommendedMoviesUseCase {

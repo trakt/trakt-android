@@ -2,9 +2,9 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase.media
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.data.remote.MediaRemoteDataSource
 import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.remote.MediaRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -19,7 +19,7 @@ import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
  * Loads interleaved show and movie recommendations for Media mode.
  */
 internal class GetRecommendedMediaUseCase(
-    private val remoteSource: MediaRemoteDataSource,
+    private val remoteSource: MediaRemoteSource,
     private val localRecommendedSource: RecommendedMediaLocalDataSource,
     private val localShowSource: ShowLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,

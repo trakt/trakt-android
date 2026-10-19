@@ -1,16 +1,16 @@
 package tv.trakt.trakt.app.core.plex.usecase
 
 import timber.log.Timber
-import tv.trakt.trakt.app.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
-import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
+import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
+import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class DropPlaybackUseCase(
-    private val remoteMovieSyncSource: MoviesSyncRemoteDataSource,
-    private val remoteEpisodeSyncSource: EpisodesSyncRemoteDataSource,
+    private val remoteMovieSyncSource: MoviesSyncRemoteSource,
+    private val remoteEpisodeSyncSource: EpisodesSyncRemoteSource,
     private val remoteScrobbleSource: ScrobbleExtrasApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) {

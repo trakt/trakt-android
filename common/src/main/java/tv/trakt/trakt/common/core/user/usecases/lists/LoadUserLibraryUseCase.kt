@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.library.LibraryItem
 import tv.trakt.trakt.common.core.user.data.local.library.UserLibraryLocalDataSource
-import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -17,7 +17,7 @@ import tv.trakt.trakt.common.model.fromDto
  * Loads the user's favorites from the remote source and updates the local cache.
  */
 class LoadUserLibraryUseCase(
-    private val remoteSource: UserRemoteDataSource,
+    private val remoteSource: UserRemoteSource,
     private val localSource: UserLibraryLocalDataSource,
 ) {
     suspend fun isLoaded(): Boolean {

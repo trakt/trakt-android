@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.today.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import java.time.Instant
