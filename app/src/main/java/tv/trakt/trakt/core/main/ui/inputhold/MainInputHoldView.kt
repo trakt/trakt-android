@@ -16,7 +16,7 @@ import kotlinx.coroutines.delay
 import tv.trakt.trakt.core.today.stories.navigation.TodayStoriesDestination
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val STORIES_EXIT_INPUT_HOLD_MS = 350L
+private const val STORIES_EXIT_INPUT_HOLD_MS = 500L
 
 /**
  * Swallows taps briefly after leaving Today stories, so rapid story taps
