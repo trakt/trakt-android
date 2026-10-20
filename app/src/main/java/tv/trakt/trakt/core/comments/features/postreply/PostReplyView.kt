@@ -69,6 +69,7 @@ internal fun PostReplyView(
     modifier: Modifier = Modifier,
     gifQuery: String? = null,
     onReplyPost: (Comment) -> Unit = {},
+    onChangesUpdate: (Boolean) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -91,6 +92,7 @@ internal fun PostReplyView(
         onErrorClick = {
             viewModel.clearError()
         },
+        onChangesUpdate = onChangesUpdate,
         modifier = modifier,
     )
 }
@@ -102,6 +104,7 @@ private fun ViewContent(
     gifQuery: String? = null,
     onSubmitClick: (comment: String, spoiler: Boolean, gif: CommentGif?) -> Unit,
     onErrorClick: () -> Unit,
+    onChangesUpdate: (Boolean) -> Unit = {},
 ) {
     val inputInitial = "@${state.commentUser?.username} "
     val editorState = rememberRichTextEditorState()
@@ -135,6 +138,12 @@ private fun ViewContent(
         if (state.commentUser != null) {
             editorState.setText(inputInitial)
         }
+    }
+
+    val input = editorState.text.trim()
+    val hasChanges = selectedGif != null || (input.isNotBlank() && input != inputInitial.trim())
+    LaunchedEffect(hasChanges) {
+        onChangesUpdate(hasChanges)
     }
 
     Column(
