@@ -594,7 +594,7 @@ internal fun ShowDetailsContent(
                         show = show,
                         showTranslation = state.showTranslation,
                         ratings = state.showRatings,
-                        creator = state.showCreator,
+                        creators = state.showCreators,
                         watched = state.showProgress?.isWatched == true,
                         watching = state.showProgress?.isWatching == true,
                         loading = state.loading.isLoading ||
