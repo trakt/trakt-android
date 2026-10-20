@@ -61,25 +61,29 @@ internal fun LazyListScope.SeasonEpisodesSection(
             item(
                 key = "season_progress_summary",
             ) {
-                val watchedEpisodes = remember(state.items.selectedSeasonEpisodes) {
-                    state.items.selectedSeasonEpisodes.count { it.isWatched }
+                val airedEpisodes = remember(state.items.selectedSeasonEpisodes) {
+                    state.items.selectedSeasonEpisodes.filter { it.isWatched || it.episode.isReleased }
                 }
 
-                val leftEpisodes = remember(state.items.selectedSeasonEpisodes) {
-                    state.items.selectedSeasonEpisodes.count { !it.isWatched }
+                val watchedEpisodes = remember(airedEpisodes) {
+                    airedEpisodes.count { it.isWatched }
                 }
 
-                val leftRuntime = remember(state.items.selectedSeasonEpisodes) {
-                    state.items.selectedSeasonEpisodes
+                val leftEpisodes = remember(airedEpisodes) {
+                    airedEpisodes.count { !it.isWatched }
+                }
+
+                val leftRuntime = remember(airedEpisodes) {
+                    airedEpisodes
                         .filter { !it.isWatched }
                         .sumOf { it.episode.runtime?.inWholeMinutes ?: 0 }
                 }
 
-                val progressPercent = remember(state.items.selectedSeasonEpisodes) {
-                    if (state.items.selectedSeasonEpisodes.isEmpty()) {
+                val progressPercent = remember(airedEpisodes) {
+                    if (airedEpisodes.isEmpty()) {
                         0F
                     } else {
-                        watchedEpisodes.toFloat() / state.items.selectedSeasonEpisodes.size.toFloat()
+                        watchedEpisodes.toFloat() / airedEpisodes.size.toFloat()
                     }
                 }
 
