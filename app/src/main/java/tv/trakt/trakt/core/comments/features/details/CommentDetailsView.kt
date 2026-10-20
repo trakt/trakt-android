@@ -480,7 +480,7 @@ private fun CommentHeader(
             Spacer(modifier = Modifier.weight(1f))
             CommentUserChips(
                 comment = comment,
-                progress = comment.userStats.progress(progressTotal).takeUnless { userComment },
+                progress = comment.userStats.progress(progressTotal),
             )
 
             val menuEditClick = onEditClick.takeIf { userComment }
