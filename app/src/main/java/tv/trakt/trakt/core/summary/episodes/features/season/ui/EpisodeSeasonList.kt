@@ -130,7 +130,7 @@ internal fun EpisodeSeasonList(
                             Text(
                                 text = item.episode.title,
                                 style = TraktTheme.typography.cardTitle,
-                                color = if (isCurrent) TraktTheme.colors.accent else TraktTheme.colors.textPrimary,
+                                color = TraktTheme.colors.textPrimary,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
