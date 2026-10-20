@@ -15,8 +15,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
@@ -37,7 +39,7 @@ internal fun DetailsHeader(
     show: Show,
     showTranslation: MediaTranslation?,
     ratings: ExternalRating?,
-    creator: Person?,
+    creators: ImmutableList<Person>?,
     loading: Boolean,
     watched: Boolean,
     watching: Boolean,
@@ -83,7 +85,7 @@ internal fun DetailsHeader(
         },
         titleFooter = {
             val animatedAlpha by animateFloatAsState(
-                targetValue = if (creator == null) 0f else 1f,
+                targetValue = if (creators == null) 0f else 1f,
                 animationSpec = tween(delayMillis = 50),
                 label = "alpha",
             )
@@ -101,21 +103,32 @@ internal fun DetailsHeader(
                     style = TraktTheme.typography.paragraphSmaller,
                 )
 
-                Text(
-                    text = (creator?.name ?: "").ifBlank { "-" },
-                    fontWeight = FontWeight.SemiBold,
-                    color = when {
-                        creator?.name?.isNotBlank() == true -> TraktTheme.colors.textPrimary
-                        else -> TraktTheme.colors.textSecondary
-                    },
-                    style = TraktTheme.typography.paragraphSmaller,
-                    modifier = Modifier
-                        .onClick {
-                            creator?.let {
-                                onCreatorClick(it)
-                            }
+                if (creators.isNullOrEmpty()) {
+                    Text(
+                        text = "-",
+                        fontWeight = FontWeight.SemiBold,
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.paragraphSmaller,
+                    )
+                }
+
+                creators?.forEachIndexed { index, creator ->
+                    Text(
+                        text = when {
+                            index < creators.lastIndex -> "${creator.name},"
+                            else -> creator.name
                         },
-                )
+                        fontWeight = FontWeight.SemiBold,
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.paragraphSmaller,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .onClick {
+                                onCreatorClick(creator)
+                            },
+                    )
+                }
             }
         },
         genres = show.genres,

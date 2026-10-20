@@ -116,7 +116,7 @@ internal class ShowDetailsViewModel(
     private val showState = MutableStateFlow(initialState.show)
     private val showRatingsState = MutableStateFlow(initialState.showRatings)
     private val showUserRatingsState = MutableStateFlow(initialState.showUserRating)
-    private val showCreatorState = MutableStateFlow(initialState.showCreator)
+    private val showCreatorsState = MutableStateFlow(initialState.showCreators)
     private val showProgressState = MutableStateFlow(initialState.showProgress)
     private val showTranslationState = MutableStateFlow(initialState.showTranslation)
     private val showSocialsState = MutableStateFlow(initialState.showSocials)
@@ -308,8 +308,8 @@ internal class ShowDetailsViewModel(
     private fun loadCreator() {
         viewModelScope.launch {
             try {
-                showCreatorState.update {
-                    getShowCreatorUseCase.getCreator(showId)
+                showCreatorsState.update {
+                    getShowCreatorUseCase.getCreators(showId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -914,7 +914,7 @@ internal class ShowDetailsViewModel(
         showState,
         showRatingsState,
         showUserRatingsState,
-        showCreatorState,
+        showCreatorsState,
         showProgressState,
         showTranslationState,
         showSocialsState,
@@ -931,7 +931,7 @@ internal class ShowDetailsViewModel(
             show = state[0] as Show?,
             showRatings = state[1] as ExternalRating?,
             showUserRating = state[2] as UserRatingsState?,
-            showCreator = state[3] as Person?,
+            showCreators = state[3] as ImmutableList<Person>?,
             showProgress = state[4] as ShowDetailsState.ProgressState?,
             showTranslation = state[5] as MediaTranslation?,
             showSocials = state[6] as ImmutableList<MediaSocialActivity>?,

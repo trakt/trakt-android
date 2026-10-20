@@ -20,7 +20,7 @@ internal data class ShowDetailsState(
     val showRatings: ExternalRating? = null,
     val showUserRating: UserRatingsState? = null,
     val showProgress: ProgressState? = null,
-    val showCreator: Person? = null,
+    val showCreators: ImmutableList<Person>? = null,
     val showTranslation: MediaTranslation? = null,
     val showSocials: ImmutableList<MediaSocialActivity>? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
