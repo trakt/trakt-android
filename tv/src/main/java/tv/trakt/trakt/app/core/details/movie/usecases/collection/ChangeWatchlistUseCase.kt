@@ -1,13 +1,13 @@
 package tv.trakt.trakt.app.core.details.movie.usecases.collection
 
-import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.TraktId
 
 internal class ChangeWatchlistUseCase(
     private val remoteSource: MoviesSyncRemoteSource,
-    private val syncLocalSource: MoviesSyncLocalDataSource,
+    private val syncLocalSource: MoviesSyncLocalSource,
 ) {
     suspend fun removeFromWatchlist(movieId: TraktId) {
         remoteSource.removeFromWatchlist(movieId)

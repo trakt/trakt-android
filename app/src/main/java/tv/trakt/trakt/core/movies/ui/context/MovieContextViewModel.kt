@@ -17,11 +17,11 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.UserProgressLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -46,9 +46,9 @@ internal class MovieContextViewModel(
     private val movie: Movie,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
-    private val userProgressLocalSource: UserProgressLocalDataSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-    private val userWatchlistMinLocalDataSource: UserWatchlistMinimalLocalDataSource,
+    private val userProgressLocalSource: UserProgressLocalSource,
+    private val userWatchlistLocalSource: UserWatchlistLocalSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val dataChanges: DataChanges,
@@ -94,7 +94,7 @@ internal class MovieContextViewModel(
 
                 coroutineScope {
                     val watchlistAsync = async {
-                        if (!userWatchlistMinLocalDataSource.isMoviesLoaded()) {
+                        if (!userWatchlistMinLocalSource.isMoviesLoaded()) {
                             loadWatchlistUseCase.loadWatchlist()
                         }
                     }
@@ -108,7 +108,7 @@ internal class MovieContextViewModel(
                     progressAsync.await()
 
                     isWatchlistState.update {
-                        userWatchlistMinLocalDataSource.containsMovie(movie.ids.trakt)
+                        userWatchlistMinLocalSource.containsMovie(movie.ids.trakt)
                     }
                     isWatchedState.update {
                         userProgressLocalSource.containsMovie(movie.ids.trakt)
@@ -146,7 +146,7 @@ internal class MovieContextViewModel(
                         ),
                     ),
                 )
-                userWatchlistMinLocalDataSource.addMovies(
+                userWatchlistMinLocalSource.addMovies(
                     movies = setOf(movie.ids.trakt),
                 )
 
@@ -189,7 +189,7 @@ internal class MovieContextViewModel(
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
-                userWatchlistMinLocalDataSource.removeMovies(
+                userWatchlistMinLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
 
@@ -228,7 +228,7 @@ internal class MovieContextViewModel(
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
-                userWatchlistMinLocalDataSource.removeMovies(
+                userWatchlistMinLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
 
@@ -268,7 +268,7 @@ internal class MovieContextViewModel(
                 userWatchlistLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
-                userWatchlistMinLocalDataSource.removeMovies(
+                userWatchlistMinLocalSource.removeMovies(
                     ids = setOf(movie.ids.trakt),
                 )
 

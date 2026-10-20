@@ -3,11 +3,11 @@ package tv.trakt.trakt.app.common.preview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 
 internal object StatusPreviewData {
     private val episodes = persistentListOf(
@@ -18,12 +18,12 @@ internal object StatusPreviewData {
         PreviewData.finaleEpisode,
     )
 
-    val upcomingEpisodes: ImmutableList<HomeUpcomingItem.EpisodeItem> = episodes
+    val upcomingEpisodes: ImmutableList<CalendarItem.EpisodeItem> = episodes
         .map { it.toUpcomingItem() }
         .toImmutableList()
 
-    val upcomingItems: ImmutableList<HomeUpcomingItem> = (
-        upcomingEpisodes + HomeUpcomingItem.MovieItem(movie = PreviewData.newMovie)
+    val upcomingItems: ImmutableList<CalendarItem> = (
+        upcomingEpisodes + CalendarItem.MovieItem(movie = PreviewData.newMovie)
     ).toImmutableList()
 
     val progressShows: ImmutableList<ProgressShow> = episodes
@@ -31,7 +31,7 @@ internal object StatusPreviewData {
         .toImmutableList()
 
     private fun Episode.toUpcomingItem() =
-        HomeUpcomingItem.EpisodeItem(
+        CalendarItem.EpisodeItem(
             show = PreviewData.show1,
             episodes = persistentListOf(this),
             isFullSeason = false,

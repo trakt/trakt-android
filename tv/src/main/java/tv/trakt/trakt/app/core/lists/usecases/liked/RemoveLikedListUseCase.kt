@@ -1,12 +1,12 @@
 package tv.trakt.trakt.app.core.lists.usecases.liked
 
-import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
+import tv.trakt.trakt.common.data.local.UserLikedListsLocalSource
 import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 
 internal class RemoveLikedListUseCase(
     private val remoteSource: ListsRemoteSource,
-    private val localSource: UserLikedListsLocalDataSource,
+    private val localSource: UserLikedListsLocalSource,
 ) {
     suspend fun removeFromLiked(listId: TraktId) {
         remoteSource.removeLikedList(

@@ -3,7 +3,7 @@ package tv.trakt.trakt.common.core.user.usecases.lists
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
+import tv.trakt.trakt.common.data.local.UserLikedListsLocalSource
 import tv.trakt.trakt.common.data.remote.UserOtherListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.TraktId
@@ -17,7 +17,7 @@ import java.time.Instant
 class LoadUserLikedListsUseCase(
     private val sessionManager: SessionManager,
     private val remoteSource: UserOtherListsRemoteSource,
-    private val localSource: UserLikedListsLocalDataSource,
+    private val localSource: UserLikedListsLocalSource,
 ) {
     suspend fun loadLocalLists(): ImmutableMap<TraktId, Instant> {
         return localSource.getLists()

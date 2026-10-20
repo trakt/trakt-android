@@ -7,7 +7,7 @@ import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.sync.model.ProgressItem
-import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
+import tv.trakt.trakt.common.data.local.UserProgressLocalSource
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Ids
@@ -18,7 +18,7 @@ import tv.trakt.trakt.common.model.toTraktId
 
 class LoadUserProgressUseCase(
     private val remoteSource: UserRemoteSource,
-    private val localSource: UserProgressLocalDataSource,
+    private val localSource: UserProgressLocalSource,
     private val dataChanges: DataChanges,
 ) {
     suspend fun loadLocalShows(): ImmutableList<ProgressItem.ShowItem> {

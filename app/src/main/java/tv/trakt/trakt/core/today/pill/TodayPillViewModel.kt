@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.local.TodaySeenLocalSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -37,8 +38,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
-import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.usecases.GetTodayStoriesUseCase
 import java.time.Instant
@@ -46,11 +46,11 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("UNCHECKED_CAST")
 internal class TodayPillViewModel(
-    private val seenSource: TodaySeenLocalDataSource,
+    private val seenSource: TodaySeenLocalSource,
     private val getTodayStoriesUseCase: GetTodayStoriesUseCase,
     private val sessionManager: SessionManager,
     private val dataChanges: DataChanges,
-    private val homePersonalActivitySource: HomePersonalLocalDataSource,
+    private val homePersonalActivitySource: HomePersonalLocalSource,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = TodayPillState()

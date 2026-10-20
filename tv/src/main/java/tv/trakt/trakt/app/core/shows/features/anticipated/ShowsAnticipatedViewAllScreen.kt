@@ -42,7 +42,6 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_PAGE_LIMIT
-import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
@@ -51,6 +50,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -171,7 +171,7 @@ private fun ShowsAnticipatedContent(
                                         modifier = Modifier.size(16.dp),
                                     )
                                     Text(
-                                        text = rememberThousandsFormat(anticipatedShow.listCount),
+                                        text = rememberThousandsFormat(anticipatedShow.count),
                                         style = TraktTheme.typography.cardTitle,
                                         color = TraktTheme.colors.textPrimary,
                                         maxLines = 1,
@@ -238,8 +238,8 @@ private fun ShowsAnticipatedContentPreview() {
         ShowsAnticipatedContent(
             state = ShowsAnticipatedViewAllState(
                 shows = listOf(
-                    AnticipatedShow(
-                        listCount = 1234,
+                    DiscoverItem.ShowItem(
+                        count = 1234,
                         show = PreviewData.show1,
                     ),
                 ).toImmutableList(),

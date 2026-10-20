@@ -6,8 +6,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -17,8 +17,8 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetPersonalListItemsUseCase(
     private val remoteSource: UserPersonalListsRemoteSource,
-    private val localShowSource: ShowLocalDataSource,
-    private val localMovieSource: MovieLocalDataSource,
+    private val localShowSource: ShowLocalSource,
+    private val localMovieSource: MovieLocalSource,
 ) {
     suspend fun getListItems(
         listId: TraktId,

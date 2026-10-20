@@ -1,14 +1,10 @@
 package tv.trakt.trakt.core.summary.movies.di
 
 import org.koin.android.ext.koin.androidApplication
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieStorage
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsViewModel
@@ -38,10 +34,6 @@ import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaViewModel
 import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
-
-internal val movieDetailsDataModule = module {
-    singleOf(::MovieStorage) { bind<MovieLocalDataSource>() }
-}
 
 internal val movieDetailsModule = module {
     factoryOf(::GetMovieDetailsUseCase)

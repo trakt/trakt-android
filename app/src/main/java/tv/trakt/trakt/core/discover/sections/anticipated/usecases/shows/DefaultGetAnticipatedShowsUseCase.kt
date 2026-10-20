@@ -2,24 +2,24 @@ package tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.AnticipatedShowsLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import java.time.temporal.ChronoUnit.DAYS
 
 internal class DefaultGetAnticipatedShowsUseCase(
     private val remoteSource: ShowsRemoteSource,
-    private val localAnticipatedSource: AnticipatedShowsLocalDataSource,
-    private val localShowSource: ShowLocalDataSource,
+    private val localAnticipatedSource: AnticipatedShowsLocalSource,
+    private val localShowSource: ShowLocalSource,
     private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) : GetAnticipatedShowsUseCase {
     override suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {

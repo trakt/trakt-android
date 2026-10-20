@@ -1,11 +1,14 @@
 ---
 trigger: glob
 globs: 'common/src/main/**/*.kt'
-description: 'DataStore (Preferences and Proto), entity caches, AuthStorage, no SharedPreferences. Migrations and disk-I/O hygiene.'
+description: 'DataStore (Preferences and Proto), local sources, auth token storage, no SharedPreferences. Migrations and disk-I/O hygiene.'
 applyTo: 'common/src/main/**/*.kt'
 paths:
   - 'common/src/main/**/*.kt'
   - '{app,tv}/src/main/**/data/**/*.kt'
+  - '{app,tv}/src/main/**/di/**/*.kt'
+  - 'app/src/main/java/tv/trakt/trakt/TraktApplication.kt'
+  - 'tv/src/main/java/tv/trakt/trakt/app/TvActivity.kt'
 ---
 
 # Persistence
@@ -15,7 +18,7 @@ paths:
 | Need                                       | Tool                                            |
 | ------------------------------------------ | ----------------------------------------------- |
 | User preferences (theme, flags, token)     | DataStore — `Preferences` or typed Proto        |
-| Entity caches (recent movies, upcoming)    | Existing entity stores in `common/.../<entity>/`|
+| Entity caches (recent movies, upcoming)    | `<Feature>LocalSource` in `common/.../data/local/` |
 | Ephemeral in-memory cache                  | `MutableStateFlow<…>` inside a `single { }` Koin scope |
 | Auth tokens / sensitive material           | DataStore + Android Keystore-backed encryption  |
 | Files (downloaded artwork, OkHttp cache)   | App cache directory (already wired)             |
@@ -74,7 +77,51 @@ Rules:
 
 - `@Serializable` data classes, default value every field.
 - Migrations via `DataStoreFactory` `produceMigrations` block on schema change.
-- One file per typed store under `common/.../persistence/`.
+- Declare the store in the Koin module that owns its consumer: `localSourcesModule` for a shared
+  local source, the feature's `di/<Feature>Module.kt` otherwise.
+
+## Local sources
+
+A local source owns one feature's cached data: an in-memory map, a `MutableStateFlow` or a
+DataStore. Phone and TV share the same classes in one flat package, `common/.../data/local/`.
+
+```kotlin
+// common/.../data/local/MovieLocalSource.kt
+class MovieLocalSource {
+    private val mutex = Mutex()
+    private val storage = mutableMapOf<TraktId, Movie>()
+
+    suspend fun getMovie(movieId: TraktId): Movie? { … }
+
+    suspend fun upsertMovies(movies: List<Movie>) { … }
+}
+
+// common/.../data/local/di/LocalSourcesModule.kt
+val localSourcesModule = module {
+    singleOf(::MovieLocalSource)
+    // …
+}
+```
+
+Rules:
+
+- **One public `class <Feature>LocalSource` per feature. No interface, no `*Storage` impl.** Add an
+  interface only when a second implementation actually exists.
+- **Lives in `common/.../data/local/`** whenever its types live in `:common`, even when only one
+  platform reads it today. Move its model to `:common` first when the model is not genuinely
+  platform-specific. A source that stores `:app` or `:tv` models stays in its feature's
+  `data/local/` folder and is bound in that feature's Koin module, still as a plain class.
+- **All shared local sources bind once in `localSourcesModule`**, registered in both
+  `TraktApplication.setupKoin()` and `TvActivity`. Koin singletons are created lazily, so binding a
+  phone-only source in TV costs nothing. Never bind a shared local source again in a feature module.
+- **Bind with `singleOf(::XLocalSource)`.** Use `single { XLocalSource(dataStore = get(named(…))) }`
+  only when a param needs a qualifier. A DataStore backing a shared source is declared next to it in
+  `localSourcesModule`.
+- **Never rename a DataStore file when moving a source.** The file name is the storage key; a new
+  name drops what users already have cached.
+- **Pin serial names when moving a stored sealed type.** A stored `List<Sealed>` writes each subtype's
+  fully qualified name. Add `@SerialName("<old fqcn>")` to every subtype before changing its
+  package, or the old cache fails to decode and is wiped.
 
 ## In-memory caches
 
@@ -86,9 +133,9 @@ State not needing process survival but shared across ViewModels (login session, 
 
 ## Auth tokens
 
-- Tokens in dedicated DataStore (`auth_prefs`).
-- `AuthStorage` only type that reads/writes auth tokens.
-- Repositories and ViewModels go through `AuthStorage`; no direct DataStore access.
+- Tokens in dedicated DataStore (`auth_preferences`), declared in `common/.../auth/di/CommonAuthModule.kt`.
+- `TokenProvider` (`DefaultTokenProvider`) only type that reads/writes auth tokens.
+- Repositories and ViewModels go through `TokenProvider` / `SessionManager`; no direct DataStore access.
 - Token refresh in Ktor authorised client's `Auth` plugin (see `networking.md`).
 
 ## Migrations
@@ -104,9 +151,11 @@ State not needing process survival but shared across ViewModels (login session, 
 
 ## Quick checklist
 
+- [ ] Local source is one class, no interface, in `common/.../data/local/` unless it stores platform models
+- [ ] Shared local source bound only in `localSourcesModule`
 - [ ] DataStore (not SharedPreferences) for new preferences
 - [ ] Keys typed via `*PreferencesKey` helpers
 - [ ] Reads return `Flow<T>`, writes are `suspend`
 - [ ] Store wired as `single { }` in Koin
-- [ ] Auth tokens go through `AuthStorage`, never DataStore directly
+- [ ] Auth tokens go through `TokenProvider`, never DataStore directly
 - [ ] No `runBlocking { … .first() }` in production code paths

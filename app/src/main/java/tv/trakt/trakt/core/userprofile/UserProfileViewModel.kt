@@ -18,9 +18,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.blocking.BlockUserUseCase
@@ -29,6 +26,9 @@ import tv.trakt.trakt.common.core.user.usecases.following.FollowRequestUserUseCa
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase.Result.Approved
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase.Result.RequestPending
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -59,9 +59,9 @@ internal class UserProfileViewModel(
     private val blockUserUseCase: BlockUserUseCase,
     private val followUserUseCase: FollowUserUseCase,
     private val followRequestUserUseCase: FollowRequestUserUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val episodeLocalSource: EpisodeLocalSource,
+    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<UserProfileDestination>()
@@ -384,7 +384,7 @@ internal class UserProfileViewModel(
         }
 
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShowState.update { show.ids.trakt }
         }
     }
@@ -395,7 +395,7 @@ internal class UserProfileViewModel(
         }
 
         processingJob = viewModelScope.launch {
-            movieLocalDataSource.upsertMovies(listOf(movie))
+            movieLocalSource.upsertMovies(listOf(movie))
             navigateMovieState.update { movie.ids.trakt }
         }
     }
@@ -409,8 +409,8 @@ internal class UserProfileViewModel(
         }
 
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            showLocalSource.upsertShows(listOf(show))
+            episodeLocalSource.upsertEpisodes(listOf(episode))
             navigateEpisodeState.update { Pair(show.ids.trakt, episode) }
         }
     }

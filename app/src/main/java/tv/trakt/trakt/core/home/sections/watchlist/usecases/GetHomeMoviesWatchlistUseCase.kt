@@ -2,8 +2,8 @@ package tv.trakt.trakt.core.home.sections.watchlist.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.data.local.HomeWatchlistLocalSource
 import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetHomeMoviesWatchlistUseCase(
-    private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,
+    private val homeWatchlistLocalSource: HomeWatchlistLocalSource,
     private val userRemoteSource: UserWatchlistRemoteSource,
 ) {
     suspend fun getLocalWatchlist(limit: Int): ImmutableList<WatchlistItem> {

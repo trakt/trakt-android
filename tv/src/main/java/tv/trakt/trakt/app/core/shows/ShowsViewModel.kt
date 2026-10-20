@@ -16,9 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
-import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetReleasesShowsUseCase
@@ -32,6 +29,8 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.calendar.CalendarItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import java.time.ZonedDateTime
 
 internal class ShowsViewModel(
@@ -131,10 +130,10 @@ internal class ShowsViewModel(
     ) { state ->
         ShowsState(
             isLoading = state[0] as Boolean,
-            trendingShows = state[1] as ImmutableList<TrendingShow>?,
+            trendingShows = state[1] as ImmutableList<DiscoverItem.ShowItem>?,
             popularShows = state[2] as ImmutableList<Show>?,
-            anticipatedShows = state[3] as ImmutableList<AnticipatedShow>?,
-            releasesShows = state[4] as ImmutableList<HomeUpcomingItem.EpisodeItem>?,
+            anticipatedShows = state[3] as ImmutableList<DiscoverItem.ShowItem>?,
+            releasesShows = state[4] as ImmutableList<CalendarItem.EpisodeItem>?,
             user = state[5] as User?,
             collection = state[6] as UserCollectionState,
             error = state[7] as Exception?,

@@ -4,7 +4,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import timber.log.Timber
 import tv.trakt.trakt.common.BuildConfig
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
 import tv.trakt.trakt.common.data.remote.PlexRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
@@ -23,7 +23,7 @@ internal class GetPlexUseCase(
     private val remoteEpisodeSyncSource: EpisodesSyncRemoteSource,
     private val remoteShowSource: ShowsRemoteSource,
     private val remotePlexSource: PlexRemoteSource,
-    private val localShowSource: ShowLocalDataSource,
+    private val localShowSource: ShowLocalSource,
 ) {
     suspend fun getPlexStatus(
         showId: TraktId,

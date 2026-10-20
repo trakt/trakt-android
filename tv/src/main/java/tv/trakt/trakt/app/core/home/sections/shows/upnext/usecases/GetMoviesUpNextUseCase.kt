@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressMovie
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -13,7 +13,7 @@ import tv.trakt.trakt.common.model.fromDto
 
 internal class GetMoviesUpNextUseCase(
     private val remoteMoviesSource: MoviesSyncRemoteSource,
-    private val localMovieSource: MovieLocalDataSource,
+    private val localMovieSource: MovieLocalSource,
 ) {
     suspend fun getMoviesUpNext(
         page: Int = 1,

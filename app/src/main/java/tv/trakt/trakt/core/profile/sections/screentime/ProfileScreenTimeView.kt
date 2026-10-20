@@ -36,11 +36,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.model.profile.ScreenTimeData
+import tv.trakt.trakt.common.model.profile.ScreenTimeData.Stats
 import tv.trakt.trakt.common.ui.theme.colors.Green400
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.profile.sections.screentime.all.ScreenTimeAllSheet
-import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
-import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData.Stats
 import tv.trakt.trakt.core.profile.sections.screentime.ui.ScreenTimeDailyBreakdownCard
 import tv.trakt.trakt.core.profile.sections.screentime.ui.ScreenTimePeakHoursCard
 import tv.trakt.trakt.core.profile.sections.screentime.ui.ScreenTimeStatCard

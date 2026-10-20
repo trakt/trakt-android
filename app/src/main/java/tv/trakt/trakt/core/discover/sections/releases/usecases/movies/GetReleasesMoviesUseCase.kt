@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.discover.sections.releases.usecases.movies
 
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import java.time.Instant
 
 internal interface GetReleasesMoviesUseCase {

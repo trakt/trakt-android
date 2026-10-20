@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.lists.sections.watchlist.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
-import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
 import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -18,13 +18,13 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.getWatchlistSorting
 
 internal class GetMoviesWatchlistUseCase(
     private val remoteSource: UserWatchlistRemoteSource,
-    private val userWatchlistLocalDataSource: UserWatchlistLocalDataSource,
+    private val userWatchlistLocalSource: UserWatchlistLocalSource,
 ) {
     suspend fun getLocalWatchlist(
         limit: Int,
         sort: Sorting,
     ): ImmutableList<WatchlistItem> {
-        return userWatchlistLocalDataSource.getMovies()
+        return userWatchlistLocalSource.getMovies()
             .sortedWith(getWatchlistSorting(sort))
             .take(limit)
             .toImmutableList()
@@ -60,7 +60,7 @@ internal class GetMoviesWatchlistUseCase(
             .toImmutableList()
             .also {
                 if (skipLocal) return@also
-                with(userWatchlistLocalDataSource) {
+                with(userWatchlistLocalSource) {
                     if (page == 1) {
                         setMovies(response)
                     } else {

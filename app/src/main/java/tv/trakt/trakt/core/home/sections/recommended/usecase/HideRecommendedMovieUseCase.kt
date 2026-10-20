@@ -1,16 +1,16 @@
 package tv.trakt.trakt.core.home.sections.recommended.usecase
 
+import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalDataSource
-import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalSource
 
 internal class HideRecommendedMovieUseCase(
     private val remoteSource: MoviesSyncRemoteSource,
-    private val localRecommendedSource: RecommendedMoviesLocalDataSource,
-    private val localRecommendedMediaSource: RecommendedMediaLocalDataSource,
+    private val localRecommendedSource: RecommendedMoviesLocalSource,
+    private val localRecommendedMediaSource: RecommendedMediaLocalSource,
     private val analytics: Analytics,
 ) {
     suspend fun hideMovie(movieId: TraktId) {

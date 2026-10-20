@@ -2,8 +2,8 @@ package tv.trakt.trakt.core.home.sections.watchlist.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.data.local.HomeWatchlistLocalSource
 import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -17,7 +17,7 @@ import tv.trakt.trakt.common.networking.WatchlistShowDto
 
 internal class GetHomeShowsWatchlistUseCase(
     private val userRemoteSource: UserWatchlistRemoteSource,
-    private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,
+    private val homeWatchlistLocalSource: HomeWatchlistLocalSource,
 ) {
     suspend fun getLocalWatchlist(limit: Int? = null): ImmutableList<WatchlistItem> {
         return homeWatchlistLocalSource.getShowItems()

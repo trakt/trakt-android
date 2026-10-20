@@ -2,22 +2,22 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.RecommendedShowsLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedSource
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalDataSource
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 
 internal class DefaultGetRecommendedShowsUseCase(
     private val remoteSource: ShowsRemoteSource,
-    private val localRecommendedSource: RecommendedShowsLocalDataSource,
-    private val localShowSource: ShowLocalDataSource,
+    private val localRecommendedSource: RecommendedShowsLocalSource,
+    private val localShowSource: ShowLocalSource,
 ) : GetRecommendedShowsUseCase {
     override suspend fun getLocalShows(): ImmutableList<RecommendedItem.ShowItem> {
         return localRecommendedSource.getShows()

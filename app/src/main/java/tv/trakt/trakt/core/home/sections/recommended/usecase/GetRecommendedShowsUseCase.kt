@@ -2,8 +2,8 @@ package tv.trakt.trakt.core.home.sections.recommended.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.core.discover.DiscoverConfig
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 
 internal interface GetRecommendedShowsUseCase {
     suspend fun getLocalShows(): ImmutableList<RecommendedItem.ShowItem>

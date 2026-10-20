@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.credits.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.local.PeopleLocalSource
 import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
@@ -12,7 +13,6 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.CastMemberDto
 import tv.trakt.trakt.common.networking.CrewMemberDto
-import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 import tv.trakt.trakt.core.summary.credits.model.CreditsSource
 import tv.trakt.trakt.core.summary.credits.model.MediaCredits
 
@@ -22,7 +22,7 @@ internal class GetMediaCreditsUseCase(
     private val moviesSource: MoviesRemoteSource,
     private val showsSource: ShowsRemoteSource,
     private val episodesSource: EpisodesRemoteSource,
-    private val peopleLocalSource: PeopleLocalDataSource,
+    private val peopleLocalSource: PeopleLocalSource,
 ) {
     suspend fun getCredits(source: CreditsSource): MediaCredits {
         val castCrew = when (source) {

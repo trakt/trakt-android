@@ -1,6 +1,6 @@
 package tv.trakt.trakt.app.core.details.show.usecases.streamings
 
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.model.Show
@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.fromDto
 internal class GetPlexUseCase(
     private val remoteSyncSource: ShowsSyncRemoteSource,
     private val remoteShowSource: ShowsRemoteSource,
-    private val localShowSource: ShowLocalDataSource,
+    private val localShowSource: ShowLocalSource,
 ) {
     suspend fun getPlexStatus(showId: TraktId): Result {
         var show = localShowSource.getShow(showId)

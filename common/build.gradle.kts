@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.negotiation)
     implementation(libs.ktor.client.auth)
+    implementation(libs.kotlinx.serialization.proto)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

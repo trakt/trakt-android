@@ -37,7 +37,7 @@ Hold across every layer. Lifted from Now in Android's `ArchitectureLearningJourn
 ├──────────────────────────────────────────┤
 │ Data                                     │  Repositories, local stores
 │   - Repository                           │  Flow<T> reads, suspend writes
-│   - Local (DataStore, entity caches)     │
+│   - Local (<Feature>LocalSource)         │
 │   - Remote (<Feature>RemoteSource)       │
 └──────────────────────────────────────────┘
 ```
@@ -110,11 +110,12 @@ Avoid one-line `UseCase` wrappers around repository calls.
 
 ## Data Layer
 
-- **Repository** is public boundary. Located in `core/<feature>/data/` or `common/.../<entity>/`.
+- **Repository** is public boundary. Located in `core/<feature>/data/` or `common/.../core/<feature>/`.
 - **Reads return `Flow<T>`.** Local + remote sources flow through repository unified by `data` layer; ViewModel sees only unified stream.
 - **Writes are `suspend fun` returning `Result<…>`** (or domain-specific sealed result type).
 - **Mapping** lives on the domain model as `companion object { fun fromDto(...) }`. No separate mapper files. Pure, no I/O. See `networking.md`.
 - **Remote sources** are shared public classes in one flat package, `common/.../data/remote/<Feature>RemoteSource.kt`, no interface, all bound in `remoteSourcesModule` (`data/remote/di/RemoteSourcesModule.kt`). Phone and TV inject the same class. See "Remote sources" in `networking.md`.
+- **Local sources** follow the same shape: one public `<Feature>LocalSource` class, no interface, in `common/.../data/local/`, all bound in `localSourcesModule` (`data/local/di/LocalSourcesModule.kt`). See "Local sources" in `persistence.md`.
 
 ## Cross-screen refresh signals
 
@@ -201,7 +202,7 @@ Scopes:
 DSL form:
 
 - **Default to the constructor-reference DSL (`singleOf`, `factoryOf`, `viewModelOf`, `workerOf`)** — `singleOf(::Foo)` replaces `single { Foo(get(), get()) }`; Koin resolves params by type.
-- **Bind interfaces with `bind`**: `singleOf(::FooRepositoryImpl) bind FooRepository::class`. Remote sources have no interface: plain `singleOf(::FooRemoteSource)`.
+- **Bind interfaces with `bind`**: `singleOf(::FooRepositoryImpl) bind FooRepository::class`. Remote and local sources have no interface: plain `singleOf(::FooRemoteSource)`, `singleOf(::FooLocalSource)`.
 - **Lambda form (`single { … }`) only when `Of` can't express it**: parametrised definitions (`viewModel { (id) -> … }`), qualified/named params, `get(named(…))`, or inline-built values. See `core/lists/di/ListsModule.kt`.
 
 ## Background sync

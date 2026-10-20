@@ -9,12 +9,12 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalDataSource
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem
+import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalSource
 
 internal class GetProfileCommentsUseCase(
     private val remoteSource: UserRemoteSource,
-    private val localDataSource: ProfileCommentsLocalDataSource,
+    private val localDataSource: ProfileCommentsLocalSource,
 ) {
     suspend fun getLocalComments(limit: Int): ImmutableList<ProfileCommentItem> {
         return localDataSource.getItems()

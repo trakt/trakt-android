@@ -18,15 +18,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.EpisodeType
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.resources.R
@@ -43,9 +43,9 @@ import java.util.Locale
 /** Bitmaps and strings are prepared here: a Glance tree can neither suspend nor read resources. */
 internal class CalendarWidgetDataSource(
     private val getCalendarItemsUseCase: GetCalendarItemsUseCase,
-    private val localShowSource: ShowLocalDataSource,
-    private val localMovieSource: MovieLocalDataSource,
-    private val localEpisodeSource: EpisodeLocalDataSource,
+    private val localShowSource: ShowLocalSource,
+    private val localMovieSource: MovieLocalSource,
+    private val localEpisodeSource: EpisodeLocalSource,
     private val imageLoader: ImageLoader,
 ) {
     private val loadedState = mutableStateOf(CalendarWidgetState())

@@ -2,18 +2,18 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.ListsSorting
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.model.sortPersonalLists
 
 internal class GetPersonalListsUseCase(
     private val remoteSource: UserPersonalListsRemoteSource,
-    private val localSource: ListsPersonalLocalDataSource,
+    private val localSource: ListsPersonalLocalSource,
 ) {
     suspend fun getLocalList(listId: TraktId): CustomList? {
         return localSource

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
+import tv.trakt.trakt.common.data.local.UserListsLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -24,7 +24,7 @@ import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 
 internal class CreateListViewModel(
     private val createListUseCase: CreateListUseCase,
-    private val userListsLocalDataSource: UserListsLocalDataSource,
+    private val userListsLocalSource: UserListsLocalSource,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -68,7 +68,7 @@ internal class CreateListViewModel(
                 analytics.lists.logListCreate()
 
                 // Clear cached lists to force refresh next time lists are accessed.
-                userListsLocalDataSource.clear()
+                userListsLocalSource.clear()
 
                 loadingState.update { Done }
             } catch (error: Exception) {

@@ -42,7 +42,6 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_PAGE_LIMIT
-import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
@@ -53,6 +52,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
@@ -175,7 +175,7 @@ private fun ShowsTrendingContent(
                                         modifier = Modifier.size(12.dp),
                                     )
                                     Text(
-                                        text = rememberThousandsFormat(trendingShow.watchers),
+                                        text = rememberThousandsFormat(trendingShow.count),
                                         style = TraktTheme.typography.cardTitle,
                                         color = TraktTheme.colors.textPrimary,
                                         maxLines = 1,
@@ -247,8 +247,8 @@ private fun Preview() {
         ShowsTrendingContent(
             state = ShowsTrendingViewAllState(
                 shows = (1..20).map {
-                    TrendingShow(
-                        watchers = 1230,
+                    DiscoverItem.ShowItem(
+                        count = 1230,
                         show = PreviewData.show1.copy(ids = Ids(TraktId(it), SlugId(it.toString()))),
                     )
                 }.toImmutableList(),

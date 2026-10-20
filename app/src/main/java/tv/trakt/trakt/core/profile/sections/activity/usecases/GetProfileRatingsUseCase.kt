@@ -10,12 +10,12 @@ import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalDataSource
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
+import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalSource
 
 internal class GetProfileRatingsUseCase(
     private val remoteSource: UserRatingsRemoteSource,
-    private val localDataSource: ProfileRatingsLocalDataSource,
+    private val localDataSource: ProfileRatingsLocalSource,
 ) {
     suspend fun getLocalRatings(limit: Int): ImmutableList<ProfileRatingItem> {
         return localDataSource.getItems()

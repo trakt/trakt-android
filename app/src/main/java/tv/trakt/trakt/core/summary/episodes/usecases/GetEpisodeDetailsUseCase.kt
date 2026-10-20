@@ -1,6 +1,6 @@
 package tv.trakt.trakt.core.summary.episodes.usecases
 
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.SeasonEpisode
@@ -9,7 +9,7 @@ import tv.trakt.trakt.common.model.fromDto
 
 internal class GetEpisodeDetailsUseCase(
     private val remoteSource: EpisodesRemoteSource,
-    private val localSource: EpisodeLocalDataSource,
+    private val localSource: EpisodeLocalSource,
 ) {
     suspend fun getLocalEpisode(episodeId: TraktId): Episode? {
         return localSource.getEpisode(episodeId)

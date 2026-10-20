@@ -18,9 +18,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.library.LibraryItem
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLibraryUseCase
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -40,8 +40,8 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ProfileLibraryViewModel(
     private val loadLibraryUseCase: LoadUserLibraryUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
@@ -158,11 +158,11 @@ internal class ProfileLibraryViewModel(
     }
 
     suspend fun onNavigateToShow(show: Show) {
-        showLocalDataSource.upsertShows(listOf(show))
+        showLocalSource.upsertShows(listOf(show))
     }
 
     suspend fun onNavigateToMovie(movie: Movie) {
-        movieLocalDataSource.upsertMovies(listOf(movie))
+        movieLocalSource.upsertMovies(listOf(movie))
     }
 
     fun setCollapsed(collapsed: Boolean) {

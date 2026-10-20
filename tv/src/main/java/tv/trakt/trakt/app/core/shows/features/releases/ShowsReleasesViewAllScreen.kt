@@ -36,13 +36,13 @@ import tv.trakt.trakt.app.common.ui.chips.EpisodeStatusChip
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
@@ -66,7 +66,7 @@ private fun ShowsReleasesViewAllContent(
     modifier: Modifier = Modifier,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
 ) {
-    var focusedItem by remember { mutableStateOf<HomeUpcomingItem.EpisodeItem?>(null) }
+    var focusedItem by remember { mutableStateOf<CalendarItem.EpisodeItem?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<Int?>(null) }
     val focusRequesters = remember { mutableMapOf<Int, FocusRequester>() }
 
@@ -125,7 +125,7 @@ private fun ShowsReleasesViewAllContent(
                     key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
-                    val focusRequester = focusRequesters.getOrPut(item.id) {
+                    val focusRequester = focusRequesters.getOrPut(item.id.value) {
                         FocusRequester()
                     }
 
@@ -142,7 +142,7 @@ private fun ShowsReleasesViewAllContent(
                                     ?.let { EpisodeStatusChip(status = it) }
 
                                 InfoChip(
-                                    text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
+                                    text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                                     iconPainter = when {
                                         item.episode.isReleased -> painterResource(R.drawable.ic_calendar_check)
                                         else -> painterResource(R.drawable.ic_calendar_upcoming)
@@ -156,7 +156,7 @@ private fun ShowsReleasesViewAllContent(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
                                 Text(
-                                    text = item.title,
+                                    text = item.show.title,
                                     style = TraktTheme.typography.cardTitle,
                                     color = TraktTheme.colors.textPrimary,
                                     maxLines = 1,
@@ -191,7 +191,7 @@ private fun ShowsReleasesViewAllContent(
                             .onFocusChanged {
                                 if (it.isFocused) {
                                     focusedItem = item
-                                    focusedItemId = item.id
+                                    focusedItemId = item.id.value
                                 }
                             },
                     )

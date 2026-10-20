@@ -4,10 +4,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.UserCalendarRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
@@ -17,6 +16,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.fromDto
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit.DAYS
@@ -26,11 +26,11 @@ private const val DAYS_RANGE = 14
 
 internal class GetUpcomingUseCase(
     private val remoteUserSource: UserCalendarRemoteSource,
-    private val localShowSource: ShowLocalDataSource,
-    private val localMovieSource: MovieLocalDataSource,
-    private val localEpisodeSource: EpisodeLocalDataSource,
+    private val localShowSource: ShowLocalSource,
+    private val localMovieSource: MovieLocalSource,
+    private val localEpisodeSource: EpisodeLocalSource,
 ) {
-    suspend fun getUpcoming(): ImmutableList<HomeUpcomingItem> {
+    suspend fun getUpcoming(): ImmutableList<CalendarItem> {
         return coroutineScope {
             val showsAsync = async { getShows() }
             val moviesAsync = async { getMovies() }
@@ -39,11 +39,11 @@ internal class GetUpcomingUseCase(
                 showsAsync.await() +
                     moviesAsync.await()
             )
-                .sortedBy { it.releaseAt }
+                .sortedBy { it.releasedAt }
                 .toImmutableList()
                 .also {
-                    val episodeItems = it.filterIsInstance<HomeUpcomingItem.EpisodeItem>()
-                    val movieItems = it.filterIsInstance<HomeUpcomingItem.MovieItem>()
+                    val episodeItems = it.filterIsInstance<CalendarItem.EpisodeItem>()
+                    val movieItems = it.filterIsInstance<CalendarItem.MovieItem>()
 
                     val shows = episodeItems.asyncMap { item -> item.show }
                     val episodes = episodeItems.flatMap { item -> item.episodes }
@@ -56,7 +56,7 @@ internal class GetUpcomingUseCase(
         }
     }
 
-    private suspend fun getShows(): List<HomeUpcomingItem.EpisodeItem> {
+    private suspend fun getShows(): List<CalendarItem.EpisodeItem> {
         val remoteShows = remoteUserSource.getShowsCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
@@ -84,7 +84,7 @@ internal class GetUpcomingUseCase(
                     .sortedBy { it.number }
                     .toImmutableList()
 
-                HomeUpcomingItem.EpisodeItem(
+                CalendarItem.EpisodeItem(
                     show = entries.first().first,
                     episodes = episodes,
                     isFullSeason = episodes.isFullSeason(),
@@ -92,7 +92,7 @@ internal class GetUpcomingUseCase(
             }
     }
 
-    private suspend fun getMovies(): List<HomeUpcomingItem.MovieItem> {
+    private suspend fun getMovies(): List<CalendarItem.MovieItem> {
         val remoteMovies = remoteUserSource.getMoviesCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
@@ -107,7 +107,7 @@ internal class GetUpcomingUseCase(
                     return@asyncMap null
                 }
 
-                HomeUpcomingItem.MovieItem(
+                CalendarItem.MovieItem(
                     movie = Movie.fromDto(it.movie),
                 )
             }

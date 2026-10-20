@@ -2,8 +2,8 @@ package tv.trakt.trakt.app.core.home.sections.recommended.viewall
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.app.core.home.sections.recommended.model.RecommendedItem
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
 
 @Immutable
 internal data class RecommendedViewAllState(

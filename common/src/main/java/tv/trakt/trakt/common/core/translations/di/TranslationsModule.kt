@@ -1,18 +1,10 @@
 package tv.trakt.trakt.common.core.translations.di
 
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import tv.trakt.trakt.common.core.translations.data.local.TranslationsLocalDataSource
-import tv.trakt.trakt.common.core.translations.data.local.TranslationsStorage
 import tv.trakt.trakt.common.core.translations.usecase.GetEpisodeTranslationsUseCase
 import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
 import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
-
-val translationsDataModule = module {
-    singleOf(::TranslationsStorage) { bind<TranslationsLocalDataSource>() }
-}
 
 val translationsModule = module {
     factoryOf(::GetShowTranslationsUseCase)

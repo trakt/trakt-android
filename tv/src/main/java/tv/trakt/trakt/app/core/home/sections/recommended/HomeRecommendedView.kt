@@ -23,15 +23,16 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
-import tv.trakt.trakt.app.core.home.sections.recommended.model.RecommendedItem
-import tv.trakt.trakt.app.core.home.sections.recommended.model.RecommendedItem.MovieItem
-import tv.trakt.trakt.app.core.home.sections.recommended.model.RecommendedItem.ShowItem
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem.MovieItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem.ShowItem
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -141,10 +142,10 @@ private fun ContentList(
             VerticalMediaCard(
                 width = TraktTheme.size.verticalMediaBigCardSize,
                 title = item.title,
-                imageUrl = item.posterImage,
-                watched = collection.isWatched(item.id, item.mediaType, item.airedEpisodes),
-                watching = collection.isWatching(item.id, item.mediaType, item.airedEpisodes),
-                watchlist = collection.isWatchlist(item.id, item.mediaType),
+                imageUrl = item.images?.getPosterUrl(Images.Size.MEDIUM),
+                watched = collection.isWatched(item.id, item.type, item.airedEpisodes),
+                watching = collection.isWatching(item.id, item.type, item.airedEpisodes),
+                watchlist = collection.isWatchlist(item.id, item.type),
                 onClick = {
                     when (item) {
                         is ShowItem -> onShowClick(item.show.ids.trakt)

@@ -58,6 +58,10 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem.EpisodeItem
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem.MovieItem
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem.ShowItem
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.ui.CommentDropdown
@@ -67,10 +71,6 @@ import tv.trakt.trakt.core.comments.ui.CommentGifLayout.Side
 import tv.trakt.trakt.core.comments.ui.CommentGifView
 import tv.trakt.trakt.core.comments.ui.SideGifMaxSize
 import tv.trakt.trakt.core.comments.ui.SideGifShape
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem.EpisodeItem
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem.MovieItem
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem.ShowItem
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R

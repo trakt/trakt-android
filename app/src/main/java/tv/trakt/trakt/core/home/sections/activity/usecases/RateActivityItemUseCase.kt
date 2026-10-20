@@ -5,8 +5,8 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 
 internal class RateActivityItemUseCase(
