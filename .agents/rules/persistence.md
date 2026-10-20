@@ -1,11 +1,14 @@
 ---
 trigger: glob
 globs: 'common/src/main/**/*.kt'
-description: 'DataStore (Preferences and Proto), entity caches, AuthStorage, no SharedPreferences. Migrations and disk-I/O hygiene.'
+description: 'DataStore (Preferences and Proto), local sources, auth token storage, no SharedPreferences. Migrations and disk-I/O hygiene.'
 applyTo: 'common/src/main/**/*.kt'
 paths:
   - 'common/src/main/**/*.kt'
   - '{app,tv}/src/main/**/data/**/*.kt'
+  - '{app,tv}/src/main/**/di/**/*.kt'
+  - 'app/src/main/java/tv/trakt/trakt/TraktApplication.kt'
+  - 'tv/src/main/java/tv/trakt/trakt/app/TvActivity.kt'
 ---
 
 # Persistence
@@ -74,7 +77,8 @@ Rules:
 
 - `@Serializable` data classes, default value every field.
 - Migrations via `DataStoreFactory` `produceMigrations` block on schema change.
-- One file per typed store under `common/.../persistence/`.
+- Declare the store in the Koin module that owns its consumer: `localSourcesModule` for a shared
+  local source, the feature's `di/<Feature>Module.kt` otherwise.
 
 ## Local sources
 
@@ -129,9 +133,9 @@ State not needing process survival but shared across ViewModels (login session, 
 
 ## Auth tokens
 
-- Tokens in dedicated DataStore (`auth_prefs`).
-- `AuthStorage` only type that reads/writes auth tokens.
-- Repositories and ViewModels go through `AuthStorage`; no direct DataStore access.
+- Tokens in dedicated DataStore (`auth_preferences`), declared in `common/.../auth/di/CommonAuthModule.kt`.
+- `TokenProvider` (`DefaultTokenProvider`) only type that reads/writes auth tokens.
+- Repositories and ViewModels go through `TokenProvider` / `SessionManager`; no direct DataStore access.
 - Token refresh in Ktor authorised client's `Auth` plugin (see `networking.md`).
 
 ## Migrations
@@ -153,5 +157,5 @@ State not needing process survival but shared across ViewModels (login session, 
 - [ ] Keys typed via `*PreferencesKey` helpers
 - [ ] Reads return `Flow<T>`, writes are `suspend`
 - [ ] Store wired as `single { }` in Koin
-- [ ] Auth tokens go through `AuthStorage`, never DataStore directly
+- [ ] Auth tokens go through `TokenProvider`, never DataStore directly
 - [ ] No `runBlocking { … .first() }` in production code paths

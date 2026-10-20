@@ -26,6 +26,8 @@ areas such as `analytics.*` calls, so still read by area:
   file caches: `networking.md`, `persistence.md`
 - Repositories, DataStore, local sources and caches in any module (`app/`,
   `tv/`, feature `data/` folders): `networking.md`, `persistence.md`
+- Koin modules that bind local sources or DataStores (feature `di/`
+  folders, `TraktApplication`, `TvActivity`): `persistence.md`
 - OpenAPI spec and generated client (`openapi/openapi.json`,
   `build/generate-resources/`, `./gradlew openApiGenerate`): `networking.md`
 - Strings and resources (`resources/src/main/res/**`, `strings.xml`,

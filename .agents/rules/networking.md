@@ -23,7 +23,7 @@ paths:
 | Hand-written response DTOs    | `common/.../data/dto/`                                     |
 | Hand-written request bodies   | `common/.../data/request/`                                 |
 | DTO → domain mapping          | `fromDto` companion on the domain model in `common/.../model/` |
-| Repositories                  | feature-local `core/<feature>/data/` or `common/.../<entity>/` |
+| Repositories                  | feature-local `core/<feature>/data/` or `common/.../core/<feature>/` |
 
 ## OpenAPI client (generated)
 
@@ -142,7 +142,7 @@ val movies = dtos.map(Movie::fromDto)
 
 ## Domain models
 
-Live in `common/.../<entity>/`:
+Live in `common/.../model/`:
 
 ```kotlin
 @Immutable
@@ -216,7 +216,7 @@ sealed interface ApiError {
 
 ## Authentication
 
-- Bearer token storage: DataStore (`Preferences`) wrapped by `AuthStorage` collaborator.
+- Bearer token storage: DataStore (`Preferences`) wrapped by `TokenProvider` (`common/.../auth/`).
 - Token refresh: handled by authorised `HttpClient`'s `Auth` plugin config. Repositories don't touch auth state.
 - OAuth flows (sign-in, device code): keep in dedicated `auth/` feature folder, don't couple to feature ViewModels.
 

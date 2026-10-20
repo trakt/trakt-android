@@ -110,7 +110,7 @@ Avoid one-line `UseCase` wrappers around repository calls.
 
 ## Data Layer
 
-- **Repository** is public boundary. Located in `core/<feature>/data/` or `common/.../<entity>/`.
+- **Repository** is public boundary. Located in `core/<feature>/data/` or `common/.../core/<feature>/`.
 - **Reads return `Flow<T>`.** Local + remote sources flow through repository unified by `data` layer; ViewModel sees only unified stream.
 - **Writes are `suspend fun` returning `Result<…>`** (or domain-specific sealed result type).
 - **Mapping** lives on the domain model as `companion object { fun fromDto(...) }`. No separate mapper files. Pure, no I/O. See `networking.md`.

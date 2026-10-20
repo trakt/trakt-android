@@ -18,9 +18,13 @@ Part of the `trakt-android` monorepo. Root rules apply — see
     DTO mapping lives on domain models as `fromDto` companions.
   - `common/.../model/` — domain types. `@Immutable` data classes,
     `Sendable`-friendly (listed in `compose-stability.conf`).
-  - `common/.../<entity>/` — repositories, use-cases, entity caches.
+  - `common/.../data/local/` — shared local sources, bound in
+    `localSourcesModule`. See `../.agents/rules/persistence.md`.
+  - `common/.../core/<feature>/` — shared feature logic and use-cases.
   - `common/.../ui/` — cross-platform Compose primitives.
-  - `common/.../di/` — Koin modules wired in `TraktApplication`.
+  - Koin modules live in each area's `di/` folder (e.g.
+    `data/local/di/`) and are registered in both `TraktApplication`
+    and `TvActivity`.
   - `common/.../firebase/` — Crashlytics, Analytics, Remote Config
     wrappers. Analytics runs Firebase + HAL in parallel; see
     `../.agents/rules/analytics.md`.

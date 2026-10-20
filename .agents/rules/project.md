@@ -42,11 +42,13 @@ trakt-android/
 │       └── ui/theme/
 ├── common/              # com.android.library — domain, networking, DI
 │   └── src/main/java/tv/trakt/trakt/common/
+│       ├── auth/            # token storage, session
+│       ├── core/<feature>/  # shared feature logic (sync, translations, tutorials)
 │       ├── data/            # remote/ and local/ sources, hand-written dto/ and request/ types
+│       ├── model/           # domain models
 │       ├── networking/      # Ktor client factory, interceptors
 │       ├── firebase/        # Crashlytics, Remote Config, analytics (see analytics.md)
 │       ├── helpers/
-│       ├── di/              # Koin modules wired in TraktApplication
 │       └── ui/              # cross-platform Compose primitives
 ├── resources/           # com.android.library — strings, drawables, i18n
 ├── buildSrc/            # ValidateStringPlaceholdersTask + future plugins

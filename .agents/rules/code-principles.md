@@ -97,7 +97,7 @@ fun fetch(options: FetchOptions): Response
 ## Dependency Injection
 
 - **Constructor injection** for ViewModels, use-cases, repositories, clients.
-- Wire deps in Koin modules under `common/.../di/` or `<feature>/di/<Feature>Module.kt`.
+- Wire deps in Koin modules in the owning area's `di/` folder: `common/.../<area>/di/` or `<feature>/di/<Feature>Module.kt`.
 - Scope:
   - **`single { }`** — clients, repositories, caches, expensive/stateful things.
   - **`factory { }`** — use-cases, mappers, stateless cheap things.
