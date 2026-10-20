@@ -1,9 +1,7 @@
 [
   {
-    "id": 27,
-    "version": "3.24.0",
-    "version_code": 444,
-    "version_name": "3.24.0",
+    "id": 28,
+    "version": "3.24.1",
     "notes": [
       {
         "title": "Today",
@@ -16,26 +14,6 @@
       {
         "title": "Linked Details",
         "text": "Person bios, trivia and sentiment summaries now link straight to the cast and crew they mention. Tap a name to jump to their page."
-      }
-    ]
-  },
-  {
-    "id": 26,
-    "version": "3.23.0",
-    "version_code": 442,
-    "version_name": "3.23.0",
-    "notes": [
-      {
-        "title": "Media Reactions",
-        "text": "Show everyone how you really feel! React to movies and shows straight from their summary or right after rating them."
-      },
-      {
-        "title": "Comment Translations",
-        "text": "Read comments in your own language. Translate them with a single tap, right on your device."
-      },
-      {
-        "title": "Parental Guide",
-        "text": "Check content advisories in the movie and show info sheets before you press play."
       }
     ]
   }
