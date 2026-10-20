@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.comments.features.report
+package tv.trakt.trakt.core.report
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_CONFLICT
@@ -17,16 +18,17 @@ import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_RATE_LIMITED
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.Comment
-import tv.trakt.trakt.core.comments.features.report.model.ReportReason
-import tv.trakt.trakt.core.comments.usecases.ReportCommentUseCase
+import tv.trakt.trakt.core.report.model.ReportReason
+import tv.trakt.trakt.core.report.model.ReportTarget
+import tv.trakt.trakt.core.report.usecases.ReportUseCase
 import tv.trakt.trakt.resources.R
 
-internal class ReportCommentViewModel(
-    private val comment: Comment,
-    private val reportCommentUseCase: ReportCommentUseCase,
+@Suppress("UNCHECKED_CAST")
+internal class ReportViewModel(
+    private val target: ReportTarget,
+    private val reportUseCase: ReportUseCase,
 ) : ViewModel() {
-    private val initialState = ReportCommentState()
+    private val initialState = ReportState()
 
     private val loadingState = MutableStateFlow(initialState.loading)
     private val reportedState = MutableStateFlow(initialState.reported)
@@ -45,9 +47,9 @@ internal class ReportCommentViewModel(
 
         job = viewModelScope.launch {
             try {
-                reportCommentUseCase.reportComment(
-                    commentId = comment.id,
-                    reason = reason.apiValue,
+                reportUseCase.report(
+                    target = target,
+                    reason = reason,
                     message = message,
                 )
                 reportedState.update { true }
@@ -79,15 +81,15 @@ internal class ReportCommentViewModel(
         super.onCleared()
     }
 
-    val state = combine(
+    val state = combine<Any?, ReportState>(
         loadingState,
         reportedState,
         errorState,
-    ) { loading, reported, error ->
-        ReportCommentState(
-            loading = loading,
-            reported = reported,
-            error = error,
+    ) { state ->
+        ReportState(
+            loading = state[0] as LoadingState,
+            reported = state[1] as Boolean,
+            error = state[2] as Int?,
         )
     }.stateIn(
         scope = viewModelScope,

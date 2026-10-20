@@ -75,7 +75,6 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
-import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
@@ -90,6 +89,8 @@ import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.comments.ui.CommentUserChips
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
+import tv.trakt.trakt.core.report.ReportSheet
+import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.userprofile.navigation.canNavigateToUserProfile
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -207,9 +208,9 @@ internal fun CommentDetailsView(
         },
     )
 
-    ReportCommentSheet(
+    ReportSheet(
         active = reportCommentSheet != null,
-        comment = reportCommentSheet,
+        target = reportCommentSheet?.let { ReportTarget.Comment(it.id) },
         skipSnack = true,
         onReported = onReportComment,
         onDismiss = {

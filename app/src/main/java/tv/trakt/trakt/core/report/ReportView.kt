@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.comments.features.report
+package tv.trakt.trakt.core.report
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -35,10 +35,13 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Red500
-import tv.trakt.trakt.core.comments.features.report.model.ReportReason
+import tv.trakt.trakt.core.report.model.ReportReason
+import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -46,8 +49,9 @@ import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun ReportCommentView(
-    viewModel: ReportCommentViewModel,
+internal fun ReportView(
+    viewModel: ReportViewModel,
+    reasons: ImmutableList<ReportReason>,
     modifier: Modifier = Modifier,
     onReported: () -> Unit = {},
 ) {
@@ -61,6 +65,7 @@ internal fun ReportCommentView(
 
     ViewContent(
         state = state,
+        reasons = reasons,
         modifier = modifier,
         onSubmitClick = { reason, message ->
             viewModel.report(reason = reason, message = message)
@@ -71,7 +76,8 @@ internal fun ReportCommentView(
 
 @Composable
 private fun ViewContent(
-    state: ReportCommentState,
+    state: ReportState,
+    reasons: ImmutableList<ReportReason>,
     modifier: Modifier = Modifier,
     onSubmitClick: (ReportReason, String) -> Unit = { _, _ -> },
     onErrorClick: () -> Unit = {},
@@ -92,6 +98,7 @@ private fun ViewContent(
         )
 
         ReasonField(
+            reasons = reasons,
             selected = selectedReason,
             enabled = !isLoading,
             onSelect = { selectedReason = it },
@@ -147,6 +154,7 @@ private fun ViewContent(
 
 @Composable
 private fun ReasonField(
+    reasons: ImmutableList<ReportReason>,
     selected: ReportReason?,
     enabled: Boolean,
     onSelect: (ReportReason) -> Unit,
@@ -200,7 +208,7 @@ private fun ReasonField(
             containerColor = TraktTheme.colors.dialogContainer,
             shape = RoundedCornerShape(16.dp),
         ) {
-            ReportReason.entries.forEach { reason ->
+            reasons.forEach { reason ->
                 DropdownMenuItem(
                     text = {
                         Text(
@@ -229,7 +237,8 @@ private fun ReasonField(
 private fun Preview() {
     TraktTheme {
         ViewContent(
-            state = ReportCommentState(),
+            state = ReportState(),
+            reasons = ReportTarget.Movie(TraktId(1)).reasons,
             modifier = Modifier.padding(24.dp),
         )
     }
