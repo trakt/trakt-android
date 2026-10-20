@@ -170,7 +170,7 @@ internal fun CalendarEpisodeItemView(
                                     contentDescription = null,
                                     tint = TraktTheme.colors.textPrimary,
                                     modifier = Modifier
-                                        .size(19.dp)
+                                        .size(20.dp)
                                         .onClick(onClick = onRemoveClick),
                                 )
                             }
@@ -180,7 +180,7 @@ internal fun CalendarEpisodeItemView(
                                     contentDescription = null,
                                     tint = TraktTheme.colors.accent,
                                     modifier = Modifier
-                                        .size(19.dp)
+                                        .size(20.dp)
                                         .onClickCombined(
                                             onClick = onCheckClick,
                                             onLongClick = onCheckLongClick,

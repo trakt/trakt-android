@@ -49,6 +49,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -109,8 +110,9 @@ import kotlin.time.Duration.Companion.milliseconds
 
 private val MinAlpha = 0.25F
 private val LoadMoreThreshold = 4
-private val FiltersRowHeight = 40.dp
+private val FiltersRowHeight = 44.dp
 private val DayHeaderSpacing = 38.dp
+private val ControlsCornerRadius = 24.dp
 
 @Composable
 internal fun CalendarScreen(
@@ -468,6 +470,8 @@ private fun CalendarScreen(
 
     val headerMonth = YearMonth.from(lastTapFocusedDay ?: focusedDate ?: state.selectedStartDay)
 
+    val maskColor = TraktTheme.colors.backgroundPrimary
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -487,17 +491,15 @@ private fun CalendarScreen(
             onRemoveClick = onRemoveClick,
         )
 
-        // Mask for the top content under the calendar controls.
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(90.dp + FiltersRowHeight)
-                .background(TraktTheme.colors.backgroundPrimary),
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .drawBehind {
+                    drawRect(
+                        color = maskColor,
+                        size = size.copy(height = size.height - ControlsCornerRadius.toPx()),
+                    )
+                }
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues()
                         .calculateTopPadding(),
@@ -532,7 +534,7 @@ private fun CalendarScreen(
 
                 Row(
                     verticalAlignment = CenterVertically,
-                    horizontalArrangement = spacedBy(18.dp),
+                    horizontalArrangement = spacedBy(20.dp),
                 ) {
                     CalendarTodayIcon(
                         visible = true,
@@ -540,13 +542,17 @@ private fun CalendarScreen(
                         modifier = Modifier
                             .padding(end = 4.dp)
                             .graphicsLayer {
-                                translationY = -1.dp.toPx()
+                                translationY = 0.25.dp.toPx()
                             },
                     )
 
                     CalendarViewToggle(
                         current = CalendarView.Weekly,
                         onViewClick = onViewClick,
+                        modifier = Modifier
+                            .graphicsLayer {
+                                translationY = 0.5.dp.toPx()
+                            },
                     )
 
                     MediaFilterIcon(

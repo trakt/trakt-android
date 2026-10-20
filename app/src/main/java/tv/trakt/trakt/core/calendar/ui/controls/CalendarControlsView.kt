@@ -78,8 +78,8 @@ internal fun CalendarControlsView(
                 color = TraktTheme.colors.dialogContainer,
                 shape = DefaultCardShape,
             )
-            .padding(top = 8.dp, bottom = 7.dp)
-            .padding(horizontal = 8.dp),
+            .padding(top = 10.dp, bottom = 9.dp)
+            .padding(horizontal = 10.dp),
     ) {
         AnimatedVisibility(
             visible = expanded,
@@ -234,7 +234,7 @@ private fun DayRowItem(
             text = itemDate.dayOfWeek
                 .getDisplayName(TextStyle.SHORT_STANDALONE, configurationLocale)
                 .capitalize(),
-            color = TraktTheme.colors.textSecondary,
+            color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.meta.copy(
                 fontSize = 11.sp,
             ),
@@ -259,7 +259,7 @@ private fun DayRowItem(
             text = itemDate.month
                 .getDisplayName(TextStyle.SHORT_STANDALONE, configurationLocale)
                 .capitalize(),
-            color = TraktTheme.colors.textSecondary,
+            color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.meta.copy(
                 fontSize = 11.sp,
             ),

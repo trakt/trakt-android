@@ -311,7 +311,7 @@ private fun CalendarMonthlyContent(
 
             Row(
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(18.dp),
+                horizontalArrangement = spacedBy(20.dp),
             ) {
                 CalendarTodayIcon(
                     visible = true,
@@ -323,13 +323,17 @@ private fun CalendarMonthlyContent(
                     modifier = Modifier
                         .padding(end = 4.dp)
                         .graphicsLayer {
-                            translationY = -1.dp.toPx()
+                            translationY = 0.25.dp.toPx()
                         },
                 )
 
                 CalendarViewToggle(
                     current = CalendarView.Monthly,
                     onViewClick = onViewClick,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationY = 0.5.dp.toPx()
+                        },
                 )
 
                 MediaFilterIcon(

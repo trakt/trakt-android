@@ -25,7 +25,7 @@ internal fun CalendarViewToggle(
         contentDescription = stringResource(target.textRes),
         tint = TraktTheme.colors.textPrimary,
         modifier = modifier
-            .size(24.dp)
+            .size(25.dp)
             .onClick { onViewClick(target) },
     )
 }
