@@ -29,6 +29,13 @@ If a field or option ID stops working, refresh it with `gh project field-list 11
 - Do not link the issue through the PR "Development" sidebar either.
 - Before every push and PR create/edit, grep the text: `grep -inE '\b(close[sd]?|fix(e[sd])?|resolve[sd]?)\b:? *(trakt/trakt-android)?#[0-9]+'`. Any hit blocks the step.
 
+## Board status rule
+
+An issue moves to Under Review (`df73e18b`) only after its PR is merged. Until then it stays In Progress (`47fc9ee4`).
+
+- This skill never merges PRs, so it always leaves its issues In Progress. Local branches, draft PRs and ready-for-review PRs all stay In Progress.
+- After every PR create, push or ready-flip, check the board item. If automation moved the issue to Under Review before the merge, move it back to In Progress.
+
 ## Step 1 - Ask
 
 Use one `AskUserQuestion` call:
@@ -93,8 +100,8 @@ Finish one issue completely before starting the next. Before each new branch, re
    - Local branches only: stop here, `git checkout main`.
    - PRs: push with `git -c credential.helper='!gh auth git-credential' push -q https://github.com/trakt/trakt-android.git <branch>`, then `gh pr create -R trakt/trakt-android --base main --head <branch> --title "<commit subject>" --body-file "$S/prN.md"`, adding `--draft` for draft PRs. Run the closing-keyword grep on the body file first.
    - PR body follows `commits.md`: one short paragraph on what changed for the user and why, then up to ~3 bullets for edge cases, deviations from web, or parts of the issue that were already in place. Do not write "ported from" in the prose. Last line lists the issue and every web PR the change mirrors: `Refs #N, trakt/trakt-web#A, trakt/trakt-web#B`. When web shipped a plain commit, find its PR with `gh api repos/trakt/trakt-web/commits/<sha>/pulls`. No AI attribution, no `Generated with` footer.
-11. **Board after PR.** Ready-for-review PRs: set the issue to Under Review (`df73e18b`) if board automation did not already. Draft PRs and local branches: leave it In Progress.
-11. `git checkout main` and continue with the next issue.
+11. **Board after PR.** Follow the board status rule below.
+12. `git checkout main` and continue with the next issue.
 
 ## Step 4 - Report
 
