@@ -2,7 +2,10 @@ package tv.trakt.trakt.common.firebase.analytics.implementation.hal
 
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ACTION
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ERROR
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FLOW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FRAME
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_PLAN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_REASON
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SLUG
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SORT_BY
@@ -33,6 +36,12 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_OPEN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_STORY
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TRAILER
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_CHECKOUT_CANCELED
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_CHECKOUT_FAILED
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_CONFIRMED
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_CONFIRM_FAILED
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPSELL_IMPRESSION
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_VIEW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_WATCHLIST
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_DURATION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.METRIC_FRAMES
@@ -297,4 +306,65 @@ internal class HalAnalyticsPlayback(
     override fun logStreamOn(source: String) {
         events.track(EVENT_STREAM_ON, dims = mapOf(DIM_SOURCE to source))
     }
+}
+
+internal class HalAnalyticsVip(
+    private val events: HalEvents,
+) : Analytics.Vip {
+    override fun logUpsellImpression(source: String) {
+        events.track(EVENT_VIP_UPSELL_IMPRESSION, dims = mapOf(DIM_SOURCE to source))
+    }
+
+    override fun logView(
+        source: String,
+        flow: String,
+    ) {
+        events.track(EVENT_VIP_VIEW, dims = mapOf(DIM_SOURCE to source, DIM_FLOW to flow))
+    }
+
+    override fun logCheckoutCanceled(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        events.track(EVENT_VIP_CHECKOUT_CANCELED, dims = purchaseDims(plan, source, flow))
+    }
+
+    override fun logCheckoutFailed(
+        plan: String,
+        source: String,
+        flow: String,
+        error: String,
+    ) {
+        events.track(
+            EVENT_VIP_CHECKOUT_FAILED,
+            dims = purchaseDims(plan, source, flow) + (DIM_ERROR to error),
+        )
+    }
+
+    override fun logConfirmed(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        events.track(EVENT_VIP_CONFIRMED, dims = purchaseDims(plan, source, flow))
+    }
+
+    override fun logConfirmFailed(
+        plan: String,
+        source: String,
+        flow: String,
+        error: String,
+    ) {
+        events.track(
+            EVENT_VIP_CONFIRM_FAILED,
+            dims = purchaseDims(plan, source, flow) + (DIM_ERROR to error),
+        )
+    }
+
+    private fun purchaseDims(
+        plan: String,
+        source: String,
+        flow: String,
+    ) = mapOf(DIM_PLAN to plan.lowercase(), DIM_SOURCE to source, DIM_FLOW to flow)
 }

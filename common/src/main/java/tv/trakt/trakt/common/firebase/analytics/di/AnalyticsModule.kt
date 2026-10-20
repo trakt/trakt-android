@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.debug.DebugAnalyt
 import tv.trakt.trakt.common.firebase.analytics.implementation.debug.DebugAnalyticsReactions
 import tv.trakt.trakt.common.firebase.analytics.implementation.debug.DebugAnalyticsToday
 import tv.trakt.trakt.common.firebase.analytics.implementation.debug.DebugAnalyticsTrivia
+import tv.trakt.trakt.common.firebase.analytics.implementation.debug.DebugAnalyticsVip
 import tv.trakt.trakt.common.firebase.analytics.implementation.firebase.FirebaseAnalytics
 import tv.trakt.trakt.common.firebase.analytics.implementation.firebase.FirebaseAnalyticsComments
 import tv.trakt.trakt.common.firebase.analytics.implementation.firebase.FirebaseAnalyticsLists
@@ -34,6 +35,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.firebase.Firebase
 import tv.trakt.trakt.common.firebase.analytics.implementation.firebase.FirebaseAnalyticsReactions
 import tv.trakt.trakt.common.firebase.analytics.implementation.firebase.FirebaseAnalyticsToday
 import tv.trakt.trakt.common.firebase.analytics.implementation.firebase.FirebaseAnalyticsTrivia
+import tv.trakt.trakt.common.firebase.analytics.implementation.firebase.FirebaseAnalyticsVip
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalAnalytics
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalAnalyticsComments
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalAnalyticsLists
@@ -43,6 +45,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalAnalyticsR
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalAnalyticsReactions
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalAnalyticsToday
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalAnalyticsTrivia
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalAnalyticsVip
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalEngine
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.data.HalEventStore
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.data.remote.HalDeviceKind
@@ -101,6 +104,7 @@ val analyticsModule = module {
                 playback = DebugAnalyticsPlayback(),
                 lists = DebugAnalyticsLists(),
                 today = DebugAnalyticsToday(),
+                vip = DebugAnalyticsVip(),
             )
         } else {
             CompositeAnalytics(
@@ -126,6 +130,7 @@ private fun firebaseAnalytics(): Analytics {
         playback = FirebaseAnalyticsPlayback(analytics),
         lists = FirebaseAnalyticsLists(analytics),
         today = FirebaseAnalyticsToday(analytics),
+        vip = FirebaseAnalyticsVip(analytics),
     )
 }
 
@@ -145,5 +150,6 @@ private fun Scope.halAnalytics(): Analytics {
         playback = HalAnalyticsPlayback(engine),
         lists = HalAnalyticsLists(engine),
         today = HalAnalyticsToday(engine),
+        vip = HalAnalyticsVip(engine),
     )
 }

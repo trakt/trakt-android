@@ -13,6 +13,7 @@ internal class CompositeAnalytics(
     override val playback: Analytics.Playback = CompositePlayback(targets.map(Analytics::playback))
     override val lists: Analytics.Lists = CompositeLists(targets.map(Analytics::lists))
     override val today: Analytics.Today = CompositeToday(targets.map(Analytics::today))
+    override val vip: Analytics.Vip = CompositeVip(targets.map(Analytics::vip))
 
     override fun setUserId(userId: String?) {
         targets.forEach { it.setUserId(userId) }
@@ -56,8 +57,12 @@ internal class CompositeAnalytics(
         targets.forEach { it.logSearch(mode) }
     }
 
-    override fun logVipUpgrade(plan: String) {
-        targets.forEach { it.logVipUpgrade(plan) }
+    override fun logVipUpgrade(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        targets.forEach { it.logVipUpgrade(plan, source, flow) }
     }
 
     override fun logVipUpsell(source: String) {
@@ -355,5 +360,54 @@ private class CompositeToday(
         frame: String,
     ) {
         targets.forEach { it.logAction(action, frame) }
+    }
+}
+
+private class CompositeVip(
+    private val targets: List<Analytics.Vip>,
+) : Analytics.Vip {
+    override fun logUpsellImpression(source: String) {
+        targets.forEach { it.logUpsellImpression(source) }
+    }
+
+    override fun logView(
+        source: String,
+        flow: String,
+    ) {
+        targets.forEach { it.logView(source, flow) }
+    }
+
+    override fun logCheckoutCanceled(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        targets.forEach { it.logCheckoutCanceled(plan, source, flow) }
+    }
+
+    override fun logCheckoutFailed(
+        plan: String,
+        source: String,
+        flow: String,
+        error: String,
+    ) {
+        targets.forEach { it.logCheckoutFailed(plan, source, flow, error) }
+    }
+
+    override fun logConfirmed(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        targets.forEach { it.logConfirmed(plan, source, flow) }
+    }
+
+    override fun logConfirmFailed(
+        plan: String,
+        source: String,
+        flow: String,
+        error: String,
+    ) {
+        targets.forEach { it.logConfirmFailed(plan, source, flow, error) }
     }
 }

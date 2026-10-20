@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.firebase.analytics.implementation.hal
 
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ACTION
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FLOW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ID
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_MODE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_OUTCOME
@@ -37,6 +38,7 @@ internal class HalAnalytics(
     override val playback: Analytics.Playback,
     override val lists: Analytics.Lists,
     override val today: Analytics.Today,
+    override val vip: Analytics.Vip,
 ) : Analytics {
     override fun setUserId(userId: String?) = Unit
 
@@ -87,8 +89,15 @@ internal class HalAnalytics(
         events.track(EVENT_SEARCH, dims = mapOf(DIM_MODE to searchMode))
     }
 
-    override fun logVipUpgrade(plan: String) {
-        events.track(EVENT_VIP_UPGRADE, dims = mapOf(DIM_PLAN to plan.lowercase()))
+    override fun logVipUpgrade(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        events.track(
+            EVENT_VIP_UPGRADE,
+            dims = mapOf(DIM_PLAN to plan.lowercase(), DIM_SOURCE to source, DIM_FLOW to flow),
+        )
     }
 
     override fun logVipUpsell(source: String) {
