@@ -89,7 +89,6 @@ internal class CalendarMonthlyViewModel(
     private var navigationJob: Job? = null
     private var processingJob: Job? = null
 
-    // Seed the type from the persisted calendar selection once; changes here stay in-memory only.
     private var typeSeeded = false
 
     init {
@@ -98,7 +97,6 @@ internal class CalendarMonthlyViewModel(
         observeData()
     }
 
-    // Persist the layout so the calendar reopens on the one last used.
     private fun rememberView() {
         viewModelScope.launch {
             getCalendarViewUseCase.setView(CalendarView.Monthly)
@@ -146,8 +144,8 @@ internal class CalendarMonthlyViewModel(
                     type = typeState.value,
                 )
 
-                // Already visited month - render from memory without a spinner or a refetch.
                 calendarCache.get(key)?.let { cached ->
+                    // Already visited month - render from memory without a spinner or a refetch.
                     itemsState.update { cached }
                     return@launch
                 }

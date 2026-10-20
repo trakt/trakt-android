@@ -7,7 +7,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -34,7 +33,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -60,7 +58,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.MovieItem
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.calendar.feature.monthly.sheets.CalendarDaySheet
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.CalendarMonthSelectorView
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.CalendarMonthView
@@ -358,26 +355,14 @@ private fun CalendarMonthlyContent(
             )
         }
 
-        Box(
-            contentAlignment = Alignment.CenterEnd,
+        CalendarTypeChips(
+            selected = state.type,
+            onTypeClick = onTypeClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
                 .padding(bottom = 6.dp),
-        ) {
-            CalendarTypeChips(
-                selected = state.type,
-                onTypeClick = onTypeClick,
-                modifier = Modifier
-                    .fillMaxWidth(),
-            )
-
-            if (state.loading.isLoading) {
-                FilmProgressIndicator(
-                    size = 16.dp,
-                )
-            }
-        }
+        )
 
         val pagerPadding = TraktTheme.spacing.mainPageHorizontalSpace / 2
 
@@ -400,9 +385,14 @@ private fun CalendarMonthlyContent(
             ),
             modifier = Modifier.fillMaxSize(),
         ) { page ->
+            val pageMonth = remember(anchorMonth, page) { anchorMonth.monthForPage(page) }
+            // Items only cover the selected month, so other pages stay blank while swiping.
+            val isSelected = pageMonth == state.selectedMonth
+            val isLoading = isSelected && state.loading.isLoading
             CalendarMonthView(
-                month = remember(anchorMonth, page) { anchorMonth.monthForPage(page) },
-                items = state.items,
+                month = pageMonth,
+                items = state.items.takeIf { isSelected && !isLoading },
+                loading = isLoading,
                 onDayClick = onDayClick,
             )
         }

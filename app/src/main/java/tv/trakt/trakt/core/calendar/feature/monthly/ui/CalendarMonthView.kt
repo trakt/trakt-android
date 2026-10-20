@@ -1,6 +1,10 @@
 package tv.trakt.trakt.core.calendar.feature.monthly.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale.Companion.Crop
 import androidx.compose.ui.platform.LocalContext
@@ -55,6 +61,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -76,6 +83,7 @@ import java.time.format.TextStyle.SHORT_STANDALONE
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters.nextOrSame
 import java.time.temporal.TemporalAdjusters.previousOrSame
+import kotlin.time.Duration.Companion.milliseconds
 
 private val CellSpacing = 3.dp
 private val CellPadding = 3.dp
@@ -89,6 +97,10 @@ private val DayNumberHorizontalPadding = 4.dp
 private val CapsuleShape = RoundedCornerShape(100)
 
 private val PosterShape = RoundedCornerShape(4.dp)
+private val SkeletonShape = RoundedCornerShape(6.dp)
+private const val SKELETON_HIGHLIGHT = 0.04F
+
+private val SkeletonDelay = 500.milliseconds
 private val PosterSpacing = 2.dp
 
 private const val MAX_VISIBLE_POSTERS = 4
@@ -105,8 +117,23 @@ internal fun CalendarMonthView(
     modifier: Modifier = Modifier,
     firstDayOfWeek: DayOfWeek = FirstDayOfWeek,
     items: ImmutableMap<LocalDate, ImmutableList<CalendarItem>>? = null,
+    loading: Boolean = false,
     onDayClick: (LocalDate) -> Unit = {},
 ) {
+    var skeletonVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(loading) {
+        if (!loading) {
+            skeletonVisible = false
+            return@LaunchedEffect
+        }
+        delay(SkeletonDelay)
+        skeletonVisible = true
+    }
+
+    val skeletonColor = when {
+        skeletonVisible -> rememberSkeletonColor()
+        else -> null
+    }
     val weekStarts = remember(month, firstDayOfWeek) {
         month.weekStarts(firstDayOfWeek)
     }
@@ -132,6 +159,7 @@ internal fun CalendarMonthView(
                         isToday = date == today,
                         inMonth = YearMonth.from(date) == month,
                         items = items?.get(date),
+                        skeletonColor = skeletonColor,
                         modifier = Modifier
                             .weight(1F)
                             .fillMaxHeight()
@@ -177,6 +205,7 @@ private fun CalendarDayCell(
     inMonth: Boolean,
     modifier: Modifier = Modifier,
     items: ImmutableList<CalendarItem>? = null,
+    skeletonColor: Color? = null,
 ) {
     Column(
         horizontalAlignment = CenterHorizontally,
@@ -221,6 +250,17 @@ private fun CalendarDayCell(
             )
         }
 
+        if (skeletonColor != null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1F)
+                    .padding(top = CellContentSpacing, bottom = CellPadding)
+                    .background(color = skeletonColor, shape = SkeletonShape),
+            )
+            return@Column
+        }
+
         AnimatedVisibility(
             visible = !items.isNullOrEmpty(),
             enter = fadeIn(tween(150)),
@@ -258,9 +298,6 @@ private fun CalendarDayCell(
     }
 }
 
-// Up to four posters across the tile width: one poster spans the full width, the
-// rest pack two per row. Posters keep their vertical ratio, so a short day tile
-// simply leaves space underneath.
 @Composable
 private fun CalendarDayPosters(
     items: ImmutableList<CalendarItem>,
@@ -300,6 +337,24 @@ private fun CalendarDayPosters(
             }
         }
     }
+}
+
+@Composable
+private fun rememberSkeletonColor(): Color {
+    val cellColor = TraktTheme.colors.dialogContainer
+    val highlightColor = lerp(cellColor, TraktTheme.colors.textPrimary, SKELETON_HIGHLIGHT)
+
+    val transition = rememberInfiniteTransition(label = "calendarSkeleton")
+    val color by transition.animateColor(
+        initialValue = cellColor,
+        targetValue = highlightColor,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "calendarSkeletonColor",
+    )
+    return color
 }
 
 @Composable
@@ -380,6 +435,25 @@ private fun Preview() {
     }
 }
 
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun LoadingPreview() {
+    TraktTheme {
+        Column {
+            CalendarWeekDaysView(firstDayOfWeek = MONDAY)
+            CalendarMonthView(
+                month = YearMonth.now(),
+                firstDayOfWeek = MONDAY,
+                loading = true,
+            )
+        }
+    }
+}
+
 private fun previewItems(month: YearMonth): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
     val counts = mapOf(
         3 to 1,
@@ -415,7 +489,6 @@ private fun previewEpisodeItem(watched: Boolean = false): CalendarItem {
     )
 }
 
-// No artwork - renders the placeholder branch.
 private fun previewMovieItem(): CalendarItem {
     return MovieItem(
         movie = PreviewData.movie1.copy(images = null),
