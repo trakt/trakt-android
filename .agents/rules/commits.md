@@ -54,7 +54,6 @@ From actual module list + recurring concerns:
 | `deps`       | `gradle/libs.versions.toml`, dependency bumps              |
 | `gradle`     | `build.gradle.kts`, `buildSrc/`, Gradle plugins            |
 | `agents`     | `.agents/`, `AGENTS.md`, `CLAUDE.md`                       |
-| `gemini`     | `.gemini/`                                                 |
 
 Multi-scope changes: pick most-affected scope or broader one:
 

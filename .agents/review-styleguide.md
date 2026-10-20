@@ -3,7 +3,7 @@
 Style guide for AI-assisted review of the trakt-android monorepo
 (phone + Android TV, Compose-first, Kotlin 2.x). Mirrors
 `.agents/rules/*.md` — those are authoritative; this is the digest
-Gemini uses when reviewing pull requests.
+the `/trakt-review` skill uses when reviewing pull requests.
 
 ## Tech stack
 
@@ -50,7 +50,7 @@ Gemini uses when reviewing pull requests.
 Conventional Commits with android-scoped enum. See
 `.agents/rules/commits.md` for full enum. Allowed scopes: `app`, `tv`,
 `common`, `resources`, `openapi`, `widget`, `i18n`, `ci`, `deps`,
-`gradle`, `agents`, `gemini`.
+`gradle`, `agents`.
 
 ```
 feat(app): add notes drawer
