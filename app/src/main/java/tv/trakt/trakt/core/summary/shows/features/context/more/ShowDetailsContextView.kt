@@ -59,6 +59,7 @@ internal fun ShowDetailsContextView(
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -70,6 +71,7 @@ internal fun ShowDetailsContextView(
         onCheckClick = onCheckClick,
         onListsClick = onListsClick,
         onCoverClick = onCoverClick,
+        onReportClick = onReportClick,
         onStreamClick = viewModel::logStreamOn,
         modifier = modifier,
     )
@@ -85,6 +87,7 @@ private fun ShowDetailsContextViewContent(
     onHistoryClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
     onStreamClick: (StreamingService) -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -170,6 +173,7 @@ private fun ShowDetailsContextViewContent(
             onHistoryClick = onHistoryClick ?: {},
             onListsClick = onListsClick ?: {},
             onCoverClick = onCoverClick ?: {},
+            onReportClick = onReportClick ?: {},
             modifier = Modifier.padding(top = 14.dp),
         )
     }
@@ -225,6 +229,7 @@ private fun ActionButtons(
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
     onCoverClick: () -> Unit,
+    onReportClick: () -> Unit,
     onHistoryClick: () -> Unit,
     onListsClick: () -> Unit,
 ) {
@@ -299,6 +304,18 @@ private fun ActionButtons(
                 onClick = onCoverClick,
             )
         }
+
+        GhostButton(
+            text = stringResource(R.string.button_text_report),
+            icon = painterResource(R.drawable.ic_flag),
+            iconSize = 22.dp,
+            iconSpace = 15.dp,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -5.dp.toPx()
+                },
+            onClick = onReportClick,
+        )
     }
 }
 

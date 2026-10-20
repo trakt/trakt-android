@@ -59,6 +59,7 @@ internal fun MovieDetailsContextView(
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -71,6 +72,7 @@ internal fun MovieDetailsContextView(
         onHistoryClick = onHistoryClick,
         onListsClick = onListsClick,
         onCoverClick = onCoverClick,
+        onReportClick = onReportClick,
         onStreamClick = viewModel::logStreamOn,
         modifier = modifier,
     )
@@ -87,6 +89,7 @@ private fun MovieDetailsContextViewContent(
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
     onStreamClick: (StreamingService) -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -170,6 +173,7 @@ private fun MovieDetailsContextViewContent(
             onHistoryClick = onHistoryClick ?: {},
             onListsClick = onListsClick ?: {},
             onCoverClick = onCoverClick ?: {},
+            onReportClick = onReportClick ?: {},
             modifier = Modifier
                 .padding(top = 14.dp),
         )
@@ -227,6 +231,7 @@ private fun ActionButtons(
     onHistoryClick: () -> Unit,
     onListsClick: () -> Unit,
     onCoverClick: () -> Unit,
+    onReportClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -299,6 +304,18 @@ private fun ActionButtons(
                 onClick = onCoverClick,
             )
         }
+
+        GhostButton(
+            text = stringResource(R.string.button_text_report),
+            icon = painterResource(R.drawable.ic_flag),
+            iconSize = 22.dp,
+            iconSpace = 15.dp,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -5.dp.toPx()
+                },
+            onClick = onReportClick,
+        )
 
 //        GhostButton(
 //            text = stringResource(R.string.button_text_share),
