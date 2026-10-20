@@ -9,7 +9,7 @@ internal suspend fun LazyListState.scrollToItemIfHidden(index: Int) {
     val item = layout.visibleItemsInfo.firstOrNull { it.index == index }
     val isFullyVisible = item != null &&
         item.offset >= layout.viewportStartOffset &&
-        item.offset + item.size <= layout.viewportEndOffset - layout.afterContentPadding
+        item.offset + item.size <= layout.viewportEndOffset
 
     if (isFullyVisible) return
     scrollToItem(index)
