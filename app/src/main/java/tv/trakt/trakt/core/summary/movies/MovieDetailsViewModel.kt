@@ -940,6 +940,10 @@ internal class MovieDetailsViewModel(
         analytics.logShare(source = "media", type = MediaType.Movie.value)
     }
 
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("movie-details")
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         movieState,

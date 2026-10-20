@@ -637,6 +637,10 @@ internal class EpisodeDetailsViewModel(
         analytics.logShare(source = "episode", type = null)
     }
 
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("episode-details")
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         showState,

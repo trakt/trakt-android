@@ -72,6 +72,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -87,6 +88,7 @@ internal fun SentimentScreen(
     SentimentContent(
         state = state,
         onVipClick = onNavigateVip,
+        onVipSeen = viewModel::onVipUpsellSeen,
         onPersonLinkClick = onNavigateToPerson,
         onBackClick = onNavigateBack,
     )
@@ -96,6 +98,7 @@ internal fun SentimentScreen(
 private fun SentimentContent(
     state: SentimentState,
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onPersonLinkClick: (SlugId) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -146,6 +149,7 @@ private fun SentimentContent(
                         Column {
                             GetVipView(
                                 modifier = Modifier
+                                    .onUpsellSeen(onVipSeen)
                                     .onClick(onClick = onVipClick),
                             )
 

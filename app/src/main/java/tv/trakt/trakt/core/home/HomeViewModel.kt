@@ -45,7 +45,7 @@ internal class HomeViewModel(
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
     private val getCalendarViewUseCase: GetCalendarViewUseCase,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
     private val initialMode = filterManager.getFilter().mode
@@ -153,6 +153,10 @@ internal class HomeViewModel(
                 }
             }
         }
+    }
+
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("home")
     }
 
     val state = combine(

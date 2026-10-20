@@ -21,7 +21,7 @@ import tv.trakt.trakt.core.discover.DiscoverState.UserState
 internal class DiscoverViewModel(
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = DiscoverState()
 
@@ -53,6 +53,10 @@ internal class DiscoverViewModel(
     private fun observeData() {
         collectionStateProvider
             .launchIn(viewModelScope)
+    }
+
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("discover")
     }
 
     val state = combine(

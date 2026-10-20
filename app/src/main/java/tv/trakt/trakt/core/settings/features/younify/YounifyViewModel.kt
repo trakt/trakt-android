@@ -58,7 +58,7 @@ internal class YounifyViewModel(
     private val refreshYounifyTokensUseCase: RefreshYounifyTokensUseCase,
     private val refreshYounifyDataUseCase: RefreshYounifyDataUseCase,
     private val unlinkYounifyServiceUseCase: UnlinkYounifyServiceUseCase,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = YounifyState()
 
@@ -390,6 +390,14 @@ internal class YounifyViewModel(
             logsState.update { it.plus(message) }
             Timber.log(level.value, "Younify: $message")
         }
+    }
+
+    private var isVipUpsellSeenLogged = false
+
+    fun onVipUpsellSeen() {
+        if (isVipUpsellSeenLogged) return
+        isVipUpsellSeenLogged = true
+        analytics.vip.logUpsellImpression("connected-apps")
     }
 
     val state = combine(

@@ -98,6 +98,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -228,6 +229,7 @@ internal fun EpisodeDetailsScreen(
         },
         onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
+        onVipSeen = viewModel::onVipUpsellSeen,
         onBackClick = onNavigateBack,
         onInfoClick = {
             val show = state.show
@@ -402,6 +404,7 @@ internal fun EpisodeDetailsContent(
     onAllCreditsClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
+    onVipSeen: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
 ) {
@@ -572,6 +575,7 @@ internal fun EpisodeDetailsContent(
                         VipBanner(
                             onClick = onVipClick ?: {},
                             modifier = Modifier
+                                .onUpsellSeen { onVipSeen?.invoke() }
                                 .alpha(ratingAlphaMask)
                                 .fillMaxWidth()
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)

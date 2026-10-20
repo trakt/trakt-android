@@ -286,6 +286,10 @@ internal class ListsViewModel(
         super.onCleared()
     }
 
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("lists")
+    }
+
     val state = combine(
         userState,
         filterState,
