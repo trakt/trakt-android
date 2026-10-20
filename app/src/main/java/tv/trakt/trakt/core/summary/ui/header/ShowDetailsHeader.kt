@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.ui.header
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -16,9 +17,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
@@ -26,6 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.MediaGenre.Anime
@@ -90,46 +94,13 @@ internal fun DetailsHeader(
                 label = "alpha",
             )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(3.dp),
+            CreatorsLine(
+                creators = creators,
+                onCreatorClick = onCreatorClick,
                 modifier = Modifier
                     .alpha(animatedAlpha)
                     .padding(top = 2.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.text_created_by_short),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmaller,
-                )
-
-                if (creators.isNullOrEmpty()) {
-                    Text(
-                        text = "-",
-                        fontWeight = FontWeight.SemiBold,
-                        color = TraktTheme.colors.textSecondary,
-                        style = TraktTheme.typography.paragraphSmaller,
-                    )
-                }
-
-                creators?.forEachIndexed { index, creator ->
-                    Text(
-                        text = when {
-                            index < creators.lastIndex -> "${creator.name},"
-                            else -> creator.name
-                        },
-                        fontWeight = FontWeight.SemiBold,
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.paragraphSmaller,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .onClick {
-                                onCreatorClick(creator)
-                            },
-                    )
-                }
-            }
+            )
         },
         genres = show.genres,
         runtime = null,
@@ -197,4 +168,85 @@ internal fun DetailsHeader(
         },
         modifier = modifier,
     )
+}
+
+@Composable
+private fun CreatorsLine(
+    creators: ImmutableList<Person>?,
+    onCreatorClick: (Person) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = spacedBy(3.dp),
+        modifier = modifier,
+    ) {
+        Text(
+            text = stringResource(R.string.text_created_by_short),
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.paragraphSmaller,
+        )
+
+        if (creators.isNullOrEmpty()) {
+            Text(
+                text = "-",
+                fontWeight = FontWeight.SemiBold,
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.paragraphSmaller,
+            )
+        }
+
+        creators?.forEachIndexed { index, creator ->
+            Text(
+                text = when {
+                    index < creators.lastIndex -> "${creator.name},"
+                    else -> creator.name
+                },
+                fontWeight = FontWeight.SemiBold,
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.paragraphSmaller,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .weight(1f, fill = false)
+                    .onClick {
+                        onCreatorClick(creator)
+                    },
+            )
+        }
+    }
+}
+
+// Previews
+
+@Preview(
+    widthDp = 240,
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun CreatorsLinePreview() {
+    TraktTheme {
+        Column(verticalArrangement = spacedBy(8.dp)) {
+            CreatorsLine(
+                creators = persistentListOf(),
+                onCreatorClick = {},
+            )
+            CreatorsLine(
+                creators = persistentListOf(PreviewData.person1),
+                onCreatorClick = {},
+            )
+            CreatorsLine(
+                creators = persistentListOf(PreviewData.person1, PreviewData.person2),
+                onCreatorClick = {},
+            )
+            CreatorsLine(
+                creators = persistentListOf(
+                    PreviewData.person1.copy(name = "Alexandra Montgomery-Fitzgerald"),
+                    PreviewData.person2.copy(name = "Christopher Worthington"),
+                ),
+                onCreatorClick = {},
+            )
+        }
+    }
 }
