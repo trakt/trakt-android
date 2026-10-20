@@ -37,8 +37,8 @@ internal fun ActionButtons(
     modifier: Modifier = Modifier,
     onNowClick: () -> Unit = {},
     onReleaseClick: () -> Unit = {},
-    onOtherClick: () -> Unit = {},
     onUnknownClick: () -> Unit = {},
+    onOtherClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(SegmentGap),
@@ -61,20 +61,20 @@ internal fun ActionButtons(
             onClick = onReleaseClick,
         )
         ActionSegment(
-            text = stringResource(R.string.button_text_mark_as_watched_other_date),
-            icon = painterResource(R.drawable.ic_edit),
-            selected = selected == OtherDate,
-            enabled = enabled,
-            shape = SegmentPosition.Middle.shape(),
-            onClick = onOtherClick,
-        )
-        ActionSegment(
             text = stringResource(R.string.button_text_mark_as_watched_unknown_date),
             icon = painterResource(R.drawable.ic_question),
             selected = selected == Unknown,
             enabled = enabled,
-            shape = SegmentPosition.Bottom.shape(),
+            shape = SegmentPosition.Middle.shape(),
             onClick = onUnknownClick,
+        )
+        ActionSegment(
+            text = stringResource(R.string.button_text_mark_as_watched_other_date),
+            icon = painterResource(R.drawable.ic_edit),
+            selected = selected == OtherDate,
+            enabled = enabled,
+            shape = SegmentPosition.Bottom.shape(),
+            onClick = onOtherClick,
         )
     }
 }

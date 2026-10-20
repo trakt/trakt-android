@@ -42,8 +42,8 @@ import java.time.ZoneOffset.UTC
 internal enum class WatchedUntilAction {
     Now,
     ReleaseDate,
-    OtherDate,
     Unknown,
+    OtherDate,
 }
 
 internal enum class OtherDateBound {
