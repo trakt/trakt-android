@@ -41,6 +41,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.ui.extensions.scrollToItemIfHidden
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -64,12 +65,12 @@ internal fun EpisodeSeasonList(
 
     var initialScrolled by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        if (!initialScrolled && (currentEpisode ?: 0) > 1) {
-            initialScrolled = true
-            val index = episodes
-                .indexOfFirst { it.episode.number == currentEpisode }
-                .coerceAtLeast(0)
-            listState.scrollToItem(index)
+        if (initialScrolled) return@LaunchedEffect
+        initialScrolled = true
+
+        val index = episodes.indexOfFirst { it.episode.number == currentEpisode }
+        if (index > 0) {
+            listState.scrollToItemIfHidden(index)
         }
     }
 
@@ -85,10 +86,12 @@ internal fun EpisodeSeasonList(
         ) { item ->
             val isReleased = item.episode.rememberReleased()
             val hasMore = (item.isWatched || isReleased) && !item.isLoading
+            val isCurrent = item.episode.number == currentEpisode
             HorizontalMediaCard(
                 title = "",
                 more = hasMore,
                 watched = item.isWatched,
+                highlighted = isCurrent,
                 containerImageUrl = item.episode.images?.getScreenshotUrl()
                     ?: show?.images?.getFanartUrl(),
                 onClick = { onEpisodeClick(item) },

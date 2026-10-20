@@ -46,6 +46,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
+import tv.trakt.trakt.ui.extensions.scrollToItemIfHidden
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -54,6 +55,7 @@ internal fun ShowEpisodesList(
     show: Show?,
     season: Int?,
     episodes: ImmutableList<EpisodeItem>,
+    highlightedEpisode: Int?,
     onEpisodeClick: (episode: EpisodeItem) -> Unit,
     onCheckClick: (episode: EpisodeItem) -> Unit,
     onCheckLongClick: (episode: EpisodeItem) -> Unit,
@@ -83,12 +85,14 @@ internal fun ShowEpisodesList(
         }
         initialScrolled = true
 
+        val highlightedIndex = episodes.indexOfFirst { it.episode.number == highlightedEpisode }
         val lastWatchedIndex = episodes.indexOfLast { it.isWatched }
-        if (lastWatchedIndex >= 0) {
-            listState.scrollToItem(
-                (lastWatchedIndex + 1).coerceAtMost(episodes.lastIndex),
-            )
+        val anchorIndex = when {
+            highlightedIndex >= 0 -> highlightedIndex
+            lastWatchedIndex >= 0 -> (lastWatchedIndex + 1).coerceAtMost(episodes.lastIndex)
+            else -> return@LaunchedEffect
         }
+        listState.scrollToItemIfHidden(anchorIndex)
     }
 
     Crossfade(
@@ -117,11 +121,13 @@ internal fun ShowEpisodesList(
                     key = { item -> item.episode.ids.trakt.value },
                 ) { item ->
                     val isReleased = item.episode.rememberReleased()
+                    val isHighlighted = item.episode.number == highlightedEpisode
 
                     HorizontalMediaCard(
                         title = "",
                         more = item.isWatched || isReleased,
                         watched = item.isWatched,
+                        highlighted = isHighlighted,
                         containerImageUrl = when {
                             !isReleased -> show?.images?.getFanartUrl()
                             else -> item.episode.images?.getScreenshotUrl()

@@ -31,11 +31,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
@@ -72,6 +77,7 @@ internal fun HorizontalMediaCard(
     corner: Dp = 15.dp,
     more: Boolean = true,
     watched: Boolean = false,
+    highlighted: Boolean = false,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
@@ -90,7 +96,17 @@ internal fun HorizontalMediaCard(
             Card(
                 modifier = Modifier
                     .width(width)
-                    .aspectRatio(HorizontalImageAspectRatio),
+                    .aspectRatio(HorizontalImageAspectRatio)
+                    .then(
+                        if (highlighted) {
+                            Modifier.highlightRing(
+                                color = TraktTheme.colors.accent,
+                                corner = corner,
+                            )
+                        } else {
+                            Modifier
+                        },
+                    ),
                 shape = RoundedCornerShape(corner),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = TraktTheme.colors.shadowDynamicSmall,
@@ -284,6 +300,27 @@ internal fun HorizontalMediaCard(
     }
 }
 
+private val HighlightRingWidth = 2.dp
+private val HighlightRingGap = 1.5.dp
+
+private fun Modifier.highlightRing(
+    color: Color,
+    corner: Dp,
+): Modifier =
+    drawBehind {
+        val stroke = HighlightRingWidth.toPx()
+        val inset = HighlightRingGap.toPx() + stroke / 2
+        val radius = corner.toPx() + inset
+
+        drawRoundRect(
+            color = color,
+            topLeft = Offset(-inset, -inset),
+            size = Size(size.width + inset * 2, size.height + inset * 2),
+            cornerRadius = CornerRadius(radius),
+            style = Stroke(width = stroke),
+        )
+    }
+
 @Composable
 private fun CollectionChip(
     iconRes: Int,
@@ -310,7 +347,7 @@ private fun CollectionChip(
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@Preview(widthDp = 160)
+@Preview
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -344,6 +381,7 @@ private fun Preview() {
                     title = "Empty",
                     containerImageUrl = PreviewData.show1.images?.getFanartUrl(),
                     paletteColor = Color(0xFF292525),
+                    highlighted = true,
                 )
 
                 HorizontalMediaCard(

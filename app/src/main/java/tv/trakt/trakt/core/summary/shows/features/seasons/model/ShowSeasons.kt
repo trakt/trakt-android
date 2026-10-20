@@ -35,6 +35,38 @@ internal data class ShowSeasons(
         get() = selectedSeasonEpisodes.isNotEmpty() &&
             selectedSeasonEpisodes.all { it.isWatched }
 
+    /**
+     * The episode after the newest watched one, or the first episode once the previous
+     * season is complete. Null when the next episode lives in another season. Specials ignored.
+     */
+    val nextEpisodeToWatch: Int?
+        get() {
+            val season = selectedSeason?.number ?: return null
+            val newestWatchedSeason = seasons
+                .filter { it.season.number > 0 && it.watchedEpisodes > 0 }
+                .maxOfOrNull { it.season.number }
+                ?: return null
+
+            if (newestWatchedSeason == season) {
+                val newestWatchedEpisode = selectedSeasonEpisodes
+                    .filter { it.isWatched }
+                    .maxOfOrNull { it.episode.number }
+                    ?: return null
+
+                return selectedSeasonEpisodes
+                    .firstOrNull { it.episode.number > newestWatchedEpisode }
+                    ?.episode
+                    ?.number
+            }
+
+            if (newestWatchedSeason != season - 1) return null
+
+            val previousSeason = seasons.firstOrNull { it.season.number == season - 1 }
+            if (previousSeason?.isWatched != true) return null
+
+            return selectedSeasonEpisodes.firstOrNull()?.episode?.number
+        }
+
     fun shouldPromptWatchedUntil(episode: Episode): Boolean {
         val wasWatched = selectedSeasonEpisodes
             .firstOrNull { it.episode.ids.trakt == episode.ids.trakt }

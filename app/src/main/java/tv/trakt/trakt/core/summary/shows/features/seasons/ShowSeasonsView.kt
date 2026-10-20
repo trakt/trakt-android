@@ -569,6 +569,7 @@ private fun ContentList(
             show = show,
             season = seasons.selectedSeason?.number,
             episodes = seasons.selectedSeasonEpisodes,
+            highlightedEpisode = seasons.nextEpisodeToWatch,
             onEpisodeClick = onEpisodeClick ?: {},
             onCheckClick = onCheckEpisodeClick ?: {},
             onCheckLongClick = onCheckEpisodeLongClick ?: {},
