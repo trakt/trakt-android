@@ -419,7 +419,7 @@ private fun RegionFilter(
     modifier: Modifier = Modifier,
 ) {
     val regionValue: DropdownOption<Region?> = state.filters.countries?.let { countries ->
-        val region = Region.entries.find { it.slug.split(',') == countries }
+        val region = Region.fromCountries(countries)
         region?.let {
             DropdownOption(
                 raw = it,

@@ -99,20 +99,23 @@ data class GlobalFilter(
     ) {
         NorthAmerica("us,ca", R.string.option_text_north_america),
         Europe(
-            "gb,fr,de,it,es,dk,ie,se,be,ru,no,pl,su,nl,at,fi,ro,gr,rs,hu,is,yu,ch,bg,cz,ee,ua",
+            "gb,fr,de,it,es,dk,ie,se,be,ru,no,pl,su,nl,at,fi,ro,gr,rs,hu,is,yu,xc,ch,bg,cz,ee,ua,pt,sk",
             R.string.option_text_europe,
         ),
-        Asia("in,jp,kr,hk,cn,th,tw,bd,id", R.string.option_text_asia),
-        MiddleEast("tr,ir,il,eg", R.string.option_text_middle_east),
+        Asia("in,jp,kr,hk,cn,th,tw,bd,id,ph,sg", R.string.option_text_asia),
+        MiddleEast("tr,ir,il,eg,sa,ae,lb,kw", R.string.option_text_middle_east),
         Oceania("au,nz", R.string.option_text_oceania),
-        LatinAmerica("mx,br,ar,cl,co", R.string.option_text_latin_america),
-        Africa("za", R.string.option_text_africa),
+        LatinAmerica("mx,br,ar,cl,co,pe", R.string.option_text_latin_america),
+        Africa("za,ng", R.string.option_text_africa),
         ;
 
         companion object {
             // Defunct codes kept in slugs for the API; ICU resolves them to
-            // successor states (SU -> Russia, YU -> Serbia) and duplicates entries.
-            private val defunctCountryCodes = setOf("su", "yu")
+            // successor states (SU -> Russia, YU -> Serbia) or has no name (XC).
+            private val defunctCountryCodes = setOf("su", "yu", "xc")
+
+            // Smart lists saved before these codes were added still hold the shorter slugs.
+            private val addedCountryCodes = setOf("xc", "pt", "sk", "ph", "sg", "sa", "ae", "lb", "kw", "pe", "ng")
 
             // Country-only locales: passing the code as language triggers legacy
             // ISO 639 remapping (e.g. "in" -> "id").
@@ -123,6 +126,14 @@ data class GlobalFilter(
                 .filter { it.country.isNotEmpty() }
                 .distinctBy { it.country }
                 .sortedBy { it.displayCountry }
+
+            fun fromCountries(countries: List<String>): Region? {
+                val codes = countries.toSet()
+                return entries.firstOrNull { region ->
+                    val regionCodes = region.slug.split(',').toSet()
+                    codes == regionCodes || codes == regionCodes - addedCountryCodes
+                }
+            }
         }
     }
 
