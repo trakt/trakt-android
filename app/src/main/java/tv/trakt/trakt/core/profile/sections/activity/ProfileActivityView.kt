@@ -53,6 +53,8 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
@@ -63,8 +65,6 @@ import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Comments
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Ratings
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 import tv.trakt.trakt.core.profile.sections.activity.ui.comments.ProfileCommentItemView
 import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingEpisodeItemView
 import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingMovieItemView

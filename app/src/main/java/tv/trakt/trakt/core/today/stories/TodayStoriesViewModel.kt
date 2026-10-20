@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.data.local.TodaySeenLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -23,7 +24,6 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.core.today.data.local.TodaySeenLocalDataSource
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.model.analyticsType
 import tv.trakt.trakt.core.today.stories.navigation.TodayStoriesDestination
@@ -45,7 +45,7 @@ internal sealed interface TodayStoriesEvent {
 internal class TodayStoriesViewModel(
     savedStateHandle: SavedStateHandle,
     private val getTodayStoriesUseCase: GetTodayStoriesUseCase,
-    private val seenSource: TodaySeenLocalDataSource,
+    private val seenSource: TodaySeenLocalSource,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<TodayStoriesDestination>()

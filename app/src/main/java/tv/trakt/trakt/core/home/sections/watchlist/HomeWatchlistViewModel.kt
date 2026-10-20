@@ -29,14 +29,14 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -76,10 +76,10 @@ internal class HomeWatchlistViewModel(
     private val getShowsUseCase: GetHomeShowsWatchlistUseCase,
     private val addHistoryUseCase: AddHomeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val userWatchlistSource: UserWatchlistLocalDataSource,
-    private val userWatchlistMinSource: UserWatchlistMinimalLocalDataSource,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val userWatchlistSource: UserWatchlistLocalSource,
+    private val userWatchlistMinSource: UserWatchlistMinimalLocalSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
     private val filterManager: GlobalFilterManager,
     private val checkInManager: CheckInManager,
     private val dataChanges: DataChanges,
@@ -475,7 +475,7 @@ internal class HomeWatchlistViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShow.update { show.ids.trakt }
         }
     }
@@ -485,7 +485,7 @@ internal class HomeWatchlistViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            movieLocalDataSource.upsertMovies(listOf(movie))
+            movieLocalSource.upsertMovies(listOf(movie))
             navigateMovie.update { movie.ids.trakt }
         }
     }

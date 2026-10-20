@@ -8,7 +8,7 @@ import androidx.compose.material3.SheetValue.Expanded
 import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 
 @Composable

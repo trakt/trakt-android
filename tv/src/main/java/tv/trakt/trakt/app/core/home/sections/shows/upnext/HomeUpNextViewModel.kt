@@ -23,8 +23,8 @@ import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetMoviesUpNextUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetShowsUpNextUseCase
-import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -36,8 +36,8 @@ import java.time.ZonedDateTime
 internal class HomeUpNextViewModel(
     private val getShowsUpNextUseCase: GetShowsUpNextUseCase,
     private val getMoviesUpNextUseCase: GetMoviesUpNextUseCase,
-    private val localShowsSyncSource: ShowsSyncLocalDataSource,
-    private val localEpisodesSyncSource: EpisodesSyncLocalDataSource,
+    private val localShowsSyncSource: ShowsSyncLocalSource,
+    private val localEpisodesSyncSource: EpisodesSyncLocalSource,
     private val dataChanges: DataChanges,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {

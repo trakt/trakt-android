@@ -3,33 +3,33 @@ package tv.trakt.trakt.core.discover.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.MediaRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.discover.DiscoverSection
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Anticipated
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Popular
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Recommended
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Trending
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.common.networking.AnticipatedMediaDto
 import tv.trakt.trakt.common.networking.PopularMediaDto
 import tv.trakt.trakt.common.networking.TrendingMediaDto
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalDataSource
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverSection
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Anticipated
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Popular
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Recommended
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Trending
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
 internal class GetDiscoverMediaUseCase(
     private val remoteSource: MediaRemoteSource,
-    private val localMediaSource: DiscoverMediaLocalDataSource,
-    private val localShowSource: ShowLocalDataSource,
-    private val localMovieSource: MovieLocalDataSource,
+    private val localMediaSource: DiscoverMediaLocalSource,
+    private val localShowSource: ShowLocalSource,
+    private val localMovieSource: MovieLocalSource,
     private val getRecommendedMediaUseCase: GetRecommendedMediaUseCase,
     private val seasonalThemeUseCase: SeasonalThemeUseCase,
 ) {

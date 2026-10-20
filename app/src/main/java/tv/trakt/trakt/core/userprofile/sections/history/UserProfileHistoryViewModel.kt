@@ -17,8 +17,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.userprofile.UserProfileConfig.HORIZONTAL_SECTION_LIMIT
 import tv.trakt.trakt.core.userprofile.sections.history.usecases.GetUserProfileHistoryUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager

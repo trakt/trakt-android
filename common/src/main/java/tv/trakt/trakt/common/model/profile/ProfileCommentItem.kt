@@ -1,0 +1,75 @@
+package tv.trakt.trakt.common.model.profile
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.helpers.extensions.toGifQuery
+import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
+import java.time.Instant
+
+@Immutable
+sealed interface ProfileCommentItem {
+    val comment: Comment
+
+    @Immutable
+    data class ShowItem(
+        val show: Show,
+        override val comment: Comment,
+    ) : ProfileCommentItem
+
+    @Immutable
+    data class MovieItem(
+        val movie: Movie,
+        override val comment: Comment,
+    ) : ProfileCommentItem
+
+    @Immutable
+    data class EpisodeItem(
+        val show: Show,
+        val episode: Episode,
+        override val comment: Comment,
+    ) : ProfileCommentItem
+
+    val key: String
+        get() = when (this) {
+            is ShowItem -> "show-${show.ids.trakt.value}"
+            is MovieItem -> "movie-${movie.ids.trakt.value}"
+            is EpisodeItem -> "episode-${show.ids.trakt.value}-${episode.ids.trakt.value}"
+        }
+
+    val title: String
+        @Composable
+        get() = when (this) {
+            is ShowItem -> show.title
+            is MovieItem -> movie.title
+            is EpisodeItem -> "${show.title} - ${episode.seasonEpisode.toDisplayString()}"
+        }
+
+    val images: Images?
+        get() = when (this) {
+            is ShowItem -> show.images
+            is MovieItem -> movie.images
+            is EpisodeItem -> episode.images ?: show.images
+        }
+
+    val commentedAt: Instant
+        get() = comment.createdAt.toInstant()
+
+    val gifQuery: String?
+        get() = when (this) {
+            is ShowItem -> MediaType.Show.toGifQuery(show.title)
+            is MovieItem -> MediaType.Movie.toGifQuery(movie.title)
+            is EpisodeItem -> MediaType.Episode.toGifQuery(show.title)
+        }
+
+    fun withComment(comment: Comment): ProfileCommentItem =
+        when (this) {
+            is ShowItem -> copy(comment = comment)
+            is MovieItem -> copy(comment = comment)
+            is EpisodeItem -> copy(comment = comment)
+        }
+}

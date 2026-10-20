@@ -12,9 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
@@ -32,16 +30,10 @@ import tv.trakt.trakt.core.lists.features.reorder.usecase.ReorderListUseCase
 import tv.trakt.trakt.core.lists.features.smart.CreateSmartListViewModel
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
-import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
-import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsStorage
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
-import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
-import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedStorage
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStorage
 import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.ListMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.ListShowContextViewModel
@@ -49,8 +41,6 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItems
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
-import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartLocalDataSource
-import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartStorage
 import tv.trakt.trakt.core.lists.sections.smart.details.SmartListDetailsViewModel
 import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListItemsUseCase
@@ -71,11 +61,6 @@ import tv.trakt.trakt.core.lists.usecases.GetListsFilterUseCase
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
 
 internal val listsDataModule = module {
-    singleOf(::ListsPersonalStorage) { bind<ListsPersonalLocalDataSource>() }
-    singleOf(::ListsLikedStorage) { bind<ListsLikedLocalDataSource>() }
-    singleOf(::ListsCollaborationsStorage) { bind<ListsCollaborationsLocalDataSource>() }
-    singleOf(::ListsSmartStorage) { bind<ListsSmartLocalDataSource>() }
-
     single<DataStore<Preferences>>(named(LISTS_PREFERENCES)) {
         createStore(
             context = androidApplication(),

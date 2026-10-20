@@ -61,10 +61,10 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem.MovieItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem.ShowItem
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedEvent.HideError
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.MovieItem
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.ShowItem
 import tv.trakt.trakt.core.home.sections.recommended.whythis.WhyThisSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet

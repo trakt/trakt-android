@@ -34,13 +34,13 @@ import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -63,7 +63,7 @@ private fun MoviesReleasesViewAllContent(
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit,
 ) {
-    var focusedItem by remember { mutableStateOf<HomeUpcomingItem.MovieItem?>(null) }
+    var focusedItem by remember { mutableStateOf<CalendarItem.MovieItem?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<Int?>(null) }
     val focusRequesters = remember { mutableMapOf<Int, FocusRequester>() }
 
@@ -122,7 +122,7 @@ private fun MoviesReleasesViewAllContent(
                     key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
-                    val focusRequester = focusRequesters.getOrPut(item.id) {
+                    val focusRequester = focusRequesters.getOrPut(item.id.value) {
                         FocusRequester()
                     }
 
@@ -135,7 +135,7 @@ private fun MoviesReleasesViewAllContent(
                                 verticalArrangement = spacedBy(2.dp),
                             ) {
                                 InfoChip(
-                                    text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
+                                    text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                                     iconPainter = when {
                                         item.movie.isReleased -> painterResource(R.drawable.ic_calendar_check)
                                         else -> painterResource(R.drawable.ic_calendar_upcoming)
@@ -173,7 +173,7 @@ private fun MoviesReleasesViewAllContent(
                             .onFocusChanged {
                                 if (it.isFocused) {
                                     focusedItem = item
-                                    focusedItemId = item.id
+                                    focusedItemId = item.id.value
                                 }
                             },
                     )

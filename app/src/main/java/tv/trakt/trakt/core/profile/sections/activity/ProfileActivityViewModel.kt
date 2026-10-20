@@ -21,12 +21,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -41,13 +41,13 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.lists.ListsConfig.ACTIVITY_SECTION_LIMIT
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Comments
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Ratings
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileCommentsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
@@ -61,9 +61,9 @@ internal class ProfileActivityViewModel(
     private val getCommentsUseCase: GetProfileCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val collapsingManager: CollapsingManager,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val episodeLocalSource: EpisodeLocalSource,
+    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
@@ -252,7 +252,7 @@ internal class ProfileActivityViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShow.update { show.ids.trakt }
         }
     }
@@ -265,8 +265,8 @@ internal class ProfileActivityViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            showLocalSource.upsertShows(listOf(show))
+            episodeLocalSource.upsertEpisodes(listOf(episode))
 
             navigateEpisode.update {
                 Pair(show.ids.trakt, episode)
@@ -280,7 +280,7 @@ internal class ProfileActivityViewModel(
         }
         processingJob = viewModelScope.launch {
             try {
-                movieLocalDataSource.upsertMovies(listOf(movie))
+                movieLocalSource.upsertMovies(listOf(movie))
                 navigateMovie.update { movie.ids.trakt }
             } catch (error: Exception) {
                 error.rethrowCancellation {

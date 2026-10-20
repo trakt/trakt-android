@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -32,11 +32,11 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.userprofile.UserProfileConfig.ALL_PAGE_LIMIT
 import tv.trakt.trakt.core.userprofile.sections.history.usecases.GetUserProfileHistoryUseCase
 import java.time.LocalDate
@@ -44,9 +44,9 @@ import java.time.LocalDate
 internal class AllUserProfileHistoryViewModel(
     savedStateHandle: SavedStateHandle,
     private val getHistoryUseCase: GetUserProfileHistoryUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val episodeLocalSource: EpisodeLocalSource,
+    private val movieLocalSource: MovieLocalSource,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllUserProfileHistoryDestination>()
     private val userId = destination.userId.toTraktId()
@@ -197,7 +197,7 @@ internal class AllUserProfileHistoryViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShowState.update { show.ids.trakt }
         }
     }
@@ -210,8 +210,8 @@ internal class AllUserProfileHistoryViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            showLocalSource.upsertShows(listOf(show))
+            episodeLocalSource.upsertEpisodes(listOf(episode))
             navigateEpisodeState.update { Pair(show.ids.trakt, episode) }
         }
     }
@@ -222,7 +222,7 @@ internal class AllUserProfileHistoryViewModel(
         }
         processingJob = viewModelScope.launch {
             try {
-                movieLocalDataSource.upsertMovies(listOf(movie))
+                movieLocalSource.upsertMovies(listOf(movie))
                 navigateMovieState.update { movie.ids.trakt }
             } catch (error: Exception) {
                 error.rethrowCancellation {

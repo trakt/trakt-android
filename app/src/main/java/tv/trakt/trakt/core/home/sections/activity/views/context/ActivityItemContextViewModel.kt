@@ -11,25 +11,25 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.AllActivityLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.EpisodeItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 
 internal class ActivityItemContextViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val activityLocalSource: HomePersonalLocalDataSource,
-    private val allActivityLocalSource: AllActivityLocalDataSource,
+    private val activityLocalSource: HomePersonalLocalSource,
+    private val allActivityLocalSource: AllActivityLocalSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {

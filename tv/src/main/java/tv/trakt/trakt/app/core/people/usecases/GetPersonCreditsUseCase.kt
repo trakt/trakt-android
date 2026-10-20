@@ -2,8 +2,8 @@ package tv.trakt.trakt.app.core.people.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.PeopleRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -12,8 +12,8 @@ import tv.trakt.trakt.common.model.fromDto
 
 internal class GetPersonCreditsUseCase(
     private val peopleRemoteSource: PeopleRemoteSource,
-    private val showLocalSource: ShowLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
 ) {
     suspend fun getShowCredits(personId: TraktId): ImmutableList<Show> {
         val response = peopleRemoteSource.getPersonShowsCredits(personId)
@@ -32,7 +32,7 @@ internal class GetPersonCreditsUseCase(
             ?.map { Movie.fromDto(it.movie) }
             ?.sortedByDescending { it.rating.votes }
 
-        movies?.let { movieLocalDataSource.upsertMovies(it) }
+        movies?.let { movieLocalSource.upsertMovies(it) }
 
         return (movies ?: listOf()).toImmutableList()
     }

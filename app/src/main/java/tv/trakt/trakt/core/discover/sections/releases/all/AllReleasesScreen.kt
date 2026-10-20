@@ -77,9 +77,9 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.calendar.model.CalendarItem
-import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
-import tv.trakt.trakt.core.calendar.model.CalendarItem.MovieItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem.MovieItem
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.context.sheet.CalendarEpisodeContextSheet

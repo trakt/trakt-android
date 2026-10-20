@@ -18,10 +18,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.SearchViewModel
-import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalDataSource
-import tv.trakt.trakt.core.search.data.local.people.SearchPeopleStorage
-import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
-import tv.trakt.trakt.core.search.data.local.popular.PopularSearchStorage
+import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalSource
+import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalSource
 import tv.trakt.trakt.core.search.features.game.GameViewModel
 import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
@@ -30,14 +28,14 @@ import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
 private const val SEARCH_PREFERENCES = "search_preferences"
 
 internal val searchDataModule = module {
-    single<SearchPeopleLocalDataSource> {
-        SearchPeopleStorage(
+    single {
+        SearchPeopleLocalSource(
             dataStore = get(named(SEARCH_PREFERENCES)),
         )
     }
 
-    single<PopularSearchLocalDataSource> {
-        PopularSearchStorage(
+    single {
+        PopularSearchLocalSource(
             dataStore = get(named(SEARCH_PREFERENCES)),
         )
     }

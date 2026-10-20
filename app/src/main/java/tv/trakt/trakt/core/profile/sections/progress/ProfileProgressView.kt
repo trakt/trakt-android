@@ -38,7 +38,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
 import tv.trakt.trakt.core.profile.sections.progress.views.ProgressFilters
 import tv.trakt.trakt.core.profile.sections.progress.views.ProgressItemView

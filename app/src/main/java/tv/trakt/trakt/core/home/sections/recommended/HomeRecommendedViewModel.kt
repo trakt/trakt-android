@@ -31,10 +31,10 @@ import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem.MovieItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem.ShowItem
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.MovieItem
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.ShowItem
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase

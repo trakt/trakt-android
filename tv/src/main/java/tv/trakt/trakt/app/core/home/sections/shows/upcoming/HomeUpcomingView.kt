@@ -28,7 +28,6 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.chips.NewChip
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
@@ -37,6 +36,7 @@ import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.resources.R
 
@@ -46,7 +46,7 @@ internal fun HomeUpcomingView(
     viewModel: HomeUpcomingViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (HomeUpcomingItem?) -> Unit = {},
+    onFocused: (CalendarItem?) -> Unit = {},
     onLoaded: () -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToMovie: (movieId: TraktId) -> Unit,
@@ -80,7 +80,7 @@ internal fun HomeUpcomingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (HomeUpcomingItem?) -> Unit = {},
+    onFocused: (CalendarItem?) -> Unit = {},
     onNavigateToMovie: (movieId: TraktId) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
 ) {
@@ -119,13 +119,13 @@ internal fun HomeUpcomingContent(
                     onFocused = onFocused,
                     onClick = {
                         when (it) {
-                            is HomeUpcomingItem.EpisodeItem -> {
+                            is CalendarItem.EpisodeItem -> {
                                 onNavigateToEpisode(
                                     it.show.ids.trakt,
                                     it.episode,
                                 )
                             }
-                            is HomeUpcomingItem.MovieItem -> {
+                            is CalendarItem.MovieItem -> {
                                 onNavigateToMovie(
                                     it.movie.ids.trakt,
                                 )
@@ -161,9 +161,9 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<HomeUpcomingItem>,
-    onFocused: (HomeUpcomingItem) -> Unit,
-    onClick: (HomeUpcomingItem) -> Unit,
+    listItems: ImmutableList<CalendarItem>,
+    onFocused: (CalendarItem) -> Unit,
+    onClick: (CalendarItem) -> Unit,
     contentPadding: PaddingValues,
 ) {
     PositionFocusLazyRow(
@@ -186,9 +186,9 @@ private fun ContentList(
 
 @Composable
 private fun ContentListItem(
-    item: HomeUpcomingItem,
-    onFocused: (HomeUpcomingItem) -> Unit,
-    onClick: (HomeUpcomingItem) -> Unit,
+    item: CalendarItem,
+    onFocused: (CalendarItem) -> Unit,
+    onClick: (CalendarItem) -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",
@@ -199,12 +199,12 @@ private fun ContentListItem(
                 verticalArrangement = spacedBy(2.dp),
             ) {
                 when (item) {
-                    is HomeUpcomingItem.EpisodeItem -> {
+                    is CalendarItem.EpisodeItem -> {
                         item.episodes
                             .rememberEpisodeStatus()
                             ?.let { EpisodeStatusChip(status = it) }
                     }
-                    is HomeUpcomingItem.MovieItem -> {
+                    is CalendarItem.MovieItem -> {
                         if (item.movie.isNew) {
                             NewChip()
                         }
@@ -212,12 +212,12 @@ private fun ContentListItem(
                 }
 
                 val isReleased = when (item) {
-                    is HomeUpcomingItem.EpisodeItem -> item.episode.isReleased
-                    is HomeUpcomingItem.MovieItem -> item.movie.isReleased
+                    is CalendarItem.EpisodeItem -> item.episode.isReleased
+                    is CalendarItem.MovieItem -> item.movie.isReleased
                 }
 
                 InfoChip(
-                    text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
+                    text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                     iconPainter = when {
                         isReleased -> painterResource(R.drawable.ic_calendar_check)
                         else -> painterResource(R.drawable.ic_calendar_upcoming)
@@ -231,7 +231,10 @@ private fun ContentListItem(
                 verticalArrangement = spacedBy(1.dp),
             ) {
                 Text(
-                    text = item.title,
+                    text = when (item) {
+                        is CalendarItem.EpisodeItem -> item.show.title
+                        is CalendarItem.MovieItem -> item.movie.title
+                    },
                     style = TraktTheme.typography.cardTitle,
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
@@ -239,7 +242,7 @@ private fun ContentListItem(
                 )
 
                 val subtitle = when (item) {
-                    is HomeUpcomingItem.EpisodeItem -> {
+                    is CalendarItem.EpisodeItem -> {
                         when {
                             item.isFullSeason -> stringResource(
                                 R.string.text_season_number,
@@ -254,7 +257,7 @@ private fun ContentListItem(
                             else -> item.episode.seasonEpisodeString()
                         }
                     }
-                    is HomeUpcomingItem.MovieItem -> {
+                    is CalendarItem.MovieItem -> {
                         rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                     }
                 }

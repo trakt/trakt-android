@@ -1,14 +1,14 @@
 package tv.trakt.trakt.app.core.profile.sections.history.usecases
 
-import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import java.time.ZonedDateTime
 
 internal class SyncProfileHistoryUseCase(
-    private val localShowsSyncSource: ShowsSyncLocalDataSource,
-    private val localMoviesSyncSource: MoviesSyncLocalDataSource,
-    private val localEpisodesSyncSource: EpisodesSyncLocalDataSource,
+    private val localShowsSyncSource: ShowsSyncLocalSource,
+    private val localMoviesSyncSource: MoviesSyncLocalSource,
+    private val localEpisodesSyncSource: EpisodesSyncLocalSource,
 ) {
     suspend fun isSyncRequired(loadedAt: ZonedDateTime?): Boolean {
         if (loadedAt == null) {

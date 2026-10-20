@@ -16,10 +16,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.analytics.logListSort
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -38,8 +38,8 @@ import tv.trakt.trakt.core.userprofile.sections.favorites.usecases.GetUserProfil
 internal class AllUserProfileFavoritesViewModel(
     savedStateHandle: SavedStateHandle,
     private val getFavoritesUseCase: GetUserProfileFavoritesUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -142,7 +142,7 @@ internal class AllUserProfileFavoritesViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShowState.update { show.ids.trakt }
         }
     }
@@ -153,7 +153,7 @@ internal class AllUserProfileFavoritesViewModel(
         }
         processingJob = viewModelScope.launch {
             try {
-                movieLocalDataSource.upsertMovies(listOf(movie))
+                movieLocalSource.upsertMovies(listOf(movie))
                 navigateMovieState.update { movie.ids.trakt }
             } catch (error: Exception) {
                 error.rethrowCancellation {

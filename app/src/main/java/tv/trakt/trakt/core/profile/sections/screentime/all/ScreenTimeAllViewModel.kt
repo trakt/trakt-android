@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
+import tv.trakt.trakt.common.model.profile.ScreenTimeData
 
 internal class ScreenTimeAllViewModel(
     data: ScreenTimeData,

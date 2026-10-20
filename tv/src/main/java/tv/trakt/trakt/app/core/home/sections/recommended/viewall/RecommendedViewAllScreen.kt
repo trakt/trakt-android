@@ -32,13 +32,14 @@ import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.home.sections.recommended.model.RecommendedItem
-import tv.trakt.trakt.app.core.home.sections.recommended.model.RecommendedItem.MovieItem
-import tv.trakt.trakt.app.core.home.sections.recommended.model.RecommendedItem.ShowItem
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem.MovieItem
+import tv.trakt.trakt.common.model.recommended.RecommendedItem.ShowItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
@@ -85,7 +86,7 @@ private fun RecommendedViewAllContent(
             },
     ) {
         BackdropImage(
-            imageUrl = focusedItem?.fullFanartImage,
+            imageUrl = focusedItem?.images?.getFanartUrl(Images.Size.FULL),
             saturation = 0F,
             crossfade = true,
         )
@@ -137,10 +138,10 @@ private fun RecommendedViewAllContent(
 
                     VerticalMediaCard(
                         title = item.title,
-                        imageUrl = item.posterImage,
-                        watched = state.collection.isWatched(item.id, item.mediaType, item.airedEpisodes),
-                        watching = state.collection.isWatching(item.id, item.mediaType, item.airedEpisodes),
-                        watchlist = state.collection.isWatchlist(item.id, item.mediaType),
+                        imageUrl = item.images?.getPosterUrl(Images.Size.MEDIUM),
+                        watched = state.collection.isWatched(item.id, item.type, item.airedEpisodes),
+                        watching = state.collection.isWatching(item.id, item.type, item.airedEpisodes),
+                        watchlist = state.collection.isWatchlist(item.id, item.type),
                         onClick = {
                             when (item) {
                                 is ShowItem -> onShowClick(item.show.ids.trakt)

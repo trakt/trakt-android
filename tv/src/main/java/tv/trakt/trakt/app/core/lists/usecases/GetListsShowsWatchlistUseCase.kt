@@ -2,7 +2,7 @@ package tv.trakt.trakt.app.core.lists.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetListsShowsWatchlistUseCase(
     private val remoteSyncSource: ShowsSyncRemoteSource,
-    private val localShowSource: ShowLocalDataSource,
+    private val localShowSource: ShowLocalSource,
 ) {
     suspend fun getShows(
         limit: Int,

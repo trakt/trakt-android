@@ -146,7 +146,7 @@ Non-negotiable shape:
 - ViewModels don't enqueue WorkManager work directly — call a `SyncTrigger`
   collaborator (see `architecture.md`).
 - ViewModels don't touch DataStore or auth tokens directly — go through a
-  repository / `AuthStorage` (see `persistence.md`).
+  repository / `TokenProvider` (see `persistence.md`).
 - ViewModels don't see raw `IOException` / `HttpException`. Repositories map
   failures to typed `ApiError` / `Result<…>`; the ViewModel parks them in
   `errorState` and the view renders localised copy from the state's `error`

@@ -6,9 +6,10 @@ import tv.trakt.trakt.common.core.home.model.Progress
 import tv.trakt.trakt.common.core.home.model.UpNextItem
 import tv.trakt.trakt.common.core.home.model.UpNextMovie
 import tv.trakt.trakt.common.core.home.model.UpNextShow
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -19,15 +20,14 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 
 internal class GetUpNextUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteSource,
     private val remoteMoviesSyncSource: MoviesSyncRemoteSource,
-    private val localDataSource: HomeUpNextLocalDataSource,
-    private val localShowSource: ShowLocalDataSource,
-    private val localMovieSource: MovieLocalDataSource,
-    private val localEpisodeSource: EpisodeLocalDataSource,
+    private val localDataSource: HomeUpNextLocalSource,
+    private val localShowSource: ShowLocalSource,
+    private val localMovieSource: MovieLocalSource,
+    private val localEpisodeSource: EpisodeLocalSource,
 ) {
     suspend fun getLocalUpNext(limit: Int): ImmutableList<UpNextItem> {
         return localDataSource.getItems()

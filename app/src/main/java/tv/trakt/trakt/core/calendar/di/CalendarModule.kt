@@ -17,8 +17,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.core.calendar.CalendarViewModel
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.ui.context.CalendarEpisodeContextViewModel
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
@@ -48,8 +48,8 @@ internal val calendarModule = module {
             updateHistoryUseCase = get(),
             updateWatchlistUseCase = get(),
             updateShowHistoryUseCase = get(),
-            upNextLocalDataSource = get(),
-            upcomingLocalDataSource = get(),
+            upNextLocalSource = get(),
+            upcomingLocalSource = get(),
             dataChanges = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),

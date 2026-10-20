@@ -6,12 +6,12 @@ import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
+import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalSource
 
 internal class GetProgressWatchingUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteSource,
-    private val localDataSource: ProgressWatchingLocalDataSource,
+    private val localDataSource: ProgressWatchingLocalSource,
 ) {
     suspend fun getLocalWatching(limit: Int): ImmutableList<ProfileProgressItem> {
         return localDataSource.getItems()

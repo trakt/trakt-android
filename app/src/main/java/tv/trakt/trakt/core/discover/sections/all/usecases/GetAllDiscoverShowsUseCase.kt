@@ -2,18 +2,18 @@ package tv.trakt.trakt.core.discover.sections.all.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.discover.DiscoverSection
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Anticipated
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Popular
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Recommended
+import tv.trakt.trakt.common.model.discover.DiscoverSection.Trending
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_ALL_LIMIT
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverSection
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Anticipated
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Popular
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Recommended
-import tv.trakt.trakt.core.discover.model.DiscoverSection.Trending
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 
 internal class GetAllDiscoverShowsUseCase(

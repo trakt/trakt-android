@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.home.sections.startwatching.usecases
 
 import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
@@ -19,7 +19,7 @@ private val SortComparator =
 
 internal class GetHomeShowsWatchlistItemsUseCase(
     private val remoteSyncSource: ShowsSyncRemoteSource,
-    private val localShowsSource: ShowLocalDataSource,
+    private val localShowsSource: ShowLocalSource,
 ) {
     suspend fun getItems(pagination: Pagination): List<WatchlistItem> {
         val nowDay = nowLocal().toString()

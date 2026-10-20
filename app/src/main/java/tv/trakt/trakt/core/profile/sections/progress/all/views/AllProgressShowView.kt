@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Images
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -45,8 +45,10 @@ internal fun AllProgressShowView(
         onClick = onClick,
         onImageClick = onClick,
         footerContent = {
+            val hiddenAt = item.hiddenAt
+            val remainingEpisodes = item.remainingEpisodes
             when {
-                item.hiddenAt != null -> {
+                hiddenAt != null -> {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -58,7 +60,7 @@ internal fun AllProgressShowView(
                             modifier = Modifier.size(14.dp),
                         )
                         Text(
-                            text = item.hiddenAt.toLocal().format(mediumDateFormat()).capitalize(),
+                            text = hiddenAt.toLocal().format(mediumDateFormat()).capitalize(),
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.cardSubtitle.copy(
                                 fontWeight = W500,
@@ -67,7 +69,7 @@ internal fun AllProgressShowView(
                     }
                 }
 
-                item.remainingEpisodes != null && item.remainingEpisodes > 0 -> {
+                remainingEpisodes != null && remainingEpisodes > 0 -> {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(3.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -79,7 +81,7 @@ internal fun AllProgressShowView(
                             modifier = Modifier.size(14.dp),
                         )
                         Text(
-                            text = stringResource(R.string.tag_text_remaining_episodes, item.remainingEpisodes),
+                            text = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.cardSubtitle.copy(
                                 fontWeight = W500,

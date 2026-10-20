@@ -3,27 +3,27 @@ package tv.trakt.trakt.core.today.usecases
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 import tv.trakt.trakt.common.core.today.model.TodayMedia
-import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.UserProgressLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
-import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
-import tv.trakt.trakt.core.today.model.TodayForYouItem
+import tv.trakt.trakt.core.today.data.local.TodayLocalSource
 
 internal class UpdateTodayHistoryUseCase(
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val userProgressLocalSource: UserProgressLocalDataSource,
+    private val userProgressLocalSource: UserProgressLocalSource,
     private val dataChanges: DataChanges,
-    private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
-    private val todayLocalSource: TodayLocalDataSource,
+    private val userWatchlistLocalSource: UserWatchlistLocalSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
+    private val todayLocalSource: TodayLocalSource,
 ) {
     suspend fun addToWatched(item: TodayForYouItem) {
         when (item) {

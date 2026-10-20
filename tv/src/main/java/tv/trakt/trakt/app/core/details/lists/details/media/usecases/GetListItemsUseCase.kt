@@ -7,8 +7,8 @@ import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUS
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem.MovieItem
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem.ShowItem
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -19,8 +19,8 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetListItemsUseCase(
     private val remoteSource: ListsRemoteSource,
-    private val showLocalSource: ShowLocalDataSource,
-    private val movieLocalSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
 ) {
     suspend fun getListItems(
         listId: TraktId,

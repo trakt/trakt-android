@@ -13,14 +13,14 @@ import timber.log.Timber
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
+import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.usecases.DropPlaybackUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 
@@ -28,8 +28,8 @@ internal class UpNextItemContextViewModel(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val dataChanges: DataChanges,
-    private val upNextLocalDataSource: HomeUpNextLocalDataSource,
-    private val upcomingLocalDataSource: HomeUpcomingLocalDataSource,
+    private val upNextLocalSource: HomeUpNextLocalSource,
+    private val upcomingLocalSource: HomeUpcomingLocalSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) : ViewModel() {
     private val initialState = UpNextItemContextState()
@@ -46,11 +46,11 @@ internal class UpNextItemContextViewModel(
                 loadingDropState.update { Loading }
                 updateShowHistoryUseCase.dropShow(showId)
 
-                upNextLocalDataSource.removeShowItems(
+                upNextLocalSource.removeShowItems(
                     ids = listOf(showId),
                 )
 
-                upcomingLocalDataSource.removeShowItems(
+                upcomingLocalSource.removeShowItems(
                     showIds = listOf(showId),
                     notify = true,
                 )
@@ -77,7 +77,7 @@ internal class UpNextItemContextViewModel(
                 loadingDropState.update { Loading }
                 dropPlaybackUseCase.dropMoviePlayback(movieId)
 
-                upNextLocalDataSource.removeMovieItems(
+                upNextLocalSource.removeMovieItems(
                     ids = listOf(movieId),
                 )
 

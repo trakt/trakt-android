@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.profile.sections.screentime.all
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
+import tv.trakt.trakt.common.model.profile.ScreenTimeData
 import java.time.LocalDate
 
 @Immutable

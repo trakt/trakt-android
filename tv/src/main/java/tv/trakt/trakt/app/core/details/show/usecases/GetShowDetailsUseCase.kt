@@ -1,6 +1,6 @@
 package tv.trakt.trakt.app.core.details.show.usecases
 
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.fromDto
 
 internal class GetShowDetailsUseCase(
     private val remoteSource: ShowsRemoteSource,
-    private val localSource: ShowLocalDataSource,
+    private val localSource: ShowLocalSource,
 ) {
     suspend fun getShowDetails(showId: TraktId): Show? {
         val localShow = localSource.getShow(showId)

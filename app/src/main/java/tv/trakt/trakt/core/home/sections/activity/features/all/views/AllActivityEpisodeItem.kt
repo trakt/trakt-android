@@ -30,8 +30,8 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityItemRating
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityRateButton
 import tv.trakt.trakt.resources.R

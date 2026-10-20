@@ -22,13 +22,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -44,8 +44,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.all.usecases.GetAllReleasesItemsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.discover.sections.releases.usecases.GetReleasesTypeUseCase
@@ -69,9 +69,9 @@ internal class AllReleasesViewModel(
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
-    private val episodeLocalDataSource: EpisodeLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
+    private val episodeLocalSource: EpisodeLocalSource,
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -482,7 +482,7 @@ internal class AllReleasesViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShow.update { show.ids.trakt }
         }
     }
@@ -492,7 +492,7 @@ internal class AllReleasesViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            movieLocalDataSource.upsertMovies(listOf(movie))
+            movieLocalSource.upsertMovies(listOf(movie))
             navigateMovie.update { movie.ids.trakt }
         }
     }
@@ -505,8 +505,8 @@ internal class AllReleasesViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            showLocalSource.upsertShows(listOf(show))
+            episodeLocalSource.upsertEpisodes(listOf(episode))
 
             navigateEpisode.update {
                 Pair(show.ids.trakt, episode)

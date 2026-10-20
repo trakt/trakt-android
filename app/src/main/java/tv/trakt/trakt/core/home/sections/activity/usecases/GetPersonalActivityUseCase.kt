@@ -14,15 +14,15 @@ import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.SyncHistoryItemDto
-import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 
 internal class GetPersonalActivityUseCase(
     private val remoteUserSource: UserHistoryRemoteSource,
-    private val localDataSource: HomePersonalLocalDataSource,
+    private val localDataSource: HomePersonalLocalSource,
 ) {
     suspend fun getLocalPersonalActivity(
         limit: Int,

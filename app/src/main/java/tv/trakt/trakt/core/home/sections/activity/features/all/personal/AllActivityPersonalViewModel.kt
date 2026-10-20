@@ -26,11 +26,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -44,13 +44,13 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.AllPersonalActivityDestination
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
@@ -64,9 +64,9 @@ internal class AllActivityPersonalViewModel(
     analytics: Analytics,
     private val getActivityUseCase: GetPersonalActivityUseCase,
     private val rateActivityItemUseCase: RateActivityItemUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val episodeLocalDataSource: EpisodeLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val episodeLocalSource: EpisodeLocalSource,
+    private val movieLocalSource: MovieLocalSource,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
@@ -360,7 +360,7 @@ internal class AllActivityPersonalViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShow.update { show.ids.trakt }
         }
     }
@@ -373,8 +373,8 @@ internal class AllActivityPersonalViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            showLocalSource.upsertShows(listOf(show))
+            episodeLocalSource.upsertEpisodes(listOf(episode))
 
             navigateEpisode.update {
                 Pair(show.ids.trakt, episode)
@@ -388,7 +388,7 @@ internal class AllActivityPersonalViewModel(
         }
         processingJob = viewModelScope.launch {
             try {
-                movieLocalDataSource.upsertMovies(listOf(movie))
+                movieLocalSource.upsertMovies(listOf(movie))
                 navigateMovie.update { movie.ids.trakt }
             } catch (error: Exception) {
                 error.rethrowCancellation {

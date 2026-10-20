@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.common.data.remote.UserCalendarRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
@@ -17,11 +18,10 @@ import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
-import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -39,7 +39,7 @@ private fun List<Episode>.isFullSeason(): Boolean {
 
 internal class GetUpcomingUseCase(
     private val remoteUserSource: UserCalendarRemoteSource,
-    private val localDataSource: HomeUpcomingLocalDataSource,
+    private val localDataSource: HomeUpcomingLocalSource,
 ) {
     suspend fun getLocalUpcoming(
         filter: GlobalFilter,

@@ -24,8 +24,8 @@ import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsSmartUseCase
-import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
-import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
+import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
+import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
@@ -43,8 +43,8 @@ internal class ListsViewModel(
     private val getSmartUseCase: GetListsSmartUseCase,
     private val getPersonalUseCase: GetListsPersonalUseCase,
     private val getLikedUseCase: GetListsLikedUseCase,
-    private val showsLocalSyncSource: ShowsSyncLocalDataSource,
-    private val moviesLocalSyncSource: MoviesSyncLocalDataSource,
+    private val showsLocalSyncSource: ShowsSyncLocalSource,
+    private val moviesLocalSyncSource: MoviesSyncLocalSource,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) : ViewModel() {

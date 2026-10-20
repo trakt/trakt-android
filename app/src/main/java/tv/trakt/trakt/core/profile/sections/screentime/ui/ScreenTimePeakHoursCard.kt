@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.common.model.profile.ScreenTimeData.PeakHour
 import tv.trakt.trakt.core.profile.sections.screentime.StatCardSize
-import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData.PeakHour
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme

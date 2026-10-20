@@ -6,19 +6,19 @@ import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import tv.trakt.trakt.common.core.today.model.FollowingActivity
 import tv.trakt.trakt.common.core.today.model.FollowingActivity.Target
+import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.data.remote.TodayRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.core.today.data.local.TodayLocalDataSource
-import tv.trakt.trakt.core.today.model.TodayForYouItem
+import tv.trakt.trakt.core.today.data.local.TodayLocalSource
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.model.TodayTitleStory
 
 internal class GetTodayStoriesUseCase(
     private val remoteSource: TodayRemoteSource,
-    private val localSource: TodayLocalDataSource,
+    private val localSource: TodayLocalSource,
     private val getForYouUseCase: GetTodayForYouUseCase,
 ) {
     suspend fun getLocalStories(mode: MediaMode): ImmutableList<TodayStoryGroup> {

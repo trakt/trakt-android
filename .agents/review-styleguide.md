@@ -146,7 +146,7 @@ plain hyphens.
   usage, **no** Realm, **no** SQLDelight in new code.
 - Keys live in a `companion object` next to the store.
 - Reads return `Flow<T>`; writes are `suspend`.
-- Auth tokens go through `AuthStorage`, never DataStore directly.
+- Auth tokens go through `TokenProvider`, never DataStore directly.
 
 ## Theming
 

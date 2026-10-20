@@ -7,10 +7,10 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.profile.ProfileCommentItem
+import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
-import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 
 @Immutable
 internal data class ProfileAllActivityState(

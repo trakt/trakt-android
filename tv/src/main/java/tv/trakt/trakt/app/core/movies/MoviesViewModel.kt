@@ -16,10 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
-import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_SECTION_LIMIT
-import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
-import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetReleasesMoviesUseCase
@@ -33,6 +30,8 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.calendar.CalendarItem
+import tv.trakt.trakt.common.model.discover.DiscoverItem
 import java.time.ZonedDateTime
 
 @Suppress("UNCHECKED_CAST")
@@ -132,10 +131,10 @@ internal class MoviesViewModel(
     ) { state ->
         MoviesState(
             isLoading = state[0] as Boolean,
-            trendingMovies = state[1] as ImmutableList<TrendingMovie>?,
+            trendingMovies = state[1] as ImmutableList<DiscoverItem.MovieItem>?,
             popularMovies = state[2] as ImmutableList<Movie>?,
-            anticipatedMovies = state[3] as ImmutableList<AnticipatedMovie>?,
-            releasesMovies = state[4] as ImmutableList<HomeUpcomingItem.MovieItem>?,
+            anticipatedMovies = state[3] as ImmutableList<DiscoverItem.MovieItem>?,
+            releasesMovies = state[4] as ImmutableList<CalendarItem.MovieItem>?,
             user = state[5] as User?,
             collection = state[6] as UserCollectionState,
             error = state[7] as Exception?,

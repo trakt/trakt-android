@@ -13,7 +13,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
+import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -29,7 +29,7 @@ internal class FavoriteMovieContextViewModel(
     private val movie: Movie,
     private val sessionManager: SessionManager,
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
-    private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
+    private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {

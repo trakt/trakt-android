@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.EPISODE
 import org.openapitools.client.models.GetUsersActivities200ResponseInner.Type.MOVIE
+import tv.trakt.trakt.common.data.local.HomeSocialLocalSource
 import tv.trakt.trakt.common.data.remote.UserSocialRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -17,16 +18,15 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 
 internal class GetSocialActivityUseCase(
     private val remoteSource: UserSocialRemoteSource,
-    private val localDataSource: HomeSocialLocalDataSource,
+    private val localDataSource: HomeSocialLocalSource,
 ) {
     suspend fun getLocalSocialActivity(
         limit: Int,

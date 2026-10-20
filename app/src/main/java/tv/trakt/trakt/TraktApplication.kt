@@ -22,9 +22,9 @@ import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.sync.changes.di.dataChangesModule
-import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
+import tv.trakt.trakt.common.data.local.di.localSourcesModule
 import tv.trakt.trakt.common.data.remote.di.remoteSourcesModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
@@ -51,14 +51,12 @@ import tv.trakt.trakt.core.klipy.di.gifPickerModule
 import tv.trakt.trakt.core.lists.di.listsDataModule
 import tv.trakt.trakt.core.lists.di.listsModule
 import tv.trakt.trakt.core.main.di.mainModule
-import tv.trakt.trakt.core.movies.di.moviesDataModule
 import tv.trakt.trakt.core.movies.di.moviesModule
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.CHECK_IN
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.MEDIA
 import tv.trakt.trakt.core.notifications.di.notificationsModule
-import tv.trakt.trakt.core.people.di.peopleDataModule
 import tv.trakt.trakt.core.people.di.peopleModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
 import tv.trakt.trakt.core.profile.di.profileModule
@@ -70,17 +68,13 @@ import tv.trakt.trakt.core.search.di.searchModule
 import tv.trakt.trakt.core.settings.di.settingsDataModule
 import tv.trakt.trakt.core.settings.di.settingsModule
 import tv.trakt.trakt.core.share.di.shareModule
-import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
 import tv.trakt.trakt.core.streamings.di.allStreamingsModule
 import tv.trakt.trakt.core.summary.credits.di.allCreditsModule
-import tv.trakt.trakt.core.summary.episodes.di.episodeDetailsDataModule
 import tv.trakt.trakt.core.summary.episodes.di.episodeDetailsModule
-import tv.trakt.trakt.core.summary.movies.di.movieDetailsDataModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsModule
 import tv.trakt.trakt.core.summary.people.di.personDetailsModule
 import tv.trakt.trakt.core.summary.sentiment.di.sentimentModule
-import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.summary.social.di.mediaSocialActivityModule
 import tv.trakt.trakt.core.sync.di.syncModule
@@ -163,20 +157,15 @@ internal class TraktApplication : Application() {
                 discoverModule,
                 dataChangesModule,
                 showsModule,
-                showsDataModule,
                 showDetailsModule,
-                showDetailsDataModule,
                 episodeDetailsModule,
-                episodeDetailsDataModule,
                 moviesModule,
-                moviesDataModule,
                 movieDetailsModule,
-                movieDetailsDataModule,
                 mediaSocialActivityModule,
                 profileModule,
                 profileDataModule,
-                peopleDataModule,
                 remoteSourcesModule,
+                localSourcesModule,
                 peopleModule,
                 personDetailsModule,
                 searchModule,
@@ -202,7 +191,6 @@ internal class TraktApplication : Application() {
                 checkInModule,
                 inAppReviewModule,
                 analyticsModule,
-                translationsDataModule,
                 translationsModule,
                 gifPickerModule,
                 userProfileModule,

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.profile.sections.progress.model
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 
 internal data class ProgressPage(
     val items: ImmutableList<ProfileProgressItem>,

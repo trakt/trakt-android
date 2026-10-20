@@ -2,7 +2,7 @@ package tv.trakt.trakt.app.core.profile.sections.favorites.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.UserFavoritesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
@@ -12,7 +12,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetFavoriteMoviesUseCase(
     private val remoteUserSource: UserFavoritesRemoteSource,
-    private val localMoviesSource: MovieLocalDataSource,
+    private val localMoviesSource: MovieLocalSource,
 ) {
     suspend fun getFavoriteMovies(
         page: Int = 1,

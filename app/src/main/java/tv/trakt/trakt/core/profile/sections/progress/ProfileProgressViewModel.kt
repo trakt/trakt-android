@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -29,9 +29,9 @@ import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.core.lists.ListsConfig.PROGRESS_SECTION_LIMIT
 import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
-import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Dropped
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Ended
@@ -50,7 +50,7 @@ internal class ProfileProgressViewModel(
     private val getDroppedUseCase: GetProgressDroppedUseCase,
     private val getCompletedUseCase: GetProgressCompleteUseCase,
     private val getWatchingUseCase: GetProgressWatchingUseCase,
-    private val localShowSource: ShowLocalDataSource,
+    private val localShowSource: ShowLocalSource,
     private val collapsingManager: CollapsingManager,
     private val dataChanges: DataChanges,
     private val appLifecycleProvider: AppLifecycleProvider,

@@ -25,20 +25,20 @@ import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.core.home.sections.social.model.SocialActivityItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun MovieSocialItemView(
-    item: SocialActivityItem.MovieItem,
+    item: HomeActivityItem.MovieItem,
     onClick: (TraktId) -> Unit,
-    onFocused: (SocialActivityItem?) -> Unit,
+    onFocused: (HomeActivityItem?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     HorizontalMediaCard(
@@ -51,18 +51,18 @@ internal fun MovieSocialItemView(
                 modifier = Modifier.sizeIn(maxHeight = 22.dp),
             ) {
                 InfoChip(
-                    text = item.user.displayName,
+                    text = item.user?.displayName.orEmpty(),
                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                     endPadding = 19.dp,
                 )
 
                 val vipColor = TraktTheme.colors.vipAccent
-                val borderColor = remember(item.user.isAnyVip) {
-                    if (item.user.isAnyVip) vipColor else Color.Transparent
+                val borderColor = remember(item.user?.isAnyVip) {
+                    if (item.user?.isAnyVip == true) vipColor else Color.Transparent
                 }
-                if (item.user.hasAvatar) {
+                if (item.user?.hasAvatar == true) {
                     AsyncImage(
-                        model = item.user.images?.avatar?.full,
+                        model = item.user?.images?.avatar?.full,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         error = painterResource(R.drawable.ic_person_placeholder),
@@ -122,11 +122,12 @@ internal fun MovieSocialItemView(
 private fun Preview() {
     TraktTheme {
         MovieSocialItemView(
-            item = SocialActivityItem.MovieItem(
+            item = HomeActivityItem.MovieItem(
                 id = 1,
                 activity = "watch",
-                activityAt = nowUtc(),
+                activityAt = nowUtcInstant(),
                 user = PreviewData.user1,
+                userRating = null,
                 movie = PreviewData.movie1,
             ),
             onClick = {},

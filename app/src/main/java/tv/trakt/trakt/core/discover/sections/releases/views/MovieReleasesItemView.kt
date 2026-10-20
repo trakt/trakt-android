@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.chips.NewChip

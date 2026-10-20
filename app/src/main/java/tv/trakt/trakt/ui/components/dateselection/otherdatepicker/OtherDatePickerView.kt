@@ -56,11 +56,11 @@ import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toLocalTime
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size.THUMB
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.EpisodeItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red600
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader

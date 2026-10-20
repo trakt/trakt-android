@@ -29,11 +29,11 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
-import tv.trakt.trakt.common.core.media.episodes.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -97,7 +97,7 @@ internal class AllShowSeasonsViewModel(
     private val dataChanges: DataChanges,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val episodeLocalDataSource: EpisodeLocalDataSource,
+    private val episodeLocalSource: EpisodeLocalSource,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
     private val translationsStore: CommentTranslationsStore,
@@ -769,7 +769,7 @@ internal class AllShowSeasonsViewModel(
         }
 
         viewModelScope.launch {
-            episodeLocalDataSource.upsertEpisodes(listOf(episode))
+            episodeLocalSource.upsertEpisodes(listOf(episode))
             navigateEpisode.update {
                 Pair(showId, episode)
             }

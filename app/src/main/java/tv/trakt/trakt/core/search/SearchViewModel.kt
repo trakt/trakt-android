@@ -21,12 +21,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.media.movies.local.MovieLocalDataSource
-import tv.trakt.trakt.common.core.media.shows.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
+import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.PeopleLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -40,8 +42,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
-import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
 import tv.trakt.trakt.core.search.SearchState.SearchResult
 import tv.trakt.trakt.core.search.SearchState.UserState
 import tv.trakt.trakt.core.search.model.SearchFilter.LISTS
@@ -64,10 +64,10 @@ internal class SearchViewModel(
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
     private val getBirthdayPeopleUseCase: GetBirthdayPeopleUseCase,
     private val loadUserLikedListsUseCase: LoadUserLikedListsUseCase,
-    private val showLocalDataSource: ShowLocalDataSource,
-    private val movieLocalDataSource: MovieLocalDataSource,
-    private val peopleLocalDataSource: PeopleLocalDataSource,
-    private val likedListsLocalDataSource: ListsLikedLocalDataSource,
+    private val showLocalSource: ShowLocalSource,
+    private val movieLocalSource: MovieLocalSource,
+    private val peopleLocalSource: PeopleLocalSource,
+    private val likedListsLocalSource: ListsLikedLocalSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
@@ -124,7 +124,7 @@ internal class SearchViewModel(
     }
 
     private fun observeLists() {
-        likedListsLocalDataSource.observeUpdates()
+        likedListsLocalSource.observeUpdates()
             .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach { loadLikedLists() }
@@ -500,7 +500,7 @@ internal class SearchViewModel(
         }
 
         viewModelScope.launch {
-            showLocalDataSource.upsertShows(listOf(show))
+            showLocalSource.upsertShows(listOf(show))
             navigateShow.update { show }
             postUserSearch(show)
         }
@@ -516,7 +516,7 @@ internal class SearchViewModel(
         }
 
         viewModelScope.launch {
-            movieLocalDataSource.upsertMovies(listOf(movie))
+            movieLocalSource.upsertMovies(listOf(movie))
             navigateMovie.update { movie }
             postUserSearch(movie)
         }
@@ -532,7 +532,7 @@ internal class SearchViewModel(
         }
 
         viewModelScope.launch {
-            peopleLocalDataSource.upsertPeople(listOf(person))
+            peopleLocalSource.upsertPeople(listOf(person))
             navigatePerson.update { person }
             postUserSearch(person)
         }

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.sections.smart.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
 import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Images
@@ -9,7 +10,6 @@ import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.lists.SmartListSource.Unknown
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartLocalDataSource
 
 private val supportedSources = SmartListSource.entries
     .filter { it != Unknown }
@@ -17,7 +17,7 @@ private val supportedSources = SmartListSource.entries
 
 internal class GetSmartListsUseCase(
     private val remoteSource: UserSmartListsRemoteSource,
-    private val localSource: ListsSmartLocalDataSource,
+    private val localSource: ListsSmartLocalSource,
 ) {
     suspend fun getLocalSmartLists(pagination: Pagination? = null): ImmutableList<SmartList> {
         return localSource.getLists()

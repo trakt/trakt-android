@@ -1,5 +1,9 @@
 package tv.trakt.trakt.core.search.usecase.popular
 
+import tv.trakt.trakt.common.data.local.model.PopularListEntity
+import tv.trakt.trakt.common.data.local.model.PopularMovieEntity
+import tv.trakt.trakt.common.data.local.model.PopularShowEntity
+import tv.trakt.trakt.common.data.local.model.create
 import tv.trakt.trakt.common.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -8,11 +12,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.lists.CustomList
-import tv.trakt.trakt.core.search.data.local.model.PopularListEntity
-import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
-import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
-import tv.trakt.trakt.core.search.data.local.model.create
-import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
+import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalSource
 import java.time.temporal.ChronoUnit.HOURS
 
 private const val POPULAR_SEARCH_LIMIT = 36
@@ -21,7 +21,7 @@ private const val POPULAR_VALID_PERIOD_HOURS = 12L
 
 internal class GetPopularSearchUseCase(
     private val remoteSource: SearchRemoteSource,
-    private val localSource: PopularSearchLocalDataSource,
+    private val localSource: PopularSearchLocalSource,
 ) {
     suspend fun isLocalShowsValid(): Boolean {
         val local = localSource.getShows()

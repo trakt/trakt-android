@@ -23,20 +23,15 @@ import tv.trakt.trakt.app.core.details.episode.di.episodeDetailsModule
 import tv.trakt.trakt.app.core.details.lists.details.media.di.customListMediaModule
 import tv.trakt.trakt.app.core.details.movie.di.movieDetailsModule
 import tv.trakt.trakt.app.core.details.show.di.showDetailsModule
-import tv.trakt.trakt.app.core.episodes.di.episodesDataModule
 import tv.trakt.trakt.app.core.home.di.homeModule
 import tv.trakt.trakt.app.core.lists.di.listsModule
 import tv.trakt.trakt.app.core.main.MainScreen
 import tv.trakt.trakt.app.core.main.di.mainModule
-import tv.trakt.trakt.app.core.movies.di.moviesDataModule
 import tv.trakt.trakt.app.core.movies.di.moviesModule
-import tv.trakt.trakt.app.core.people.di.peopleDataModule
 import tv.trakt.trakt.app.core.people.di.personDetailsModule
-import tv.trakt.trakt.app.core.profile.di.profileDataModule
 import tv.trakt.trakt.app.core.profile.di.profileModule
 import tv.trakt.trakt.app.core.search.di.searchDataModule
 import tv.trakt.trakt.app.core.search.di.searchModule
-import tv.trakt.trakt.app.core.shows.di.showsDataModule
 import tv.trakt.trakt.app.core.shows.di.showsModule
 import tv.trakt.trakt.app.core.streamings.di.allStreamingsModule
 import tv.trakt.trakt.app.core.streamings.di.plexDataModule
@@ -46,9 +41,9 @@ import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.sync.changes.di.dataChangesModule
-import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
+import tv.trakt.trakt.common.data.local.di.localSourcesModule
 import tv.trakt.trakt.common.data.remote.di.remoteSourcesModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
@@ -119,21 +114,17 @@ class TvActivity : ComponentActivity() {
                     authModule,
                     commonAuthModule,
                     showsModule,
-                    showsDataModule,
                     showDetailsModule,
                     moviesModule,
-                    moviesDataModule,
                     dataChangesModule,
                     movieDetailsModule,
-                    episodesDataModule,
                     episodeDetailsModule,
                     listsModule,
                     commentsModule,
-                    peopleDataModule,
                     remoteSourcesModule,
+                    localSourcesModule,
                     personDetailsModule,
                     customListMediaModule,
-                    profileDataModule,
                     profileModule,
                     searchModule,
                     searchDataModule,
@@ -144,7 +135,6 @@ class TvActivity : ComponentActivity() {
                     syncModule,
                     inAppReviewModule,
                     analyticsModule,
-                    translationsDataModule,
                     translationsModule,
                 )
             }
