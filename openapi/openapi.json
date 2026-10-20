@@ -76789,7 +76789,7 @@
     },
     "/sync/ratings": {
       "post": {
-        "description": "#### 🔒 OAuth Required\nRate one or more items. Accepts shows, seasons, episodes and movies. If only a show is passed, only the show itself will be rated. If seasons are specified, all of those seasons will be rated.\n\nSend a `rated_at` UTC datetime to mark items as rated in the past. This is useful for syncing ratings from a media center.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `movies` | array | Array of `movie` objects. (see examples ->) |\n| `shows` | array | Array of `show` objects. |\n| `seasons` | array | Array of `season` objects. |\n| `episodes` | array | Array of `episode` objects. |\n\n#### Media Object POST Data\n| Key | Type | Value |\n|---|---|---|\n| item * | object | `movie`, `show`, `season`, or `episode` object. |\n| `rating` * | integer | Between 1 and 10. |\n| `rated_at` | datetime | UTC datetime when the item was rated. |",
+        "description": "#### 🔒 OAuth Required\nRate one or more items. Accepts shows, seasons, episodes and movies. A show without `seasons` rates the show itself. Send `seasons` inside a show to rate those seasons instead; add `episodes` to a season to rate only those episodes. Items without a `rating` are skipped.\n\nSend a `rated_at` UTC datetime to mark items as rated in the past. This is useful for syncing ratings from a media center.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `movies` | array | Array of `movie` objects. (see examples ->) |\n| `shows` | array | Array of `show` objects. |\n| `seasons` | array | Array of `season` objects. |\n| `episodes` | array | Array of `episode` objects. |\n\n#### Media Object POST Data\n| Key | Type | Value |\n|---|---|---|\n| item * | object | `movie`, `show`, `season`, or `episode` object. |\n| `rating` * | integer | Between 1 and 10. |\n| `rated_at` | datetime | UTC datetime when the item was rated. |",
         "summary": "Add new ratings",
         "tags": [
           "sync",
@@ -76812,6 +76812,10 @@
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 10
+                        },
+                        "rated_at": {
+                          "type": "string",
+                          "nullable": true
                         },
                         "ids": {
                           "oneOf": [
@@ -76937,7 +76941,12 @@
                         "rating": {
                           "type": "integer",
                           "minimum": 1,
-                          "maximum": 10
+                          "maximum": 10,
+                          "nullable": true
+                        },
+                        "rated_at": {
+                          "type": "string",
+                          "nullable": true
                         },
                         "ids": {
                           "oneOf": [
@@ -77097,10 +77106,59 @@
                               ]
                             }
                           ]
+                        },
+                        "seasons": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rating": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 10,
+                                "nullable": true
+                              },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "number": {
+                                "type": "integer"
+                              },
+                              "episodes": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "rating": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 10
+                                    },
+                                    "rated_at": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "number": {
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "required": [
+                                    "rating",
+                                    "number"
+                                  ]
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "number"
+                            ]
+                          },
+                          "nullable": true
                         }
                       },
                       "required": [
-                        "rating",
                         "ids"
                       ]
                     },
@@ -77115,6 +77173,10 @@
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 10
+                        },
+                        "rated_at": {
+                          "type": "string",
+                          "nullable": true
                         },
                         "ids": {
                           "oneOf": [
@@ -77200,6 +77262,10 @@
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 10
+                        },
+                        "rated_at": {
+                          "type": "string",
+                          "nullable": true
                         },
                         "ids": {
                           "oneOf": [
@@ -77294,6 +77360,10 @@
                                 "minimum": 1,
                                 "maximum": 10
                               },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "ids": {
                                 "oneOf": [
                                   {
@@ -77418,7 +77488,12 @@
                               "rating": {
                                 "type": "integer",
                                 "minimum": 1,
-                                "maximum": 10
+                                "maximum": 10,
+                                "nullable": true
+                              },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "oneOf": [
@@ -77578,10 +77653,59 @@
                                     ]
                                   }
                                 ]
+                              },
+                              "seasons": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "rating": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 10,
+                                      "nullable": true
+                                    },
+                                    "rated_at": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "number": {
+                                      "type": "integer"
+                                    },
+                                    "episodes": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "rating": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 10
+                                          },
+                                          "rated_at": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "number": {
+                                            "type": "integer"
+                                          }
+                                        },
+                                        "required": [
+                                          "rating",
+                                          "number"
+                                        ]
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "number"
+                                  ]
+                                },
+                                "nullable": true
                               }
                             },
                             "required": [
-                              "rating",
                               "ids"
                             ]
                           },
@@ -77595,7 +77719,12 @@
                               "rating": {
                                 "type": "integer",
                                 "minimum": 1,
-                                "maximum": 10
+                                "maximum": 10,
+                                "nullable": true
+                              },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "oneOf": [
@@ -77604,6 +77733,16 @@
                                     "properties": {
                                       "trakt": {
                                         "type": "integer"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
                                       },
                                       "tmdb": {
                                         "type": "integer",
@@ -77627,6 +77766,78 @@
                                         "type": "integer",
                                         "nullable": true,
                                         "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "slug"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "imdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
                                       },
                                       "tmdb": {
                                         "type": "integer"
@@ -77649,6 +77860,16 @@
                                         "nullable": true,
                                         "description": "Trakt ID"
                                       },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
                                       "tmdb": {
                                         "type": "integer",
                                         "nullable": true,
@@ -77663,10 +77884,59 @@
                                     ]
                                   }
                                 ]
+                              },
+                              "seasons": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "rating": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 10,
+                                      "nullable": true
+                                    },
+                                    "rated_at": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "number": {
+                                      "type": "integer"
+                                    },
+                                    "episodes": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "rating": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 10
+                                          },
+                                          "rated_at": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "number": {
+                                            "type": "integer"
+                                          }
+                                        },
+                                        "required": [
+                                          "rating",
+                                          "number"
+                                        ]
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "number"
+                                  ]
+                                },
+                                "nullable": true
                               }
                             },
                             "required": [
-                              "rating",
                               "ids"
                             ]
                           },
@@ -77680,7 +77950,12 @@
                               "rating": {
                                 "type": "integer",
                                 "minimum": 1,
-                                "maximum": 10
+                                "maximum": 10,
+                                "nullable": true
+                              },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "oneOf": [
@@ -77689,6 +77964,21 @@
                                     "properties": {
                                       "trakt": {
                                         "type": "integer"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
                                       },
                                       "tvdb": {
                                         "type": "integer",
@@ -77708,6 +77998,114 @@
                                         "nullable": true,
                                         "description": "Trakt ID"
                                       },
+                                      "slug": {
+                                        "type": "string"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "slug"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "imdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer"
+                                      },
+                                      "tvdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TVDb ID"
+                                      }
+                                    },
+                                    "required": [
+                                      "tmdb"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "trakt": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "Trakt ID"
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Slug"
+                                      },
+                                      "imdb": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "IMDb ID"
+                                      },
+                                      "tmdb": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "description": "TMDb ID"
+                                      },
                                       "tvdb": {
                                         "type": "integer"
                                       }
@@ -77717,10 +78115,59 @@
                                     ]
                                   }
                                 ]
+                              },
+                              "seasons": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "rating": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 10,
+                                      "nullable": true
+                                    },
+                                    "rated_at": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "number": {
+                                      "type": "integer"
+                                    },
+                                    "episodes": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "rating": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 10
+                                          },
+                                          "rated_at": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "number": {
+                                            "type": "integer"
+                                          }
+                                        },
+                                        "required": [
+                                          "rating",
+                                          "number"
+                                        ]
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "number"
+                                  ]
+                                },
+                                "nullable": true
                               }
                             },
                             "required": [
-                              "rating",
                               "ids"
                             ]
                           },
@@ -78230,6 +78677,10 @@
                                 "minimum": 1,
                                 "maximum": 10
                               },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
                               "ids": {
                                 "oneOf": [
                                   {
@@ -78354,7 +78805,12 @@
                               "rating": {
                                 "type": "integer",
                                 "minimum": 1,
-                                "maximum": 10
+                                "maximum": 10,
+                                "nullable": true
+                              },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "oneOf": [
@@ -78514,10 +78970,59 @@
                                     ]
                                   }
                                 ]
+                              },
+                              "seasons": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "rating": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 10,
+                                      "nullable": true
+                                    },
+                                    "rated_at": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "number": {
+                                      "type": "integer"
+                                    },
+                                    "episodes": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "rating": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 10
+                                          },
+                                          "rated_at": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "number": {
+                                            "type": "integer"
+                                          }
+                                        },
+                                        "required": [
+                                          "rating",
+                                          "number"
+                                        ]
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "number"
+                                  ]
+                                },
+                                "nullable": true
                               }
                             },
                             "required": [
-                              "rating",
                               "ids"
                             ]
                           },
@@ -78532,6 +79037,10 @@
                                 "type": "integer",
                                 "minimum": 1,
                                 "maximum": 10
+                              },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "oneOf": [
@@ -78617,6 +79126,10 @@
                                 "type": "integer",
                                 "minimum": 1,
                                 "maximum": 10
+                              },
+                              "rated_at": {
+                                "type": "string",
+                                "nullable": true
                               },
                               "ids": {
                                 "oneOf": [
