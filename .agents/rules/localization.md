@@ -4,7 +4,7 @@ globs: '{resources/src/main/res/**,**/ui/**/*.kt,**/strings.xml}'
 description: 'Crowdin source of truth, R.string namespacing (action_/common_/screen_/error_/a11y_), pluralStringResource, exhaustive API enum lookups returning @StringRes.'
 applyTo: '{resources/src/main/res/**,**/ui/**/*.kt,**/strings.xml}'
 paths:
-  - 'resources/src/main/res/**'
+  - 'resources/src/main/res/**/*'
   - '{app,tv}/src/main/**/*.kt'
   - '**/ui/**/*.kt'
 ---

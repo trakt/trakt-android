@@ -7,8 +7,8 @@ paths:
   - '**/build.gradle.kts'
   - '**/settings.gradle.kts'
   - 'gradle/libs.versions.toml'
-  - 'buildSrc/**'
-  - 'build-logic/**'
+  - 'buildSrc/**/*'
+  - 'build-logic/**/*'
 ---
 
 # Gradle Modules & Dependencies

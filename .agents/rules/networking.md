@@ -6,7 +6,7 @@ applyTo: 'common/src/main/**/*.kt'
 paths:
   - 'common/src/main/**/*.kt'
   - '{app,tv}/src/main/**/data/**/*.kt'
-  - 'openapi/**'
+  - 'openapi/**/*'
 ---
 
 # Networking

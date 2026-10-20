@@ -4,7 +4,7 @@ globs: 'common/src/main/java/tv/trakt/trakt/common/firebase/analytics/**'
 description: 'Analytics interface, Firebase + HAL backends, screen views, user action events, HAL parity with trakt-web, event allowlist, privacy.'
 applyTo: 'common/src/main/java/tv/trakt/trakt/common/firebase/analytics/**'
 paths:
-  - 'common/src/main/java/tv/trakt/trakt/common/firebase/analytics/**'
+  - 'common/src/main/java/tv/trakt/trakt/common/firebase/analytics/**/*'
 ---
 
 # Analytics

@@ -32,5 +32,3 @@ Part of the `trakt-android` monorepo. Root rules apply — see
   repository contract per `networking.md`.
 - **Testing**: `common/src/test/.../fakes/` and `.../fixtures/` for
   fakes and `.fixture(...)` factories. No mocking libraries.
-
-@../AGENTS.md
