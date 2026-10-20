@@ -119868,8 +119868,9 @@
     },
     "/people/{id}/lists/{type}/{sort}": {
       "get": {
-        "description": "#### 📄 Pagination 😁 Emojis\n\nReturns all lists that contain this person. By default, `personal` lists are returned sorted by the most `popular`.",
+        "description": "#### 📄 Pagination 😁 Emojis\n\nLists no longer support people, so this always returns an empty array.",
         "summary": "Get lists containing this person",
+        "deprecated": true,
         "tags": [
           "people"
         ],
