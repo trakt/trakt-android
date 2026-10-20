@@ -31,8 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.resources.R
@@ -43,16 +41,15 @@ import java.time.LocalTime
 import java.time.ZoneOffset.UTC
 import java.util.Locale
 
+// The picker reports each calendar day as UTC midnight, so compare days against the local today.
 object PastSelectableDates : SelectableDates {
-    private val nowUtc = nowUtc()
-    private val nowInstantUtc = nowUtcInstant()
-
     override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-        return utcTimeMillis <= nowInstantUtc.toEpochMilli()
+        val day = Instant.ofEpochMilli(utcTimeMillis).atZone(UTC).toLocalDate()
+        return !day.isAfter(nowLocalDay())
     }
 
     override fun isSelectableYear(year: Int): Boolean {
-        return year <= nowUtc.year
+        return year <= nowLocalDay().year
     }
 }
 
