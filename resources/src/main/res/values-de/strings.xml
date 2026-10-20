@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Hintergrund</string>
   <string name="page_title_year_in_review">%s im Rückblick</string>
   <string name="page_title_year_to_date">Jahresstatistik</string>
-  <string name="preview_feature_description_calendar_redesign">Eine Wochenübersicht mit Postern, eine Monatsansicht, eine angedockte Seitenleiste mit einem Minikalender und einklappbaren Filtern sowie eine Tagesansicht auf Telefonen.</string>
   <string name="preview_feature_description_edit_mode">Aktivieren Sie Steuerelemente zum Ausblenden oder Anzeigen konfigurierbarer Abschnitte in der gesamten App.</string>
   <string name="preview_feature_description_large_screen_cards">Auf größeren Bildschirmen verwenden alle Listen die gleichen Karten wie der Rest der App. Wenn Sie eine auswählen, öffnet sich eine Kurzübersicht, anstatt die Liste zu verlassen.</string>
   <string name="preview_feature_description_rewatch">Starten Sie Wiederholungssitzungen für bereits gesehene Serien, checken Sie Episoden ein oder markieren Sie diese direkt aus dem Sitzungs-Drawer als gesehen.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Eine neue Art, VIP zu kündigen: Fragt nach dem Grund, zeigt Änderungen auf und bietet ein Angebot zum Bleiben an.</string>
   <string name="preview_feature_description_vip_veteran">Zeigt, wie lange Mitglieder VIP ohne Unterbrechung waren, mit einem Veteranen- oder Legendenabzeichen, einem farbigen Avatarring und einigen Feiern auf Ihrem Profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Dein Jahr 2026 als scrollbares Reel mit einer Zuschauerpersönlichkeit und anschließend einer dazu passenden Statistikseite.</string>
-  <string name="preview_feature_title_calendar_redesign">Kalender-Redesign</string>
   <string name="preview_feature_title_edit_mode">Bearbeitungsmodus</string>
   <string name="preview_feature_title_large_screen_cards">Großbildkarten</string>
   <string name="preview_feature_title_rewatch">Wiederholung</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Möchten Sie \"%s\" wirklich nicht mehr ansehen?</string>
   <string name="warning_prompt_track_show_episode_count">Möchten Sie \"%1$s\" wirklich als gesehen markieren? Dies markiert %2$d Episoden als gesehen.</string>
   <string name="warning_prompt_unfollow_user">Möchten Sie %s wirklich entfolgen?</string>
-  <string name="warning_prompt_watched_until_here">Das Markieren von \"%s\" als gesehen hat frühere Episoden ungesehen gelassen. Alle davor liegenden Episoden ebenfalls als gesehen markieren?</string>
   <string name="warning_prompt_younify_unlink">Möchten Sie %s wirklich entknüpfen?</string>
   <string name="warning_smart_lists_limit">Sie haben Ihr Smart List-Limit erreicht</string>
   <string name="welcome_banner_action">Importiere deine Daten</string>

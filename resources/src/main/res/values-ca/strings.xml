@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Fons</string>
   <string name="page_title_year_in_review">%s en resum</string>
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
-  <string name="preview_feature_description_calendar_redesign">Un tauler setmanal amb pòsters, una vista mensual, una barra lateral ancorada amb un mini calendari i filtres desplegables, i una safata de dia als telèfons.</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_large_screen_cards">A pantalles més grans, totes les llistes utilitzen les mateixes targetes que la resta de l\'aplicació. Si en seleccioneu una, s\'obre una vista ràpida en lloc de sortir de la llista.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Una nova manera de cancel·lar el VIP: pregunta per què, mostra els canvis i ofereix una oferta per quedar-se.</string>
   <string name="preview_feature_description_vip_veteran">Mostra quant de temps els membres han mantingut el VIP sense interrupcions, amb una insígnia de Veterà o Llegenda, un anell d\'avatar de color i algunes celebracions al teu propi perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">El teu 2026 en un carrusel desplaçable amb una personalitat d\'espectador, i després una pàgina d\'estadístiques amb el mateix estil.</string>
-  <string name="preview_feature_title_calendar_redesign">Redisseny del calendari</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_large_screen_cards">Targetes per a pantalles grans</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Estàs segur que vols deixar de veure \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Estàs segur que vols marcar \"%1$s\" com a vist? Això marcarà %2$d episodis com a vists.</string>
   <string name="warning_prompt_unfollow_user">Estàs segur que vols deixar de seguir %s?</string>
-  <string name="warning_prompt_watched_until_here">En marcar \"%s\" com a vist, has deixat episodis anteriors sense veure. Vols marcar-los tots com a vistos fins a aquest?</string>
   <string name="warning_prompt_younify_unlink">Estàs segur que vols desvincular %s?</string>
   <string name="warning_smart_lists_limit">Has arribat al límit de llistes intel·ligents</string>
   <string name="welcome_banner_action">Importa les teves dades</string>

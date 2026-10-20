@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Latar Belakang</string>
   <string name="page_title_year_in_review">%s dalam tinjauan</string>
   <string name="page_title_year_to_date">Tahun Berjalan</string>
-  <string name="preview_feature_description_calendar_redesign">Papan minggu dengan poster, tampilan bulan, bilah sisi tertambat dengan kalender mini dan filter yang dapat dilipat, serta laci hari di ponsel.</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Cara baru untuk membatalkan VIP: menanyakan alasannya, menunjukkan perubahan apa yang akan terjadi, dan menawarkan penawaran untuk tetap berlangganan.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
-  <string name="preview_feature_title_calendar_redesign">Desain ulang Kalender</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Anda yakin ingin berhenti menonton \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Anda yakin ingin menandai \"%1$s\" sudah ditonton? Ini akan menandai %2$d episode sebagai sudah ditonton.</string>
   <string name="warning_prompt_unfollow_user">Anda yakin ingin berhenti mengikuti %s?</string>
-  <string name="warning_prompt_watched_until_here">Menandai \"%s\" sebagai sudah ditonton menyisakan episode-episode sebelumnya belum ditonton. Tandai semua sampai episode ini sebagai sudah ditonton juga?</string>
   <string name="warning_prompt_younify_unlink">Anda yakin ingin melepaskan tautan %s?</string>
   <string name="warning_smart_lists_limit">Anda telah mencapai batas daftar cerdas Anda</string>
   <string name="welcome_banner_action">Impor data Anda</string>

@@ -3,6 +3,8 @@ trigger: glob
 globs: '**/*.kt'
 description: 'MVVM + UDF, Compose-only UI, ViewModel + StateFlow, Compose Navigation typed routes, repositories. Background sync, adaptive layouts.'
 applyTo: '**/*.kt'
+paths:
+  - '**/*.kt'
 ---
 
 # Architecture

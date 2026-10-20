@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">خلفية</string>
   <string name="page_title_year_in_review">ملخص %s</string>
   <string name="page_title_year_to_date">منذ بداية العام</string>
-  <string name="preview_feature_description_calendar_redesign">لوحة أسبوعية مع ملصقات، وعرض شهري، وشريط جانبي ثابت مع تقويم مصغر وفلاتر قابلة للطي، ودرج يومي على الهواتف.</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">طريقة جديدة لإلغاء VIP: تسأل عن السبب، وتوضح التغييرات، وتقدم عرضًا للبقاء.</string>
   <string name="preview_feature_description_vip_veteran">تُظهر المدة التي احتفظ فيها الأعضاء بخدمة VIP دون انقطاع، مع شارة مخضرم أو أسطورة، وحلقة ملونة للصورة الرمزية، وبعض الاحتفالات على ملفك الشخصي.</string>
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
-  <string name="preview_feature_title_calendar_redesign">إعادة تصميم التقويم</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">هل أنت متأكد من أنك تريد إيقاف مشاهدة \"%s\"؟</string>
   <string name="warning_prompt_track_show_episode_count">هل أنت متأكد من أنك تريد وضع علامة \"%1$s\" كمسلسل تمت مشاهدته؟ سيؤدي هذا إلى وضع علامة على %2$d حلقة كشوهدت.</string>
   <string name="warning_prompt_unfollow_user">هل أنت متأكد من أنك تريد إلغاء متابعة %s؟</string>
-  <string name="warning_prompt_watched_until_here">بوضع علامة \"شوهد\" على \"%s\" بقيت الحلقات السابقة غير مشاهدة. هل تريد تحديد كل ما سبقها كمشاهد أيضًا؟</string>
   <string name="warning_prompt_younify_unlink">هل أنت متأكد أنك تريد إلغاء ربط %s؟</string>
   <string name="warning_smart_lists_limit">لقد وصلت إلى حد قوائمك الذكية</string>
   <string name="welcome_banner_action">استيراد بياناتك</string>

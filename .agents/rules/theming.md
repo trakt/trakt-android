@@ -3,6 +3,11 @@ trigger: glob
 globs: '{**/ui/**/*.kt,**/theme/**/*.kt,**/*Theme.kt}'
 description: 'TraktTheme tokens, MaterialTheme overlay, TraktSpacing / TraktTypography / TraktSize / TraktRadius. Coil 3 specifics. TV adaptations.'
 applyTo: '{**/ui/**/*.kt,**/theme/**/*.kt,**/*Theme.kt}'
+paths:
+  - '{app,tv}/src/main/**/*.kt'
+  - '**/ui/**/*.kt'
+  - '**/theme/**/*.kt'
+  - '**/*Theme.kt'
 ---
 
 # Theming & Design Tokens

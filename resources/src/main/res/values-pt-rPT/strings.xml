@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Fundo</string>
   <string name="page_title_year_in_review">Resumo de %s</string>
   <string name="page_title_year_to_date">Até agora</string>
-  <string name="preview_feature_description_calendar_redesign">Um calendário semanal com cartazes, uma vista mensal, uma barra lateral fixa com um minicalendário e filtros recolhíveis, e um painel diário nos telemóveis.</string>
   <string name="preview_feature_description_edit_mode">Ativa controlos para mostrar ou ocultar secções configuráveis em toda a app.</string>
   <string name="preview_feature_description_large_screen_cards">Em ecrãs maiores, todas as listas usam os mesmos cartões que o resto da app. Ao selecionares um, abre-se uma vista rápida em vez de saíres da lista.</string>
   <string name="preview_feature_description_rewatch">Inicia sessões de revisão para séries que já viste e regista a visualização ou marca episódios como vistos diretamente no painel da sessão.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Uma nova forma de cancelar o VIP: pergunta-te o motivo, mostra o que muda e oferece-te um desconto para ficares.</string>
   <string name="preview_feature_description_vip_veteran">Mostra há quanto tempo os membros mantêm o VIP sem interrupções, com um distintivo de Veterano ou Lenda, um anel colorido à volta do avatar e algumas celebrações no teu próprio perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">O teu 2026 num reel interativo com uma persona de espectador, seguido de uma página de estatísticas com o mesmo estilo.</string>
-  <string name="preview_feature_title_calendar_redesign">Novo design do calendário</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
   <string name="preview_feature_title_large_screen_cards">Cartões para ecrãs grandes</string>
   <string name="preview_feature_title_rewatch">Rever</string>
@@ -2157,10 +2155,10 @@
   <string name="text_today_watched_episode_at">Viu %1$s · %2$s</string>
   <string name="text_today_watched_episodes">Viu %d episódios</string>
   <string name="text_today_watched_episodes_at">Viu %1$d episódios · %2$s</string>
-  <string name="text_today_watched_rated">Assistiu e classificou</string>
-  <string name="text_today_watched_rated_at">Assistiu e classificou · %s</string>
-  <string name="text_today_watched_rated_episode">Assistiu e classificou %s</string>
-  <string name="text_today_watched_rated_episode_at">Assistiu e classificou %1$s · %2$s</string>
+  <string name="text_today_watched_rated">Viu e classificou</string>
+  <string name="text_today_watched_rated_at">Viu e classificou · %s</string>
+  <string name="text_today_watched_rated_episode">Viu e classificou %s</string>
+  <string name="text_today_watched_rated_episode_at">Viu e classificou %1$s · %2$s</string>
   <string name="text_total_plays">total de visualizações</string>
   <string name="text_trakt_apps_description">e explora uma experiência Trakt mais completa nas nossas aplicações nativas</string>
   <string name="text_unavailable">Indisponível</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Tens a certeza de que queres parar de ver \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Tens a certeza de que queres marcar \"%1$s\" como vista? Marcará %2$d episódios como vistos.</string>
   <string name="warning_prompt_unfollow_user">Tens a certeza de que queres deixar de seguir %s?</string>
-  <string name="warning_prompt_watched_until_here">Ao marcares \"%s\" como visto, ficaram episódios anteriores por ver. Queres marcar também como vistos todos os episódios anteriores?</string>
   <string name="warning_prompt_younify_unlink">Tens a certeza de que queres desassociar %s?</string>
   <string name="warning_smart_lists_limit">Atingiste o limite de listas inteligentes</string>
   <string name="welcome_banner_action">Importar os teus dados</string>

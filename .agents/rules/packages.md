@@ -3,6 +3,12 @@ trigger: glob
 globs: '{**/build.gradle.kts,**/settings.gradle.kts,gradle/libs.versions.toml,buildSrc/**,build-logic/**}'
 description: 'Module dependency direction, version catalogue, external deps justification, per-feature module opt-in, convention plugins, lint baseline.'
 applyTo: '{**/build.gradle.kts,**/settings.gradle.kts,gradle/libs.versions.toml,buildSrc/**,build-logic/**}'
+paths:
+  - '**/build.gradle.kts'
+  - '**/settings.gradle.kts'
+  - 'gradle/libs.versions.toml'
+  - 'buildSrc/**/*'
+  - 'build-logic/**/*'
 ---
 
 # Gradle Modules & Dependencies

@@ -21,5 +21,3 @@ Part of the `trakt-android` monorepo. Root rules apply — see
 - **TV variant**: TV screens live in `:tv`. Share ViewModels and
   state types via `:common`; render with TV-specific Compose layouts.
 - **No** new XML layouts, Fragments, or `AppCompatActivity` subclasses.
-
-@../AGENTS.md
