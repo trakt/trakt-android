@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Achtergrond</string>
   <string name="page_title_year_in_review">%s in overzicht</string>
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
-  <string name="preview_feature_description_calendar_redesign">Een weekoverzicht met posters, een maandoverzicht, een vast zijpaneel met een minikalender en inklapbare filters, en een daglade op telefoons.</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_large_screen_cards">Op grotere schermen gebruiken alle lijsten dezelfde kaarten als de rest van de app. Het selecteren van een item opent een snel overzicht in plaats van de lijst te verlaten.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Een nieuwe manier om VIP te annuleren: vraagt waarom, toont wat er verandert en biedt een deal om te blijven.</string>
   <string name="preview_feature_description_vip_veteran">Toont hoe lang leden ononderbroken VIP zijn, met een Veteraan- of Legende-badge, een gekleurde avatarring en enkele vieringen op je eigen profiel.</string>
   <string name="preview_feature_description_year_in_review_2026">Jouw 2026 als een scroll-gedreven reel met een kijkerspersoonlijkheid, gevolgd door een statistiekenpagina die daarbij past.</string>
-  <string name="preview_feature_title_calendar_redesign">Kalenderherontwerp</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_large_screen_cards">Grote Scherm Kaarten</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Weet je zeker dat je wilt stoppen met het kijken naar \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Weet je zeker dat je \"%1$s\" als bekeken wilt markeren? Hiermee worden %2$d afleveringen als bekeken gemarkeerd.</string>
   <string name="warning_prompt_unfollow_user">Weet je zeker dat je %s wilt ontvolgen?</string>
-  <string name="warning_prompt_watched_until_here">Door \"%s\" als bekeken te markeren, zijn eerdere afleveringen onbekeken gebleven. Alles tot en met deze aflevering ook als bekeken markeren?</string>
   <string name="warning_prompt_younify_unlink">Weet je zeker dat je %s wilt ontkoppelen?</string>
   <string name="warning_smart_lists_limit">U heeft de limiet voor slimme lijsten bereikt</string>
   <string name="welcome_banner_action">Importeer je gegevens</string>

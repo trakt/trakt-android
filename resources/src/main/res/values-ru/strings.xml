@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Фон</string>
   <string name="page_title_year_in_review">%s в обзоре</string>
   <string name="page_title_year_to_date">С начала года</string>
-  <string name="preview_feature_description_calendar_redesign">Недельная доска с постерами, месячный вид, закрепленная боковая панель с мини-календарем и сворачиваемыми фильтрами, а также выдвижная панель дня на телефонах.</string>
   <string name="preview_feature_description_edit_mode">Включите элементы управления для скрытия или отображения настраиваемых разделов во всем приложении.</string>
   <string name="preview_feature_description_large_screen_cards">На больших экранах все списки используют те же карточки, что и остальное приложение. Выбор одной открывает быстрый просмотр вместо выхода из списка.</string>
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Новый способ отмены VIP: спрашивает, почему вы уходите, показывает, что изменится, и предлагает сделку, чтобы остаться.</string>
   <string name="preview_feature_description_vip_veteran">Показывает, как долго пользователи сохраняют VIP-статус без перерыва, с помощью значка \"Ветеран\" или \"Легенда\", цветного кольца аватара и нескольких празднований в вашем профиле.</string>
   <string name="preview_feature_description_year_in_review_2026">Ваш 2026 год в виде прокручиваемого ролика с персоной зрителя, затем страница статистики, оформленная в соответствующем стиле.</string>
-  <string name="preview_feature_title_calendar_redesign">Обновление дизайна календаря</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_large_screen_cards">Крупноэкранные карточки</string>
   <string name="preview_feature_title_rewatch">Пересмотр</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Вы уверены, что хотите прекратить просмотр \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Вы уверены, что хотите отметить \"%1$s\" как просмотренное? Это отметит %2$d эпизодов как просмотренные.</string>
   <string name="warning_prompt_unfollow_user">Вы уверены, что хотите отписаться от %s?</string>
-  <string name="warning_prompt_watched_until_here">Вы отметили \"%s\" как просмотренное, но предыдущие эпизоды остались неотмеченными. Отметить все до него как просмотренные?</string>
   <string name="warning_prompt_younify_unlink">Вы уверены, что хотите отключить %s?</string>
   <string name="warning_smart_lists_limit">Вы достигли лимита умных списков</string>
   <string name="welcome_banner_action">Импортировать данные</string>

@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">背景</string>
   <string name="page_title_year_in_review">%s 年回顾</string>
   <string name="page_title_year_to_date">年至今</string>
-  <string name="preview_feature_description_calendar_redesign">一个带有海报的周视图面板、月视图、带迷你日历和可折叠过滤器的停靠侧边栏，以及手机上的日抽屉。</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">取消 VIP 的新方式：询问原因，显示变更内容并提供挽留优惠。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
-  <string name="preview_feature_title_calendar_redesign">日历改版</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
   <string name="preview_feature_title_rewatch">重温</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">你确定要停止观看“%s”吗？</string>
   <string name="warning_prompt_track_show_episode_count">你确定要将“%1$s”标记为已观看吗？这会标记 %2$d 集为已观看。</string>
   <string name="warning_prompt_unfollow_user">你确定要取消关注 %s 吗？</string>
-  <string name="warning_prompt_watched_until_here">将 “%s” 标记为已看后，之前的剧集仍未观看。是否将它之前的所有剧集也标记为已看？</string>
   <string name="warning_prompt_younify_unlink">你确定要取消关联 %s 吗？</string>
   <string name="warning_smart_lists_limit">您已达到智能列表限制</string>
   <string name="welcome_banner_action">导入您的数据</string>

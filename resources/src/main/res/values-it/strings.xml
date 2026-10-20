@@ -1478,7 +1478,6 @@
   <string name="page_title_widget_background">Sfondo</string>
   <string name="page_title_year_in_review">%s in rassegna</string>
   <string name="page_title_year_to_date">Dall\'inizio dell\'anno</string>
-  <string name="preview_feature_description_calendar_redesign">Una bacheca settimanale con poster, una visualizzazione mensile, una barra laterale ancorata con un mini calendario e filtri a scomparsa, e un cassetto giornaliero sui telefoni.</string>
   <string name="preview_feature_description_edit_mode">Abilita i controlli per nascondere o mostrare sezioni configurabili in tutta l\'app.</string>
   <string name="preview_feature_description_large_screen_cards">Su schermi più grandi, tutte le liste utilizzano le stesse schede del resto dell\'app. Selezionandone una si apre una rapida occhiata invece di abbandonare la lista.</string>
   <string name="preview_feature_description_rewatch">Avvia sessioni di riguardato per le serie TV che hai già visto, registrando la visione o contrassegnando gli episodi come guardati direttamente dal pannello della sessione.</string>
@@ -1487,7 +1486,6 @@
   <string name="preview_feature_description_vip_cancel_flow">Un nuovo modo per annullare VIP: chiede il motivo, mostra cosa cambia e offre un\'offerta per restare.</string>
   <string name="preview_feature_description_vip_veteran">Mostra per quanto tempo i membri hanno mantenuto lo stato VIP senza interruzioni, con un badge Veterano o Leggenda, un anello avatar colorato e alcune celebrazioni sul tuo profilo.</string>
   <string name="preview_feature_description_year_in_review_2026">Il tuo 2026 come un reel scorrevole con una personalità di spettatore, poi una pagina di statistiche stilizzata per abbinarla.</string>
-  <string name="preview_feature_title_calendar_redesign">Riprogettazione calendario</string>
   <string name="preview_feature_title_edit_mode">Modalità di modifica</string>
   <string name="preview_feature_title_large_screen_cards">Schede a schermo grande</string>
   <string name="preview_feature_title_rewatch">Riguarda</string>
@@ -2603,7 +2601,6 @@
   <string name="warning_prompt_stop_checkin">Sei sicuro di voler smettere di guardare \"%s\"?</string>
   <string name="warning_prompt_track_show_episode_count">Sei sicuro di voler segnare \"%1$s\" come visto? Questo segnerà %2$d episodi come visti.</string>
   <string name="warning_prompt_unfollow_user">Sei sicuro di voler smettere di seguire %s?</string>
-  <string name="warning_prompt_watched_until_here">Contrassegnare \"%s\" come visto ha lasciato episodi precedenti non visti. Contrassegnare anche tutto ciò che lo precede come visto?</string>
   <string name="warning_prompt_younify_unlink">Sei sicuro di voler scollegare %s?</string>
   <string name="warning_smart_lists_limit">Hai raggiunto il limite di liste intelligenti</string>
   <string name="welcome_banner_action">Importa i tuoi dati</string>
