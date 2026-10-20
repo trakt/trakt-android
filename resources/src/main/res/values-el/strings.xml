@@ -32,6 +32,7 @@
   <string name="auto_tracking_card_heading">Αυτόματη παρακολούθηση σε όλες τις υπηρεσίες streaming σας</string>
   <string name="badge_text_beta">Έκδοση Beta</string>
   <string name="badge_text_get_vip">Αποκτήστε VIP</string>
+  <string name="button_connect_jellyfin">Σύνδεση Jellyfin</string>
   <string name="button_connect_plex">Σύνδεση Plex</string>
   <string name="button_description_sort_default">Αρχική σειρά</string>
   <string name="button_description_sort_release_date_asc">Παλαιότερα πρώτα</string>
@@ -82,9 +83,12 @@
   <string name="button_label_close_error">Κλείσιμο σφάλματος</string>
   <string name="button_label_close_reaction">Κλείσιμο</string>
   <string name="button_label_close_stories">Κλείσιμο ιστοριών</string>
+  <string name="button_label_collapse_list">Σύμπτυξη λίστας %s</string>
   <string name="button_label_collapse_navbar">Σύμπτυξη</string>
   <string name="button_label_comment_replies">Απαντήσεις Κριτικών</string>
   <string name="button_label_comment_reply">Απάντηση στον %s</string>
+  <string name="button_label_comment_show_original_hint">Εμφάνιση αρχικού σχολίου</string>
+  <string name="button_label_comment_translate">Μετάφραση σχολίου</string>
   <string name="button_label_connect_streaming_service">Σύνδεση %s</string>
   <string name="button_label_copied">Αντιγράφηκε</string>
   <string name="button_label_copy">Αντιγραφή</string>
@@ -113,6 +117,7 @@
   <string name="button_label_exclude_option">Εξαίρεση %s</string>
   <string name="button_label_exit_edit_mode">Έξοδος από λειτουργία επεξεργασίας</string>
   <string name="button_label_expand_category">Ανάπτυξη %s</string>
+  <string name="button_label_expand_list">Ανάπτυξη λίστας %s</string>
   <string name="button_label_expand_media_overview">Ανάπτυξη επισκόπησης \"%s\"</string>
   <string name="button_label_expand_navbar">Ανάπτυξη</string>
   <string name="button_label_filter_settings">Ρυθμίσεις %s</string>
@@ -143,6 +148,11 @@
   <string name="button_label_import_more">Επαναφορά και έναρξη νέας εισαγωγής.</string>
   <string name="button_label_import_selected">Εισαγάγετε τις αντιστοιχίσεις ταινιών που επιλέξατε παραπάνω.</string>
   <string name="button_label_include_option">Συμπερίληψη %s</string>
+  <string name="button_label_jellyfin_add_server">Προσθήκη διακομιστή Jellyfin</string>
+  <string name="button_label_jellyfin_connect">Σύνδεση του διακομιστή σας Jellyfin</string>
+  <string name="button_label_jellyfin_connect_server">Σύνδεση αυτού του διακομιστή Jellyfin</string>
+  <string name="button_label_jellyfin_sign_in">Σύνδεση σε αυτόν τον διακομιστή Jellyfin</string>
+  <string name="button_label_jellyfin_sync_now">Συγχρονισμός Jellyfin τώρα</string>
   <string name="button_label_join_trakt">Εγγραφείτε στο trakt.tv για να παρακολουθείτε τι βλέπετε</string>
   <string name="button_label_keep_newest_play">Διατήρηση της νεότερης προβολής κάθε στοιχείου</string>
   <string name="button_label_keep_oldest_play">Διατήρηση της παλαιότερης προβολής κάθε στοιχείου</string>
@@ -173,6 +183,7 @@
   <string name="button_label_media_sync_next">Μετάβαση στο επόμενο βήμα</string>
   <string name="button_label_media_sync_open_plex">Άνοιγμα της σελίδας σύνδεσης του Plex</string>
   <string name="button_label_media_sync_reconnect">Συνδεθείτε ξανά στο Plex για αυτόν τον διακομιστή</string>
+  <string name="button_label_media_sync_reconnect_jellyfin">Συνδεθείτε ξανά στο Jellyfin για αυτόν τον διακομιστή</string>
   <string name="button_label_media_sync_retry">Επανάληψη συγχρονισμού αυτού του διακομιστή</string>
   <string name="button_label_mixtape_another">Όχι αυτό, δείξε μου άλλο</string>
   <string name="button_label_mixtape_remove_pick">Κατάργηση %s</string>
@@ -222,6 +233,8 @@
   <string name="button_label_react">Αντιδράστε με %s</string>
   <string name="button_label_read_more">Διαβάστε περισσότερα</string>
   <string name="button_label_recent_comments">Πρόσφατες κριτικές</string>
+  <string name="button_label_recommendation_mode_classic">Εμφάνιση κλασικών προτάσεων</string>
+  <string name="button_label_recommendation_mode_smart">Εμφάνιση έξυπνων προτάσεων</string>
   <string name="button_label_reject_follow_request">Απόρριψη αίτησης παρακολούθησης από %s</string>
   <string name="button_label_remove_collaborator">Αφαίρεση %s ως συνεργάτη</string>
   <string name="button_label_remove_from_favorites">Αφαίρεση του \"%s\" από τα Αγαπημένα σας</string>
@@ -514,6 +527,8 @@
   <string name="button_text_progress_in_progress">Σε εξέλιξη</string>
   <string name="button_text_raw_export">Εξαγωγή τώρα</string>
   <string name="button_text_recent_comments">Πρόσφατα</string>
+  <string name="button_text_recommendation_mode_classic">Κλασικές</string>
+  <string name="button_text_recommendation_mode_smart">Έξυπνα</string>
   <string name="button_text_reconnect">Επανασύνδεση</string>
   <string name="button_text_reject_follow_request">Απόρριψη Αίτησης</string>
   <string name="button_text_remove_from_favorites">Αφαίρεση από τα Αγαπημένα</string>
@@ -623,8 +638,19 @@
   <string name="calendar_day_item_count_other">%d Αντικείμενα</string>
   <string name="calendar_view_day">Ημέρα</string>
   <string name="calendar_view_week">Εβδομάδα</string>
+  <string name="chart_label_area_chart">Διάγραμμα περιοχής</string>
+  <string name="chart_label_bar_chart">Ραβδόγραμμα</string>
+  <string name="chart_label_bubble_chart">Διάγραμμα φυσαλίδων</string>
+  <string name="chart_label_country_map">Χάρτης χώρας</string>
   <string name="chart_label_grouped_categories">%d κατηγορίες</string>
+  <string name="chart_label_line_chart">Γραμμικό διάγραμμα</string>
   <string name="chart_label_other">Άλλο</string>
+  <string name="chart_label_segmented_distribution">Κατανομή σε τμήματα</string>
+  <string name="chart_label_sparkline">Μικροδιάγραμμα τάσης</string>
+  <string name="chart_label_stacked_bar_chart">Στοιβαρτό ραβδόγραμμα</string>
+  <string name="chart_role_interactive_bar_chart">διαδραστικό ραβδόγραμμα</string>
+  <string name="chart_role_interactive_line_chart">διαδραστικό γραμμικό διάγραμμα</string>
+  <string name="chart_role_interactive_stacked_bar_chart">διαδραστικό στοιβαρτό ραβδόγραμμα</string>
   <string name="cleanup_status_done">Αφαιρέθηκαν %d διπλότυπες προβολές.</string>
   <string name="cleanup_status_removing">Αφαίρεση %1$d / %2$d διπλότυπων προβολών…</string>
   <string name="clear_status_clearing">Εκκαθάριση %1$d / %2$d στοιχείων…</string>
@@ -691,8 +717,16 @@
   <string name="description_export_before_destructive">Κατεβάζει ένα αρχείο ZIP των δεδομένων σας πριν διαγραφεί οτιδήποτε.</string>
   <string name="description_history_analysis">Βρείτε διπλότυπες προβολές στο ιστορικό παρακολούθησής σας και κρατήστε μόνο μία παρακολούθηση κάθε στοιχείου.</string>
   <string name="description_import">Εισαγάγετε τα δεδομένα σας από άλλες υπηρεσίες απευθείας στον περιηγητή σας.</string>
+  <string name="description_jellyfin_connect_expired">Ο κωδικός Quick Connect έληξε. Ξεκινήστε ξανά για να συνδέσετε τον διακομιστή σας.</string>
+  <string name="description_jellyfin_password">Συνδεθείτε με το όνομα χρήστη και τον κωδικό πρόσβασης που χρησιμοποιείτε στο Jellyfin.</string>
+  <string name="description_jellyfin_quick_connect">Λαμβάνετε έναν κωδικό για έγκριση στο Jellyfin, οπότε δεν πληκτρολογείτε ποτέ τον κωδικό πρόσβασής σας εδώ.</string>
+  <string name="description_jellyfin_quick_connect_code">Στο Jellyfin, στον <b>%s</b>, ανοίξτε το προφίλ σας, μετά το Quick Connect, και εισάγετε:</string>
+  <string name="description_jellyfin_sync">Συνδέστε τον διακομιστή σας Jellyfin για συγχρονισμό ιστορικού παρακολούθησης και συλλογών με το Trakt.</string>
+  <string name="description_jellyfin_synced_servers">Αυτόματος συγχρονισμός του ιστορικού παρακολούθησης και της βιβλιοθήκης σας.</string>
+  <string name="description_jellyfin_vip_upsell">Αναβαθμίστε σε VIP για να συγχρονίσετε το ιστορικό παρακολούθησης και τις συλλογές από τον διακομιστή σας Jellyfin όσο βρίσκεται σε beta.</string>
   <string name="description_library_collection_limit">Κάποια στοιχεία από %s δεν βρίσκονται ακόμη στη συλλογή σας Trakt. Οι δωρεάν λογαριασμοί σταματούν στο όριο συλλογής. Το VIP συλλέγει τα πάντα.</string>
   <string name="description_manage_collaborators">Οι συνεργάτες μπορούν να προσθέτουν και να αφαιρούν στοιχεία σε αυτή τη λίστα. Επιλέξτε από άτομα που σας ακολουθούν.</string>
+  <string name="description_media_sync_add_jellyfin_server">Συνδέστε έναν άλλο διακομιστή Jellyfin για να τον συγχρονίσετε επίσης.</string>
   <string name="description_media_sync_add_server_free">Οι δωρεάν λογαριασμοί συγχρονίζουν 1 διακομιστή Plex. Γίνετε VIP για να προσθέσετε περισσότερους.</string>
   <string name="description_media_sync_add_server_vip">Συνδέστε έναν άλλο διακομιστή Plex για να τον συγχρονίσετε επίσης.</string>
   <string name="description_media_sync_collection_limit">Κάποια στοιχεία από αυτόν τον διακομιστή δεν βρίσκονται ακόμη στη συλλογή σας Trakt. Γίνετε VIP για να συλλέξετε τα πάντα.</string>
@@ -705,6 +739,7 @@
   <string name="description_media_sync_feeds">Επιλέξτε τι συγχρονίζει αυτός ο διακομιστής με τον λογαριασμό σας Trakt. Κάθε διακόπτης καλύπτει ταινίες και σειρές εξίσου.</string>
   <string name="description_media_sync_history_all">Ό,τι έχετε παρακολουθήσει σε αυτόν τον διακομιστή μεταφέρεται στον πρώτο συγχρονισμό.</string>
   <string name="description_media_sync_history_always_full">Οι αξιολογήσεις, η συλλογή και η λίστα παρακολούθησης μεταφέρονται πάντα πλήρως.</string>
+  <string name="description_media_sync_history_always_full_jellyfin">Η συλλογή σας μεταφέρεται πάντα πλήρως.</string>
   <string name="description_media_sync_history_today">Μόνο νέες παρακολουθήσεις θα προστεθούν. Το υπάρχον ιστορικό Trakt παραμένει όπως είναι.</string>
   <string name="description_media_sync_import_past_watches">Μεταφέρει όλα όσα έχετε παρακολουθήσει σε αυτόν τον διακομιστή. Πραγματοποιεί πλήρη συγχρονισμό.</string>
   <string name="description_media_sync_never_synced">Αναμονή για τον πρώτο συγχρονισμό</string>
@@ -714,6 +749,7 @@
   <string name="description_media_sync_server_unreachable">Μη προσβάσιμο από το διαδίκτυο</string>
   <string name="description_media_sync_synced_at">Συγχρονίστηκε %s</string>
   <string name="description_media_sync_unauthorized">Το Plex δεν αποδέχεται πλέον την πρόσβαση του Trakt. Επανασυνδεθείτε για να συνεχίσετε τον συγχρονισμό.</string>
+  <string name="description_media_sync_unauthorized_jellyfin">Το Jellyfin δεν αποδέχεται πλέον την πρόσβαση του Trakt. Επανασυνδεθείτε για να συνεχίσετε τον συγχρονισμό.</string>
   <string name="description_media_sync_unreachable">Το Trakt δεν μπορεί να προσεγγίσει αυτόν τον διακομιστή. Δοκιμάστε ξανά μόλις είναι πάλι συνδεδεμένος.</string>
   <string name="description_media_sync_watchlist_only">Δεν χρειάζεται διακομιστής. Συγχρονίζει τη λίστα παρακολούθησης του Plex.</string>
   <string name="description_media_sync_webhook_only">Οι παρακολουθήσεις και οι αξιολογήσεις προέρχονται από το webhook του Plex σας.</string>
@@ -780,6 +816,17 @@
   <string name="error_text_genres_save_failed">Αποτυχία αποθήκευσης. Παρακαλώ δοκιμάστε ξανά.</string>
   <string name="error_text_image_preview_failed">Η προεπισκόπηση απέτυχε να φορτώσει</string>
   <string name="error_text_imdb_link_not_found">Δεν μπορέσαμε να βρούμε αυτόν τον τίτλο IMDb στο Trakt.</string>
+  <string name="error_text_jellyfin_embedded_credentials">Αφήστε το όνομα χρήστη και τον κωδικό πρόσβασής σας εκτός της διεύθυνσης.</string>
+  <string name="error_text_jellyfin_invalid_credentials">Αυτό το όνομα χρήστη και ο κωδικός πρόσβασης δεν λειτούργησαν.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Εισάγετε την πλήρη διεύθυνση του διακομιστή σας, όπως https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_quick_connect_disabled">Το Quick Connect είναι απενεργοποιημένο σε αυτόν τον διακομιστή. Ενεργοποιήστε το στον πίνακα ελέγχου του Jellyfin, ή συνδεθείτε με τον κωδικό πρόσβασής σας.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Χρησιμοποιήστε το όνομα τομέα του διακομιστή σας. Το Trakt δεν μπορεί να προσπελάσει μια απλή διεύθυνση IP.</string>
+  <string name="error_text_jellyfin_server_limit">Οι δωρεάν λογαριασμοί μπορούν να συγχρονίσουν 1 διακομιστή πολυμέσων. Γίνετε VIP για να προσθέσετε περισσότερους.</string>
+  <string name="error_text_jellyfin_server_not_found">Κανένας διακομιστής Jellyfin δεν απάντησε σε αυτήν τη διεύθυνση. Ελέγξτε την και δοκιμάστε ξανά.</string>
+  <string name="error_text_jellyfin_server_unreachable">Το Trakt δεν μπορεί να προσπελάσει αυτόν τον διακομιστή. Βεβαιωθείτε ότι είναι online και προσβάσιμος από το διαδίκτυο.</string>
+  <string name="error_text_jellyfin_unsupported_port">Χρησιμοποιήστε τη θύρα 80, 443, 8096 ή 8920, ή τοποθετήστε τον διακομιστή πίσω από έναν αντίστροφο διακομιστή μεσολάβησης.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Ξεκινήστε τη διεύθυνση με https:// ή http://.</string>
+  <string name="error_text_jellyfin_vip_required">Ο συγχρονισμός Jellyfin είναι προς το παρόν VIP beta.</string>
   <string name="error_text_lists_limit">Έχετε φτάσει το όριο των προσωπικών σας λιστών. Αναβαθμίστε σε VIP για απεριόριστο αριθμό λιστών!</string>
   <string name="error_text_locked_account_collection_limit">Αυτός ο λογαριασμός χρήστη έχει κλειδωθεί επειδή η συλλογή έχει υπερβεί το όριο. Παρακαλούμε <a>επικοινωνήστε με την υποστήριξη</a> για την επίλυση αυτού του ζητήματος.</string>
   <string name="error_text_locked_account_guide">Παρακαλούμε επισκεφθείτε τις <a>προηγμένες ρυθμίσεις</a> για να εκτελέσετε ανάλυση ιστορικού και να ξεκλειδώσετε τον λογαριασμό σας.</string>
@@ -803,6 +850,8 @@
   <string name="error_text_unexpected_notes_error">Κάτι πήγε στραβά κατά την ανάρτηση της σημείωσής σας. Εάν αυτό συνεχίζεται, παρακαλούμε <a>αναφέρετε ένα νέο πρόβλημα</a>.</string>
   <string name="error_text_username">Η ενημέρωση του ονόματος χρήστη απέτυχε. Είναι είτε κατειλημμένο είτε περιέχει μη έγκυρους χαρακτήρες.</string>
   <string name="filter_label_before_year">Πριν το %d</string>
+  <string name="filter_label_range_maximum">%s, μέγιστο</string>
+  <string name="filter_label_range_minimum">%s, ελάχιστο</string>
   <string name="filter_label_ratings">Βαθμολογία Trakt από %1$s έως %2$s</string>
   <string name="filter_label_runtime">%s λεπτά</string>
   <string name="filter_label_runtime_up_to">Έως %d λεπτά</string>
@@ -868,6 +917,8 @@
   <string name="header_import_example">Παράδειγμα</string>
   <string name="header_import_fields">Πεδία</string>
   <string name="header_import_json_guidelines">Οδηγίες JSON</string>
+  <string name="header_jellyfin_synced_servers">Διακομιστές Jellyfin</string>
+  <string name="header_jellyfin_vip_upsell">Ο συγχρονισμός Jellyfin είναι VIP beta</string>
   <string name="header_landing_discover">Ανακαλύψτε</string>
   <string name="header_landing_hero">Το επόμενο αγαπημένο σου σε περιμένει.</string>
   <string name="header_landing_share">Μοιραστείτε</string>
@@ -882,12 +933,14 @@
   <string name="header_media_sync_choose_server">Επιλέξτε έναν διακομιστή</string>
   <string name="header_media_sync_collection_limit">Η συλλογή σας έφτασε το δωρεάν όριο</string>
   <string name="header_media_sync_connect">Σύνδεση διακομιστή Plex</string>
+  <string name="header_media_sync_connect_jellyfin">Σύνδεση διακομιστή Jellyfin</string>
   <string name="header_media_sync_feeds">Ρυθμίσεις συγχρονισμού</string>
   <string name="header_media_sync_history_start">Από πού πρέπει να ξεκινήσει το ιστορικό σας;</string>
   <string name="header_media_sync_libraries">Βιβλιοθήκες</string>
   <string name="header_media_sync_profiles">Των οποίων οι προβολές συγχρονίζονται</string>
   <string name="header_media_sync_runs">Πρόσφατοι συγχρονισμοί</string>
   <string name="header_media_sync_sign_in">Σύνδεση στο Plex</string>
+  <string name="header_media_sync_sign_in_jellyfin">Σύνδεση στο Jellyfin</string>
   <string name="header_media_sync_watch_history">Ιστορικό Παρακολούθησης</string>
   <string name="header_media_sync_what_to_sync">Τι να συγχρονιστεί</string>
   <string name="header_mixtape_done">Αυτή είναι η μίξτεϊπ σου</string>
@@ -913,8 +966,8 @@
   <string name="header_player_subtitle">Υπότιτλοι</string>
   <string name="header_player_subtitle_language">Γλώσσα</string>
   <string name="header_player_subtitle_size">Μέγεθος</string>
+  <string name="header_plex_servers">Διακομιστές Plex</string>
   <string name="header_plex_sync_free_limits">Συγχρονισμός Plex στο δωρεάν πρόγραμμα</string>
-  <string name="header_plex_synced_servers">Συγχρονισμένοι Διακομιστές</string>
   <string name="header_plex_vip_upsell_add_server">Οι πολλαπλοί διακομιστές είναι λειτουργία VIP</string>
   <string name="header_plex_vip_upsell_webhook">Το scrobbling του Plex είναι μια λειτουργία VIP</string>
   <string name="header_post_credits">Μετά τους τίτλους</string>
@@ -930,6 +983,7 @@
   <string name="header_renewal_date">Ημερομηνία Ανανέωσης</string>
   <string name="header_runtime">Διάρκεια</string>
   <string name="header_screen_time">Χρόνος Οθόνης</string>
+  <string name="header_seasonal_greeting_halloween">Ευτυχισμένο Χάλογουιν</string>
   <string name="header_sentiment_aspects">Πλεονεκτήματα &amp; Μειονεκτήματα</string>
   <string name="header_sentiment_highlight">Αποκορύφωμα</string>
   <string name="header_sentiment_mixed">Μεικτό</string>
@@ -1000,6 +1054,7 @@
   <string name="heading_connected_community_apps">Συνδεδεμένες Εφαρμογές Κοινότητας</string>
   <string name="heading_meet_the_team">Γνωρίστε την Ομάδα</string>
   <string name="heading_what_is_trakt">Τι είναι το Trakt;</string>
+  <string name="hint_jellyfin_server_url">Η διεύθυνση με την οποία ανοίγετε το Jellyfin. Το Trakt πρέπει να μπορεί να την προσπελάσει από το διαδίκτυο.</string>
   <string name="hint_media_sync_history_resync">Μπορείτε να εισαγάγετε παλιές παρακολουθήσεις αργότερα από το μενού Διαχείρισης του διακομιστή.</string>
   <string name="image_alt_comment_gif">GIF συνημμένο στο σχόλιο</string>
   <string name="image_alt_list_preview_poster">Αφίσα για μια καταχώριση στο %s</string>
@@ -1083,6 +1138,7 @@
   <string name="input_label_search_streaming_services">Αναζήτηση υπηρεσιών streaming</string>
   <string name="input_placeholder_filter">Φίλτρο</string>
   <string name="input_placeholder_filter_services">Φιλτράρισμα υπηρεσιών streaming</string>
+  <string name="input_placeholder_jellyfin_server_url">https://jellyfin.example.com</string>
   <string name="input_placeholder_lists_description">Περιγραφή (προαιρετικά)</string>
   <string name="input_placeholder_lists_name">Όνομα</string>
   <string name="input_placeholder_mention_search">Αναζήτηση ηθοποιών</string>
@@ -1124,6 +1180,10 @@
   <string name="label_genres_drawer_all">Όλα τα Είδη</string>
   <string name="label_genres_drawer_selected">Επιλεγμένα</string>
   <string name="label_genres_drawer_subtitle_loved">Επιλέξτε έως 5 είδη που θα θέλατε να βλέπετε περισσότερο.</string>
+  <string name="label_jellyfin_password">Κωδικός πρόσβασης</string>
+  <string name="label_jellyfin_server">Διακομιστής Jellyfin</string>
+  <string name="label_jellyfin_server_url">Διεύθυνση διακομιστή</string>
+  <string name="label_jellyfin_username">Όνομα χρήστη</string>
   <string name="label_keep_play">Διατήρηση</string>
   <string name="label_library_collection_limit">Όριο συλλογής</string>
   <string name="label_list_item_count">%s στοιχεία</string>
@@ -1152,7 +1212,6 @@
   <string name="label_parental_guide_severity_none">Κανένα</string>
   <string name="label_parental_guide_severity_severe">Σοβαρό</string>
   <string name="label_plex_connected">Συνδεδεμένο με το Plex</string>
-  <string name="label_plex_connection">Σύνδεση</string>
   <string name="label_plex_server">Διακομιστής</string>
   <string name="label_queued_action">Αποθηκεύτηκε εκτός σύνδεσης, σε αναμονή συγχρονισμού</string>
   <string name="label_rating_average">Μέση βαθμολογία %s στα 5</string>
@@ -1230,6 +1289,7 @@
   <string name="link_label_status">Κατάσταση Trakt</string>
   <string name="link_label_view_social_activities">Προβολή κοινωνικών δραστηριοτήτων για το/την %s</string>
   <string name="link_label_view_social_activities_shared">Προβολή κοινωνικών δραστηριοτήτων για το/την %s, που κοινοποιήθηκε σε εσάς</string>
+  <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Σχετικά</string>
   <string name="link_text_account_settings">Λογαριασμός</string>
   <string name="link_text_advanced_settings">Για προχωρημένους</string>
@@ -1482,6 +1542,7 @@
   <string name="preview_feature_description_large_screen_cards">Σε μεγαλύτερες οθόνες, όλες οι λίστες χρησιμοποιούν τις ίδιες κάρτες με την υπόλοιπη εφαρμογή. Η επιλογή μιας ανοίγει μια γρήγορη επισκόπηση αντί να αποχωρήσετε από τη λίστα.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_show_ending">Εμφανίζει μια γραμμή Τέλος στις λεπτομέρειες μιας σειράς: «Ολοκληρώθηκε» όταν η ιστορία ολοκληρώθηκε, «Άλυτο» όταν δεν ολοκληρώθηκε.</string>
+  <string name="preview_feature_description_smart_recommendations">Εναλλαγή προτάσεων μεταξύ έξυπνων επιλογών από το νέο μοντέλο και των Κλασικών.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
   <string name="preview_feature_description_vip_cancel_flow">Ένας νέος τρόπος ακύρωσης του VIP: ρωτάει γιατί, δείχνει τι αλλάζει και προσφέρει μια συμφωνία για να παραμείνετε.</string>
   <string name="preview_feature_description_vip_veteran">Δείχνει πόσο καιρό οι χρήστες έχουν διατηρήσει το VIP χωρίς διακοπή, με σήμα Βετεράνου ή Θρύλου, ένα έγχρωμο δαχτυλίδι στο avatar και μερικούς εορτασμούς στο προφίλ σας.</string>
@@ -1490,6 +1551,7 @@
   <string name="preview_feature_title_large_screen_cards">Κάρτες Μεγάλης Οθόνης</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_show_ending">Τέλος σειράς</string>
+  <string name="preview_feature_title_smart_recommendations">Έξυπνες προτάσεις</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
   <string name="preview_feature_title_vip_cancel_flow">Ροή ακύρωσης VIP</string>
   <string name="preview_feature_title_vip_veteran">Κατάσταση βετεράνου VIP</string>
@@ -1572,6 +1634,8 @@
   <string name="switch_label_toggle_halloween_filters">Εναλλαγή φίλτρων Χαλοουίν</string>
   <string name="switch_label_toggle_list_privacy">Εναλλαγή απορρήτου λίστας</string>
   <string name="tab_text_advanced_filters">Για προχωρημένους</string>
+  <string name="tab_text_jellyfin_password">Κωδικός πρόσβασης</string>
+  <string name="tab_text_jellyfin_quick_connect">Quick Connect</string>
   <string name="tab_text_media_sync_history_all">Όλες οι παλιές παρακολουθήσεις</string>
   <string name="tab_text_media_sync_history_today">Από σήμερα</string>
   <string name="tab_text_more">Περισσότερα</string>
@@ -1848,6 +1912,7 @@
   <string name="text_info_widget_background">Ορίστε το επίπεδο διαφάνειας του φόντου.</string>
   <string name="text_info_younify_service_linked">Η υπηρεσία ροής έχει συνδεθεί.</string>
   <string name="text_info_younify_service_unlinked">Η υπηρεσία ροής έχει αποσυνδεθεί.</string>
+  <string name="text_jellyfin_quick_connect_waiting">Αναμονή για την έγκρισή σας</string>
   <string name="text_landing_discover">ταινίες και σειρές που θα λατρέψετε και πού προβάλλονται αυτή τη στιγμή.</string>
   <string name="text_landing_discover_eyebrow">Βρες το</string>
   <string name="text_landing_hero">Παρακολούθησε τι έχεις δει, βρες τι να παρακολουθήσεις μετά, και δες πού μεταδίδεται απόψε.</string>
@@ -2009,6 +2074,7 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s ψήφοι</string>
   <string name="text_raw_export">Ακατέργαστη εξαγωγή</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Παρακαλούμε επανασυνδέστε τις %s παρακάτω.</string>
   <string name="text_rent">Ενοικίαση</string>
   <string name="text_rewatching_next_episode_prompt">Ποιο είναι το επόμενο επεισόδιο που θέλετε να δείτε ξανά;</string>
@@ -2020,6 +2086,8 @@
   <string name="text_season_number">Σεζόν %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Ειδικά</string>
+  <string name="text_seasonal_greeting_halloween">Οι τρομακτικές μας επιλογές σας περιμένουν!</string>
+  <string name="text_seasonal_greeting_signoff">Από όλους εμάς στο Trakt</string>
   <string name="text_select_searching">Αναζήτηση</string>
   <string name="text_selected_from_lists">από %s λίστες</string>
   <string name="text_sentiment_example">Παράδειγμα από το \"%s\"</string>
@@ -2499,9 +2567,6 @@
   <string name="translated_value_video_type_recap">Ανασκόπηση</string>
   <string name="translated_value_video_type_teaser">Teaser</string>
   <string name="translated_value_video_type_trailer">Τρέιλερ</string>
-  <string name="tv_time_banner_action">tvtime.trakt.tv</string>
-  <string name="tv_time_banner_description">Νιώστε σαν στο σπίτι σας με την οικεία συνοδευτική μας εφαρμογή, που λειτουργεί με τον λογαριασμό σας στο Trakt.</string>
-  <string name="tv_time_banner_heading">Από το TV Time;</string>
   <string name="tv_time_faq_dropped_shows_answer">Η κατάσταση \"εγκαταλελειμμένο\" δεν εισάγεται, οπότε όποιες σειρές εγκαταλείψατε εκεί, πρέπει να εγκαταλειφθούν ξανά στο Trakt μετά την εισαγωγή.</string>
   <string name="tv_time_faq_dropped_shows_question">Μεταφέρονται οι σειρές που έχω εγκαταλείψει;</string>
   <string name="tv_time_faq_missing_episodes_answer">Από τις 8 Ιουλίου 2026, βελτιώσαμε τον τρόπο με τον οποίο ο εισαγωγέας αντιστοιχίζει τα επεισόδια, οπότε οι σειρές που προηγουμένως εισάγονταν ελλιπείς θα πρέπει τώρα να εισαχθούν πλήρως. Εισαγάγετε ξανά την εξαγωγή σας για να ανακτήσετε τα επεισόδια που λείπουν. Αν κάποια εξακολουθούν να λείπουν μετά από αυτό, διαγράψτε πρώτα τις παλιές αναπαραγωγές και, στη συνέχεια, εισαγάγετε ξανά.</string>
@@ -2512,9 +2577,6 @@
   <string name="tv_time_faq_nothing_imported_question">Τίποτα δεν εισήχθη. Γιατί;</string>
   <string name="tv_time_faq_page_description">Συχνές ερωτήσεις σχετικά με τη μεταφορά των δεδομένων σας από το TV Time στο Trakt. Έχετε ακόμα απορίες; Στείλτε μας την εξαγωγή σας και θα τη δούμε.</string>
   <string name="tv_time_faq_page_title">Συχνές ερωτήσεις εισαγωγής TV Time</string>
-  <string name="tv_time_import_banner_action">Εισαγωγή ξανά</string>
-  <string name="tv_time_import_banner_description">Αναβαθμίσαμε τον εισαγωγέα. Εάν λείπουν κάποιες σειρές ή επεισόδια, εισαγάγετε ξανά την εξαγωγή σας από το TV Time για να τα ανακτήσετε. Εξακολουθούν να λείπουν μετά από αυτό; Διαγράψτε πρώτα τις παλιές αναπαραγωγές και, στη συνέχεια, εισαγάγετε ξανά.</string>
-  <string name="tv_time_import_banner_heading">Η εισαγωγή σας από το TV Time, βελτιωμένη</string>
   <string name="tv_time_report_description">Επισυνάψτε την εξαγωγή σας από το TV Time και πείτε μας τι πήγε στραβά. Τα αρχεία σας και ο λογαριασμός σας στο Trakt αποστέλλονται ιδιωτικά στην ομάδα, δεν κοινοποιούνται ποτέ δημόσια.</string>
   <string name="tv_time_report_error_too_large">Αυτά τα αρχεία είναι πολύ μεγάλα. Διατηρήστε τις μεταφορτώσεις κάτω από 25 MB συνολικά.</string>
   <string name="tv_time_report_error_unknown">Κάτι πήγε στραβά κατά την αποστολή της αναφοράς σας. Παρακαλούμε δοκιμάστε ξανά.</string>

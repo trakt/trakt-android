@@ -32,6 +32,7 @@
   <string name="auto_tracking_card_heading">ردیابی خودکار در سرویس‌های پخش شما</string>
   <string name="badge_text_beta">بتا</string>
   <string name="badge_text_get_vip">دریافت VIP</string>
+  <string name="button_connect_jellyfin">اتصال Jellyfin</string>
   <string name="button_connect_plex">Plex را متصل کنید</string>
   <string name="button_description_sort_default">ترتیب اصلی</string>
   <string name="button_description_sort_release_date_asc">قدیمی‌ترین ابتدا</string>
@@ -82,9 +83,12 @@
   <string name="button_label_close_error">بستن خطا</string>
   <string name="button_label_close_reaction">بستن</string>
   <string name="button_label_close_stories">بستن داستان‌ها</string>
+  <string name="button_label_collapse_list">جمع کردن لیست %s</string>
   <string name="button_label_collapse_navbar">جمع کردن</string>
   <string name="button_label_comment_replies">پاسخ‌های بازخورد</string>
   <string name="button_label_comment_reply">پاسخ به %s</string>
+  <string name="button_label_comment_show_original_hint">نمایش نظر اصلی</string>
+  <string name="button_label_comment_translate">ترجمه نظر</string>
   <string name="button_label_connect_streaming_service">اتصال %s</string>
   <string name="button_label_copied">کپی شد</string>
   <string name="button_label_copy">کپی</string>
@@ -113,6 +117,7 @@
   <string name="button_label_exclude_option">حذف %s</string>
   <string name="button_label_exit_edit_mode">خروج از حالت ویرایش</string>
   <string name="button_label_expand_category">گسترش %s</string>
+  <string name="button_label_expand_list">گسترش لیست %s</string>
   <string name="button_label_expand_media_overview">نمای کلی \"%s\" را گسترش دهید</string>
   <string name="button_label_expand_navbar">گسترش</string>
   <string name="button_label_filter_settings">تنظیمات %s</string>
@@ -143,6 +148,11 @@
   <string name="button_label_import_more">بازنشانی و شروع یک وارد کردن جدید.</string>
   <string name="button_label_import_selected">فیلم‌های مطابق انتخاب شده در بالا را وارد کنید.</string>
   <string name="button_label_include_option">شامل %s</string>
+  <string name="button_label_jellyfin_add_server">افزودن یک سرور Jellyfin</string>
+  <string name="button_label_jellyfin_connect">اتصال سرور Jellyfin خود</string>
+  <string name="button_label_jellyfin_connect_server">اتصال این سرور Jellyfin</string>
+  <string name="button_label_jellyfin_sign_in">ورود به این سرور Jellyfin</string>
+  <string name="button_label_jellyfin_sync_now">همگام‌سازی Jellyfin اکنون</string>
   <string name="button_label_join_trakt">به trakt.tv بپیوندید تا آنچه را تماشا می‌کنید پیگیری کنید</string>
   <string name="button_label_keep_newest_play">جدیدترین تماشای هر مورد را نگه دارید.</string>
   <string name="button_label_keep_oldest_play">قدیمی‌ترین تماشای هر مورد را نگه دارید.</string>
@@ -173,6 +183,7 @@
   <string name="button_label_media_sync_next">به مرحله بعدی بروید</string>
   <string name="button_label_media_sync_open_plex">باز کردن صفحه ورود به پلکس</string>
   <string name="button_label_media_sync_reconnect">دوباره برای این سرور وارد پلکس شوید</string>
+  <string name="button_label_media_sync_reconnect_jellyfin">دوباره برای این سرور وارد Jellyfin شوید</string>
   <string name="button_label_media_sync_retry">دوباره همگام\n‌سازی این سرور را امتحان کنید</string>
   <string name="button_label_mixtape_another">این یکی نه، دیگری را نمایش بده</string>
   <string name="button_label_mixtape_remove_pick">حذف %s</string>
@@ -222,6 +233,8 @@
   <string name="button_label_react">واکنش با %s</string>
   <string name="button_label_read_more">بیشتر بخوانید</string>
   <string name="button_label_recent_comments">بازخوردهای اخیر</string>
+  <string name="button_label_recommendation_mode_classic">نمایش توصیه‌های کلاسیک</string>
+  <string name="button_label_recommendation_mode_smart">نمایش توصیه‌های هوشمند</string>
   <string name="button_label_reject_follow_request">رد درخواست دنبال کردن از %s</string>
   <string name="button_label_remove_collaborator">حذف %s از لیست همکاران</string>
   <string name="button_label_remove_from_favorites">حذف \"%s\" از علاقه‌مندی‌های شما</string>
@@ -514,6 +527,8 @@
   <string name="button_text_progress_in_progress">در حال انجام</string>
   <string name="button_text_raw_export">همین حالا خروجی بگیر</string>
   <string name="button_text_recent_comments">اخیر</string>
+  <string name="button_text_recommendation_mode_classic">کلاسیک</string>
+  <string name="button_text_recommendation_mode_smart">هوشمند</string>
   <string name="button_text_reconnect">اتصال مجدد</string>
   <string name="button_text_reject_follow_request">رد درخواست</string>
   <string name="button_text_remove_from_favorites">حذف از علاقه‌مندی‌ها</string>
@@ -623,8 +638,19 @@
   <string name="calendar_day_item_count_other">%d مورد</string>
   <string name="calendar_view_day">روز</string>
   <string name="calendar_view_week">هفته</string>
+  <string name="chart_label_area_chart">نمودار مساحتی</string>
+  <string name="chart_label_bar_chart">نمودار میله‌ای</string>
+  <string name="chart_label_bubble_chart">نمودار حبابی</string>
+  <string name="chart_label_country_map">نقشه کشور</string>
   <string name="chart_label_grouped_categories">%d دسته‌بندی</string>
+  <string name="chart_label_line_chart">نمودار خطی</string>
   <string name="chart_label_other">دیگر</string>
+  <string name="chart_label_segmented_distribution">توزیع بخش‌بندی شده</string>
+  <string name="chart_label_sparkline">نمودار کوچک</string>
+  <string name="chart_label_stacked_bar_chart">نمودار میله‌ای انباشته</string>
+  <string name="chart_role_interactive_bar_chart">نمودار میله‌ای تعاملی</string>
+  <string name="chart_role_interactive_line_chart">نمودار خطی تعاملی</string>
+  <string name="chart_role_interactive_stacked_bar_chart">نمودار میله‌ای انباشته تعاملی</string>
   <string name="cleanup_status_done">%d نوازش تکراری حذف شد.</string>
   <string name="cleanup_status_removing">در حال حذف %1$d / %2$d نوازش تکراری…</string>
   <string name="clear_status_clearing">در حال پاک کردن %1$d / %2$d آیتم…</string>
@@ -691,8 +717,16 @@
   <string name="description_export_before_destructive">یک فایل ZIP از داده‌های شما را قبل از حذف هر چیزی دانلود می‌کند.</string>
   <string name="description_history_analysis">تماشاهای تکراری را در تاریخچه تماشای خود بیابید و فقط یک تماشای هر مورد را نگه دارید.</string>
   <string name="description_import">داده‌های خود را از سایر سرویس‌ها مستقیماً در مرورگر خود وارد کنید.</string>
+  <string name="description_jellyfin_connect_expired">کد اتصال سریع منقضی شد. برای اتصال سرور خود دوباره شروع کنید.</string>
+  <string name="description_jellyfin_password">با نام کاربری و رمز عبوری که در Jellyfin استفاده می‌کنید، وارد شوید.</string>
+  <string name="description_jellyfin_quick_connect">شما یک کد برای تأیید در Jellyfin دریافت می‌کنید، بنابراین هرگز رمز عبور خود را اینجا وارد نمی‌کنید.</string>
+  <string name="description_jellyfin_quick_connect_code">در Jellyfin روی <b>%s</b>، نمایه خود را باز کنید، سپس به اتصال سریع بروید و وارد کنید:</string>
+  <string name="description_jellyfin_sync">سرور Jellyfin خود را برای همگام‌سازی سابقه تماشا و مجموعه‌ها با Trakt متصل کنید.</string>
+  <string name="description_jellyfin_synced_servers">به‌طور خودکار سابقه تماشا و کتابخانه خود را همگام‌سازی کنید.</string>
+  <string name="description_jellyfin_vip_upsell">به VIP ارتقا دهید تا سابقه تماشا و مجموعه‌ها را از سرور Jellyfin خود در طول دوره بتا همگام‌سازی کنید.</string>
   <string name="description_library_collection_limit">برخی از آیتم‌ها از %s هنوز در مجموعه Trakt شما نیستند. حساب‌های رایگان تا سقف مجموعه محدود هستند؛ VIP همه چیز را جمع‌آوری می‌کند.</string>
   <string name="description_manage_collaborators">همکاران می‌توانند موارد را به این لیست اضافه یا از آن حذف کنند. از میان افرادی که شما را دنبال می‌کنند، انتخاب کنید.</string>
+  <string name="description_media_sync_add_jellyfin_server">یک سرور Jellyfin دیگر را متصل کنید تا آن را نیز همگام‌سازی کنید.</string>
   <string name="description_media_sync_add_server_free">حساب‌های رایگان ۱ سرور پلکس را همگام\n‌سازی می‌کنند. برای افزودن بیشتر، VIP شوید.</string>
   <string name="description_media_sync_add_server_vip">یک سرور پلکس دیگر را متصل کنید تا آن را نیز همگام\n‌سازی کنید.</string>
   <string name="description_media_sync_collection_limit">برخی از آیتم‌های این سرور هنوز در مجموعه Trakt شما نیستند. برای جمع\n‌آوری همه چیز، VIP شوید.</string>
@@ -705,6 +739,7 @@
   <string name="description_media_sync_feeds">انتخاب کنید این سرور چه چیزی را با حساب Trakt شما همگام\n‌سازی کند. هر گزینه شامل فیلم‌ها و نمایش‌ها به طور یکسان می‌شود.</string>
   <string name="description_media_sync_history_all">هر آنچه در این سرور تماشا کرده‌اید، در اولین همگام‌سازی منتقل می‌شود.</string>
   <string name="description_media_sync_history_always_full">امتیازات، مجموعه و فهرست تماشا همیشه به طور کامل منتقل می‌شوند.</string>
+  <string name="description_media_sync_history_always_full_jellyfin">مجموعه شما همیشه به طور کامل منتقل می‌شود.</string>
   <string name="description_media_sync_history_today">فقط تماشا‌های جدید اضافه خواهند شد. تاریخچه موجود شما در Trakt بدون تغییر باقی می‌ماند.</string>
   <string name="description_media_sync_import_past_watches">همه چیزهایی را که در این سرور تماشا کرده‌اید منتقل می‌کند. همگام‌سازی کامل انجام می‌دهد.</string>
   <string name="description_media_sync_never_synced">در انتظار اولین همگام\n‌سازی آن</string>
@@ -714,6 +749,7 @@
   <string name="description_media_sync_server_unreachable">از اینترنت قابل دسترسی نیست</string>
   <string name="description_media_sync_synced_at">همگام\n‌سازی شد %s</string>
   <string name="description_media_sync_unauthorized">پلکس دیگر دسترسی Trakt را نمی‌پذیرد. برای ادامه همگام\n‌سازی دوباره متصل شوید.</string>
+  <string name="description_media_sync_unauthorized_jellyfin">Jellyfin دیگر دسترسی Trakt را نمی‌پذیرد. برای ادامه همگام‌سازی دوباره متصل شوید.</string>
   <string name="description_media_sync_unreachable">Trakt نمی‌تواند به این سرور دسترسی پیدا کند. پس از آنلاین شدن دوباره تلاش کنید.</string>
   <string name="description_media_sync_watchlist_only">نیازی به سرور نیست. لیست تماشای پلکس شما را همگام\n‌سازی می‌کند.</string>
   <string name="description_media_sync_webhook_only">تماشاها و امتیازات از وب‌هوک Plex شما می‌آید.</string>
@@ -780,6 +816,17 @@
   <string name="error_text_genres_save_failed">ذخیره ناموفق بود. لطفاً دوباره تلاش کنید.</string>
   <string name="error_text_image_preview_failed">پیش‌نمایش بارگیری نشد</string>
   <string name="error_text_imdb_link_not_found">نتوانستیم این عنوان IMDb را در Trakt پیدا کنیم.</string>
+  <string name="error_text_jellyfin_embedded_credentials">نام کاربری و رمز عبور خود را از آدرس حذف کنید.</string>
+  <string name="error_text_jellyfin_invalid_credentials">نام کاربری و رمز عبور کار نکرد.</string>
+  <string name="error_text_jellyfin_invalid_server_url">آدرس کامل سرور خود را وارد کنید، مانند https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_quick_connect_disabled">اتصال سریع در این سرور خاموش است. آن را در داشبورد Jellyfin روشن کنید، یا با رمز عبور خود وارد شوید.</string>
+  <string name="error_text_jellyfin_raw_ip_address">از نام دامنه سرور خود استفاده کنید. Trakt نمی‌تواند به یک آدرس IP خالی دسترسی پیدا کند.</string>
+  <string name="error_text_jellyfin_server_limit">حساب‌های رایگان می‌توانند ۱ سرور رسانه را همگام‌سازی کنند. برای افزودن بیشتر، VIP شوید.</string>
+  <string name="error_text_jellyfin_server_not_found">هیچ سرور Jellyfin در آن آدرس پاسخ نداد. آن را بررسی کنید و دوباره امتحان کنید.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt نمی‌تواند به آن سرور دسترسی پیدا کند. مطمئن شوید که آنلاین است و از طریق اینترنت قابل دسترسی است.</string>
+  <string name="error_text_jellyfin_unsupported_port">از پورت 80، 443، 8096 یا 8920 استفاده کنید، یا سرور را پشت یک پروکسی معکوس قرار دهید.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">آدرس را با https:// یا http:// شروع کنید.</string>
+  <string name="error_text_jellyfin_vip_required">همگام‌سازی Jellyfin فعلاً یک بتای VIP است.</string>
   <string name="error_text_lists_limit">شما به حد مجاز لیست‌های شخصی خود رسیده‌اید. برای لیست‌های نامحدود به VIP ارتقا دهید!</string>
   <string name="error_text_locked_account_collection_limit">این حساب کاربری قفل شده است زیرا مجموعه از حد مجاز فراتر رفته است. لطفاً برای حل این مشکل <a>با پشتیبانی تماس بگیرید</a>.</string>
   <string name="error_text_locked_account_guide">لطفاً برای اجرای تحلیل تاریخچه و باز کردن قفل حساب خود، به <a>تنظیمات پیشرفته</a> مراجعه کنید.</string>
@@ -803,6 +850,8 @@
   <string name="error_text_unexpected_notes_error">خطایی هنگام ارسال یادداشت شما رخ داد. اگر این مشکل ادامه داشت، لطفاً <a>یک مشکل جدید ارسال کنید</a>.</string>
   <string name="error_text_username">به‌روزرسانی نام کاربری ناموفق بود. یا قبلاً گرفته شده است یا حاوی کاراکترهای نامعتبر است.</string>
   <string name="filter_label_before_year">قبل از %d</string>
+  <string name="filter_label_range_maximum">%s، حداکثر</string>
+  <string name="filter_label_range_minimum">%s، حداقل</string>
   <string name="filter_label_ratings">امتیاز Trakt از %1$s تا %2$s</string>
   <string name="filter_label_runtime">%s دقیقه</string>
   <string name="filter_label_runtime_up_to">تا %d دقیقه</string>
@@ -868,6 +917,8 @@
   <string name="header_import_example">مثال</string>
   <string name="header_import_fields">فیلدها</string>
   <string name="header_import_json_guidelines">دستورالعمل‌های JSON</string>
+  <string name="header_jellyfin_synced_servers">سرورهای Jellyfin</string>
+  <string name="header_jellyfin_vip_upsell">همگام‌سازی Jellyfin یک بتای VIP است</string>
   <string name="header_landing_discover">کشف کنید</string>
   <string name="header_landing_hero">سرگرمی بعدی شما همین الان در دسترس است.</string>
   <string name="header_landing_share">به اشتراک بگذارید</string>
@@ -882,12 +933,14 @@
   <string name="header_media_sync_choose_server">یک سرور انتخاب کنید</string>
   <string name="header_media_sync_collection_limit">مجموعه شما به سقف رایگان رسید</string>
   <string name="header_media_sync_connect">اتصال یک سرور پلکس</string>
+  <string name="header_media_sync_connect_jellyfin">اتصال یک سرور Jellyfin</string>
   <string name="header_media_sync_feeds">تنظیمات همگام\n‌سازی</string>
   <string name="header_media_sync_history_start">از کجا باید تاریخچه شما شروع شود؟</string>
   <string name="header_media_sync_libraries">کتابخانه‌ها</string>
   <string name="header_media_sync_profiles">پخش‌های چه کسی همگام\n‌سازی می‌شود</string>
   <string name="header_media_sync_runs">همگام\n‌سازی‌های اخیر</string>
   <string name="header_media_sync_sign_in">ورود به پلکس</string>
+  <string name="header_media_sync_sign_in_jellyfin">ورود به Jellyfin</string>
   <string name="header_media_sync_watch_history">تاریخچه تماشا</string>
   <string name="header_media_sync_what_to_sync">چه چیزی همگام\n‌سازی شود</string>
   <string name="header_mixtape_done">این میکس‌تیپ شماست</string>
@@ -913,8 +966,8 @@
   <string name="header_player_subtitle">زیرنویس</string>
   <string name="header_player_subtitle_language">زبان</string>
   <string name="header_player_subtitle_size">اندازه</string>
+  <string name="header_plex_servers">سرورهای پلکس</string>
   <string name="header_plex_sync_free_limits">همگام‌سازی Plex در طرح رایگان</string>
-  <string name="header_plex_synced_servers">سرورهای همگام‌شده</string>
   <string name="header_plex_vip_upsell_add_server">چندین سرور یک ویژگی VIP است</string>
   <string name="header_plex_vip_upsell_webhook">اسکروبلینگ Plex یک ویژگی VIP است</string>
   <string name="header_post_credits">پس از تیتراژ</string>
@@ -930,6 +983,7 @@
   <string name="header_renewal_date">تاریخ تمدید</string>
   <string name="header_runtime">مدت زمان</string>
   <string name="header_screen_time">زمان نمایش</string>
+  <string name="header_seasonal_greeting_halloween">هالوین مبارک</string>
   <string name="header_sentiment_aspects">مزایا و معایب</string>
   <string name="header_sentiment_highlight">برجسته</string>
   <string name="header_sentiment_mixed">ترکیبی</string>
@@ -1000,6 +1054,7 @@
   <string name="heading_connected_community_apps">برنامه‌های متصل انجمن</string>
   <string name="heading_meet_the_team">با تیم آشنا شوید</string>
   <string name="heading_what_is_trakt">Trakt چیست؟</string>
+  <string name="hint_jellyfin_server_url">آدرسی که با آن Jellyfin را باز می‌کنید. Trakt باید بتواند از اینترنت به آن دسترسی داشته باشد.</string>
   <string name="hint_media_sync_history_resync">می‌توانید تماشا‌های قبلی را بعداً از منوی مدیریت سرور وارد کنید.</string>
   <string name="image_alt_comment_gif">گیف پیوست‌شده به نظر</string>
   <string name="image_alt_list_preview_poster">پوستر برای یک ورودی در %s</string>
@@ -1083,6 +1138,7 @@
   <string name="input_label_search_streaming_services">جستجوی سرویس‌های پخش</string>
   <string name="input_placeholder_filter">فیلتر</string>
   <string name="input_placeholder_filter_services">فیلتر کردن سرویس‌های پخش</string>
+  <string name="input_placeholder_jellyfin_server_url">https://jellyfin.example.com</string>
   <string name="input_placeholder_lists_description">توضیحات (اختیاری)</string>
   <string name="input_placeholder_lists_name">نام</string>
   <string name="input_placeholder_mention_search">جستجوی بازیگران</string>
@@ -1124,6 +1180,10 @@
   <string name="label_genres_drawer_all">همه ژانرها</string>
   <string name="label_genres_drawer_selected">انتخاب‌شده</string>
   <string name="label_genres_drawer_subtitle_loved">حداکثر ۵ ژانر را انتخاب کنید که مایلید بیشتر از آن‌ها را ببینید.</string>
+  <string name="label_jellyfin_password">رمز عبور</string>
+  <string name="label_jellyfin_server">سرور Jellyfin</string>
+  <string name="label_jellyfin_server_url">آدرس سرور</string>
+  <string name="label_jellyfin_username">نام کاربری</string>
   <string name="label_keep_play">نگه داشتن</string>
   <string name="label_library_collection_limit">محدودیت مجموعه</string>
   <string name="label_list_item_count">%s مورد</string>
@@ -1152,7 +1212,6 @@
   <string name="label_parental_guide_severity_none">هیچ‌کدام</string>
   <string name="label_parental_guide_severity_severe">شدید</string>
   <string name="label_plex_connected">متصل به Plex</string>
-  <string name="label_plex_connection">اتصال</string>
   <string name="label_plex_server">سرور</string>
   <string name="label_queued_action">ذخیره شد به صورت آفلاین، در انتظار همگام‌سازی</string>
   <string name="label_rating_average">میانگین امتیاز %s از 5</string>
@@ -1230,6 +1289,7 @@
   <string name="link_label_status">وضعیت Trakt</string>
   <string name="link_label_view_social_activities">مشاهده فعالیت‌های اجتماعی برای %s</string>
   <string name="link_label_view_social_activities_shared">مشاهده فعالیت‌های اجتماعی برای %s, به اشتراک گذاشته شده با شما</string>
+  <string name="link_label_youtube">یوتیوب</string>
   <string name="link_text_about">درباره ما</string>
   <string name="link_text_account_settings">حساب کاربری</string>
   <string name="link_text_advanced_settings">پیشرفته</string>
@@ -1482,6 +1542,7 @@
   <string name="preview_feature_description_large_screen_cards">در صفحه‌های نمایش بزرگ‌تر، همه لیست‌ها از همان طراحی کارت‌های مورد استفاده در بقیه برنامه بهره می‌برند. با انتخاب هر کدام، به جای ترک لیست، یک نمای کلی سریع نمایش داده می‌شود.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_show_ending">ردیف پایان را در جزئیات سریال نمایش می‌دهد: «تکمیل شده» وقتی داستان به سرانجام رسیده باشد، و «حل‌نشده» وقتی نرسیده باشد.</string>
+  <string name="preview_feature_description_smart_recommendations">جابه‌جایی توصیه‌ها بین انتخاب‌های هوشمند مدل جدید و موارد کلاسیک.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
   <string name="preview_feature_description_vip_cancel_flow">راهی جدید برای لغو VIP: دلیل را می‌پرسد، تغییرات را نشان می‌دهد و برای ماندن پیشنهاد ویژه‌ای ارائه می‌کند.</string>
   <string name="preview_feature_description_vip_veteran">نشان می‌دهد که اعضا چقدر بدون وقفه اشتراک VIP را حفظ کرده‌اند، با نشان کهنه‌کار یا افسانه، حلقه‌ی آواتار رنگی و چند جشن در پروفایل خودتان.</string>
@@ -1490,6 +1551,7 @@
   <string name="preview_feature_title_large_screen_cards">کارت‌های صفحه نمایش بزرگ</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_show_ending">پایان سریال</string>
+  <string name="preview_feature_title_smart_recommendations">توصیه‌های هوشمند</string>
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>
   <string name="preview_feature_title_vip_cancel_flow">روند لغو VIP</string>
   <string name="preview_feature_title_vip_veteran">وضعیت VIP کهنه‌کار</string>
@@ -1572,6 +1634,8 @@
   <string name="switch_label_toggle_halloween_filters">تغییر فیلترهای هالووین</string>
   <string name="switch_label_toggle_list_privacy">تغییر وضعیت لیست به خصوصی</string>
   <string name="tab_text_advanced_filters">پیشرفته</string>
+  <string name="tab_text_jellyfin_password">رمز عبور</string>
+  <string name="tab_text_jellyfin_quick_connect">اتصال سریع</string>
   <string name="tab_text_media_sync_history_all">همه تماشا‌های گذشته</string>
   <string name="tab_text_media_sync_history_today">از امروز</string>
   <string name="tab_text_more">بیشتر</string>
@@ -1848,6 +1912,7 @@
   <string name="text_info_widget_background">سطح شفافیت پس‌زمینه را تنظیم کنید.</string>
   <string name="text_info_younify_service_linked">سرویس پخش پیوند داده شد.</string>
   <string name="text_info_younify_service_unlinked">سرویس پخش قطع پیوند شد.</string>
+  <string name="text_jellyfin_quick_connect_waiting">در انتظار تأیید شما</string>
   <string name="text_landing_discover">فیلم‌ها و برنامه‌هایی که دوست خواهید داشت و همین حالا در کجا پخش می‌شوند.</string>
   <string name="text_landing_discover_eyebrow">پیدایش کن</string>
   <string name="text_landing_hero">آنچه دیده‌اید را ردیابی کنید، مورد بعدی برای تماشا را پیدا کنید و ببینید امشب کجا در حال پخش است.</string>
@@ -2009,6 +2074,7 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s رای</string>
   <string name="text_raw_export">خروجی خام</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">لطفاً %s را در زیر مجدداً متصل کنید.</string>
   <string name="text_rent">اجاره</string>
   <string name="text_rewatching_next_episode_prompt">قسمت بعدی که می‌خواهید بازتماشا کنید کدام است؟</string>
@@ -2020,6 +2086,8 @@
   <string name="text_season_number">فصل %d</string>
   <string name="text_season_number_with_title">%1$d : %2$s</string>
   <string name="text_season_specials">ویژه‌ها</string>
+  <string name="text_seasonal_greeting_halloween">برترین‌های ترسناک ما منتظر شما هستند!</string>
+  <string name="text_seasonal_greeting_signoff">از طرف همه ما در Trakt</string>
   <string name="text_select_searching">در حال جستجو</string>
   <string name="text_selected_from_lists">از %s لیست</string>
   <string name="text_sentiment_example">مثالی از \"%s\"</string>
@@ -2499,9 +2567,6 @@
   <string name="translated_value_video_type_recap">خلاصه</string>
   <string name="translated_value_video_type_teaser">تیزر</string>
   <string name="translated_value_video_type_trailer">تریلر</string>
-  <string name="tv_time_banner_action">tvtime.trakt.tv</string>
-  <string name="tv_time_banner_description">با اپلیکیشن همراه آشنای ما، که توسط حساب Trakt شما پشتیبانی می‌شود، احساس راحتی کنید.</string>
-  <string name="tv_time_banner_heading">از TV Time می‌آیید؟</string>
   <string name="tv_time_faq_dropped_shows_answer">وضعیت «رها شده» وارد نمی‌شود، بنابراین هر سریالی که در آنجا رها کرده‌اید، باید پس از وارد کردن، دوباره در Trakt رها شود.</string>
   <string name="tv_time_faq_dropped_shows_question">آیا سریال‌های رها شده من منتقل می‌شوند؟</string>
   <string name="tv_time_faq_missing_episodes_answer">از تاریخ ۸ جولای ۲۰۲۶، ما نحوه تطبیق قسمت‌ها توسط واردکننده را بهبود بخشیده‌ایم، بنابراین نمایش‌هایی که قبلاً ناقص وارد می‌شدند، اکنون باید به‌طور کامل وارد شوند. خروجی خود را دوباره وارد کنید تا قسمت‌های از دست رفته را دریافت کنید. اگر بعد از آن نیز برخی از آن‌ها همچنان گم شده بودند، ابتدا تماشاهای قبلی را حذف کنید، سپس یک بار دیگر وارد کنید.</string>
@@ -2512,9 +2577,6 @@
   <string name="tv_time_faq_nothing_imported_question">چیزی وارد نشد. چرا؟</string>
   <string name="tv_time_faq_page_description">سوالات رایج در مورد انتقال داده‌های TV Time شما به Trakt. هنوز مشکل دارید؟ فایل خروجی خود را برای ما ارسال کنید تا بررسی کنیم.</string>
   <string name="tv_time_faq_page_title">سوالات متداول وارد کردن TV Time</string>
-  <string name="tv_time_import_banner_action">دوباره وارد کنید</string>
-  <string name="tv_time_import_banner_description">ما واردکننده را ارتقا داده‌ایم. اگر برخی نمایش‌ها یا قسمت‌ها از دست رفته‌اند، خروجی TV Time خود را دوباره وارد کنید تا آن‌ها را بیاورید. اگر بعد از آن نیز همچنان گم شده بودند؟ ابتدا تماشاهای قبلی را حذف کنید، سپس یک بار دیگر وارد کنید.</string>
-  <string name="tv_time_import_banner_heading">واردات TV Time شما، بهبود یافته</string>
   <string name="tv_time_report_description">فایل خروجی TV Time خود را پیوست کنید و به ما بگویید چه مشکلی پیش آمده است. فایل‌های شما و حساب Trakt به صورت خصوصی برای تیم ارسال می‌شوند و هرگز به صورت عمومی به اشتراک گذاشته نمی‌شوند.</string>
   <string name="tv_time_report_error_too_large">این فایل‌ها خیلی بزرگ هستند. مجموع آپلودها را زیر ۲۵ مگابایت نگه دارید.</string>
   <string name="tv_time_report_error_unknown">مشکلی در ارسال گزارش شما پیش آمد. لطفاً دوباره تلاش کنید.</string>

@@ -32,6 +32,7 @@
   <string name="auto_tracking_card_heading">Automatisch bijhouden via uw streamingdiensten</string>
   <string name="badge_text_beta">Bèta</string>
   <string name="badge_text_get_vip">Word VIP</string>
+  <string name="button_connect_jellyfin">Verbind Jellyfin</string>
   <string name="button_connect_plex">Verbind Plex</string>
   <string name="button_description_sort_default">Oorspronkelijke volgorde</string>
   <string name="button_description_sort_release_date_asc">Oudste eerst</string>
@@ -82,9 +83,12 @@
   <string name="button_label_close_error">Sluit foutmelding</string>
   <string name="button_label_close_reaction">Sluiten</string>
   <string name="button_label_close_stories">Sluit verhalen</string>
+  <string name="button_label_collapse_list">Lijst %s inklappen</string>
   <string name="button_label_collapse_navbar">Invouwen</string>
   <string name="button_label_comment_replies">Recensie reacties</string>
   <string name="button_label_comment_reply">Reageer op %s</string>
+  <string name="button_label_comment_show_original_hint">Oorspronkelijke reactie weergeven</string>
+  <string name="button_label_comment_translate">Reactie vertalen</string>
   <string name="button_label_connect_streaming_service">Verbind %s</string>
   <string name="button_label_copied">Gekopieerd</string>
   <string name="button_label_copy">Kopiëren</string>
@@ -113,6 +117,7 @@
   <string name="button_label_exclude_option">%s uitsluiten</string>
   <string name="button_label_exit_edit_mode">Bewerkmodus verlaten</string>
   <string name="button_label_expand_category">%s uitvouwen</string>
+  <string name="button_label_expand_list">Lijst %s uitvouwen</string>
   <string name="button_label_expand_media_overview">Vouw overzicht van \"%s\" uit</string>
   <string name="button_label_expand_navbar">Uitvouwen</string>
   <string name="button_label_filter_settings">%s instellingen</string>
@@ -143,6 +148,11 @@
   <string name="button_label_import_more">Reset en start een nieuwe import.</string>
   <string name="button_label_import_selected">Importeer de filmmatches die je hierboven hebt gekozen.</string>
   <string name="button_label_include_option">%s opnemen</string>
+  <string name="button_label_jellyfin_add_server">Een Jellyfin-server toevoegen</string>
+  <string name="button_label_jellyfin_connect">Verbind je Jellyfin-server</string>
+  <string name="button_label_jellyfin_connect_server">Verbind deze Jellyfin-server</string>
+  <string name="button_label_jellyfin_sign_in">Meld je aan bij deze Jellyfin-server</string>
+  <string name="button_label_jellyfin_sync_now">Synchroniseer Jellyfin nu</string>
   <string name="button_label_join_trakt">Lid worden van trakt.tv om bij te houden wat je kijkt</string>
   <string name="button_label_keep_newest_play">Behoud de nieuwste weergave van elk item</string>
   <string name="button_label_keep_oldest_play">Behoud de oudste weergave van elk item</string>
@@ -173,6 +183,7 @@
   <string name="button_label_media_sync_next">Ga naar de volgende stap</string>
   <string name="button_label_media_sync_open_plex">Open de Plex-aanmeldpagina</string>
   <string name="button_label_media_sync_reconnect">Meld je opnieuw aan bij Plex voor deze server</string>
+  <string name="button_label_media_sync_reconnect_jellyfin">Meld je opnieuw aan bij Jellyfin voor deze server</string>
   <string name="button_label_media_sync_retry">Probeer deze server opnieuw te synchroniseren</string>
   <string name="button_label_mixtape_another">Niet deze, toon een andere</string>
   <string name="button_label_mixtape_remove_pick">Verwijder %s</string>
@@ -222,6 +233,8 @@
   <string name="button_label_react">Reageer met %s</string>
   <string name="button_label_read_more">Lees meer</string>
   <string name="button_label_recent_comments">Recente recensies</string>
+  <string name="button_label_recommendation_mode_classic">Toon klassieke aanbevelingen</string>
+  <string name="button_label_recommendation_mode_smart">Toon slimme aanbevelingen</string>
   <string name="button_label_reject_follow_request">Volgverzoek van %s afwijzen</string>
   <string name="button_label_remove_collaborator">Verwijder %s als medewerker</string>
   <string name="button_label_remove_from_favorites">\"%s\" uit je favorieten verwijderen</string>
@@ -514,6 +527,8 @@
   <string name="button_text_progress_in_progress">Bezig</string>
   <string name="button_text_raw_export">Nu exporteren</string>
   <string name="button_text_recent_comments">Recent</string>
+  <string name="button_text_recommendation_mode_classic">Klassiek</string>
+  <string name="button_text_recommendation_mode_smart">Slim</string>
   <string name="button_text_reconnect">Opnieuw verbinden</string>
   <string name="button_text_reject_follow_request">Verzoek afwijzen</string>
   <string name="button_text_remove_from_favorites">Uit favorieten verwijderen</string>
@@ -623,8 +638,19 @@
   <string name="calendar_day_item_count_other">%d items</string>
   <string name="calendar_view_day">Dag</string>
   <string name="calendar_view_week">Week</string>
+  <string name="chart_label_area_chart">Vlakdiagram</string>
+  <string name="chart_label_bar_chart">Staafdiagram</string>
+  <string name="chart_label_bubble_chart">Bellendiagram</string>
+  <string name="chart_label_country_map">Landkaart</string>
   <string name="chart_label_grouped_categories">%d categorieën</string>
+  <string name="chart_label_line_chart">Lijndiagram</string>
   <string name="chart_label_other">Overig</string>
+  <string name="chart_label_segmented_distribution">Gegroepeerde verdeling</string>
+  <string name="chart_label_sparkline">Sparkline</string>
+  <string name="chart_label_stacked_bar_chart">Gestapeld staafdiagram</string>
+  <string name="chart_role_interactive_bar_chart">interactief staafdiagram</string>
+  <string name="chart_role_interactive_line_chart">interactief lijndiagram</string>
+  <string name="chart_role_interactive_stacked_bar_chart">interactief gestapeld staafdiagram</string>
   <string name="cleanup_status_done">%d dubbele weergaven verwijderd.</string>
   <string name="cleanup_status_removing">Verwijderen %1$d / %2$d dubbele weergaven…</string>
   <string name="clear_status_clearing">%1$d / %2$d items worden gewist…</string>
@@ -691,8 +717,16 @@
   <string name="description_export_before_destructive">Downloadt een ZIP van je gegevens voordat er iets wordt verwijderd.</string>
   <string name="description_history_analysis">Vind dubbele weergaven in je kijkgeschiedenis en bewaar slechts één weergave van elk item.</string>
   <string name="description_import">Importeer uw gegevens van andere services direct in uw browser.</string>
+  <string name="description_jellyfin_connect_expired">De Quick Connect-code is verlopen. Begin opnieuw om je server te verbinden.</string>
+  <string name="description_jellyfin_password">Meld je aan met de gebruikersnaam en het wachtwoord die je in Jellyfin gebruikt.</string>
+  <string name="description_jellyfin_quick_connect">Je ontvangt een code om goed te keuren in Jellyfin, zodat je hier nooit je wachtwoord typt.</string>
+  <string name="description_jellyfin_quick_connect_code">In Jellyfin op <b>%s</b>, open je profiel, dan Quick Connect, en voer in:</string>
+  <string name="description_jellyfin_sync">Verbind je Jellyfin-server om kijkgeschiedenis en collecties te synchroniseren met Trakt.</string>
+  <string name="description_jellyfin_synced_servers">Synchroniseer automatisch je kijkgeschiedenis en bibliotheek.</string>
+  <string name="description_jellyfin_vip_upsell">Upgrade naar VIP om kijkgeschiedenis en collecties van je Jellyfin-server te synchroniseren terwijl het in bèta is.</string>
   <string name="description_library_collection_limit">Sommige items van %s staan nog niet in je Trakt-verzameling. Gratis accounts stoppen bij de verzamelinglimiet; VIP verzamelt alles.</string>
   <string name="description_manage_collaborators">Medewerkers kunnen items toevoegen en verwijderen van deze lijst. Kies uit mensen die je volgen.</string>
+  <string name="description_media_sync_add_jellyfin_server">Verbind een andere Jellyfin-server om deze ook te synchroniseren.</string>
   <string name="description_media_sync_add_server_free">Gratis accounts synchroniseren 1 Plex-server. Ga VIP om meer toe te voegen.</string>
   <string name="description_media_sync_add_server_vip">Verbind een andere Plex-server om deze ook te synchroniseren.</string>
   <string name="description_media_sync_collection_limit">Sommige items van deze server staan nog niet in je Trakt-verzameling. Ga VIP om alles te verzamelen.</string>
@@ -705,6 +739,7 @@
   <string name="description_media_sync_feeds">Kies wat deze server synchroniseert met je Trakt-account. Elke schakelaar omvat zowel films als series.</string>
   <string name="description_media_sync_history_all">Alles wat je op deze server hebt bekeken, wordt overgezet bij de eerste synchronisatie.</string>
   <string name="description_media_sync_history_always_full">Beoordelingen, collectie en Watchlist worden altijd volledig overgezet.</string>
+  <string name="description_media_sync_history_always_full_jellyfin">Je collectie wordt altijd volledig overgezet.</string>
   <string name="description_media_sync_history_today">Alleen nieuwe kijkbeurten worden toegevoegd. Je bestaande Trakt-geschiedenis blijft zoals deze is.</string>
   <string name="description_media_sync_import_past_watches">Haalt alles op wat je op deze server hebt bekeken. Voert een volledige synchronisatie uit.</string>
   <string name="description_media_sync_never_synced">Wachten op de eerste synchronisatie</string>
@@ -714,6 +749,7 @@
   <string name="description_media_sync_server_unreachable">Niet bereikbaar vanaf internet</string>
   <string name="description_media_sync_synced_at">Gesynchroniseerd %s</string>
   <string name="description_media_sync_unauthorized">Plex accepteert Trakt\'s toegang niet langer. Maak opnieuw verbinding om te blijven synchroniseren.</string>
+  <string name="description_media_sync_unauthorized_jellyfin">Jellyfin accepteert de toegang van Trakt niet langer. Maak opnieuw verbinding om te blijven synchroniseren.</string>
   <string name="description_media_sync_unreachable">Trakt kan deze server niet bereiken. Probeer het opnieuw zodra deze weer online is.</string>
   <string name="description_media_sync_watchlist_only">Geen server nodig. Synchroniseert je Plex-kijklijst.</string>
   <string name="description_media_sync_webhook_only">Bekeken items en beoordelingen komen van je Plex-webhook.</string>
@@ -780,6 +816,17 @@
   <string name="error_text_genres_save_failed">Opslaan mislukt. Probeer het opnieuw.</string>
   <string name="error_text_image_preview_failed">Voorbeeld kon niet worden geladen</string>
   <string name="error_text_imdb_link_not_found">We konden deze IMDb-titel niet vinden op Trakt.</string>
+  <string name="error_text_jellyfin_embedded_credentials">Laat je gebruikersnaam en wachtwoord buiten het adres.</string>
+  <string name="error_text_jellyfin_invalid_credentials">Die gebruikersnaam en dat wachtwoord werkten niet.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Voer het volledige adres van je server in, zoals https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect staat uit op deze server. Schakel het in via het Jellyfin-dashboard, of meld je aan met je wachtwoord.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Gebruik de domeinnaam van je server. Trakt kan een kaal IP-adres niet bereiken.</string>
+  <string name="error_text_jellyfin_server_limit">Gratis accounts kunnen 1 mediaserver synchroniseren. Ga VIP om meer toe te voegen.</string>
+  <string name="error_text_jellyfin_server_not_found">Geen Jellyfin-server reageerde op dat adres. Controleer het en probeer het opnieuw.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt kan die server niet bereiken. Zorg ervoor dat deze online is en vanaf internet bereikbaar.</string>
+  <string name="error_text_jellyfin_unsupported_port">Gebruik poort 80, 443, 8096 of 8920, of plaats de server achter een reverse proxy.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Begin het adres met https:// of http://.</string>
+  <string name="error_text_jellyfin_vip_required">Jellyfin-synchronisatie is vooralsnog een VIP-bèta.</string>
   <string name="error_text_lists_limit">Je hebt de limiet voor persoonlijke lijsten bereikt. Upgrade naar VIP voor een onbeperkt aantal lijsten!</string>
   <string name="error_text_locked_account_collection_limit">Dit gebruikersaccount is vergrendeld omdat de collectie de limiet heeft overschreden. Neem alstublieft <a>contact op met de ondersteuning</a> om dit probleem op te lossen.</string>
   <string name="error_text_locked_account_guide">Bezoek de <a>geavanceerde instellingen</a> om een geschiedenisanalyse uit te voeren en je account te ontgrendelen.</string>
@@ -803,6 +850,8 @@
   <string name="error_text_unexpected_notes_error">Er ging iets mis tijdens het plaatsen van uw notitie. Als dit blijft gebeuren, kunt u alstublieft <a>een nieuw probleem indienen</a>.</string>
   <string name="error_text_username">Gebruikersnaam bijwerken mislukt. Deze is al in gebruik of bevat ongeldige tekens.</string>
   <string name="filter_label_before_year">Vóór %d</string>
+  <string name="filter_label_range_maximum">%s, maximum</string>
+  <string name="filter_label_range_minimum">%s, minimum</string>
   <string name="filter_label_ratings">Trakt beoordeling van %1$s tot %2$s</string>
   <string name="filter_label_runtime">%s minuten</string>
   <string name="filter_label_runtime_up_to">Tot %d minuten</string>
@@ -868,6 +917,8 @@
   <string name="header_import_example">Voorbeeld</string>
   <string name="header_import_fields">Velden</string>
   <string name="header_import_json_guidelines">JSON-richtlijnen</string>
+  <string name="header_jellyfin_synced_servers">Jellyfin-servers</string>
+  <string name="header_jellyfin_vip_upsell">Jellyfin-synchronisatie is een VIP-bèta</string>
   <string name="header_landing_discover">Ontdekken</string>
   <string name="header_landing_hero">Je volgende favoriet is er al.</string>
   <string name="header_landing_share">Delen</string>
@@ -882,12 +933,14 @@
   <string name="header_media_sync_choose_server">Kies een server</string>
   <string name="header_media_sync_collection_limit">Je verzameling heeft de gratis limiet bereikt</string>
   <string name="header_media_sync_connect">Verbind een Plex-server</string>
+  <string name="header_media_sync_connect_jellyfin">Verbind een Jellyfin-server</string>
   <string name="header_media_sync_feeds">Synchronisatie-instellingen</string>
   <string name="header_media_sync_history_start">Waar moet je kijkgeschiedenis beginnen?</string>
   <string name="header_media_sync_libraries">Bibliotheken</string>
   <string name="header_media_sync_profiles">Wiens afgespeelde items synchroniseren</string>
   <string name="header_media_sync_runs">Recente synchronisaties</string>
   <string name="header_media_sync_sign_in">Meld je aan bij Plex</string>
+  <string name="header_media_sync_sign_in_jellyfin">Meld je aan bij Jellyfin</string>
   <string name="header_media_sync_watch_history">Kijkgeschiedenis</string>
   <string name="header_media_sync_what_to_sync">Wat te synchroniseren</string>
   <string name="header_mixtape_done">Dit is jouw mixtape</string>
@@ -913,8 +966,8 @@
   <string name="header_player_subtitle">Ondertiteling</string>
   <string name="header_player_subtitle_language">Taal</string>
   <string name="header_player_subtitle_size">Grootte</string>
+  <string name="header_plex_servers">Plex-servers</string>
   <string name="header_plex_sync_free_limits">Plex Sync op het gratis abonnement</string>
-  <string name="header_plex_synced_servers">Gesynchroniseerde servers</string>
   <string name="header_plex_vip_upsell_add_server">Meerdere servers is een VIP-functie</string>
   <string name="header_plex_vip_upsell_webhook">Plex scrobbling is een VIP-functie</string>
   <string name="header_post_credits">Na de aftiteling</string>
@@ -930,6 +983,7 @@
   <string name="header_renewal_date">Verlengingsdatum</string>
   <string name="header_runtime">Speelduur</string>
   <string name="header_screen_time">Schermtijd</string>
+  <string name="header_seasonal_greeting_halloween">Fijne Halloween</string>
   <string name="header_sentiment_aspects">Voor- en nadelen</string>
   <string name="header_sentiment_highlight">Hoogtepunt</string>
   <string name="header_sentiment_mixed">Gemengd</string>
@@ -1000,6 +1054,7 @@
   <string name="heading_connected_community_apps">Gekoppelde community-apps</string>
   <string name="heading_meet_the_team">Maak kennis met het team</string>
   <string name="heading_what_is_trakt">Wat is Trakt?</string>
+  <string name="hint_jellyfin_server_url">Het adres waarmee je Jellyfin opent. Trakt moet het vanaf internet kunnen bereiken.</string>
   <string name="hint_media_sync_history_resync">Je kunt eerdere kijkgeschiedenis later importeren via het Beheer-menu van de server.</string>
   <string name="image_alt_comment_gif">GIF toegevoegd aan de reactie</string>
   <string name="image_alt_list_preview_poster">Poster voor een item in %s</string>
@@ -1083,6 +1138,7 @@
   <string name="input_label_search_streaming_services">Zoek streamingdiensten</string>
   <string name="input_placeholder_filter">Filter</string>
   <string name="input_placeholder_filter_services">Streamingdiensten filteren</string>
+  <string name="input_placeholder_jellyfin_server_url">https://jellyfin.example.com</string>
   <string name="input_placeholder_lists_description">Beschrijving (optioneel)</string>
   <string name="input_placeholder_lists_name">Naam</string>
   <string name="input_placeholder_mention_search">Zoek cast</string>
@@ -1124,6 +1180,10 @@
   <string name="label_genres_drawer_all">Alle genres</string>
   <string name="label_genres_drawer_selected">Geselecteerd</string>
   <string name="label_genres_drawer_subtitle_loved">Selecteer maximaal 5 genres waarvan je meer wilt zien.</string>
+  <string name="label_jellyfin_password">Wachtwoord</string>
+  <string name="label_jellyfin_server">Jellyfin-server</string>
+  <string name="label_jellyfin_server_url">Serveradres</string>
+  <string name="label_jellyfin_username">Gebruikersnaam</string>
   <string name="label_keep_play">Behouden</string>
   <string name="label_library_collection_limit">Verzamelinglimiet</string>
   <string name="label_list_item_count">%s items</string>
@@ -1152,7 +1212,6 @@
   <string name="label_parental_guide_severity_none">Geen</string>
   <string name="label_parental_guide_severity_severe">Ernstig</string>
   <string name="label_plex_connected">Verbonden met Plex</string>
-  <string name="label_plex_connection">Verbinding</string>
   <string name="label_plex_server">Server</string>
   <string name="label_queued_action">Offline opgeslagen, wachtend op synchronisatie</string>
   <string name="label_rating_average">Gemiddelde beoordeling %s van de 5</string>
@@ -1230,6 +1289,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">Sociale activiteiten bekijken voor %s</string>
   <string name="link_label_view_social_activities_shared">Bekijk sociale activiteiten voor %s, met jou gedeeld</string>
+  <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Over ons</string>
   <string name="link_text_account_settings">Account</string>
   <string name="link_text_advanced_settings">Geavanceerd</string>
@@ -1482,6 +1542,7 @@
   <string name="preview_feature_description_large_screen_cards">Op grotere schermen gebruiken alle lijsten dezelfde kaarten als de rest van de app. Het selecteren van een item opent een snel overzicht in plaats van de lijst te verlaten.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_show_ending">Toont een \'Einde\'-rij in de details van een serie: \'Voltooid\' als het verhaal is afgesloten, \'Onopgelost\' als dat niet het geval is.</string>
+  <string name="preview_feature_description_smart_recommendations">Schakel aanbevelingen tussen slimme keuzes van het nieuwe model en de klassieke.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_vip_cancel_flow">Een nieuwe manier om VIP te annuleren: vraagt waarom, toont wat er verandert en biedt een deal om te blijven.</string>
   <string name="preview_feature_description_vip_veteran">Toont hoe lang leden ononderbroken VIP zijn, met een Veteraan- of Legende-badge, een gekleurde avatarring en enkele vieringen op je eigen profiel.</string>
@@ -1490,6 +1551,7 @@
   <string name="preview_feature_title_large_screen_cards">Grote Scherm Kaarten</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_show_ending">Serieeinde</string>
+  <string name="preview_feature_title_smart_recommendations">Slimme aanbevelingen</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP opzegproces</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteraanstatus</string>
@@ -1572,6 +1634,8 @@
   <string name="switch_label_toggle_halloween_filters">Schakel Halloween-filters in/uit</string>
   <string name="switch_label_toggle_list_privacy">Schakel lijstprivacy in/uit</string>
   <string name="tab_text_advanced_filters">Geavanceerd</string>
+  <string name="tab_text_jellyfin_password">Wachtwoord</string>
+  <string name="tab_text_jellyfin_quick_connect">Quick Connect</string>
   <string name="tab_text_media_sync_history_all">Alle eerdere kijkbeurten</string>
   <string name="tab_text_media_sync_history_today">Vanaf vandaag</string>
   <string name="tab_text_more">Meer</string>
@@ -1848,6 +1912,7 @@
   <string name="text_info_widget_background">Stel het transparantieniveau van de achtergrond in.</string>
   <string name="text_info_younify_service_linked">Streamingdienst is gekoppeld.</string>
   <string name="text_info_younify_service_unlinked">Streamingdienst is ontkoppeld.</string>
+  <string name="text_jellyfin_quick_connect_waiting">Wachten op jouw goedkeuring</string>
   <string name="text_landing_discover">films en series waar je van zult houden en waar je ze nu kan streamen.</string>
   <string name="text_landing_discover_eyebrow">Vind het</string>
   <string name="text_landing_hero">Houd bij wat je hebt gezien, vind wat je hierna kunt kijken en zie waar het vanavond wordt gestreamd.</string>
@@ -2009,6 +2074,7 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s stemmen</string>
   <string name="text_raw_export">Ruwe export</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Verbind %s hieronder opnieuw.</string>
   <string name="text_rent">Huren</string>
   <string name="text_rewatching_next_episode_prompt">Welke volgende aflevering wil je opnieuw bekijken?</string>
@@ -2020,6 +2086,8 @@
   <string name="text_season_number">Seizoen %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Specials</string>
+  <string name="text_seasonal_greeting_halloween">Onze griezelige aanraders wachten op je!</string>
+  <string name="text_seasonal_greeting_signoff">Van ons allemaal bij Trakt</string>
   <string name="text_select_searching">Bezig met zoeken</string>
   <string name="text_selected_from_lists">vanuit %s lijsten</string>
   <string name="text_sentiment_example">Voorbeeld van \"%s\"</string>
@@ -2499,9 +2567,6 @@
   <string name="translated_value_video_type_recap">Recap</string>
   <string name="translated_value_video_type_teaser">Teaser</string>
   <string name="translated_value_video_type_trailer">Trailer</string>
-  <string name="tv_time_banner_action">tvtime.trakt.tv</string>
-  <string name="tv_time_banner_description">Voel je thuis met onze vertrouwde companion-app, aangedreven door je Trakt-account.</string>
-  <string name="tv_time_banner_heading">Kom je van TV Time?</string>
   <string name="tv_time_faq_dropped_shows_answer">De \'stopgezet\' status wordt niet geïmporteerd, dus alle series die je daar hebt stopgezet, moeten na het importeren opnieuw op Trakt worden stopgezet.</string>
   <string name="tv_time_faq_dropped_shows_question">Worden mijn stopgezette series overgenomen?</string>
   <string name="tv_time_faq_missing_episodes_answer">Vanaf 8 juli 2026 hebben we de manier verbeterd waarop de importeur afleveringen koppelt, dus series die voorheen onvolledig binnenkwamen, zouden nu volledig moeten importeren. Importeer je export opnieuw om de ontbrekende afleveringen binnen te halen. Als er daarna nog steeds afleveringen ontbreken, verwijder dan eerst de oude weergaven en importeer vervolgens nogmaals.</string>
@@ -2512,9 +2577,6 @@
   <string name="tv_time_faq_nothing_imported_question">Niets is geïmporteerd. Waarom?</string>
   <string name="tv_time_faq_page_description">Veelgestelde vragen over het verplaatsen van je TV Time gegevens naar Trakt. Zit je nog steeds vast? Stuur ons je export en we kijken ernaar.</string>
   <string name="tv_time_faq_page_title">TV Time import FAQ</string>
-  <string name="tv_time_import_banner_action">Opnieuw importeren</string>
-  <string name="tv_time_import_banner_description">We hebben de importeur geüpgraded. Als er series of afleveringen ontbreken, importeer dan je TV Time export opnieuw om ze binnen te halen. Ontbreken ze daarna nog steeds? Verwijder dan eerst de oude weergaven en importeer vervolgens nogmaals.</string>
-  <string name="tv_time_import_banner_heading">Je TV Time import, verbeterd</string>
   <string name="tv_time_report_description">Voeg je TV Time export toe en vertel ons wat er misging. Je bestanden en Trakt-account worden privé naar het team gestuurd en nooit openbaar gedeeld.</string>
   <string name="tv_time_report_error_too_large">Deze bestanden zijn te groot. Houd uploads onder de 25 MB in totaal.</string>
   <string name="tv_time_report_error_unknown">Er is iets misgegaan bij het verzenden van je rapport. Probeer het opnieuw.</string>

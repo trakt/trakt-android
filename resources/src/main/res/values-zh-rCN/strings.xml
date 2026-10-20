@@ -32,6 +32,7 @@
   <string name="auto_tracking_card_heading">自动追踪您的流媒体服务</string>
   <string name="badge_text_beta">测试版</string>
   <string name="badge_text_get_vip">获取VIP</string>
+  <string name="button_connect_jellyfin">连接 Jellyfin</string>
   <string name="button_connect_plex">连接Plex</string>
   <string name="button_description_sort_default">原始顺序</string>
   <string name="button_description_sort_release_date_asc">最旧优先</string>
@@ -82,9 +83,12 @@
   <string name="button_label_close_error">关闭错误</string>
   <string name="button_label_close_reaction">关闭</string>
   <string name="button_label_close_stories">关闭故事</string>
+  <string name="button_label_collapse_list">收起%s列表</string>
   <string name="button_label_collapse_navbar">折叠</string>
   <string name="button_label_comment_replies">评论回复</string>
   <string name="button_label_comment_reply">回复 %s</string>
+  <string name="button_label_comment_show_original_hint">显示原始评论</string>
+  <string name="button_label_comment_translate">翻译评论</string>
   <string name="button_label_connect_streaming_service">连接 %s</string>
   <string name="button_label_copied">已复制</string>
   <string name="button_label_copy">复制</string>
@@ -113,6 +117,7 @@
   <string name="button_label_exclude_option">排除 %s</string>
   <string name="button_label_exit_edit_mode">退出编辑模式</string>
   <string name="button_label_expand_category">展开 %s</string>
+  <string name="button_label_expand_list">展开%s列表</string>
   <string name="button_label_expand_media_overview">展开“%s”概述</string>
   <string name="button_label_expand_navbar">展开</string>
   <string name="button_label_filter_settings">%s 设置</string>
@@ -143,6 +148,11 @@
   <string name="button_label_import_more">重置并开始新的导入。</string>
   <string name="button_label_import_selected">导入您在上方选择的电影匹配项。</string>
   <string name="button_label_include_option">包含 %s</string>
+  <string name="button_label_jellyfin_add_server">添加 Jellyfin 服务器</string>
+  <string name="button_label_jellyfin_connect">连接您的 Jellyfin 服务器</string>
+  <string name="button_label_jellyfin_connect_server">连接此 Jellyfin 服务器</string>
+  <string name="button_label_jellyfin_sign_in">登录此 Jellyfin 服务器</string>
+  <string name="button_label_jellyfin_sync_now">立即同步 Jellyfin</string>
   <string name="button_label_join_trakt">加入trakt.tv以追踪你正在观看的内容</string>
   <string name="button_label_keep_newest_play">保留每个项目最新的播放记录</string>
   <string name="button_label_keep_oldest_play">保留每个项目最旧的播放记录</string>
@@ -173,6 +183,7 @@
   <string name="button_label_media_sync_next">进入下一步</string>
   <string name="button_label_media_sync_open_plex">打开Plex登录页面</string>
   <string name="button_label_media_sync_reconnect">为此服务器重新登录Plex</string>
+  <string name="button_label_media_sync_reconnect_jellyfin">为此服务器重新登录 Jellyfin</string>
   <string name="button_label_media_sync_retry">重试同步此服务器</string>
   <string name="button_label_mixtape_another">换一个推荐</string>
   <string name="button_label_mixtape_remove_pick">移除%s</string>
@@ -222,6 +233,8 @@
   <string name="button_label_react">使用 %s 反应</string>
   <string name="button_label_read_more">阅读更多</string>
   <string name="button_label_recent_comments">最新评论</string>
+  <string name="button_label_recommendation_mode_classic">显示经典推荐</string>
+  <string name="button_label_recommendation_mode_smart">显示智能推荐</string>
   <string name="button_label_reject_follow_request">拒绝来自 %s 的关注请求</string>
   <string name="button_label_remove_collaborator">将“%s”从协作者中移除</string>
   <string name="button_label_remove_from_favorites">将“%s”从你的最爱中移除</string>
@@ -514,6 +527,8 @@
   <string name="button_text_progress_in_progress">进行中</string>
   <string name="button_text_raw_export">立即导出</string>
   <string name="button_text_recent_comments">最新</string>
+  <string name="button_text_recommendation_mode_classic">经典</string>
+  <string name="button_text_recommendation_mode_smart">智能</string>
   <string name="button_text_reconnect">重新连接</string>
   <string name="button_text_reject_follow_request">拒绝请求</string>
   <string name="button_text_remove_from_favorites">从我的最爱中移除</string>
@@ -623,8 +638,19 @@
   <string name="calendar_day_item_count_other">%d 个项目</string>
   <string name="calendar_view_day">日</string>
   <string name="calendar_view_week">一周</string>
+  <string name="chart_label_area_chart">面积图</string>
+  <string name="chart_label_bar_chart">条形图</string>
+  <string name="chart_label_bubble_chart">气泡图</string>
+  <string name="chart_label_country_map">国家/地区地图</string>
   <string name="chart_label_grouped_categories">%d 条类别</string>
+  <string name="chart_label_line_chart">折线图</string>
   <string name="chart_label_other">其他</string>
+  <string name="chart_label_segmented_distribution">分段分布图</string>
+  <string name="chart_label_sparkline">迷你图</string>
+  <string name="chart_label_stacked_bar_chart">堆积条形图</string>
+  <string name="chart_role_interactive_bar_chart">交互式条形图</string>
+  <string name="chart_role_interactive_line_chart">交互式折线图</string>
+  <string name="chart_role_interactive_stacked_bar_chart">交互式堆积条形图</string>
   <string name="cleanup_status_done">已移除 %d 个重复播放记录。</string>
   <string name="cleanup_status_removing">正在移除 %1$d / %2$d 个重复播放…</string>
   <string name="clear_status_clearing">正在清除 %1$d / %2$d 个项目…</string>
@@ -691,8 +717,16 @@
   <string name="description_export_before_destructive">在移除任何内容之前下载您的数据ZIP。</string>
   <string name="description_history_analysis">在您的观看历史中查找重复播放，并只保留每个项目的一次观看记录。</string>
   <string name="description_import">直接在浏览器中从其他服务导入您的数据。</string>
+  <string name="description_jellyfin_connect_expired">快速连接代码已过期。请重新开始连接您的服务器。</string>
+  <string name="description_jellyfin_password">使用您在 Jellyfin 中使用的用户名和密码登录。</string>
+  <string name="description_jellyfin_quick_connect">您将收到一个代码，用于在 Jellyfin 中批准，因此您无需在此处输入密码。</string>
+  <string name="description_jellyfin_quick_connect_code">在 <b>%s</b> 上的 Jellyfin 中，打开您的个人资料，然后选择快速连接，并输入：</string>
+  <string name="description_jellyfin_sync">连接您的 Jellyfin 服务器，将观看历史和收藏与 Trakt 同步。</string>
+  <string name="description_jellyfin_synced_servers">自动同步您的观看历史和媒体库。</string>
+  <string name="description_jellyfin_vip_upsell">升级到 VIP，即可在 Jellyfin 同步测试期间，同步您的 Jellyfin 服务器中的观看历史和收藏。</string>
   <string name="description_library_collection_limit">来自%s的某些项目尚未添加到您的Trakt收藏中。免费账户达到收藏上限后会停止；VIP账户可以收藏所有内容。</string>
   <string name="description_manage_collaborators">协作者可以添加和删除此列表中的项目。从关注您的人中选择。</string>
+  <string name="description_media_sync_add_jellyfin_server">连接另一个 Jellyfin 服务器以同步。</string>
   <string name="description_media_sync_add_server_free">免费账户可同步1个Plex服务器。升级VIP以添加更多。</string>
   <string name="description_media_sync_add_server_vip">连接另一个Plex服务器以同步。</string>
   <string name="description_media_sync_collection_limit">此服务器中的某些项目尚未添加到您的Trakt收藏中。升级VIP即可收藏所有内容。</string>
@@ -705,6 +739,7 @@
   <string name="description_media_sync_feeds">选择此服务器同步到您的Trakt账户的内容。每个开关都适用于电影和电视节目。</string>
   <string name="description_media_sync_history_all">您在此服务器上观看过的所有内容都将在首次同步时导入。</string>
   <string name="description_media_sync_history_always_full">评分、收藏和观看列表将始终完整导入。</string>
+  <string name="description_media_sync_history_always_full_jellyfin">您的收藏夹将始终完整导入。</string>
   <string name="description_media_sync_history_today">只会添加新的观看记录。您现有的 Trakt 历史记录将保持不变。</string>
   <string name="description_media_sync_import_past_watches">导入您在此服务器上观看过的所有内容。运行完全同步。</string>
   <string name="description_media_sync_never_synced">等待首次同步</string>
@@ -714,6 +749,7 @@
   <string name="description_media_sync_server_unreachable">无法从互联网访问</string>
   <string name="description_media_sync_synced_at">%s已同步</string>
   <string name="description_media_sync_unauthorized">Plex不再接受Trakt的访问。请重新连接以继续同步。</string>
+  <string name="description_media_sync_unauthorized_jellyfin">Jellyfin 不再接受 Trakt 的访问。请重新连接以继续同步。</string>
   <string name="description_media_sync_unreachable">Trakt无法连接此服务器。待其恢复在线后请重试。</string>
   <string name="description_media_sync_watchlist_only">无需服务器。同步您的Plex待看列表。</string>
   <string name="description_media_sync_webhook_only">观看记录和评分来自您的 Plex Webhook。</string>
@@ -780,6 +816,17 @@
   <string name="error_text_genres_save_failed">保存失败。请再试一次。</string>
   <string name="error_text_image_preview_failed">预览加载失败</string>
   <string name="error_text_imdb_link_not_found">我们无法在 Trakt 上找到此 IMDb 影片。</string>
+  <string name="error_text_jellyfin_embedded_credentials">请勿在地址中包含您的用户名和密码。</string>
+  <string name="error_text_jellyfin_invalid_credentials">用户名或密码不正确。</string>
+  <string name="error_text_jellyfin_invalid_server_url">请输入您的服务器完整地址，例如 https://jellyfin.example.com。</string>
+  <string name="error_text_jellyfin_quick_connect_disabled">此服务器上的快速连接已关闭。请在 Jellyfin 控制面板中将其打开，或使用您的密码登录。</string>
+  <string name="error_text_jellyfin_raw_ip_address">请使用您的服务器域名。Trakt 无法访问裸 IP 地址。</string>
+  <string name="error_text_jellyfin_server_limit">免费账户只能同步 1 个媒体服务器。升级 VIP 以添加更多。</string>
+  <string name="error_text_jellyfin_server_not_found">该地址没有 Jellyfin 服务器响应。请检查并重试。</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt 无法连接到该服务器。请确保它在线并可从互联网访问。</string>
+  <string name="error_text_jellyfin_unsupported_port">请使用 80、443、8096 或 8920 端口，或者将服务器放在反向代理后面。</string>
+  <string name="error_text_jellyfin_unsupported_scheme">地址应以 https:// 或 http:// 开头。</string>
+  <string name="error_text_jellyfin_vip_required">Jellyfin 同步目前是 VIP 测试版。</string>
   <string name="error_text_lists_limit">你已达到个人列表数量上限。升级至VIP可获得无限量列表！</string>
   <string name="error_text_locked_account_collection_limit">此用户帐户已被锁定，因为收藏已超出限制。请<a>联系支持</a>以解决此问题。</string>
   <string name="error_text_locked_account_guide">请访问<a>高级设置</a>以运行历史分析并解锁您的账户。</string>
@@ -803,6 +850,8 @@
   <string name="error_text_unexpected_notes_error">发布笔记时出错。如果此问题持续发生，请<a>提交新问题</a>。</string>
   <string name="error_text_username">用户名更新失败。该用户名已被占用或包含无效字符。</string>
   <string name="filter_label_before_year">%d 年之前</string>
+  <string name="filter_label_range_maximum">%s，最大值</string>
+  <string name="filter_label_range_minimum">%s，最小值</string>
   <string name="filter_label_ratings">Trakt 评分为 %1$s 至 %2$s</string>
   <string name="filter_label_runtime">%s 分钟</string>
   <string name="filter_label_runtime_up_to">最多 %d 分钟</string>
@@ -868,6 +917,8 @@
   <string name="header_import_example">示例</string>
   <string name="header_import_fields">字段</string>
   <string name="header_import_json_guidelines">JSON 指南</string>
+  <string name="header_jellyfin_synced_servers">Jellyfin 服务器</string>
+  <string name="header_jellyfin_vip_upsell">Jellyfin 同步是 VIP 测试版</string>
   <string name="header_landing_discover">发现</string>
   <string name="header_landing_hero">你的下一部心头好已上线。</string>
   <string name="header_landing_share">分享</string>
@@ -882,12 +933,14 @@
   <string name="header_media_sync_choose_server">选择服务器</string>
   <string name="header_media_sync_collection_limit">您的收藏已达到免费上限</string>
   <string name="header_media_sync_connect">连接Plex服务器</string>
+  <string name="header_media_sync_connect_jellyfin">连接 Jellyfin 服务器</string>
   <string name="header_media_sync_feeds">同步设置</string>
   <string name="header_media_sync_history_start">您的历史记录应该从何处开始？</string>
   <string name="header_media_sync_libraries">媒体库</string>
   <string name="header_media_sync_profiles">同步谁的播放记录</string>
   <string name="header_media_sync_runs">最近同步</string>
   <string name="header_media_sync_sign_in">登录Plex</string>
+  <string name="header_media_sync_sign_in_jellyfin">登录 Jellyfin</string>
   <string name="header_media_sync_watch_history">观看历史</string>
   <string name="header_media_sync_what_to_sync">要同步的内容</string>
   <string name="header_mixtape_done">这是您的 Mixtape</string>
@@ -913,8 +966,8 @@
   <string name="header_player_subtitle">字幕</string>
   <string name="header_player_subtitle_language">语言</string>
   <string name="header_player_subtitle_size">大小</string>
+  <string name="header_plex_servers">Plex 服务器</string>
   <string name="header_plex_sync_free_limits">免费套餐上的Plex同步</string>
-  <string name="header_plex_synced_servers">已同步的服务器</string>
   <string name="header_plex_vip_upsell_add_server">多服务器是VIP功能</string>
   <string name="header_plex_vip_upsell_webhook">Plex 记录是一项 VIP 功能</string>
   <string name="header_post_credits">片尾彩蛋</string>
@@ -930,6 +983,7 @@
   <string name="header_renewal_date">续订日期</string>
   <string name="header_runtime">时长</string>
   <string name="header_screen_time">屏幕时间</string>
+  <string name="header_seasonal_greeting_halloween">万圣节快乐</string>
   <string name="header_sentiment_aspects">优点与缺点</string>
   <string name="header_sentiment_highlight">亮点</string>
   <string name="header_sentiment_mixed">混合</string>
@@ -1000,6 +1054,7 @@
   <string name="heading_connected_community_apps">已连接的社区应用</string>
   <string name="heading_meet_the_team">认识团队</string>
   <string name="heading_what_is_trakt">Trakt 是什么？</string>
+  <string name="hint_jellyfin_server_url">您用来打开 Jellyfin 的地址。Trakt 必须能从互联网访问它。</string>
   <string name="hint_media_sync_history_resync">您可以稍后从服务器的“管理”菜单导入过去的观看记录。</string>
   <string name="image_alt_comment_gif">评论附带的GIF</string>
   <string name="image_alt_list_preview_poster">%s 中的条目海报</string>
@@ -1083,6 +1138,7 @@
   <string name="input_label_search_streaming_services">筛选流媒体服务</string>
   <string name="input_placeholder_filter">筛选器</string>
   <string name="input_placeholder_filter_services">筛选流媒体服务</string>
+  <string name="input_placeholder_jellyfin_server_url">https://jellyfin.example.com</string>
   <string name="input_placeholder_lists_description">描述（可选）</string>
   <string name="input_placeholder_lists_name">名称</string>
   <string name="input_placeholder_mention_search">搜索演职人员</string>
@@ -1124,6 +1180,10 @@
   <string name="label_genres_drawer_all">所有类型</string>
   <string name="label_genres_drawer_selected">已选择</string>
   <string name="label_genres_drawer_subtitle_loved">最多选择 5 种您希望更多看到的类型。</string>
+  <string name="label_jellyfin_password">密码</string>
+  <string name="label_jellyfin_server">Jellyfin 服务器</string>
+  <string name="label_jellyfin_server_url">服务器地址</string>
+  <string name="label_jellyfin_username">用户名</string>
   <string name="label_keep_play">保留</string>
   <string name="label_library_collection_limit">收藏上限</string>
   <string name="label_list_item_count">%s 个项目</string>
@@ -1152,7 +1212,6 @@
   <string name="label_parental_guide_severity_none">无</string>
   <string name="label_parental_guide_severity_severe">严重</string>
   <string name="label_plex_connected">已连接到Plex</string>
-  <string name="label_plex_connection">连接</string>
   <string name="label_plex_server">服务器</string>
   <string name="label_queued_action">已离线保存，等待同步</string>
   <string name="label_rating_average">平均评分 5 分中的 %s 分</string>
@@ -1230,6 +1289,7 @@
   <string name="link_label_status">Trakt 状态</string>
   <string name="link_label_view_social_activities">查看%s的社交动态</string>
   <string name="link_label_view_social_activities_shared">查看%s的社交动态，与你分享</string>
+  <string name="link_label_youtube">优兔</string>
   <string name="link_text_about">关于</string>
   <string name="link_text_account_settings">帐户</string>
   <string name="link_text_advanced_settings">高级</string>
@@ -1482,6 +1542,7 @@
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_show_ending">在剧集详情中显示结局行：故事完结时为“已完成”，未完结时为“未完结”。</string>
+  <string name="preview_feature_description_smart_recommendations">在新模型智能推荐和经典推荐之间切换。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_vip_cancel_flow">取消 VIP 的新方式：询问原因，显示变更内容并提供挽留优惠。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
@@ -1490,6 +1551,7 @@
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_show_ending">剧集结局</string>
+  <string name="preview_feature_title_smart_recommendations">智能推荐</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP 取消流程</string>
   <string name="preview_feature_title_vip_veteran">VIP 资深会员身份</string>
@@ -1572,6 +1634,8 @@
   <string name="switch_label_toggle_halloween_filters">切换万圣节筛选器</string>
   <string name="switch_label_toggle_list_privacy">切换列表隐私</string>
   <string name="tab_text_advanced_filters">高级</string>
+  <string name="tab_text_jellyfin_password">密码</string>
+  <string name="tab_text_jellyfin_quick_connect">快速连接</string>
   <string name="tab_text_media_sync_history_all">所有过去的观看记录</string>
   <string name="tab_text_media_sync_history_today">从今天开始</string>
   <string name="tab_text_more">更多</string>
@@ -1848,6 +1912,7 @@
   <string name="text_info_widget_background">设置背景透明度。</string>
   <string name="text_info_younify_service_linked">流媒体服务已关联。</string>
   <string name="text_info_younify_service_unlinked">流媒体服务已取消关联。</string>
+  <string name="text_jellyfin_quick_connect_waiting">等待您批准</string>
   <string name="text_landing_discover">你会喜欢的电影和剧集以及它们当前正在哪里播放。</string>
   <string name="text_landing_discover_eyebrow">发现</string>
   <string name="text_landing_hero">追踪你看过的内容，发现接下来要看什么，并查看今晚在哪里播放。</string>
@@ -2009,6 +2074,7 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s 票</string>
   <string name="text_raw_export">原始导出</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">请在下方重新连接 %s。</string>
   <string name="text_rent">租借</string>
   <string name="text_rewatching_next_episode_prompt">您想重温的下一集是哪一集？</string>
@@ -2020,6 +2086,8 @@
   <string name="text_season_number">第 %d 季</string>
   <string name="text_season_number_with_title">%1$d：%2$s</string>
   <string name="text_season_specials">特别篇</string>
+  <string name="text_seasonal_greeting_halloween">我们的万圣节精选等着您！</string>
+  <string name="text_seasonal_greeting_signoff">Trakt 全体人员</string>
   <string name="text_select_searching">正在搜索</string>
   <string name="text_selected_from_lists">来自 %s 个列表</string>
   <string name="text_sentiment_example">来自“%s”的示例</string>
@@ -2499,9 +2567,6 @@
   <string name="translated_value_video_type_recap">回顾</string>
   <string name="translated_value_video_type_teaser">预告</string>
   <string name="translated_value_video_type_trailer">预告片</string>
-  <string name="tv_time_banner_action">tvtime.trakt.tv</string>
-  <string name="tv_time_banner_description">使用我们熟悉的配套应用（由您的 Trakt 账户提供支持），让您倍感宾至如归。</string>
-  <string name="tv_time_banner_heading">您来自 TV Time 吗？</string>
   <string name="tv_time_faq_dropped_shows_answer">放弃状态不会导入，因此您在TV Time上放弃的任何节目在导入Trakt后需要重新放弃。</string>
   <string name="tv_time_faq_dropped_shows_question">我已放弃的节目会转移过来吗？</string>
   <string name="tv_time_faq_missing_episodes_answer">截至2026年7月8日，我们改进了导入器匹配剧集的方式，因此以前导入不完整的节目现在应该能够完全导入。请再次导入您的导出文件以获取缺失的剧集。如果之后仍有缺失，请先删除旧的播放记录，然后再次导入。</string>
@@ -2512,9 +2577,6 @@
   <string name="tv_time_faq_nothing_imported_question">没有导入任何内容。为什么？</string>
   <string name="tv_time_faq_page_description">关于将您的TV Time数据迁移到Trakt的常见问题。仍然遇到问题？请将您的导出文件发送给我们，我们会进行查看。</string>
   <string name="tv_time_faq_page_title">TV Time导入常见问题</string>
-  <string name="tv_time_import_banner_action">再次导入</string>
-  <string name="tv_time_import_banner_description">我们已升级导入器。如果有些节目或剧集缺失，请再次导入您的TV Time导出文件以获取它们。如果之后仍有缺失？请先删除旧的播放记录，然后再次导入。</string>
-  <string name="tv_time_import_banner_heading">您的TV Time导入已改进</string>
   <string name="tv_time_report_description">附上您的TV Time导出文件，并告诉我们哪里出了问题。您的文件和Trakt帐户将私密地发送给团队，绝不会公开分享。</string>
   <string name="tv_time_report_error_too_large">文件过大。上传总大小请控制在25 MB以下。</string>
   <string name="tv_time_report_error_unknown">发送报告时发生了一些错误。请重试。</string>

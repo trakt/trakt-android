@@ -32,6 +32,7 @@
   <string name="auto_tracking_card_heading">Fes un seguiment automàtic a tots els teus serveis de streaming</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Obtén VIP</string>
+  <string name="button_connect_jellyfin">Connecta Jellyfin</string>
   <string name="button_connect_plex">Connecta Plex</string>
   <string name="button_description_sort_default">Ordre original</string>
   <string name="button_description_sort_release_date_asc">Més antic primer</string>
@@ -82,9 +83,12 @@
   <string name="button_label_close_error">Tanca l\'error</string>
   <string name="button_label_close_reaction">Tanca</string>
   <string name="button_label_close_stories">Tanca les històries</string>
+  <string name="button_label_collapse_list">Redueix la llista %s</string>
   <string name="button_label_collapse_navbar">Redueix</string>
   <string name="button_label_comment_replies">Respostes a la ressenya</string>
   <string name="button_label_comment_reply">Respon a %s</string>
+  <string name="button_label_comment_show_original_hint">Mostra el comentari original</string>
+  <string name="button_label_comment_translate">Tradueix el comentari</string>
   <string name="button_label_connect_streaming_service">Connecta %s</string>
   <string name="button_label_copied">Copiat</string>
   <string name="button_label_copy">Copia</string>
@@ -113,6 +117,7 @@
   <string name="button_label_exclude_option">Exclou %s</string>
   <string name="button_label_exit_edit_mode">Surt del mode d\'edició</string>
   <string name="button_label_expand_category">Expandeix %s</string>
+  <string name="button_label_expand_list">Expandeix la llista %s</string>
   <string name="button_label_expand_media_overview">Expandeix la sinopsi de \"%s\"</string>
   <string name="button_label_expand_navbar">Expandeix</string>
   <string name="button_label_filter_settings">Configuració de %s</string>
@@ -143,6 +148,11 @@
   <string name="button_label_import_more">Restableix i inicia una nova importació.</string>
   <string name="button_label_import_selected">Importa les coincidències de pel·lícules que has triat anteriorment.</string>
   <string name="button_label_include_option">Inclou %s</string>
+  <string name="button_label_jellyfin_add_server">Afegeix un servidor Jellyfin</string>
+  <string name="button_label_jellyfin_connect">Connecta el teu servidor Jellyfin</string>
+  <string name="button_label_jellyfin_connect_server">Connecta aquest servidor Jellyfin</string>
+  <string name="button_label_jellyfin_sign_in">Inicia sessió en aquest servidor Jellyfin</string>
+  <string name="button_label_jellyfin_sync_now">Sincronitza Jellyfin ara</string>
   <string name="button_label_join_trakt">Uneix-te a trakt.tv per fer un seguiment del que estàs veient</string>
   <string name="button_label_keep_newest_play">Conservar la reproducció més recent de cada element</string>
   <string name="button_label_keep_oldest_play">Conservar la reproducció més antiga de cada element</string>
@@ -173,6 +183,7 @@
   <string name="button_label_media_sync_next">Ves al pas següent</string>
   <string name="button_label_media_sync_open_plex">Obre la pàgina d\'inici de sessió de Plex</string>
   <string name="button_label_media_sync_reconnect">Torna a iniciar sessió a Plex per a aquest servidor</string>
+  <string name="button_label_media_sync_reconnect_jellyfin">Torna a iniciar sessió a Jellyfin per a aquest servidor</string>
   <string name="button_label_media_sync_retry">Torna a intentar sincronitzar aquest servidor</string>
   <string name="button_label_mixtape_another">Aquest no, mostra\'n un altre</string>
   <string name="button_label_mixtape_remove_pick">Elimina %s</string>
@@ -222,6 +233,8 @@
   <string name="button_label_react">Reacciona amb %s</string>
   <string name="button_label_read_more">Llegeix més</string>
   <string name="button_label_recent_comments">Ressenyes recents</string>
+  <string name="button_label_recommendation_mode_classic">Mostra recomanacions clàssiques</string>
+  <string name="button_label_recommendation_mode_smart">Mostra recomanacions intel·ligents</string>
   <string name="button_label_reject_follow_request">Rebutjar sol·licitud de seguiment de %s</string>
   <string name="button_label_remove_collaborator">Elimina %s com a col·laborador</string>
   <string name="button_label_remove_from_favorites">Elimina \"%s\" dels teus Preferits</string>
@@ -514,6 +527,8 @@
   <string name="button_text_progress_in_progress">En curs</string>
   <string name="button_text_raw_export">Exporta ara</string>
   <string name="button_text_recent_comments">Recents</string>
+  <string name="button_text_recommendation_mode_classic">Clàssic</string>
+  <string name="button_text_recommendation_mode_smart">Intel·ligent</string>
   <string name="button_text_reconnect">Torna a connectar</string>
   <string name="button_text_reject_follow_request">Rebutjar sol·licitud</string>
   <string name="button_text_remove_from_favorites">Elimina de Preferits</string>
@@ -623,8 +638,19 @@
   <string name="calendar_day_item_count_other">%d Elements de la llista</string>
   <string name="calendar_view_day">Dia</string>
   <string name="calendar_view_week">Setmana</string>
+  <string name="chart_label_area_chart">Gràfic d\'àrea</string>
+  <string name="chart_label_bar_chart">Gràfic de barres</string>
+  <string name="chart_label_bubble_chart">Gràfic de bombolles</string>
+  <string name="chart_label_country_map">Mapa de països</string>
   <string name="chart_label_grouped_categories">%d categories</string>
+  <string name="chart_label_line_chart">Gràfic de línies</string>
   <string name="chart_label_other">Altres</string>
+  <string name="chart_label_segmented_distribution">Distribució segmentada</string>
+  <string name="chart_label_sparkline">Minigràfic</string>
+  <string name="chart_label_stacked_bar_chart">Gràfic de barres apilades</string>
+  <string name="chart_role_interactive_bar_chart">gràfic de barres interactiu</string>
+  <string name="chart_role_interactive_line_chart">gràfic de línies interactiu</string>
+  <string name="chart_role_interactive_stacked_bar_chart">gràfic de barres apilades interactiu</string>
   <string name="cleanup_status_done">S\'han eliminat %d reproduccions duplicades.</string>
   <string name="cleanup_status_removing">S\'estan eliminant %1$d / %2$d reproduccions duplicades…</string>
   <string name="clear_status_clearing">Eliminant %1$d / %2$d elements…</string>
@@ -691,8 +717,16 @@
   <string name="description_export_before_destructive">Descarrega un ZIP de les teves dades abans que s\'elimini res.</string>
   <string name="description_history_analysis">Troba reproduccions duplicades al teu historial de reproduccions i conserva només una reproducció de cada element.</string>
   <string name="description_import">Importa les teves dades d\'altres serveis directament al teu navegador.</string>
+  <string name="description_jellyfin_connect_expired">El codi de Quick Connect ha caducat. Torna a començar per connectar el teu servidor.</string>
+  <string name="description_jellyfin_password">Inicia sessió amb el nom d\'usuari i la contrasenya que utilitzes a Jellyfin.</string>
+  <string name="description_jellyfin_quick_connect">Obtindràs un codi per aprovar a Jellyfin, així que mai hauràs d\'introduir la teva contrasenya aquí.</string>
+  <string name="description_jellyfin_quick_connect_code">A Jellyfin, a <b>%s</b>, obre el teu perfil, després Quick Connect i introdueix:</string>
+  <string name="description_jellyfin_sync">Connecta el teu servidor Jellyfin per sincronitzar l\'historial de visualització i les col·leccions amb Trakt.</string>
+  <string name="description_jellyfin_synced_servers">Sincronitza automàticament el teu historial de visualització i biblioteca.</string>
+  <string name="description_jellyfin_vip_upsell">Fes-te VIP per sincronitzar l\'historial de visualització i les col·leccions del teu servidor Jellyfin mentre estigui en fase beta.</string>
   <string name="description_library_collection_limit">Alguns elements de %s encara no són a la teva col·lecció de Trakt. Els comptes gratuïts s\'aturen al límit de la col·lecció; els VIP ho recopilen tot.</string>
   <string name="description_manage_collaborators">Els col·laboradors poden afegir i eliminar elements d\'aquesta llista. Tria entre les persones que et segueixen.</string>
+  <string name="description_media_sync_add_jellyfin_server">Connecta un altre servidor Jellyfin per sincronitzar-lo també.</string>
   <string name="description_media_sync_add_server_free">Els comptes gratuïts sincronitzen 1 servidor Plex. Fes-te VIP per afegir-ne més.</string>
   <string name="description_media_sync_add_server_vip">Connecta un altre servidor Plex per sincronitzar-lo també.</string>
   <string name="description_media_sync_collection_limit">Alguns elements d\'aquest servidor encara no es troben a la teva col·lecció de Trakt. Fes-te VIP per col·leccionar-ho tot.</string>
@@ -705,6 +739,7 @@
   <string name="description_media_sync_feeds">Tria què sincronitza aquest servidor al teu compte de Trakt. Cada opció cobreix tant pel·lícules com sèries.</string>
   <string name="description_media_sync_history_all">Tot el que has visualitzat en aquest servidor s\'importarà amb la primera sincronització.</string>
   <string name="description_media_sync_history_always_full">Les puntuacions, la col·lecció i la llista de seguiment sempre s\'importen completament.</string>
+  <string name="description_media_sync_history_always_full_jellyfin">La teva col·lecció sempre s\'importa completament.</string>
   <string name="description_media_sync_history_today">Només s\'afegiran noves visualitzacions. El teu historial de Trakt existent es mantindrà com està.</string>
   <string name="description_media_sync_import_past_watches">S\'importa tot el que heu vist en aquest servidor. Realitza una sincronització completa.</string>
   <string name="description_media_sync_never_synced">Esperant la seva primera sincronització</string>
@@ -714,6 +749,7 @@
   <string name="description_media_sync_server_unreachable">No accessible des d\'internet</string>
   <string name="description_media_sync_synced_at">Sincronitzat %s</string>
   <string name="description_media_sync_unauthorized">Plex ja no accepta l\'accés de Trakt. Torna a connectar-te per mantenir la sincronització.</string>
+  <string name="description_media_sync_unauthorized_jellyfin">Jellyfin ja no accepta l\'accés de Trakt. Torna a connectar-te per mantenir la sincronització.</string>
   <string name="description_media_sync_unreachable">Trakt no pot accedir a aquest servidor. Torna-ho a intentar quan estigui en línia.</string>
   <string name="description_media_sync_watchlist_only">No cal cap servidor. Sincronitza la teva llista de seguiment de Plex.</string>
   <string name="description_media_sync_webhook_only">Les reproduccions i les puntuacions provenen del teu webhook de Plex.</string>
@@ -780,6 +816,17 @@
   <string name="error_text_genres_save_failed">No s\'ha pogut desar. Torna-ho a provar.</string>
   <string name="error_text_image_preview_failed">No s\'ha pogut carregar la previsualització</string>
   <string name="error_text_imdb_link_not_found">No hem pogut trobar aquest títol d\'IMDb a Trakt.</string>
+  <string name="error_text_jellyfin_embedded_credentials">No incloguis el teu nom d\'usuari i contrasenya a l\'adreça.</string>
+  <string name="error_text_jellyfin_invalid_credentials">Aquest nom d\'usuari i contrasenya no han funcionat.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Introdueix l\'adreça completa del teu servidor, com https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect està desactivat en aquest servidor. Activa\'l al panell de control de Jellyfin, o inicia sessió amb la teva contrasenya.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Utilitza el nom de domini del teu servidor. Trakt no pot accedir a una adreça IP nua.</string>
+  <string name="error_text_jellyfin_server_limit">Els comptes gratuïts poden sincronitzar 1 servidor de contingut. Fes-te VIP per afegir-ne més.</string>
+  <string name="error_text_jellyfin_server_not_found">Cap servidor Jellyfin ha respost a aquesta adreça. Revisa-la i torna a provar-ho.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt no pot accedir a aquest servidor. Assegura\'t que estigui en línia i sigui accessible des d\'Internet.</string>
+  <string name="error_text_jellyfin_unsupported_port">Utilitza el port 80, 443, 8096 o 8920, o posa el servidor darrere d\'un proxy invers.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Comença l\'adreça amb https:// o http://.</string>
+  <string name="error_text_jellyfin_vip_required">La sincronització de Jellyfin és una beta VIP de moment.</string>
   <string name="error_text_lists_limit">Has arribat al límit de les teves llistes personals. Actualitza a VIP per obtenir una quantitat il·limitada de llistes!</string>
   <string name="error_text_locked_account_collection_limit">Aquest compte d\'usuari s\'ha bloquejat perquè la col·lecció ha superat el límit. Si us plau, <a>contacta amb el suport</a> per resoldre aquest problema.</string>
   <string name="error_text_locked_account_guide">Si us plau, visita la secció de <a>configuració avançada</a> per executar una anàlisi de l\'historial i desbloquejar el teu compte.</string>
@@ -803,6 +850,8 @@
   <string name="error_text_unexpected_notes_error">Alguna cosa ha anat malament en publicar la teva nota. Si això continua passant, si us plau, <a>envia un nou problema</a>.</string>
   <string name="error_text_username">L\'actualització del nom d\'usuari ha fallat. Ja està ocupat o conté caràcters no vàlids.</string>
   <string name="filter_label_before_year">Abans de %d</string>
+  <string name="filter_label_range_maximum">%s, màxim</string>
+  <string name="filter_label_range_minimum">%s, mínim</string>
   <string name="filter_label_ratings">Valoració de Trakt de %1$s a %2$s</string>
   <string name="filter_label_runtime">%s minuts</string>
   <string name="filter_label_runtime_up_to">Fins a %d minuts</string>
@@ -868,6 +917,8 @@
   <string name="header_import_example">Exemple</string>
   <string name="header_import_fields">Camps</string>
   <string name="header_import_json_guidelines">Directrius JSON</string>
+  <string name="header_jellyfin_synced_servers">Servidors Jellyfin</string>
+  <string name="header_jellyfin_vip_upsell">La sincronització de Jellyfin és una beta VIP</string>
   <string name="header_landing_discover">Descobreix</string>
   <string name="header_landing_hero">El teu pròxim favorit ja és a fora.</string>
   <string name="header_landing_share">Comparteix</string>
@@ -882,12 +933,14 @@
   <string name="header_media_sync_choose_server">Tria un servidor</string>
   <string name="header_media_sync_collection_limit">La teva col·lecció ha arribat al límit gratuït</string>
   <string name="header_media_sync_connect">Connecta un servidor Plex</string>
+  <string name="header_media_sync_connect_jellyfin">Connecta un servidor Jellyfin</string>
   <string name="header_media_sync_feeds">Configuració de sincronització</string>
   <string name="header_media_sync_history_start">On ha de començar el teu historial?</string>
   <string name="header_media_sync_libraries">Biblioteques</string>
   <string name="header_media_sync_profiles">De qui se sincronitzen les reproduccions</string>
   <string name="header_media_sync_runs">Sincronitzacions recents</string>
   <string name="header_media_sync_sign_in">Inicia sessió a Plex</string>
+  <string name="header_media_sync_sign_in_jellyfin">Inicia sessió a Jellyfin</string>
   <string name="header_media_sync_watch_history">Historial de visualització</string>
   <string name="header_media_sync_what_to_sync">Què sincronitzar</string>
   <string name="header_mixtape_done">Aquesta és la teva mixtape</string>
@@ -913,8 +966,8 @@
   <string name="header_player_subtitle">Subtítols</string>
   <string name="header_player_subtitle_language">Idioma</string>
   <string name="header_player_subtitle_size">Mida</string>
+  <string name="header_plex_servers">Servidors Plex</string>
   <string name="header_plex_sync_free_limits">Sincronització de Plex al pla gratuït</string>
-  <string name="header_plex_synced_servers">Servidors sincronitzats</string>
   <string name="header_plex_vip_upsell_add_server">Múltiples servidors és una característica VIP</string>
   <string name="header_plex_vip_upsell_webhook">L\'scrobbling de Plex és una característica VIP</string>
   <string name="header_post_credits">Escenes post-crèdits</string>
@@ -930,6 +983,7 @@
   <string name="header_renewal_date">Data de renovació</string>
   <string name="header_runtime">Durada</string>
   <string name="header_screen_time">Temps de pantalla</string>
+  <string name="header_seasonal_greeting_halloween">Feliç Halloween</string>
   <string name="header_sentiment_aspects">Pros i contres</string>
   <string name="header_sentiment_highlight">Destacat</string>
   <string name="header_sentiment_mixed">Mixt</string>
@@ -1000,6 +1054,7 @@
   <string name="heading_connected_community_apps">Aplicacions de comunitat connectades</string>
   <string name="heading_meet_the_team">Coneix l\'equip</string>
   <string name="heading_what_is_trakt">Què és Trakt?</string>
+  <string name="hint_jellyfin_server_url">L\'adreça amb què obres Jellyfin. Trakt ha de poder accedir-hi des d\'Internet.</string>
   <string name="hint_media_sync_history_resync">Podeu importar visualitzacions passades més tard des del menú Gestionar del servidor.</string>
   <string name="image_alt_comment_gif">GIF adjunt al comentari</string>
   <string name="image_alt_list_preview_poster">Pòster d\'una entrada a %s</string>
@@ -1083,6 +1138,7 @@
   <string name="input_label_search_streaming_services">Cercar serveis de streaming</string>
   <string name="input_placeholder_filter">Filtre</string>
   <string name="input_placeholder_filter_services">Filtrar serveis de streaming</string>
+  <string name="input_placeholder_jellyfin_server_url">https://jellyfin.example.com</string>
   <string name="input_placeholder_lists_description">Descripció (opcional)</string>
   <string name="input_placeholder_lists_name">Nom</string>
   <string name="input_placeholder_mention_search">Cerca al repartiment</string>
@@ -1124,6 +1180,10 @@
   <string name="label_genres_drawer_all">Tots els gèneres</string>
   <string name="label_genres_drawer_selected">Seleccionats</string>
   <string name="label_genres_drawer_subtitle_loved">Selecciona fins a 5 gèneres dels quals t\'agradaria veure\'n més.</string>
+  <string name="label_jellyfin_password">Contrasenya</string>
+  <string name="label_jellyfin_server">Servidor Jellyfin</string>
+  <string name="label_jellyfin_server_url">Adreça del servidor</string>
+  <string name="label_jellyfin_username">Nom d\'usuari</string>
   <string name="label_keep_play">Conservar</string>
   <string name="label_library_collection_limit">Límit de la col·lecció</string>
   <string name="label_list_item_count">%s elements de la llista</string>
@@ -1152,7 +1212,6 @@
   <string name="label_parental_guide_severity_none">Cap</string>
   <string name="label_parental_guide_severity_severe">Greu</string>
   <string name="label_plex_connected">Connectat a Plex</string>
-  <string name="label_plex_connection">Connexió</string>
   <string name="label_plex_server">Servidor</string>
   <string name="label_queued_action">Desat fora de línia, esperant per sincronitzar</string>
   <string name="label_rating_average">Puntuació mitjana %s de 5</string>
@@ -1230,6 +1289,7 @@
   <string name="link_label_status">Estat de Trakt</string>
   <string name="link_label_view_social_activities">Mostra les activitats socials de %s</string>
   <string name="link_label_view_social_activities_shared">Mostra les activitats socials de %s, compartides amb tu</string>
+  <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Quant a</string>
   <string name="link_text_account_settings">Compte</string>
   <string name="link_text_advanced_settings">Avançat</string>
@@ -1482,6 +1542,7 @@
   <string name="preview_feature_description_large_screen_cards">A pantalles més grans, totes les llistes utilitzen les mateixes targetes que la resta de l\'aplicació. Si en seleccioneu una, s\'obre una vista ràpida en lloc de sortir de la llista.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_show_ending">Mostra una fila de Finalització als detalls d\'una sèrie: Completat quan la història ha conclòs, Sense resoldre quan no.</string>
+  <string name="preview_feature_description_smart_recommendations">Canvia les recomanacions entre les seleccions intel·ligents del nou model i les clàssiques.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
   <string name="preview_feature_description_vip_cancel_flow">Una nova manera de cancel·lar el VIP: pregunta per què, mostra els canvis i ofereix una oferta per quedar-se.</string>
   <string name="preview_feature_description_vip_veteran">Mostra quant de temps els membres han mantingut el VIP sense interrupcions, amb una insígnia de Veterà o Llegenda, un anell d\'avatar de color i algunes celebracions al teu propi perfil.</string>
@@ -1490,6 +1551,7 @@
   <string name="preview_feature_title_large_screen_cards">Targetes per a pantalles grans</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_show_ending">Finalització de la sèrie</string>
+  <string name="preview_feature_title_smart_recommendations">Recomanacions intel·ligents</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_vip_cancel_flow">Flux de cancel·lació VIP</string>
   <string name="preview_feature_title_vip_veteran">Estat VIP de veterà</string>
@@ -1572,6 +1634,8 @@
   <string name="switch_label_toggle_halloween_filters">Activa/desactiva els filtres de Halloween</string>
   <string name="switch_label_toggle_list_privacy">Activa/desactiva la privadesa de la llista</string>
   <string name="tab_text_advanced_filters">Avançat</string>
+  <string name="tab_text_jellyfin_password">Contrasenya</string>
+  <string name="tab_text_jellyfin_quick_connect">Quick Connect</string>
   <string name="tab_text_media_sync_history_all">Totes les visualitzacions passades</string>
   <string name="tab_text_media_sync_history_today">Des d\'avui</string>
   <string name="tab_text_more">Més</string>
@@ -1848,6 +1912,7 @@
   <string name="text_info_widget_background">Estableix el nivell de transparència del fons.</string>
   <string name="text_info_younify_service_linked">El servei de streaming s\'ha vinculat.</string>
   <string name="text_info_younify_service_unlinked">El servei de streaming s\'ha desvinculat.</string>
+  <string name="text_jellyfin_quick_connect_waiting">Esperant la teva aprovació</string>
   <string name="text_landing_discover">pel·lícules i sèries que t\'encantaran i on les pots veure ara mateix.</string>
   <string name="text_landing_discover_eyebrow">Troba-ho</string>
   <string name="text_landing_hero">Fes un seguiment del que has vist, troba què veure a continuació i descobreix on s\'estrena aquesta nit.</string>
@@ -2009,6 +2074,7 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s vots</string>
   <string name="text_raw_export">Exportació en brut</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Torna a connectar %s a continuació.</string>
   <string name="text_rent">Lloga</string>
   <string name="text_rewatching_next_episode_prompt">Quin és el pròxim episodi que vols revisionar?</string>
@@ -2020,6 +2086,8 @@
   <string name="text_season_number">Temporada %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Especials</string>
+  <string name="text_seasonal_greeting_halloween">Les nostres seleccions esgarrifoses t\'esperen!</string>
+  <string name="text_seasonal_greeting_signoff">De part de tot l\'equip de Trakt</string>
   <string name="text_select_searching">Cercant</string>
   <string name="text_selected_from_lists">de %s llistes</string>
   <string name="text_sentiment_example">Exemple de \"%s\"</string>
@@ -2499,9 +2567,6 @@
   <string name="translated_value_video_type_recap">Resum</string>
   <string name="translated_value_video_type_teaser">Teaser</string>
   <string name="translated_value_video_type_trailer">Tràiler</string>
-  <string name="tv_time_banner_action">tvtime.trakt.tv</string>
-  <string name="tv_time_banner_description">Sent-te com a casa amb la nostra aplicació complementària familiar, impulsada pel teu compte de Trakt.</string>
-  <string name="tv_time_banner_heading">Vens de TV Time?</string>
   <string name="tv_time_faq_dropped_shows_answer">L\'estat d\'abandonat no s\'importa, així que qualsevol sèrie que hagueu abandonat allà s\'ha d\'abandonar de nou a Trakt després d\'importar-la.</string>
   <string name="tv_time_faq_dropped_shows_question">Les meves sèries abandonades es transfereixen?</string>
   <string name="tv_time_faq_missing_episodes_answer">A partir del 8 de juliol de 2026, hem millorat la manera com l\'importador assigna els episodis, de manera que les sèries que abans arribaven incompletes ara s\'haurien d\'importar completament. Importa la teva exportació de nou per incloure els episodis que falten. Si encara en falten alguns després d\'això, esborra les reproduccions antigues primer i després importa una vegada més.</string>
@@ -2512,9 +2577,6 @@
   <string name="tv_time_faq_nothing_imported_question">No s\'ha importat res. Per què?</string>
   <string name="tv_time_faq_page_description">Preguntes freqüents sobre com moure les vostres dades de TV Time a Trakt. Encara encallat? Envieu-nos la vostra exportació i hi farem una ullada.</string>
   <string name="tv_time_faq_page_title">Preguntes freqüents sobre la importació de TV Time</string>
-  <string name="tv_time_import_banner_action">Importar de nou</string>
-  <string name="tv_time_import_banner_description">Hem actualitzat l\'importador. Si falten algunes sèries o episodis, importa la teva exportació de TV Time de nou per incloure\'ls. Encara falten després d\'això? Esborra les reproduccions antigues primer i després importa una vegada més.</string>
-  <string name="tv_time_import_banner_heading">La teva importació de TV Time, millorada</string>
   <string name="tv_time_report_description">Adjunteu la vostra exportació de TV Time i digueu-nos què ha anat malament. Els vostres fitxers i el compte de Trakt s\'envien de forma privada a l\'equip, mai es comparteixen públicament.</string>
   <string name="tv_time_report_error_too_large">Aquests fitxers són massa grans. Mantingueu les pujades per sota dels 25 MB en total.</string>
   <string name="tv_time_report_error_unknown">Alguna cosa ha anat malament en enviar el vostre informe. Si us plau, torneu a intentar-ho.</string>
