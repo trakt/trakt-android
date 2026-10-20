@@ -265,7 +265,10 @@ private fun OtherDatePickerContent(
             initialTime = selectedDate?.toLocalTime(),
             onDateTimeSelected = { dateTimeUtc ->
                 val localDateTime = LocalDateTime.ofInstant(dateTimeUtc, UTC)
-                selectedDate = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
+                selectedDate = minOf(
+                    localDateTime.atZone(ZoneId.systemDefault()).toInstant(),
+                    nowUtcInstant(),
+                )
                 editingDate = false
                 pendingDate = null
             },

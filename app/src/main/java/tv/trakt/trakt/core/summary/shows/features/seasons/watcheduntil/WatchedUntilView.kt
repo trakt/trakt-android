@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Now
@@ -203,7 +204,10 @@ private fun WatchedUntilContent(
         selectedDate = pendingDate,
         onDateTimeSelected = { dateTimeUtc ->
             val localDateTime = LocalDateTime.ofInstant(dateTimeUtc, UTC)
-            otherAnchor = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
+            otherAnchor = minOf(
+                localDateTime.atZone(ZoneId.systemDefault()).toInstant(),
+                nowUtcInstant(),
+            )
             otherBound = pendingBound
             pendingBound = null
             pendingDate = null
