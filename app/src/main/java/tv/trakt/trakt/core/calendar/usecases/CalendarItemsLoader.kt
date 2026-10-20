@@ -29,9 +29,9 @@ import java.time.temporal.ChronoUnit
 // mornings in positive-offset ones. The local-day filter below trims the excess.
 private const val DAYS_OFFSET = 1L
 
-// Trakt caps a single calendar call at 33 days; longer ranges are split into
-// consecutive windows and fetched in parallel.
-private const val MAX_REQUEST_DAYS = 33
+// Trakt caps a single calendar call at 44 days, enough for a padded 6-row month page.
+// Longer ranges are split into consecutive windows and fetched in parallel.
+private const val MAX_REQUEST_DAYS = 44
 
 /**
  * Loads calendar items for an arbitrary day range and returns them grouped by day,
