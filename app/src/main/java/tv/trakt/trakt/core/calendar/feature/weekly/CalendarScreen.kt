@@ -110,6 +110,7 @@ import kotlin.time.Duration.Companion.milliseconds
 private val MinAlpha = 0.25F
 private val LoadMoreThreshold = 4
 private val FiltersRowHeight = 40.dp
+private val DayHeaderSpacing = 38.dp
 
 @Composable
 internal fun CalendarScreen(
@@ -313,7 +314,7 @@ private fun CalendarScreen(
     onViewClick: (CalendarView) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val scrollOffset = with(LocalDensity.current) { 70.dp.toPx().toInt() }
+    val scrollOffset = with(LocalDensity.current) { DayHeaderSpacing.roundToPx() }
 
     val gridState = rememberLazyGridState()
     val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
@@ -337,7 +338,7 @@ private fun CalendarScreen(
         end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
-            .plus(202.dp)
+            .plus(150.dp)
             .plus(FiltersRowHeight),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
@@ -490,7 +491,7 @@ private fun CalendarScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(132.dp + FiltersRowHeight)
+                .height(90.dp + FiltersRowHeight)
                 .background(TraktTheme.colors.backgroundPrimary),
         )
 
@@ -744,7 +745,7 @@ private fun ContentItemsGrid(
                     horizontalArrangement = spacedBy(6.dp),
                     verticalAlignment = CenterVertically,
                     modifier = Modifier
-                        .padding(top = if (index == 0) 0.dp else 38.dp),
+                        .padding(top = if (index == 0) 0.dp else DayHeaderSpacing),
                 ) {
                     val isToday = remember(date) { date == nowLocalDay() }
                     if (isToday) {
@@ -894,6 +895,7 @@ private fun scrollToDay(
 
     for (itemDate in items.keys) {
         if (itemDate == date) {
+            // Skip the spacing above a day header so it lands right under the controls.
             scope.launch {
                 val offset = when {
                     accumulatedCount == 0 -> 0
