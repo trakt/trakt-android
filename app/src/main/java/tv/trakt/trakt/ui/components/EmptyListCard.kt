@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -29,6 +30,7 @@ internal fun EmptyListCard(
     modifier: Modifier = Modifier,
     text: String = stringResource(R.string.list_placeholder_empty),
     height: Dp = 86.dp,
+    onClick: (() -> Unit)? = null,
 ) {
     Box(
         modifier = modifier
@@ -41,6 +43,10 @@ internal fun EmptyListCard(
             .background(
                 TraktTheme.colors.dialogContainer,
                 DefaultCardShape,
+            )
+            .onClick(
+                enabled = onClick != null,
+                onClick = { onClick?.invoke() },
             )
             .padding(18.dp),
         contentAlignment = Alignment.Center,
