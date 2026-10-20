@@ -1423,7 +1423,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
   <string name="mir_banner_body_short">%s özetiniz hazır.</string>
@@ -1658,7 +1658,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s% eşleşme</string>
+  <string name="tag_mixtape_match">%s%% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
@@ -2818,7 +2818,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

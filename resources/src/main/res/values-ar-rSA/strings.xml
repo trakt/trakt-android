@@ -1423,7 +1423,7 @@
   <string name="match_label_soulmates">رفقاء الروح</string>
   <string name="match_label_spin_off">عرضية</string>
   <string name="match_pill_anchor">تطابق:</string>
-  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. فتح تفاصيل التطابق.</string>
+  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. فتح تفاصيل التطابق.</string>
   <string name="match_pill_loading_aria_label">جارٍ حساب نتيجة التطابق</string>
   <string name="mir_banner_body">ملخصك الشهري جاهز. إليك ما شاهدته في %s.</string>
   <string name="mir_banner_body_short">ملخص %s جاهز.</string>
@@ -1658,7 +1658,7 @@
   <string name="tag_media_sync_webhook_only">ويب هوك فقط</string>
   <string name="tag_mixtape_different_mood">مزاج مختلف</string>
   <string name="tag_mixtape_kept">محفوظ</string>
-  <string name="tag_mixtape_match">مطابقة بنسبة %s%</string>
+  <string name="tag_mixtape_match">مطابقة بنسبة %s%%</string>
   <string name="tag_mixtape_tap_details">انقر للتفاصيل</string>
   <string name="tag_text_blocked_user">محظور</string>
   <string name="tag_text_deal_price">أول سنتين</string>
@@ -2818,7 +2818,7 @@
   <string name="yir_2026_preview_runner_none">لا شيء (لا يوجد هجين)</string>
   <string name="yir_2026_preview_runner_up">الوصيف</string>
   <string name="yir_2026_preview_title">معاينة الشخصية</string>
-  <string name="yir_2026_rarity">فقط %1$d% هم %2$s</string>
+  <string name="yir_2026_rarity">فقط %1$d%% هم %2$s</string>
   <string name="yir_2026_reel_a_little_bit">قليلاً %s</string>
   <string name="yir_2026_reel_and_you_are">وأنت كذلك</string>
   <string name="yir_2026_reel_but_mostly">ولكن غالبًا</string>
