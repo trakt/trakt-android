@@ -336,4 +336,15 @@ class MoviesRemoteSource(
 
         return response.body()
     }
+
+    suspend fun postReport(
+        movieId: TraktId,
+        reason: String,
+        message: String,
+    ) {
+        moviesApi.postMoviesReport(
+            id = movieId.value.toString(),
+            postMoviesReportRequest = createReportRequest(reason, message),
+        )
+    }
 }
