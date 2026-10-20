@@ -17,6 +17,7 @@ internal object ListsConfig {
     const val LISTS_ITEMS_SECTION_LIMIT = 20
     const val LISTS_ITEMS_ALL_LIMIT = 100
 
-    const val LISTS_PAGE_LIMIT = 5
+    const val LISTS_SECTION_LIMIT = 3
+    const val LISTS_PAGE_LIMIT = 10
     const val LISTS_ALL_PAGE_LIMIT = 20
 }

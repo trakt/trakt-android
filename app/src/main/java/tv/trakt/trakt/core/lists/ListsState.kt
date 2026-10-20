@@ -14,6 +14,7 @@ internal data class ListsState(
     val user: UserState = UserState(),
     val filter: PersonalListType = PersonalListType.Smart,
     val lists: ImmutableList<ListsItem>? = null,
+    val listsMore: Boolean = false,
     val listsLoading: LoadingState = Idle,
     val info: DynamicStringResource? = null,
     val error: Exception? = null,

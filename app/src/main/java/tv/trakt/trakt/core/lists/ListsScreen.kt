@@ -76,6 +76,7 @@ import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
@@ -376,6 +377,29 @@ private fun ListsScreenContent(
                             }
                             else -> {}
                         }
+                    }
+                }
+            }
+
+            if (listVisible && state.listsMore) {
+                item(key = "view_all") {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 24.dp)
+                            .padding(sectionPadding),
+                    ) {
+                        FilterChip(
+                            selected = false,
+                            text = stringResource(R.string.button_label_view_all_lists),
+                            height = 36.dp,
+                            paddingHorizontal = PaddingValues(
+                                start = 12.dp,
+                                end = 16.dp,
+                            ),
+                            onClick = onAllListsClick,
+                        )
                     }
                 }
             }

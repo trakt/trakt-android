@@ -294,10 +294,13 @@ internal class ListsViewModel(
         infoState,
         errorState,
     ) { state ->
+        // Lists load past the section limit so the screen knows when more exist.
+        val lists = state[2] as ImmutableList<ListsItem>?
         ListsState(
             user = state[0] as UserState,
             filter = state[1] as PersonalListType,
-            lists = state[2] as ImmutableList<ListsItem>?,
+            lists = lists?.take(ListsConfig.LISTS_SECTION_LIMIT)?.toImmutableList(),
+            listsMore = (lists?.size ?: 0) > ListsConfig.LISTS_SECTION_LIMIT,
             listsLoading = state[3] as LoadingState,
             info = state[4] as DynamicStringResource?,
             error = state[5] as Exception?,
