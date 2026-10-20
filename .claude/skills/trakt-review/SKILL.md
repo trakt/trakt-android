@@ -1,6 +1,6 @@
 ---
 name: trakt-review
-description: 'Trakt''s in-house replacement for the sunset Gemini Code Assist reviewer. Reviews the current branch/diff or a GitHub PR against the repository''s .gemini/styleguide.md and outputs a Gemini-compatible summary + severity-tagged inline comments (critical/high/medium/low) with suggested code. Posts as trakt-bot[bot] when configured, else as your own account. Trigger: /trakt-review, "trakt review", "review like gemini", "gemini review".'
+description: 'Trakt''s in-house replacement for the sunset Gemini Code Assist reviewer. Reviews the current branch/diff or a GitHub PR against the repository''s .agents/review-styleguide.md (falls back to .gemini/styleguide.md) and outputs a Gemini-compatible summary + severity-tagged inline comments (critical/high/medium/low) with suggested code. Posts as trakt-bot[bot] when configured, else as your own account. Trigger: /trakt-review, "trakt review", "review like gemini", "gemini review".'
 allowed-tools:
   - Bash
   - Read
@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Act as the `trakt-review` bot — Trakt's replacement for the sunset Gemini Code Assist reviewer. Read the repo's `.gemini/styleguide.md`, review either the current branch diff (default) or a named GitHub PR, and emit feedback in the format the team already knows from Gemini: a top-level `## Code Review` summary plus per-finding inline comments tagged `critical` / `high` / `medium` / `low` with a suggested code snippet.
+Act as the `trakt-review` bot — Trakt's replacement for the sunset Gemini Code Assist reviewer. Read the repo's `.agents/review-styleguide.md`, review either the current branch diff (default) or a named GitHub PR, and emit feedback in the format the team already knows from Gemini: a top-level `## Code Review` summary plus per-finding inline comments tagged `critical` / `high` / `medium` / `low` with a suggested code snippet.
 
 This skill renders feedback by default. It does NOT post comments to GitHub unless the user passes `--post` (see Posting).
 </objective>
@@ -32,16 +32,16 @@ Once parsed, normalise to a `target` object: `{ kind: 'pr' | 'local' | 'branch',
 - Metadata: `gh pr view <num> --json title,body,baseRefName,headRefName,headRefOid,files ${repo ? "--repo " + repo : ""}`
 - Comments (for `--post`): `gh api repos/<owner>/<repo>/pulls/<num>/comments ...`
 
-For PR URL/shorthand targets, **do not** require `.gemini/styleguide.md` from the local cwd. Try in order:
-1. Local cwd `<repo_root>/.gemini/styleguide.md` if the parsed `<owner>/<repo>` matches the current git remote.
-2. Otherwise fetch via `gh api repos/<owner>/<repo>/contents/.gemini/styleguide.md --jq '.content' | base64 -d` against the PR's repo.
+For PR URL/shorthand targets, **do not** require the styleguide from the local cwd. The styleguide lives at `.agents/review-styleguide.md`; older repos still carry `.gemini/styleguide.md`. Check both paths, `.agents/` first, in this order:
+1. Local cwd `<repo_root>/<path>` if the parsed `<owner>/<repo>` matches the current git remote.
+2. Otherwise fetch via `gh api repos/<owner>/<repo>/contents/<path> --jq '.content' | base64 -d` against the PR's repo.
 3. If neither exists, stop and tell the user — no styleguide, no review.
 
 The repo's default branch name is read from `gh repo view ${repo ? "--repo " + repo : ""} --json defaultBranchRef --jq '.defaultBranchRef.name'`. Fall back to `main`.
 </scope_resolution>
 
 <style_guide_loading>
-**Always** read `<repo_root>/.gemini/styleguide.md` first. If absent, tell the user and STOP — the styleguide is the reviewer's whole identity in this codebase. Do not invent rules. (The `.gemini/` path is kept for compatibility with the old Gemini Code Assist setup; every Trakt repo already carries one.)
+**Always** read `<repo_root>/.agents/review-styleguide.md` first, falling back to `<repo_root>/.gemini/styleguide.md` in repos that have not moved it yet. If neither exists, tell the user and STOP — the styleguide is the reviewer's whole identity in this codebase. Do not invent rules.
 
 The file is the source of truth for what counts as a finding. Cross-check every proposed comment against it. If a finding is not grounded in the styleguide, drop it — the reviewer does not invent rules, it enforces written ones.
 </style_guide_loading>
@@ -113,7 +113,7 @@ If a finding is file-level (no specific line), use `<path>:` (no line number) an
 <workflow>
 1. **Parse target.** Detect arg form (no arg / PR number / PR URL / `owner/repo#num` / branch). Resolve to the `target` object in `<scope_resolution>`.
 2. **Confirm scope.** Echo one line: `Reviewing <owner>/<repo>#<num>` (PR), `Reviewing local diff against main` (no arg), or `Reviewing branch <foo> against main`.
-3. **Load styleguide.** Per `<scope_resolution>` resolution order (local cwd if remote matches, else `gh api ... /contents/.gemini/styleguide.md`). Stop if absent.
+3. **Load styleguide.** Per `<scope_resolution>` resolution order (local cwd if remote matches, else `gh api ... /contents/<path>`). Stop if absent.
 4. **Pull the diff.**
    - Local: `git diff $(git merge-base HEAD <main>)..HEAD` plus `git status --short` for untracked.
    - PR: `gh pr diff <num> [--repo <owner>/<repo>]` and `gh pr view <num> --json title,body,baseRefName,headRefName,headRefOid,files [--repo <owner>/<repo>]`.
@@ -222,7 +222,7 @@ Token cache lives at `~/.cache/trakt-bot/token.json` (chmod 600) and auto-renews
 </bot_setup>
 
 <anti_patterns>
-- Don't invent rules. If it isn't in `.gemini/styleguide.md`, it isn't a finding.
+- Don't invent rules. If it isn't in the styleguide, it isn't a finding.
 - Don't bundle multiple issues into one comment. One finding = one comment.
 - Don't use GitHub's `suggestion` block. Use plain fenced code.
 - Don't include the old Gemini sunset/deprecation `[!IMPORTANT]` notice. It died with the Gemini bot.
@@ -258,7 +258,7 @@ When navigating between users, SvelteKit reuses the page component and its child
 
 <checklist>
 1. ✅ Scope echoed back to user in one line.
-2. ✅ `.gemini/styleguide.md` actually read; every finding traces to a rule in it.
+2. ✅ Styleguide actually read; every finding traces to a rule in it.
 3. ✅ Output starts with `## Code Review`, has summary paragraph + feedback paragraph. No sunset notice.
 4. ✅ Findings ordered critical → high → medium → low, grouped by file within tier.
 5. ✅ Each finding: path:line header, severity badge image, problem + prescription prose, fenced code suggestion.
