@@ -65,13 +65,14 @@ import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
 import tv.trakt.trakt.core.comments.features.translation.ui.CommentTranslateButton
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
+import tv.trakt.trakt.core.report.ReportSheet
+import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -159,9 +160,9 @@ internal fun CommentReplyCard(
         )
     }
 
-    ReportCommentSheet(
+    ReportSheet(
         active = reportActive,
-        comment = reply,
+        target = ReportTarget.Comment(reply.id),
         onDismiss = { reportActive = false },
     )
 }

@@ -63,6 +63,7 @@ import tv.trakt.trakt.core.profile.di.profileModule
 import tv.trakt.trakt.core.ratings.di.ratingsDataModule
 import tv.trakt.trakt.core.ratings.di.ratingsModule
 import tv.trakt.trakt.core.reactions.di.reactionsModule
+import tv.trakt.trakt.core.report.di.reportModule
 import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
 import tv.trakt.trakt.core.settings.di.settingsDataModule
@@ -175,6 +176,7 @@ internal class TraktApplication : Application() {
                 allStreamingsModule,
                 commentsDataModule,
                 commentsModule,
+                reportModule,
                 triviaModule,
                 sentimentModule,
                 allCreditsModule,

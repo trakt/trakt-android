@@ -198,4 +198,19 @@ class EpisodesRemoteSource(
 
         return response.body()
     }
+
+    suspend fun postReport(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+        reason: String,
+        message: String,
+    ) {
+        showsApi.postShowsEpisodeReport(
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
+            postMoviesReportRequest = createReportRequest(reason, message),
+        )
+    }
 }

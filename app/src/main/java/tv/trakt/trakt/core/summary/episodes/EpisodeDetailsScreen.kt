@@ -76,6 +76,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.report.ReportSheet
+import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
@@ -129,6 +131,7 @@ internal fun EpisodeDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var detailsSheet by remember { mutableStateOf<Pair<Show, Episode>?>(null) }
     var coverImageSheet by remember { mutableStateOf(false) }
+    var reportSheet by remember { mutableStateOf<ReportTarget?>(null) }
     var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
 
     DisposableEffect(Unit) {
@@ -266,6 +269,17 @@ internal fun EpisodeDetailsScreen(
         onCoverClick = {
             coverImageSheet = true
         },
+        onReportClick = {
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                reportSheet = ReportTarget.Episode(
+                    showId = show.ids.trakt,
+                    season = episode.season,
+                    episode = episode.number,
+                )
+            }
+        },
         onDismiss = {
             contextSheet = false
         },
@@ -319,6 +333,14 @@ internal fun EpisodeDetailsScreen(
         },
         onDismiss = {
             socialActivitySheet = null
+        },
+    )
+
+    ReportSheet(
+        active = reportSheet != null,
+        target = reportSheet,
+        onDismiss = {
+            reportSheet = null
         },
     )
 

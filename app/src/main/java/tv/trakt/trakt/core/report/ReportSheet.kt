@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.comments.features.report
+package tv.trakt.trakt.core.report
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,20 +20,20 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
-import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random.Default.nextInt
 
 @Composable
-internal fun ReportCommentSheet(
+internal fun ReportSheet(
     state: SheetState = rememberBottomSheetState(
         initialValue = Hidden,
         enabledValues = setOf(Hidden, Expanded),
     ),
     active: Boolean,
-    comment: Comment?,
+    target: ReportTarget?,
     skipSnack: Boolean = false,
     onReported: () -> Unit = {},
     onDismiss: () -> Unit,
@@ -42,20 +42,21 @@ internal fun ReportCommentSheet(
     val localRes = LocalResources.current
 
     val sheetScope = rememberCoroutineScope()
-    val viewModelKey = remember(comment) { nextInt().toString() }
+    val viewModelKey = remember(target) { nextInt().toString() }
 
-    if (active && comment != null) {
+    if (active && target != null) {
         TraktBottomSheet(
             sheetState = state,
             onDismiss = onDismiss,
         ) {
-            ReportCommentView(
+            ReportView(
                 viewModel = koinViewModel(
                     key = viewModelKey,
                     parameters = {
-                        parametersOf(comment)
+                        parametersOf(target)
                     },
                 ),
+                reasons = target.reasons,
                 onReported = {
                     onReported()
                     sheetScope.dismissWithAction(

@@ -30,6 +30,7 @@ internal fun ShowDetailsContextSheet(
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -76,6 +77,15 @@ internal fun ShowDetailsContextSheet(
                 },
                 onCoverClick = {
                     onCoverClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
+                onReportClick = {
+                    onReportClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

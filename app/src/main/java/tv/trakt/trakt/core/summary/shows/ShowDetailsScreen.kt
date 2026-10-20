@@ -84,6 +84,8 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.report.ReportSheet
+import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -155,6 +157,7 @@ internal fun ShowDetailsScreen(
     var dateSheet by remember { mutableStateOf(false to false) }
     var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Show?>(null) }
+    var reportSheet by remember { mutableStateOf<ReportTarget?>(null) }
     var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
 
     DisposableEffect(Unit) {
@@ -326,6 +329,9 @@ internal fun ShowDetailsScreen(
         onCoverClick = {
             coverImageSheet = state.show
         },
+        onReportClick = {
+            reportSheet = state.show?.let { ReportTarget.Show(it.ids.trakt) }
+        },
         onDismiss = {
             contextSheet = null
         },
@@ -415,6 +421,14 @@ internal fun ShowDetailsScreen(
         },
         onDismiss = {
             dateSheet = false to false
+        },
+    )
+
+    ReportSheet(
+        active = reportSheet != null,
+        target = reportSheet,
+        onDismiss = {
+            reportSheet = null
         },
     )
 
