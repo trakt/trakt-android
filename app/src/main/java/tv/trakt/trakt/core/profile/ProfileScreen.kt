@@ -339,6 +339,7 @@ private fun ProfileScreen(
                             onShowClick = onNavigateToShow,
                             onEpisodeClick = onNavigateToEpisode,
                             onMoreClick = onNavigateToActivity,
+                            onEmptyClick = onNavigateToHistory,
                             modifier = Modifier
                                 .padding(
                                     bottom = TraktTheme.spacing.mainSectionVerticalSpace -

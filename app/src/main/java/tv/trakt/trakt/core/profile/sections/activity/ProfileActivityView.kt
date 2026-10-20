@@ -91,6 +91,7 @@ internal fun ProfileActivityView(
     onShowClick: (TraktId) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onMoreClick: () -> Unit = {},
+    onEmptyClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -133,6 +134,7 @@ internal fun ProfileActivityView(
             deleteCommentSheet = it
         },
         onMoreClick = onMoreClick,
+        onEmptyClick = onEmptyClick,
     )
 
     CommentDetailsSheet(
@@ -181,6 +183,7 @@ internal fun ProfileActivityContent(
     onEditCommentClick: (ProfileCommentItem) -> Unit = {},
     onDeleteCommentClick: (Comment) -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onEmptyClick: () -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -250,10 +253,15 @@ internal fun ProfileActivityContent(
                             (current.filter == Ratings && current.ratingItems?.isEmpty() == true) ||
                                 (current.filter == Comments && current.commentItems?.isEmpty() == true) -> {
                                 EmptyListCard(
+                                    text = when (current.filter) {
+                                        Ratings -> stringResource(R.string.list_placeholder_no_ratings_activity)
+                                        Comments -> stringResource(R.string.list_placeholder_no_review_activity)
+                                    },
                                     height = when {
                                         current.filter == Ratings -> EmptyHorizontalDoubleHeight
                                         else -> TraktTheme.size.commentCardSize
                                     },
+                                    onClick = onEmptyClick,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(contentPadding),
