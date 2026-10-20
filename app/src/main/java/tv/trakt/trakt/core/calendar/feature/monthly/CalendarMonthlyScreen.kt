@@ -54,6 +54,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
@@ -70,9 +71,11 @@ import tv.trakt.trakt.core.calendar.ui.CalendarTodayIcon
 import tv.trakt.trakt.core.calendar.ui.CalendarTypeChips
 import tv.trakt.trakt.core.calendar.ui.CalendarViewToggle
 import tv.trakt.trakt.core.calendar.ui.calendarMonthTitle
+import tv.trakt.trakt.core.calendar.ui.context.sheet.CalendarEpisodeContextSheet
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
+import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -106,6 +109,8 @@ internal fun CalendarMonthlyScreen(
     var daySheet by remember { mutableStateOf<LocalDate?>(null) }
     var dateSelectionSheet by remember { mutableStateOf<CalendarItem?>(null) }
     var confirmRemoveSheet by remember { mutableStateOf<CalendarItem?>(null) }
+    var contextEpisodeSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
 
     LaunchedEffect(
         state.navigateShow,
@@ -176,6 +181,12 @@ internal fun CalendarMonthlyScreen(
         },
         onCheckLongClick = { dateSelectionSheet = it },
         onRemoveClick = { confirmRemoveSheet = it },
+        onLongClick = { item ->
+            when (item) {
+                is EpisodeItem -> contextEpisodeSheet = item
+                is MovieItem -> contextMovieSheet = item.movie
+            }
+        },
         onDismiss = { daySheet = null },
     )
 
@@ -214,6 +225,20 @@ internal fun CalendarMonthlyScreen(
             R.string.warning_prompt_remove_from_watched,
             confirmRemoveSheet?.title.orEmpty(),
         ),
+    )
+
+    CalendarEpisodeContextSheet(
+        item = contextEpisodeSheet,
+        showWatchlist = false,
+        showDrop = true,
+        onDataChange = viewModel::refreshData,
+        onDismiss = { contextEpisodeSheet = null },
+    )
+
+    MovieContextSheet(
+        movie = contextMovieSheet,
+        onWatchedChange = viewModel::refreshData,
+        onDismiss = { contextMovieSheet = null },
     )
 
     GlobalFiltersSheet(

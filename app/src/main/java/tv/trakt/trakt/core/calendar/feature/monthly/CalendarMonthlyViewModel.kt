@@ -115,10 +115,7 @@ internal class CalendarMonthlyViewModel(
     private fun observeData() {
         dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
-            .onEach {
-                calendarCache.clear()
-                loadData()
-            }
+            .onEach { refreshData() }
             .launchIn(viewModelScope)
     }
 
@@ -171,6 +168,11 @@ internal class CalendarMonthlyViewModel(
                 dataJob = null
             }
         }
+    }
+
+    fun refreshData() {
+        calendarCache.clear()
+        loadData()
     }
 
     fun setMonth(month: YearMonth) {

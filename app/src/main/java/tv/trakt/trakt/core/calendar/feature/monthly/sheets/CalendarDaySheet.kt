@@ -38,6 +38,7 @@ internal fun CalendarDaySheet(
     onCheckClick: (CalendarItem) -> Unit = {},
     onCheckLongClick: (CalendarItem) -> Unit = {},
     onRemoveClick: (CalendarItem) -> Unit = {},
+    onLongClick: (CalendarItem) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
     if (!visible || date == null) {
@@ -70,6 +71,7 @@ internal fun CalendarDaySheet(
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onRemoveClick = onRemoveClick,
+            onLongClick = onLongClick,
             modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .padding(top = 4.dp, bottom = 16.dp),

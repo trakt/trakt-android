@@ -58,6 +58,7 @@ internal fun CalendarDayView(
     onCheckClick: (CalendarItem) -> Unit = {},
     onCheckLongClick: (CalendarItem) -> Unit = {},
     onRemoveClick: (CalendarItem) -> Unit = {},
+    onLongClick: (CalendarItem) -> Unit = {},
 ) {
     val dayFormat = fullDayFormat()
     val isToday = remember(date) { date == nowLocalDay() }
@@ -113,6 +114,7 @@ internal fun CalendarDayView(
                         onCheckClick = { onCheckClick(item) },
                         onCheckLongClick = { onCheckLongClick(item) },
                         onRemoveClick = { onRemoveClick(item) },
+                        onLongClick = { onLongClick(item) },
                     )
 
                     is MovieItem -> CalendarMovieItemView(
@@ -122,6 +124,7 @@ internal fun CalendarDayView(
                         onCheckClick = { onCheckClick(item) },
                         onCheckLongClick = { onCheckLongClick(item) },
                         onRemoveClick = { onRemoveClick(item) },
+                        onLongClick = { onLongClick(item) },
                     )
                 }
             }
