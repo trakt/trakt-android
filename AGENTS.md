@@ -22,6 +22,8 @@ paths match each rule file's `applyTo` header):
   `viewmodel.md`
 - `common/src/main/**/*.kt`: Ktor client, OpenAPI mappers, DataStore, Room,
   file caches: `networking.md`, `persistence.md`
+- Repositories, DataStore, local sources and caches in any module (`app/`,
+  `tv/`, feature `data/` folders): `networking.md`, `persistence.md`
 - OpenAPI spec and generated client (`openapi/openapi.json`,
   `build/generate-resources/`, `./gradlew openApiGenerate`): `networking.md`
 - Strings and resources (`resources/src/main/res/**`, `strings.xml`,
