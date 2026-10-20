@@ -37,7 +37,6 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.core.profile.sections.social.ui.SocialUserView
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity.Watched.Rated
@@ -122,8 +121,13 @@ internal fun MediaSocialItemCard(
                     .padding(top = 8.dp),
             ) {
                 val chipContainer = when {
-                    TraktTheme.colors.isLight -> Shade500.copy(alpha = 0.64F)
-                    else -> TraktTheme.colors.chipContainer
+                    TraktTheme.colors.isLight -> {
+                        TraktTheme.colors.chipContainerOnContent
+                            .copy(alpha = 0.33F)
+                    }
+                    else -> {
+                        TraktTheme.colors.chipContainer
+                    }
                 }
 
                 Row(
