@@ -3,6 +3,10 @@ trigger: glob
 globs: 'common/src/main/**/*.kt'
 description: 'OpenAPI client, Ktor 3 setup, mappers, ApiError, repository contract with local-write-first, TTL helpers, pagination.'
 applyTo: 'common/src/main/**/*.kt'
+paths:
+  - 'common/src/main/**/*.kt'
+  - '{app,tv}/src/main/**/data/**/*.kt'
+  - 'openapi/**'
 ---
 
 # Networking

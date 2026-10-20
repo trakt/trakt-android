@@ -3,6 +3,9 @@ trigger: glob
 globs: 'common/src/main/**/*.kt'
 description: 'DataStore (Preferences and Proto), entity caches, AuthStorage, no SharedPreferences. Migrations and disk-I/O hygiene.'
 applyTo: 'common/src/main/**/*.kt'
+paths:
+  - 'common/src/main/**/*.kt'
+  - '{app,tv}/src/main/**/data/**/*.kt'
 ---
 
 # Persistence

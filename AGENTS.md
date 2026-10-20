@@ -7,8 +7,10 @@ session does not pay for all of them.
 - Max subagents per task: 1.
 - Do not recurse into deeper agents (depth = 0).
 
-Domain rules (read every file whose area or paths the task touches; the
-paths match each rule file's `applyTo` header):
+Domain rules (read every file whose area or paths the task touches). Claude
+Code also loads them automatically through `.claude/rules/` when it reads a
+file matching a rule's `paths` header, but that only covers file paths, not
+areas such as `analytics.*` calls, so still read by area:
 
 - Any Kotlin file (`**/*.kt`): layers, repositories, DI, navigation,
   background sync: `architecture.md`

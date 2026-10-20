@@ -3,6 +3,8 @@ trigger: glob
 globs: '{app,tv,common}/src/main/**/*.kt'
 description: 'Composable-side state: remember / rememberSaveable, bottom sheets, composition locals, side effects, Compose stability. ViewModel state lives in viewmodel.md.'
 applyTo: '{app,tv,common}/src/main/**/*.kt'
+paths:
+  - '{app,tv,common}/src/main/**/*.kt'
 ---
 
 # State Management
