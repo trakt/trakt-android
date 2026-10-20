@@ -32,6 +32,7 @@
   <string name="auto_tracking_card_heading">Automatically track across your streaming services</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Get VIP</string>
+  <string name="button_connect_jellyfin">Connect Jellyfin</string>
   <string name="button_connect_plex">Connect Plex</string>
   <string name="button_description_sort_default">Original order</string>
   <string name="button_description_sort_release_date_asc">Oldest first</string>
@@ -82,9 +83,12 @@
   <string name="button_label_close_error">Close error</string>
   <string name="button_label_close_reaction">Close</string>
   <string name="button_label_close_stories">Close stories</string>
+  <string name="button_label_collapse_list">Collapse %s list</string>
   <string name="button_label_collapse_navbar">Collapse</string>
   <string name="button_label_comment_replies">Review Replies</string>
   <string name="button_label_comment_reply">Reply to %s</string>
+  <string name="button_label_comment_show_original_hint">Show original comment</string>
+  <string name="button_label_comment_translate">Translate comment</string>
   <string name="button_label_connect_streaming_service">Connect %s</string>
   <string name="button_label_copied">Copied</string>
   <string name="button_label_copy">Copy</string>
@@ -113,6 +117,7 @@
   <string name="button_label_exclude_option">Exclude %s</string>
   <string name="button_label_exit_edit_mode">Exit edit mode</string>
   <string name="button_label_expand_category">Expand %s</string>
+  <string name="button_label_expand_list">Expand %s list</string>
   <string name="button_label_expand_media_overview">Expand \"%s\" overview</string>
   <string name="button_label_expand_navbar">Expand</string>
   <string name="button_label_filter_settings">%s settings</string>
@@ -143,6 +148,11 @@
   <string name="button_label_import_more">Reset and start a new import.</string>
   <string name="button_label_import_selected">Import the movie matches you picked above.</string>
   <string name="button_label_include_option">Include %s</string>
+  <string name="button_label_jellyfin_add_server">Add a Jellyfin server</string>
+  <string name="button_label_jellyfin_connect">Connect your Jellyfin server</string>
+  <string name="button_label_jellyfin_connect_server">Connect this Jellyfin server</string>
+  <string name="button_label_jellyfin_sign_in">Sign in to this Jellyfin server</string>
+  <string name="button_label_jellyfin_sync_now">Sync Jellyfin now</string>
   <string name="button_label_join_trakt">Join trakt.tv to keep track of what you\'re watching</string>
   <string name="button_label_keep_newest_play">Keep the newest play of each item</string>
   <string name="button_label_keep_oldest_play">Keep the oldest play of each item</string>
@@ -173,6 +183,7 @@
   <string name="button_label_media_sync_next">Go to the next step</string>
   <string name="button_label_media_sync_open_plex">Open the Plex sign-in page</string>
   <string name="button_label_media_sync_reconnect">Sign in to Plex again for this server</string>
+  <string name="button_label_media_sync_reconnect_jellyfin">Sign in to Jellyfin again for this server</string>
   <string name="button_label_media_sync_retry">Retry syncing this server</string>
   <string name="button_label_mixtape_another">Not this, show another</string>
   <string name="button_label_mixtape_remove_pick">Remove %s</string>
@@ -222,6 +233,8 @@
   <string name="button_label_react">React with %s</string>
   <string name="button_label_read_more">Read more</string>
   <string name="button_label_recent_comments">Recent reviews</string>
+  <string name="button_label_recommendation_mode_classic">Show classic recommendations</string>
+  <string name="button_label_recommendation_mode_smart">Show smart recommendations</string>
   <string name="button_label_reject_follow_request">Reject follow request from %s</string>
   <string name="button_label_remove_collaborator">Remove %s as a collaborator</string>
   <string name="button_label_remove_from_favorites">Remove \"%s\" from your Favourites</string>
@@ -514,6 +527,8 @@
   <string name="button_text_progress_in_progress">In progress</string>
   <string name="button_text_raw_export">Export now</string>
   <string name="button_text_recent_comments">Recent</string>
+  <string name="button_text_recommendation_mode_classic">Classic</string>
+  <string name="button_text_recommendation_mode_smart">Smart</string>
   <string name="button_text_reconnect">Reconnect</string>
   <string name="button_text_reject_follow_request">Reject Request</string>
   <string name="button_text_remove_from_favorites">Remove from Favourites</string>
@@ -623,8 +638,19 @@
   <string name="calendar_day_item_count_other">%d Items</string>
   <string name="calendar_view_day">Day</string>
   <string name="calendar_view_week">Week</string>
+  <string name="chart_label_area_chart">Area chart</string>
+  <string name="chart_label_bar_chart">Bar chart</string>
+  <string name="chart_label_bubble_chart">Bubble chart</string>
+  <string name="chart_label_country_map">Country map</string>
   <string name="chart_label_grouped_categories">%d categories</string>
+  <string name="chart_label_line_chart">Line chart</string>
   <string name="chart_label_other">Other</string>
+  <string name="chart_label_segmented_distribution">Segmented distribution</string>
+  <string name="chart_label_sparkline">Sparkline</string>
+  <string name="chart_label_stacked_bar_chart">Stacked bar chart</string>
+  <string name="chart_role_interactive_bar_chart">interactive bar chart</string>
+  <string name="chart_role_interactive_line_chart">interactive line chart</string>
+  <string name="chart_role_interactive_stacked_bar_chart">interactive stacked bar chart</string>
   <string name="cleanup_status_done">Removed %d duplicate plays.</string>
   <string name="cleanup_status_removing">Removing %1$d / %2$d duplicate plays…</string>
   <string name="clear_status_clearing">Clearing %1$d / %2$d items…</string>
@@ -691,8 +717,16 @@
   <string name="description_export_before_destructive">Downloads a ZIP of your data before anything is removed.</string>
   <string name="description_history_analysis">Find duplicate plays in your watch history and keep only one watch of each item.</string>
   <string name="description_import">Import your data from other services directly in your browser.</string>
+  <string name="description_jellyfin_connect_expired">The Quick Connect code expired. Start again to connect your server.</string>
+  <string name="description_jellyfin_password">Sign in with the username and password you use in Jellyfin.</string>
+  <string name="description_jellyfin_quick_connect">You get a code to approve in Jellyfin, so you never type your password here.</string>
+  <string name="description_jellyfin_quick_connect_code">In Jellyfin on <b>%s</b>, open your profile, then Quick Connect, and enter:</string>
+  <string name="description_jellyfin_sync">Connect your Jellyfin server to sync watch history and collections with Trakt.</string>
+  <string name="description_jellyfin_synced_servers">Automatically sync your watch history and library.</string>
+  <string name="description_jellyfin_vip_upsell">Upgrade to VIP to sync watch history and collections from your Jellyfin server while it\'s in beta.</string>
   <string name="description_library_collection_limit">Some items from %s aren\'t in your Trakt collection yet. Free accounts stop at the collection limit; VIP collects everything.</string>
   <string name="description_manage_collaborators">Collaborators can add and remove items on this list. Choose from people who follow you.</string>
+  <string name="description_media_sync_add_jellyfin_server">Connect another Jellyfin server to sync it too.</string>
   <string name="description_media_sync_add_server_free">Free accounts sync 1 Plex server. Go VIP to add more.</string>
   <string name="description_media_sync_add_server_vip">Connect another Plex server to sync it too.</string>
   <string name="description_media_sync_collection_limit">Some items from this server aren\'t in your Trakt collection yet. Go VIP to collect everything.</string>
@@ -705,6 +739,7 @@
   <string name="description_media_sync_feeds">Choose what this server syncs to your Trakt account. Each switch covers movies and shows alike.</string>
   <string name="description_media_sync_history_all">Everything you\'ve watched on this server comes over on the first sync.</string>
   <string name="description_media_sync_history_always_full">Ratings, collection and watchlist always come over in full.</string>
+  <string name="description_media_sync_history_always_full_jellyfin">Your collection always comes over in full.</string>
   <string name="description_media_sync_history_today">Only new watches will be added. Your existing Trakt history stays as it is.</string>
   <string name="description_media_sync_import_past_watches">Brings over everything you\'ve watched on this server. Runs a full sync.</string>
   <string name="description_media_sync_never_synced">Waiting for its first sync</string>
@@ -714,6 +749,7 @@
   <string name="description_media_sync_server_unreachable">Not reachable from the internet</string>
   <string name="description_media_sync_synced_at">Synced %s</string>
   <string name="description_media_sync_unauthorized">Plex no longer accepts Trakt\'s access. Reconnect to keep syncing.</string>
+  <string name="description_media_sync_unauthorized_jellyfin">Jellyfin no longer accepts Trakt\'s access. Reconnect to keep syncing.</string>
   <string name="description_media_sync_unreachable">Trakt can\'t reach this server. Retry once it\'s back online.</string>
   <string name="description_media_sync_watchlist_only">No server needed. Syncs your Plex watchlist.</string>
   <string name="description_media_sync_webhook_only">Watches and ratings come from your Plex webhook.</string>
@@ -780,6 +816,17 @@
   <string name="error_text_genres_save_failed">Failed to save. Please try again.</string>
   <string name="error_text_image_preview_failed">Preview failed to load</string>
   <string name="error_text_imdb_link_not_found">We couldn\'t find this IMDb title on Trakt.</string>
+  <string name="error_text_jellyfin_embedded_credentials">Leave your username and password out of the address.</string>
+  <string name="error_text_jellyfin_invalid_credentials">That username and password didn\'t work.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Enter your server\'s full address, like https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect is off on this server. Turn it on in the Jellyfin dashboard, or sign in with your password.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Use your server\'s domain name. Trakt can\'t reach a bare IP address.</string>
+  <string name="error_text_jellyfin_server_limit">Free accounts can sync 1 media server. Go VIP to add more.</string>
+  <string name="error_text_jellyfin_server_not_found">No Jellyfin server answered at that address. Check it and try again.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt can\'t reach that server. Make sure it\'s online and reachable from the internet.</string>
+  <string name="error_text_jellyfin_unsupported_port">Use port 80, 443, 8096 or 8920, or put the server behind a reverse proxy.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Start the address with https:// or http://.</string>
+  <string name="error_text_jellyfin_vip_required">Jellyfin sync is a VIP beta for now.</string>
   <string name="error_text_lists_limit">You\'ve reached your limit for personal lists. Upgrade to VIP for unlimited lists!</string>
   <string name="error_text_locked_account_collection_limit">This user account has been locked because the collection has exceeded the limit. Please <a>contact support</a> to resolve this issue.</string>
   <string name="error_text_locked_account_guide">Please visit the <a>advanced settings</a> to run a history analysis and unlock your account.</string>
@@ -803,6 +850,8 @@
   <string name="error_text_unexpected_notes_error">Something went wrong while posting your note. If this keeps happening, please <a>submit a new issue</a>.</string>
   <string name="error_text_username">Username update failed. It\'s either taken or contains invalid characters.</string>
   <string name="filter_label_before_year">Before %d</string>
+  <string name="filter_label_range_maximum">%s, maximum</string>
+  <string name="filter_label_range_minimum">%s, minimum</string>
   <string name="filter_label_ratings">Trakt Rating of %1$s to %2$s</string>
   <string name="filter_label_runtime">%s minutes</string>
   <string name="filter_label_runtime_up_to">Up to %d minutes</string>
@@ -868,6 +917,8 @@
   <string name="header_import_example">Example</string>
   <string name="header_import_fields">Fields</string>
   <string name="header_import_json_guidelines">JSON Guidelines</string>
+  <string name="header_jellyfin_synced_servers">Jellyfin Servers</string>
+  <string name="header_jellyfin_vip_upsell">Jellyfin sync is a VIP beta</string>
   <string name="header_landing_discover">Discover</string>
   <string name="header_landing_hero">Your next favourite is already out there.</string>
   <string name="header_landing_share">Share</string>
@@ -882,12 +933,14 @@
   <string name="header_media_sync_choose_server">Choose a server</string>
   <string name="header_media_sync_collection_limit">Your collection hit the free limit</string>
   <string name="header_media_sync_connect">Connect a Plex server</string>
+  <string name="header_media_sync_connect_jellyfin">Connect a Jellyfin server</string>
   <string name="header_media_sync_feeds">Sync settings</string>
   <string name="header_media_sync_history_start">Where should your history start?</string>
   <string name="header_media_sync_libraries">Libraries</string>
   <string name="header_media_sync_profiles">Whose plays sync</string>
   <string name="header_media_sync_runs">Recent syncs</string>
   <string name="header_media_sync_sign_in">Sign in to Plex</string>
+  <string name="header_media_sync_sign_in_jellyfin">Sign in to Jellyfin</string>
   <string name="header_media_sync_watch_history">Watch history</string>
   <string name="header_media_sync_what_to_sync">What to sync</string>
   <string name="header_mixtape_done">That\'s your mixtape</string>
@@ -913,8 +966,8 @@
   <string name="header_player_subtitle">Subtitles</string>
   <string name="header_player_subtitle_language">Language</string>
   <string name="header_player_subtitle_size">Size</string>
+  <string name="header_plex_servers">Plex Servers</string>
   <string name="header_plex_sync_free_limits">Plex Sync on the free plan</string>
-  <string name="header_plex_synced_servers">Synced Servers</string>
   <string name="header_plex_vip_upsell_add_server">Multiple servers is a VIP feature</string>
   <string name="header_plex_vip_upsell_webhook">Plex scrobbling is a VIP feature</string>
   <string name="header_post_credits">Post Credits</string>
@@ -930,6 +983,7 @@
   <string name="header_renewal_date">Renewal Date</string>
   <string name="header_runtime">Runtime</string>
   <string name="header_screen_time">Screen Time</string>
+  <string name="header_seasonal_greeting_halloween">Happy Halloween</string>
   <string name="header_sentiment_aspects">Pros &amp; Cons</string>
   <string name="header_sentiment_highlight">Highlight</string>
   <string name="header_sentiment_mixed">Mixed</string>
@@ -1000,6 +1054,7 @@
   <string name="heading_connected_community_apps">Connected Community Apps</string>
   <string name="heading_meet_the_team">Meet the Team</string>
   <string name="heading_what_is_trakt">What is Trakt?</string>
+  <string name="hint_jellyfin_server_url">The address you open Jellyfin with. Trakt has to reach it from the internet.</string>
   <string name="hint_media_sync_history_resync">You can import past watches later from the server\'s Manage menu.</string>
   <string name="image_alt_comment_gif">GIF attached to the comment</string>
   <string name="image_alt_list_preview_poster">Poster for an entry in %s</string>
@@ -1083,6 +1138,7 @@
   <string name="input_label_search_streaming_services">Search streaming services</string>
   <string name="input_placeholder_filter">Filter</string>
   <string name="input_placeholder_filter_services">Filter streaming services</string>
+  <string name="input_placeholder_jellyfin_server_url">https://jellyfin.example.com</string>
   <string name="input_placeholder_lists_description">Description (optional)</string>
   <string name="input_placeholder_lists_name">Name</string>
   <string name="input_placeholder_mention_search">Search cast</string>
@@ -1124,6 +1180,10 @@
   <string name="label_genres_drawer_all">All Genres</string>
   <string name="label_genres_drawer_selected">Selected</string>
   <string name="label_genres_drawer_subtitle_loved">Select up to 5 genres which you\'d like to see more of.</string>
+  <string name="label_jellyfin_password">Password</string>
+  <string name="label_jellyfin_server">Jellyfin server</string>
+  <string name="label_jellyfin_server_url">Server address</string>
+  <string name="label_jellyfin_username">Username</string>
   <string name="label_keep_play">Keep</string>
   <string name="label_library_collection_limit">Collection limit</string>
   <string name="label_list_item_count">%s items</string>
@@ -1152,7 +1212,6 @@
   <string name="label_parental_guide_severity_none">None</string>
   <string name="label_parental_guide_severity_severe">Severe</string>
   <string name="label_plex_connected">Connected to Plex</string>
-  <string name="label_plex_connection">Connection</string>
   <string name="label_plex_server">Server</string>
   <string name="label_queued_action">Saved offline, waiting to sync</string>
   <string name="label_rating_average">Average rating %s out of 5</string>
@@ -1230,6 +1289,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">View social activities for %s</string>
   <string name="link_label_view_social_activities_shared">View social activities for %s, shared with you</string>
+  <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">About</string>
   <string name="link_text_account_settings">Account</string>
   <string name="link_text_advanced_settings">Advanced</string>
@@ -1363,7 +1423,7 @@
   <string name="match_label_soulmates">Soulmates</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open match details.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open match details.</string>
   <string name="match_pill_loading_aria_label">Computing match score</string>
   <string name="mir_banner_body">Your monthly recap is ready. Here\'s what you watched in %s.</string>
   <string name="mir_banner_body_short">Your %s recap is ready.</string>
@@ -1482,6 +1542,7 @@
   <string name="preview_feature_description_large_screen_cards">On bigger screens, all lists use the same cards as the rest of the app. Selecting one opens a quick glance instead of leaving the list.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_show_ending">Shows an Ending row in a show\'s details: Complete when the story wrapped up, Unresolved when it did not.</string>
+  <string name="preview_feature_description_smart_recommendations">Switch recommendations between Smart picks from the new model and the Classic ones.</string>
   <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
   <string name="preview_feature_description_vip_cancel_flow">A new way to cancel VIP: asks why, shows what changes and offers a deal to stay.</string>
   <string name="preview_feature_description_vip_veteran">Shows how long members have kept VIP without a break, with a Veteran or Legend badge, a coloured avatar ring and a few celebrations on your own profile.</string>
@@ -1490,6 +1551,7 @@
   <string name="preview_feature_title_large_screen_cards">Large Screen Cards</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_show_ending">Show ending</string>
+  <string name="preview_feature_title_smart_recommendations">Smart recommendations</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP cancel flow</string>
   <string name="preview_feature_title_vip_veteran">VIP veteran status</string>
@@ -1572,6 +1634,8 @@
   <string name="switch_label_toggle_halloween_filters">Toggle Halloween filters</string>
   <string name="switch_label_toggle_list_privacy">Toggle list privacy</string>
   <string name="tab_text_advanced_filters">Advanced</string>
+  <string name="tab_text_jellyfin_password">Password</string>
+  <string name="tab_text_jellyfin_quick_connect">Quick Connect</string>
   <string name="tab_text_media_sync_history_all">All past watches</string>
   <string name="tab_text_media_sync_history_today">From today</string>
   <string name="tab_text_more">More</string>
@@ -1594,7 +1658,7 @@
   <string name="tag_media_sync_webhook_only">Webhook only</string>
   <string name="tag_mixtape_different_mood">Different mood</string>
   <string name="tag_mixtape_kept">Kept</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tap for details</string>
   <string name="tag_text_blocked_user">Blocked</string>
   <string name="tag_text_deal_price">First 2 Years</string>
@@ -1848,6 +1912,7 @@
   <string name="text_info_widget_background">Set background transparency level.</string>
   <string name="text_info_younify_service_linked">Streaming service has been linked.</string>
   <string name="text_info_younify_service_unlinked">Streaming service has been unlinked.</string>
+  <string name="text_jellyfin_quick_connect_waiting">Waiting for you to approve it</string>
   <string name="text_landing_discover">movies and shows you\'ll love, and where they\'re streaming right now.</string>
   <string name="text_landing_discover_eyebrow">Find it</string>
   <string name="text_landing_hero">Track what you\'ve seen, find what to watch next, and see where it\'s streaming tonight.</string>
@@ -2009,6 +2074,7 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votes</string>
   <string name="text_raw_export">Raw export</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Please reconnect %s below.</string>
   <string name="text_rent">Rent</string>
   <string name="text_rewatching_next_episode_prompt">What\'s the next episode you want to rewatch?</string>
@@ -2020,6 +2086,8 @@
   <string name="text_season_number">Season %d</string>
   <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Specials</string>
+  <string name="text_seasonal_greeting_halloween">Our spooky picks are waiting for you!</string>
+  <string name="text_seasonal_greeting_signoff">From all of us at Trakt</string>
   <string name="text_select_searching">Searching</string>
   <string name="text_selected_from_lists">from %s lists</string>
   <string name="text_sentiment_example">Example from \"%s\"</string>
@@ -2499,9 +2567,6 @@
   <string name="translated_value_video_type_recap">Recap</string>
   <string name="translated_value_video_type_teaser">Teaser</string>
   <string name="translated_value_video_type_trailer">Trailer</string>
-  <string name="tv_time_banner_action">tvtime.trakt.tv</string>
-  <string name="tv_time_banner_description">Feel right at home with our familiar companion app, powered by your Trakt account.</string>
-  <string name="tv_time_banner_heading">Coming from TV Time?</string>
   <string name="tv_time_faq_dropped_shows_answer">Dropped status is not imported, so any shows you dropped there need to be dropped again on Trakt after importing.</string>
   <string name="tv_time_faq_dropped_shows_question">Do my dropped shows carry over?</string>
   <string name="tv_time_faq_missing_episodes_answer">As of 8 July 2026, we\'ve improved how the importer matches episodes, so shows that previously came in incomplete should now import fully. Import your export again to pull in the missing episodes. If some are still missing after that, delete the old plays first, then import once more.</string>
@@ -2512,9 +2577,6 @@
   <string name="tv_time_faq_nothing_imported_question">Nothing was imported. Why?</string>
   <string name="tv_time_faq_page_description">Common questions about moving your TV Time data to Trakt. Still stuck? Send us your export and we\'ll take a look.</string>
   <string name="tv_time_faq_page_title">TV Time import FAQ</string>
-  <string name="tv_time_import_banner_action">Import again</string>
-  <string name="tv_time_import_banner_description">We\'ve upgraded the importer. If some shows or episodes are missing, import your TV Time export again to pull them in. Still missing after that? Delete the old plays first, then import once more.</string>
-  <string name="tv_time_import_banner_heading">Your TV Time import, improved</string>
   <string name="tv_time_report_description">Attach your TV Time export and tell us what went wrong. Your files and Trakt account are sent privately to the team, never shared publicly.</string>
   <string name="tv_time_report_error_too_large">Those files are too large. Keep uploads under 25 MB in total.</string>
   <string name="tv_time_report_error_unknown">Something went wrong sending your report. Please try again.</string>
@@ -2756,7 +2818,7 @@
   <string name="yir_2026_preview_runner_none">None (no hybrid)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona preview</string>
-  <string name="yir_2026_rarity">Only %1$d%% are %2$s</string>
+  <string name="yir_2026_rarity">Only %1$d% are %2$s</string>
   <string name="yir_2026_reel_a_little_bit">A little bit %s</string>
   <string name="yir_2026_reel_and_you_are">And you are</string>
   <string name="yir_2026_reel_but_mostly">But mostly</string>

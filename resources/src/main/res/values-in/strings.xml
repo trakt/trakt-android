@@ -32,6 +32,7 @@
   <string name="auto_tracking_card_heading">Lacak secara otomatis di seluruh layanan streaming Anda</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Dapatkan VIP</string>
+  <string name="button_connect_jellyfin">Hubungkan Jellyfin</string>
   <string name="button_connect_plex">Hubungkan Plex</string>
   <string name="button_description_sort_default">Urutan asli</string>
   <string name="button_description_sort_release_date_asc">Terlama dulu</string>
@@ -82,9 +83,12 @@
   <string name="button_label_close_error">Tutup kesalahan</string>
   <string name="button_label_close_reaction">Tutup</string>
   <string name="button_label_close_stories">Tutup cerita</string>
+  <string name="button_label_collapse_list">Ciutkan daftar %s</string>
   <string name="button_label_collapse_navbar">Ciutkan</string>
   <string name="button_label_comment_replies">Balasan Ulasan</string>
   <string name="button_label_comment_reply">Balas ke %s</string>
+  <string name="button_label_comment_show_original_hint">Tampilkan komentar asli</string>
+  <string name="button_label_comment_translate">Terjemahkan komentar</string>
   <string name="button_label_connect_streaming_service">Hubungkan %s</string>
   <string name="button_label_copied">Tersalin</string>
   <string name="button_label_copy">Salin</string>
@@ -113,6 +117,7 @@
   <string name="button_label_exclude_option">Kecualikan %s</string>
   <string name="button_label_exit_edit_mode">Keluar mode edit</string>
   <string name="button_label_expand_category">Perluas %s</string>
+  <string name="button_label_expand_list">Perluas daftar %s</string>
   <string name="button_label_expand_media_overview">Perluas ikhtisar \"%s\"</string>
   <string name="button_label_expand_navbar">Perluas</string>
   <string name="button_label_filter_settings">Setelan %s</string>
@@ -143,6 +148,11 @@
   <string name="button_label_import_more">Atur ulang dan mulai impor baru.</string>
   <string name="button_label_import_selected">Impor film yang cocok yang Anda pilih di atas.</string>
   <string name="button_label_include_option">Sertakan %s</string>
+  <string name="button_label_jellyfin_add_server">Tambahkan server Jellyfin</string>
+  <string name="button_label_jellyfin_connect">Hubungkan server Jellyfin Anda</string>
+  <string name="button_label_jellyfin_connect_server">Hubungkan server Jellyfin ini</string>
+  <string name="button_label_jellyfin_sign_in">Masuk ke server Jellyfin ini</string>
+  <string name="button_label_jellyfin_sync_now">Sinkronkan Jellyfin sekarang</string>
   <string name="button_label_join_trakt">Gabung trakt.tv untuk melacak apa yang Anda tonton</string>
   <string name="button_label_keep_newest_play">Simpan pemutaran terbaru dari setiap item</string>
   <string name="button_label_keep_oldest_play">Simpan pemutaran terlama dari setiap item</string>
@@ -173,6 +183,7 @@
   <string name="button_label_media_sync_next">Lanjutkan ke langkah berikutnya</string>
   <string name="button_label_media_sync_open_plex">Buka halaman masuk Plex</string>
   <string name="button_label_media_sync_reconnect">Masuk ke Plex lagi untuk server ini</string>
+  <string name="button_label_media_sync_reconnect_jellyfin">Masuk ke Jellyfin lagi untuk server ini</string>
   <string name="button_label_media_sync_retry">Coba lagi menyinkronkan server ini</string>
   <string name="button_label_mixtape_another">Bukan ini, tampilkan yang lain</string>
   <string name="button_label_mixtape_remove_pick">Hapus %s</string>
@@ -222,6 +233,8 @@
   <string name="button_label_react">Bereaksi dengan %s</string>
   <string name="button_label_read_more">Baca selengkapnya</string>
   <string name="button_label_recent_comments">Ulasan terbaru</string>
+  <string name="button_label_recommendation_mode_classic">Tampilkan rekomendasi Klasik</string>
+  <string name="button_label_recommendation_mode_smart">Tampilkan rekomendasi cerdas</string>
   <string name="button_label_reject_follow_request">Tolak permintaan ikuti dari %s</string>
   <string name="button_label_remove_collaborator">Hapus %s sebagai kolaborator</string>
   <string name="button_label_remove_from_favorites">Hapus \"%s\" dari Favorit Anda</string>
@@ -514,6 +527,8 @@
   <string name="button_text_progress_in_progress">Sedang Berlangsung</string>
   <string name="button_text_raw_export">Ekspor sekarang</string>
   <string name="button_text_recent_comments">Terbaru</string>
+  <string name="button_text_recommendation_mode_classic">Klasik</string>
+  <string name="button_text_recommendation_mode_smart">Cerdas</string>
   <string name="button_text_reconnect">Hubungkan Kembali</string>
   <string name="button_text_reject_follow_request">Tolak Permintaan</string>
   <string name="button_text_remove_from_favorites">Hapus dari Favorit</string>
@@ -623,8 +638,19 @@
   <string name="calendar_day_item_count_other">%d Item</string>
   <string name="calendar_view_day">Hari</string>
   <string name="calendar_view_week">Minggu</string>
+  <string name="chart_label_area_chart">Bagan area</string>
+  <string name="chart_label_bar_chart">Bagan batang</string>
+  <string name="chart_label_bubble_chart">Bagan gelembung</string>
+  <string name="chart_label_country_map">Peta negara</string>
   <string name="chart_label_grouped_categories">%d kategori</string>
+  <string name="chart_label_line_chart">Bagan garis</string>
   <string name="chart_label_other">Lain-lain</string>
+  <string name="chart_label_segmented_distribution">Distribusi tersegmentasi</string>
+  <string name="chart_label_sparkline">Sparkline</string>
+  <string name="chart_label_stacked_bar_chart">Bagan batang bertumpuk</string>
+  <string name="chart_role_interactive_bar_chart">bagan batang interaktif</string>
+  <string name="chart_role_interactive_line_chart">bagan garis interaktif</string>
+  <string name="chart_role_interactive_stacked_bar_chart">bagan batang bertumpuk interaktif</string>
   <string name="cleanup_status_done">Berhasil menghapus %d pemutaran duplikat.</string>
   <string name="cleanup_status_removing">Menghapus %1$d / %2$d pemutaran duplikat…</string>
   <string name="clear_status_clearing">Menghapus %1$d / %2$d item…</string>
@@ -691,8 +717,16 @@
   <string name="description_export_before_destructive">Mengunduh ZIP data Anda sebelum ada yang dihapus.</string>
   <string name="description_history_analysis">Temukan pemutaran duplikat dalam riwayat tontonan Anda dan hanya simpan satu tontonan dari setiap item.</string>
   <string name="description_import">Impor data Anda dari layanan lain langsung di browser Anda.</string>
+  <string name="description_jellyfin_connect_expired">Kode Quick Connect telah kedaluwarsa. Mulai lagi untuk menghubungkan server Anda.</string>
+  <string name="description_jellyfin_password">Masuk dengan nama pengguna dan kata sandi yang Anda gunakan di Jellyfin.</string>
+  <string name="description_jellyfin_quick_connect">Anda akan mendapatkan kode untuk disetujui di Jellyfin, jadi Anda tidak perlu mengetik kata sandi Anda di sini.</string>
+  <string name="description_jellyfin_quick_connect_code">Di Jellyfin pada <b>%s</b>, buka profil Anda, lalu Quick Connect, dan masukkan:</string>
+  <string name="description_jellyfin_sync">Hubungkan server Jellyfin Anda untuk menyinkronkan riwayat tontonan dan koleksi dengan Trakt.</string>
+  <string name="description_jellyfin_synced_servers">Secara otomatis menyinkronkan riwayat tontonan dan perpustakaan Anda.</string>
+  <string name="description_jellyfin_vip_upsell">Tingkatkan ke VIP untuk menyinkronkan riwayat tontonan dan koleksi dari server Jellyfin Anda selama dalam tahap beta.</string>
   <string name="description_library_collection_limit">Beberapa item dari %s belum ada di koleksi Trakt Anda. Akun gratis berhenti di batas koleksi; VIP mengumpulkan semuanya.</string>
   <string name="description_manage_collaborators">Kolaborator dapat menambah dan menghapus item di daftar ini. Pilih dari orang-orang yang mengikuti Anda.</string>
+  <string name="description_media_sync_add_jellyfin_server">Hubungkan server Jellyfin lain untuk menyinkronkannya juga.</string>
   <string name="description_media_sync_add_server_free">Akun gratis menyinkronkan 1 server Plex. Tingkatkan ke VIP untuk menambahkan lebih banyak.</string>
   <string name="description_media_sync_add_server_vip">Hubungkan server Plex lain untuk menyinkronkannya juga.</string>
   <string name="description_media_sync_collection_limit">Beberapa item dari server ini belum ada di koleksi Trakt Anda. Tingkatkan ke VIP untuk mengumpulkan semuanya.</string>
@@ -705,6 +739,7 @@
   <string name="description_media_sync_feeds">Pilih apa yang disinkronkan server ini ke akun Trakt Anda. Setiap sakelar mencakup film dan acara.</string>
   <string name="description_media_sync_history_all">Semua yang telah Anda tonton di server ini akan disinkronkan pada sinkronisasi pertama.</string>
   <string name="description_media_sync_history_always_full">Peringkat, koleksi, dan daftar tontonan akan selalu disinkronkan sepenuhnya.</string>
+  <string name="description_media_sync_history_always_full_jellyfin">Koleksi Anda selalu disinkronkan secara penuh.</string>
   <string name="description_media_sync_history_today">Hanya tontonan baru yang akan ditambahkan. Riwayat Trakt Anda yang sudah ada akan tetap seperti semula.</string>
   <string name="description_media_sync_import_past_watches">Mengambil semua yang telah Anda tonton di server ini. Menjalankan sinkronisasi penuh.</string>
   <string name="description_media_sync_never_synced">Menunggu sinkronisasi pertamanya</string>
@@ -714,6 +749,7 @@
   <string name="description_media_sync_server_unreachable">Tidak dapat dijangkau dari internet</string>
   <string name="description_media_sync_synced_at">Disinkronkan %s</string>
   <string name="description_media_sync_unauthorized">Plex tidak lagi menerima akses Trakt. Hubungkan kembali untuk terus menyinkronkan.</string>
+  <string name="description_media_sync_unauthorized_jellyfin">Jellyfin tidak lagi menerima akses Trakt. Hubungkan kembali untuk terus menyinkronkan.</string>
   <string name="description_media_sync_unreachable">Trakt tidak dapat menjangkau server ini. Coba lagi setelah server kembali daring.</string>
   <string name="description_media_sync_watchlist_only">Tidak perlu server. Menyinkronkan daftar tontonan Plex Anda.</string>
   <string name="description_media_sync_webhook_only">Tontonan dan penilaian berasal dari webhook Plex Anda.</string>
@@ -780,6 +816,17 @@
   <string name="error_text_genres_save_failed">Gagal menyimpan. Silakan coba lagi.</string>
   <string name="error_text_image_preview_failed">Pratinjau gagal dimuat</string>
   <string name="error_text_imdb_link_not_found">Kami tidak dapat menemukan judul IMDb ini di Trakt.</string>
+  <string name="error_text_jellyfin_embedded_credentials">Jangan sertakan nama pengguna dan kata sandi Anda di alamat.</string>
+  <string name="error_text_jellyfin_invalid_credentials">Nama pengguna dan kata sandi tersebut tidak berfungsi.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Masukkan alamat lengkap server Anda, seperti https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect mati di server ini. Aktifkan di dasbor Jellyfin, atau masuk dengan kata sandi Anda.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Gunakan nama domain server Anda. Trakt tidak dapat menjangkau alamat IP murni.</string>
+  <string name="error_text_jellyfin_server_limit">Akun gratis dapat menyinkronkan 1 server media. Tingkatkan ke VIP untuk menambahkan lebih banyak.</string>
+  <string name="error_text_jellyfin_server_not_found">Tidak ada server Jellyfin yang merespons di alamat tersebut. Periksa dan coba lagi.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt tidak dapat menjangkau server tersebut. Pastikan server online dan dapat dijangkau dari internet.</string>
+  <string name="error_text_jellyfin_unsupported_port">Gunakan port 80, 443, 8096, atau 8920, atau letakkan server di belakang reverse proxy.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Mulai alamat dengan https:// atau http://.</string>
+  <string name="error_text_jellyfin_vip_required">Sinkronisasi Jellyfin saat ini adalah beta VIP.</string>
   <string name="error_text_lists_limit">Anda telah mencapai batas daftar pribadi Anda. Tingkatkan ke VIP untuk daftar tanpa batas!</string>
   <string name="error_text_locked_account_collection_limit">Akun pengguna ini telah dikunci karena koleksi telah melampaui batas. Harap <a>hubungi dukungan</a> untuk menyelesaikan masalah ini.</string>
   <string name="error_text_locked_account_guide">Silakan kunjungi <a>pengaturan lanjutan</a> untuk menjalankan analisis riwayat dan membuka kunci akun Anda.</string>
@@ -803,6 +850,8 @@
   <string name="error_text_unexpected_notes_error">Terjadi kesalahan saat memposting catatan Anda. Jika ini terus terjadi, silakan <a>laporkan masalah baru</a>.</string>
   <string name="error_text_username">Pembaruan nama pengguna gagal. Nama pengguna sudah dipakai atau berisi karakter yang tidak valid.</string>
   <string name="filter_label_before_year">Sebelum %d</string>
+  <string name="filter_label_range_maximum">%s, maksimum</string>
+  <string name="filter_label_range_minimum">%s, minimum</string>
   <string name="filter_label_ratings">Rating Trakt %1$s hingga %2$s</string>
   <string name="filter_label_runtime">%s menit</string>
   <string name="filter_label_runtime_up_to">Hingga %d menit</string>
@@ -868,6 +917,8 @@
   <string name="header_import_example">Contoh</string>
   <string name="header_import_fields">Bidang</string>
   <string name="header_import_json_guidelines">Panduan JSON</string>
+  <string name="header_jellyfin_synced_servers">Server Jellyfin</string>
+  <string name="header_jellyfin_vip_upsell">Sinkronisasi Jellyfin adalah beta VIP</string>
   <string name="header_landing_discover">Temukan</string>
   <string name="header_landing_hero">Favorit Anda berikutnya sudah ada.</string>
   <string name="header_landing_share">Bagikan</string>
@@ -882,12 +933,14 @@
   <string name="header_media_sync_choose_server">Pilih server</string>
   <string name="header_media_sync_collection_limit">Koleksi Anda mencapai batas gratis</string>
   <string name="header_media_sync_connect">Hubungkan server Plex</string>
+  <string name="header_media_sync_connect_jellyfin">Hubungkan server Jellyfin</string>
   <string name="header_media_sync_feeds">Pengaturan sinkronisasi</string>
   <string name="header_media_sync_history_start">Dari mana riwayat Anda harus dimulai?</string>
   <string name="header_media_sync_libraries">Pustaka</string>
   <string name="header_media_sync_profiles">Tontonan siapa yang disinkronkan</string>
   <string name="header_media_sync_runs">Sinkronisasi terbaru</string>
   <string name="header_media_sync_sign_in">Masuk ke Plex</string>
+  <string name="header_media_sync_sign_in_jellyfin">Masuk ke Jellyfin</string>
   <string name="header_media_sync_watch_history">Riwayat Tontonan</string>
   <string name="header_media_sync_what_to_sync">Apa yang akan disinkronkan</string>
   <string name="header_mixtape_done">Itu mixtape Anda</string>
@@ -913,8 +966,8 @@
   <string name="header_player_subtitle">Subtitel</string>
   <string name="header_player_subtitle_language">Bahasa</string>
   <string name="header_player_subtitle_size">Ukuran</string>
+  <string name="header_plex_servers">Server Plex</string>
   <string name="header_plex_sync_free_limits">Plex Sync di paket gratis</string>
-  <string name="header_plex_synced_servers">Server yang Disinkronkan</string>
   <string name="header_plex_vip_upsell_add_server">Beberapa server adalah fitur VIP</string>
   <string name="header_plex_vip_upsell_webhook">Plex scrobbling adalah fitur VIP</string>
   <string name="header_post_credits">Pasca-Kredit</string>
@@ -930,6 +983,7 @@
   <string name="header_renewal_date">Tanggal Perpanjangan</string>
   <string name="header_runtime">Durasi</string>
   <string name="header_screen_time">Waktu Layar</string>
+  <string name="header_seasonal_greeting_halloween">Selamat Halloween</string>
   <string name="header_sentiment_aspects">Pro &amp; Kontra</string>
   <string name="header_sentiment_highlight">Sorotan</string>
   <string name="header_sentiment_mixed">Campuran</string>
@@ -1000,6 +1054,7 @@
   <string name="heading_connected_community_apps">Aplikasi Komunitas Terhubung</string>
   <string name="heading_meet_the_team">Temui Tim</string>
   <string name="heading_what_is_trakt">Apa itu Trakt?</string>
+  <string name="hint_jellyfin_server_url">Alamat yang Anda gunakan untuk membuka Jellyfin. Trakt harus dapat menjangkaunya dari internet.</string>
   <string name="hint_media_sync_history_resync">Anda dapat mengimpor riwayat tontonan nanti dari menu Kelola server.</string>
   <string name="image_alt_comment_gif">GIF terlampir pada komentar</string>
   <string name="image_alt_list_preview_poster">Poster untuk entri di %s</string>
@@ -1083,6 +1138,7 @@
   <string name="input_label_search_streaming_services">Cari layanan streaming</string>
   <string name="input_placeholder_filter">Filter</string>
   <string name="input_placeholder_filter_services">Saring layanan streaming</string>
+  <string name="input_placeholder_jellyfin_server_url">https://jellyfin.example.com</string>
   <string name="input_placeholder_lists_description">Deskripsi (opsional)</string>
   <string name="input_placeholder_lists_name">Nama</string>
   <string name="input_placeholder_mention_search">Cari pemeran</string>
@@ -1124,6 +1180,10 @@
   <string name="label_genres_drawer_all">Semua Genre</string>
   <string name="label_genres_drawer_selected">Terpilih</string>
   <string name="label_genres_drawer_subtitle_loved">Pilih hingga 5 genre yang ingin Anda lihat lebih banyak.</string>
+  <string name="label_jellyfin_password">Kata Sandi</string>
+  <string name="label_jellyfin_server">Server Jellyfin</string>
+  <string name="label_jellyfin_server_url">Alamat server</string>
+  <string name="label_jellyfin_username">Nama Pengguna</string>
   <string name="label_keep_play">Simpan</string>
   <string name="label_library_collection_limit">Batas koleksi</string>
   <string name="label_list_item_count">%s item</string>
@@ -1152,7 +1212,6 @@
   <string name="label_parental_guide_severity_none">Tidak Ada</string>
   <string name="label_parental_guide_severity_severe">Parah</string>
   <string name="label_plex_connected">Terhubung ke Plex</string>
-  <string name="label_plex_connection">Koneksi</string>
   <string name="label_plex_server">Server</string>
   <string name="label_queued_action">Disimpan secara offline, menunggu sinkronisasi</string>
   <string name="label_rating_average">Peringkat rata-rata %s dari 5</string>
@@ -1230,6 +1289,7 @@
   <string name="link_label_status">Status Trakt</string>
   <string name="link_label_view_social_activities">Lihat aktivitas sosial untuk %s</string>
   <string name="link_label_view_social_activities_shared">Lihat aktivitas sosial untuk %s, dibagikan kepada Anda</string>
+  <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Tentang</string>
   <string name="link_text_account_settings">Akun</string>
   <string name="link_text_advanced_settings">Lanjutan</string>
@@ -1363,7 +1423,7 @@
   <string name="match_label_soulmates">Satu Frekuensi</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Cocok:</string>
-  <string name="match_pill_aria_label">Kecocokan %1$d%%, %2$s. Buka detail kecocokan.</string>
+  <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
   <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
   <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
@@ -1482,6 +1542,7 @@
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_show_ending">Menampilkan baris Akhir di detail tayangan: Selesai saat cerita berakhir, Tidak Terselesaikan saat tidak berakhir.</string>
+  <string name="preview_feature_description_smart_recommendations">Beralih rekomendasi antara pilihan Cerdas dari model baru dan yang Klasik.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
   <string name="preview_feature_description_vip_cancel_flow">Cara baru untuk membatalkan VIP: menanyakan alasannya, menunjukkan perubahan apa yang akan terjadi, dan menawarkan penawaran untuk tetap berlangganan.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
@@ -1490,6 +1551,7 @@
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_show_ending">Akhir Tayangan</string>
+  <string name="preview_feature_title_smart_recommendations">Rekomendasi cerdas</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">Alur pembatalan VIP</string>
   <string name="preview_feature_title_vip_veteran">Status veteran VIP</string>
@@ -1572,6 +1634,8 @@
   <string name="switch_label_toggle_halloween_filters">Alihkan filter halloween</string>
   <string name="switch_label_toggle_list_privacy">Alihkan privasi daftar</string>
   <string name="tab_text_advanced_filters">Lanjutan</string>
+  <string name="tab_text_jellyfin_password">Kata Sandi</string>
+  <string name="tab_text_jellyfin_quick_connect">Quick Connect</string>
   <string name="tab_text_media_sync_history_all">Semua tontonan sebelumnya</string>
   <string name="tab_text_media_sync_history_today">Mulai hari ini</string>
   <string name="tab_text_more">Lainnya</string>
@@ -1594,7 +1658,7 @@
   <string name="tag_media_sync_webhook_only">Webhook saja</string>
   <string name="tag_mixtape_different_mood">Nuansa berbeda</string>
   <string name="tag_mixtape_kept">Disimpan</string>
-  <string name="tag_mixtape_match">%s%% cocok</string>
+  <string name="tag_mixtape_match">%s% cocok</string>
   <string name="tag_mixtape_tap_details">Ketuk untuk detail</string>
   <string name="tag_text_blocked_user">Diblokir</string>
   <string name="tag_text_deal_price">2 Tahun Pertama</string>
@@ -1848,6 +1912,7 @@
   <string name="text_info_widget_background">Atur tingkat transparansi latar belakang.</string>
   <string name="text_info_younify_service_linked">Layanan streaming telah ditautkan.</string>
   <string name="text_info_younify_service_unlinked">Layanan streaming telah dilepas tautan.</string>
+  <string name="text_jellyfin_quick_connect_waiting">Menunggu Anda menyetujuinya</string>
   <string name="text_landing_discover">film dan acara yang akan Anda sukai dan di mana mereka sedang streaming saat ini.</string>
   <string name="text_landing_discover_eyebrow">Temukan</string>
   <string name="text_landing_hero">Lacak apa yang sudah Anda tonton, temukan tontonan berikutnya, dan lihat di mana itu streaming malam ini.</string>
@@ -2009,6 +2074,7 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s suara</string>
   <string name="text_raw_export">Ekspor mentah</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Harap hubungkan kembali %s di bawah.</string>
   <string name="text_rent">Sewa</string>
   <string name="text_rewatching_next_episode_prompt">Episode apa selanjutnya yang ingin Anda tonton ulang?</string>
@@ -2020,6 +2086,8 @@
   <string name="text_season_number">Musim %d</string>
   <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Spesial</string>
+  <string name="text_seasonal_greeting_halloween">Pilihan horor kami menanti Anda!</string>
+  <string name="text_seasonal_greeting_signoff">Dari kami semua di Trakt</string>
   <string name="text_select_searching">Mencari</string>
   <string name="text_selected_from_lists">dari %s daftar</string>
   <string name="text_sentiment_example">Contoh dari \"%s\"</string>
@@ -2499,9 +2567,6 @@
   <string name="translated_value_video_type_recap">Rekap</string>
   <string name="translated_value_video_type_teaser">Teaser</string>
   <string name="translated_value_video_type_trailer">Trailer</string>
-  <string name="tv_time_banner_action">tvtime.trakt.tv</string>
-  <string name="tv_time_banner_description">Rasakan kenyamanan di aplikasi pendamping kami yang familiar, didukung oleh akun Trakt Anda.</string>
-  <string name="tv_time_banner_heading">Datang dari TV Time?</string>
   <string name="tv_time_faq_dropped_shows_answer">Status dihentikan tidak diimpor, jadi setiap acara yang Anda hentikan di sana perlu dihentikan lagi di Trakt setelah mengimpor.</string>
   <string name="tv_time_faq_dropped_shows_question">Apakah acara yang saya hentikan ikut terbawa?</string>
   <string name="tv_time_faq_missing_episodes_answer">Per 8 Juli 2026, kami telah meningkatkan cara pengimpor mencocokkan episode, sehingga acara yang sebelumnya tidak lengkap kini seharusnya diimpor sepenuhnya. Impor ekspor Anda lagi untuk menarik episode yang hilang. Jika beberapa masih hilang setelah itu, hapus pemutaran lama terlebih dahulu, lalu impor sekali lagi.</string>
@@ -2512,9 +2577,6 @@
   <string name="tv_time_faq_nothing_imported_question">Tidak ada yang diimpor. Mengapa?</string>
   <string name="tv_time_faq_page_description">Pertanyaan umum tentang memindahkan data TV Time Anda ke Trakt. Masih ada masalah? Kirimkan ekspor Anda dan kami akan memeriksanya.</string>
   <string name="tv_time_faq_page_title">FAQ Impor TV Time</string>
-  <string name="tv_time_import_banner_action">Impor lagi</string>
-  <string name="tv_time_import_banner_description">Kami telah meningkatkan pengimpor. Jika beberapa acara atau episode hilang, impor ulang ekspor TV Time Anda untuk memasukkannya. Masih hilang setelah itu? Hapus pemutaran lama terlebih dahulu, lalu impor sekali lagi.</string>
-  <string name="tv_time_import_banner_heading">Impor TV Time Anda, kini lebih baik</string>
   <string name="tv_time_report_description">Lampirkan ekspor TV Time Anda dan beritahu kami apa yang salah. File dan akun Trakt Anda dikirim secara pribadi ke tim, tidak pernah dibagikan secara publik.</string>
   <string name="tv_time_report_error_too_large">File-file tersebut terlalu besar. Batasi unggahan di bawah 25 MB secara total.</string>
   <string name="tv_time_report_error_unknown">Terjadi kesalahan saat mengirim laporan Anda. Harap coba lagi.</string>
@@ -2756,7 +2818,7 @@
   <string name="yir_2026_preview_runner_none">Tidak ada (tanpa hibrida)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Pratinjau Persona</string>
-  <string name="yir_2026_rarity">Hanya %1$d%% adalah %2$s</string>
+  <string name="yir_2026_rarity">Hanya %1$d% adalah %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Sedikit %s</string>
   <string name="yir_2026_reel_and_you_are">Dan Anda adalah</string>
   <string name="yir_2026_reel_but_mostly">Tapi sebagian besar</string>

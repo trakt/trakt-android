@@ -32,6 +32,7 @@
   <string name="auto_tracking_card_heading">Urmăriți automat pe toate serviciile dvs. de streaming</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Ia VIP</string>
+  <string name="button_connect_jellyfin">Conectează Jellyfin</string>
   <string name="button_connect_plex">Conectează Plex</string>
   <string name="button_description_sort_default">Ordinea originală</string>
   <string name="button_description_sort_release_date_asc">Cele mai vechi mai întâi</string>
@@ -82,9 +83,12 @@
   <string name="button_label_close_error">Închide eroarea</string>
   <string name="button_label_close_reaction">Închide</string>
   <string name="button_label_close_stories">Închide povestirile</string>
+  <string name="button_label_collapse_list">Restrânge lista %s</string>
   <string name="button_label_collapse_navbar">Restrânge</string>
   <string name="button_label_comment_replies">Răspunsuri la recenzie</string>
   <string name="button_label_comment_reply">Răspunde lui %s</string>
+  <string name="button_label_comment_show_original_hint">Afișați comentariul original</string>
+  <string name="button_label_comment_translate">Traduceți comentariul</string>
   <string name="button_label_connect_streaming_service">Conectează %s</string>
   <string name="button_label_copied">Copiat</string>
   <string name="button_label_copy">Copiază</string>
@@ -113,6 +117,7 @@
   <string name="button_label_exclude_option">Exclude %s</string>
   <string name="button_label_exit_edit_mode">Ieși din modul de editare</string>
   <string name="button_label_expand_category">Extinde %s</string>
+  <string name="button_label_expand_list">Extinde lista %s</string>
   <string name="button_label_expand_media_overview">Extinde prezentarea generală a \"%s\"</string>
   <string name="button_label_expand_navbar">Extinde</string>
   <string name="button_label_filter_settings">Setări %s</string>
@@ -143,6 +148,11 @@
   <string name="button_label_import_more">Resetează și începe un nou import.</string>
   <string name="button_label_import_selected">Importă filmele selectate mai sus.</string>
   <string name="button_label_include_option">Include %s</string>
+  <string name="button_label_jellyfin_add_server">Adăugați un server Jellyfin</string>
+  <string name="button_label_jellyfin_connect">Conectați-vă serverul Jellyfin</string>
+  <string name="button_label_jellyfin_connect_server">Conectați acest server Jellyfin</string>
+  <string name="button_label_jellyfin_sign_in">Conectați-vă la acest server Jellyfin</string>
+  <string name="button_label_jellyfin_sync_now">Sincronizează Jellyfin acum</string>
   <string name="button_label_join_trakt">Alătură-te trakt.tv pentru a ține evidența a ceea ce urmărești</string>
   <string name="button_label_keep_newest_play">Păstrează cea mai nouă vizionare a fiecărui element</string>
   <string name="button_label_keep_oldest_play">Păstrează cea mai veche vizionare a fiecărui element</string>
@@ -173,6 +183,7 @@
   <string name="button_label_media_sync_next">Treceți la pasul următor</string>
   <string name="button_label_media_sync_open_plex">Deschideți pagina de conectare Plex</string>
   <string name="button_label_media_sync_reconnect">Conectați-vă din nou la Plex pentru acest server</string>
+  <string name="button_label_media_sync_reconnect_jellyfin">Conectați-vă din nou la Jellyfin pentru acest server</string>
   <string name="button_label_media_sync_retry">Reîncercați sincronizarea acestui server</string>
   <string name="button_label_mixtape_another">Nu acesta, arată altul</string>
   <string name="button_label_mixtape_remove_pick">Eliminați %s</string>
@@ -222,6 +233,8 @@
   <string name="button_label_react">Reacționează cu %s</string>
   <string name="button_label_read_more">Citește mai mult</string>
   <string name="button_label_recent_comments">Recenzii recente</string>
+  <string name="button_label_recommendation_mode_classic">Afișează recomandări clasice</string>
+  <string name="button_label_recommendation_mode_smart">Afișează recomandări inteligente</string>
   <string name="button_label_reject_follow_request">Refuză cererea de urmărire de la %s</string>
   <string name="button_label_remove_collaborator">Eliminați-l pe %s ca un colaborator</string>
   <string name="button_label_remove_from_favorites">Elimină \"%s\" din Favoritele tale</string>
@@ -514,6 +527,8 @@
   <string name="button_text_progress_in_progress">În desfășurare</string>
   <string name="button_text_raw_export">Exportă acum</string>
   <string name="button_text_recent_comments">Recente</string>
+  <string name="button_text_recommendation_mode_classic">Clasic</string>
+  <string name="button_text_recommendation_mode_smart">Inteligent</string>
   <string name="button_text_reconnect">Reconectează</string>
   <string name="button_text_reject_follow_request">Refuză cererea</string>
   <string name="button_text_remove_from_favorites">Elimină din Favorite</string>
@@ -623,8 +638,19 @@
   <string name="calendar_day_item_count_other">%d Elemente</string>
   <string name="calendar_view_day">Zi</string>
   <string name="calendar_view_week">Săptămână</string>
+  <string name="chart_label_area_chart">Diagramă de zonă</string>
+  <string name="chart_label_bar_chart">Diagramă cu bare</string>
+  <string name="chart_label_bubble_chart">Diagramă cu bule</string>
+  <string name="chart_label_country_map">Hartă de țară</string>
   <string name="chart_label_grouped_categories">%d categorii</string>
+  <string name="chart_label_line_chart">Diagramă liniară</string>
   <string name="chart_label_other">Altele</string>
+  <string name="chart_label_segmented_distribution">Distribuție segmentată</string>
+  <string name="chart_label_sparkline">Minigrafic</string>
+  <string name="chart_label_stacked_bar_chart">Diagramă cu bare suprapuse</string>
+  <string name="chart_role_interactive_bar_chart">diagramă interactivă cu bare</string>
+  <string name="chart_role_interactive_line_chart">diagramă liniară interactivă</string>
+  <string name="chart_role_interactive_stacked_bar_chart">diagramă interactivă cu bare suprapuse</string>
   <string name="cleanup_status_done">Au fost eliminate %d vizionări duplicate.</string>
   <string name="cleanup_status_removing">Se elimină %1$d / %2$d vizionări duplicate…</string>
   <string name="clear_status_clearing">Se șterg %1$d / %2$d elemente…</string>
@@ -691,8 +717,16 @@
   <string name="description_export_before_destructive">Descarcă un fișier ZIP cu datele tale înainte ca orice să fie eliminat.</string>
   <string name="description_history_analysis">Găsește vizionări duplicate în istoricul tău și păstrează doar o singură vizionare pentru fiecare element.</string>
   <string name="description_import">Importă-ți datele de la alte servicii direct în browserul tău.</string>
+  <string name="description_jellyfin_connect_expired">Codul de Conectare Rapidă a expirat. Începeți din nou pentru a vă conecta serverul.</string>
+  <string name="description_jellyfin_password">Conectați-vă cu numele de utilizator și parola pe care le folosiți în Jellyfin.</string>
+  <string name="description_jellyfin_quick_connect">Primiți un cod de aprobat în Jellyfin, astfel încât nu veți introduce niciodată parola aici.</string>
+  <string name="description_jellyfin_quick_connect_code">În Jellyfin pe <b>%s</b>, deschideți profilul, apoi Conectare Rapidă și introduceți:</string>
+  <string name="description_jellyfin_sync">Conectează-ți serverul Jellyfin pentru a sincroniza istoricul vizionărilor și colecțiile cu Trakt.</string>
+  <string name="description_jellyfin_synced_servers">Sincronizați automat istoricul vizionărilor și biblioteca.</string>
+  <string name="description_jellyfin_vip_upsell">Actualizați la VIP pentru a sincroniza istoricul vizionărilor și colecțiile de pe serverul dvs. Jellyfin cât timp este în versiune beta.</string>
   <string name="description_library_collection_limit">Unele elemente de pe %s nu sunt încă în colecția dvs. Trakt. Conturile gratuite se opresc la limita colecției; VIP colectează totul.</string>
   <string name="description_manage_collaborators">Colaboratorii pot adăuga și elimina elemente din această listă. Alegeți dintre persoanele care vă urmăresc.</string>
+  <string name="description_media_sync_add_jellyfin_server">Conectați un alt server Jellyfin pentru a-l sincroniza și pe acesta.</string>
   <string name="description_media_sync_add_server_free">Conturile gratuite sincronizează 1 server Plex. Treceți la VIP pentru a adăuga mai multe.</string>
   <string name="description_media_sync_add_server_vip">Conectați un alt server Plex pentru a-l sincroniza și pe acesta.</string>
   <string name="description_media_sync_collection_limit">Unele elemente de pe acest server nu sunt încă în colecția dvs. Trakt. Treceți la VIP pentru a colecta totul.</string>
@@ -705,6 +739,7 @@
   <string name="description_media_sync_feeds">Alegeți ce sincronizează acest server cu contul dvs. Trakt. Fiecare comutator acoperă atât filme, cât și seriale.</string>
   <string name="description_media_sync_history_all">Tot ce ai vizionat pe acest server va fi importat la prima sincronizare.</string>
   <string name="description_media_sync_history_always_full">Evaluările, colecția și lista de vizionare sunt întotdeauna importate integral.</string>
+  <string name="description_media_sync_history_always_full_jellyfin">Colecția dvs. este întotdeauna sincronizată integral.</string>
   <string name="description_media_sync_history_today">Doar vizionările noi vor fi adăugate. Istoricul tău existent Trakt rămâne neschimbat.</string>
   <string name="description_media_sync_import_past_watches">Aduce tot ce ai vizionat pe acest server. Rulează o sincronizare completă.</string>
   <string name="description_media_sync_never_synced">Se așteaptă prima sincronizare</string>
@@ -714,6 +749,7 @@
   <string name="description_media_sync_server_unreachable">Nu poate fi accesat de pe internet</string>
   <string name="description_media_sync_synced_at">Sincronizat %s</string>
   <string name="description_media_sync_unauthorized">Plex nu mai acceptă accesul Trakt. Reconectați-vă pentru a continua sincronizarea.</string>
+  <string name="description_media_sync_unauthorized_jellyfin">Jellyfin nu mai acceptă accesul Trakt. Reconectați-vă pentru a continua sincronizarea.</string>
   <string name="description_media_sync_unreachable">Trakt nu poate accesa acest server. Reîncercați odată ce este din nou online.</string>
   <string name="description_media_sync_watchlist_only">Nu este necesar niciun server. Sincronizează lista de vizionare Plex.</string>
   <string name="description_media_sync_webhook_only">Vizionările și evaluările provin de la webhook-ul tău Plex.</string>
@@ -780,6 +816,17 @@
   <string name="error_text_genres_save_failed">Salvarea a eșuat. Te rog să încerci din nou.</string>
   <string name="error_text_image_preview_failed">Previzualizarea nu a putut fi încărcată</string>
   <string name="error_text_imdb_link_not_found">Nu am putut găsi acest titlu IMDb pe Trakt.</string>
+  <string name="error_text_jellyfin_embedded_credentials">Nu includeți numele de utilizator și parola în adresă.</string>
+  <string name="error_text_jellyfin_invalid_credentials">Numele de utilizator și parola introduse nu au funcționat.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Introduceți adresa completă a serverului dvs., cum ar fi https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_quick_connect_disabled">Conectarea Rapidă este dezactivată pe acest server. Activați-o în tabloul de bord Jellyfin, sau conectați-vă cu parola dumneavoastră.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Utilizați numele de domeniu al serverului dvs. Trakt nu poate accesa o adresă IP brută.</string>
+  <string name="error_text_jellyfin_server_limit">Conturile gratuite pot sincroniza 1 server media. Treceți la VIP pentru a adăuga mai multe.</string>
+  <string name="error_text_jellyfin_server_not_found">Niciun server Jellyfin nu a răspuns la acea adresă. Verificați-o și încercați din nou.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt nu poate accesa acel server. Asigurați-vă că este online și accesibil de pe internet.</string>
+  <string name="error_text_jellyfin_unsupported_port">Utilizați portul 80, 443, 8096 sau 8920, sau plasați serverul în spatele unui proxy invers.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Începeți adresa cu https:// sau http://.</string>
+  <string name="error_text_jellyfin_vip_required">Sincronizarea Jellyfin este momentan în versiune beta VIP.</string>
   <string name="error_text_lists_limit">Ai atins limita listelor personale. Fă upgrade la VIP pentru liste nelimitate!</string>
   <string name="error_text_locked_account_collection_limit">Acest cont de utilizator a fost blocat deoarece colecția a depășit limita. Vă rugăm să <a>contactați asistența</a> pentru a rezolva această problemă.</string>
   <string name="error_text_locked_account_guide">Te rugăm să vizitezi <a>setările avansate</a> pentru a rula o analiză a istoricului și a debloca contul.</string>
@@ -803,6 +850,8 @@
   <string name="error_text_unexpected_notes_error">Ceva nu a mers bine la postarea notei tale. Dacă acest lucru se tot întâmplă, te rugăm să <a>trimiți o nouă problemă</a>.</string>
   <string name="error_text_username">Actualizarea numelui de utilizator a eșuat. Este deja luat sau conține caractere nevalide.</string>
   <string name="filter_label_before_year">Înainte de %d</string>
+  <string name="filter_label_range_maximum">%s, maxim</string>
+  <string name="filter_label_range_minimum">%s, minim</string>
   <string name="filter_label_ratings">Evaluare Trakt de la %1$s la %2$s</string>
   <string name="filter_label_runtime">%s minute</string>
   <string name="filter_label_runtime_up_to">Până la %d minute</string>
@@ -868,6 +917,8 @@
   <string name="header_import_example">Exemplu</string>
   <string name="header_import_fields">Câmpuri</string>
   <string name="header_import_json_guidelines">Ghiduri JSON</string>
+  <string name="header_jellyfin_synced_servers">Servere Jellyfin</string>
+  <string name="header_jellyfin_vip_upsell">Sincronizarea Jellyfin este o versiune beta VIP</string>
   <string name="header_landing_discover">Descoperă</string>
   <string name="header_landing_hero">Următorul tău preferat este deja disponibil.</string>
   <string name="header_landing_share">Partajează</string>
@@ -882,12 +933,14 @@
   <string name="header_media_sync_choose_server">Alegeți un server</string>
   <string name="header_media_sync_collection_limit">Colecția dvs. a atins limita gratuită</string>
   <string name="header_media_sync_connect">Conectați un server Plex</string>
+  <string name="header_media_sync_connect_jellyfin">Conectați un server Jellyfin</string>
   <string name="header_media_sync_feeds">Setări de sincronizare</string>
   <string name="header_media_sync_history_start">De unde ar trebui să înceapă istoricul tău?</string>
   <string name="header_media_sync_libraries">Biblioteci</string>
   <string name="header_media_sync_profiles">Ale căror vizionări se sincronizează</string>
   <string name="header_media_sync_runs">Sincronizări recente</string>
   <string name="header_media_sync_sign_in">Conectați-vă la Plex</string>
+  <string name="header_media_sync_sign_in_jellyfin">Conectați-vă la Jellyfin</string>
   <string name="header_media_sync_watch_history">Istoric vizionări</string>
   <string name="header_media_sync_what_to_sync">Ce să sincronizați</string>
   <string name="header_mixtape_done">Acesta este Mixtape-ul tău</string>
@@ -913,8 +966,8 @@
   <string name="header_player_subtitle">Subtitrări</string>
   <string name="header_player_subtitle_language">Limbă</string>
   <string name="header_player_subtitle_size">Dimensiune</string>
+  <string name="header_plex_servers">Servere Plex</string>
   <string name="header_plex_sync_free_limits">Sincronizare Plex pe planul gratuit</string>
-  <string name="header_plex_synced_servers">Servere sincronizate</string>
   <string name="header_plex_vip_upsell_add_server">Mai multe servere sunt o funcție VIP</string>
   <string name="header_plex_vip_upsell_webhook">Scrobbling-ul Plex este o funcție VIP</string>
   <string name="header_post_credits">După credite</string>
@@ -930,6 +983,7 @@
   <string name="header_renewal_date">Data reînnoirii</string>
   <string name="header_runtime">Durată</string>
   <string name="header_screen_time">Timp petrecut în fața ecranului</string>
+  <string name="header_seasonal_greeting_halloween">La mulți ani de Halloween!</string>
   <string name="header_sentiment_aspects">Pro &amp; Contra</string>
   <string name="header_sentiment_highlight">Punct cheie</string>
   <string name="header_sentiment_mixed">Mixt</string>
@@ -1000,6 +1054,7 @@
   <string name="heading_connected_community_apps">Aplicații comunitare conectate</string>
   <string name="heading_meet_the_team">Fă cunoștință cu echipa</string>
   <string name="heading_what_is_trakt">Ce este Trakt?</string>
+  <string name="hint_jellyfin_server_url">Adresa cu care deschideți Jellyfin. Trakt trebuie să o poată accesa de pe internet.</string>
   <string name="hint_media_sync_history_resync">Poți importa vizionări anterioare mai târziu din meniul Gestionare al serverului.</string>
   <string name="image_alt_comment_gif">GIF atașat comentariului</string>
   <string name="image_alt_list_preview_poster">Afiș pentru o intrare în %s</string>
@@ -1083,6 +1138,7 @@
   <string name="input_label_search_streaming_services">Căutați servicii de streaming</string>
   <string name="input_placeholder_filter">Filtru</string>
   <string name="input_placeholder_filter_services">Filtrează serviciile de streaming</string>
+  <string name="input_placeholder_jellyfin_server_url">https://jellyfin.example.com</string>
   <string name="input_placeholder_lists_description">Descriere (opțional)</string>
   <string name="input_placeholder_lists_name">Nume</string>
   <string name="input_placeholder_mention_search">Căută distribuția</string>
@@ -1124,6 +1180,10 @@
   <string name="label_genres_drawer_all">Toate genurile</string>
   <string name="label_genres_drawer_selected">Selectate</string>
   <string name="label_genres_drawer_subtitle_loved">Selectează până la 5 genuri pe care ai vrea să le vezi mai des.</string>
+  <string name="label_jellyfin_password">Parolă</string>
+  <string name="label_jellyfin_server">Server Jellyfin</string>
+  <string name="label_jellyfin_server_url">Adresa serverului</string>
+  <string name="label_jellyfin_username">Nume de utilizator</string>
   <string name="label_keep_play">Păstrează</string>
   <string name="label_library_collection_limit">Limită colecție</string>
   <string name="label_list_item_count">%s elemente</string>
@@ -1152,7 +1212,6 @@
   <string name="label_parental_guide_severity_none">Niciunul</string>
   <string name="label_parental_guide_severity_severe">Sever</string>
   <string name="label_plex_connected">Conectat la Plex</string>
-  <string name="label_plex_connection">Conexiune</string>
   <string name="label_plex_server">Server</string>
   <string name="label_queued_action">Salvat offline, în așteptarea sincronizării</string>
   <string name="label_rating_average">Evaluare medie %s din 5</string>
@@ -1230,6 +1289,7 @@
   <string name="link_label_status">Starea Trakt</string>
   <string name="link_label_view_social_activities">Vezi activitățile sociale pentru %s</string>
   <string name="link_label_view_social_activities_shared">Vezi activitățile sociale pentru %s, partajate cu tine</string>
+  <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Despre</string>
   <string name="link_text_account_settings">Cont</string>
   <string name="link_text_advanced_settings">Avansate</string>
@@ -1363,7 +1423,7 @@
   <string name="match_label_soulmates">Suflete pereche</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Potrivire:</string>
-  <string name="match_pill_aria_label">%1$d%% potrivire, %2$s. Deschide detaliile potrivirii.</string>
+  <string name="match_pill_aria_label">%1$d% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
   <string name="mir_banner_body">Recapitularea ta lunară este gata. Iată ce ai vizionat în %s.</string>
   <string name="mir_banner_body_short">Recapitularea ta din %s este gata.</string>
@@ -1482,6 +1542,7 @@
   <string name="preview_feature_description_large_screen_cards">Pe ecrane mai mari, toate listele folosesc aceleași carduri ca și restul aplicației. Selectarea unui card deschide o vizualizare rapidă, în loc să părăsească lista.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_show_ending">Afișează un rând despre Final în detaliile unui serial: Finalizat când povestea s-a încheiat, Nerezolvat când nu s-a încheiat.</string>
+  <string name="preview_feature_description_smart_recommendations">Comută recomandările între selecțiile inteligente din noul model și cele clasice.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_vip_cancel_flow">O nouă modalitate de a anula VIP: întreabă de ce, arată ce se schimbă și oferă o înțelegere pentru a rămâne.</string>
   <string name="preview_feature_description_vip_veteran">Arată cât timp au păstrat membrii statutul VIP fără întrerupere, cu o insignă Veteran sau Legendă, un inel colorat de avatar și câteva celebrații pe propriul profil.</string>
@@ -1490,6 +1551,7 @@
   <string name="preview_feature_title_large_screen_cards">Carduri pe Ecrane Mari</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_show_ending">Finalul serialului</string>
+  <string name="preview_feature_title_smart_recommendations">Recomandări inteligente</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
   <string name="preview_feature_title_vip_cancel_flow">Flux de anulare VIP</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP veteran</string>
@@ -1572,6 +1634,8 @@
   <string name="switch_label_toggle_halloween_filters">Activează/dezactivează filtrele de Halloween</string>
   <string name="switch_label_toggle_list_privacy">Activează/dezactivează confidențialitatea listei</string>
   <string name="tab_text_advanced_filters">Avansate</string>
+  <string name="tab_text_jellyfin_password">Parolă</string>
+  <string name="tab_text_jellyfin_quick_connect">Conectare Rapidă</string>
   <string name="tab_text_media_sync_history_all">Toate vizionările anterioare</string>
   <string name="tab_text_media_sync_history_today">Începând de astăzi</string>
   <string name="tab_text_more">Mai multe</string>
@@ -1594,7 +1658,7 @@
   <string name="tag_media_sync_webhook_only">Doar webhook</string>
   <string name="tag_mixtape_different_mood">Atmosferă diferită</string>
   <string name="tag_mixtape_kept">Păstrat</string>
-  <string name="tag_mixtape_match">%s%% potrivire</string>
+  <string name="tag_mixtape_match">%s% potrivire</string>
   <string name="tag_mixtape_tap_details">Atinge pentru detalii</string>
   <string name="tag_text_blocked_user">Blocat</string>
   <string name="tag_text_deal_price">Primii 2 ani</string>
@@ -1848,6 +1912,7 @@
   <string name="text_info_widget_background">Setează nivelul de transparență al fundalului.</string>
   <string name="text_info_younify_service_linked">Serviciul de streaming a fost conectat.</string>
   <string name="text_info_younify_service_unlinked">Serviciul de streaming a fost deconectat.</string>
+  <string name="text_jellyfin_quick_connect_waiting">Așteptăm aprobarea dumneavoastră</string>
   <string name="text_landing_discover">filme și seriale pe care le vei iubi și unde sunt disponibile acum.</string>
   <string name="text_landing_discover_eyebrow">Găsește-l</string>
   <string name="text_landing_hero">Urmărește ce ai văzut, găsește ce să urmărești în continuare și vezi unde este difuzat în această seară.</string>
@@ -2009,6 +2074,7 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s voturi</string>
   <string name="text_raw_export">Export brut</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Te rugăm să reconectezi %s de mai jos.</string>
   <string name="text_rent">Închiriază</string>
   <string name="text_rewatching_next_episode_prompt">Care este următorul episod pe care doriți să-l revizionați?</string>
@@ -2020,6 +2086,8 @@
   <string name="text_season_number">Sezonul %d</string>
   <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Speciale</string>
+  <string name="text_seasonal_greeting_halloween">Selecțiile noastre înfricoșătoare vă așteaptă!</string>
+  <string name="text_seasonal_greeting_signoff">Din partea întregii echipe Trakt</string>
   <string name="text_select_searching">Se caută</string>
   <string name="text_selected_from_lists">din %s liste</string>
   <string name="text_sentiment_example">Exemplu din „%s”</string>
@@ -2499,9 +2567,6 @@
   <string name="translated_value_video_type_recap">Rezumat</string>
   <string name="translated_value_video_type_teaser">Teaser</string>
   <string name="translated_value_video_type_trailer">Trailer</string>
-  <string name="tv_time_banner_action">tvtime.trakt.tv</string>
-  <string name="tv_time_banner_description">Simțiți-vă ca acasă cu aplicația noastră însoțitoare familiară, alimentată de contul dumneavoastră Trakt.</string>
-  <string name="tv_time_banner_heading">Vii de pe TV Time?</string>
   <string name="tv_time_faq_dropped_shows_answer">Statutul „abandonat” nu este importat, așa că orice serial pe care l-ai abandonat acolo trebuie abandonat din nou pe Trakt după importare.</string>
   <string name="tv_time_faq_dropped_shows_question">Se transferă serialele mele abandonate?</string>
   <string name="tv_time_faq_missing_episodes_answer">Începând cu 8 iulie 2026, am îmbunătățit modul în care importatorul asociază episoadele, astfel încât serialele care anterior au fost importate incomplet ar trebui acum să se importe integral. Importă-ți din nou exportul pentru a aduce episoadele lipsă. Dacă unele lipsesc în continuare, șterge mai întâi vizionările vechi, apoi importă încă o dată.</string>
@@ -2512,9 +2577,6 @@
   <string name="tv_time_faq_nothing_imported_question">Nimic nu a fost importat. De ce?</string>
   <string name="tv_time_faq_page_description">Întrebări frecvente despre mutarea datelor tale TV Time către Trakt. Ești încă blocat? Trimite-ne exportul tău și vom arunca o privire.</string>
   <string name="tv_time_faq_page_title">Întrebări frecvente despre importul TV Time</string>
-  <string name="tv_time_import_banner_action">Importă din nou</string>
-  <string name="tv_time_import_banner_description">Am actualizat importatorul. Dacă unele seriale sau episoade lipsesc, importă-ți din nou exportul TV Time pentru a le aduce. Încă lipsesc după aceea? Șterge mai întâi vizionările vechi, apoi importă încă o dată.</string>
-  <string name="tv_time_import_banner_heading">Importul tău TV Time, îmbunătățit</string>
   <string name="tv_time_report_description">Atașează exportul tău TV Time și spune-ne ce a mers greșit. Fișierele tale și contul Trakt sunt trimise privat echipei, nu sunt niciodată partajate public.</string>
   <string name="tv_time_report_error_too_large">Aceste fișiere sunt prea mari. Menține încărcările sub 25 MB în total.</string>
   <string name="tv_time_report_error_unknown">Ceva nu a mers bine la trimiterea raportului tău. Te rugăm să încerci din nou.</string>
@@ -2756,7 +2818,7 @@
   <string name="yir_2026_preview_runner_none">Niciunul (fără hibrid)</string>
   <string name="yir_2026_preview_runner_up">Locul doi</string>
   <string name="yir_2026_preview_title">Previzualizare persona</string>
-  <string name="yir_2026_rarity">Doar %1$d%% sunt %2$s</string>
+  <string name="yir_2026_rarity">Doar %1$d% sunt %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Puțin %s</string>
   <string name="yir_2026_reel_and_you_are">Și tu ești</string>
   <string name="yir_2026_reel_but_mostly">Dar în mare parte</string>
