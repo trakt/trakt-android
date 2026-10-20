@@ -531,7 +531,7 @@ private fun CalendarScreen(
 
                 Row(
                     verticalAlignment = CenterVertically,
-                    horizontalArrangement = spacedBy(20.dp),
+                    horizontalArrangement = spacedBy(18.dp),
                 ) {
                     CalendarTodayIcon(
                         visible = true,
@@ -566,7 +566,7 @@ private fun CalendarScreen(
 
             CalendarControlsView(
                 enabled = !state.loading.isLoading,
-                expanded = atTop || scrollingUp,
+                expanded = false,
                 startDate = stripStartDate,
                 focusedDate = focusedDate,
                 lastTapFocusedDate = lastTapFocusedDay,

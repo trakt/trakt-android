@@ -314,7 +314,7 @@ private fun CalendarMonthlyContent(
 
             Row(
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(20.dp),
+                horizontalArrangement = spacedBy(18.dp),
             ) {
                 CalendarTodayIcon(
                     visible = true,

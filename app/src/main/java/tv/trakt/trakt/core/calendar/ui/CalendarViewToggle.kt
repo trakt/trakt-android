@@ -18,7 +18,6 @@ internal fun CalendarViewToggle(
     modifier: Modifier = Modifier,
     onViewClick: (CalendarView) -> Unit = {},
 ) {
-    // Shows the layout it switches to, not the one on screen.
     val target = current.toggle
 
     Icon(
@@ -26,12 +25,7 @@ internal fun CalendarViewToggle(
         contentDescription = stringResource(target.textRes),
         tint = TraktTheme.colors.textPrimary,
         modifier = modifier
-            .size(
-                when (target) {
-                    CalendarView.Weekly -> 22.dp
-                    CalendarView.Monthly -> 23.dp
-                },
-            )
+            .size(24.dp)
             .onClick { onViewClick(target) },
     )
 }

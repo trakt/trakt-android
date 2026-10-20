@@ -10,11 +10,11 @@ internal enum class CalendarView(
 ) {
     Weekly(
         textRes = R.string.button_text_calendar_view_weekly,
-        iconRes = R.drawable.ic_calendar_view_week,
+        iconRes = R.drawable.ic_calendar_view_month,
     ),
     Monthly(
         textRes = R.string.button_text_calendar_view_monthly,
-        iconRes = R.drawable.ic_calendar_view_month,
+        iconRes = R.drawable.ic_calendar_view_week,
     ),
     ;
 
