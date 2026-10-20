@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -114,14 +115,25 @@ private fun SplashScreenContent(
 
         Column(
             verticalArrangement = spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.graphicsLayer { alpha = animatedAlpha },
         ) {
+            val markPainter = painterResource(R.drawable.ic_trakt)
+            Image(
+                painter = markPainter,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(bottom = 26.dp)
+                    .height(164.dp)
+                    .aspectRatio(markPainter.intrinsicSize.width / markPainter.intrinsicSize.height),
+            )
+
             val painter = painterResource(R.drawable.ic_trakt_logo)
             Image(
                 painter = painter,
                 contentDescription = "Trakt",
                 modifier = Modifier
-                    .height(128.dp)
+                    .height(78.dp)
                     .aspectRatio(painter.intrinsicSize.width / painter.intrinsicSize.height),
             )
 

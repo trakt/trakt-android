@@ -119,21 +119,11 @@ internal fun WelcomeScreen(
                 .verticalScroll(scrollState)
                 .padding(contentPadding),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(12.dp),
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_trakt),
-                    contentDescription = null,
-                    modifier = Modifier.size(56.dp),
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_trakt_logo),
-                    contentDescription = null,
-                    tint = Color.White,
-                )
-            }
+            Image(
+                painter = painterResource(R.drawable.ic_trakt_banner),
+                contentDescription = null,
+                modifier = Modifier.height(42.dp),
+            )
 
             Column(
                 verticalArrangement = spacedBy(42.dp),
