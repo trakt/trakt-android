@@ -86,6 +86,7 @@ import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarTodayIcon
 import tv.trakt.trakt.core.calendar.ui.CalendarTypeChips
 import tv.trakt.trakt.core.calendar.ui.CalendarViewToggle
+import tv.trakt.trakt.core.calendar.ui.calendarMonthTitle
 import tv.trakt.trakt.core.calendar.ui.context.sheet.CalendarEpisodeContextSheet
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
@@ -103,6 +104,7 @@ import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
+import java.time.YearMonth
 import kotlin.time.Duration.Companion.milliseconds
 
 private val MinAlpha = 0.25F
@@ -463,6 +465,8 @@ private fun CalendarScreen(
         else -> (lastTapFocusedDay ?: focusedDate)?.with(MONDAY) ?: state.selectedStartDay
     }
 
+    val headerMonth = YearMonth.from(lastTapFocusedDay ?: focusedDate ?: state.selectedStartDay)
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -518,7 +522,7 @@ private fun CalendarScreen(
                         contentDescription = null,
                     )
                     TraktHeader(
-                        title = stringResource(R.string.page_title_calendar),
+                        title = calendarMonthTitle(headerMonth),
                         subtitle = state.filter?.mode?.let {
                             stringResource(it.displayRes)
                         } ?: stringResource(MediaMode.Media.displayRes),

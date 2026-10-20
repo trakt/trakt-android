@@ -52,11 +52,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
-import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.rememberAppLocale
-import tv.trakt.trakt.common.helpers.extensions.yearMonthFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
@@ -75,6 +72,7 @@ import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.ui.CalendarTodayIcon
 import tv.trakt.trakt.core.calendar.ui.CalendarTypeChips
 import tv.trakt.trakt.core.calendar.ui.CalendarViewToggle
+import tv.trakt.trakt.core.calendar.ui.calendarMonthTitle
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
@@ -87,7 +85,6 @@ import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.TextStyle.FULL_STANDALONE
 
 private val PageSpacing = 8.dp
 
@@ -247,8 +244,6 @@ private fun CalendarMonthlyContent(
     onBackClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
-    val locale = rememberAppLocale()
-    val monthFormat = yearMonthFormat()
 
     val anchorMonth = remember { YearMonth.from(nowLocalDay()) }
 
@@ -300,17 +295,7 @@ private fun CalendarMonthlyContent(
                 modifier = Modifier.onClick { selectorVisible = !selectorVisible },
             ) {
                 TraktHeader(
-                    title = when (selectedMonth.year) {
-                        anchorMonth.year -> {
-                            selectedMonth.month
-                                .getDisplayName(FULL_STANDALONE, locale)
-                                .capitalize()
-                        }
-
-                        else -> {
-                            selectedMonth.format(monthFormat).capitalize()
-                        }
-                    },
+                    title = calendarMonthTitle(selectedMonth),
                     subtitle = state.filter?.mode?.let {
                         stringResource(it.displayRes)
                     } ?: stringResource(MediaMode.Media.displayRes),
