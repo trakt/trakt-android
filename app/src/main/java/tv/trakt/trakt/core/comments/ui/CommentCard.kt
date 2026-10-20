@@ -553,7 +553,7 @@ private fun CommentHeader(
         ) {
             CommentUserChips(
                 comment = comment,
-                progress = comment.userStats.progress(progressTotal).takeUnless { userComment },
+                progress = comment.userStats.progress(progressTotal),
                 modifier = Modifier.padding(start = 12.dp),
             )
 
