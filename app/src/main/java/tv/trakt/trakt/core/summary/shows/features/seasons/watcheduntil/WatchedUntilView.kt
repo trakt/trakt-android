@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Now
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.OtherDate
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.ReleaseDate
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Unknown
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.ui.ActionButtons
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.ui.OtherDateBoundButtons
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.ui.SegmentGap
@@ -42,6 +43,7 @@ import java.time.ZoneOffset.UTC
 internal enum class WatchedUntilAction {
     Now,
     ReleaseDate,
+    Unknown,
     OtherDate,
 }
 
@@ -128,6 +130,10 @@ private fun WatchedUntilContent(
                     resetOtherDate()
                 },
                 onOtherClick = { selectedAction = OtherDate },
+                onUnknownClick = {
+                    selectedAction = Unknown
+                    resetOtherDate()
+                },
             )
 
             if (selectedAction == OtherDate) {

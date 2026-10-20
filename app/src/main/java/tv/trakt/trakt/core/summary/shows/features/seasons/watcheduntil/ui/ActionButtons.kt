@@ -25,6 +25,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUn
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Now
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.OtherDate
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.ReleaseDate
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Unknown
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -36,6 +37,7 @@ internal fun ActionButtons(
     modifier: Modifier = Modifier,
     onNowClick: () -> Unit = {},
     onReleaseClick: () -> Unit = {},
+    onUnknownClick: () -> Unit = {},
     onOtherClick: () -> Unit = {},
 ) {
     Column(
@@ -57,6 +59,14 @@ internal fun ActionButtons(
             enabled = enabled,
             shape = SegmentPosition.Middle.shape(),
             onClick = onReleaseClick,
+        )
+        ActionSegment(
+            text = stringResource(R.string.button_text_mark_as_watched_unknown_date),
+            icon = painterResource(R.drawable.ic_question),
+            selected = selected == Unknown,
+            enabled = enabled,
+            shape = SegmentPosition.Middle.shape(),
+            onClick = onUnknownClick,
         )
         ActionSegment(
             text = stringResource(R.string.button_text_mark_as_watched_other_date),
