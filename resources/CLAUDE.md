@@ -22,5 +22,3 @@ Part of the `trakt-android` monorepo. Root rules apply — see
 - **Placeholder parity**: `buildSrc/.../ValidateStringPlaceholdersTask`
   guards against placeholder mismatches across locales. Run before
   merging.
-
-@../AGENTS.md

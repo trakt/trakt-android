@@ -28,5 +28,3 @@ Part of the `trakt-android` monorepo. Root rules apply — see
   Share types via `:common`.
 - **Navigation**: typed Compose Navigation routes per feature, same
   conventions as `:app`.
-
-@../AGENTS.md

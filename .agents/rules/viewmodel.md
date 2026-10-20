@@ -3,6 +3,9 @@ trigger: glob
 globs: '{**/*ViewModel.kt,**/*State.kt}'
 description: 'ViewModel rules: single combined state declared last with no explicit type, indexed-cast combine + stateIn, one MutableStateFlow per state field, no mutableStateOf, one-shot events via SharedFlow, viewModelScope, constructor injection, size limits.'
 applyTo: '{**/*ViewModel.kt,**/*State.kt}'
+paths:
+  - '**/*ViewModel.kt'
+  - '**/*State.kt'
 ---
 
 # ViewModels
