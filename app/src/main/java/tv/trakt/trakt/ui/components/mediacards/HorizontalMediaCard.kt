@@ -1,5 +1,6 @@
 package tv.trakt.trakt.ui.components.mediacards
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -72,6 +73,7 @@ internal fun HorizontalMediaCard(
     corner: Dp = 15.dp,
     more: Boolean = true,
     watched: Boolean = false,
+    highlighted: Boolean = false,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
@@ -92,6 +94,7 @@ internal fun HorizontalMediaCard(
                     .width(width)
                     .aspectRatio(HorizontalImageAspectRatio),
                 shape = RoundedCornerShape(corner),
+                border = if (highlighted) BorderStroke(2.dp, TraktTheme.colors.accent) else null,
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = TraktTheme.colors.shadowDynamicSmall,
                     pressedElevation = TraktTheme.colors.shadowDynamicSmall,
