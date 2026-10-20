@@ -25,7 +25,6 @@ import tv.trakt.trakt.core.calendar.feature.weekly.CalendarViewModel
 import tv.trakt.trakt.core.calendar.feature.weekly.usecases.GetCalendarItemsUseCase
 import tv.trakt.trakt.core.calendar.ui.context.CalendarEpisodeContextViewModel
 import tv.trakt.trakt.core.calendar.usecases.CalendarItemsLoader
-import tv.trakt.trakt.core.calendar.usecases.GetCalendarDisplayUseCase
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.calendar.usecases.SaveCalendarMediaUseCase
@@ -48,12 +47,6 @@ internal val calendarModule = module {
 
     factory {
         GetCalendarViewUseCase(
-            dataStore = get(named(CALENDAR_PREFERENCES)),
-        )
-    }
-
-    factory {
-        GetCalendarDisplayUseCase(
             dataStore = get(named(CALENDAR_PREFERENCES)),
         )
     }

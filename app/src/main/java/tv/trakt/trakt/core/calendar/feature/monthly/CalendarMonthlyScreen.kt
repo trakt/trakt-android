@@ -65,14 +65,12 @@ import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.MovieItem
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.calendar.feature.monthly.sheets.CalendarDaySheet
-import tv.trakt.trakt.core.calendar.feature.monthly.ui.CalendarDisplayDropdown
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.CalendarMonthSelectorView
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.CalendarMonthView
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.CalendarWeekDaysView
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.INITIAL_MONTH_PAGE
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.MONTH_PAGE_COUNT
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.monthForPage
-import tv.trakt.trakt.core.calendar.model.CalendarDayDisplay
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.ui.CalendarTodayIcon
 import tv.trakt.trakt.core.calendar.ui.CalendarTypeChips
@@ -162,7 +160,6 @@ internal fun CalendarMonthlyScreen(
             filtersSheet = true
         },
         onTypeClick = viewModel::setType,
-        onDisplayClick = viewModel::setDisplay,
         onViewClick = onViewClick,
         onBackClick = onNavigateBack,
     )
@@ -246,7 +243,6 @@ private fun CalendarMonthlyContent(
     onDayClick: (LocalDate) -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onTypeClick: (ReleaseType) -> Unit = {},
-    onDisplayClick: (CalendarDayDisplay) -> Unit = {},
     onViewClick: (CalendarView) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -359,11 +355,6 @@ private fun CalendarMonthlyContent(
                     enabled = state.loading.isDone,
                     onClick = onFiltersClick,
                 )
-
-                CalendarDisplayDropdown(
-                    current = state.display,
-                    onDisplayClick = onDisplayClick,
-                )
             }
         }
 
@@ -426,7 +417,6 @@ private fun CalendarMonthlyContent(
         ) { page ->
             CalendarMonthView(
                 month = remember(anchorMonth, page) { anchorMonth.monthForPage(page) },
-                display = state.display,
                 items = state.items,
                 onDayClick = onDayClick,
             )

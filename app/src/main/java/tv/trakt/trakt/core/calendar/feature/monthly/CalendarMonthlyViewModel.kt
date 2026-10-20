@@ -40,12 +40,10 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.feature.monthly.data.CalendarMonthKey
 import tv.trakt.trakt.core.calendar.feature.monthly.data.CalendarMonthlyItemsCache
 import tv.trakt.trakt.core.calendar.feature.monthly.usecases.GetMonthlyCalendarItemsUseCase
-import tv.trakt.trakt.core.calendar.model.CalendarDayDisplay
 import tv.trakt.trakt.core.calendar.model.CalendarItems
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.model.withWatched
 import tv.trakt.trakt.core.calendar.model.withoutMovie
-import tv.trakt.trakt.core.calendar.usecases.GetCalendarDisplayUseCase
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.calendar.usecases.SaveCalendarMediaUseCase
@@ -64,7 +62,6 @@ internal class CalendarMonthlyViewModel(
     private val filterManager: GlobalFilterManager,
     private val calendarCache: CalendarMonthlyItemsCache,
     private val getCalendarViewUseCase: GetCalendarViewUseCase,
-    private val getCalendarDisplayUseCase: GetCalendarDisplayUseCase,
     private val getMonthlyCalendarItemsUseCase: GetMonthlyCalendarItemsUseCase,
     private val getCalendarTypeUseCase: GetCalendarTypeUseCase,
     private val saveCalendarMediaUseCase: SaveCalendarMediaUseCase,
@@ -78,7 +75,6 @@ internal class CalendarMonthlyViewModel(
     private val selectedMonthState = MutableStateFlow(initialState.selectedMonth)
     private val filterState = MutableStateFlow(filterManager.getFilter())
     private val typeState = MutableStateFlow(initialState.type)
-    private val displayState = MutableStateFlow(initialState.display)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsLoadingState = MutableStateFlow(initialState.itemsLoading)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -98,7 +94,6 @@ internal class CalendarMonthlyViewModel(
 
     init {
         rememberView()
-        loadDisplay()
         observeFilters()
         observeData()
     }
@@ -107,12 +102,6 @@ internal class CalendarMonthlyViewModel(
     private fun rememberView() {
         viewModelScope.launch {
             getCalendarViewUseCase.setView(CalendarView.Monthly)
-        }
-    }
-
-    private fun loadDisplay() {
-        viewModelScope.launch {
-            displayState.update { getCalendarDisplayUseCase.getDisplay() }
         }
     }
 
@@ -197,16 +186,6 @@ internal class CalendarMonthlyViewModel(
     fun setFilter(filter: GlobalFilter) {
         filterState.update { filter }
         loadData()
-    }
-
-    fun setDisplay(display: CalendarDayDisplay) {
-        if (display == displayState.value) {
-            return
-        }
-        displayState.update { display }
-        viewModelScope.launch {
-            getCalendarDisplayUseCase.setDisplay(display)
-        }
     }
 
     fun setType(type: ReleaseType) {
@@ -364,7 +343,6 @@ internal class CalendarMonthlyViewModel(
         selectedMonthState,
         filterState,
         typeState,
-        displayState,
         itemsState,
         itemsLoadingState,
         navigateShow,
@@ -378,15 +356,14 @@ internal class CalendarMonthlyViewModel(
             selectedMonth = states[0] as YearMonth?,
             filter = states[1] as GlobalFilter?,
             type = states[2] as ReleaseType,
-            display = states[3] as CalendarDayDisplay,
-            items = states[4] as ImmutableMap<LocalDate, ImmutableList<CalendarItem>>?,
-            itemsLoading = states[5] as ImmutableSet<TraktId>?,
-            navigateShow = states[6] as TraktId?,
-            navigateMovie = states[7] as TraktId?,
-            navigateEpisode = states[8] as Pair<TraktId, Episode>?,
-            loading = states[9] as LoadingState,
-            info = states[10] as DynamicStringResource?,
-            error = states[11] as Exception?,
+            items = states[3] as ImmutableMap<LocalDate, ImmutableList<CalendarItem>>?,
+            itemsLoading = states[4] as ImmutableSet<TraktId>?,
+            navigateShow = states[5] as TraktId?,
+            navigateMovie = states[6] as TraktId?,
+            navigateEpisode = states[7] as Pair<TraktId, Episode>?,
+            loading = states[8] as LoadingState,
+            info = states[9] as DynamicStringResource?,
+            error = states[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

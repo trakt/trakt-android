@@ -38,7 +38,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale.Companion.Crop
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,7 +65,6 @@ import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.MovieItem
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
-import tv.trakt.trakt.core.calendar.model.CalendarDayDisplay
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
@@ -93,13 +91,7 @@ private val CapsuleShape = RoundedCornerShape(100)
 private val PosterShape = RoundedCornerShape(4.dp)
 private val PosterSpacing = 2.dp
 
-private val LabelSpacing = 2.dp
-private val LabelShape = RoundedCornerShape(3.dp)
-private val LabelHorizontalPadding = 2.5.dp
-private val LabelVerticalPadding = 2.dp
-
 private const val MAX_VISIBLE_POSTERS = 4
-private const val MAX_VISIBLE_LABELS = 4
 private const val POSTERS_PER_ROW = 2
 private const val POSTER_ROWS = 2
 private const val POSTER_PLACEHOLDER_RATIO = 0.6F
@@ -107,18 +99,11 @@ private const val OUT_OF_MONTH_ALPHA = 0.45F
 
 private val FirstDayOfWeek = MONDAY
 
-private val CalendarDayDisplay.maxVisibleItems: Int
-    get() = when (this) {
-        CalendarDayDisplay.Posters -> MAX_VISIBLE_POSTERS
-        CalendarDayDisplay.Labels -> MAX_VISIBLE_LABELS
-    }
-
 @Composable
 internal fun CalendarMonthView(
     month: YearMonth,
     modifier: Modifier = Modifier,
     firstDayOfWeek: DayOfWeek = FirstDayOfWeek,
-    display: CalendarDayDisplay = CalendarDayDisplay.Posters,
     items: ImmutableMap<LocalDate, ImmutableList<CalendarItem>>? = null,
     onDayClick: (LocalDate) -> Unit = {},
 ) {
@@ -146,7 +131,6 @@ internal fun CalendarMonthView(
                         date = date,
                         isToday = date == today,
                         inMonth = YearMonth.from(date) == month,
-                        display = display,
                         items = items?.get(date),
                         modifier = Modifier
                             .weight(1F)
@@ -192,7 +176,6 @@ private fun CalendarDayCell(
     isToday: Boolean,
     inMonth: Boolean,
     modifier: Modifier = Modifier,
-    display: CalendarDayDisplay = CalendarDayDisplay.Posters,
     items: ImmutableList<CalendarItem>? = null,
 ) {
     Column(
@@ -248,29 +231,19 @@ private fun CalendarDayCell(
                 verticalArrangement = spacedBy(CellContentSpacing),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                val visibleItems = remember(items, display) {
-                    items.orEmpty().take(display.maxVisibleItems).toImmutableList()
+                val visibleItems = remember(items) {
+                    items.orEmpty().take(MAX_VISIBLE_POSTERS).toImmutableList()
                 }
 
-                when (display) {
-                    CalendarDayDisplay.Posters -> CalendarDayPosters(
-                        items = visibleItems,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1F)
-                            .padding(vertical = CellContentSpacing),
-                    )
+                CalendarDayPosters(
+                    items = visibleItems,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1F)
+                        .padding(vertical = CellContentSpacing),
+                )
 
-                    CalendarDayDisplay.Labels -> CalendarDayLabels(
-                        items = visibleItems,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1F)
-                            .padding(top = CellContentSpacing),
-                    )
-                }
-
-                val overflow = (items?.size ?: 0) - display.maxVisibleItems
+                val overflow = (items?.size ?: 0) - MAX_VISIBLE_POSTERS
                 if (overflow > 0) {
                     Text(
                         text = "+$overflow",
@@ -281,43 +254,6 @@ private fun CalendarDayCell(
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun CalendarDayLabels(
-    items: ImmutableList<CalendarItem>,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        verticalArrangement = spacedBy(LabelSpacing),
-        modifier = modifier,
-    ) {
-        for (item in items) {
-            Text(
-                text = when (item) {
-                    is EpisodeItem -> item.show.title
-                    is MovieItem -> item.movie.title
-                },
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.meta.copy(
-                    fontSize = 8.sp,
-                    fontWeight = W500,
-                ),
-                maxLines = 1,
-                softWrap = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = TraktTheme.colors.dialogContent,
-                        shape = LabelShape,
-                    )
-                    .padding(
-                        horizontal = LabelHorizontalPadding,
-                        vertical = LabelVerticalPadding,
-                    ),
-            )
         }
     }
 }
@@ -440,29 +376,6 @@ private fun Preview() {
                     items = items,
                 )
             }
-        }
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun LabelsPreview() {
-    val month = YearMonth.now()
-    val items = remember(month) { previewItems(month) }
-
-    TraktTheme {
-        Column {
-            CalendarWeekDaysView(firstDayOfWeek = MONDAY)
-            CalendarMonthView(
-                month = month,
-                firstDayOfWeek = MONDAY,
-                display = CalendarDayDisplay.Labels,
-                items = items,
-            )
         }
     }
 }
