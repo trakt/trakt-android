@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoilApi::class)
+
 package tv.trakt.trakt.core.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -23,6 +25,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -32,7 +35,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -42,8 +47,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.ColorImage
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.AsyncImagePreviewHandler
+import coil3.compose.LocalAsyncImagePreviewHandler
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.LocalStartAuthorization
@@ -53,7 +63,10 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAG
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_4
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
@@ -230,6 +243,8 @@ private fun ListsScreenContent(
     onFiltersClick: () -> Unit = {},
     onUserClick: (User) -> Unit = {},
 ) {
+    // Watchlist section and header bar resolve dependencies through Koin.
+    val preview = LocalInspectionMode.current
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -288,6 +303,9 @@ private fun ListsScreenContent(
             item(
                 key = "watchlist",
             ) {
+                if (preview) {
+                    return@item
+                }
                 ListsWatchlistView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -442,13 +460,15 @@ private fun ListsScreenContent(
             }
         }
 
-        ListsScreenHeader(
-            state = state,
-            headerState = headerState,
-            isScrolledToTop = isScrolledToTop,
-            onVipClick = onVipClick,
-            onFiltersClick = onFiltersClick,
-        )
+        if (!preview) {
+            ListsScreenHeader(
+                state = state,
+                headerState = headerState,
+                isScrolledToTop = isScrolledToTop,
+                onVipClick = onVipClick,
+                onFiltersClick = onFiltersClick,
+            )
+        }
     }
 }
 
@@ -594,4 +614,67 @@ private fun ContentEmptyView(
         onClick = onActionClick,
         modifier = modifier,
     )
+}
+
+@DevicePreview
+@Composable
+private fun Preview() {
+    val previewHandler = AsyncImagePreviewHandler { ColorImage(Color.LightGray.toArgb()) }
+    TraktTheme {
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            ListsScreenContent(
+                state = ListsState(
+                    user = ListsState.UserState(
+                        user = PreviewData.user1,
+                        loading = Done,
+                    ),
+                    filter = Personal,
+                    lists = (1..3)
+                        .map {
+                            ListsItem.Custom(
+                                PreviewData.customList1.copy(
+                                    ids = PreviewData.customList1.ids.copy(trakt = TraktId(it)),
+                                    name = "My Custom List $it",
+                                ),
+                            )
+                        }
+                        .toImmutableList(),
+                    listsMore = true,
+                    listsLoading = Done,
+                ),
+            )
+        }
+    }
+}
+
+@DevicePreview
+@Composable
+private fun PreviewLoading() {
+    TraktTheme {
+        ListsScreenContent(
+            state = ListsState(
+                user = ListsState.UserState(
+                    user = PreviewData.user1,
+                    loading = Done,
+                ),
+                filter = Personal,
+                listsLoading = Loading,
+            ),
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun PreviewEmpty() {
+    TraktTheme {
+        ListsScreenContent(
+            state = ListsState(
+                user = ListsState.UserState(loading = Done),
+                filter = Smart,
+                lists = EmptyImmutableList,
+                listsLoading = Done,
+            ),
+        )
+    }
 }
