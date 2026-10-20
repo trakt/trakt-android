@@ -92,10 +92,11 @@ internal fun HomeUpNextShowView(
                             remainingEpisodes,
                         ),
                         progress = remainingPercent,
+                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.6F),
                         modifier = Modifier
                             .shadow(
                                 2.dp,
-                                androidx.compose.foundation.shape.RoundedCornerShape(100),
+                                RoundedCornerShape(percent = 100),
                             ),
                     )
                 }

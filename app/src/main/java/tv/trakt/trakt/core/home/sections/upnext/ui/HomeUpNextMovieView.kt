@@ -43,7 +43,7 @@ internal fun HomeUpNextMovieView(
 
                 EpisodeProgressBar(
                     startText = stringResource(R.string.tag_text_remaining_duration, item.remainingTimeText() ?: "?"),
-                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.6F),
                     progress = (1F - remainingPercent).coerceIn(0F, 0.99F),
                     modifier = Modifier
                         .shadow(2.dp, RoundedCornerShape(100)),

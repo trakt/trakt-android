@@ -121,8 +121,13 @@ internal fun MediaSocialItemCard(
                     .padding(top = 8.dp),
             ) {
                 val chipContainer = when {
-                    TraktTheme.colors.isLight -> TraktTheme.colors.chipContainerOnContent
-                    else -> TraktTheme.colors.chipContainer
+                    TraktTheme.colors.isLight -> {
+                        TraktTheme.colors.chipContainerOnContent
+                            .copy(alpha = 0.33F)
+                    }
+                    else -> {
+                        TraktTheme.colors.chipContainer
+                    }
                 }
 
                 Row(
