@@ -71,6 +71,7 @@ internal fun WatchedTimestampsList(
                 EpisodeRow(
                     episode = episode,
                     timestamp = timestamps.getOrNull(index),
+                    unknownDate = selectedAction == WatchedUntilAction.Unknown,
                 )
             }
         }
@@ -81,14 +82,18 @@ internal fun WatchedTimestampsList(
 private fun EpisodeRow(
     episode: Episode,
     timestamp: Instant?,
+    unknownDate: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val dateFormat = longDateFormat()
     val timeFormat = timeFormat()
 
-    val timestampText = timestamp?.toLocal()?.let {
-        "${it.format(dateFormat)}  •  ${it.format(timeFormat)}"
-    } ?: "-"
+    val timestampText = when {
+        unknownDate -> stringResource(R.string.button_text_mark_as_watched_unknown_date)
+        else -> timestamp?.toLocal()?.let {
+            "${it.format(dateFormat)}  •  ${it.format(timeFormat)}"
+        } ?: "-"
+    }
 
     Row(
         horizontalArrangement = SpaceBetween,

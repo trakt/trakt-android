@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.UnknownDate
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.helpers.computeWatchedTimestamps
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.usecases.GetWatchedUntilEpisodesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
@@ -96,7 +97,10 @@ internal class WatchedUntilViewModel(
             otherAnchor = otherAnchor,
         )
         val entries = episodes.mapIndexedNotNull { index, episode ->
-            timestamps.getOrNull(index)?.let { watchedAt ->
+            when (action) {
+                WatchedUntilAction.Unknown -> UnknownDate.dateString
+                else -> timestamps.getOrNull(index)?.toString()
+            }?.let { watchedAt ->
                 episode.ids.trakt to watchedAt
             }
         }
@@ -111,9 +115,7 @@ internal class WatchedUntilViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateEpisodeHistoryUseCase.addToHistory(
-                    episodes = entries.map { (episodeId, watchedAt) ->
-                        episodeId to watchedAt.toString()
-                    },
+                    episodes = entries,
                 )
                 loadUserProgressUseCase.loadShowsProgress()
 

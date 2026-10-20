@@ -8,6 +8,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUn
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Now
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.OtherDate
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.ReleaseDate
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Unknown
 import java.time.Instant
 
 // Timeline anchors per action:
@@ -15,6 +16,7 @@ import java.time.Instant
 //  - Release date: each episode's own release date.
 //  - Other + Start: first episode = anchor, progresses forward by each runtime.
 //  - Other + End: last episode = anchor, steps backwards by each runtime.
+//  - Unknown: no timestamp, the request sends an unknown watched date instead.
 internal fun computeWatchedTimestamps(
     episodes: ImmutableList<Episode>,
     action: WatchedUntilAction,
@@ -30,6 +32,7 @@ internal fun computeWatchedTimestamps(
             otherBound == OtherDateBound.End -> backwardFrom(episodes, otherAnchor)
             else -> List(episodes.size) { null }
         }
+        Unknown -> List(episodes.size) { null }
     }
 
 private fun forwardFrom(
