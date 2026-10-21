@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.ratings
 import timber.log.Timber
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.data.local.UserProgressLocalSource
 import tv.trakt.trakt.common.data.local.UserRatingsLocalSource
 import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -19,40 +18,29 @@ internal data class OrphanedRating(
 
 /**
  * A rating left without any play in history is removed with the last play.
- * Candidates come from local ratings and progress read before the history removal. Local progress
- * can be stale, so the rating is deleted only after the live history confirms no play is left.
+ * Local ratings only rule out unrated items once loaded. The rating is deleted only after the live
+ * history confirms no play is left, because local progress can be missing or stale.
  */
 internal class RemoveOrphanedRatingUseCase(
-    private val progressLocalSource: UserProgressLocalSource,
     private val ratingsLocalSource: UserRatingsLocalSource,
     private val historyRemoteSource: UserHistoryRemoteSource,
     private val deleteRatingUseCase: DeleteRatingUseCase,
     private val dataChanges: DataChanges,
 ) {
     suspend fun findMovie(movieId: TraktId): OrphanedRating? {
-        if (!ratingsLocalSource.containsMovie(movieId)) return null
-        if (!progressLocalSource.containsMovie(movieId)) return null
+        if (ratingsLocalSource.isMoviesLoaded() && !ratingsLocalSource.containsMovie(movieId)) return null
 
         return OrphanedRating(movieId, MediaType.Movie)
     }
 
     suspend fun findShow(showId: TraktId): OrphanedRating? {
-        if (!ratingsLocalSource.containsShow(showId)) return null
-        if (!progressLocalSource.containsShow(showId)) return null
+        if (ratingsLocalSource.isShowsLoaded() && !ratingsLocalSource.containsShow(showId)) return null
 
         return OrphanedRating(showId, MediaType.Show)
     }
 
     suspend fun findEpisode(episodeId: TraktId): OrphanedRating? {
-        if (!ratingsLocalSource.containsEpisode(episodeId)) return null
-
-        val isWatched = progressLocalSource.getShows()
-            .asSequence()
-            .flatMap { it.seasons }
-            .flatMap { it.episodes }
-            .any { it.id == episodeId && it.plays.isNotEmpty() }
-
-        if (!isWatched) return null
+        if (ratingsLocalSource.isEpisodesLoaded() && !ratingsLocalSource.containsEpisode(episodeId)) return null
 
         return OrphanedRating(episodeId, MediaType.Episode)
     }
@@ -78,7 +66,6 @@ internal class RemoveOrphanedRatingUseCase(
 
             dataChanges.notify(Kind.Ratings)
         } catch (error: Exception) {
-            // The history removal already succeeded, so a failed cleanup must not surface as its error.
             error.rethrowCancellation {
                 Timber.recordError(error)
             }
