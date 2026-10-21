@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -27,6 +28,7 @@ import tv.trakt.trakt.resources.R
 internal class ReportViewModel(
     private val target: ReportTarget,
     private val reportUseCase: ReportUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ReportState()
 
@@ -35,6 +37,10 @@ internal class ReportViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var job: Job? = null
+
+    fun onOpened() {
+        analytics.logReportOpen(target.type)
+    }
 
     fun report(
         reason: ReportReason,
@@ -53,8 +59,22 @@ internal class ReportViewModel(
                     message = message,
                 )
                 reportedState.update { true }
+                analytics.logReport(
+                    type = target.type,
+                    reason = reason.apiValue,
+                    outcome = "sent",
+                )
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    analytics.logReport(
+                        type = target.type,
+                        reason = reason.apiValue,
+                        outcome = when (error.getHttpCode()) {
+                            HTTP_ERROR_CONFLICT -> "already-reported"
+                            HTTP_ERROR_RATE_LIMITED -> "rate-limited"
+                            else -> "unknown"
+                        },
+                    )
                     loadingState.update { Done }
                     errorState.update {
                         when (error.getHttpCode()) {

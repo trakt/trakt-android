@@ -256,6 +256,30 @@ internal class FirebaseAnalytics(
             ),
         )
     }
+
+    override fun logLoginStart(source: String) = Unit
+
+    override fun logLoginFailed(error: String) = Unit
+
+    override fun logStreamingService(
+        action: String,
+        service: String,
+    ) = Unit
+
+    override fun logMuteSharer() = Unit
+
+    override fun logReportOpen(type: String) = Unit
+
+    override fun logReport(
+        type: String,
+        reason: String,
+        outcome: String,
+    ) = Unit
+
+    override fun logDrilldown(
+        source: String,
+        type: String?,
+    ) = Unit
 }
 
 internal class FirebaseAnalyticsReactions(
@@ -467,6 +491,10 @@ internal class FirebaseAnalyticsComments(
             ),
         )
     }
+
+    override fun logSpoilerReveal() = Unit
+
+    override fun logGifPicker(action: String) = Unit
 }
 
 internal class FirebaseAnalyticsProgress(

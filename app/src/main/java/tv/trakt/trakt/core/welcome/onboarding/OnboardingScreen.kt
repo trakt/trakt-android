@@ -53,6 +53,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
+import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage1
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage2
 import tv.trakt.trakt.core.welcome.onboarding.pages.OnboardingPage3
@@ -65,7 +66,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun OnboardingScreen(
     modifier: Modifier = Modifier,
-    onLogin: () -> Unit,
+    onLogin: (LoginSource) -> Unit,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     val contentVerticalPadding = PaddingValues(
@@ -209,7 +210,7 @@ internal fun OnboardingScreen(
                 onClick = {
                     currentPage.intValue = when {
                         isLastPage -> {
-                            onLogin()
+                            onLogin(LoginSource.OnboardingJoin)
                             3
                         }
                         else -> {
@@ -246,7 +247,7 @@ internal fun OnboardingScreen(
                         modifier = Modifier
                             .onClick(
                                 enabled = !isLastPage,
-                                onClick = onLogin,
+                                onClick = { onLogin(LoginSource.OnboardingLogin) },
                             ),
                     )
                 }

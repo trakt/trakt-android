@@ -42,6 +42,7 @@ import org.koin.core.qualifier.named
 import timber.log.Timber
 import tv.trakt.trakt.app.TvSplashActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HTTPS_AUTH_CALLBACK_ENABLED
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
@@ -53,6 +54,7 @@ import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_SCHEME
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.Pkce
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
+import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.auth.usecase.authRedirectUriKey
 import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
@@ -69,7 +71,7 @@ internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true
 internal val LocalCheckInVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalRatePromptVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
-internal val LocalStartAuthorization = staticCompositionLocalOf { {} }
+internal val LocalStartAuthorization = staticCompositionLocalOf<(LoginSource) -> Unit> { {} }
 
 internal class MainActivity : AppCompatActivity() {
     private val authPreferences: DataStore<Preferences> by lazy {
@@ -86,6 +88,10 @@ internal class MainActivity : AppCompatActivity() {
 
     private val seasonalThemeUseCase: SeasonalThemeUseCase by lazy {
         inject<SeasonalThemeUseCase>().value
+    }
+
+    private val analytics: Analytics by lazy {
+        inject<Analytics>().value
     }
 
     private val authBrowser = AuthBrowser(
@@ -166,7 +172,7 @@ internal class MainActivity : AppCompatActivity() {
             val snackbarState = remember { SnackbarHostState() }
 
             val startAuthorization = remember {
-                { startAuthorization() }
+                { source: LoginSource -> startAuthorization(source) }
             }
 
             TraktTheme(
@@ -243,7 +249,12 @@ internal class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun startAuthorization(allowHttpsRedirect: Boolean = true) {
+    private fun startAuthorization(source: LoginSource) {
+        analytics.logLoginStart(source.value)
+        openAuthorization()
+    }
+
+    private fun openAuthorization(allowHttpsRedirect: Boolean = true) {
         lifecycleScope.launch {
             val redirectUri = authRedirectUri(
                 httpsSupported = allowHttpsRedirect && authBrowser.supportsAuthTab(),
@@ -288,7 +299,7 @@ internal class MainActivity : AppCompatActivity() {
             AuthTabIntent.RESULT_VERIFICATION_TIMED_OUT,
             -> {
                 Timber.w("Auth Tab could not verify the https redirect (%d), retrying", result.resultCode)
-                startAuthorization(allowHttpsRedirect = false)
+                openAuthorization(allowHttpsRedirect = false)
             }
             else -> {
                 Timber.d("Auth Tab closed without a redirect (%d)", result.resultCode)

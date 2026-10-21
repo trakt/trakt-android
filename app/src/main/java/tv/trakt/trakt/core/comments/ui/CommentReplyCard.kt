@@ -184,6 +184,11 @@ private fun CommentReplyCardContent(
     onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     var showSpoilers by remember { mutableStateOf(false) }
+    val logSpoilerReveal = rememberSpoilerRevealLogger()
+    val revealSpoiler = {
+        showSpoilers = true
+        logSpoilerReveal()
+    }
 
     val isUserReply = remember(user) {
         comment.user.ids.trakt == user?.ids?.trakt
@@ -216,14 +221,14 @@ private fun CommentReplyCardContent(
         CommentReplyBody(
             text = markdownText,
             blurred = spoilerBlurred,
-            onRevealSpoiler = { showSpoilers = true },
+            onRevealSpoiler = revealSpoiler,
         )
 
         comment.gif?.let { gif ->
             CommentGifView(
                 gif = gif,
                 blurred = spoilerBlurred,
-                onRevealSpoiler = { showSpoilers = true },
+                onRevealSpoiler = revealSpoiler,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 12.dp)

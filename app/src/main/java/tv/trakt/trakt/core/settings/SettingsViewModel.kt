@@ -260,8 +260,8 @@ internal class SettingsViewModel(
             try {
                 logoutLoadingState.update { Loading }
 
-                logoutUseCase.logoutUser()
                 analytics.logUserLogout()
+                logoutUseCase.logoutUser()
 
                 logoutLoadingState.update { Done }
             } catch (error: Exception) {

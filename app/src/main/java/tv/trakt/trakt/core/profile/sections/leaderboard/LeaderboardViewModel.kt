@@ -48,6 +48,7 @@ internal class LeaderboardViewModel(
         analytics.logScreenView(
             screenName = "profile_leaderboard",
         )
+        analytics.logDrilldown(source = "leaderboard", type = null)
     }
 
     private fun loadData() {

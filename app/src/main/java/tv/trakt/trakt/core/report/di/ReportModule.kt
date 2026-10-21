@@ -14,6 +14,7 @@ internal val reportModule = module {
         ReportViewModel(
             target = target,
             reportUseCase = get(),
+            analytics = get(),
         )
     }
 }

@@ -70,7 +70,10 @@ internal fun GifPickerView(
         state = state,
         onQueryChange = viewModel::updateQuery,
         onLoadMore = viewModel::loadMore,
-        onGifClick = onGifClick,
+        onGifClick = { gif ->
+            viewModel.onGifSelected()
+            onGifClick(gif)
+        },
         modifier = modifier,
     )
 }

@@ -235,6 +235,11 @@ private fun CommentCardContent(
     onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     var isSpoilerRevealed by remember { mutableStateOf(false) }
+    val logSpoilerReveal = rememberSpoilerRevealLogger()
+    val revealSpoiler = {
+        isSpoilerRevealed = true
+        logSpoilerReveal()
+    }
 
     val isUserComment = remember(user) {
         comment.user.ids.trakt == user?.ids?.trakt
@@ -262,7 +267,7 @@ private fun CommentCardContent(
             CommentBody(
                 text = translations.displayText(comment),
                 blurred = spoilerBlurred,
-                onRevealSpoiler = { isSpoilerRevealed = true },
+                onRevealSpoiler = revealSpoiler,
             )
         }
 
@@ -280,7 +285,7 @@ private fun CommentCardContent(
                     gif = gif,
                     blurred = spoilerBlurred,
                     paused = gifPaused,
-                    onRevealSpoiler = { isSpoilerRevealed = true },
+                    onRevealSpoiler = revealSpoiler,
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .padding(bottom = 20.dp),
@@ -298,7 +303,7 @@ private fun CommentCardContent(
                         shape = SideGifShape,
                         blurred = spoilerBlurred,
                         paused = gifPaused,
-                        onRevealSpoiler = { isSpoilerRevealed = true },
+                        onRevealSpoiler = revealSpoiler,
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(top = 14.dp, bottom = 20.dp),
@@ -318,7 +323,7 @@ private fun CommentCardContent(
                         shape = SideGifShape,
                         blurred = spoilerBlurred,
                         paused = gifPaused,
-                        onRevealSpoiler = { isSpoilerRevealed = true },
+                        onRevealSpoiler = revealSpoiler,
                         modifier = Modifier
                             .padding(top = 16.dp, end = 16.dp)
                             .sizeIn(

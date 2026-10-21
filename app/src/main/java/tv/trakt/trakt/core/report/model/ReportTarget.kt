@@ -25,6 +25,14 @@ internal sealed interface ReportTarget {
         val episode: Int,
     ) : ReportTarget
 
+    val type: String
+        get() = when (this) {
+            is Comment -> "comment"
+            is Movie -> "movie"
+            is Show -> "show"
+            is Episode -> "episode"
+        }
+
     val reasons: ImmutableList<ReportReason>
         get() = when (this) {
             is Comment -> commentReasons

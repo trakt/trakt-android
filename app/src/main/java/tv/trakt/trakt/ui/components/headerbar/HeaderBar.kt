@@ -34,6 +34,7 @@ import tv.trakt.trakt.LocalStartAuthorization
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
+import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.today.pill.TodayPillContent
@@ -184,7 +185,7 @@ private fun HeaderBar(
                         height = contentHeight,
                         loading = userLoading,
                         enabled = !userLoading,
-                        onClick = startAuthorization,
+                        onClick = { startAuthorization(LoginSource.HeaderBar) },
                     )
                 } else if (showVip) {
                     VipChip(

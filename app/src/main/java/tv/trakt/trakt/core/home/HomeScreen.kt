@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
@@ -95,14 +96,14 @@ internal fun HomeScreen(
             when {
                 userLoading -> return@HomeScreenContent
                 state.user.user != null -> onNavigateToDiscover()
-                else -> startAuthorization()
+                else -> startAuthorization(LoginSource.Gated)
             }
         },
         onMoviesClick = {
             when {
                 userLoading -> return@HomeScreenContent
                 state.user.user != null -> onNavigateToDiscover()
-                else -> startAuthorization()
+                else -> startAuthorization(LoginSource.Gated)
             }
         },
         onMovieClick = onNavigateToMovie,

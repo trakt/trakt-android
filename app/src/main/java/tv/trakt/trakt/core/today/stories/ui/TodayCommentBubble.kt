@@ -30,6 +30,7 @@ import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.core.today.model.FollowingActivity.Detail
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.comments.ui.rememberSpoilerRevealLogger
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -49,11 +50,15 @@ internal fun TodayCommentBubble(
     modifier: Modifier = Modifier,
 ) {
     var isRevealed by remember(comment.id) { mutableStateOf(false) }
+    val logSpoilerReveal = rememberSpoilerRevealLogger()
 
     TodayCommentBubbleContent(
         comment = comment,
         isSpoilerHidden = comment.isSpoiler && !isRevealed,
-        onReveal = { isRevealed = true },
+        onReveal = {
+            isRevealed = true
+            logSpoilerReveal()
+        },
         modifier = modifier,
     )
 }
