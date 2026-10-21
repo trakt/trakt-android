@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -54,7 +56,6 @@ internal class SettingsViewModel(
     private val themeModeState = MutableStateFlow(initialState.themeMode)
     private val accountLoadingState = MutableStateFlow(initialState.accountLoading)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
-    private val infoState = MutableStateFlow(initialState.info)
 
     init {
         loadUser()
@@ -144,11 +145,9 @@ internal class SettingsViewModel(
                 analytics.logSettings("profile")
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    infoState.update {
-                        DynamicStringResource(R.string.error_text_username)
-                    }
                     Timber.w(error, "Unable to update username")
                 }
+                info.emit(DynamicStringResource(R.string.error_text_username))
             } finally {
                 accountLoadingState.update { Done }
             }
@@ -261,9 +260,7 @@ internal class SettingsViewModel(
                     mediaId = null,
                     mediaType = null,
                 )
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_cover_removed)
-                }
+                info.emit(DynamicStringResource(R.string.text_info_cover_removed))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -292,9 +289,8 @@ internal class SettingsViewModel(
         }
     }
 
-    fun clearInfo() {
-        infoState.update { null }
-    }
+    val info: Flow<StringResource>
+        field = MutableSharedFlow<StringResource>(replay = 0)
 
     val state = combine(
         userState,
@@ -303,7 +299,6 @@ internal class SettingsViewModel(
         themeModeState,
         accountLoadingState,
         logoutLoadingState,
-        infoState,
     ) { state ->
         SettingsState(
             user = state[0] as User?,
@@ -312,7 +307,6 @@ internal class SettingsViewModel(
             themeMode = state[3] as ThemeMode,
             accountLoading = state[4] as LoadingState,
             logoutLoading = state[5] as LoadingState,
-            info = state[6] as StringResource?,
         )
     }.stateIn(
         scope = viewModelScope,

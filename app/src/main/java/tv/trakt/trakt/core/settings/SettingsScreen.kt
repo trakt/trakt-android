@@ -129,14 +129,13 @@ internal fun SettingsScreen(
         }
     }
 
-    LaunchedEffect(state.info) {
-        if (state.info != null) {
+    LaunchedEffect(Unit) {
+        viewModel.info.collect { info ->
             haptic.performHapticFeedback(Confirm)
             snackbar.showSnackbar(
-                message = state.info?.get(context) ?: return@LaunchedEffect,
+                message = info.get(context),
                 duration = Short,
             )
-            viewModel.clearInfo()
         }
     }
 
