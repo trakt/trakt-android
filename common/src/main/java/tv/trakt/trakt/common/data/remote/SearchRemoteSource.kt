@@ -168,6 +168,25 @@ class SearchRemoteSource(
         return response.body()
     }
 
+    suspend fun getTrending(
+        query: String,
+        type: String,
+        extended: String = "full,images,colors,streaming_ids",
+    ): List<TrendingSearchDto> {
+        if (query.trim().isBlank()) {
+            return emptyList()
+        }
+
+        val response = api.getSearchTrending(
+            type = type,
+            page = 1,
+            query = query,
+            extended = extended,
+        )
+
+        return response.body()
+    }
+
     suspend fun getPopularLists(limit: Int): List<SearchItemDto> {
         return api.getSearchQuery(
             type = "list",
