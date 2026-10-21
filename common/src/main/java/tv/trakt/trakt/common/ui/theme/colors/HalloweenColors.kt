@@ -1,5 +1,7 @@
 package tv.trakt.trakt.common.ui.theme.colors
 
+import androidx.compose.ui.graphics.compositeOver
+
 val HalloweenDarkColors: TraktColors = DarkColors.copy(
     accent = Orange500,
     accentPalette = OrangePalette,
@@ -26,9 +28,10 @@ val HalloweenDarkColors: TraktColors = DarkColors.copy(
     settingsLinkedStatus = Orange400,
     rateBannerContainer = Orange600,
     primaryButtonContainer = Orange500,
-    switchContainerChecked = Orange800,
     switchThumbChecked = Orange500,
     switchThumbUnchecked = Orange500,
+    selectorContainer = Orange500.copy(alpha = 0.24F).compositeOver(Shade920),
+    selectorBorder = Orange400,
 )
 
 val HalloweenLightColors: TraktColors = LightColors.copy(
@@ -57,6 +60,8 @@ val HalloweenLightColors: TraktColors = LightColors.copy(
     settingsLinkedStatus = Orange600,
     rateBannerContainer = Orange600,
     primaryButtonContainer = Orange500,
-    switchContainerChecked = Orange400,
     switchThumbChecked = Orange600,
+    selectorContainer = Orange500.copy(alpha = 0.22F).compositeOver(White),
+    selectorBorder = Orange500,
+    selectorContent = Orange900,
 )

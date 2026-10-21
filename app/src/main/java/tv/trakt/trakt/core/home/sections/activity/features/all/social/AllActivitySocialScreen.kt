@@ -467,7 +467,7 @@ private fun ContentFilters(
                         painter = painterResource(filter.offIcon),
                         contentDescription = null,
                         tint = when {
-                            itemsFilter.mode == filter -> TraktTheme.colors.textPrimaryOnAccent
+                            itemsFilter.mode == filter -> TraktTheme.colors.selectorContent
                             else -> TraktTheme.colors.textPrimary
                         },
                         modifier = Modifier

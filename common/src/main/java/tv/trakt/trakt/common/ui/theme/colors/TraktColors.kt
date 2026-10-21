@@ -93,10 +93,16 @@ data class TraktColors(
     val tooltipContainer: Color = Color.Unspecified,
     val tooltipContent: Color = Color.Unspecified,
     // Switches
-    val switchContainerChecked: Color = Color.Unspecified,
     val switchContainerUnchecked: Color = Color.Unspecified,
     val switchThumbChecked: Color = Color.Unspecified,
     val switchThumbUnchecked: Color = Color.Unspecified,
+    // Selector
+    val selectorContainer: Color = Color.Unspecified,
+    val selectorBorder: Color = Color.Unspecified,
+    val selectorContent: Color = Color.Unspecified,
+    // Track
+    val trackContainer: Color = Color.Unspecified,
+    val trackBorder: Color = Color.Unspecified,
     // Reactions
     val reactionsContainer: Color = Color.Unspecified,
     val reactionsSummaryContainer: Color = Color.Unspecified,

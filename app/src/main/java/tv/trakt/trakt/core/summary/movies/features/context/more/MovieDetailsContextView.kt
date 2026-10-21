@@ -213,7 +213,6 @@ private fun WatchButton(
             else -> TraktTheme.colors.primaryButtonContainerDisabled
         },
         height = 40.dp,
-        corner = 12.dp,
         onClick = onClick,
         modifier = modifier,
     )

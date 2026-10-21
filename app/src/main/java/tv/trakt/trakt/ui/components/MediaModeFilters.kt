@@ -57,7 +57,7 @@ internal fun MediaModeFilters(
                         painter = painterResource(filter.offIcon),
                         contentDescription = null,
                         tint = when {
-                            selected == filter -> TraktTheme.colors.textPrimaryOnAccent
+                            selected == filter -> TraktTheme.colors.selectorContent
                             else -> TraktTheme.colors.textPrimary
                         },
                         modifier = Modifier.size(16.dp),

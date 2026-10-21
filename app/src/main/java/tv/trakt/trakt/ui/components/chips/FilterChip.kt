@@ -20,8 +20,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -29,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -37,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.PillShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -44,7 +42,7 @@ internal fun FilterChip(
     selected: Boolean,
     text: String,
     modifier: Modifier = Modifier,
-    height: Dp = 28.dp,
+    height: Dp = TraktTheme.size.chipHeight,
     animated: Boolean = true,
     unselectedTextVisible: Boolean = true,
     leadingAlwaysVisible: Boolean = false,
@@ -62,22 +60,22 @@ internal fun FilterChip(
         modifier = modifier
             .onClick(onClick = onClick)
             .height(height)
+            .background(
+                shape = PillShape,
+                color = if (selected) {
+                    TraktTheme.colors.selectorContainer
+                } else {
+                    TraktTheme.colors.trackContainer
+                },
+            )
             .border(
                 width = 1.dp,
                 color = if (selected) {
-                    TraktTheme.colors.accent
+                    TraktTheme.colors.selectorBorder
                 } else {
-                    TraktTheme.colors.chipContainer
+                    TraktTheme.colors.trackBorder
                 },
-                shape = CircleShape,
-            )
-            .background(
-                shape = RoundedCornerShape(100),
-                color = if (selected) {
-                    TraktTheme.colors.accent
-                } else {
-                    Color.Transparent
-                },
+                shape = PillShape,
             )
             .padding(paddingHorizontal)
             .padding(
@@ -110,8 +108,8 @@ internal fun FilterChip(
                     text = text,
                     style = TraktTheme.typography.buttonTertiary,
                     color = when {
-                        selected -> TraktTheme.colors.textPrimaryOnAccent
-                        else -> TraktTheme.colors.textPrimary
+                        selected -> TraktTheme.colors.selectorContent
+                        else -> TraktTheme.colors.textSecondary
                     },
                     maxLines = 1,
                     textAlign = TextAlign.Center,
@@ -123,8 +121,8 @@ internal fun FilterChip(
                 text = text,
                 style = TraktTheme.typography.buttonTertiary,
                 color = when {
-                    selected -> TraktTheme.colors.textPrimaryOnAccent
-                    else -> TraktTheme.colors.textPrimary
+                    selected -> TraktTheme.colors.selectorContent
+                    else -> TraktTheme.colors.textSecondary
                 },
                 maxLines = 1,
                 textAlign = TextAlign.Center,
@@ -149,7 +147,7 @@ internal fun FilterChip(
 @Composable
 internal fun FilterChipSkeleton(
     modifier: Modifier = Modifier,
-    height: Dp = 28.dp,
+    height: Dp = TraktTheme.size.chipHeight,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
@@ -168,7 +166,7 @@ internal fun FilterChipSkeleton(
             .height(height)
             .width(72.dp)
             .background(
-                shape = RoundedCornerShape(100),
+                shape = PillShape,
                 color = shimmerTransition,
             )
             .padding(
@@ -208,7 +206,7 @@ private fun Preview2() {
                 Icon(
                     painter = painterResource(R.drawable.ic_check_2),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textPrimaryOnAccent,
+                    tint = TraktTheme.colors.selectorContent,
                     modifier = Modifier.size(FilterChipDefaults.IconSize),
                 )
             },

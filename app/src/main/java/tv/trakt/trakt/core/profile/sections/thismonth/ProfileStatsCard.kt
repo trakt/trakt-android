@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,7 +25,6 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,6 +65,7 @@ import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
+import tv.trakt.trakt.ui.theme.PillShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.ZonedDateTime
 import java.time.format.TextStyle
@@ -293,9 +294,13 @@ private fun PreviousMonthRow(
         modifier = Modifier
             .alpha(animatedAlpha)
             .padding(horizontal = 16.dp)
+            .height(TraktTheme.size.chipHeight)
+            .clip(PillShape)
+            .background(TraktTheme.colors.profileStatsChip)
             .onClick(enabled = visible) {
                 onClick()
-            },
+            }
+            .padding(horizontal = 12.dp),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_history),
@@ -392,7 +397,7 @@ private fun StatsChip(
     icon: Painter,
     loading: Boolean,
 ) {
-    val shape = RoundedCornerShape(6.dp)
+    val shape = PillShape
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
@@ -403,10 +408,8 @@ private fun StatsChip(
                 color = TraktTheme.colors.profileStatsChip,
                 shape = shape,
             )
-            .padding(
-                horizontal = 8.dp,
-                vertical = 6.dp,
-            ),
+            .height(TraktTheme.size.chipHeight)
+            .padding(horizontal = 12.dp),
     ) {
         Icon(
             painter = icon,

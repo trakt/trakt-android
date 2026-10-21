@@ -37,9 +37,9 @@ internal fun TraktSwitch(
         colors = SwitchDefaults.colors(
             checkedThumbColor = TraktTheme.colors.switchThumbChecked,
             uncheckedThumbColor = TraktTheme.colors.switchThumbUnchecked,
-            checkedTrackColor = TraktTheme.colors.switchContainerChecked,
+            checkedTrackColor = TraktTheme.colors.selectorContainer,
             uncheckedTrackColor = TraktTheme.colors.switchContainerUnchecked,
-            checkedBorderColor = TraktTheme.colors.switchContainerChecked,
+            checkedBorderColor = TraktTheme.colors.selectorBorder,
             uncheckedBorderColor = TraktTheme.colors.switchContainerUnchecked,
             // Disabled
             disabledUncheckedTrackColor = Shade800,

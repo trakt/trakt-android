@@ -41,7 +41,7 @@ internal fun SearchFiltersList(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
                         tint = when {
-                            isSelected -> TraktTheme.colors.textPrimaryOnAccent
+                            isSelected -> TraktTheme.colors.selectorContent
                             else -> TraktTheme.colors.textPrimary
                         },
                         modifier = Modifier

@@ -1,6 +1,11 @@
 package tv.trakt.trakt.ui.components.buttons
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +17,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -26,8 +34,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private const val PRESSED_SCALE = 0.92F
 
 @Composable
 internal fun GhostButton(
@@ -36,24 +47,41 @@ internal fun GhostButton(
     text: String,
     textStyle: TextStyle = TraktTheme.typography.buttonSecondary,
     icon: Painter? = null,
-    iconSize: Dp = 22.dp,
+    iconSize: Dp = 16.dp,
     iconSpace: Dp = 10.dp,
     enabled: Boolean = true,
     loading: Boolean = false,
     uppercase: Boolean = true,
-    corner: Dp = 8.dp,
+    height: Dp = TraktTheme.size.chipHeight,
+    corner: Dp = height / 2,
     fillWidth: Boolean = true,
     containerColor: Color = Color.Transparent,
     contentColor: Color = TraktTheme.colors.ghostButtonContent,
     disabledContainerColor: Color = Color.Transparent,
     disabledContentColor: Color = TraktTheme.colors.ghostButtonContent.copy(alpha = 0.25F),
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val animationsDisabled = rememberAnimationsDisabled()
+    val scale by animateFloatAsState(
+        targetValue = if (pressed && !animationsDisabled) PRESSED_SCALE else 1F,
+        animationSpec = spring(
+            dampingRatio = 0.55F,
+            stiffness = Spring.StiffnessMediumLow,
+        ),
+        label = "ghostPressScale",
+    )
+
     Button(
         modifier = modifier
-            .height(iconSize + 16.dp),
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .height(height),
         enabled = enabled,
         contentPadding = PaddingValues(
-            horizontal = 8.dp,
+            horizontal = 12.dp,
             vertical = 0.dp,
         ),
         shape = RoundedCornerShape(corner),
@@ -63,7 +91,7 @@ internal fun GhostButton(
             disabledContainerColor = disabledContainerColor,
             disabledContentColor = disabledContentColor,
         ),
-        interactionSource = null,
+        interactionSource = interactionSource,
         onClick = onClick,
     ) {
         Row(

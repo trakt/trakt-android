@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -43,6 +42,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.FieldShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -54,7 +54,7 @@ internal fun InputField(
     loading: Boolean = false,
     enabled: Boolean = true,
     height: Dp = 48.dp,
-    border: Dp = 1.5.dp,
+    border: Dp = 1.dp,
     containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
     borderColor: Color = TraktTheme.colors.accent,
     lineLimits: TextFieldLineLimits = SingleLine,
@@ -94,7 +94,7 @@ internal fun InputField(
                 modifier = Modifier
                     .background(
                         color = containerColor,
-                        shape = RoundedCornerShape(16.dp),
+                        shape = FieldShape,
                     )
                     .border(
                         width = border,
@@ -102,7 +102,7 @@ internal fun InputField(
                             isFocused -> borderColor
                             else -> TraktTheme.colors.chipContainer
                         },
-                        shape = RoundedCornerShape(16.dp),
+                        shape = FieldShape,
                     )
                     .padding(12.dp),
             ) {

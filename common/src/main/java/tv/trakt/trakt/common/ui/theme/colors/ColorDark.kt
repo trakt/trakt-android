@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.ui.theme.colors
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.unit.dp
 
 val DarkColors: TraktColors = TraktColors(
@@ -86,10 +87,16 @@ val DarkColors: TraktColors = TraktColors(
     tooltipContainer = Shade800,
     tooltipContent = White,
     // Switches
-    switchContainerChecked = Purple800,
     switchContainerUnchecked = White,
     switchThumbChecked = Purple500,
     switchThumbUnchecked = Purple500,
+    // Selector
+    selectorContainer = Purple500.copy(alpha = 0.24F).compositeOver(Shade920),
+    selectorBorder = Purple400,
+    selectorContent = White,
+    // Track
+    trackContainer = White.copy(alpha = 0.03F),
+    trackBorder = White.copy(alpha = 0.06F),
     // Reactions
     reactionsContainer = Shade800,
     reactionsSummaryContainer = Shade700,

@@ -8,16 +8,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
-import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -56,6 +53,7 @@ import tv.trakt.trakt.core.share.model.ShareImageVariant.Feed
 import tv.trakt.trakt.core.share.model.ShareImageVariant.Story
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SegmentedToggle
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -220,65 +218,24 @@ private fun ShareContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun ShareButtons(
     modifier: Modifier = Modifier,
     selectedVariant: ShareImageVariant,
     onVariantSelected: (ShareImageVariant) -> Unit = {},
 ) {
-    Row(
-        horizontalArrangement = spacedBy(4.dp),
+    SegmentedToggle(
+        options = ShareImageVariant.entries.toImmutableList(),
+        selected = selectedVariant,
+        onSelect = onVariantSelected,
+        fillWidth = true,
         modifier = modifier,
-    ) {
-        ShareImageVariant.entries.forEach { variant ->
-            ToggleButton(
-                checked = selectedVariant == variant,
-                onCheckedChange = {
-                    if (selectedVariant != variant) {
-                        onVariantSelected(variant)
-                    }
-                },
-                colors = ToggleButtonDefaults.colors(
-                    containerColor = Color.Transparent,
-                    contentColor = TraktTheme.colors.textPrimary,
-                    checkedContainerColor = TraktTheme.colors.accent,
-                    checkedContentColor = TraktTheme.colors.textPrimary,
-                ),
-                border = when {
-                    selectedVariant == variant -> BorderStroke(
-                        width = 0.dp,
-                        color = Color.Transparent,
-                    )
-
-                    else -> BorderStroke(
-                        width = 1.dp,
-                        color = TraktTheme.colors.chipContainer,
-                    )
-                },
-                shapes = when (variant) {
-                    Default -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                    Feed -> ButtonGroupDefaults.connectedMiddleButtonShapes()
-                    Story -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                },
-                contentPadding = PaddingValues(
-                    horizontal = 12.dp,
-                ),
-                modifier = Modifier
-                    .weight(1f)
-                    .height(36.dp),
-            ) {
-                Text(
-                    text = stringResource(variant.displayRes),
-                    color = when {
-                        selectedVariant == variant -> TraktTheme.colors.textPrimaryOnAccent
-                        else -> TraktTheme.colors.textPrimary
-                    },
-                    style = TraktTheme.typography.buttonTertiary,
-                    maxLines = 1,
-                    overflow = Ellipsis,
-                )
-            }
-        }
+    ) { variant, _ ->
+        Text(
+            text = stringResource(variant.displayRes),
+            style = TraktTheme.typography.buttonSecondary,
+            maxLines = 1,
+            overflow = Ellipsis,
+        )
     }
 }
 

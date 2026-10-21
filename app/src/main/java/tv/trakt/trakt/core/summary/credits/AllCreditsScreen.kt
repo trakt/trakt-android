@@ -324,7 +324,7 @@ private fun CreditsFilters(
                         Icon(
                             painter = painterResource(option.iconRes),
                             contentDescription = null,
-                            tint = TraktTheme.colors.textPrimaryOnAccent,
+                            tint = TraktTheme.colors.selectorContent,
                             modifier = Modifier.size(FilterChipDefaults.IconSize),
                         )
                     },
