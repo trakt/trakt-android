@@ -102,7 +102,7 @@ internal fun CalendarDayView(
         ) {
             items(
                 count = items.size,
-                key = { index -> items[index].id.value },
+                key = { index -> items[index].key },
             ) { index ->
                 when (val item = items[index]) {
                     is EpisodeItem -> CalendarEpisodeItemView(

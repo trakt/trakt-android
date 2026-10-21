@@ -788,7 +788,7 @@ private fun ContentItemsGrid(
             if (gridItems.isNotEmpty()) {
                 items(
                     count = gridItems.size,
-                    key = { index -> gridItems[index].id.value },
+                    key = { index -> gridItems[index].key },
                 ) { index ->
                     val item = gridItems[index]
                     if (item is EpisodeItem) {
