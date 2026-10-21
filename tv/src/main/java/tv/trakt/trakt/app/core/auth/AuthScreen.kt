@@ -26,9 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.component1
-import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.component2
-import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.component3
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -244,7 +241,7 @@ private fun DeviceCodeContent(
                     .padding(8.dp),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_trakt_placeholder),
+                    painter = painterResource(R.drawable.ic_trakt_icon),
                     contentDescription = "Logo",
                     tint = Color.White,
                     modifier = Modifier.size(42.dp),

@@ -209,13 +209,13 @@ private fun TodaySentiment(
 
         TodaySentimentAspects(
             aspects = pros,
-            iconRes = R.drawable.ic_thumb_up2_fill,
+            iconRes = R.drawable.ic_thumb_up_fill,
             color = TraktTheme.colors.sentimentsAccent,
         )
 
         TodaySentimentAspects(
             aspects = cons,
-            iconRes = R.drawable.ic_thumb_down2_fill,
+            iconRes = R.drawable.ic_thumb_down_fill,
             color = TraktTheme.colors.sentimentsBadAccent,
         )
     }

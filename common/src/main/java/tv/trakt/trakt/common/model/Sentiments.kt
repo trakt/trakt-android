@@ -26,9 +26,9 @@ data class Sentiments(
         val displayTextRes: Int,
         val displayIconRes: Int,
     ) {
-        Positive("positive", R.string.header_sentiment_positive, R.drawable.ic_thumb_up2_fill),
-        Mixed("mixed", R.string.header_sentiment_mixed, R.drawable.ic_thumb_up_down),
-        Negative("negative", R.string.header_sentiment_negative, R.drawable.ic_thumb_down2_fill),
+        Positive("positive", R.string.header_sentiment_positive, R.drawable.ic_thumb_up_fill),
+        Mixed("mixed", R.string.header_sentiment_mixed, R.drawable.ic_thumb_updown_fill),
+        Negative("negative", R.string.header_sentiment_negative, R.drawable.ic_thumb_down_fill),
         ;
 
         companion object {

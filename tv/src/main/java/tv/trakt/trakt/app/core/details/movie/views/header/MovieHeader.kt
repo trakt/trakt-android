@@ -67,6 +67,7 @@ import tv.trakt.trakt.common.model.MediaGenre.Anime
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun MovieHeader(
@@ -111,7 +112,7 @@ internal fun MovieHeader(
                             onPosterUnfocused()
                         }
                         scope.launch {
-                            delay(100)
+                            delay(100.milliseconds)
                             isPosterFocused = it.isFocused
                         }
                     }

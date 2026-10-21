@@ -345,7 +345,6 @@ private fun TitleBar(
             text = stringResource(R.string.button_text_apply),
             textStyle = TraktTheme.typography.buttonTertiary,
             height = 34.dp,
-            corner = 12.dp,
             enabled = applyEnabled,
             onClick = onApplyClick,
         )

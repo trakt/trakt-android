@@ -39,13 +39,12 @@ internal fun TertiaryButton(
         contentPadding = 10.dp,
         containerColor = containerColor,
         contentColor = contentColor,
-        corner = 12.dp,
         disabledContainerColor = disabledContainerColor,
         disabledContentColor = disabledContentColor,
     )
 }
 
-@Preview()
+@Preview
 @Composable
 private fun Preview1() {
     TraktTheme {
@@ -66,7 +65,7 @@ private fun Preview2() {
     }
 }
 
-@Preview()
+@Preview
 @Composable
 private fun PreviewIcon() {
     TraktTheme {

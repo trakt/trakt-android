@@ -326,7 +326,7 @@ internal fun ProsConsCard(
                     verticalAlignment = Alignment.Top,
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_thumb_up2_fill),
+                        painter = painterResource(R.drawable.ic_thumb_up_fill),
                         tint = goodColor,
                         contentDescription = null,
                         modifier = Modifier.size(22.dp),
@@ -351,7 +351,7 @@ internal fun ProsConsCard(
                     modifier = Modifier.padding(top = 8.dp),
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_thumb_down2_fill),
+                        painter = painterResource(R.drawable.ic_thumb_down_fill),
                         tint = badColor,
                         contentDescription = null,
                         modifier = Modifier.size(22.dp),

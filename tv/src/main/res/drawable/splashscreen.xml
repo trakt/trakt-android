@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
-    android:opacity="opaque"
-    >
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="@color/background" />
-        </shape>
-    </item>
+  android:opacity="opaque"
+  >
+  <item>
+    <shape android:shape="rectangle">
+      <solid android:color="@color/background" />
+    </shape>
+  </item>
 
-    <item
-        android:drawable="@drawable/ic_trakt_banner_bw"
-        android:gravity="center"
-        />
+  <item
+    android:drawable="@drawable/ic_banner_foreground"
+    android:gravity="center"
+    />
 
 </layer-list>

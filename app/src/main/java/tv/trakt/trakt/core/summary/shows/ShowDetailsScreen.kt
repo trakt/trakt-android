@@ -570,9 +570,13 @@ internal fun ShowDetailsContent(
     ) {
         state.show?.let { show ->
             val isReleased = show.rememberReleased()
+
             val isWatched = remember(state.showProgress) {
-                state.showProgress?.isWatched == true ||
-                    state.showProgress?.isWatching == true
+                state.showProgress?.isWatched == true
+            }
+
+            val isWatching = remember(state.showProgress) {
+                state.showProgress?.isWatching == true
             }
 
             DetailsBackground(
@@ -616,6 +620,7 @@ internal fun ShowDetailsContent(
                         primaryEnabled = isReleased,
                         primaryIcon = when {
                             isWatched -> R.drawable.ic_check_double
+                            isWatching -> R.drawable.ic_check_2
                             else -> R.drawable.ic_check_2
                         },
                         enabled = state.user != null &&
@@ -654,7 +659,7 @@ internal fun ShowDetailsContent(
                 item {
                     val isLoaded = state.showUserRating?.loading == LoadingState.Done
                     DetailsRating(
-                        visible = isWatched && isLoaded,
+                        visible = (isWatched || isWatching) && isLoaded,
                         rating = state.showUserRating?.rating,
                         loading = state.loadingFavorite.isLoading,
                         onRatingDrag = {

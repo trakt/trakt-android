@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="icon_background">#9F42C6</color>
-    <color name="background">#131517</color>
-    <!-- Launch window background in light mode. Mirrors LightColors.backgroundPrimary. -->
-    <color name="window_background">#F1EFF4</color>
+  <color name="icon_background">#6B35D8</color>
+  <color name="background">#131517</color>
+  <!-- Launch window background in light mode. Mirrors LightColors.backgroundPrimary. -->
+  <color name="window_background">#F1EFF4</color>
 </resources>

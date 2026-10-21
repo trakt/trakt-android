@@ -124,9 +124,9 @@ internal fun WelcomeScreen(
                 horizontalArrangement = spacedBy(12.dp),
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_trakt),
+                    painter = painterResource(R.drawable.ic_trakt_icon),
                     contentDescription = null,
-                    modifier = Modifier.size(56.dp),
+                    modifier = Modifier.size(50.dp),
                 )
                 Icon(
                     painter = painterResource(R.drawable.ic_trakt_logo),

@@ -438,8 +438,8 @@ private fun TitleBar(
                         Icon(
                             painter = painterResource(
                                 when {
-                                    liked?.liked ?: false -> R.drawable.ic_thumb_up2_fill
-                                    else -> R.drawable.ic_thumb_up2
+                                    liked?.liked ?: false -> R.drawable.ic_thumb_up_fill
+                                    else -> R.drawable.ic_thumb_up_like
                                 },
                             ),
                             tint = TraktTheme.colors.textPrimary,
