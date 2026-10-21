@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -45,6 +44,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.core.trivia.model.TriviaCategory
 import tv.trakt.trakt.core.trivia.model.TriviaFilter
+import tv.trakt.trakt.core.trivia.ui.TriviaCategoryDropdown
 import tv.trakt.trakt.core.trivia.ui.TriviaFactCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -175,13 +175,15 @@ private fun ContentFilters(
     onCategoryClick: (TriviaCategory?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        verticalArrangement = spacedBy(8.dp),
-        modifier = modifier,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = spacedBy(TraktTheme.spacing.filterChipsSpace),
+        modifier = modifier.fillMaxWidth(),
     ) {
         FilterChipGroup(
             paddingVertical = PaddingValues.Zero,
             paddingHorizontal = PaddingValues.Zero,
+            modifier = Modifier.weight(1F),
         ) {
             for (filter in TriviaFilter.entries) {
                 FilterChip(
@@ -203,44 +205,11 @@ private fun ContentFilters(
             }
         }
 
-        if ((categories?.size ?: 0) > 1) {
-            CategoryFilters(
-                categories = categories ?: persistentListOf(),
+        if (categories != null && categories.size > 1) {
+            TriviaCategoryDropdown(
+                categories = categories,
                 selectedCategory = selectedCategory,
-                onClick = onCategoryClick,
-            )
-        }
-    }
-}
-
-@Composable
-private fun CategoryFilters(
-    categories: ImmutableList<TriviaCategory>,
-    selectedCategory: TriviaCategory?,
-    onClick: (TriviaCategory?) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val labeledCategories = categories
-        .map { it to stringResource(it.displayRes) }
-        .sortedBy { it.second }
-
-    FilterChipGroup(
-        paddingVertical = PaddingValues.Zero,
-        paddingHorizontal = PaddingValues.Zero,
-        modifier = modifier,
-    ) {
-        FilterChip(
-            selected = selectedCategory == null,
-            text = stringResource(R.string.option_text_trivia_category_all),
-            height = 32.dp,
-            onClick = { onClick(null) },
-        )
-        for ((category, label) in labeledCategories) {
-            FilterChip(
-                selected = selectedCategory == category,
-                text = label,
-                height = 32.dp,
-                onClick = { onClick(category) },
+                onCategoryClick = onCategoryClick,
             )
         }
     }

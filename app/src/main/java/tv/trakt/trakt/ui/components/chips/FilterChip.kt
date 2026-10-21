@@ -48,6 +48,7 @@ internal fun FilterChip(
     animated: Boolean = true,
     unselectedTextVisible: Boolean = true,
     leadingAlwaysVisible: Boolean = false,
+    endAlwaysVisible: Boolean = false,
     leadingContent: @Composable (() -> Unit)? = null,
     endContent: @Composable (() -> Unit)? = null,
     paddingHorizontal: PaddingValues = PaddingValues(
@@ -134,13 +135,13 @@ internal fun FilterChip(
 
         if (animated) {
             AnimatedVisibility(
-                visible = selected && endContent != null,
+                visible = (selected || endAlwaysVisible) && endContent != null,
                 enter = fadeIn(tween(150, delayMillis = 100)) + expandHorizontally(tween(150, delayMillis = 100)),
                 exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
             ) {
                 endContent?.invoke()
             }
-        } else if (selected && endContent != null) {
+        } else if ((selected || endAlwaysVisible) && endContent != null) {
             endContent.invoke()
         }
     }

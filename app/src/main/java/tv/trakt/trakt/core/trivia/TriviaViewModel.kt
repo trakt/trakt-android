@@ -139,9 +139,7 @@ internal class TriviaViewModel(
     }
 
     fun setCategory(category: TriviaCategory?) {
-        categoryState.update { current ->
-            if (current == category) null else category
-        }
+        categoryState.update { category }
     }
 
     @Suppress("UNCHECKED_CAST")
