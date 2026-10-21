@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.profile.sections.library.views
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,12 +25,14 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Orange400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val tooltipShape = RoundedCornerShape(8.dp)
+
+// Widens the hit area of the one-line tag without changing the chip row height.
+private val tagTouchPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
 
 @Composable
 internal fun LibraryCollectionLimitTag(
@@ -78,14 +81,16 @@ internal fun LibraryCollectionLimitTag(
         Text(
             text = stringResource(R.string.label_library_collection_limit),
             style = TraktTheme.typography.meta,
-            color = Orange400,
+            color = TraktTheme.colors.warningAccent,
             maxLines = 1,
-            modifier = Modifier.onClick {
-                onShow()
-                scope.launch {
-                    tooltipState.show()
+            modifier = Modifier
+                .onClick {
+                    onShow()
+                    scope.launch {
+                        tooltipState.show()
+                    }
                 }
-            },
+                .padding(tagTouchPadding),
         )
     }
 }

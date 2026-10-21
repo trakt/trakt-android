@@ -11,7 +11,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -64,12 +66,21 @@ internal class ProfileLibraryViewModel(
 
     private var loadDataJob: Job? = null
     private var collapseJob: Job? = null
+    private var collectionLimitJob: Job? = null
     private var isVipUpsellSeenLogged = false
 
     init {
         loadData()
-        loadCollectionLimit()
+        observeVipStatus()
         observeForeground()
+    }
+
+    private fun observeVipStatus() {
+        sessionManager.observeProfile()
+            .map { it?.isAnyVip }
+            .distinctUntilChanged()
+            .onEach { loadCollectionLimit() }
+            .launchIn(viewModelScope)
     }
 
     private fun observeForeground() {
@@ -82,7 +93,8 @@ internal class ProfileLibraryViewModel(
     }
 
     private fun loadCollectionLimit() {
-        viewModelScope.launch {
+        collectionLimitJob?.cancel()
+        collectionLimitJob = viewModelScope.launch {
             try {
                 val user = sessionManager.getProfile()
                 if (user == null || user.isAnyVip) {
