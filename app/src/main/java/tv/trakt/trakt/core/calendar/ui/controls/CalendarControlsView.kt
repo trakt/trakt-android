@@ -78,8 +78,8 @@ internal fun CalendarControlsView(
                 color = TraktTheme.colors.dialogContainer,
                 shape = DefaultCardShape,
             )
-            .padding(top = 12.dp, bottom = 11.dp)
-            .padding(horizontal = 12.dp),
+            .padding(top = 10.dp, bottom = 9.dp)
+            .padding(horizontal = 10.dp),
     ) {
         AnimatedVisibility(
             visible = expanded,
@@ -205,13 +205,14 @@ private fun DayRowItem(
         animationSpec = tween(200),
     )
 
+    val cornerSize = 12.dp
     Column(
         horizontalAlignment = CenterHorizontally,
-        verticalArrangement = spacedBy(3.dp),
+        verticalArrangement = spacedBy(2.dp),
         modifier = modifier
             .background(
                 color = animatedColor,
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(cornerSize),
             )
             .border(
                 width = if (isToday) 1.dp else 0.dp,
@@ -219,7 +220,7 @@ private fun DayRowItem(
                     isToday -> TraktTheme.colors.accentPalette.shade400
                     else -> Color.Transparent
                 },
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(cornerSize),
             )
             .padding(
                 vertical = 6.dp,

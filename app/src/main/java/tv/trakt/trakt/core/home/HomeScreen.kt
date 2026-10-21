@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedView
@@ -74,7 +75,7 @@ internal fun HomeScreen(
     onNavigateToAllSocial: () -> Unit,
     onNavigateToAllRecommended: () -> Unit,
     onNavigateToVip: () -> Unit,
-    onNavigateToCalendar: () -> Unit,
+    onNavigateToCalendar: (CalendarView) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToToday: (groupKey: String) -> Unit,
 ) {
@@ -111,7 +112,7 @@ internal fun HomeScreen(
         onMorePersonalClick = onNavigateToAllPersonal,
         onMoreSocialClick = onNavigateToAllSocial,
         onMoreRecommendedClick = onNavigateToAllRecommended,
-        onCalendarClick = onNavigateToCalendar,
+        onCalendarClick = { onNavigateToCalendar(state.calendarView) },
         onVipClick = onNavigateToVip,
         onUserClick = onNavigateToUser,
         onTodayClick = onNavigateToToday,

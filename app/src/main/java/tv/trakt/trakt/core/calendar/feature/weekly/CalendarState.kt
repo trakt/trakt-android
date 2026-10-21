@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.calendar
+package tv.trakt.trakt.core.calendar.feature.weekly
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList

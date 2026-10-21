@@ -2,12 +2,10 @@ package tv.trakt.trakt.core.calendar.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
-import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.remote.UserCalendarRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -21,59 +19,54 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
-import java.time.DayOfWeek.MONDAY
-import java.time.DayOfWeek.SUNDAY
 import java.time.LocalDate
 import java.time.ZoneOffset.UTC
+import java.time.temporal.ChronoUnit
 
+// The calendar endpoints key off release dates in UTC, so the request window gets one
+// day of padding on each side: a release on a local range-end evening lands on the next
+// UTC day in negative-offset zones, and on the previous UTC day for local range-start
+// mornings in positive-offset ones. The local-day filter below trims the excess.
 private const val DAYS_OFFSET = 1L
 
-// One UTC day of padding on each side of the local window: a release on local Sunday
-// evening lands on UTC Monday in negative-offset zones, and on UTC Sunday for local Monday
-// mornings in positive-offset ones. The local-day filter below trims the excess.
-private const val DAYS_RANGE = 9
+// Trakt caps a single calendar call at 44 days, enough for a padded 6-row month page.
+// Longer ranges are split into consecutive windows and fetched in parallel.
+private const val MAX_REQUEST_DAYS = 44
 
-internal class GetCalendarItemsUseCase(
+/**
+ * Loads calendar items for an arbitrary day range and returns them grouped by day,
+ * with an entry for every day in the range - empty days included.
+ *
+ * Shared by the weekly and monthly calendar use cases.
+ */
+internal class CalendarItemsLoader(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val remoteUserSource: UserCalendarRemoteSource,
-    private val sessionManager: SessionManager,
 ) {
-    suspend fun getCalendarItems(
-        day: LocalDate,
+    suspend fun load(
+        range: ClosedRange<LocalDate>,
         filters: GlobalFilter,
         type: ReleaseType,
         skipProgress: Boolean = false,
     ): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
         return coroutineScope {
-            if (!sessionManager.isAuthenticated()) {
-                return@coroutineScope persistentMapOf()
-            }
+            val startDate = range.start
+            val endDate = range.endInclusive
 
-            val (weekStart, weekEnd) = with(day) {
-                with(MONDAY) to with(SUNDAY)
-            }
+            val days = ChronoUnit.DAYS.between(startDate, endDate).toInt() + 1
+            val windows = requestWindows(
+                startDate = startDate.minusDays(DAYS_OFFSET),
+                days = days + 2 * DAYS_OFFSET.toInt(),
+            )
 
-            val showsDataAsync = if (filters.mode.isMediaOrShows) {
-                async {
-                    remoteUserSource.getShowsCalendar(
-                        startDate = weekStart.minusDays(DAYS_OFFSET),
-                        days = DAYS_RANGE,
+            val mediaDataAsync = async {
+                windows.asyncMap {
+                    remoteUserSource.getMediaCalendar(
+                        startDate = it.startDate,
+                        days = it.days,
                         filters = filters,
                     )
-                }
-            } else {
-                null
-            }
-            val moviesDataAsync = if (filters.mode.isMediaOrMovies) {
-                async {
-                    remoteUserSource.getMoviesCalendar(
-                        startDate = weekStart.minusDays(DAYS_OFFSET),
-                        days = DAYS_RANGE,
-                        filters = filters,
-                    )
-                }
-            } else {
-                null
+                }.flatten()
             }
 
             val showsProgressAsync = async {
@@ -102,22 +95,26 @@ internal class GetCalendarItemsUseCase(
                 }
             }
 
-            val showsData = showsDataAsync?.await().orEmpty()
-            val moviesData = moviesDataAsync?.await().orEmpty()
+            val mediaData = mediaDataAsync.await()
 
             val showsProgress = showsProgressAsync.await()
                 .associateBy { it.showId }
             val moviesProgress = moviesProgressAsync.await()
                 .associateBy { it.movie.ids.trakt }
 
-            val weekShowsData = showsData.filter {
-                val date = it.episode.effectiveReleaseDate ?: it.firstAired
+            val rangeShowsData = mediaData.mapNotNull { item ->
+                val show = item.show ?: return@mapNotNull null
+                val episode = item.episode ?: return@mapNotNull null
+                val date = episode.effectiveReleaseDate ?: item.firstAired ?: return@mapNotNull null
                 val localDate = date.toInstant().toLocalDay()
-                it.episode.season > 0 && localDate in weekStart..weekEnd
+                if (episode.season <= 0 || localDate !in startDate..endDate) {
+                    return@mapNotNull null
+                }
+                show to episode
             }
 
-            val episodes = weekShowsData
-                .map { it.show to Episode.fromDto(it.episode) }
+            val episodes = rangeShowsData
+                .map { (show, episode) -> show to Episode.fromDto(episode) }
                 // Group a show's episodes that share the same release day into one item,
                 // so a same-day batch renders as a single card with a combined list.
                 .groupBy { (show, episode) -> show.ids.trakt to episode.releasedAt?.toLocalDay() }
@@ -145,34 +142,36 @@ internal class GetCalendarItemsUseCase(
             val movies = if (type != ReleaseType.All) {
                 emptyList()
             } else {
-                moviesData
-                    .filter {
+                mediaData
+                    .mapNotNull { item ->
+                        val movie = item.movie ?: return@mapNotNull null
+                        val released = item.released ?: return@mapNotNull null
                         // Same UTC-midnight-to-local conversion as CalendarItem.releasedAt, so
                         // filtering and day placement agree on which local day a movie belongs to.
-                        val localDate = LocalDate.parse(it.released)
+                        val localDate = LocalDate.parse(released)
                             .atStartOfDay(UTC)
                             .toInstant()
                             .toLocalDay()
-                        localDate in weekStart..weekEnd
+                        movie.takeIf { localDate in startDate..endDate }
                     }
-                    .asyncMap {
-                        val id = it.movie.ids.trakt.toTraktId()
+                    .asyncMap { movie ->
                         CalendarItem.MovieItem(
-                            watched = moviesProgress.containsKey(id),
-                            movie = Movie.fromDto(it.movie),
+                            watched = moviesProgress.containsKey(movie.ids.trakt.toTraktId()),
+                            movie = Movie.fromDto(movie),
                         )
                     }
             }
 
             // Group by day
             val itemsByDay = (episodes + movies)
+                .distinctBy { it.key }
                 .filter { it.releasedAt != null }
                 .groupBy { it.releasedAt!!.toLocalDay() }
 
-            // Create sorted map with all days in the week, including empty days
+            // Create sorted map with every day in the range, including empty days
             val result = buildMap<LocalDate, ImmutableList<CalendarItem>> {
-                for (i in 0..6) {
-                    val currentDay = weekStart.plusDays(i.toLong())
+                for (offset in 0 until days) {
+                    val currentDay = startDate.plusDays(offset.toLong())
                     val items = (itemsByDay[currentDay] ?: emptyList())
                         .sortedBy { it.releasedAt }.toImmutableList()
                     put(currentDay, items)
@@ -181,6 +180,27 @@ internal class GetCalendarItemsUseCase(
 
             result.toImmutableMap()
         }
+    }
+}
+
+private data class CalendarRequestWindow(
+    val startDate: LocalDate,
+    val days: Int,
+)
+
+// Consecutive windows of at most MAX_REQUEST_DAYS days covering [days] from [startDate].
+private fun requestWindows(
+    startDate: LocalDate,
+    days: Int,
+): List<CalendarRequestWindow> {
+    val windowCount = (days + MAX_REQUEST_DAYS - 1) / MAX_REQUEST_DAYS
+
+    return List(windowCount) { index ->
+        val offset = index * MAX_REQUEST_DAYS
+        CalendarRequestWindow(
+            startDate = startDate.plusDays(offset.toLong()),
+            days = minOf(MAX_REQUEST_DAYS, days - offset),
+        )
     }
 }
 

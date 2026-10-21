@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 
@@ -31,6 +32,7 @@ internal fun MainNavHost(
             controller = navController,
             userId = userId,
             userLoading = userLoading,
+            onNavigateToCalendar = navController::navigateToCalendar,
         )
         calendarScreens(navController)
         discoverScreens(navController)

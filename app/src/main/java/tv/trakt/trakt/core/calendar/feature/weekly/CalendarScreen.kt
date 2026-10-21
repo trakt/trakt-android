@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.calendar
+package tv.trakt.trakt.core.calendar.feature.weekly
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
@@ -49,6 +49,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -79,8 +81,14 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.MovieItem
+import tv.trakt.trakt.core.calendar.model.CalendarView
+import tv.trakt.trakt.core.calendar.ui.CalendarChevrons
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
+import tv.trakt.trakt.core.calendar.ui.CalendarTodayIcon
+import tv.trakt.trakt.core.calendar.ui.CalendarTypeChips
+import tv.trakt.trakt.core.calendar.ui.CalendarViewToggle
+import tv.trakt.trakt.core.calendar.ui.calendarMonthTitle
 import tv.trakt.trakt.core.calendar.ui.context.sheet.CalendarEpisodeContextSheet
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
@@ -91,8 +99,6 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.chips.FilterChip
-import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -100,11 +106,14 @@ import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
+import java.time.YearMonth
 import kotlin.time.Duration.Companion.milliseconds
 
 private val MinAlpha = 0.25F
 private val LoadMoreThreshold = 4
-private val FiltersRowHeight = 40.dp
+private val FiltersRowHeight = 44.dp
+private val DayHeaderSpacing = 38.dp
+private val ControlsCornerRadius = 24.dp
 
 @Composable
 internal fun CalendarScreen(
@@ -113,6 +122,7 @@ internal fun CalendarScreen(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onViewClick: (CalendarView) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -207,6 +217,7 @@ internal fun CalendarScreen(
             filtersSheet = true
         },
         onTypeClick = viewModel::setType,
+        onViewClick = onViewClick,
         onBackClick = onNavigateBack,
     )
 
@@ -303,9 +314,10 @@ private fun CalendarScreen(
     onRemoveClick: (CalendarItem) -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onTypeClick: (ReleaseType) -> Unit = {},
+    onViewClick: (CalendarView) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val scrollOffset = with(LocalDensity.current) { 70.dp.toPx().toInt() }
+    val scrollOffset = with(LocalDensity.current) { DayHeaderSpacing.roundToPx() }
 
     val gridState = rememberLazyGridState()
     val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
@@ -318,18 +330,12 @@ private fun CalendarScreen(
         }
     }
 
-    val atTop by remember {
-        derivedStateOf {
-            gridState.firstVisibleItemIndex == 0 && gridState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
-            .plus(202.dp)
+            .plus(150.dp)
             .plus(FiltersRowHeight),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
@@ -434,10 +440,69 @@ private fun CalendarScreen(
             }
     }
 
+    val scrollToToday = {
+        onPeriodChange("reset")
+        val today = nowLocalDay()
+        if (state.items?.containsKey(today) == true) {
+            scrollToDay(
+                scope = scope,
+                state = state,
+                date = today,
+                scrollOffset = scrollOffset,
+                gridState = gridState,
+            )
+            lastTapFocusedDay = today
+        } else {
+            lastTapFocusedDay = null
+            onTodayClick()
+        }
+    }
+
     val stripStartDate = when {
         state.loading.isLoading -> state.selectedStartDay
         else -> (lastTapFocusedDay ?: focusedDate)?.with(MONDAY) ?: state.selectedStartDay
     }
+
+    val headerMonth = YearMonth.from(lastTapFocusedDay ?: focusedDate ?: state.selectedStartDay)
+
+    val onNextWeekClick = {
+        onPeriodChange("next")
+        val target = stripStartDate.plusWeeks(1)
+        if (state.items?.containsKey(target) == true) {
+            scrollToDay(
+                scope = scope,
+                state = state,
+                date = target,
+                scrollOffset = scrollOffset,
+                gridState = gridState,
+            )
+            lastTapFocusedDay = target
+        } else {
+            // Stale tapped day would win over the fresh week once it loads.
+            lastTapFocusedDay = null
+            onLoadWeek(target)
+        }
+    }
+
+    val onPreviousWeekClick = {
+        onPeriodChange("previous")
+        val target = stripStartDate.minusWeeks(1)
+        if (state.items?.containsKey(target) == true) {
+            scrollToDay(
+                scope = scope,
+                state = state,
+                date = target,
+                scrollOffset = scrollOffset,
+                gridState = gridState,
+            )
+            lastTapFocusedDay = target
+        } else {
+            lastTapFocusedDay = null
+            onLoadWeek(target)
+        }
+    }
+
+    val maskColor = TraktTheme.colors.backgroundPrimary
 
     Box(
         modifier = modifier
@@ -458,17 +523,15 @@ private fun CalendarScreen(
             onRemoveClick = onRemoveClick,
         )
 
-        // Mask for the top content under the calendar controls.
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(132.dp + FiltersRowHeight)
-                .background(TraktTheme.colors.backgroundPrimary),
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .drawBehind {
+                    drawRect(
+                        color = maskColor,
+                        size = size.copy(height = size.height - ControlsCornerRadius.toPx()),
+                    )
+                }
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues()
                         .calculateTopPadding(),
@@ -478,62 +541,83 @@ private fun CalendarScreen(
         ) {
             Row(
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(12.dp),
-                modifier = Modifier
-                    .padding(start = 2.dp, bottom = 12.dp)
-                    .onClick(onClick = onBackClick),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_back_arrow),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                )
-                TraktHeader(
-                    title = stringResource(R.string.page_title_calendar),
-                    subtitle = state.filter?.mode?.let {
-                        stringResource(it.displayRes)
-                    } ?: stringResource(MediaMode.Media.displayRes),
-                )
-            }
-
-            Row(
-                verticalAlignment = CenterVertically,
                 horizontalArrangement = SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 12.dp),
             ) {
-                FilterChipGroup(
-                    paddingVertical = PaddingValues.Zero,
+                Row(
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = spacedBy(12.dp),
+                    modifier = Modifier.onClick(onClick = onBackClick),
                 ) {
-                    for (type in ReleaseType.entries) {
-                        FilterChip(
-                            selected = state.type == type,
-                            text = stringResource(type.textRes),
-                            leadingContent = {
-                                Icon(
-                                    painter = painterResource(type.iconRes),
-                                    contentDescription = null,
-                                    tint = TraktTheme.colors.textPrimaryOnAccent,
-                                    modifier = Modifier.size(type.iconSize),
-                                )
-                            },
-                            onClick = { onTypeClick(type) },
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(R.drawable.ic_back_arrow),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                    )
+                    TraktHeader(
+                        title = calendarMonthTitle(headerMonth),
+                        subtitle = state.filter?.mode?.let {
+                            stringResource(it.displayRes)
+                        } ?: stringResource(MediaMode.Media.displayRes),
+                    )
                 }
-                MediaFilterIcon(
-                    active = state.filter?.isActive == true,
-                    enabled = state.loading.isDone,
-                    onClick = onFiltersClick,
-                    modifier = Modifier
-                        .padding(bottom = 1.dp),
+
+                Row(
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = spacedBy(20.dp),
+                    modifier = Modifier.padding(end = 2.dp),
+                ) {
+                    CalendarTodayIcon(
+                        visible = true,
+                        onClick = scrollToToday,
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                            .graphicsLayer {
+                                translationY = 0.25.dp.toPx()
+                            },
+                    )
+
+                    CalendarViewToggle(
+                        current = CalendarView.Weekly,
+                        onViewClick = onViewClick,
+                        modifier = Modifier
+                            .graphicsLayer {
+                                translationY = 0.5.dp.toPx()
+                            },
+                    )
+
+                    MediaFilterIcon(
+                        active = state.filter?.isActive == true,
+                        enabled = state.loading.isDone,
+                        onClick = onFiltersClick,
+                    )
+                }
+            }
+
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp),
+            ) {
+                CalendarTypeChips(
+                    selected = state.type,
+                    onTypeClick = onTypeClick,
+                    modifier = Modifier.weight(1F),
+                )
+
+                CalendarChevrons(
+                    onPreviousClick = onPreviousWeekClick,
+                    onNextClick = onNextWeekClick,
                 )
             }
 
             CalendarControlsView(
                 enabled = !state.loading.isLoading,
-                expanded = atTop || scrollingUp,
+                expanded = false,
                 startDate = stripStartDate,
                 focusedDate = focusedDate,
                 lastTapFocusedDate = lastTapFocusedDay,
@@ -553,58 +637,9 @@ private fun CalendarScreen(
                     )
                     lastTapFocusedDay = date
                 },
-                onTodayClick = {
-                    onPeriodChange("reset")
-                    val today = nowLocalDay()
-                    if (state.items?.containsKey(today) == true) {
-                        scrollToDay(
-                            scope = scope,
-                            state = state,
-                            date = today,
-                            scrollOffset = scrollOffset,
-                            gridState = gridState,
-                        )
-                        lastTapFocusedDay = today
-                    } else {
-                        lastTapFocusedDay = null
-                        onTodayClick()
-                    }
-                },
-                onNextWeekClick = {
-                    onPeriodChange("next")
-                    val target = stripStartDate.plusWeeks(1)
-                    if (state.items?.containsKey(target) == true) {
-                        scrollToDay(
-                            scope = scope,
-                            state = state,
-                            date = target,
-                            scrollOffset = scrollOffset,
-                            gridState = gridState,
-                        )
-                        lastTapFocusedDay = target
-                    } else {
-                        // Stale tapped day would win over the fresh week once it loads.
-                        lastTapFocusedDay = null
-                        onLoadWeek(target)
-                    }
-                },
-                onPreviousWeekClick = {
-                    onPeriodChange("previous")
-                    val target = stripStartDate.minusWeeks(1)
-                    if (state.items?.containsKey(target) == true) {
-                        scrollToDay(
-                            scope = scope,
-                            state = state,
-                            date = target,
-                            scrollOffset = scrollOffset,
-                            gridState = gridState,
-                        )
-                        lastTapFocusedDay = target
-                    } else {
-                        lastTapFocusedDay = null
-                        onLoadWeek(target)
-                    }
-                },
+                onTodayClick = scrollToToday,
+                onNextWeekClick = onNextWeekClick,
+                onPreviousWeekClick = onPreviousWeekClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .onClick(onClick = {}),
@@ -727,7 +762,7 @@ private fun ContentItemsGrid(
                     horizontalArrangement = spacedBy(6.dp),
                     verticalAlignment = CenterVertically,
                     modifier = Modifier
-                        .padding(top = if (index == 0) 0.dp else 38.dp),
+                        .padding(top = if (index == 0) 0.dp else DayHeaderSpacing),
                 ) {
                     val isToday = remember(date) { date == nowLocalDay() }
                     if (isToday) {
@@ -753,7 +788,7 @@ private fun ContentItemsGrid(
             if (gridItems.isNotEmpty()) {
                 items(
                     count = gridItems.size,
-                    key = { index -> gridItems[index].id.value },
+                    key = { index -> gridItems[index].key },
                 ) { index ->
                     val item = gridItems[index]
                     if (item is EpisodeItem) {
@@ -877,6 +912,7 @@ private fun scrollToDay(
 
     for (itemDate in items.keys) {
         if (itemDate == date) {
+            // Skip the spacing above a day header so it lands right under the controls.
             scope.launch {
                 val offset = when {
                     accumulatedCount == 0 -> 0
