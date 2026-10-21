@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">До %d минут</string>
   <string name="filter_label_this_year">В этом году</string>
   <string name="filter_toggle_state_default">По умолчанию</string>
-  <string name="filter_toggle_state_off">Выкл.</string>
-  <string name="filter_toggle_state_on">Вкл.</string>
+  <string name="filter_toggle_state_off">Нет</string>
+  <string name="filter_toggle_state_on">Да</string>
   <string name="header_account_details">Данные аккаунта</string>
   <string name="header_account_security">Безопасность учетной записи</string>
   <string name="header_add_from_lists">Добавить в %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Недавно просмотренное</string>
   <string name="list_title_recommendation_sources_activity">Вы смотрели</string>
   <string name="list_title_recommendation_sources_favorite">Вам понравилось</string>
+  <string name="list_title_recommendation_sources_people">Вы продолжаете смотреть</string>
   <string name="list_title_recommendation_sources_subgenre">Вам нравится</string>
   <string name="list_title_recommended">Рекомендуемое</string>
   <string name="list_title_recommended_movies">Рекомендуемые фильмы</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">На больших экранах все списки используют те же карточки, что и остальное приложение. Выбор одной открывает быстрый просмотр вместо выхода из списка.</string>
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
   <string name="preview_feature_description_show_ending">Отображает строку \"Окончание\" в деталях сериала: \"Завершено\", если история завершена, \"Незавершено\", если нет.</string>
-  <string name="preview_feature_description_smart_recommendations">Переключайте рекомендации между умными подборками из новой модели и классическими.</string>
   <string name="preview_feature_description_soundtrack">Добавляет раздел саундтреков на страницы фильмов и сериалов с возможностью воспроизведения, если трек может быть сопоставлен.</string>
   <string name="preview_feature_description_vip_cancel_flow">Новый способ отмены VIP: спрашивает, почему вы уходите, показывает, что изменится, и предлагает сделку, чтобы остаться.</string>
   <string name="preview_feature_description_vip_veteran">Показывает, как долго пользователи сохраняют VIP-статус без перерыва, с помощью значка \"Ветеран\" или \"Легенда\", цветного кольца аватара и нескольких празднований в вашем профиле.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Крупноэкранные карточки</string>
   <string name="preview_feature_title_rewatch">Пересмотр</string>
   <string name="preview_feature_title_show_ending">Окончание сериала</string>
-  <string name="preview_feature_title_smart_recommendations">Умные рекомендации</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_vip_cancel_flow">Процесс отмены VIP</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s голосов</string>
   <string name="text_raw_export">Исходный экспорт</string>
+  <string name="text_recommendation_person_more_titles">+Еще %d</string>
+  <string name="text_recommendation_person_watched_acting_one">Снялся в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_acting_other">Снялся в %d просмотренных вами проектах</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Режиссер и снялся в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Режиссер и снялся в %d просмотренных вами проектах</string>
+  <string name="text_recommendation_person_watched_directing_one">Режиссер в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_directing_other">Режиссер в %d просмотренных вами проектах</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Создатель и снялся в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Создатель и снялся в %d просмотренных вами проектах</string>
+  <string name="text_recommendation_person_watched_making_one">Создал в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_making_other">Создал в %d просмотренных вами проектах</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Пожалуйста, переподключите %s ниже.</string>
   <string name="text_rent">Аренда</string>

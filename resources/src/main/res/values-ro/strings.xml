@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">Până la %d minute</string>
   <string name="filter_label_this_year">Anul acesta</string>
   <string name="filter_toggle_state_default">Implicit</string>
-  <string name="filter_toggle_state_off">Oprit</string>
-  <string name="filter_toggle_state_on">Activat</string>
+  <string name="filter_toggle_state_off">Nu</string>
+  <string name="filter_toggle_state_on">Da</string>
   <string name="header_account_details">Detalii cont</string>
   <string name="header_account_security">Securitatea contului</string>
   <string name="header_add_from_lists">Adaugă la %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Vizionat recent</string>
   <string name="list_title_recommendation_sources_activity">Ai vizionat</string>
   <string name="list_title_recommendation_sources_favorite">Ai iubit</string>
+  <string name="list_title_recommendation_sources_people">Continui să vizionezi</string>
   <string name="list_title_recommendation_sources_subgenre">Îți place</string>
   <string name="list_title_recommended">Recomandate</string>
   <string name="list_title_recommended_movies">Filme recomandate</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">Pe ecrane mai mari, toate listele folosesc aceleași carduri ca și restul aplicației. Selectarea unui card deschide o vizualizare rapidă, în loc să părăsească lista.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_show_ending">Afișează un rând despre Final în detaliile unui serial: Finalizat când povestea s-a încheiat, Nerezolvat când nu s-a încheiat.</string>
-  <string name="preview_feature_description_smart_recommendations">Comută recomandările între selecțiile inteligente din noul model și cele clasice.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_vip_cancel_flow">O nouă modalitate de a anula VIP: întreabă de ce, arată ce se schimbă și oferă o înțelegere pentru a rămâne.</string>
   <string name="preview_feature_description_vip_veteran">Arată cât timp au păstrat membrii statutul VIP fără întrerupere, cu o insignă Veteran sau Legendă, un inel colorat de avatar și câteva celebrații pe propriul profil.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Carduri pe Ecrane Mari</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_show_ending">Finalul serialului</string>
-  <string name="preview_feature_title_smart_recommendations">Recomandări inteligente</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
   <string name="preview_feature_title_vip_cancel_flow">Flux de anulare VIP</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP veteran</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s voturi</string>
   <string name="text_raw_export">Export brut</string>
+  <string name="text_recommendation_person_more_titles">+%d mai multe</string>
+  <string name="text_recommendation_person_watched_acting_one">A jucat în %d titlu vizionat de tine</string>
+  <string name="text_recommendation_person_watched_acting_other">A jucat în %d titluri vizionate de tine</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">A regizat și a jucat în %d titlu vizionat de tine</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">A regizat și a jucat în %d titluri vizionate de tine</string>
+  <string name="text_recommendation_person_watched_directing_one">A regizat în %d titlu vizionat de tine</string>
+  <string name="text_recommendation_person_watched_directing_other">A regizat în %d titluri vizionate de tine</string>
+  <string name="text_recommendation_person_watched_making_acting_one">A realizat și a jucat în %d titlu vizionat de tine</string>
+  <string name="text_recommendation_person_watched_making_acting_other">A realizat și a jucat în %d titluri vizionate de tine</string>
+  <string name="text_recommendation_person_watched_making_one">A realizat în %d titlu vizionat de tine</string>
+  <string name="text_recommendation_person_watched_making_other">A realizat în %d titluri vizionate de tine</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Te rugăm să reconectezi %s de mai jos.</string>
   <string name="text_rent">Închiriază</string>

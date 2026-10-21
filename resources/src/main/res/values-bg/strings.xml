@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">До %d минути</string>
   <string name="filter_label_this_year">Тази година</string>
   <string name="filter_toggle_state_default">По подразбиране</string>
-  <string name="filter_toggle_state_off">Изкл.</string>
-  <string name="filter_toggle_state_on">Вкл.</string>
+  <string name="filter_toggle_state_off">Не</string>
+  <string name="filter_toggle_state_on">Да</string>
   <string name="header_account_details">Детайли на акаунта</string>
   <string name="header_account_security">Сигурност на профила</string>
   <string name="header_add_from_lists">Добавяне към %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Наскоро гледани</string>
   <string name="list_title_recommendation_sources_activity">Гледали сте</string>
   <string name="list_title_recommendation_sources_favorite">Харесали сте много</string>
+  <string name="list_title_recommendation_sources_people">Продължаваш да гледаш</string>
   <string name="list_title_recommendation_sources_subgenre">Харесвате</string>
   <string name="list_title_recommended">Препоръчани</string>
   <string name="list_title_recommended_movies">Препоръчани филми</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">На по-големи екрани, всички списъци използват същите карти като останалата част от приложението. Избирането на елемент отваря бърз преглед, вместо да напускате списъка.</string>
   <string name="preview_feature_description_rewatch">Започнете сесии за повторно гледане на предавания, които вече сте гледали, отбележете гледани епизоди директно от прозореца на сесията.</string>
   <string name="preview_feature_description_show_ending">Показва ред за край в детайлите на сериала: Завършен, когато историята е приключила, Неразрешен, когато не е.</string>
-  <string name="preview_feature_description_smart_recommendations">Превключвайте препоръките между интелигентни предложения от новия модел и класическите.</string>
   <string name="preview_feature_description_soundtrack">Добавя секция за саундтрак към страниците на филми и предавания, с възпроизвеждане, където може да бъде намерена песен.</string>
   <string name="preview_feature_description_vip_cancel_flow">Нов начин за отказ от VIP: пита защо, показва какви промени настъпват и предлага сделка за оставане.</string>
   <string name="preview_feature_description_vip_veteran">Показва колко дълго членовете са запазили VIP без прекъсване, с значка Ветеран или Легенда, цветен пръстен на аватара и няколко празненства в профила ви.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Карти за голям екран</string>
   <string name="preview_feature_title_rewatch">Преглед</string>
   <string name="preview_feature_title_show_ending">Край на сериала</string>
-  <string name="preview_feature_title_smart_recommendations">Интелигентни препоръки</string>
   <string name="preview_feature_title_soundtrack">Саундтрак</string>
   <string name="preview_feature_title_vip_cancel_flow">Поток за отказ на VIP</string>
   <string name="preview_feature_title_vip_veteran">VIP ветерански статус</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s гласа</string>
   <string name="text_raw_export">Необработен експорт</string>
+  <string name="text_recommendation_person_more_titles">+още %d</string>
+  <string name="text_recommendation_person_watched_acting_one">Участвал в %d заглавие, което си гледал</string>
+  <string name="text_recommendation_person_watched_acting_other">Участвал в %d заглавия, които си гледал</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Режисирал и участвал в %d заглавие, което си гледал</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Режисирал и участвал в %d заглавия, които си гледал</string>
+  <string name="text_recommendation_person_watched_directing_one">Режисирал в %d заглавие, което си гледал</string>
+  <string name="text_recommendation_person_watched_directing_other">Режисирал в %d заглавия, които си гледал</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Създал и участвал в %d заглавие, което си гледал</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Създал и участвал в %d заглавия, които си гледал</string>
+  <string name="text_recommendation_person_watched_making_one">Създал в %d заглавие, което си гледал</string>
+  <string name="text_recommendation_person_watched_making_other">Създал в %d заглавия, които си гледал</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Моля, свържете отново %s по-долу.</string>
   <string name="text_rent">Под наем</string>

@@ -858,7 +858,7 @@
   <string name="filter_label_this_year">Dette år</string>
   <string name="filter_toggle_state_default">Standard</string>
   <string name="filter_toggle_state_off">Fra</string>
-  <string name="filter_toggle_state_on">Til</string>
+  <string name="filter_toggle_state_on">Ja</string>
   <string name="header_account_details">Kontooplysninger</string>
   <string name="header_account_security">Konto &amp; sikkerhed</string>
   <string name="header_add_from_lists">Tilføj til %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Senest set</string>
   <string name="list_title_recommendation_sources_activity">Du har set</string>
   <string name="list_title_recommendation_sources_favorite">Du elskede</string>
+  <string name="list_title_recommendation_sources_people">Du bliver ved med at se</string>
   <string name="list_title_recommendation_sources_subgenre">Du kan lide</string>
   <string name="list_title_recommended">Anbefalede</string>
   <string name="list_title_recommended_movies">Anbefalede film</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">På større skærme bruger alle lister de samme kort som resten af appen. Ved at vælge et, åbnes en hurtig oversigt i stedet for at forlade listen.</string>
   <string name="preview_feature_description_rewatch">Start gensynssessioner for serier, du allerede har set, tjek ind eller marker sete episoder direkte fra sessionsskuffen.</string>
   <string name="preview_feature_description_show_ending">Viser en \"Afslutning\"-række i en series detaljer: \"Afsluttet\", når historien er fuldendt, \"Uafsluttet\", når den ikke er.</string>
-  <string name="preview_feature_description_smart_recommendations">Skift anbefalinger mellem smarte valg fra den nye model og de klassiske.</string>
   <string name="preview_feature_description_soundtrack">Tilføjer en soundtrack-sektion til film- og seriesider, med afspilning hvor et nummer kan matches.</string>
   <string name="preview_feature_description_vip_cancel_flow">En ny måde at annullere VIP på: spørger hvorfor, viser hvad der ændrer sig, og tilbyder en aftale om at blive.</string>
   <string name="preview_feature_description_vip_veteran">Viser, hvor længe medlemmer har opretholdt VIP uden afbrydelse, med et Veteran- eller Legende-badge, en farvet avatarring og et par fejringer på din egen profil.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Kort til stor skærm</string>
   <string name="preview_feature_title_rewatch">Gensyn</string>
   <string name="preview_feature_title_show_ending">Serieafslutning</string>
-  <string name="preview_feature_title_smart_recommendations">Smarte anbefalinger</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP-annulleringsflow</string>
   <string name="preview_feature_title_vip_veteran">VIP veteranstatus</string>
@@ -2074,6 +2073,18 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s stemmer</string>
   <string name="text_raw_export">Rå eksport</string>
+  <string name="text_recommendation_person_more_titles">+%d mere</string>
+  <string name="text_recommendation_person_watched_acting_one">Spillede med i %d titel du så</string>
+  <string name="text_recommendation_person_watched_acting_other">Spillede med i %d titler du så</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Instruerede og spillede med i %d titel du så</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Instruerede og spillede med i %d titler du så</string>
+  <string name="text_recommendation_person_watched_directing_one">Instruerede i %d titel du så</string>
+  <string name="text_recommendation_person_watched_directing_other">Instruerede i %d titler du så</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Skabte og spillede med i %d titel du så</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Skabte og spillede med i %d titler du så</string>
+  <string name="text_recommendation_person_watched_making_one">Skabte i %d titel du så</string>
+  <string name="text_recommendation_person_watched_making_other">Skabte i %d titler du så</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Gendan forbindelse til %s nedenfor.</string>
   <string name="text_rent">Lej</string>
   <string name="text_rewatching_next_episode_prompt">Hvilken episode vil du gense nu?</string>

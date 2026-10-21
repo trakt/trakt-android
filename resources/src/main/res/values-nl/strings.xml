@@ -858,7 +858,7 @@
   <string name="filter_label_this_year">Dit jaar</string>
   <string name="filter_toggle_state_default">Standaard</string>
   <string name="filter_toggle_state_off">Uit</string>
-  <string name="filter_toggle_state_on">Aan</string>
+  <string name="filter_toggle_state_on">Ja</string>
   <string name="header_account_details">Accountgegevens</string>
   <string name="header_account_security">Accountbeveiliging</string>
   <string name="header_add_from_lists">Toevoegen aan %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Recent bekeken</string>
   <string name="list_title_recommendation_sources_activity">Je hebt gekeken</string>
   <string name="list_title_recommendation_sources_favorite">Je vond geweldig</string>
+  <string name="list_title_recommendation_sources_people">Je blijft kijken</string>
   <string name="list_title_recommendation_sources_subgenre">Je vindt leuk</string>
   <string name="list_title_recommended">Aanbevolen</string>
   <string name="list_title_recommended_movies">Aanbevolen films</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">Op grotere schermen gebruiken alle lijsten dezelfde kaarten als de rest van de app. Het selecteren van een item opent een snel overzicht in plaats van de lijst te verlaten.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_show_ending">Toont een \'Einde\'-rij in de details van een serie: \'Voltooid\' als het verhaal is afgesloten, \'Onopgelost\' als dat niet het geval is.</string>
-  <string name="preview_feature_description_smart_recommendations">Schakel aanbevelingen tussen slimme keuzes van het nieuwe model en de klassieke.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_vip_cancel_flow">Een nieuwe manier om VIP te annuleren: vraagt waarom, toont wat er verandert en biedt een deal om te blijven.</string>
   <string name="preview_feature_description_vip_veteran">Toont hoe lang leden ononderbroken VIP zijn, met een Veteraan- of Legende-badge, een gekleurde avatarring en enkele vieringen op je eigen profiel.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Grote Scherm Kaarten</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_show_ending">Serieeinde</string>
-  <string name="preview_feature_title_smart_recommendations">Slimme aanbevelingen</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP opzegproces</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteraanstatus</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s stemmen</string>
   <string name="text_raw_export">Ruwe export</string>
+  <string name="text_recommendation_person_more_titles">+%d meer</string>
+  <string name="text_recommendation_person_watched_acting_one">Speelde in %d titel die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_acting_other">Speelde in %d titels die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Regisseerde en speelde in %d titel die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Regisseerde en speelde in %d titels die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_directing_one">Regisseerde in %d titel die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_directing_other">Regisseerde in %d titels die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Creëerde en speelde in %d titel die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Creëerde en speelde in %d titels die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_making_one">Creëerde in %d titel die je hebt gekeken</string>
+  <string name="text_recommendation_person_watched_making_other">Creëerde in %d titels die je hebt gekeken</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Verbind %s hieronder opnieuw.</string>
   <string name="text_rent">Huren</string>

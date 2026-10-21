@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">До %d хвилин</string>
   <string name="filter_label_this_year">Цього року</string>
   <string name="filter_toggle_state_default">Типово</string>
-  <string name="filter_toggle_state_off">Вимкнено</string>
-  <string name="filter_toggle_state_on">Увімкнено</string>
+  <string name="filter_toggle_state_off">Ні</string>
+  <string name="filter_toggle_state_on">Так</string>
   <string name="header_account_details">Деталі облікового запису</string>
   <string name="header_account_security">Безпека облікового запису</string>
   <string name="header_add_from_lists">Додати до %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Нещодавно переглянуті</string>
   <string name="list_title_recommendation_sources_activity">Ви переглядали</string>
   <string name="list_title_recommendation_sources_favorite">Вам сподобалось</string>
+  <string name="list_title_recommendation_sources_people">Ви продовжуєте дивитися</string>
   <string name="list_title_recommendation_sources_subgenre">Вам подобається</string>
   <string name="list_title_recommended">Рекомендовані</string>
   <string name="list_title_recommended_movies">Рекомендовані фільми</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">На великих екранах усі списки використовують ті ж картки, що й решта додатка. Вибір одного відкриває швидкий перегляд, замість того щоб залишати список.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_show_ending">Відображає рядок «Завершення» в деталях серіалу: «Завершено», коли історія закінчилася, «Незавершено», коли цього не сталося.</string>
-  <string name="preview_feature_description_smart_recommendations">Перемикайте рекомендації між Розумними підбірками з нової моделі та Класичними.</string>
   <string name="preview_feature_description_soundtrack">Додає розділ саундтреків до сторінок фільмів та серіалів, з відтворенням там, де трек може бути зіставлений.</string>
   <string name="preview_feature_description_vip_cancel_flow">Новий спосіб скасувати VIP: запитує причину, показує зміни та пропонує угоду, щоб залишитися.</string>
   <string name="preview_feature_description_vip_veteran">Показує, як довго учасники зберігали VIP-статус без перерв, з відзнакою «Ветеран» або «Легенда», кольоровим кільцем аватара та кількома святкуваннями у вашому профілі.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Картки для великих екранів</string>
   <string name="preview_feature_title_rewatch">Повторний перегляд</string>
   <string name="preview_feature_title_show_ending">Завершення серіалу</string>
-  <string name="preview_feature_title_smart_recommendations">Розумні рекомендації</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_vip_cancel_flow">Процес скасування VIP</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
@@ -2074,6 +2073,18 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s голосів</string>
   <string name="text_raw_export">Експорт вихідних даних</string>
+  <string name="text_recommendation_person_more_titles">+ще %d</string>
+  <string name="text_recommendation_person_watched_acting_one">Грав у %d переглянутому вами фільмі/серіалі</string>
+  <string name="text_recommendation_person_watched_acting_other">Грав у %d переглянутих вами фільмах/серіалах</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Був режисером та актором у %d переглянутому вами фільмі/серіалі</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Був режисером та актором у %d переглянутих вами фільмах/серіалах</string>
+  <string name="text_recommendation_person_watched_directing_one">Був режисером у %d переглянутому вами фільмі/серіалі</string>
+  <string name="text_recommendation_person_watched_directing_other">Був режисером у %d переглянутих вами фільмах/серіалах</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Створив та грав у %d переглянутому вами серіалі</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Створив та грав у %d переглянутих вами серіалах</string>
+  <string name="text_recommendation_person_watched_making_one">Створив у %d переглянутому вами серіалі</string>
+  <string name="text_recommendation_person_watched_making_other">Створив у %d переглянутих вами серіалах</string>
+  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Будь ласка, перепідключіть %s нижче.</string>
   <string name="text_rent">Орендувати</string>
   <string name="text_rewatching_next_episode_prompt">Яку наступну серію ви хочете переглянути повторно?</string>

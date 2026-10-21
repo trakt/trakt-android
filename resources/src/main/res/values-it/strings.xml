@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">Fino a %d minuti</string>
   <string name="filter_label_this_year">Quest\'anno</string>
   <string name="filter_toggle_state_default">Predefinito</string>
-  <string name="filter_toggle_state_off">Disattivati</string>
-  <string name="filter_toggle_state_on">Attivo</string>
+  <string name="filter_toggle_state_off">No</string>
+  <string name="filter_toggle_state_on">Sì</string>
   <string name="header_account_details">Dettagli account</string>
   <string name="header_account_security">Sicurezza dell\'account</string>
   <string name="header_add_from_lists">Aggiungi a %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Visti di Recente</string>
   <string name="list_title_recommendation_sources_activity">Hai guardato</string>
   <string name="list_title_recommendation_sources_favorite">Hai amato</string>
+  <string name="list_title_recommendation_sources_people">Continui a guardare</string>
   <string name="list_title_recommendation_sources_subgenre">Ti piace</string>
   <string name="list_title_recommended">Consigliati</string>
   <string name="list_title_recommended_movies">Film Consigliati</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">Su schermi più grandi, tutte le liste utilizzano le stesse schede del resto dell\'app. Selezionandone una si apre una rapida occhiata invece di abbandonare la lista.</string>
   <string name="preview_feature_description_rewatch">Avvia sessioni di riguardato per le serie TV che hai già visto, registrando la visione o contrassegnando gli episodi come guardati direttamente dal pannello della sessione.</string>
   <string name="preview_feature_description_show_ending">Mostra una riga \'Conclusione\' nei dettagli di una serie: Completata quando la storia si è conclusa, Irrisolta quando non lo è stato.</string>
-  <string name="preview_feature_description_smart_recommendations">Alterna le raccomandazioni tra i suggerimenti Smart del nuovo modello e quelli Classici.</string>
   <string name="preview_feature_description_soundtrack">Aggiunge una sezione colonna sonora alle pagine di film e serie TV, con riproduzione dove un brano può essere trovato.</string>
   <string name="preview_feature_description_vip_cancel_flow">Un nuovo modo per annullare VIP: chiede il motivo, mostra cosa cambia e offre un\'offerta per restare.</string>
   <string name="preview_feature_description_vip_veteran">Mostra per quanto tempo i membri hanno mantenuto lo stato VIP senza interruzioni, con un badge Veterano o Leggenda, un anello avatar colorato e alcune celebrazioni sul tuo profilo.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Schede a schermo grande</string>
   <string name="preview_feature_title_rewatch">Riguarda</string>
   <string name="preview_feature_title_show_ending">Conclusione serie</string>
-  <string name="preview_feature_title_smart_recommendations">Raccomandazioni Smart</string>
   <string name="preview_feature_title_soundtrack">Colonna sonora</string>
   <string name="preview_feature_title_vip_cancel_flow">Flusso di annullamento VIP</string>
   <string name="preview_feature_title_vip_veteran">Stato veterano VIP</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s voti</string>
   <string name="text_raw_export">Esportazione grezza</string>
+  <string name="text_recommendation_person_more_titles">+%d altro</string>
+  <string name="text_recommendation_person_watched_acting_one">Ha recitato in %d titolo che hai visto</string>
+  <string name="text_recommendation_person_watched_acting_other">Ha recitato in %d titoli che hai visto</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Ha diretto e recitato in %d titolo che hai visto</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Ha diretto e recitato in %d titoli che hai visto</string>
+  <string name="text_recommendation_person_watched_directing_one">Ha diretto in %d titolo che hai visto</string>
+  <string name="text_recommendation_person_watched_directing_other">Ha diretto in %d titoli che hai visto</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Ha creato e recitato in %d titolo che hai visto</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Ha creato e recitato in %d titoli che hai visto</string>
+  <string name="text_recommendation_person_watched_making_one">Ha creato in %d titolo che hai visto</string>
+  <string name="text_recommendation_person_watched_making_other">Ha creato in %d titoli che hai visto</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Riconnetti %s qui sotto.</string>
   <string name="text_rent">Noleggio</string>

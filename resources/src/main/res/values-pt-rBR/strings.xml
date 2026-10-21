@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">Até %d minutos</string>
   <string name="filter_label_this_year">Este ano</string>
   <string name="filter_toggle_state_default">Padrão</string>
-  <string name="filter_toggle_state_off">Desativado</string>
-  <string name="filter_toggle_state_on">Ativado</string>
+  <string name="filter_toggle_state_off">Não</string>
+  <string name="filter_toggle_state_on">Sim</string>
   <string name="header_account_details">Detalhes da Conta</string>
   <string name="header_account_security">Conta e segurança</string>
   <string name="header_add_from_lists">Adicionar a %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Assistidos Recentemente</string>
   <string name="list_title_recommendation_sources_activity">Você assistiu</string>
   <string name="list_title_recommendation_sources_favorite">Você amou</string>
+  <string name="list_title_recommendation_sources_people">Você continua assistindo</string>
   <string name="list_title_recommendation_sources_subgenre">Você gosta</string>
   <string name="list_title_recommended">Recomendados</string>
   <string name="list_title_recommended_movies">Filmes Recomendados</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">Em telas maiores, todas as listas usam os mesmos cards que o restante do aplicativo. Selecionar um abre uma pré-visualização rápida em vez de sair da lista.</string>
   <string name="preview_feature_description_rewatch">Comece sessões de reassistência para séries que você já assistiu, faça check-in ou marque episódios como assistidos diretamente na gaveta da sessão.</string>
   <string name="preview_feature_description_show_ending">Mostra uma linha de Finalização nos detalhes de uma série: Concluído quando a história terminou, Não Resolvido quando não.</string>
-  <string name="preview_feature_description_smart_recommendations">Alterne as recomendações entre as escolhas Inteligentes do novo modelo e as Clássicas.</string>
   <string name="preview_feature_description_soundtrack">Adiciona uma seção de trilha sonora às páginas de filmes e séries, com reprodução onde uma faixa pode ser encontrada.</string>
   <string name="preview_feature_description_vip_cancel_flow">Uma nova forma de cancelar o VIP: pergunta o motivo, mostra o que muda e oferece uma oferta para você ficar.</string>
   <string name="preview_feature_description_vip_veteran">Mostra há quanto tempo os membros mantêm o VIP sem interrupção, com um selo de Veterano ou Lenda, um anel de avatar colorido e algumas celebrações no seu próprio perfil.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Cards para Telas Grandes</string>
   <string name="preview_feature_title_rewatch">Reassistir</string>
   <string name="preview_feature_title_show_ending">Finalização da série</string>
-  <string name="preview_feature_title_smart_recommendations">Recomendações inteligentes</string>
   <string name="preview_feature_title_soundtrack">Trilha Sonora</string>
   <string name="preview_feature_title_vip_cancel_flow">Fluxo de cancelamento VIP</string>
   <string name="preview_feature_title_vip_veteran">Status VIP Veterano</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votos</string>
   <string name="text_raw_export">Exportação bruta</string>
+  <string name="text_recommendation_person_more_titles">+Mais %d</string>
+  <string name="text_recommendation_person_watched_acting_one">Atuou em %d título que você assistiu</string>
+  <string name="text_recommendation_person_watched_acting_other">Atuou em %d títulos que você assistiu</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Dirigiu e atuou em %d título que você assistiu</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Dirigiu e atuou em %d títulos que você assistiu</string>
+  <string name="text_recommendation_person_watched_directing_one">Dirigiu em %d título que você assistiu</string>
+  <string name="text_recommendation_person_watched_directing_other">Dirigiu em %d títulos que você assistiu</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Criou e atuou em %d título que você assistiu</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Criou e atuou em %d títulos que você assistiu</string>
+  <string name="text_recommendation_person_watched_making_one">Criou em %d título que você assistiu</string>
+  <string name="text_recommendation_person_watched_making_other">Criou em %d títulos que você assistiu</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Por favor, reconecte %s abaixo.</string>
   <string name="text_rent">Aluguel</string>

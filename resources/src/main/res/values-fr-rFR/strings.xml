@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">Jusqu\'à %d minutes</string>
   <string name="filter_label_this_year">Cette année</string>
   <string name="filter_toggle_state_default">Par défaut</string>
-  <string name="filter_toggle_state_off">Désactivé</string>
-  <string name="filter_toggle_state_on">Actif</string>
+  <string name="filter_toggle_state_off">Non</string>
+  <string name="filter_toggle_state_on">Oui</string>
   <string name="header_account_details">Détails du compte</string>
   <string name="header_account_security">Sécurité du compte</string>
   <string name="header_add_from_lists">Ajouter à %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Vus récemment</string>
   <string name="list_title_recommendation_sources_activity">Vous avez visionné</string>
   <string name="list_title_recommendation_sources_favorite">Vous avez adoré</string>
+  <string name="list_title_recommendation_sources_people">Vous continuez à regarder</string>
   <string name="list_title_recommendation_sources_subgenre">Vous aimez</string>
   <string name="list_title_recommended">Recommandés</string>
   <string name="list_title_recommended_movies">Films recommandés</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">Sur les grands écrans, toutes les listes utilisent les mêmes cartes que le reste de l\'application. Sélectionner l\'une d\'elles ouvre un aperçu rapide au lieu de quitter la liste.</string>
   <string name="preview_feature_description_rewatch">Démarrez des sessions de revisionnage pour les séries que vous avez déjà vues, enregistrez-vous ou marquez les épisodes comme vus directement depuis le tiroir de session.</string>
   <string name="preview_feature_description_show_ending">Affiche une ligne \"Fin\" dans les détails d\'une série : \"Terminé\" lorsque l\'histoire est conclue, \"Non résolu\" lorsqu\'elle ne l\'est pas.</string>
-  <string name="preview_feature_description_smart_recommendations">Basculez les recommandations entre les sélections intelligentes du nouveau modèle et les classiques.</string>
   <string name="preview_feature_description_soundtrack">Ajoute une section bande-son aux pages de films et d\'émissions, avec lecture si une piste peut être associée.</string>
   <string name="preview_feature_description_vip_cancel_flow">Une nouvelle façon d\'annuler VIP : demande la raison, montre les changements et propose une offre pour rester.</string>
   <string name="preview_feature_description_vip_veteran">Indique la durée pendant laquelle les membres ont conservé le statut VIP sans interruption, avec un badge Vétéran ou Légende, un anneau d\'avatar coloré et quelques célébrations sur votre propre profil.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Cartes grand écran</string>
   <string name="preview_feature_title_rewatch">Revisionnage</string>
   <string name="preview_feature_title_show_ending">Fin de série</string>
-  <string name="preview_feature_title_smart_recommendations">Recommandations intelligentes</string>
   <string name="preview_feature_title_soundtrack">Bande-son</string>
   <string name="preview_feature_title_vip_cancel_flow">Flux d\'annulation VIP</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP vétéran</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votes</string>
   <string name="text_raw_export">Exportation brute</string>
+  <string name="text_recommendation_person_more_titles">+%d de plus</string>
+  <string name="text_recommendation_person_watched_acting_one">A joué dans %d titre que vous avez regardé</string>
+  <string name="text_recommendation_person_watched_acting_other">A joué dans %d titres que vous avez regardés</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">A réalisé et joué dans %d titre que vous avez regardé</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">A réalisé et joué dans %d titres que vous avez regardés</string>
+  <string name="text_recommendation_person_watched_directing_one">A réalisé dans %d titre que vous avez regardé</string>
+  <string name="text_recommendation_person_watched_directing_other">A réalisé dans %d titres que vous avez regardés</string>
+  <string name="text_recommendation_person_watched_making_acting_one">A créé et joué dans %d titre que vous avez regardé</string>
+  <string name="text_recommendation_person_watched_making_acting_other">A créé et joué dans %d titres que vous avez regardés</string>
+  <string name="text_recommendation_person_watched_making_one">A créé dans %d titre que vous avez regardé</string>
+  <string name="text_recommendation_person_watched_making_other">A créé dans %d titres que vous avez regardés</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Veuillez reconnecter %s ci-dessous.</string>
   <string name="text_rent">Location</string>

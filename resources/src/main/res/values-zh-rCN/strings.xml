@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">最多 %d 分钟</string>
   <string name="filter_label_this_year">今年</string>
   <string name="filter_toggle_state_default">默认</string>
-  <string name="filter_toggle_state_off">关闭</string>
-  <string name="filter_toggle_state_on">开</string>
+  <string name="filter_toggle_state_off">关</string>
+  <string name="filter_toggle_state_on">是</string>
   <string name="header_account_details">账户详情</string>
   <string name="header_account_security">账户安全</string>
   <string name="header_add_from_lists">添加到 %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">最近观看</string>
   <string name="list_title_recommendation_sources_activity">你已观看</string>
   <string name="list_title_recommendation_sources_favorite">你喜爱过</string>
+  <string name="list_title_recommendation_sources_people">您持续观看</string>
   <string name="list_title_recommendation_sources_subgenre">你喜欢</string>
   <string name="list_title_recommended">推荐</string>
   <string name="list_title_recommended_movies">推荐电影</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_show_ending">在剧集详情中显示结局行：故事完结时为“已完成”，未完结时为“未完结”。</string>
-  <string name="preview_feature_description_smart_recommendations">在新模型智能推荐和经典推荐之间切换。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_vip_cancel_flow">取消 VIP 的新方式：询问原因，显示变更内容并提供挽留优惠。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_show_ending">剧集结局</string>
-  <string name="preview_feature_title_smart_recommendations">智能推荐</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP 取消流程</string>
   <string name="preview_feature_title_vip_veteran">VIP 资深会员身份</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s 票</string>
   <string name="text_raw_export">原始导出</string>
+  <string name="text_recommendation_person_more_titles">+%d 更多</string>
+  <string name="text_recommendation_person_watched_acting_one">在您观看的 %d 部作品中出演</string>
+  <string name="text_recommendation_person_watched_acting_other">在您观看的 %d 部作品中出演</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">在您观看的 %d 部作品中执导并出演</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">在您观看的 %d 部作品中执导并出演</string>
+  <string name="text_recommendation_person_watched_directing_one">在您观看的 %d 部作品中执导</string>
+  <string name="text_recommendation_person_watched_directing_other">在您观看的 %d 部作品中执导</string>
+  <string name="text_recommendation_person_watched_making_acting_one">在您观看的 %d 部作品中制作并出演</string>
+  <string name="text_recommendation_person_watched_making_acting_other">在您观看的 %d 部作品中制作并出演</string>
+  <string name="text_recommendation_person_watched_making_one">在您观看的 %d 部作品中制作</string>
+  <string name="text_recommendation_person_watched_making_other">在您观看的 %d 部作品中制作</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">请在下方重新连接 %s。</string>
   <string name="text_rent">租借</string>

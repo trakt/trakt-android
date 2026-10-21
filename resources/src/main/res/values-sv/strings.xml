@@ -858,7 +858,7 @@
   <string name="filter_label_this_year">I år</string>
   <string name="filter_toggle_state_default">Standard</string>
   <string name="filter_toggle_state_off">Av</string>
-  <string name="filter_toggle_state_on">På</string>
+  <string name="filter_toggle_state_on">Ja</string>
   <string name="header_account_details">Kontouppgifter</string>
   <string name="header_account_security">Kontosäkerhet</string>
   <string name="header_add_from_lists">Lägg till i %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Nyligen sedda</string>
   <string name="list_title_recommendation_sources_activity">Du har sett</string>
   <string name="list_title_recommendation_sources_favorite">Du älskade</string>
+  <string name="list_title_recommendation_sources_people">Du fortsätter titta på</string>
   <string name="list_title_recommendation_sources_subgenre">Du gillar</string>
   <string name="list_title_recommended">Rekommenderat</string>
   <string name="list_title_recommended_movies">Rekommenderade filmer</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">På större skärmar används samma kort för alla listor som i resten av appen. Att välja ett kort öppnar en snabböverblick istället för att lämna listan.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_show_ending">Visar en avslutningsrad i en series detaljer: \"Avslutad\" när handlingen är klar, \"Oavslutad\" när den inte är det.</string>
-  <string name="preview_feature_description_smart_recommendations">Växla rekommendationer mellan smarta val från den nya modellen och de klassiska.</string>
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
   <string name="preview_feature_description_vip_cancel_flow">Ett nytt sätt att säga upp VIP: frågar varför, visar vad som ändras och erbjuder ett avtal för att stanna kvar.</string>
   <string name="preview_feature_description_vip_veteran">Visar hur länge medlemmar har behållit VIP utan avbrott, med ett Veteran- eller Legend-märke, en färgad avatarring och några firanden på din egen profil.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Kort för stor skärm</string>
   <string name="preview_feature_title_rewatch">Omtittning</string>
   <string name="preview_feature_title_show_ending">Serieavslutning</string>
-  <string name="preview_feature_title_smart_recommendations">Smarta rekommendationer</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP-avbrutningsflöde</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteranstatus</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s röster</string>
   <string name="text_raw_export">Rå export</string>
+  <string name="text_recommendation_person_more_titles">+%d till</string>
+  <string name="text_recommendation_person_watched_acting_one">Spelade i %d titel du tittat på</string>
+  <string name="text_recommendation_person_watched_acting_other">Spelade i %d titlar du tittat på</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Regisserade och spelade i %d titel du tittat på</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Regisserade och spelade i %d titlar du tittat på</string>
+  <string name="text_recommendation_person_watched_directing_one">Regisserade i %d titel du tittat på</string>
+  <string name="text_recommendation_person_watched_directing_other">Regisserade i %d titlar du tittat på</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Skapade och spelade i %d titel du tittat på</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Skapade och spelade i %d titlar du tittat på</string>
+  <string name="text_recommendation_person_watched_making_one">Skapade i %d titel du tittat på</string>
+  <string name="text_recommendation_person_watched_making_other">Skapade i %d titlar du tittat på</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Vänligen återanslut %s nedan.</string>
   <string name="text_rent">Hyr</string>
