@@ -240,7 +240,10 @@ internal class MovieHistoryViewModel(
             try {
                 loadingState.update { Loading }
 
-                updateHistoryUseCase.removePlayFromHistory(item.id)
+                updateHistoryUseCase.removePlayFromHistory(
+                    playId = item.id,
+                    movieId = item.movie.ids.trakt,
+                )
                 loadProgressUseCase.loadMoviesProgress()
                 dataChanges.notify(Kind.History, origin = origin)
 

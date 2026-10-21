@@ -6,11 +6,14 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.ratings.RemoveOrphanedRatingUseCase
 import tv.trakt.trakt.widgets.data.WidgetsUpdater
 
 internal class UpdateEpisodeHistoryUseCase(
     private val remoteSource: EpisodesSyncRemoteSource,
     private val widgetsUpdater: WidgetsUpdater,
+    private val orphanedRatings: RemoveOrphanedRatingUseCase,
 ) {
     suspend fun addToHistory(
         episodeId: TraktId,
@@ -67,9 +70,11 @@ internal class UpdateEpisodeHistoryUseCase(
     }
 
     suspend fun removeEpisodeFromHistory(episodeId: Int) {
+        val orphanedRating = orphanedRatings.findEpisode(episodeId.toTraktId())
         remoteSource.removeEpisodeFromHistory(
             episodeId = episodeId,
         )
+        orphanedRatings.remove(orphanedRating)
         widgetsUpdater.refreshInBackground()
     }
 
@@ -80,10 +85,15 @@ internal class UpdateEpisodeHistoryUseCase(
         widgetsUpdater.refreshInBackground()
     }
 
-    suspend fun removePlayFromHistory(playId: Long) {
+    suspend fun removePlayFromHistory(
+        playId: Long,
+        episodeId: TraktId,
+    ) {
+        val orphanedRating = orphanedRatings.findEpisode(episodeId)
         remoteSource.removePlayFromHistory(
             playId = playId,
         )
+        orphanedRatings.remove(orphanedRating)
         widgetsUpdater.refreshInBackground()
     }
 }
