@@ -1,4 +1,4 @@
-package tv.trakt.trakt.common.networking.api.klipy.model
+package tv.trakt.trakt.common.data.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

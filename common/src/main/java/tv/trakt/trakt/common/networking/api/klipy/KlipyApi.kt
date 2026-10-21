@@ -7,7 +7,7 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import tv.trakt.trakt.common.networking.api.klipy.model.KlipyCategoriesDto
+import tv.trakt.trakt.common.data.dto.KlipyCategoriesDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifsRequest
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyPageDto

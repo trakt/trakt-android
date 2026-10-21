@@ -35,6 +35,10 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val tileShape = RoundedCornerShape(8.dp)
 
+// Category tiles are a fixed strip above the GIF grid and do not scale with the grid columns.
+private val tileWidth = 96.dp
+private val tileHeight = 56.dp
+
 // The label always sits on a GIF, never on the sheet, so it stays light in both themes.
 private val labelShadow = Shadow(
     color = Color.Black,
@@ -72,7 +76,7 @@ private fun GifCategoryTile(
     Box(
         contentAlignment = Alignment.BottomStart,
         modifier = Modifier
-            .size(width = 96.dp, height = 56.dp)
+            .size(width = tileWidth, height = tileHeight)
             .clip(tileShape)
             .background(TraktTheme.colors.skeletonShimmer)
             .onClick(onClick = onClick),

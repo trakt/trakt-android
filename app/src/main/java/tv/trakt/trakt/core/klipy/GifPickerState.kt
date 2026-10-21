@@ -19,4 +19,7 @@ internal data class GifPickerState(
     /** True once a load finished without results - trending and search share the empty copy. */
     val isEmpty: Boolean
         get() = gifs.isEmpty() && loading.isDone && error == null
+
+    val showCategories: Boolean
+        get() = query.isBlank() && categories.isNotEmpty()
 }

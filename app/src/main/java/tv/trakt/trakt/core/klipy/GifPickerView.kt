@@ -148,7 +148,7 @@ private fun GifPickerContent(
                 EmptyListCard(text = stringResource(R.string.error_text_unexpected_error_short))
             }
 
-            state.isEmpty -> {
+            state.isEmpty && !state.showCategories -> {
                 EmptyListCard(text = stringResource(R.string.list_placeholder_empty))
             }
 
@@ -166,7 +166,7 @@ private fun GifPickerContent(
                         .fillMaxSize()
                         .padding(top = inputHeight / 2),
                 ) {
-                    if (state.query.isBlank() && state.categories.isNotEmpty()) {
+                    if (state.showCategories) {
                         item(
                             key = "categories",
                             span = StaggeredGridItemSpan.FullLine,
