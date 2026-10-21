@@ -70,12 +70,14 @@ Keep raw dumps in the session scratchpad directory, referred to below as `$S`.
 
 Finish one issue completely before starting the next. Before each new branch, repeat the pull and the `HEAD` = `FETCH_HEAD` check from step 2, so every branch starts from the latest `main`.
 
-0. **Start the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/startN.txt"`. Each issue gets its own start time, so the effort report in step 10 counts only that issue.
 1. **Read the issue.** `gh issue view N -R trakt/trakt-android --json title,body,labels,comments > "$S/iN.json"`. Read comments too: maintainers often extend the scope there (for example a follow-up web PR).
 2. **Read the web source.** For each `trakt-web#N` or `trakt-web/pull/N` link, read `gh pr view N -R trakt/trakt-web --json title,body,files` and the relevant part of `gh pr diff`. Then read the current web files, not only the diff, because later PRs may have changed them. Match web logic, ordering and edge cases.
 3. **Assess against Android.** Check every claim in the issue against current Android code. Issues often list items that already exist. Note those for the PR body instead of re-implementing them.
 4. **Load rules.** Read the `.agents/rules/` files that match the touched area, as `CLAUDE.md` lists.
-5. **Branch.** `git checkout -b <type>/<short-slug>` (for example `feat/season-rail-highlight`, `fix/season-progress-aired`).
+5. **Start the effort clock, then branch.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/startN.txt"` right
+   before `git checkout -b <type>/<short-slug>` (for example `feat/season-rail-highlight`,
+   `fix/season-progress-aired`). Each issue gets its own start time, so the effort report in step 10
+   counts only that issue's build work, not reading and assessment.
 6. **Implement.** Reuse existing helpers and tokens. Keep the diff small.
 7. **Sync tracking with web.** Read `analytics.md` first. Check whether the web code for this feature tracks anything:
    ```bash
