@@ -1,10 +1,9 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package tv.trakt.trakt.core.calendar.feature.monthly
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -67,6 +66,7 @@ import tv.trakt.trakt.core.calendar.feature.monthly.ui.INITIAL_MONTH_PAGE
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.MONTH_PAGE_COUNT
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.monthForPage
 import tv.trakt.trakt.core.calendar.model.CalendarView
+import tv.trakt.trakt.core.calendar.ui.CalendarChevrons
 import tv.trakt.trakt.core.calendar.ui.CalendarTodayIcon
 import tv.trakt.trakt.core.calendar.ui.CalendarTypeChips
 import tv.trakt.trakt.core.calendar.ui.CalendarViewToggle
@@ -90,7 +90,7 @@ private val PageSpacing = 8.dp
 
 @Composable
 internal fun CalendarMonthlyScreen(
-    viewModel: tv.trakt.trakt.core.calendar.feature.monthly.CalendarMonthlyViewModel,
+    viewModel: CalendarMonthlyViewModel,
     onNavigateBack: () -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
@@ -337,6 +337,7 @@ private fun CalendarMonthlyContent(
             Row(
                 verticalAlignment = CenterVertically,
                 horizontalArrangement = spacedBy(20.dp),
+                modifier = Modifier.padding(end = 2.dp),
             ) {
                 CalendarTodayIcon(
                     visible = true,
@@ -384,14 +385,33 @@ private fun CalendarMonthlyContent(
             )
         }
 
-        CalendarTypeChips(
-            selected = state.type,
-            onTypeClick = onTypeClick,
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
                 .padding(bottom = 6.dp),
-        )
+        ) {
+            CalendarTypeChips(
+                selected = state.type,
+                onTypeClick = onTypeClick,
+                modifier = Modifier.weight(1F),
+            )
+
+            CalendarChevrons(
+                onPreviousClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                    }
+                },
+                onNextClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    }
+                },
+            )
+        }
 
         val pagerPadding = TraktTheme.spacing.mainPageHorizontalSpace / 2
 

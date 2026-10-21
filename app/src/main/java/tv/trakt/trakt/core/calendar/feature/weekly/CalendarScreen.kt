@@ -82,6 +82,7 @@ import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.EpisodeItem
 import tv.trakt.trakt.common.model.calendar.CalendarItem.MovieItem
 import tv.trakt.trakt.core.calendar.model.CalendarView
+import tv.trakt.trakt.core.calendar.ui.CalendarChevrons
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarTodayIcon
@@ -329,12 +330,6 @@ private fun CalendarScreen(
         }
     }
 
-    val atTop by remember {
-        derivedStateOf {
-            gridState.firstVisibleItemIndex == 0 && gridState.firstVisibleItemScrollOffset == 0
-        }
-    }
-
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -470,6 +465,43 @@ private fun CalendarScreen(
 
     val headerMonth = YearMonth.from(lastTapFocusedDay ?: focusedDate ?: state.selectedStartDay)
 
+    val onNextWeekClick = {
+        onPeriodChange("next")
+        val target = stripStartDate.plusWeeks(1)
+        if (state.items?.containsKey(target) == true) {
+            scrollToDay(
+                scope = scope,
+                state = state,
+                date = target,
+                scrollOffset = scrollOffset,
+                gridState = gridState,
+            )
+            lastTapFocusedDay = target
+        } else {
+            // Stale tapped day would win over the fresh week once it loads.
+            lastTapFocusedDay = null
+            onLoadWeek(target)
+        }
+    }
+
+    val onPreviousWeekClick = {
+        onPeriodChange("previous")
+        val target = stripStartDate.minusWeeks(1)
+        if (state.items?.containsKey(target) == true) {
+            scrollToDay(
+                scope = scope,
+                state = state,
+                date = target,
+                scrollOffset = scrollOffset,
+                gridState = gridState,
+            )
+            lastTapFocusedDay = target
+        } else {
+            lastTapFocusedDay = null
+            onLoadWeek(target)
+        }
+    }
+
     val maskColor = TraktTheme.colors.backgroundPrimary
 
     Box(
@@ -535,6 +567,7 @@ private fun CalendarScreen(
                 Row(
                     verticalAlignment = CenterVertically,
                     horizontalArrangement = spacedBy(20.dp),
+                    modifier = Modifier.padding(end = 2.dp),
                 ) {
                     CalendarTodayIcon(
                         visible = true,
@@ -563,13 +596,24 @@ private fun CalendarScreen(
                 }
             }
 
-            CalendarTypeChips(
-                selected = state.type,
-                onTypeClick = onTypeClick,
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(12.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 12.dp),
-            )
+            ) {
+                CalendarTypeChips(
+                    selected = state.type,
+                    onTypeClick = onTypeClick,
+                    modifier = Modifier.weight(1F),
+                )
+
+                CalendarChevrons(
+                    onPreviousClick = onPreviousWeekClick,
+                    onNextClick = onNextWeekClick,
+                )
+            }
 
             CalendarControlsView(
                 enabled = !state.loading.isLoading,
@@ -594,41 +638,8 @@ private fun CalendarScreen(
                     lastTapFocusedDay = date
                 },
                 onTodayClick = scrollToToday,
-                onNextWeekClick = {
-                    onPeriodChange("next")
-                    val target = stripStartDate.plusWeeks(1)
-                    if (state.items?.containsKey(target) == true) {
-                        scrollToDay(
-                            scope = scope,
-                            state = state,
-                            date = target,
-                            scrollOffset = scrollOffset,
-                            gridState = gridState,
-                        )
-                        lastTapFocusedDay = target
-                    } else {
-                        // Stale tapped day would win over the fresh week once it loads.
-                        lastTapFocusedDay = null
-                        onLoadWeek(target)
-                    }
-                },
-                onPreviousWeekClick = {
-                    onPeriodChange("previous")
-                    val target = stripStartDate.minusWeeks(1)
-                    if (state.items?.containsKey(target) == true) {
-                        scrollToDay(
-                            scope = scope,
-                            state = state,
-                            date = target,
-                            scrollOffset = scrollOffset,
-                            gridState = gridState,
-                        )
-                        lastTapFocusedDay = target
-                    } else {
-                        lastTapFocusedDay = null
-                        onLoadWeek(target)
-                    }
-                },
+                onNextWeekClick = onNextWeekClick,
+                onPreviousWeekClick = onPreviousWeekClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .onClick(onClick = {}),
