@@ -40,7 +40,9 @@ An issue moves to Under Review (`df73e18b`) only after its PR is merged. Until t
 
 Use one `AskUserQuestion` call:
 
-1. **Which issues?** Skip this question when the user already named issue numbers in the arguments. Otherwise offer the In Progress / Up Next trakt-android items from the board as options (fetch them first, see step 2), with "Other" for free input.
+1. **Which issues?** Skip this question when the user already named issue numbers in the arguments.
+   Otherwise offer the Backlog / Up Next trakt-android items from the board as options (fetch them
+   first, see step 2), with "Other" for free input.
 2. **End state?**
    - Local branches only - commit on a branch per issue, no push.
    - Draft PRs - push and open draft PRs.
