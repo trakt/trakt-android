@@ -5,52 +5,33 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.UserProgressLocalSource
 import tv.trakt.trakt.common.data.local.UserRatingsLocalSource
+import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.pagination.Pagination
 
 internal data class OrphanedRating(
     val id: TraktId,
     val type: MediaType,
 )
 
-internal enum class HistoryRemoval {
-    SinglePlay,
-    AllPlays,
-    ;
-
-    fun orphansRating(plays: Int): Boolean {
-        return when (this) {
-            SinglePlay -> plays == 1
-            AllPlays -> plays > 0
-        }
-    }
-}
-
 /**
  * A rating left without any play in history is removed with the last play.
- * Ratings to remove are found from local progress, so they must be read before the history removal.
+ * Candidates come from local ratings and progress read before the history removal. Local progress
+ * can be stale, so the rating is deleted only after the live history confirms no play is left.
  */
 internal class RemoveOrphanedRatingUseCase(
     private val progressLocalSource: UserProgressLocalSource,
     private val ratingsLocalSource: UserRatingsLocalSource,
+    private val historyRemoteSource: UserHistoryRemoteSource,
     private val deleteRatingUseCase: DeleteRatingUseCase,
     private val dataChanges: DataChanges,
 ) {
-    suspend fun findMovie(
-        movieId: TraktId,
-        removal: HistoryRemoval,
-    ): OrphanedRating? {
+    suspend fun findMovie(movieId: TraktId): OrphanedRating? {
         if (!ratingsLocalSource.containsMovie(movieId)) return null
-
-        val plays = progressLocalSource.getMovies()
-            .firstOrNull { it.mediaId == movieId }
-            ?.plays
-            ?.size
-            ?: return null
-
-        if (!removal.orphansRating(plays)) return null
+        if (!progressLocalSource.containsMovie(movieId)) return null
 
         return OrphanedRating(movieId, MediaType.Movie)
     }
@@ -62,22 +43,16 @@ internal class RemoveOrphanedRatingUseCase(
         return OrphanedRating(showId, MediaType.Show)
     }
 
-    suspend fun findEpisode(
-        episodeId: TraktId,
-        removal: HistoryRemoval,
-    ): OrphanedRating? {
+    suspend fun findEpisode(episodeId: TraktId): OrphanedRating? {
         if (!ratingsLocalSource.containsEpisode(episodeId)) return null
 
-        val plays = progressLocalSource.getShows()
+        val isWatched = progressLocalSource.getShows()
             .asSequence()
             .flatMap { it.seasons }
             .flatMap { it.episodes }
-            .firstOrNull { it.id == episodeId }
-            ?.plays
-            ?.size
-            ?: return null
+            .any { it.id == episodeId && it.plays.isNotEmpty() }
 
-        if (!removal.orphansRating(plays)) return null
+        if (!isWatched) return null
 
         return OrphanedRating(episodeId, MediaType.Episode)
     }
@@ -86,6 +61,8 @@ internal class RemoveOrphanedRatingUseCase(
         if (rating == null) return
 
         try {
+            if (hasRemainingPlays(rating)) return
+
             deleteRatingUseCase.deleteRating(
                 mediaId = rating.id,
                 mediaType = rating.type,
@@ -106,5 +83,16 @@ internal class RemoveOrphanedRatingUseCase(
                 Timber.recordError(error)
             }
         }
+    }
+
+    private suspend fun hasRemainingPlays(rating: OrphanedRating): Boolean {
+        val history = when (rating.type) {
+            MediaType.Movie -> historyRemoteSource.getMovieHistory(rating.id, limit = 1)
+            MediaType.Show -> historyRemoteSource.getShowHistory(rating.id, Pagination(limit = 1))
+            MediaType.Episode -> historyRemoteSource.getEpisodeHistory(rating.id, limit = 1)
+            MediaType.Season -> return true
+        }
+
+        return history.isNotEmpty()
     }
 }

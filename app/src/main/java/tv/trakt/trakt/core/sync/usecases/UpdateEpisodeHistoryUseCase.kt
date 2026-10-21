@@ -7,7 +7,6 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.ratings.HistoryRemoval
 import tv.trakt.trakt.core.ratings.RemoveOrphanedRatingUseCase
 import tv.trakt.trakt.widgets.data.WidgetsUpdater
 
@@ -71,7 +70,7 @@ internal class UpdateEpisodeHistoryUseCase(
     }
 
     suspend fun removeEpisodeFromHistory(episodeId: Int) {
-        val orphanedRating = orphanedRatings.findEpisode(episodeId.toTraktId(), HistoryRemoval.AllPlays)
+        val orphanedRating = orphanedRatings.findEpisode(episodeId.toTraktId())
         remoteSource.removeEpisodeFromHistory(
             episodeId = episodeId,
         )
@@ -90,7 +89,7 @@ internal class UpdateEpisodeHistoryUseCase(
         playId: Long,
         episodeId: TraktId,
     ) {
-        val orphanedRating = orphanedRatings.findEpisode(episodeId, HistoryRemoval.SinglePlay)
+        val orphanedRating = orphanedRatings.findEpisode(episodeId)
         remoteSource.removePlayFromHistory(
             playId = playId,
         )
