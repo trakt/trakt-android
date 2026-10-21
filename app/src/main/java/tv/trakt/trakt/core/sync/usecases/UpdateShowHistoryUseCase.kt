@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.core.ratings.RemoveOrphanedRatingUseCase
 import tv.trakt.trakt.widgets.data.WidgetsUpdater
 
 internal class UpdateShowHistoryUseCase(
@@ -23,6 +24,7 @@ internal class UpdateShowHistoryUseCase(
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val widgetsUpdater: WidgetsUpdater,
     private val analytics: Analytics,
+    private val orphanedRatings: RemoveOrphanedRatingUseCase,
 ) {
     suspend fun addToWatched(
         showId: TraktId,
@@ -61,9 +63,11 @@ internal class UpdateShowHistoryUseCase(
     }
 
     suspend fun removeAllFromHistory(showId: TraktId) {
+        val orphanedRating = orphanedRatings.findShow(showId)
         remoteSource.removeAllFromHistory(
             showId = showId,
         )
+        orphanedRatings.remove(orphanedRating)
         widgetsUpdater.refreshInBackground()
     }
 

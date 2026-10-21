@@ -22,6 +22,7 @@ import org.koin.dsl.module
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
+import tv.trakt.trakt.core.ratings.RemoveOrphanedRatingUseCase
 import tv.trakt.trakt.core.ratings.allratings.AllRatingsViewModel
 import tv.trakt.trakt.core.ratings.allratings.usecases.GetSeasonRatingsUseCase
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
@@ -83,6 +84,8 @@ internal val ratingsModule = module {
     factoryOf(::PostRatingUseCase)
 
     factoryOf(::DeleteRatingUseCase)
+
+    factoryOf(::RemoveOrphanedRatingUseCase)
 
     worker {
         PostRatingWorker(

@@ -251,7 +251,10 @@ internal class ShowHistoryViewModel(
             try {
                 loadingState.update { Loading }
 
-                updateHistoryUseCase.removePlayFromHistory(item.id)
+                updateHistoryUseCase.removePlayFromHistory(
+                    playId = item.id,
+                    episodeId = item.episode.ids.trakt,
+                )
                 loadProgressUseCase.loadShowsProgress()
                 dataChanges.notify(Kind.History, origin = origin)
 
