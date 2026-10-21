@@ -52,6 +52,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.core.profile.sections.library.model.LibraryFilter
+import tv.trakt.trakt.core.profile.sections.library.views.LibraryCollectionLimitTag
 import tv.trakt.trakt.core.profile.sections.library.views.LibraryItemView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
@@ -71,6 +72,7 @@ internal fun ProfileLibraryView(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onMoreClick: () -> Unit,
+    onVipClick: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -85,6 +87,8 @@ internal fun ProfileLibraryView(
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
+        onVipClick = onVipClick,
+        onVipUpsellSeen = viewModel::onVipUpsellSeen,
         onEpisodeClick = { show, _ ->
             scope.launch {
                 viewModel.onNavigateToShow(show)
@@ -123,6 +127,8 @@ private fun ProfileLibraryView(
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onFilterClick: (LibraryFilter) -> Unit = {},
+    onVipClick: () -> Unit = {},
+    onVipUpsellSeen: () -> Unit = {},
     onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
     onMovieClick: (Movie) -> Unit = {},
     onLibraryClick: () -> Unit = {},
@@ -156,6 +162,8 @@ private fun ProfileLibraryView(
                 state = state,
                 headerPadding = headerPadding,
                 onFilterClick = onFilterClick,
+                onVipClick = onVipClick,
+                onVipUpsellSeen = onVipUpsellSeen,
             )
 
             Crossfade(
@@ -220,6 +228,8 @@ private fun ContentFilters(
     state: ProfileLibraryState,
     modifier: Modifier = Modifier,
     onFilterClick: (LibraryFilter) -> Unit,
+    onVipClick: () -> Unit,
+    onVipUpsellSeen: () -> Unit,
 ) {
     FilterChipGroup(
         paddingHorizontal = headerPadding,
@@ -231,6 +241,14 @@ private fun ContentFilters(
                 selected = filter == state.filter,
                 text = stringResource(filter.displayRes),
                 onClick = { onFilterClick(filter) },
+            )
+        }
+
+        if (state.filter == LibraryFilter.DIGITAL && state.collectionLimitServers.isNotEmpty()) {
+            LibraryCollectionLimitTag(
+                servers = state.collectionLimitServers,
+                onVipClick = onVipClick,
+                onShow = onVipUpsellSeen,
             )
         }
     }

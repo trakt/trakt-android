@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.profile.sections.library
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.core.library.LibraryItem
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.User
@@ -14,5 +15,6 @@ internal data class ProfileLibraryState(
     val filter: LibraryFilter? = null,
     val loading: LoadingState = LoadingState.Idle,
     val collapsed: Boolean? = null,
+    val collectionLimitServers: ImmutableList<String?> = persistentListOf(),
     val error: Exception? = null,
 )
