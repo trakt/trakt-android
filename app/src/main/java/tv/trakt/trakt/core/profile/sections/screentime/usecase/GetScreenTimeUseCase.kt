@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalSource
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneOffset.UTC
 import kotlin.math.roundToInt
 import kotlin.time.Duration
@@ -159,21 +160,26 @@ internal class GetScreenTimeUseCase(
     private fun getPeakHours(
         episodes: List<SyncHistoryEpisodeItemDto>,
         movies: List<SyncHistoryMovieItemDto>,
-    ): ImmutableMap<ScreenTimeData.PeakHour, Int> {
-        val watchedTimes = episodes.map { it.watchedAt.toInstant().toLocalTime() } +
-            movies.map { it.watchedAt.toInstant().toLocalTime() }
+    ): ImmutableMap<ScreenTimeData.PeakHour, ScreenTimeData.PeakHourCount> {
+        val episodeTimes = episodes.map { it.watchedAt.toInstant().toLocalTime() }
+        val movieTimes = movies.map { it.watchedAt.toInstant().toLocalTime() }
 
         return ScreenTimeData.PeakHour.entries
             .associateWith { peakHour ->
-                watchedTimes.count { time ->
-                    val (start, end) = peakHour.period
-                    when {
-                        start <= end -> time in start..end
-                        else -> time >= start || time <= end
-                    }
-                }
+                ScreenTimeData.PeakHourCount(
+                    movies = movieTimes.count { it in peakHour },
+                    episodes = episodeTimes.count { it in peakHour },
+                )
             }
             .toImmutableMap()
+    }
+
+    private operator fun ScreenTimeData.PeakHour.contains(time: LocalTime): Boolean {
+        val (start, end) = period
+        return when {
+            start <= end -> time in start..end
+            else -> time >= start || time <= end
+        }
     }
 
     private fun getWakingHoursPercent(
