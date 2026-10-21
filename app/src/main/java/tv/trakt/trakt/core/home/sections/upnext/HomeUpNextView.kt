@@ -120,7 +120,13 @@ internal fun HomeUpNextView(
         sheetItem = contextSheet,
         onDismiss = { contextSheet = null },
         onAddWatched = {
-            dateSheet = it as UpNextShow
+            when (it) {
+                is UpNextShow -> dateSheet = it
+                is UpNextMovie -> viewModel.loadData(
+                    resetScroll = false,
+                    ignoreErrors = false,
+                )
+            }
         },
         onDropped = {
             viewModel.loadData(

@@ -144,7 +144,10 @@ internal fun AllHomeUpNextScreen(
         sheetItem = contextSheet,
         onDismiss = { contextSheet = null },
         onAddWatched = {
-            dateSheet = contextSheet as UpNextShow
+            when (it) {
+                is UpNextShow -> dateSheet = it
+                is UpNextMovie -> viewModel.removeMovie(it.movie.ids.trakt)
+            }
         },
         onDropped = {
             when (it) {
