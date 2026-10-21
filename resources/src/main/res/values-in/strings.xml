@@ -1424,7 +1424,7 @@
   <string name="match_label_soulmates">Satu Frekuensi</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Cocok:</string>
-  <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
+  <string name="match_pill_aria_label">Kecocokan %1$d%%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
   <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
   <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
@@ -1657,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">Webhook saja</string>
   <string name="tag_mixtape_different_mood">Nuansa berbeda</string>
   <string name="tag_mixtape_kept">Disimpan</string>
-  <string name="tag_mixtape_match">%s% cocok</string>
+  <string name="tag_mixtape_match">%s%% cocok</string>
   <string name="tag_mixtape_tap_details">Ketuk untuk detail</string>
   <string name="tag_text_blocked_user">Diblokir</string>
   <string name="tag_text_deal_price">2 Tahun Pertama</string>
@@ -2828,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">Tidak ada (tanpa hibrida)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Pratinjau Persona</string>
-  <string name="yir_2026_rarity">Hanya %1$d% adalah %2$s</string>
+  <string name="yir_2026_rarity">Hanya %1$d%% adalah %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Sedikit %s</string>
   <string name="yir_2026_reel_and_you_are">Dan Anda adalah</string>
   <string name="yir_2026_reel_but_mostly">Tapi sebagian besar</string>

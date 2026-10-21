@@ -1424,7 +1424,7 @@
   <string name="match_label_soulmates">Anime gemelle</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Corrispondenza:</string>
-  <string name="match_pill_aria_label">%1$d% di corrispondenza, %2$s. Apri dettagli corrispondenza.</string>
+  <string name="match_pill_aria_label">%1$d%% di corrispondenza, %2$s. Apri dettagli corrispondenza.</string>
   <string name="match_pill_loading_aria_label">Calcolo del punteggio di corrispondenza</string>
   <string name="mir_banner_body">Il tuo riepilogo mensile è pronto. Ecco cosa hai guardato a %s.</string>
   <string name="mir_banner_body_short">Il tuo riepilogo di %s è pronto.</string>
@@ -1657,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">Solo Webhook</string>
   <string name="tag_mixtape_different_mood">Atmosfera diversa</string>
   <string name="tag_mixtape_kept">Conservato</string>
-  <string name="tag_mixtape_match">%s% di corrispondenza</string>
+  <string name="tag_mixtape_match">%s%% di corrispondenza</string>
   <string name="tag_mixtape_tap_details">Tocca per i dettagli</string>
   <string name="tag_text_blocked_user">Bloccato</string>
   <string name="tag_text_deal_price">Primi 2 Anni</string>
@@ -2828,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">Nessuno (no ibrido)</string>
   <string name="yir_2026_preview_runner_up">Secondo classificato</string>
   <string name="yir_2026_preview_title">Anteprima personalità</string>
-  <string name="yir_2026_rarity">Solo il %1$d% sono %2$s</string>
+  <string name="yir_2026_rarity">Solo il %1$d%% sono %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un po\' %s</string>
   <string name="yir_2026_reel_and_you_are">E tu sei</string>
   <string name="yir_2026_reel_but_mostly">Ma soprattutto</string>
