@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -52,10 +53,14 @@ import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
+import tv.trakt.trakt.core.profile.sections.favorites.views.FavoritesYearLabel
+import tv.trakt.trakt.core.profile.sections.favorites.views.FavoritesYearLabelHeight
+import tv.trakt.trakt.core.profile.sections.favorites.views.toFavoritesYearHeaders
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 
 @Composable
 internal fun ProfileFavoritesView(
@@ -163,7 +168,10 @@ internal fun ProfileFavoritesContent(
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
-                            modifier = Modifier.padding(bottom = 3.75.dp),
+                            modifier = Modifier.padding(
+                                top = FavoritesYearLabelHeight,
+                                bottom = 3.75.dp,
+                            ),
                         )
                     }
 
@@ -240,6 +248,7 @@ private fun ContentList(
     onMovieLongClick: (Movie) -> Unit = {},
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
+    val yearHeaders = remember(listItems) { listItems.toFavoritesYearHeaders() }
 
     LaunchedEffect(listItems) {
         val hashCode = listItems.hashCode()
@@ -259,35 +268,39 @@ private fun ContentList(
             items = listItems,
             key = { it.key },
         ) { item ->
-            FavoriteItemView(
-                item = item,
-                showMore = true,
-                showMediaIcon = true,
-                onShowClick = {
-                    if (item is FavoriteItem.ShowItem && !item.loading) {
-                        onShowClick(item.show)
-                    }
-                },
-                onMovieClick = {
-                    if (item is FavoriteItem.MovieItem && !item.loading) {
-                        onMovieClick(item.movie)
-                    }
-                },
-                onShowLongClick = {
-                    if (item is FavoriteItem.ShowItem && !item.loading) {
-                        onShowLongClick(item.show)
-                    }
-                },
-                onMovieLongClick = {
-                    if (item is FavoriteItem.MovieItem && !item.loading) {
-                        onMovieLongClick(item.movie)
-                    }
-                },
+            Column(
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
                 ),
-            )
+            ) {
+                FavoritesYearLabel(year = yearHeaders[item.key])
+                FavoriteItemView(
+                    item = item,
+                    showMore = true,
+                    showMediaIcon = true,
+                    onShowClick = {
+                        if (item is FavoriteItem.ShowItem && !item.loading) {
+                            onShowClick(item.show)
+                        }
+                    },
+                    onMovieClick = {
+                        if (item is FavoriteItem.MovieItem && !item.loading) {
+                            onMovieClick(item.movie)
+                        }
+                    },
+                    onShowLongClick = {
+                        if (item is FavoriteItem.ShowItem && !item.loading) {
+                            onShowLongClick(item.show)
+                        }
+                    },
+                    onMovieLongClick = {
+                        if (item is FavoriteItem.MovieItem && !item.loading) {
+                            onMovieLongClick(item.movie)
+                        }
+                    },
+                )
+            }
         }
     }
 }
@@ -366,6 +379,44 @@ private fun Preview3() {
             state = ProfileFavoritesState(
                 loading = Done,
                 items = emptyList<FavoriteItem>().toImmutableList(),
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview4() {
+    TraktTheme {
+        ProfileFavoritesContent(
+            state = ProfileFavoritesState(
+                loading = Done,
+                items = listOf(
+                    FavoriteItem.ShowItem(
+                        show = PreviewData.show1,
+                        rank = 1,
+                        listedAt = Instant.parse("2026-03-02T10:00:00Z"),
+                    ),
+                    FavoriteItem.MovieItem(
+                        movie = PreviewData.movie1,
+                        rank = 2,
+                        listedAt = Instant.parse("2025-11-20T10:00:00Z"),
+                    ),
+                    FavoriteItem.ShowItem(
+                        show = PreviewData.show2,
+                        rank = 3,
+                        listedAt = Instant.parse("2025-06-14T10:00:00Z"),
+                    ),
+                    FavoriteItem.MovieItem(
+                        movie = PreviewData.movie2,
+                        rank = 4,
+                        listedAt = Instant.parse("2024-01-05T10:00:00Z"),
+                    ),
+                ).toImmutableList(),
             ),
         )
     }
