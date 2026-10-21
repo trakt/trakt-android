@@ -77,6 +77,7 @@ Keep raw dumps in the session scratchpad directory, referred to below as `$S`.
 
 Finish one issue completely before starting the next. Before each new branch, repeat the pull and the `HEAD` = `FETCH_HEAD` check from step 2, so every branch starts from the latest `main`.
 
+0. **Start the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/startN.txt"`. Each issue gets its own start time, so the effort report in step 10 counts only that issue.
 1. **Read the issue.** `gh issue view N -R trakt/trakt-android --json title,body,labels,comments > "$S/iN.json"`. Read comments too: maintainers often extend the scope there (for example a follow-up web PR).
 2. **Read the web source.** For each `trakt-web#N` or `trakt-web/pull/N` link, read `gh pr view N -R trakt/trakt-web --json title,body,files` and the relevant part of `gh pr diff`. Then read the current web files, not only the diff, because later PRs may have changed them. Match web logic, ordering and edge cases.
 3. **Assess against Android.** Check every claim in the issue against current Android code. Issues often list items that already exist. Note those for the PR body instead of re-implementing them.
@@ -101,7 +102,16 @@ Finish one issue completely before starting the next. Before each new branch, re
 10. **End state.**
    - Local branches only: stop here, `git checkout main`.
    - PRs: push with `git -c credential.helper='!gh auth git-credential' push -q https://github.com/trakt/trakt-android.git <branch>`, then `gh pr create -R trakt/trakt-android --base main --head <branch> --title "<commit subject>" --body-file "$S/prN.md"`, adding `--draft` for draft PRs. Run the closing-keyword grep on the body file first.
-   - PR body follows `commits.md`: one short paragraph on what changed for the user and why, then up to ~3 bullets for edge cases, deviations from web, or parts of the issue that were already in place. Do not write "ported from" in the prose. Last line lists the issue and every web PR the change mirrors: `Refs #N, trakt/trakt-web#A, trakt/trakt-web#B`. When web shipped a plain commit, find its PR with `gh api repos/trakt/trakt-web/commits/<sha>/pulls`. No AI attribution, no `Generated with` footer.
+   - PR body follows `commits.md`: one short paragraph on what changed for the user and why, then up to ~3 bullets for edge cases, deviations from web, or parts of the issue that were already in place. Do not write "ported from" in the prose. Then a line listing the issue and every web PR the change mirrors: `Refs #N, trakt/trakt-web#A, trakt/trakt-web#B`. When web shipped a plain commit, find its PR with `gh api repos/trakt/trakt-web/commits/<sha>/pulls`. No AI attribution, no `Generated with` footer.
+   - **Effort report.** Right before `gh pr create`, count this issue's tokens. The session ID is the name of the scratchpad's parent folder, so pass the transcript explicitly instead of letting the script guess the newest session:
+     ```bash
+     SID=$(basename "$(dirname "$S")")
+     T=$(ls ~/.claude/projects/*/"$SID".jsonl | head -1)
+     python3 .claude/skills/trakt-android-implement/scripts/session_usage.py --since "$(cat "$S/startN.txt")" --session "$T"
+     ```
+     It prints one JSON line with tokens per model, subagents included. Append one line at the very end of the PR body, after the `Refs` line:
+     `<!-- convergence-run {"web_pr": <first linked trakt-web PR number or null>, "issue": "trakt-android#N", "client": "android", "lead_model": "<model id>", "subagents": <its "subagents">, "started": "<start time>", "pr_opened": "<now, UTC>", "tokens": <its "tokens">, "tokens_by_model": <its "models">} -->`
+     A daily job reads this block to measure how long ports take. When the script prints `"tokens": null`, write `null`. Never estimate.
 11. **Board after PR.** Follow the board status rule below.
 12. `git checkout main` and continue with the next issue.
 
@@ -110,6 +120,7 @@ Finish one issue completely before starting the next. Before each new branch, re
 Lead with the result. Per issue: link (PR or branch name), what changed in plain words, what was already in place, any deviation from web. Then:
 
 - Tracking: events added and whether they mirror web, or why none.
+- Effort: tokens per issue from the effort report. For local-branch runs, run the script anyway and report the totals here, since there is no PR body to hold them.
 - Verified: compile and ktlint per branch.
 - Not verified: device or emulator runs, unless done.
 - Blockers: missing scopes, issues not on the board, anything skipped.
