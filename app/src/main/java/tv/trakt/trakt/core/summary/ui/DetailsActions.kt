@@ -76,7 +76,7 @@ internal fun DetailsActions(
             .padding(
                 top = 8.dp,
                 bottom = 8.dp,
-                start = 8.dp,
+                start = 8.5.dp,
                 end = when {
                     secondaryVisible -> 20.dp
                     else -> 32.dp
