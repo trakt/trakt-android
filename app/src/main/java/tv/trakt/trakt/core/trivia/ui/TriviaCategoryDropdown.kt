@@ -32,7 +32,7 @@ import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val ChevronSize = 12.dp
-private val MaxLabelWidth = 120.dp
+private val MaxLabelWidth = 100.dp
 private val CheckSize = 14.dp
 
 @Composable
