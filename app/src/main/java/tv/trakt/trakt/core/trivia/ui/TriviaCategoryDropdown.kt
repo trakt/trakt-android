@@ -32,6 +32,7 @@ import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val ChevronSize = 12.dp
+private val MaxLabelWidth = 120.dp
 private val CheckSize = 14.dp
 
 @Composable
@@ -56,6 +57,7 @@ internal fun TriviaCategoryDropdown(
             height = 32.dp,
             animated = false,
             endAlwaysVisible = true,
+            maxTextWidth = MaxLabelWidth,
             paddingHorizontal = PaddingValues(start = 9.dp, end = 11.dp),
             endContent = {
                 Icon(
@@ -157,7 +159,7 @@ private fun TriviaCategoryDropdownPreview() {
                     TriviaCategory.BehindTheScenes,
                     TriviaCategory.CastAndCrew,
                 ),
-                selectedCategory = TriviaCategory.CastAndCrew,
+                selectedCategory = TriviaCategory.RealWorldConnections,
                 onCategoryClick = {},
             )
         }
