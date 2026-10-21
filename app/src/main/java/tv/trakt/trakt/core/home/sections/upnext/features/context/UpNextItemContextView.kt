@@ -57,7 +57,7 @@ internal fun UpNextItemContextView(
     LaunchedEffect(state.loadingWatched, state.loadingDrop) {
         when {
             state.loadingWatched == Done && state.error == null -> onAddWatched(item)
-            state.loadingDrop == Done -> onDropped(item)
+            state.loadingDrop == Done && state.error == null -> onDropped(item)
         }
     }
 
