@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,18 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.ZoneId
 
-private val YearLabelMinHeight = 20.dp
-
-// Expects items sorted by listedAt, newest first, like web.
 internal fun List<FavoriteItem>.toFavoritesYearHeaders(): ImmutableMap<String, Int> {
     val zone = ZoneId.systemDefault()
     return mapIndexedNotNull { index, item ->
@@ -40,18 +39,20 @@ internal fun FavoritesYearLabel(
     year: Int?,
     modifier: Modifier = Modifier,
 ) {
+    val textStyle = TraktTheme.typography.meta.copy(
+        fontWeight = W400,
+        lineHeight = 1.2.em,
+    )
+
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
-            .width(TraktTheme.size.verticalMediaCardSize)
-            .heightIn(min = YearLabelMinHeight),
+            .width(TraktTheme.size.verticalMediaCardSize),
     ) {
-        // An empty label still measures one text line, so every card in the row
-        // reserves the same height at any font scale.
         if (year == null) {
             Text(
                 text = "",
-                style = TraktTheme.typography.meta,
+                style = textStyle,
                 maxLines = 1,
             )
             return@Box
@@ -67,18 +68,19 @@ internal fun FavoritesYearLabel(
             Text(
                 text = year.toString(),
                 color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.meta,
+                style = textStyle,
                 maxLines = 1,
             )
 
             Box(
                 modifier = Modifier
-                    .weight(1F)
+                    .width(72.dp)
                     .height(1.dp)
                     .background(
                         Brush.horizontalGradient(
                             if (isRtl) lineColors.reversed() else lineColors,
                         ),
+                        shape = CircleShape,
                     ),
             )
         }

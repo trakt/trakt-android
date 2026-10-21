@@ -134,7 +134,7 @@ internal fun ProfileFavoritesContent(
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        verticalArrangement = spacedBy(3.dp),
         modifier = modifier
             .animateContentSize(
                 animationSpec = if (animateCollapse) spring() else snap(),
@@ -142,7 +142,6 @@ internal fun ProfileFavoritesContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_favorites),
-            subtitle = stringResource(R.string.text_sort_recently_added),
             chevron = !state.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
@@ -228,7 +227,9 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 12) {
-            Column {
+            Column(
+                verticalArrangement = spacedBy(6.dp),
+            ) {
                 FavoritesYearLabel(year = null)
                 VerticalMediaSkeletonCard(chipRatio = 0.66F)
             }
@@ -268,6 +269,7 @@ private fun ContentList(
             key = { it.key },
         ) { item ->
             Column(
+                verticalArrangement = spacedBy(6.dp),
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -361,23 +363,6 @@ private fun Preview2() {
         ProfileFavoritesContent(
             state = ProfileFavoritesState(
                 loading = Loading,
-            ),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        ProfileFavoritesContent(
-            state = ProfileFavoritesState(
-                loading = Done,
-                items = emptyList<FavoriteItem>().toImmutableList(),
             ),
         )
     }
