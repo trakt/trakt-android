@@ -1,8 +1,10 @@
 package tv.trakt.trakt.common.data.remote
 
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.core.klipy.data.remote.toDomain
 import tv.trakt.trakt.common.core.klipy.data.remote.toRequest
 import tv.trakt.trakt.common.core.klipy.model.GIFS_MIN_PER_PAGE
+import tv.trakt.trakt.common.core.klipy.model.GifCategory
 import tv.trakt.trakt.common.core.klipy.model.GifPage
 import tv.trakt.trakt.common.core.klipy.model.GifsQuery
 import tv.trakt.trakt.common.networking.api.klipy.KlipyApi
@@ -12,6 +14,10 @@ class GifsRemoteSource(
 ) {
     suspend fun getTrendingGifs(query: GifsQuery = GifsQuery()): GifPage {
         return api.getTrendingGifs(query.toRequest()).toDomain()
+    }
+
+    suspend fun getCategories(customerId: String?): ImmutableList<GifCategory> {
+        return api.getCategories(customerId).toDomain()
     }
 
     /** Blank terms short-circuit to [GifPage.Empty] - KLIPY rejects an empty `q`. */

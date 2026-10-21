@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -44,6 +46,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.klipy.model.GifCategory
 import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.core.klipy.model.KlipyGifFormats
 import tv.trakt.trakt.common.core.klipy.model.KlipyGifMedia
@@ -51,6 +54,7 @@ import tv.trakt.trakt.common.core.klipy.model.KlipyGifRenditions
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.core.klipy.ui.GifCard
+import tv.trakt.trakt.core.klipy.ui.GifCategoriesRow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.InputField
@@ -70,9 +74,10 @@ internal fun GifPickerView(
         state = state,
         onQueryChange = viewModel::updateQuery,
         onLoadMore = viewModel::loadMore,
-        onGifClick = { gif ->
-            viewModel.onGifSelected()
-            onGifClick(gif)
+        onCategoryClick = viewModel::selectCategory,
+        onGifClick = {
+            viewModel.selectGif()
+            onGifClick(it)
         },
         modifier = modifier,
     )
@@ -85,6 +90,7 @@ private fun GifPickerContent(
     modifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit = {},
     onLoadMore: () -> Unit = {},
+    onCategoryClick: (GifCategory) -> Unit = {},
     onGifClick: (KlipyGif) -> Unit = {},
 ) {
     val inputState = rememberTextFieldState()
@@ -160,6 +166,21 @@ private fun GifPickerContent(
                         .fillMaxSize()
                         .padding(top = inputHeight / 2),
                 ) {
+                    if (state.query.isBlank() && state.categories.isNotEmpty()) {
+                        item(
+                            key = "categories",
+                            span = StaggeredGridItemSpan.FullLine,
+                        ) {
+                            GifCategoriesRow(
+                                categories = state.categories,
+                                onCategoryClick = { category ->
+                                    inputState.setTextAndPlaceCursorAtEnd(category.query)
+                                    onCategoryClick(category)
+                                },
+                            )
+                        }
+                    }
+
                     items(
                         items = state.gifs,
                         key = { it.id },

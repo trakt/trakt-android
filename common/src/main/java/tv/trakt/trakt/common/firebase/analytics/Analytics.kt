@@ -314,10 +314,14 @@ interface Analytics {
         fun logSpoilerReveal()
 
         /**
-         * Logs using the GIF picker.
-         * @param action The step (open, select).
+         * Logs a GIF picker interaction.
+         * @param action The interaction (open, category, select).
+         * @param source Where the picker was opened from (comment, review).
          */
-        fun logGifPicker(action: String)
+        fun logGifPicker(
+            action: String,
+            source: String,
+        )
     }
 
     interface Progress {

@@ -3,12 +3,14 @@ package tv.trakt.trakt.core.klipy
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import tv.trakt.trakt.common.core.klipy.model.GifCategory
 import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.helpers.LoadingState
 
 @Immutable
 internal data class GifPickerState(
     val query: String = "",
+    val categories: ImmutableList<GifCategory> = persistentListOf(),
     val gifs: ImmutableList<KlipyGif> = persistentListOf(),
     val loading: LoadingState = LoadingState.Idle,
     val loadingMore: LoadingState = LoadingState.Idle,

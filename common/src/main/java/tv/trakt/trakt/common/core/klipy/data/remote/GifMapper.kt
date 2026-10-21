@@ -1,12 +1,15 @@
 package tv.trakt.trakt.common.core.klipy.data.remote
 
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.klipy.model.GifCategory
 import tv.trakt.trakt.common.core.klipy.model.GifPage
 import tv.trakt.trakt.common.core.klipy.model.GifsQuery
 import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.core.klipy.model.KlipyGifFormats
 import tv.trakt.trakt.common.core.klipy.model.KlipyGifMedia
 import tv.trakt.trakt.common.core.klipy.model.KlipyGifRenditions
+import tv.trakt.trakt.common.networking.api.klipy.model.KlipyCategoriesDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifFormatsDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifsRequest
@@ -35,6 +38,18 @@ internal fun KlipyPageDto<KlipyGifDto>.toDomain(): GifPage {
         perPage = perPage,
         hasNext = hasNext,
     )
+}
+
+internal fun KlipyCategoriesDto.toDomain(): ImmutableList<GifCategory> {
+    return categories
+        .map {
+            GifCategory(
+                title = it.category,
+                query = it.query,
+                previewUrl = it.previewUrl,
+            )
+        }
+        .toImmutableList()
 }
 
 internal fun KlipyGifDto.toDomain(): KlipyGif? {
