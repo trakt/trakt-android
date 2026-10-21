@@ -1,6 +1,6 @@
 ---
 name: trakt-android-implement
-description: Implement trakt-android GitHub issues one by one - ask which issues and the end state (local branches, draft PRs or ready-for-review PRs), move them to In Progress on the trakt Product board, assess each issue against trakt-web and the Android code, implement, verify, commit and optionally open PRs that never auto-close issues. Trigger: /trakt-android-implement, "implement issues", "work on #499 #484", "take care of these issues".
+description: Implement trakt-android GitHub issues one by one - ask which issues and the end state (local branches, draft PRs or ready-for-review PRs), move them to In Progress on the trakt Product board, assess each issue against trakt-web and the Android code, implement, verify, commit and optionally open PRs. Trigger: /trakt-android-implement, "implement issues", "work on #499 #484", "take care of these issues".
 ---
 
 # Implement issues
@@ -20,20 +20,13 @@ Takes a set of trakt-android issues from the board to branches or PRs, one issue
 
 If a field or option ID stops working, refresh it with `gh project field-list 11 --owner trakt --format json` and update this table.
 
-## Hard rule: never close issues
-
-**Done on the Android board means released to the public.** A merged PR or commit that closes an issue moves it to Done too early.
-
-- Never write a closing keyword followed by an issue reference in a PR title, PR body or commit message. Closing keywords: `close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`, `resolved` (any case).
-- Reference issues with `Refs #N` in PR bodies and a `Refs: #N` footer in commits.
-- Do not link the issue through the PR "Development" sidebar either.
-- Before every push and PR create/edit, grep the text: `grep -inE '\b(close[sd]?|fix(e[sd])?|resolve[sd]?)\b:? *(trakt/trakt-android)?#[0-9]+'`. Any hit blocks the step.
-
 ## Board status rule
 
-An issue moves to Under Review (`df73e18b`) only after its PR is merged. Until then it stays In Progress (`47fc9ee4`).
+An issue stays In Progress (`47fc9ee4`) until its PR is merged. The merge closes the issue through
+the `Closes #N` line, and board automation sets the status from there.
 
 - This skill never merges PRs, so it always leaves its issues In Progress. Local branches, draft PRs and ready-for-review PRs all stay In Progress.
+- Never move an issue after merge by hand. The automation owns that step.
 - After every PR create, push or ready-flip, check the board item. If automation moved the issue to Under Review before the merge, move it back to In Progress.
 
 ## Step 1 - Ask
@@ -98,18 +91,29 @@ Finish one issue completely before starting the next. Before each new branch, re
    - Compile: `./gradlew -q :app:compilePlaystoreDebugKotlin` (plain `compileDebugKotlin` is ambiguous because of flavors). Add `:tv:compileDebugKotlin` when `tv/` or shared code changed.
    - Lint: the Gradle `ktlintCheck` task is not wired. Run the CLI on changed files: `ktlint -F $(git diff --name-only main; git ls-files -o --exclude-standard)`, then `ktlint` again to confirm it is clean.
    - Fix all errors before committing. Do not claim device testing that did not happen.
-9. **Commit.** Follow `commits.md`: Conventional Commits, body explains why, `Refs: #N` footer, no AI attribution, no em-dashes. Run the closing-keyword grep on the message.
+9. **Commit.** Follow `commits.md`: Conventional Commits, body explains why, `Refs: #N` footer, no
+   AI attribution, no em-dashes.
 10. **End state.**
    - Local branches only: stop here, `git checkout main`.
-   - PRs: push with `git -c credential.helper='!gh auth git-credential' push -q https://github.com/trakt/trakt-android.git <branch>`, then `gh pr create -R trakt/trakt-android --base main --head <branch> --title "<commit subject>" --body-file "$S/prN.md"`, adding `--draft` for draft PRs. Run the closing-keyword grep on the body file first.
-   - PR body follows `commits.md`: one short paragraph on what changed for the user and why, then up to ~3 bullets for edge cases, deviations from web, or parts of the issue that were already in place. Do not write "ported from" in the prose. Then a line listing the issue and every web PR the change mirrors: `Refs #N, trakt/trakt-web#A, trakt/trakt-web#B`. When web shipped a plain commit, find its PR with `gh api repos/trakt/trakt-web/commits/<sha>/pulls`. No AI attribution, no `Generated with` footer.
+- PRs: push with
+  `git -c credential.helper='!gh auth git-credential' push -q https://github.com/trakt/trakt-android.git <branch>`,
+  then
+  `gh pr create -R trakt/trakt-android --base main --head <branch> --title "<commit subject>" --body-file "$S/prN.md"`,
+  adding `--draft` for draft PRs.
+- PR body follows `commits.md`: one short paragraph on what changed for the user and why, then up
+  to ~3 bullets for edge cases, deviations from web, or parts of the issue that were already in
+  place. Do not write "ported from" in the prose. Then a line listing the issue and every web PR the
+  change mirrors: `Refs #N, trakt/trakt-web#A, trakt/trakt-web#B`, followed by a `Closes #N` line so
+  merging the PR closes the issue. When web shipped a plain commit, find its PR with
+  `gh api repos/trakt/trakt-web/commits/<sha>/pulls`. No AI attribution, no `Generated with` footer.
    - **Effort report.** Right before `gh pr create`, count this issue's tokens. The session ID is the name of the scratchpad's parent folder, so pass the transcript explicitly instead of letting the script guess the newest session:
      ```bash
      SID=$(basename "$(dirname "$S")")
      T=$(ls ~/.claude/projects/*/"$SID".jsonl | head -1)
      python3 .claude/skills/trakt-android-implement/scripts/session_usage.py --since "$(cat "$S/startN.txt")" --session "$T"
      ```
-     It prints one JSON line with tokens per model, subagents included. Append one line at the very end of the PR body, after the `Refs` line:
+     It prints one JSON line with tokens per model, subagents included. Append one line at the very
+     end of the PR body, after the `Closes` line:
      `<!-- convergence-run {"web_pr": <first linked trakt-web PR number or null>, "issue": "trakt-android#N", "client": "android", "lead_model": "<model id>", "subagents": <its "subagents">, "started": "<start time>", "pr_opened": "<now, UTC>", "tokens": <its "tokens">, "tokens_by_model": <its "models">} -->`
      A daily job reads this block to measure how long ports take. When the script prints `"tokens": null`, write `null`. Never estimate.
 11. **Board after PR.** Follow the board status rule below.
