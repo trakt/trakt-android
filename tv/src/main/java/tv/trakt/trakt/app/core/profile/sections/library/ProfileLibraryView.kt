@@ -120,31 +120,11 @@ internal fun ProfileLibraryContent(
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
-            if (!state.isLoading && state.items?.isEmpty() == true) {
-                Row(
-                    horizontalArrangement = spacedBy(4.dp),
-                    verticalAlignment = CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_info),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textSecondary,
-                        modifier = Modifier
-                            .size(12.dp),
-                    )
-                    Text(
-                        text = stringResource(R.string.text_plex_tv_library_description),
-                        color = TraktTheme.colors.textSecondary,
-                        style = subtitleStyle,
-                    )
-                }
-            } else {
-                Text(
-                    text = stringResource(R.string.translated_value_library_digital),
-                    color = TraktTheme.colors.textSecondary,
-                    style = subtitleStyle,
-                )
-            }
+            Text(
+                text = stringResource(R.string.translated_value_library_digital),
+                color = TraktTheme.colors.textSecondary,
+                style = subtitleStyle,
+            )
         }
 
         when {
@@ -156,12 +136,23 @@ internal fun ProfileLibraryContent(
             }
 
             state.items?.isEmpty() == true -> {
-                Text(
-                    text = stringResource(R.string.list_placeholder_empty),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.heading6,
+                Row(
+                    horizontalArrangement = spacedBy(4.dp),
+                    verticalAlignment = CenterVertically,
                     modifier = Modifier.padding(headerPadding),
-                )
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_info),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textSecondary,
+                        modifier = Modifier.size(14.dp),
+                    )
+                    Text(
+                        text = stringResource(R.string.text_plex_tv_library_description),
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.heading6,
+                    )
+                }
             }
 
             else -> {
