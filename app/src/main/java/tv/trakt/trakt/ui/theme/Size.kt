@@ -30,6 +30,9 @@ internal val Size: TraktSize = TraktSize(
     customListCardSize = 192.dp,
     detailsBackgroundRatio = VerticalImageAspectRatio,
     detailsActionButtonsSize = 0.dp,
+    chipHeight = 32.dp,
+    trackHeight = 40.dp,
+    largeButtonHeight = 48.dp,
 )
 
 internal val MediumSize: TraktSize = Size.copy(
@@ -70,4 +73,7 @@ internal data class TraktSize(
     val customListCardSize: Dp = Dp.Unspecified,
     val detailsBackgroundRatio: Float = 1F,
     val detailsActionButtonsSize: Dp = Dp.Unspecified,
+    val chipHeight: Dp = Dp.Unspecified,
+    val trackHeight: Dp = Dp.Unspecified,
+    val largeButtonHeight: Dp = Dp.Unspecified,
 )
