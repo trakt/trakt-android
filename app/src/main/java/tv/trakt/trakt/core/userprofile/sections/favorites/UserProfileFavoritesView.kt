@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -39,6 +40,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
+import tv.trakt.trakt.core.profile.sections.favorites.views.FavoritesYearLabel
+import tv.trakt.trakt.core.profile.sections.favorites.views.toFavoritesYearHeaders
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -174,7 +177,10 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 12) {
-            VerticalMediaSkeletonCard(chipRatio = 0.66F)
+            Column {
+                FavoritesYearLabel(year = null)
+                VerticalMediaSkeletonCard(chipRatio = 0.66F)
+            }
         }
     }
 }
@@ -188,6 +194,8 @@ private fun ContentList(
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
 ) {
+    val yearHeaders = remember(listItems) { listItems.toFavoritesYearHeaders() }
+
     LazyRow(
         state = listState,
         modifier = Modifier.fillMaxWidth(),
@@ -198,30 +206,34 @@ private fun ContentList(
             items = listItems,
             key = { it.key },
         ) { item ->
-            FavoriteItemView(
-                item = item,
-                showMore = false,
-                showMediaIcon = true,
-                watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
-                watching = collectionState.isWatching(item.id, item.type, item.airedEpisodes),
-                watchlist = collectionState.isWatchlist(item.id, item.type),
-                onShowClick = {
-                    if (item is FavoriteItem.ShowItem && !item.loading) {
-                        onShowClick(item.show)
-                    }
-                },
-                onMovieClick = {
-                    if (item is FavoriteItem.MovieItem && !item.loading) {
-                        onMovieClick(item.movie)
-                    }
-                },
-                onShowLongClick = {},
-                onMovieLongClick = {},
+            Column(
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
                 ),
-            )
+            ) {
+                FavoritesYearLabel(year = yearHeaders[item.key])
+                FavoriteItemView(
+                    item = item,
+                    showMore = false,
+                    showMediaIcon = true,
+                    watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
+                    watching = collectionState.isWatching(item.id, item.type, item.airedEpisodes),
+                    watchlist = collectionState.isWatchlist(item.id, item.type),
+                    onShowClick = {
+                        if (item is FavoriteItem.ShowItem && !item.loading) {
+                            onShowClick(item.show)
+                        }
+                    },
+                    onMovieClick = {
+                        if (item is FavoriteItem.MovieItem && !item.loading) {
+                            onMovieClick(item.movie)
+                        }
+                    },
+                    onShowLongClick = {},
+                    onMovieLongClick = {},
+                )
+            }
         }
     }
 }
