@@ -56,7 +56,7 @@ internal fun UpNextItemContextView(
 
     LaunchedEffect(state.loadingWatched, state.loadingDrop) {
         when {
-            state.loadingWatched == Done -> onAddWatched(item)
+            state.loadingWatched == Done && state.error == null -> onAddWatched(item)
             state.loadingDrop == Done -> onDropped(item)
         }
     }
@@ -72,7 +72,10 @@ internal fun UpNextItemContextView(
         state = state,
         modifier = modifier,
         onAddWatched = {
-            onAddWatched(item)
+            when (item) {
+                is UpNextShow -> onAddWatched(item)
+                is UpNextMovie -> viewModel.addMovieToWatched(item.mediaId)
+            }
         },
         onRemoveWatchlist = {
             confirmDropSheet = true
@@ -165,21 +168,19 @@ private fun UpNextItemContextViewContent(
                 state.loadingWatched.isLoading ||
                     state.loadingDrop.isLoading
 
-            if (item is UpNextShow) {
-                GhostButton(
-                    enabled = !isLoading,
-                    loading = state.loadingWatched.isLoading,
-                    text = stringResource(R.string.button_text_track),
-                    iconSize = 20.dp,
-                    iconSpace = 16.dp,
-                    onClick = onAddWatched,
-                    icon = painterResource(R.drawable.ic_check_2),
-                    modifier = Modifier
-                        .graphicsLayer {
-                            translationX = -7.dp.toPx()
-                        },
-                )
-            }
+            GhostButton(
+                enabled = !isLoading,
+                loading = state.loadingWatched.isLoading,
+                text = stringResource(R.string.button_text_track),
+                iconSize = 20.dp,
+                iconSpace = 16.dp,
+                onClick = onAddWatched,
+                icon = painterResource(R.drawable.ic_check_2),
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -7.dp.toPx()
+                    },
+            )
 
             GhostButton(
                 enabled = !isLoading,
