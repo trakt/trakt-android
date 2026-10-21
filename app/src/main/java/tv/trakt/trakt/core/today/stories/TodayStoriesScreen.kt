@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -76,6 +77,7 @@ import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val FRAME_DURATION_MS = 10_000
 private const val BACKDROP_ALPHA = 0.35F
@@ -152,6 +154,7 @@ private fun TodayStoriesContent(
     onClose: () -> Unit = {},
 ) {
     val background = TraktTheme.colors.backgroundPrimary
+    val horizontalPadding = TraktTheme.spacing.mainPageHorizontalSpace
 
     Box(
         modifier = modifier
@@ -190,8 +193,6 @@ private fun TodayStoriesContent(
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 8.dp,
                     bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
-                    start = TraktTheme.spacing.mainPageHorizontalSpace,
-                    end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
         ) {
             TodayStoryProgress(
@@ -199,6 +200,7 @@ private fun TodayStoriesContent(
                 currentIndex = state.frameIndex,
                 isPaused = isPaused,
                 onFinished = onNext,
+                modifier = Modifier.padding(horizontal = horizontalPadding),
             )
 
             TodayStoryHeader(
@@ -214,9 +216,14 @@ private fun TodayStoriesContent(
                 onDetailsClick = { isFlipped = !isFlipped },
                 onSocialClick = onSocialClick,
                 onClose = onClose,
-                modifier = Modifier.padding(bottom = PosterTopGap - 16.dp),
+                modifier = Modifier.padding(
+                    start = horizontalPadding,
+                    end = horizontalPadding,
+                    bottom = PosterTopGap - 16.dp,
+                ),
             )
 
+            // Spans the full width so the sliding story is not cut off at the page padding.
             TodayStoryFrameTransition(
                 state = state,
                 modifier = Modifier
@@ -234,7 +241,9 @@ private fun TodayStoriesContent(
                     onHeldChange = { if (isActive) isHeld = it },
                     onUserClick = onUserClick,
                     onConfirmVisibleChange = { if (isActive) isConfirming = it },
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = horizontalPadding),
                 )
             }
         }
@@ -295,6 +304,7 @@ private fun TodayStoryFrameTransition(
                 .togetherWith(
                     slideOutHorizontally(spec) { -it * direction / 3 } + fadeOut(tween(STORY_TRANSITION_MS)),
                 )
+                .using(SizeTransform(clip = false))
         },
         label = "todayStory",
         modifier = modifier,
@@ -337,6 +347,7 @@ private fun TodayStoryProgress(
     currentIndex: Int,
     isPaused: Boolean,
     onFinished: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val finished by rememberUpdatedState(onFinished)
     val currentKey = frameKeys.getOrNull(currentIndex)
@@ -348,12 +359,11 @@ private fun TodayStoryProgress(
 
         val remaining = ((1F - progress.value) * FRAME_DURATION_MS).toLong()
 
-        // With animations off a tween ends instantly, so time the frame with a plain delay.
         if (animationsDisabled) {
             val startedAt = SystemClock.uptimeMillis()
             val startProgress = progress.value
             try {
-                delay(remaining)
+                delay(remaining.milliseconds)
             } finally {
                 val elapsed = SystemClock.uptimeMillis() - startedAt
                 progress.snapTo(
@@ -375,9 +385,9 @@ private fun TodayStoryProgress(
 
     Row(
         horizontalArrangement = spacedBy(SegmentSpace),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        frameKeys.forEachIndexed { index, key ->
+        frameKeys.forEachIndexed { index, _ ->
             val fill = when {
                 index < currentIndex -> 1F
                 index == currentIndex -> progress.value
