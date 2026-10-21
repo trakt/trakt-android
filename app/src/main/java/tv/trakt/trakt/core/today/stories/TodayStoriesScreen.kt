@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -76,6 +77,7 @@ import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val FRAME_DURATION_MS = 10_000
 private const val BACKDROP_ALPHA = 0.35F
@@ -151,6 +153,138 @@ private fun TodayStoriesContent(
     onSocialClick: () -> Unit = {},
     onClose: () -> Unit = {},
 ) {
+    val background = TraktTheme.colors.backgroundPrimary
+    val horizontalPadding = TraktTheme.spacing.mainPageHorizontalSpace
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(background)
+            .storySwipe(
+                onNextGroup = onNextGroup,
+                onPreviousGroup = onPreviousGroup,
+            ),
+    ) {
+        val group = state.group ?: return@Box
+        val frame = state.frame ?: return@Box
+
+        var isFlipped by remember(frame.key) { mutableStateOf(false) }
+        var isHeld by remember(group.key) { mutableStateOf(false) }
+        var isConfirming by remember(group.key) { mutableStateOf(false) }
+
+        val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+        val isPaused = isHeld || isFlipped || isConfirming || !lifecycle.isAtLeast(Lifecycle.State.RESUMED)
+
+        TodayStoryBackdrop(state = state)
+
+        // Only the story moves between groups. The progress bar and header stay put,
+        // since sliding the whole screen causes motion sickness.
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        0F to background.copy(alpha = 0.4F),
+                        0.3F to background.copy(alpha = 0.1F),
+                        0.7F to background,
+                    ),
+                )
+                .padding(
+                    top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 8.dp,
+                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+                ),
+        ) {
+            TodayStoryProgress(
+                frameKeys = group.frames.map { it.key },
+                currentIndex = state.frameIndex,
+                isPaused = isPaused,
+                onFinished = onNext,
+                modifier = Modifier.padding(horizontal = horizontalPadding),
+            )
+
+            TodayStoryHeader(
+                title = when (group) {
+                    is TodayStoryGroup.Title -> group.media.title
+                    is TodayStoryGroup.ForYou -> stringResource(R.string.text_today_for_you)
+                },
+                position = stringResource(
+                    R.string.text_today_story_position,
+                    state.groupIndex + 1,
+                    state.groups.size,
+                ),
+                onDetailsClick = { isFlipped = !isFlipped },
+                onSocialClick = onSocialClick,
+                onClose = onClose,
+                modifier = Modifier.padding(
+                    start = horizontalPadding,
+                    end = horizontalPadding,
+                    bottom = PosterTopGap - 16.dp,
+                ),
+            )
+
+            // Spans the full width so the sliding story is not cut off at the page padding.
+            TodayStoryFrameTransition(
+                state = state,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1F),
+            ) { story, isActive ->
+                val storyFrame = story.frame ?: return@TodayStoryFrameTransition
+
+                TodayStoryFrameContent(
+                    frame = storyFrame,
+                    isFlipped = isFlipped && storyFrame.key == frame.key,
+                    onFlip = { if (isActive) isFlipped = !isFlipped },
+                    onNext = onNext,
+                    onPrevious = onPrevious,
+                    onHeldChange = { if (isActive) isHeld = it },
+                    onUserClick = onUserClick,
+                    onConfirmVisibleChange = { if (isActive) isConfirming = it },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = horizontalPadding),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TodayStoryBackdrop(state: TodayStoriesState) {
+    val animationsDisabled = rememberAnimationsDisabled()
+
+    AnimatedContent(
+        targetState = state,
+        contentKey = { it.group?.key },
+        transitionSpec = {
+            if (animationsDisabled) {
+                return@AnimatedContent EnterTransition.None togetherWith ExitTransition.None
+            }
+            fadeIn(tween(STORY_TRANSITION_MS)) togetherWith fadeOut(tween(STORY_TRANSITION_MS))
+        },
+        label = "todayStoryBackdrop",
+        modifier = Modifier.fillMaxSize(),
+    ) { story ->
+        AsyncImage(
+            model = story.frame?.media?.images?.getPosterUrl(Images.Size.MEDIUM),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(BACKDROP_ALPHA)
+                .blur(BackdropBlur),
+        )
+    }
+}
+
+/** Slides the story between groups; `isActive` is false for the one animating out. */
+@Composable
+private fun TodayStoryFrameTransition(
+    state: TodayStoriesState,
+    modifier: Modifier = Modifier,
+    content: @Composable (story: TodayStoriesState, isActive: Boolean) -> Unit,
+) {
     val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val animationsDisabled = rememberAnimationsDisabled()
 
@@ -170,121 +304,12 @@ private fun TodayStoriesContent(
                 .togetherWith(
                     slideOutHorizontally(spec) { -it * direction / 3 } + fadeOut(tween(STORY_TRANSITION_MS)),
                 )
+                .using(SizeTransform(clip = false))
         },
         label = "todayStory",
-        modifier = modifier
-            .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
-            .storySwipe(
-                onNextGroup = onNextGroup,
-                onPreviousGroup = onPreviousGroup,
-            ),
+        modifier = modifier,
     ) { story ->
-        TodayStoryPage(
-            state = story,
-            isActive = transition.targetState == EnterExitState.Visible,
-            onNext = onNext,
-            onPrevious = onPrevious,
-            onUserClick = onUserClick,
-            onSocialClick = onSocialClick,
-            onClose = onClose,
-        )
-    }
-}
-
-/** One story; [isActive] is false while it animates out, so its timer stops. */
-@Composable
-private fun TodayStoryPage(
-    state: TodayStoriesState,
-    isActive: Boolean,
-    onNext: () -> Unit,
-    onPrevious: () -> Unit,
-    onUserClick: (User) -> Unit,
-    onSocialClick: () -> Unit,
-    onClose: () -> Unit,
-) {
-    val group = state.group ?: return
-    val frame = state.frame ?: return
-
-    var isFlipped by remember(frame.key) { mutableStateOf(false) }
-    var isHeld by remember { mutableStateOf(false) }
-    var isConfirming by remember { mutableStateOf(false) }
-
-    val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
-    val isPaused = !isActive || isHeld || isFlipped || isConfirming || !lifecycle.isAtLeast(Lifecycle.State.RESUMED)
-
-    val background = TraktTheme.colors.backgroundPrimary
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(background),
-    ) {
-        AsyncImage(
-            model = frame.media.images?.getPosterUrl(Images.Size.MEDIUM),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-                .alpha(BACKDROP_ALPHA)
-                .blur(BackdropBlur),
-        )
-
-        Column(
-            verticalArrangement = spacedBy(16.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        0F to background.copy(alpha = 0.4F),
-                        0.3F to background.copy(alpha = 0.1F),
-                        0.7F to background,
-                    ),
-                )
-                .padding(
-                    top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 8.dp,
-                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
-                    start = TraktTheme.spacing.mainPageHorizontalSpace,
-                    end = TraktTheme.spacing.mainPageHorizontalSpace,
-                ),
-        ) {
-            TodayStoryProgress(
-                frameKeys = group.frames.map { it.key },
-                currentIndex = state.frameIndex,
-                isPaused = isPaused,
-                onFinished = onNext,
-            )
-
-            TodayStoryHeader(
-                title = when (group) {
-                    is TodayStoryGroup.Title -> group.media.title
-                    is TodayStoryGroup.ForYou -> stringResource(R.string.text_today_for_you)
-                },
-                position = stringResource(
-                    R.string.text_today_story_position,
-                    state.groupIndex + 1,
-                    state.groups.size,
-                ),
-                onDetailsClick = { isFlipped = !isFlipped },
-                onSocialClick = onSocialClick,
-                onClose = onClose,
-                modifier = Modifier.padding(bottom = PosterTopGap - 16.dp),
-            )
-
-            TodayStoryFrameContent(
-                frame = frame,
-                isFlipped = isFlipped && frame.key == frame.key,
-                onFlip = { isFlipped = !isFlipped },
-                onNext = onNext,
-                onPrevious = onPrevious,
-                onHeldChange = { isHeld = it },
-                onUserClick = onUserClick,
-                onConfirmVisibleChange = { isConfirming = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1F),
-            )
-        }
+        content(story, transition.targetState == EnterExitState.Visible)
     }
 }
 
@@ -322,6 +347,7 @@ private fun TodayStoryProgress(
     currentIndex: Int,
     isPaused: Boolean,
     onFinished: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val finished by rememberUpdatedState(onFinished)
     val currentKey = frameKeys.getOrNull(currentIndex)
@@ -333,12 +359,11 @@ private fun TodayStoryProgress(
 
         val remaining = ((1F - progress.value) * FRAME_DURATION_MS).toLong()
 
-        // With animations off a tween ends instantly, so time the frame with a plain delay.
         if (animationsDisabled) {
             val startedAt = SystemClock.uptimeMillis()
             val startProgress = progress.value
             try {
-                delay(remaining)
+                delay(remaining.milliseconds)
             } finally {
                 val elapsed = SystemClock.uptimeMillis() - startedAt
                 progress.snapTo(
@@ -360,9 +385,9 @@ private fun TodayStoryProgress(
 
     Row(
         horizontalArrangement = spacedBy(SegmentSpace),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        frameKeys.forEachIndexed { index, key ->
+        frameKeys.forEachIndexed { index, _ ->
             val fill = when {
                 index < currentIndex -> 1F
                 index == currentIndex -> progress.value
