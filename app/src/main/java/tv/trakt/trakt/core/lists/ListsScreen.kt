@@ -170,6 +170,7 @@ internal fun ListsScreen(
         onSmartListDeleteClick = { smartListToDelete = it },
         onAllListsClick = { onNavigateToAllLists(state.filter) },
         onVipClick = onNavigateToVip,
+        onVipSeen = viewModel::onVipUpsellSeen,
         onUserClick = onNavigateToUser,
         onFiltersClick = {
             filtersSheet = true
@@ -240,6 +241,7 @@ private fun ListsScreenContent(
     onSmartListDeleteClick: (SmartList) -> Unit = { _ -> },
     onAllListsClick: () -> Unit = { },
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onUserClick: (User) -> Unit = {},
 ) {
@@ -466,6 +468,7 @@ private fun ListsScreenContent(
                 headerState = headerState,
                 isScrolledToTop = isScrolledToTop,
                 onVipClick = onVipClick,
+                onVipSeen = onVipSeen,
                 onFiltersClick = onFiltersClick,
             )
         }
@@ -478,6 +481,7 @@ private fun ListsScreenHeader(
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
+    onVipSeen: () -> Unit,
     onFiltersClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
@@ -491,6 +495,7 @@ private fun ListsScreenHeader(
         showLogin = userState.first && !userState.second,
         showVip = userState.second && state.user.user?.isVip == false,
         showFilters = true,
+        onVipSeen = onVipSeen,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
         modifier = Modifier.offset {

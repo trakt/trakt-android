@@ -909,6 +909,10 @@ internal class ShowDetailsViewModel(
         analytics.logShare(source = "media", type = MediaType.Show.value)
     }
 
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("show-details")
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         showState,

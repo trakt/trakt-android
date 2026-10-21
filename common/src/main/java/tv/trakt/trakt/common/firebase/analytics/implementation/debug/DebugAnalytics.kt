@@ -12,6 +12,7 @@ internal class DebugAnalytics(
     override val playback: Analytics.Playback,
     override val lists: Analytics.Lists,
     override val today: Analytics.Today,
+    override val vip: Analytics.Vip,
 ) : Analytics {
     override fun setUserId(userId: String?) {
         Timber.d("setUserId: $userId")
@@ -55,8 +56,12 @@ internal class DebugAnalytics(
         Timber.d("logSearch: mode=%s", mode)
     }
 
-    override fun logVipUpgrade(plan: String) {
-        Timber.d("logVipUpgrade: plan=%s", plan)
+    override fun logVipUpgrade(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        Timber.d("logVipUpgrade: plan=%s, source=%s, flow=%s", plan, source, flow)
     }
 
     override fun logVipUpsell(source: String) {
@@ -334,5 +339,52 @@ internal class DebugAnalyticsToday : Analytics.Today {
         frame: String,
     ) {
         Timber.d("logTodayAction: action=%s, frame=%s", action, frame)
+    }
+}
+
+internal class DebugAnalyticsVip : Analytics.Vip {
+    override fun logUpsellImpression(source: String) {
+        Timber.d("logVipUpsellImpression: source=%s", source)
+    }
+
+    override fun logView(
+        source: String,
+        flow: String,
+    ) {
+        Timber.d("logVipView: source=%s, flow=%s", source, flow)
+    }
+
+    override fun logCheckoutCanceled(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        Timber.d("logVipCheckoutCanceled: plan=%s, source=%s, flow=%s", plan, source, flow)
+    }
+
+    override fun logCheckoutFailed(
+        plan: String,
+        source: String,
+        flow: String,
+        error: String,
+    ) {
+        Timber.d("logVipCheckoutFailed: plan=%s, source=%s, flow=%s, error=%s", plan, source, flow, error)
+    }
+
+    override fun logConfirmed(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        Timber.d("logVipConfirmed: plan=%s, source=%s, flow=%s", plan, source, flow)
+    }
+
+    override fun logConfirmFailed(
+        plan: String,
+        source: String,
+        flow: String,
+        error: String,
+    ) {
+        Timber.d("logVipConfirmFailed: plan=%s, source=%s, flow=%s, error=%s", plan, source, flow, error)
     }
 }

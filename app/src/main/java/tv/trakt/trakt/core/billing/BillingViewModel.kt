@@ -55,13 +55,21 @@ import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.core.billing.model.VipBillingProduct
+import tv.trakt.trakt.core.billing.model.toVipFailureCode
 import tv.trakt.trakt.core.billing.navigation.BillingDestination
 import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
+private const val VIP_FLOW = "new"
+private const val KEY_OPEN_LOGGED = "vip_open_logged"
+private const val KEY_PENDING_PLAN = "vip_pending_plan"
+
+// The paywall opens on its own after login and at a VIP limit, so those opens are not upsell taps.
+private val AUTO_OPEN_SOURCES = setOf("onboarding", "vip-limit")
+
 internal class BillingViewModel(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val analytics: Analytics,
     private val appContext: Context,
     private val sessionManager: SessionManager,
@@ -78,6 +86,8 @@ internal class BillingViewModel(
     private lateinit var billingClient: BillingClient
     private var pendingPurchaseProduct: PendingPurchaseProduct? = null
 
+    private val source = savedStateHandle.toRoute<BillingDestination>().source
+
     private val purchasesUpdatedListener = PurchasesUpdatedListener { result, purchases ->
         if (result.responseCode == BillingResponseCode.OK) {
             purchases?.forEach { purchase ->
@@ -87,6 +97,7 @@ internal class BillingViewModel(
             pendingPurchaseProduct?.let {
                 pendingPurchaseProduct = null
                 val error = VipBillingError.fromBillingResponseCode(result.responseCode)
+                logCheckoutOutcome(error)
                 if (error is CancelledError) {
                     Timber.d("Purchase cancelled by user: ${it.skuId}")
                 } else {
@@ -125,7 +136,17 @@ internal class BillingViewModel(
         analytics.logScreenView(
             screenName = "billing",
         )
-        analytics.logVipUpsell(savedStateHandle.toRoute<BillingDestination>().source)
+        logPaywallOpen()
+    }
+
+    private fun logPaywallOpen() {
+        if (savedStateHandle.get<Boolean>(KEY_OPEN_LOGGED) == true) return
+        savedStateHandle[KEY_OPEN_LOGGED] = true
+
+        analytics.vip.logView(source = source, flow = VIP_FLOW)
+        if (source !in AUTO_OPEN_SOURCES) {
+            analytics.logVipUpsell(source)
+        }
     }
 
     private fun loadUser() {
@@ -299,8 +320,12 @@ internal class BillingViewModel(
         val billingResult = billingClient.launchBillingFlow(activity, billingFlowParams)
         val responseCode = billingResult.responseCode
 
+        val plan = VipBillingProduct.entries.find { it.sku == product.productId }?.plan
+        savedStateHandle[KEY_PENDING_PLAN] = plan
+
         if (responseCode != BillingResponseCode.OK) {
             val billingError = VipBillingError.fromBillingResponseCode(responseCode)
+            logCheckoutOutcome(billingError)
             handleError(billingError)
             loadingState.update { LoadingState.Done }
         } else {
@@ -311,9 +336,7 @@ internal class BillingViewModel(
                 price = price?.priceAmountMicros,
             )
 
-            VipBillingProduct.entries
-                .find { it.sku == product.productId }
-                ?.let { analytics.logVipUpgrade(plan = it.plan) }
+            plan?.let { analytics.logVipUpgrade(plan = it, source = source, flow = VIP_FLOW) }
         }
     }
 
@@ -336,13 +359,38 @@ internal class BillingViewModel(
             return
         }
 
+        val plan = savedStateHandle.get<String>(KEY_PENDING_PLAN)
+
         try {
             verifyPurchaseUseCase.verifyPurchase(
                 purchase = purchase,
                 pendingPurchaseProduct = pendingPurchaseProduct,
             )
             Timber.d("Purchase verified successfully: ${purchase.products.firstOrNull()}")
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                savedStateHandle.remove<String>(KEY_PENDING_PLAN)
+                plan?.let {
+                    analytics.vip.logConfirmFailed(
+                        plan = it,
+                        source = source,
+                        flow = VIP_FLOW,
+                        error = error.toVipFailureCode(),
+                    )
+                }
+                handleError(error)
+                Timber.recordError(error)
+            }
+            return
+        }
 
+        savedStateHandle.remove<String>(KEY_PENDING_PLAN)
+        plan?.let { analytics.vip.logConfirmed(plan = it, source = source, flow = VIP_FLOW) }
+        refreshProfileAfterPurchase()
+    }
+
+    private suspend fun refreshProfileAfterPurchase() {
+        try {
             delay(500)
             loadUserUseCase.loadUserProfile()
             Timber.d("User profile loaded after purchase")
@@ -352,6 +400,20 @@ internal class BillingViewModel(
                 Timber.recordError(error)
             }
         }
+    }
+
+    private fun logCheckoutOutcome(error: VipBillingError) {
+        val plan = savedStateHandle.remove<String>(KEY_PENDING_PLAN) ?: return
+        if (error is CancelledError) {
+            analytics.vip.logCheckoutCanceled(plan = plan, source = source, flow = VIP_FLOW)
+            return
+        }
+        analytics.vip.logCheckoutFailed(
+            plan = plan,
+            source = source,
+            flow = VIP_FLOW,
+            error = error.toVipFailureCode(),
+        )
     }
 
     private fun handleError(error: Exception) {

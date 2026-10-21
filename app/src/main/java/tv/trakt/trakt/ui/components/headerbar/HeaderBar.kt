@@ -43,6 +43,7 @@ import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.seasonal.SeasonalThemeIcon
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewIcon
 import tv.trakt.trakt.ui.theme.LocalSeasonalTheme
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -59,6 +60,7 @@ internal fun HeaderBar(
     showWhatsNew: Boolean = false,
     userLoading: Boolean = false,
     todayContent: (@Composable () -> Unit)? = null,
+    onVipSeen: (() -> Unit)? = null,
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
     onWhatsNewClick: () -> Unit = {},
@@ -87,6 +89,7 @@ internal fun HeaderBar(
         seasonEnabled = seasonEnabled,
         userLoading = userLoading,
         todayContent = todayContent,
+        onVipSeen = onVipSeen,
         onVipClick = onVipClick,
         onFilterClick = onFilterClick,
         onWhatsNewClick = onWhatsNewClick,
@@ -120,6 +123,7 @@ private fun HeaderBar(
     userLoading: Boolean = false,
     todayContent: (@Composable () -> Unit)? = null,
     onMediaModeSelect: (MediaMode) -> Unit = {},
+    onVipSeen: (() -> Unit)? = null,
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
     onWhatsNewClick: () -> Unit = {},
@@ -184,6 +188,7 @@ private fun HeaderBar(
                     )
                 } else if (showVip) {
                     VipChip(
+                        modifier = onVipSeen?.let { Modifier.onUpsellSeen(it) } ?: Modifier,
                         onClick = onVipClick,
                     )
                 }

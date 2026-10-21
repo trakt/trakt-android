@@ -12,6 +12,7 @@ interface Analytics {
     val playback: Playback
     val lists: Lists
     val today: Today
+    val vip: Vip
 
     /**
      * Sets the user ID for analytics.
@@ -71,11 +72,17 @@ interface Analytics {
     /**
      * Logs the start of a VIP purchase flow.
      * @param plan The plan duration (monthly, yearly, two_years).
+     * @param source The upsell that opened the paywall.
+     * @param flow The purchase kind (new, renew, switch).
      */
-    fun logVipUpgrade(plan: String)
+    fun logVipUpgrade(
+        plan: String,
+        source: String,
+        flow: String,
+    )
 
     /**
-     * Logs opening the VIP paywall from an upsell entry point.
+     * Logs a tap on a VIP upsell entry point.
      * @param source The entry point (home, discover, lists, show-details, ...).
      */
     fun logVipUpsell(source: String)
@@ -432,5 +439,63 @@ interface Analytics {
          * @param source The streaming service source slug.
          */
         fun logStreamOn(source: String)
+    }
+
+    interface Vip {
+        /**
+         * Logs a VIP upsell that stayed fully visible for one second.
+         * @param source The upsell entry point.
+         */
+        fun logUpsellImpression(source: String)
+
+        /**
+         * Logs opening the VIP paywall.
+         * @param source The upsell that opened it.
+         * @param flow The purchase kind (new, renew, switch).
+         */
+        fun logView(
+            source: String,
+            flow: String,
+        )
+
+        /**
+         * Logs the user cancelling the store purchase sheet.
+         */
+        fun logCheckoutCanceled(
+            plan: String,
+            source: String,
+            flow: String,
+        )
+
+        /**
+         * Logs a purchase that failed before verification.
+         * @param error A short error code, never a message.
+         */
+        fun logCheckoutFailed(
+            plan: String,
+            source: String,
+            flow: String,
+            error: String,
+        )
+
+        /**
+         * Logs a purchase verified by the Trakt API.
+         */
+        fun logConfirmed(
+            plan: String,
+            source: String,
+            flow: String,
+        )
+
+        /**
+         * Logs a purchase the Trakt API failed to verify.
+         * @param error A short error code, never a message.
+         */
+        fun logConfirmFailed(
+            plan: String,
+            source: String,
+            flow: String,
+            error: String,
+        )
     }
 }

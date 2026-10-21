@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Sentiments
@@ -24,6 +25,7 @@ internal class SentimentViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMockSentimentUseCase: GetMockSentimentUseCase,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<SentimentDestination>()
 
@@ -57,6 +59,10 @@ internal class SentimentViewModel(
                 }
             }
         }
+    }
+
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("sentiment")
     }
 
     @Suppress("UNCHECKED_CAST")

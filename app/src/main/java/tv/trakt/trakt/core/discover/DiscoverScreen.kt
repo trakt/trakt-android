@@ -69,6 +69,7 @@ internal fun DiscoverScreen(
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
         onMoreReleasesClick = onNavigateToAllReleases,
         onVipClick = onNavigateToVip,
+        onVipSeen = viewModel::onVipUpsellSeen,
         onFiltersClick = {
             filtersSheet = true
         },
@@ -94,6 +95,7 @@ private fun DiscoverScreen(
     onMoreAnticipatedClick: () -> Unit = {},
     onMoreReleasesClick: () -> Unit = {},
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
 ) {
     val lazyListState = rememberLazyListState()
@@ -197,6 +199,7 @@ private fun DiscoverScreen(
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
+            onVipSeen = onVipSeen,
             onFiltersClick = onFiltersClick,
         )
     }
@@ -208,6 +211,7 @@ private fun ScreenHeader(
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
+    onVipSeen: () -> Unit,
     onFiltersClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
@@ -221,6 +225,7 @@ private fun ScreenHeader(
         showLogin = userState.first && !userState.second,
         showVip = userState.second && state.user.user?.isVip == false,
         showFilters = true,
+        onVipSeen = onVipSeen,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
         modifier = Modifier.offset {

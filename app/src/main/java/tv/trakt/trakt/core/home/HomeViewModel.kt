@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,7 +34,6 @@ import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
 internal class HomeViewModel(
     private val dismissWelcomeUseCase: DismissWelcomeBannerUseCase,
@@ -45,7 +43,7 @@ internal class HomeViewModel(
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
     private val getCalendarViewUseCase: GetCalendarViewUseCase,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
     private val initialMode = filterManager.getFilter().mode
@@ -153,6 +151,10 @@ internal class HomeViewModel(
                 }
             }
         }
+    }
+
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("home")
     }
 
     val state = combine(

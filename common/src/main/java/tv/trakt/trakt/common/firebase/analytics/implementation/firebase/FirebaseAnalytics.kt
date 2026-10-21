@@ -23,6 +23,8 @@ private const val PARAMETER_COUNT = "count"
 private const val PARAMETER_RESULT = "result"
 private const val PARAMETER_MODE = "mode"
 private const val PARAMETER_PLAN = "plan"
+private const val PARAMETER_FLOW = "flow"
+private const val PARAMETER_ERROR = "error"
 private const val PARAMETER_CONTENT = "content_type"
 private const val PARAMETER_TYPE = "type"
 private const val PARAMETER_ACTION = "action"
@@ -63,6 +65,7 @@ internal class FirebaseAnalytics(
     override val playback: Analytics.Playback,
     override val lists: Analytics.Lists,
     override val today: Analytics.Today,
+    override val vip: Analytics.Vip,
 ) : Analytics {
     companion object Event {
         const val LOGOUT = "logout"
@@ -169,10 +172,18 @@ internal class FirebaseAnalytics(
         )
     }
 
-    override fun logVipUpgrade(plan: String) {
+    override fun logVipUpgrade(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
         firebaseAnalytics.logEvent(
             eventName(VIP_UPGRADE),
-            bundleOf(PARAMETER_PLAN to plan.lowercase()),
+            bundleOf(
+                PARAMETER_PLAN to plan.lowercase(),
+                PARAMETER_SOURCE to source,
+                PARAMETER_FLOW to flow,
+            ),
         )
     }
 
@@ -769,4 +780,92 @@ internal class FirebaseAnalyticsToday(
             ),
         )
     }
+}
+
+internal class FirebaseAnalyticsVip(
+    private val firebase: FirebaseAnalytics,
+) : Analytics.Vip {
+    companion object Event {
+        const val VIP_UPSELL_SEEN = "vip_upsell_seen"
+        const val VIP_VIEW = "vip_view"
+        const val VIP_CHECKOUT_CANCEL = "vip_checkout_cancel"
+        const val VIP_CHECKOUT_FAIL = "vip_checkout_fail"
+        const val VIP_CONFIRMED = "vip_confirmed"
+        const val VIP_CONFIRM_FAIL = "vip_confirm_fail"
+    }
+
+    init {
+        requireEventNames(
+            VIP_UPSELL_SEEN,
+            VIP_VIEW,
+            VIP_CHECKOUT_CANCEL,
+            VIP_CHECKOUT_FAIL,
+            VIP_CONFIRMED,
+            VIP_CONFIRM_FAIL,
+        )
+    }
+
+    override fun logUpsellImpression(source: String) {
+        firebase.logEvent(eventName(VIP_UPSELL_SEEN), bundleOf(PARAMETER_SOURCE to source))
+    }
+
+    override fun logView(
+        source: String,
+        flow: String,
+    ) {
+        firebase.logEvent(
+            eventName(VIP_VIEW),
+            bundleOf(PARAMETER_SOURCE to source, PARAMETER_FLOW to flow),
+        )
+    }
+
+    override fun logCheckoutCanceled(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        firebase.logEvent(eventName(VIP_CHECKOUT_CANCEL), purchaseBundle(plan, source, flow))
+    }
+
+    override fun logCheckoutFailed(
+        plan: String,
+        source: String,
+        flow: String,
+        error: String,
+    ) {
+        firebase.logEvent(
+            eventName(VIP_CHECKOUT_FAIL),
+            purchaseBundle(plan, source, flow).apply { putString(PARAMETER_ERROR, error) },
+        )
+    }
+
+    override fun logConfirmed(
+        plan: String,
+        source: String,
+        flow: String,
+    ) {
+        firebase.logEvent(eventName(VIP_CONFIRMED), purchaseBundle(plan, source, flow))
+    }
+
+    override fun logConfirmFailed(
+        plan: String,
+        source: String,
+        flow: String,
+        error: String,
+    ) {
+        firebase.logEvent(
+            eventName(VIP_CONFIRM_FAIL),
+            purchaseBundle(plan, source, flow).apply { putString(PARAMETER_ERROR, error) },
+        )
+    }
+
+    private fun purchaseBundle(
+        plan: String,
+        source: String,
+        flow: String,
+    ) = bundleOf(
+        PARAMETER_PLAN to plan.lowercase(),
+        PARAMETER_SOURCE to source,
+        PARAMETER_FLOW to flow,
+    )
 }

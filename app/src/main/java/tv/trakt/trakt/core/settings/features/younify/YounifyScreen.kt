@@ -75,6 +75,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.younify.sdk.connect.StreamingService
 
@@ -99,6 +100,7 @@ internal fun YounifyScreen(
             onNavigateBack()
             onNavigateVip()
         },
+        onVipSeen = viewModel::onVipUpsellSeen,
         onServiceActionClick = {
             viewModel.onServiceAction(
                 service = it,
@@ -205,6 +207,7 @@ private fun YounifyScreenContent(
     onSendLogsClick: () -> Unit = { },
     onAllSettingsClick: () -> Unit = { },
     onVipClick: () -> Unit = { },
+    onVipSeen: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
@@ -276,6 +279,7 @@ private fun YounifyScreenContent(
                             service = service,
                             locked = !isVip && !isFree,
                             onVipClick = onVipClick,
+                            onVipSeen = onVipSeen,
                             onActionClick = {
                                 onServiceActionClick(service)
                             },
@@ -310,6 +314,7 @@ private fun YounifyServiceView(
     modifier: Modifier = Modifier,
     onActionClick: () -> Unit = { },
     onVipClick: () -> Unit = { },
+    onVipSeen: () -> Unit = { },
     onEditClick: () -> Unit = { },
     onUnlinkClick: () -> Unit = { },
 ) {
@@ -410,6 +415,7 @@ private fun YounifyServiceView(
 
         if (locked) {
             VipChip(
+                modifier = Modifier.onUpsellSeen(onVipSeen),
                 onClick = onVipClick,
             )
         } else {

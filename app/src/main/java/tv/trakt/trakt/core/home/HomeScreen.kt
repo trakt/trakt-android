@@ -114,6 +114,7 @@ internal fun HomeScreen(
         onMoreRecommendedClick = onNavigateToAllRecommended,
         onCalendarClick = { onNavigateToCalendar(state.calendarView) },
         onVipClick = onNavigateToVip,
+        onVipSeen = viewModel::onVipUpsellSeen,
         onUserClick = onNavigateToUser,
         onTodayClick = onNavigateToToday,
         onStreakClick = {
@@ -170,6 +171,7 @@ private fun HomeScreenContent(
     onMovieClick: (TraktId) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onCalendarClick: () -> Unit = {},
     onStreakClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
@@ -351,6 +353,7 @@ private fun HomeScreenContent(
             userLoading = userLoading,
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
+            onVipSeen = onVipSeen,
             onFiltersClick = onFiltersClick,
             onWhatsNewClick = onWhatsNewClick,
             onTodayClick = onTodayClick,
@@ -366,6 +369,7 @@ private fun HomeScreenHeader(
     userLoading: Boolean,
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
+    onVipSeen: () -> Unit,
     onFiltersClick: () -> Unit,
     onWhatsNewClick: () -> Unit,
     onTodayClick: (groupKey: String) -> Unit,
@@ -392,6 +396,7 @@ private fun HomeScreenHeader(
                 )
             }
         },
+        onVipSeen = onVipSeen,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
         onWhatsNewClick = onWhatsNewClick,

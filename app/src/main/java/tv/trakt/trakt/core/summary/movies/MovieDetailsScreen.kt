@@ -106,6 +106,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -241,6 +242,7 @@ internal fun MovieDetailsScreen(
         },
         onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
+        onVipSeen = viewModel::onVipUpsellSeen,
         onTriviaClick = {
             state.movie?.let { movie ->
                 onTriviaClick(movie)
@@ -444,6 +446,7 @@ internal fun MovieDetailsContent(
     onFavoriteClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
+    onVipSeen: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onPersonLinkClick: ((SlugId) -> Unit)? = null,
     onSentimentClick: ((Sentiments) -> Unit)? = null,
@@ -623,6 +626,7 @@ internal fun MovieDetailsContent(
                         VipBanner(
                             onClick = onVipClick ?: {},
                             modifier = Modifier
+                                .onUpsellSeen { onVipSeen?.invoke() }
                                 .alpha(ratingAlphaMask)
                                 .fillMaxWidth()
                                 .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
