@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +31,7 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.PillShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val firstRowReactions = listOf(
@@ -131,12 +133,10 @@ fun ReactionItem(
         modifier = modifier
             .background(
                 if (highlight) TraktTheme.colors.reactionsSummaryHighlight else Color.Transparent,
-                RoundedCornerShape(12.dp),
+                PillShape,
             )
-            .padding(
-                horizontal = 8.dp,
-                vertical = 4.dp,
-            ),
+            .height(TraktTheme.size.chipHeight)
+            .padding(horizontal = 10.dp),
     ) {
         Text(
             text = reaction.first.emoji,

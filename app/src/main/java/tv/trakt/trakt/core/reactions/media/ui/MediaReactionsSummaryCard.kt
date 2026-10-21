@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -39,6 +40,7 @@ import tv.trakt.trakt.common.model.reactions.MediaReaction
 import tv.trakt.trakt.common.model.reactions.MediaReactionsSummary
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.PillShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.roundToInt
 
@@ -192,9 +194,10 @@ private fun SummaryItem(
         modifier = modifier
             .background(
                 color = if (highlight) TraktTheme.colors.reactionsSummaryHighlight else Color.Transparent,
-                shape = RoundedCornerShape(12.dp),
+                shape = PillShape,
             )
-            .padding(horizontal = 6.dp, vertical = 4.dp),
+            .height(TraktTheme.size.chipHeight)
+            .padding(horizontal = 10.dp),
     ) {
         Text(
             text = reaction.emoji,
