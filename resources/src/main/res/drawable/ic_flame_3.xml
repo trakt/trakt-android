@@ -43,7 +43,7 @@
           />
 
         <item
-          android:color="#FF6438D0"
+          android:color="#FF7654E2"
           android:offset="1"
           />
 
@@ -61,12 +61,12 @@
         >
 
         <item
-          android:color="#FFA08EFE"
+          android:color="#FFCDC5FF"
           android:offset="0.356"
           />
 
         <item
-          android:color="#FF7654E2"
+          android:color="#FF8A70F5"
           android:offset="1"
           />
 
