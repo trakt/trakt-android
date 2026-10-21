@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
 import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
+import tv.trakt.trakt.core.trivia.model.TriviaCategory
 import tv.trakt.trakt.core.trivia.model.TriviaFilter
 import tv.trakt.trakt.core.trivia.model.TriviaFilter.NoSpoilers
 import tv.trakt.trakt.core.trivia.model.TriviaFilter.Spoilers
@@ -58,6 +59,7 @@ internal class TriviaViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val categoryState = MutableStateFlow(initialState.category)
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
@@ -136,30 +138,51 @@ internal class TriviaViewModel(
         }
     }
 
+    fun setCategory(category: TriviaCategory?) {
+        categoryState.update { current ->
+            if (current == category) null else category
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         userState,
         loadingState,
         itemsState,
         filterState,
+        categoryState,
         errorState,
     ) { state ->
         val items = state[2] as ImmutableList<TriviaFact>?
         val filter = state[3] as TriviaFilter?
 
+        val spoilerItems = when (filter) {
+            null -> items
+            NoSpoilers -> items?.filter { !it.spoiler }
+            Spoilers -> items?.filter { it.spoiler }
+        }
+
+        val categories = spoilerItems
+            ?.mapNotNull { TriviaCategory.fromValue(it.category) }
+            ?.distinct()
+            ?.toImmutableList()
+
+        val category = (state[4] as TriviaCategory?)
+            ?.takeIf { categories?.contains(it) == true }
+
         TriviaState(
             user = state[0] as User?,
             loading = state[1] as LoadingState,
             items = items,
-            filteredItems = when (filter) {
-                null -> items
-                NoSpoilers -> items?.filter { !it.spoiler }?.toImmutableList()
-                Spoilers -> items?.filter { it.spoiler }?.toImmutableList()
-            },
+            filteredItems = spoilerItems
+                ?.filter { category == null || it.category == category.value }
+                ?.toImmutableList(),
             filter = filter,
+            categories = categories,
+            category = category,
             backgroundUrl = initialState.backgroundUrl,
             mediaTitle = initialState.mediaTitle,
-            error = state[4] as Exception?,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
