@@ -1,19 +1,11 @@
 package tv.trakt.trakt.core.lists.sheets.create
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
-import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -29,14 +21,14 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.model.lists.CustomList
-import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Private
-import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Public
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
+import tv.trakt.trakt.ui.components.SegmentedToggle
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -163,68 +155,26 @@ private fun CreateListContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun PrivacyButtons(
     modifier: Modifier = Modifier,
     enabled: Boolean,
     selected: CustomList.Privacy,
     onSelect: (CustomList.Privacy) -> Unit,
 ) {
-    Row(
-        horizontalArrangement = spacedBy(4.dp),
+    SegmentedToggle(
+        options = CustomList.Privacy.entries.toImmutableList(),
+        selected = selected,
+        onSelect = onSelect,
+        enabled = enabled,
+        fillWidth = true,
         modifier = modifier,
-    ) {
-        CustomList.Privacy.entries.forEach { variant ->
-            ToggleButton(
-                enabled = enabled,
-                checked = selected == variant,
-                onCheckedChange = {
-                    if (selected != variant) {
-                        onSelect(variant)
-                    }
-                },
-                colors = ToggleButtonDefaults.colors(
-                    containerColor = Color.Transparent,
-                    contentColor = TraktTheme.colors.textPrimary,
-                    checkedContainerColor = TraktTheme.colors.accent,
-                    checkedContentColor = TraktTheme.colors.textPrimaryOnAccent,
-                    disabledContentColor = TraktTheme.colors.textPrimary.copy(
-                        alpha = 0.33F,
-                    ),
-                    disabledContainerColor = when {
-                        selected == variant -> TraktTheme.colors.primaryButtonContainerDisabled
-                        else -> Color.Transparent
-                    },
-                ),
-                border = when {
-                    selected == variant -> BorderStroke(
-                        width = 0.dp,
-                        color = Color.Transparent,
-                    )
-                    else -> BorderStroke(
-                        width = 1.5.dp,
-                        color = TraktTheme.colors.chipContainer,
-                    )
-                },
-                shapes = when (variant) {
-                    Public -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                    Private -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                },
-                contentPadding = PaddingValues(
-                    horizontal = 12.dp,
-                ),
-                modifier = Modifier
-                    .weight(1f)
-                    .height(46.dp),
-            ) {
-                Text(
-                    text = stringResource(variant.displayRes),
-                    style = TraktTheme.typography.buttonPrimary,
-                    maxLines = 1,
-                    overflow = Ellipsis,
-                )
-            }
-        }
+    ) { variant, _ ->
+        Text(
+            text = stringResource(variant.displayRes),
+            style = TraktTheme.typography.buttonSecondary,
+            maxLines = 1,
+            overflow = Ellipsis,
+        )
     }
 }
 
