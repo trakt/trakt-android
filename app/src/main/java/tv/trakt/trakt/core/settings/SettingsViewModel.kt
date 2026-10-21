@@ -136,6 +136,25 @@ internal class SettingsViewModel(
         }
     }
 
+    fun updateUsername(username: String) {
+        viewModelScope.launch {
+            try {
+                accountLoadingState.update { Loading }
+                updateSettingsUseCase.updateUsername(username)
+                analytics.logSettings("profile")
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    infoState.update {
+                        DynamicStringResource(R.string.error_text_username)
+                    }
+                    Timber.w(error, "Unable to update username")
+                }
+            } finally {
+                accountLoadingState.update { Done }
+            }
+        }
+    }
+
     fun updateUserAbout(about: String?) {
         viewModelScope.launch {
             try {

@@ -39,6 +39,7 @@ import tv.trakt.trakt.common.networking.api.klipy.KlipyApi
 import tv.trakt.trakt.common.networking.api.people.PeopleExtrasApi
 import tv.trakt.trakt.common.networking.api.plex.PlexStreamApi
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
+import tv.trakt.trakt.common.networking.api.users.UsersExtrasApi
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -114,6 +115,7 @@ val networkingApiModule = module {
             get<WatchedApi>(),
             get<V3Api>(),
             get<ScrobbleExtrasApi>(),
+            get<UsersExtrasApi>(),
         )
     }
 
@@ -137,6 +139,14 @@ val networkingApiModule = module {
 
     single<ScrobbleExtrasApi> {
         ScrobbleExtrasApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<UsersExtrasApi> {
+        UsersExtrasApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),

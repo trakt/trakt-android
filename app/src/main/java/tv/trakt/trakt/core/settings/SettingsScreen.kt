@@ -117,7 +117,7 @@ internal fun SettingsScreen(
     val uriHandler = LocalUriHandler.current
     val snackbar = LocalSnackbarState.current
     val haptic = LocalHapticFeedback.current
-    val resources = LocalResources.current
+    val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -133,7 +133,7 @@ internal fun SettingsScreen(
         if (state.info != null) {
             haptic.performHapticFeedback(Confirm)
             snackbar.showSnackbar(
-                message = resources.getString(R.string.text_info_cover_removed),
+                message = state.info?.get(context) ?: return@LaunchedEffect,
                 duration = Short,
             )
             viewModel.clearInfo()
@@ -143,6 +143,7 @@ internal fun SettingsScreen(
     SettingsScreenContent(
         state = state,
         onSetDisplayName = viewModel::updateUserDisplayName,
+        onSetUsername = viewModel::updateUsername,
         onSetLocation = viewModel::updateUserLocation,
         onSetAbout = viewModel::updateUserAbout,
         onEnableMultiplePlays = viewModel::enableMultiplePlays,
@@ -193,6 +194,7 @@ private fun SettingsScreenContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onSetDisplayName: (String?) -> Unit = { },
+    onSetUsername: (String) -> Unit = { },
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
     onClearCoverImage: () -> Unit = { },
@@ -265,6 +267,7 @@ private fun SettingsScreenContent(
                 SettingsAccount(
                     state = state,
                     onSetDisplayName = onSetDisplayName,
+                    onSetUsername = onSetUsername,
                     onSetLocation = onSetLocation,
                     onSetAbout = onSetAbout,
                     onClearCoverImage = onClearCoverImage,
@@ -376,12 +379,14 @@ private fun SettingsAccount(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onSetDisplayName: (String?) -> Unit = { },
+    onSetUsername: (String) -> Unit = { },
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
     onClearCoverImage: () -> Unit = { },
     onEnablePrivateAccount: (Boolean) -> Unit = { },
 ) {
     var displayNameSheet by remember { mutableStateOf<String?>(null) }
+    var usernameSheet by remember { mutableStateOf<String?>(null) }
     var locationSheet by remember { mutableStateOf<String?>(null) }
     var aboutSheet by remember { mutableStateOf<String?>(null) }
 
@@ -420,6 +425,15 @@ private fun SettingsAccount(
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
                 displayNameSheet = state.user?.name
+            },
+        )
+
+        SettingsValueField(
+            text = stringResource(R.string.text_username),
+            value = state.user?.username?.let { "@$it" },
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+            onClick = {
+                usernameSheet = state.user?.username.orEmpty()
             },
         )
 
@@ -484,6 +498,22 @@ private fun SettingsAccount(
         },
         onDismiss = {
             displayNameSheet = null
+        },
+    )
+
+    SingleInputSheet(
+        active = usernameSheet != null,
+        title = stringResource(R.string.text_username),
+        description = stringResource(R.string.input_prompt_username),
+        initialInput = usernameSheet,
+        onApply = {
+            val username = it?.trim()
+            if (!username.isNullOrBlank() && usernameSheet != username) {
+                onSetUsername(username)
+            }
+        },
+        onDismiss = {
+            usernameSheet = null
         },
     )
 

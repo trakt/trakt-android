@@ -92,6 +92,10 @@ internal class CompositeAnalytics(
         targets.forEach { it.logCoverImage(mediaType) }
     }
 
+    override fun logSettings(settings: String) {
+        targets.forEach { it.logSettings(settings) }
+    }
+
     override fun logCalendarPeriod(action: String) {
         targets.forEach { it.logCalendarPeriod(action) }
     }

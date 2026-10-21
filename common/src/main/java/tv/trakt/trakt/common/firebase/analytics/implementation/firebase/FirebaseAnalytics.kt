@@ -35,6 +35,7 @@ private const val PARAMETER_FRAMES = "frames"
 private const val PARAMETER_GROUPS = "groups"
 private const val PARAMETER_FRAME = "frame"
 private const val PARAMETER_THEME = "theme"
+private const val PARAMETER_SETTINGS = "settings"
 private const val PARAMETER_ID = "id"
 private const val PARAMETER_SLUG = "slug"
 private const val PARAMETER_SORT_BY = "sort_by"
@@ -80,6 +81,7 @@ internal class FirebaseAnalytics(
         const val SOCIAL_BLOCK = "social_block"
         const val SETTINGS_THEME = "settings_theme"
         const val SETTINGS_COVER_IMAGE = "settings_cover_image"
+        const val SETTINGS_CHANGE = "settings_change"
         const val CALENDAR_PERIOD = "calendar_period"
         const val FILTER_CHANGE = "filter_change"
     }
@@ -96,6 +98,7 @@ internal class FirebaseAnalytics(
             SOCIAL_BLOCK,
             SETTINGS_THEME,
             SETTINGS_COVER_IMAGE,
+            SETTINGS_CHANGE,
             CALENDAR_PERIOD,
             FILTER_CHANGE,
         )
@@ -232,6 +235,13 @@ internal class FirebaseAnalytics(
         firebaseAnalytics.logEvent(
             eventName(SETTINGS_COVER_IMAGE),
             bundleOf(PARAMETER_MEDIA_TYPE to mediaType.lowercase()),
+        )
+    }
+
+    override fun logSettings(settings: String) {
+        firebaseAnalytics.logEvent(
+            eventName(SETTINGS_CHANGE),
+            bundleOf(PARAMETER_SETTINGS to settings.lowercase()),
         )
     }
 
