@@ -17,8 +17,6 @@ import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
 private val SEEN_DURATION = 1.seconds
-
-// A full view can round to a hair under the measured size.
 private const val FULLY_VISIBLE_RATIO = 0.99F
 
 /**
