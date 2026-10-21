@@ -11,11 +11,19 @@ applyTo: '**/*.kt'
 
 ## Code Comments
 
-- Avoid comments that explain "what" code does - prefer self-documenting names. Use comments to
-  explain "why" or "how" when non-obvious.
-- Comments amount should be minimal
-- Comments should be in English, clear, concise, and grammatically correct. Avoid slang, idioms, or
-  jokes.
+- **Default to no comment.** Code must explain itself through names, types and structure. Add a
+  comment only when it carries a non-obvious "why": a workaround, a platform or API quirk, a
+  constraint that is not visible in the code.
+- **Never comment "what" the code does.** If a comment restates the next line, delete it and
+  improve the name instead.
+- **Never mention other platforms or parity.** No "same as on web", "matches iOS", "mirrors
+  trakt-web", "parity with ..." and similar. Android behaviour stands on its own; these notes are
+  noise and go stale.
+- No change-history or process notes: "previously ...", "changed from ...", "as requested",
+  "per review", "new", "fixed". Git history and PRs already carry that.
+- No commented-out code, no section dividers, no KDoc on private or self-explanatory members.
+- When comments are justified: English, one or two lines, clear and grammatically correct. No
+  slang, idioms or jokes.
 
 ## Before Writing Code
 

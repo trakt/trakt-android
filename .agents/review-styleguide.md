@@ -80,6 +80,19 @@ plain hyphens.
 - **Single responsibility** per function and per type. ViewModels >
   300 lines are smells.
 
+## Code comments
+
+- **Default to no comment.** Only a non-obvious "why" justifies one:
+  a workaround, a platform or API quirk, a hidden constraint.
+- **Flag "what" comments** that restate the code. Suggest a better
+  name instead.
+- **Flag platform / parity references**: "same as on web", "matches
+  iOS", "mirrors trakt-web", "parity with ...". Noise that goes stale.
+- **Flag change-history or process notes**: "previously ...",
+  "changed from ...", "as requested", "per review", "new", "fixed".
+- **Flag** commented-out code, section dividers, and KDoc on private
+  or self-explanatory members.
+
 ## Architecture
 
 - **MVVM + UDF.** ViewModel exposes `StateFlow<UiState>` built via
@@ -232,6 +245,9 @@ Severity-prioritised list:
 - `default:` / `else ->` branches on sealed domain enums.
 - `Task { … }`/`launch { … }` inside composable `body { }` (use
   `LaunchedEffect`).
+- Comments mentioning other platforms or parity ("same as on web",
+  "matches iOS"), change history, or review process.
+- Comments restating what the code does, and commented-out code.
 
 **Low (advisory):**
 
