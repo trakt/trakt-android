@@ -135297,7 +135297,7 @@
     },
     "/comments/{id}/reactions/{reaction_type}": {
       "post": {
-        "description": "#### 🔒 OAuth Required\nAdd a reaction to a comment. Use `reaction_type` to choose the reaction; a successful create returns `201` with no response body.",
+        "description": "#### 🔒 OAuth Required\nAdd a reaction to a comment. Use `reaction_type` to choose the reaction; a successful create returns `204` with no response body.",
         "summary": "Add comment reaction",
         "tags": [
           "comments",
@@ -135339,8 +135339,8 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "201",
+          "204": {
+            "description": "204",
             "content": {
               "application/json": {
                 "schema": {}
