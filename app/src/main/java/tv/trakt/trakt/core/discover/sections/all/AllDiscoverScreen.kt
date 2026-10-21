@@ -201,6 +201,7 @@ private fun AllDiscoverScreenContent(
             items = state.items ?: EmptyImmutableList,
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
+            filtered = state.filter?.isActive == true,
             title = {
                 Column {
                     TitleBar(
