@@ -60,7 +60,7 @@ internal fun ListsFilters(
                     Icon(
                         painter = painterResource(filter.displayIcon),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimaryOnAccent,
+                        tint = TraktTheme.colors.selectorContent,
                         modifier = Modifier.size(
                             when (filter) {
                                 Smart -> 18.dp

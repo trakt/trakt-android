@@ -440,7 +440,7 @@ private fun ContentFilters(
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimaryOnAccent,
+                        tint = TraktTheme.colors.selectorContent,
                         modifier = Modifier
                             .size(FilterChipDefaults.IconSize)
                             .graphicsLayer {

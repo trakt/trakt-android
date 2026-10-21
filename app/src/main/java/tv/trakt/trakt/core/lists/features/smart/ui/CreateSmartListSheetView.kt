@@ -180,7 +180,7 @@ internal fun CreateSmartListSheetView(
                                         painter = painterResource(filter.offIcon),
                                         contentDescription = null,
                                         tint = when {
-                                            state.filters.media == filter -> TraktTheme.colors.textPrimaryOnAccent
+                                            state.filters.media == filter -> TraktTheme.colors.selectorContent
                                             else -> TraktTheme.colors.textPrimary
                                         },
                                         modifier = Modifier.size(16.dp),

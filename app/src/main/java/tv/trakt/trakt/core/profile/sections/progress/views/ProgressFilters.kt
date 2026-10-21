@@ -57,7 +57,7 @@ internal fun ProgressFilters(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
                         tint = when {
-                            selected == filter -> TraktTheme.colors.textPrimaryOnAccent
+                            selected == filter -> TraktTheme.colors.selectorContent
                             else -> TraktTheme.colors.textPrimary
                         },
                         modifier = Modifier
