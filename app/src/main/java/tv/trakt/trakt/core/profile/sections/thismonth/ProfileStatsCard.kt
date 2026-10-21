@@ -294,9 +294,13 @@ private fun PreviousMonthRow(
         modifier = Modifier
             .alpha(animatedAlpha)
             .padding(horizontal = 16.dp)
+            .height(TraktTheme.size.chipHeight)
+            .clip(PillShape)
+            .background(TraktTheme.colors.profileStatsChip)
             .onClick(enabled = visible) {
                 onClick()
-            },
+            }
+            .padding(horizontal = 12.dp),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_history),
