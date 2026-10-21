@@ -87,7 +87,6 @@ val DarkColors: TraktColors = TraktColors(
     tooltipContainer = Shade800,
     tooltipContent = White,
     // Switches
-    switchContainerChecked = Purple800,
     switchContainerUnchecked = White,
     switchThumbChecked = Purple500,
     switchThumbUnchecked = Purple500,
