@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">Έως %d λεπτά</string>
   <string name="filter_label_this_year">Φέτος</string>
   <string name="filter_toggle_state_default">Προεπιλογή</string>
-  <string name="filter_toggle_state_off">Απενεργοποίηση</string>
-  <string name="filter_toggle_state_on">Ενεργό</string>
+  <string name="filter_toggle_state_off">Όχι</string>
+  <string name="filter_toggle_state_on">Ναι</string>
   <string name="header_account_details">Στοιχεία λογαριασμού</string>
   <string name="header_account_security">Ασφάλεια λογαριασμού</string>
   <string name="header_add_from_lists">Προσθήκη στο %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Πρόσφατα Παρακολουθήθηκαν</string>
   <string name="list_title_recommendation_sources_activity">Έχετε παρακολουθήσει</string>
   <string name="list_title_recommendation_sources_favorite">Λατρέψατε</string>
+  <string name="list_title_recommendation_sources_people">Συνεχίζετε να παρακολουθείτε</string>
   <string name="list_title_recommendation_sources_subgenre">Σας αρέσει</string>
   <string name="list_title_recommended">Προτεινόμενα</string>
   <string name="list_title_recommended_movies">Προτεινόμενες Ταινίες</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">Ψυχές Συγγενείς</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Ταίριασμα:</string>
-  <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
+  <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
   <string name="mir_banner_body">Η μηνιαία ανακεφαλαίωσή σου είναι έτοιμη. Δες τι παρακολούθησες τον %s.</string>
   <string name="mir_banner_body_short">Η ανακεφαλαίωση για τον %s είναι έτοιμη.</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">Σε μεγαλύτερες οθόνες, όλες οι λίστες χρησιμοποιούν τις ίδιες κάρτες με την υπόλοιπη εφαρμογή. Η επιλογή μιας ανοίγει μια γρήγορη επισκόπηση αντί να αποχωρήσετε από τη λίστα.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_show_ending">Εμφανίζει μια γραμμή Τέλος στις λεπτομέρειες μιας σειράς: «Ολοκληρώθηκε» όταν η ιστορία ολοκληρώθηκε, «Άλυτο» όταν δεν ολοκληρώθηκε.</string>
-  <string name="preview_feature_description_smart_recommendations">Εναλλαγή προτάσεων μεταξύ έξυπνων επιλογών από το νέο μοντέλο και των Κλασικών.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
   <string name="preview_feature_description_vip_cancel_flow">Ένας νέος τρόπος ακύρωσης του VIP: ρωτάει γιατί, δείχνει τι αλλάζει και προσφέρει μια συμφωνία για να παραμείνετε.</string>
   <string name="preview_feature_description_vip_veteran">Δείχνει πόσο καιρό οι χρήστες έχουν διατηρήσει το VIP χωρίς διακοπή, με σήμα Βετεράνου ή Θρύλου, ένα έγχρωμο δαχτυλίδι στο avatar και μερικούς εορτασμούς στο προφίλ σας.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Κάρτες Μεγάλης Οθόνης</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_show_ending">Τέλος σειράς</string>
-  <string name="preview_feature_title_smart_recommendations">Έξυπνες προτάσεις</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
   <string name="preview_feature_title_vip_cancel_flow">Ροή ακύρωσης VIP</string>
   <string name="preview_feature_title_vip_veteran">Κατάσταση βετεράνου VIP</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">Μόνο Webhook</string>
   <string name="tag_mixtape_different_mood">Διαφορετική διάθεση</string>
   <string name="tag_mixtape_kept">Διατηρήθηκε</string>
-  <string name="tag_mixtape_match">%s%% αντιστοιχία</string>
+  <string name="tag_mixtape_match">%s% αντιστοιχία</string>
   <string name="tag_mixtape_tap_details">Πατήστε για λεπτομέρειες</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
   <string name="tag_text_deal_price">Πρώτα 2 έτη</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s ψήφοι</string>
   <string name="text_raw_export">Ακατέργαστη εξαγωγή</string>
+  <string name="text_recommendation_person_more_titles">+%d ακόμη</string>
+  <string name="text_recommendation_person_watched_acting_one">Πρωταγωνίστησε σε %d τίτλο που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_acting_other">Πρωταγωνίστησε σε %d τίτλους που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Σκηνοθέτησε και πρωταγωνίστησε σε %d τίτλο που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Σκηνοθέτησε και πρωταγωνίστησε σε %d τίτλους που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_directing_one">Σκηνοθέτησε σε %d τίτλο που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_directing_other">Σκηνοθέτησε σε %d τίτλους που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Δημιούργησε και πρωταγωνίστησε σε %d τίτλο που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Δημιούργησε και πρωταγωνίστησε σε %d τίτλους που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_making_one">Δημιούργησε σε %d τίτλο που παρακολουθήσατε</string>
+  <string name="text_recommendation_person_watched_making_other">Δημιούργησε σε %d τίτλους που παρακολουθήσατε</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Παρακαλούμε επανασυνδέστε τις %s παρακάτω.</string>
   <string name="text_rent">Ενοικίαση</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">Κανένα (όχι υβρίδιο)</string>
   <string name="yir_2026_preview_runner_up">Επιλαχών</string>
   <string name="yir_2026_preview_title">Προεπισκόπηση προφίλ</string>
-  <string name="yir_2026_rarity">Μόνο το %1$d%% είναι %2$s</string>
+  <string name="yir_2026_rarity">Μόνο το %1$d% είναι %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Λίγο %s</string>
   <string name="yir_2026_reel_and_you_are">Και είστε</string>
   <string name="yir_2026_reel_but_mostly">Αλλά κυρίως</string>

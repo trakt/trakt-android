@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">Hingga %d menit</string>
   <string name="filter_label_this_year">Tahun ini</string>
   <string name="filter_toggle_state_default">Default</string>
-  <string name="filter_toggle_state_off">Mati</string>
-  <string name="filter_toggle_state_on">Aktif</string>
+  <string name="filter_toggle_state_off">Tidak</string>
+  <string name="filter_toggle_state_on">Ya</string>
   <string name="header_account_details">Detail Akun</string>
   <string name="header_account_security">Keamanan Akun</string>
   <string name="header_add_from_lists">Tambahkan ke %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Baru Ditonton</string>
   <string name="list_title_recommendation_sources_activity">Anda tonton</string>
   <string name="list_title_recommendation_sources_favorite">Anda suka</string>
+  <string name="list_title_recommendation_sources_people">Anda terus menonton</string>
   <string name="list_title_recommendation_sources_subgenre">Anda suka</string>
   <string name="list_title_recommended">Rekomendasi</string>
   <string name="list_title_recommended_movies">Film Rekomendasi</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">Satu Frekuensi</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Cocok:</string>
-  <string name="match_pill_aria_label">Kecocokan %1$d%%, %2$s. Buka detail kecocokan.</string>
+  <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
   <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
   <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_show_ending">Menampilkan baris Akhir di detail tayangan: Selesai saat cerita berakhir, Tidak Terselesaikan saat tidak berakhir.</string>
-  <string name="preview_feature_description_smart_recommendations">Beralih rekomendasi antara pilihan Cerdas dari model baru dan yang Klasik.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
   <string name="preview_feature_description_vip_cancel_flow">Cara baru untuk membatalkan VIP: menanyakan alasannya, menunjukkan perubahan apa yang akan terjadi, dan menawarkan penawaran untuk tetap berlangganan.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_show_ending">Akhir Tayangan</string>
-  <string name="preview_feature_title_smart_recommendations">Rekomendasi cerdas</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">Alur pembatalan VIP</string>
   <string name="preview_feature_title_vip_veteran">Status veteran VIP</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">Webhook saja</string>
   <string name="tag_mixtape_different_mood">Nuansa berbeda</string>
   <string name="tag_mixtape_kept">Disimpan</string>
-  <string name="tag_mixtape_match">%s%% cocok</string>
+  <string name="tag_mixtape_match">%s% cocok</string>
   <string name="tag_mixtape_tap_details">Ketuk untuk detail</string>
   <string name="tag_text_blocked_user">Diblokir</string>
   <string name="tag_text_deal_price">2 Tahun Pertama</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s suara</string>
   <string name="text_raw_export">Ekspor mentah</string>
+  <string name="text_recommendation_person_more_titles">+%d lainnya</string>
+  <string name="text_recommendation_person_watched_acting_one">Berperan dalam %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_acting_other">Berperan dalam %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Menyutradarai dan berperan dalam %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Menyutradarai dan berperan dalam %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_directing_one">Menyutradarai di %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_directing_other">Menyutradarai di %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Membuat dan berperan dalam %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Membuat dan berperan dalam %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_making_one">Membuat di %d judul yang Anda tonton</string>
+  <string name="text_recommendation_person_watched_making_other">Membuat di %d judul yang Anda tonton</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Harap hubungkan kembali %s di bawah.</string>
   <string name="text_rent">Sewa</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">Tidak ada (tanpa hibrida)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Pratinjau Persona</string>
-  <string name="yir_2026_rarity">Hanya %1$d%% adalah %2$s</string>
+  <string name="yir_2026_rarity">Hanya %1$d% adalah %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Sedikit %s</string>
   <string name="yir_2026_reel_and_you_are">Dan Anda adalah</string>
   <string name="yir_2026_reel_but_mostly">Tapi sebagian besar</string>

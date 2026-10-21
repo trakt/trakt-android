@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">Fins a %d minuts</string>
   <string name="filter_label_this_year">Aquest any</string>
   <string name="filter_toggle_state_default">Per defecte</string>
-  <string name="filter_toggle_state_off">Desactivat</string>
-  <string name="filter_toggle_state_on">Activat</string>
+  <string name="filter_toggle_state_off">No</string>
+  <string name="filter_toggle_state_on">Sí</string>
   <string name="header_account_details">Detalls del compte</string>
   <string name="header_account_security">Seguretat del compte</string>
   <string name="header_add_from_lists">Afegeix a %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Vists recentment</string>
   <string name="list_title_recommendation_sources_activity">Has vist</string>
   <string name="list_title_recommendation_sources_favorite">T\'ha encantat</string>
+  <string name="list_title_recommendation_sources_people">Segueixes veient</string>
   <string name="list_title_recommendation_sources_subgenre">T\'agrada</string>
   <string name="list_title_recommended">Recomanat</string>
   <string name="list_title_recommended_movies">Pel·lícules recomanades</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">Ànimes bessones</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidència:</string>
-  <string name="match_pill_aria_label">%1$d%% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
+  <string name="match_pill_aria_label">%1$d% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
   <string name="mir_banner_body">El teu resum mensual està llest. Aquí teniu el que vau veure a %s.</string>
   <string name="mir_banner_body_short">El teu resum de %s està llest.</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">A pantalles més grans, totes les llistes utilitzen les mateixes targetes que la resta de l\'aplicació. Si en seleccioneu una, s\'obre una vista ràpida en lloc de sortir de la llista.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_show_ending">Mostra una fila de Finalització als detalls d\'una sèrie: Completat quan la història ha conclòs, Sense resoldre quan no.</string>
-  <string name="preview_feature_description_smart_recommendations">Canvia les recomanacions entre les seleccions intel·ligents del nou model i les clàssiques.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
   <string name="preview_feature_description_vip_cancel_flow">Una nova manera de cancel·lar el VIP: pregunta per què, mostra els canvis i ofereix una oferta per quedar-se.</string>
   <string name="preview_feature_description_vip_veteran">Mostra quant de temps els membres han mantingut el VIP sense interrupcions, amb una insígnia de Veterà o Llegenda, un anell d\'avatar de color i algunes celebracions al teu propi perfil.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Targetes per a pantalles grans</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_show_ending">Finalització de la sèrie</string>
-  <string name="preview_feature_title_smart_recommendations">Recomanacions intel·ligents</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_vip_cancel_flow">Flux de cancel·lació VIP</string>
   <string name="preview_feature_title_vip_veteran">Estat VIP de veterà</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">Només Webhook</string>
   <string name="tag_mixtape_different_mood">Un altre ambient</string>
   <string name="tag_mixtape_kept">Guardat</string>
-  <string name="tag_mixtape_match">%s%% de coincidència</string>
+  <string name="tag_mixtape_match">%s% de coincidència</string>
   <string name="tag_mixtape_tap_details">Toca per als detalls</string>
   <string name="tag_text_blocked_user">Bloquejat</string>
   <string name="tag_text_deal_price">Primers 2 anys</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s vots</string>
   <string name="text_raw_export">Exportació en brut</string>
+  <string name="text_recommendation_person_more_titles">+%d més</string>
+  <string name="text_recommendation_person_watched_acting_one">Ha actuat en %d títol que has vist</string>
+  <string name="text_recommendation_person_watched_acting_other">Ha actuat en %d títols que has vist</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Ha dirigit i actuat en %d títol que has vist</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Ha dirigit i actuat en %d títols que has vist</string>
+  <string name="text_recommendation_person_watched_directing_one">Ha dirigit en %d títol que has vist</string>
+  <string name="text_recommendation_person_watched_directing_other">Ha dirigit en %d títols que has vist</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Ha creat i actuat en %d títol que has vist</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Ha creat i actuat en %d títols que has vist</string>
+  <string name="text_recommendation_person_watched_making_one">Ha creat en %d títol que has vist</string>
+  <string name="text_recommendation_person_watched_making_other">Ha creat en %d títols que has vist</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Torna a connectar %s a continuació.</string>
   <string name="text_rent">Lloga</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">Cap (sense híbrid)</string>
   <string name="yir_2026_preview_runner_up">Subcampió</string>
   <string name="yir_2026_preview_title">Vista prèvia de la personalitat</string>
-  <string name="yir_2026_rarity">Només el %1$d%% són %2$s</string>
+  <string name="yir_2026_rarity">Només el %1$d% són %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Una mica %s</string>
   <string name="yir_2026_reel_and_you_are">I tu ets</string>
   <string name="yir_2026_reel_but_mostly">Però majoritàriament</string>

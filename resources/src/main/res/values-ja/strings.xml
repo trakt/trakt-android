@@ -858,7 +858,7 @@
   <string name="filter_label_this_year">今年</string>
   <string name="filter_toggle_state_default">デフォルト</string>
   <string name="filter_toggle_state_off">オフ</string>
-  <string name="filter_toggle_state_on">オン</string>
+  <string name="filter_toggle_state_on">はい</string>
   <string name="header_account_details">アカウント詳細</string>
   <string name="header_account_security">アカウントセキュリティ</string>
   <string name="header_add_from_lists">%sに追加</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">最近視聴した作品</string>
   <string name="list_title_recommendation_sources_activity">視聴済み</string>
   <string name="list_title_recommendation_sources_favorite">お気に入り</string>
+  <string name="list_title_recommendation_sources_people">よく視聴している</string>
   <string name="list_title_recommendation_sources_subgenre">お好み</string>
   <string name="list_title_recommended">おすすめ</string>
   <string name="list_title_recommended_movies">おすすめの映画</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">ソウルメイト</string>
   <string name="match_label_spin_off">スピンオフ</string>
   <string name="match_pill_anchor">マッチ:</string>
-  <string name="match_pill_aria_label">%1$d%%一致、%2$s。一致の詳細を開く。</string>
+  <string name="match_pill_aria_label">%1$d%一致、%2$s。一致の詳細を開く。</string>
   <string name="match_pill_loading_aria_label">マッチスコアを計算中</string>
   <string name="mir_banner_body">あなたの月間まとめができました。%sに視聴したコンテンツはこちらです。</string>
   <string name="mir_banner_body_short">あなたの%sのまとめができました。</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">大画面では、すべてのリストでアプリの他の部分と同じカードを使用します。いずれかを選択すると、リストを離れることなくクイック概要が開きます。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_show_ending">作品の詳細に完結情報行を表示します。ストーリーが完結した場合は「完結済み」、しなかった場合は「未完」と表示されます。</string>
-  <string name="preview_feature_description_smart_recommendations">新しいモデルからのスマートなピックと、クラシックなレコメンデーションを切り替えます。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_vip_cancel_flow">VIPを解約する新しい方法: 理由を尋ね、変更点を示し、継続するための特典を提供します。</string>
   <string name="preview_feature_description_vip_veteran">VIPを途切れることなく継続した期間を表示します。ベテランまたはレジェンドバッジ、色付きのアバターリング、そしてプロフィールでのささやかなお祝いが贈られます。</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">大画面カード</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_show_ending">完結情報</string>
-  <string name="preview_feature_title_smart_recommendations">スマートレコメンデーション</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP解約フロー</string>
   <string name="preview_feature_title_vip_veteran">VIPベテランステータス</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">ウェブフックのみ</string>
   <string name="tag_mixtape_different_mood">別の雰囲気</string>
   <string name="tag_mixtape_kept">キープ済み</string>
-  <string name="tag_mixtape_match">%s%%一致</string>
+  <string name="tag_mixtape_match">%s%一致</string>
   <string name="tag_mixtape_tap_details">タップで詳細</string>
   <string name="tag_text_blocked_user">ブロック済み</string>
   <string name="tag_text_deal_price">最初の2年間</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s票</string>
   <string name="text_raw_export">生データのエクスポート</string>
+  <string name="text_recommendation_person_more_titles">+あと%d件</string>
+  <string name="text_recommendation_person_watched_acting_one">出演した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_acting_other">出演した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">監督し、出演した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">監督し、出演した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_directing_one">監督した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_directing_other">監督した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_making_acting_one">制作し、出演した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_making_acting_other">制作し、出演した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_making_one">制作した · 視聴済みのタイトル%d件</string>
+  <string name="text_recommendation_person_watched_making_other">制作した · 視聴済みのタイトル%d件</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">以下の%sを再接続してください。</string>
   <string name="text_rent">レンタル</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">なし（ハイブリッドなし）</string>
   <string name="yir_2026_preview_runner_up">次点</string>
   <string name="yir_2026_preview_title">ペルソナプレビュー</string>
-  <string name="yir_2026_rarity">%1$d%%だけが%2$sです</string>
+  <string name="yir_2026_rarity">%1$d%だけが%2$sです</string>
   <string name="yir_2026_reel_a_little_bit">少し%s</string>
   <string name="yir_2026_reel_and_you_are">そしてあなたは</string>
   <string name="yir_2026_reel_but_mostly">しかし、ほとんどは</string>

@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">Up to %d minutes</string>
   <string name="filter_label_this_year">This year</string>
   <string name="filter_toggle_state_default">Default</string>
-  <string name="filter_toggle_state_off">Off</string>
-  <string name="filter_toggle_state_on">On</string>
+  <string name="filter_toggle_state_off">No</string>
+  <string name="filter_toggle_state_on">Yes</string>
   <string name="header_account_details">Account Details</string>
   <string name="header_account_security">Account security</string>
   <string name="header_add_from_lists">Add to %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Recently Watched</string>
   <string name="list_title_recommendation_sources_activity">You watched</string>
   <string name="list_title_recommendation_sources_favorite">You loved</string>
+  <string name="list_title_recommendation_sources_people">You keep watching</string>
   <string name="list_title_recommendation_sources_subgenre">You like</string>
   <string name="list_title_recommended">Recommended</string>
   <string name="list_title_recommended_movies">Recommended Movies</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">Soulmates</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open match details.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open match details.</string>
   <string name="match_pill_loading_aria_label">Computing match score</string>
   <string name="mir_banner_body">Your monthly recap is ready. Here\'s what you watched in %s.</string>
   <string name="mir_banner_body_short">Your %s recap is ready.</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">On bigger screens, view all lists use the same cards as the rest of the app. Selecting one opens a quick glance instead of leaving the list.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_show_ending">Shows an Ending row in a show\'s details: Complete when the story wrapped up, Unresolved when it did not.</string>
-  <string name="preview_feature_description_smart_recommendations">Switch recommendations between Smart picks from the new model and the Classic ones.</string>
   <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
   <string name="preview_feature_description_vip_cancel_flow">A new way to cancel VIP: asks why, shows what changes and offers a deal to stay.</string>
   <string name="preview_feature_description_vip_veteran">Shows how long members have kept VIP without a break, with a Veteran or Legend badge, a coloured avatar ring and a few celebrations on your own profile.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Large Screen Cards</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_show_ending">Show ending</string>
-  <string name="preview_feature_title_smart_recommendations">Smart recommendations</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP cancel flow</string>
   <string name="preview_feature_title_vip_veteran">VIP veteran status</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">Webhook only</string>
   <string name="tag_mixtape_different_mood">Different mood</string>
   <string name="tag_mixtape_kept">Kept</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tap for details</string>
   <string name="tag_text_blocked_user">Blocked</string>
   <string name="tag_text_deal_price">First 2 Years</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votes</string>
   <string name="text_raw_export">Raw export</string>
+  <string name="text_recommendation_person_more_titles">+%d more</string>
+  <string name="text_recommendation_person_watched_acting_one">Acted in %d title you watched</string>
+  <string name="text_recommendation_person_watched_acting_other">Acted in %d titles you watched</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Directed and acted in %d title you watched</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Directed and acted in %d titles you watched</string>
+  <string name="text_recommendation_person_watched_directing_one">Directed in %d title you watched</string>
+  <string name="text_recommendation_person_watched_directing_other">Directed in %d titles you watched</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Created and acted in %d title you watched</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Created and acted in %d titles you watched</string>
+  <string name="text_recommendation_person_watched_making_one">Created in %d title you watched</string>
+  <string name="text_recommendation_person_watched_making_other">Created in %d titles you watched</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Please reconnect %s below.</string>
   <string name="text_rent">Rent</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">None (no hybrid)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona preview</string>
-  <string name="yir_2026_rarity">Only %1$d%% are %2$s</string>
+  <string name="yir_2026_rarity">Only %1$d% are %2$s</string>
   <string name="yir_2026_reel_a_little_bit">A little bit %s</string>
   <string name="yir_2026_reel_and_you_are">And you are</string>
   <string name="yir_2026_reel_but_mostly">But mostly</string>

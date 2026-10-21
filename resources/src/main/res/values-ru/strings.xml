@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">До %d минут</string>
   <string name="filter_label_this_year">В этом году</string>
   <string name="filter_toggle_state_default">По умолчанию</string>
-  <string name="filter_toggle_state_off">Выкл.</string>
-  <string name="filter_toggle_state_on">Вкл.</string>
+  <string name="filter_toggle_state_off">Нет</string>
+  <string name="filter_toggle_state_on">Да</string>
   <string name="header_account_details">Данные аккаунта</string>
   <string name="header_account_security">Безопасность учетной записи</string>
   <string name="header_add_from_lists">Добавить в %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Недавно просмотренное</string>
   <string name="list_title_recommendation_sources_activity">Вы смотрели</string>
   <string name="list_title_recommendation_sources_favorite">Вам понравилось</string>
+  <string name="list_title_recommendation_sources_people">Вы продолжаете смотреть</string>
   <string name="list_title_recommendation_sources_subgenre">Вам нравится</string>
   <string name="list_title_recommended">Рекомендуемое</string>
   <string name="list_title_recommended_movies">Рекомендуемые фильмы</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">Родственные души</string>
   <string name="match_label_spin_off">Спин-офф</string>
   <string name="match_pill_anchor">Совпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% совпадения, %2$s. Открыть подробности совпадения.</string>
+  <string name="match_pill_aria_label">%1$d% совпадения, %2$s. Открыть подробности совпадения.</string>
   <string name="match_pill_loading_aria_label">Вычисляется оценка соответствия</string>
   <string name="mir_banner_body">Ваш ежемесячный обзор готов. Вот что вы посмотрели в %s.</string>
   <string name="mir_banner_body_short">Ваш обзор за %s готов.</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">На больших экранах все списки используют те же карточки, что и остальное приложение. Выбор одной открывает быстрый просмотр вместо выхода из списка.</string>
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
   <string name="preview_feature_description_show_ending">Отображает строку \"Окончание\" в деталях сериала: \"Завершено\", если история завершена, \"Незавершено\", если нет.</string>
-  <string name="preview_feature_description_smart_recommendations">Переключайте рекомендации между умными подборками из новой модели и классическими.</string>
   <string name="preview_feature_description_soundtrack">Добавляет раздел саундтреков на страницы фильмов и сериалов с возможностью воспроизведения, если трек может быть сопоставлен.</string>
   <string name="preview_feature_description_vip_cancel_flow">Новый способ отмены VIP: спрашивает, почему вы уходите, показывает, что изменится, и предлагает сделку, чтобы остаться.</string>
   <string name="preview_feature_description_vip_veteran">Показывает, как долго пользователи сохраняют VIP-статус без перерыва, с помощью значка \"Ветеран\" или \"Легенда\", цветного кольца аватара и нескольких празднований в вашем профиле.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Крупноэкранные карточки</string>
   <string name="preview_feature_title_rewatch">Пересмотр</string>
   <string name="preview_feature_title_show_ending">Окончание сериала</string>
-  <string name="preview_feature_title_smart_recommendations">Умные рекомендации</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_vip_cancel_flow">Процесс отмены VIP</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">Только вебхук</string>
   <string name="tag_mixtape_different_mood">Другое настроение</string>
   <string name="tag_mixtape_kept">Сохранено</string>
-  <string name="tag_mixtape_match">Совпадение: %s%%</string>
+  <string name="tag_mixtape_match">Совпадение: %s%</string>
   <string name="tag_mixtape_tap_details">Нажмите для подробностей</string>
   <string name="tag_text_blocked_user">Заблокировано</string>
   <string name="tag_text_deal_price">Первые 2 года</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s голосов</string>
   <string name="text_raw_export">Исходный экспорт</string>
+  <string name="text_recommendation_person_more_titles">+Еще %d</string>
+  <string name="text_recommendation_person_watched_acting_one">Снялся в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_acting_other">Снялся в %d просмотренных вами проектах</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Режиссер и снялся в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Режиссер и снялся в %d просмотренных вами проектах</string>
+  <string name="text_recommendation_person_watched_directing_one">Режиссер в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_directing_other">Режиссер в %d просмотренных вами проектах</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Создатель и снялся в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Создатель и снялся в %d просмотренных вами проектах</string>
+  <string name="text_recommendation_person_watched_making_one">Создал в %d просмотренном вами проекте</string>
+  <string name="text_recommendation_person_watched_making_other">Создал в %d просмотренных вами проектах</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Пожалуйста, переподключите %s ниже.</string>
   <string name="text_rent">Аренда</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">Нет (без гибрида)</string>
   <string name="yir_2026_preview_runner_up">Второй</string>
   <string name="yir_2026_preview_title">Предварительный просмотр персоны</string>
-  <string name="yir_2026_rarity">Только %1$d%% являются %2$s</string>
+  <string name="yir_2026_rarity">Только %1$d% являются %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Немного %s</string>
   <string name="yir_2026_reel_and_you_are">И вы</string>
   <string name="yir_2026_reel_but_mostly">Но в основном</string>

@@ -858,7 +858,7 @@
   <string name="filter_label_this_year">Dieses Jahr</string>
   <string name="filter_toggle_state_default">Standard</string>
   <string name="filter_toggle_state_off">Aus</string>
-  <string name="filter_toggle_state_on">An</string>
+  <string name="filter_toggle_state_on">Ja</string>
   <string name="header_account_details">Kontodetails</string>
   <string name="header_account_security">Konto &amp; Sicherheit</string>
   <string name="header_add_from_lists">Zu %s hinzufügen</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">Zuletzt gesehen</string>
   <string name="list_title_recommendation_sources_activity">Du hast gesehen</string>
   <string name="list_title_recommendation_sources_favorite">Du hast geliebt</string>
+  <string name="list_title_recommendation_sources_people">Du schaust immer wieder</string>
   <string name="list_title_recommendation_sources_subgenre">Du magst</string>
   <string name="list_title_recommended">Empfohlen</string>
   <string name="list_title_recommended_movies">Empfohlene Filme</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">Seelenverwandte</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Übereinstimmung:</string>
-  <string name="match_pill_aria_label">%1$d%% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
+  <string name="match_pill_aria_label">%1$d% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
   <string name="match_pill_loading_aria_label">Übereinstimmungswert wird berechnet</string>
   <string name="mir_banner_body">Ihr monatlicher Rückblick ist fertig. Hier ist, was Sie im %s gesehen haben.</string>
   <string name="mir_banner_body_short">Ihr %s-Rückblick ist fertig.</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">Auf größeren Bildschirmen verwenden alle Listen die gleichen Karten wie der Rest der App. Wenn Sie eine auswählen, öffnet sich eine Kurzübersicht, anstatt die Liste zu verlassen.</string>
   <string name="preview_feature_description_rewatch">Starten Sie Wiederholungssitzungen für bereits gesehene Serien, checken Sie Episoden ein oder markieren Sie diese direkt aus dem Sitzungs-Drawer als gesehen.</string>
   <string name="preview_feature_description_show_ending">Zeigt eine \"Ende\"-Zeile in den Details einer Serie an: \"Abgeschlossen\", wenn die Geschichte beendet wurde, \"Offen\", wenn dies nicht der Fall war.</string>
-  <string name="preview_feature_description_smart_recommendations">Wechseln Sie die Empfehlungen zwischen intelligenten Vorschlägen des neuen Modells und den Klassischen.</string>
   <string name="preview_feature_description_soundtrack">Fügt einen Soundtrack-Bereich zu Film- und Serienseiten hinzu, mit Wiedergabe, wo ein Titel zugeordnet werden kann.</string>
   <string name="preview_feature_description_vip_cancel_flow">Eine neue Art, VIP zu kündigen: Fragt nach dem Grund, zeigt Änderungen auf und bietet ein Angebot zum Bleiben an.</string>
   <string name="preview_feature_description_vip_veteran">Zeigt, wie lange Mitglieder VIP ohne Unterbrechung waren, mit einem Veteranen- oder Legendenabzeichen, einem farbigen Avatarring und einigen Feiern auf Ihrem Profil.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">Großbildkarten</string>
   <string name="preview_feature_title_rewatch">Wiederholung</string>
   <string name="preview_feature_title_show_ending">Serienende</string>
-  <string name="preview_feature_title_smart_recommendations">Intelligente Empfehlungen</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_cancel_flow">VIP-Kündigungsfluss</string>
   <string name="preview_feature_title_vip_veteran">VIP-Veteranenstatus</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">Nur Webhook</string>
   <string name="tag_mixtape_different_mood">Andere Stimmung</string>
   <string name="tag_mixtape_kept">Behalten</string>
-  <string name="tag_mixtape_match">%s%% Übereinstimmung</string>
+  <string name="tag_mixtape_match">%s% Übereinstimmung</string>
   <string name="tag_mixtape_tap_details">Für Details tippen</string>
   <string name="tag_text_blocked_user">Blockiert</string>
   <string name="tag_text_deal_price">Erste 2 Jahre</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s Stimmen</string>
   <string name="text_raw_export">Rohdaten-Export</string>
+  <string name="text_recommendation_person_more_titles">+%d mehr</string>
+  <string name="text_recommendation_person_watched_acting_one">Hat mitgespielt in %d Titel, den du gesehen hast</string>
+  <string name="text_recommendation_person_watched_acting_other">Hat mitgespielt in %d Titeln, die du gesehen hast</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">Hat Regie geführt und mitgespielt in %d Titel, den du gesehen hast</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">Hat Regie geführt und mitgespielt in %d Titeln, die du gesehen hast</string>
+  <string name="text_recommendation_person_watched_directing_one">Hat Regie geführt in %d Titel, den du gesehen hast</string>
+  <string name="text_recommendation_person_watched_directing_other">Hat Regie geführt in %d Titeln, die du gesehen hast</string>
+  <string name="text_recommendation_person_watched_making_acting_one">Erstellt und mitgespielt in %d Titel, den du gesehen hast</string>
+  <string name="text_recommendation_person_watched_making_acting_other">Erstellt und mitgespielt in %d Titeln, die du gesehen hast</string>
+  <string name="text_recommendation_person_watched_making_one">Erstellt in %d Titel, den du gesehen hast</string>
+  <string name="text_recommendation_person_watched_making_other">Erstellt in %d Titeln, die du gesehen hast</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Bitte verbinde %s unten neu.</string>
   <string name="text_rent">Mieten</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">Keine (kein Hybrid)</string>
   <string name="yir_2026_preview_runner_up">Zweitplatzierter</string>
   <string name="yir_2026_preview_title">Persona-Vorschau</string>
-  <string name="yir_2026_rarity">Nur %1$d%% sind %2$s</string>
+  <string name="yir_2026_rarity">Nur %1$d% sind %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Ein bisschen %s</string>
   <string name="yir_2026_reel_and_you_are">Und du bist</string>
   <string name="yir_2026_reel_but_mostly">Aber hauptsächlich</string>

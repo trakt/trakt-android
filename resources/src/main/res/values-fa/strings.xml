@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">تا %d دقیقه</string>
   <string name="filter_label_this_year">امسال</string>
   <string name="filter_toggle_state_default">پیش‌فرض</string>
-  <string name="filter_toggle_state_off">خاموش</string>
-  <string name="filter_toggle_state_on">روشن</string>
+  <string name="filter_toggle_state_off">خیر</string>
+  <string name="filter_toggle_state_on">بله</string>
   <string name="header_account_details">جزئیات حساب کاربری</string>
   <string name="header_account_security">امنیت حساب کاربری</string>
   <string name="header_add_from_lists">افزودن به %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">اخیراً تماشا شده</string>
   <string name="list_title_recommendation_sources_activity">آنچه تماشا کردید</string>
   <string name="list_title_recommendation_sources_favorite">آنچه دوست داشتید</string>
+  <string name="list_title_recommendation_sources_people">شما همچنان تماشا می‌کنید</string>
   <string name="list_title_recommendation_sources_subgenre">آنچه دوست دارید</string>
   <string name="list_title_recommended">توصیه شده</string>
   <string name="list_title_recommended_movies">فیلم‌های پیشنهادی</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">هم\nروح‌ها</string>
   <string name="match_label_spin_off">اسپین\nآف</string>
   <string name="match_pill_anchor">همخوانی:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
   <string name="match_pill_loading_aria_label">در حال محاسبه امتیاز تطابق</string>
   <string name="mir_banner_body">خلاصه ماهانه شما آماده است. در %s اینها را تماشا کرده‌اید.</string>
   <string name="mir_banner_body_short">خلاصه %s شما آماده است.</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">در صفحه‌های نمایش بزرگ‌تر، همه لیست‌ها از همان طراحی کارت‌های مورد استفاده در بقیه برنامه بهره می‌برند. با انتخاب هر کدام، به جای ترک لیست، یک نمای کلی سریع نمایش داده می‌شود.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_show_ending">ردیف پایان را در جزئیات سریال نمایش می‌دهد: «تکمیل شده» وقتی داستان به سرانجام رسیده باشد، و «حل‌نشده» وقتی نرسیده باشد.</string>
-  <string name="preview_feature_description_smart_recommendations">جابه‌جایی توصیه‌ها بین انتخاب‌های هوشمند مدل جدید و موارد کلاسیک.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
   <string name="preview_feature_description_vip_cancel_flow">راهی جدید برای لغو VIP: دلیل را می‌پرسد، تغییرات را نشان می‌دهد و برای ماندن پیشنهاد ویژه‌ای ارائه می‌کند.</string>
   <string name="preview_feature_description_vip_veteran">نشان می‌دهد که اعضا چقدر بدون وقفه اشتراک VIP را حفظ کرده‌اند، با نشان کهنه‌کار یا افسانه، حلقه‌ی آواتار رنگی و چند جشن در پروفایل خودتان.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">کارت‌های صفحه نمایش بزرگ</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_show_ending">پایان سریال</string>
-  <string name="preview_feature_title_smart_recommendations">توصیه‌های هوشمند</string>
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>
   <string name="preview_feature_title_vip_cancel_flow">روند لغو VIP</string>
   <string name="preview_feature_title_vip_veteran">وضعیت VIP کهنه‌کار</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">فقط وب‌هوک</string>
   <string name="tag_mixtape_different_mood">حس و حال متفاوت</string>
   <string name="tag_mixtape_kept">نگه داشته شده</string>
-  <string name="tag_mixtape_match">%s%% تطابق</string>
+  <string name="tag_mixtape_match">%s% تطابق</string>
   <string name="tag_mixtape_tap_details">برای جزئیات ضربه بزنید</string>
   <string name="tag_text_blocked_user">مسدود شده</string>
   <string name="tag_text_deal_price">۲ سال اول</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s رای</string>
   <string name="text_raw_export">خروجی خام</string>
+  <string name="text_recommendation_person_more_titles">+%d مورد دیگر</string>
+  <string name="text_recommendation_person_watched_acting_one">در %d عنوانی که تماشا کرده‌اید بازی کرده</string>
+  <string name="text_recommendation_person_watched_acting_other">در %d عنوانی که تماشا کرده‌اید بازی کرده</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">در %d عنوانی که تماشا کرده‌اید کارگردانی و بازی کرده</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">در %d عنوانی که تماشا کرده‌اید کارگردانی و بازی کرده</string>
+  <string name="text_recommendation_person_watched_directing_one">در %d عنوانی که تماشا کرده‌اید کارگردانی کرده</string>
+  <string name="text_recommendation_person_watched_directing_other">در %d عنوانی که تماشا کرده‌اید کارگردانی کرده</string>
+  <string name="text_recommendation_person_watched_making_acting_one">در %d عنوانی که تماشا کرده‌اید ساخته و بازی کرده</string>
+  <string name="text_recommendation_person_watched_making_acting_other">در %d عنوانی که تماشا کرده‌اید ساخته و بازی کرده</string>
+  <string name="text_recommendation_person_watched_making_one">در %d عنوانی که تماشا کرده‌اید ساخته</string>
+  <string name="text_recommendation_person_watched_making_other">در %d عنوانی که تماشا کرده‌اید ساخته</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">لطفاً %s را در زیر مجدداً متصل کنید.</string>
   <string name="text_rent">اجاره</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">هیچ‌کدام (بدون ترکیب)</string>
   <string name="yir_2026_preview_runner_up">رتبه‌دوم</string>
   <string name="yir_2026_preview_title">پیش‌نمایش پرسونا</string>
-  <string name="yir_2026_rarity">فقط %1$d%% %2$s هستند</string>
+  <string name="yir_2026_rarity">فقط %1$d% %2$s هستند</string>
   <string name="yir_2026_reel_a_little_bit">کمی %s</string>
   <string name="yir_2026_reel_and_you_are">و شما هستید</string>
   <string name="yir_2026_reel_but_mostly">اما بیشتر</string>

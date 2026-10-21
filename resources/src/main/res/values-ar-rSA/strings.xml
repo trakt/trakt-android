@@ -857,8 +857,8 @@
   <string name="filter_label_runtime_up_to">حتى %d دقيقة</string>
   <string name="filter_label_this_year">هذا العام</string>
   <string name="filter_toggle_state_default">الافتراضي</string>
-  <string name="filter_toggle_state_off">إيقاف</string>
-  <string name="filter_toggle_state_on">تشغيل</string>
+  <string name="filter_toggle_state_off">لا</string>
+  <string name="filter_toggle_state_on">نعم</string>
   <string name="header_account_details">تفاصيل الحساب</string>
   <string name="header_account_security">أمان الحساب</string>
   <string name="header_add_from_lists">إضافة إلى %s</string>
@@ -1375,6 +1375,7 @@
   <string name="list_title_recently_watched">تمت مشاهدته مؤخرًا</string>
   <string name="list_title_recommendation_sources_activity">شاهدت</string>
   <string name="list_title_recommendation_sources_favorite">أحببت</string>
+  <string name="list_title_recommendation_sources_people">تواصل المشاهدة</string>
   <string name="list_title_recommendation_sources_subgenre">يعجبك</string>
   <string name="list_title_recommended">موصى به</string>
   <string name="list_title_recommended_movies">الأفلام الموصى بها</string>
@@ -1423,7 +1424,7 @@
   <string name="match_label_soulmates">رفقاء الروح</string>
   <string name="match_label_spin_off">عرضية</string>
   <string name="match_pill_anchor">تطابق:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. فتح تفاصيل التطابق.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. فتح تفاصيل التطابق.</string>
   <string name="match_pill_loading_aria_label">جارٍ حساب نتيجة التطابق</string>
   <string name="mir_banner_body">ملخصك الشهري جاهز. إليك ما شاهدته في %s.</string>
   <string name="mir_banner_body_short">ملخص %s جاهز.</string>
@@ -1542,7 +1543,6 @@
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_show_ending">يعرض صفًا لـ \"النهاية\" في تفاصيل العرض: \"مكتمل\" عندما تنتهي القصة، و\"غير محسوم\" عندما لا تنتهي.</string>
-  <string name="preview_feature_description_smart_recommendations">تبديل التوصيات بين اختيارات ذكية من النموذج الجديد وتلك الكلاسيكية.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
   <string name="preview_feature_description_vip_cancel_flow">طريقة جديدة لإلغاء VIP: تسأل عن السبب، وتوضح التغييرات، وتقدم عرضًا للبقاء.</string>
   <string name="preview_feature_description_vip_veteran">تُظهر المدة التي احتفظ فيها الأعضاء بخدمة VIP دون انقطاع، مع شارة مخضرم أو أسطورة، وحلقة ملونة للصورة الرمزية، وبعض الاحتفالات على ملفك الشخصي.</string>
@@ -1551,7 +1551,6 @@
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_show_ending">نهاية العرض</string>
-  <string name="preview_feature_title_smart_recommendations">توصيات ذكية</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
   <string name="preview_feature_title_vip_cancel_flow">سير إلغاء VIP</string>
   <string name="preview_feature_title_vip_veteran">حالة VIP المخضرم</string>
@@ -1658,7 +1657,7 @@
   <string name="tag_media_sync_webhook_only">ويب هوك فقط</string>
   <string name="tag_mixtape_different_mood">مزاج مختلف</string>
   <string name="tag_mixtape_kept">محفوظ</string>
-  <string name="tag_mixtape_match">مطابقة بنسبة %s%%</string>
+  <string name="tag_mixtape_match">مطابقة بنسبة %s%</string>
   <string name="tag_mixtape_tap_details">انقر للتفاصيل</string>
   <string name="tag_text_blocked_user">محظور</string>
   <string name="tag_text_deal_price">أول سنتين</string>
@@ -2074,6 +2073,17 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s تصويت</string>
   <string name="text_raw_export">تصدير خام</string>
+  <string name="text_recommendation_person_more_titles">+%d المزيد</string>
+  <string name="text_recommendation_person_watched_acting_one">مثل في %d عنوان شاهدته</string>
+  <string name="text_recommendation_person_watched_acting_other">مثل في %d عناوين شاهدتها</string>
+  <string name="text_recommendation_person_watched_directing_acting_one">أخرج ومثل في %d عنوان شاهدته</string>
+  <string name="text_recommendation_person_watched_directing_acting_other">أخرج ومثل في %d عناوين شاهدتها</string>
+  <string name="text_recommendation_person_watched_directing_one">أخرج في %d عنوان شاهدته</string>
+  <string name="text_recommendation_person_watched_directing_other">أخرج في %d عناوين شاهدتها</string>
+  <string name="text_recommendation_person_watched_making_acting_one">أنتج ومثل في %d عنوان شاهدته</string>
+  <string name="text_recommendation_person_watched_making_acting_other">أنتج ومثل في %d عناوين شاهدتها</string>
+  <string name="text_recommendation_person_watched_making_one">أنتج في %d عنوان شاهدته</string>
+  <string name="text_recommendation_person_watched_making_other">أنتج في %d عناوين شاهدتها</string>
   <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">يرجى إعادة توصيل %s أدناه.</string>
   <string name="text_rent">الإيجار</string>
@@ -2818,7 +2828,7 @@
   <string name="yir_2026_preview_runner_none">لا شيء (لا يوجد هجين)</string>
   <string name="yir_2026_preview_runner_up">الوصيف</string>
   <string name="yir_2026_preview_title">معاينة الشخصية</string>
-  <string name="yir_2026_rarity">فقط %1$d%% هم %2$s</string>
+  <string name="yir_2026_rarity">فقط %1$d% هم %2$s</string>
   <string name="yir_2026_reel_a_little_bit">قليلاً %s</string>
   <string name="yir_2026_reel_and_you_are">وأنت كذلك</string>
   <string name="yir_2026_reel_but_mostly">ولكن غالبًا</string>
