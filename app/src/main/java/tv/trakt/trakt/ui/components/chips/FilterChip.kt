@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilterChipDefaults
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
@@ -48,6 +50,8 @@ internal fun FilterChip(
     animated: Boolean = true,
     unselectedTextVisible: Boolean = true,
     leadingAlwaysVisible: Boolean = false,
+    endAlwaysVisible: Boolean = false,
+    maxTextWidth: Dp = Dp.Unspecified,
     leadingContent: @Composable (() -> Unit)? = null,
     endContent: @Composable (() -> Unit)? = null,
     paddingHorizontal: PaddingValues = PaddingValues(
@@ -114,8 +118,11 @@ internal fun FilterChip(
                         else -> TraktTheme.colors.textPrimary
                     },
                     maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(start = 4.dp),
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .widthIn(max = maxTextWidth),
                 )
             }
         } else if (selected || unselectedTextVisible) {
@@ -127,20 +134,23 @@ internal fun FilterChip(
                     else -> TraktTheme.colors.textPrimary
                 },
                 maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(start = 4.dp),
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .widthIn(max = maxTextWidth),
             )
         }
 
         if (animated) {
             AnimatedVisibility(
-                visible = selected && endContent != null,
+                visible = (selected || endAlwaysVisible) && endContent != null,
                 enter = fadeIn(tween(150, delayMillis = 100)) + expandHorizontally(tween(150, delayMillis = 100)),
                 exit = fadeOut(tween(150)) + shrinkHorizontally(tween(150)),
             ) {
                 endContent?.invoke()
             }
-        } else if (selected && endContent != null) {
+        } else if ((selected || endAlwaysVisible) && endContent != null) {
             endContent.invoke()
         }
     }
