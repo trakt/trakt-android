@@ -151,85 +151,31 @@ private fun TodayStoriesContent(
     onSocialClick: () -> Unit = {},
     onClose: () -> Unit = {},
 ) {
-    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-    val animationsDisabled = rememberAnimationsDisabled()
+    val background = TraktTheme.colors.backgroundPrimary
 
-    AnimatedContent(
-        targetState = state,
-        contentKey = { it.group?.key },
-        transitionSpec = {
-            if (animationsDisabled) {
-                return@AnimatedContent EnterTransition.None togetherWith ExitTransition.None
-            }
-
-            val forward = targetState.groupIndex >= initialState.groupIndex
-            val direction = if (forward != isRtl) 1 else -1
-            val spec = tween<IntOffset>(STORY_TRANSITION_MS)
-
-            (slideInHorizontally(spec) { it * direction / 3 } + fadeIn(tween(STORY_TRANSITION_MS)))
-                .togetherWith(
-                    slideOutHorizontally(spec) { -it * direction / 3 } + fadeOut(tween(STORY_TRANSITION_MS)),
-                )
-        },
-        label = "todayStory",
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
+            .background(background)
             .storySwipe(
                 onNextGroup = onNextGroup,
                 onPreviousGroup = onPreviousGroup,
             ),
-    ) { story ->
-        TodayStoryPage(
-            state = story,
-            isActive = transition.targetState == EnterExitState.Visible,
-            onNext = onNext,
-            onPrevious = onPrevious,
-            onUserClick = onUserClick,
-            onSocialClick = onSocialClick,
-            onClose = onClose,
-        )
-    }
-}
-
-/** One story; [isActive] is false while it animates out, so its timer stops. */
-@Composable
-private fun TodayStoryPage(
-    state: TodayStoriesState,
-    isActive: Boolean,
-    onNext: () -> Unit,
-    onPrevious: () -> Unit,
-    onUserClick: (User) -> Unit,
-    onSocialClick: () -> Unit,
-    onClose: () -> Unit,
-) {
-    val group = state.group ?: return
-    val frame = state.frame ?: return
-
-    var isFlipped by remember(frame.key) { mutableStateOf(false) }
-    var isHeld by remember { mutableStateOf(false) }
-    var isConfirming by remember { mutableStateOf(false) }
-
-    val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
-    val isPaused = !isActive || isHeld || isFlipped || isConfirming || !lifecycle.isAtLeast(Lifecycle.State.RESUMED)
-
-    val background = TraktTheme.colors.backgroundPrimary
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(background),
     ) {
-        AsyncImage(
-            model = frame.media.images?.getPosterUrl(Images.Size.MEDIUM),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-                .alpha(BACKDROP_ALPHA)
-                .blur(BackdropBlur),
-        )
+        val group = state.group ?: return@Box
+        val frame = state.frame ?: return@Box
 
+        var isFlipped by remember(frame.key) { mutableStateOf(false) }
+        var isHeld by remember(group.key) { mutableStateOf(false) }
+        var isConfirming by remember(group.key) { mutableStateOf(false) }
+
+        val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+        val isPaused = isHeld || isFlipped || isConfirming || !lifecycle.isAtLeast(Lifecycle.State.RESUMED)
+
+        TodayStoryBackdrop(state = state)
+
+        // Only the story moves between groups. The progress bar and header stay put,
+        // since sliding the whole screen causes motion sickness.
         Column(
             verticalArrangement = spacedBy(16.dp),
             modifier = Modifier
@@ -271,20 +217,89 @@ private fun TodayStoryPage(
                 modifier = Modifier.padding(bottom = PosterTopGap - 16.dp),
             )
 
-            TodayStoryFrameContent(
-                frame = frame,
-                isFlipped = isFlipped && frame.key == frame.key,
-                onFlip = { isFlipped = !isFlipped },
-                onNext = onNext,
-                onPrevious = onPrevious,
-                onHeldChange = { isHeld = it },
-                onUserClick = onUserClick,
-                onConfirmVisibleChange = { isConfirming = it },
+            TodayStoryFrameTransition(
+                state = state,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1F),
-            )
+            ) { story, isActive ->
+                val storyFrame = story.frame ?: return@TodayStoryFrameTransition
+
+                TodayStoryFrameContent(
+                    frame = storyFrame,
+                    isFlipped = isFlipped && storyFrame.key == frame.key,
+                    onFlip = { if (isActive) isFlipped = !isFlipped },
+                    onNext = onNext,
+                    onPrevious = onPrevious,
+                    onHeldChange = { if (isActive) isHeld = it },
+                    onUserClick = onUserClick,
+                    onConfirmVisibleChange = { if (isActive) isConfirming = it },
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun TodayStoryBackdrop(state: TodayStoriesState) {
+    val animationsDisabled = rememberAnimationsDisabled()
+
+    AnimatedContent(
+        targetState = state,
+        contentKey = { it.group?.key },
+        transitionSpec = {
+            if (animationsDisabled) {
+                return@AnimatedContent EnterTransition.None togetherWith ExitTransition.None
+            }
+            fadeIn(tween(STORY_TRANSITION_MS)) togetherWith fadeOut(tween(STORY_TRANSITION_MS))
+        },
+        label = "todayStoryBackdrop",
+        modifier = Modifier.fillMaxSize(),
+    ) { story ->
+        AsyncImage(
+            model = story.frame?.media?.images?.getPosterUrl(Images.Size.MEDIUM),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(BACKDROP_ALPHA)
+                .blur(BackdropBlur),
+        )
+    }
+}
+
+/** Slides the story between groups; `isActive` is false for the one animating out. */
+@Composable
+private fun TodayStoryFrameTransition(
+    state: TodayStoriesState,
+    modifier: Modifier = Modifier,
+    content: @Composable (story: TodayStoriesState, isActive: Boolean) -> Unit,
+) {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    val animationsDisabled = rememberAnimationsDisabled()
+
+    AnimatedContent(
+        targetState = state,
+        contentKey = { it.group?.key },
+        transitionSpec = {
+            if (animationsDisabled) {
+                return@AnimatedContent EnterTransition.None togetherWith ExitTransition.None
+            }
+
+            val forward = targetState.groupIndex >= initialState.groupIndex
+            val direction = if (forward != isRtl) 1 else -1
+            val spec = tween<IntOffset>(STORY_TRANSITION_MS)
+
+            (slideInHorizontally(spec) { it * direction / 3 } + fadeIn(tween(STORY_TRANSITION_MS)))
+                .togetherWith(
+                    slideOutHorizontally(spec) { -it * direction / 3 } + fadeOut(tween(STORY_TRANSITION_MS)),
+                )
+        },
+        label = "todayStory",
+        modifier = modifier,
+    ) { story ->
+        content(story, transition.targetState == EnterExitState.Visible)
     }
 }
 
