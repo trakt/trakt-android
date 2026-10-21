@@ -22,6 +22,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -149,6 +150,7 @@ internal fun CalendarMonthlyScreen(
     CalendarMonthlyContent(
         state = state,
         onMonthChange = viewModel::setMonth,
+        onPeriodChange = viewModel::logPeriodChange,
         onDayClick = { date ->
             if (state.loading.isLoading) return@CalendarMonthlyContent
             // Nothing to show for a day without releases.
@@ -259,6 +261,7 @@ private fun CalendarMonthlyContent(
     state: CalendarMonthlyState,
     modifier: Modifier = Modifier,
     onMonthChange: (YearMonth) -> Unit = {},
+    onPeriodChange: (String) -> Unit = {},
     onDayClick: (LocalDate) -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onTypeClick: (ReleaseType) -> Unit = {},
@@ -342,6 +345,7 @@ private fun CalendarMonthlyContent(
                 CalendarTodayIcon(
                     visible = true,
                     onClick = {
+                        onPeriodChange("reset")
                         scope.launch {
                             pagerState.animateScrollToPage(INITIAL_MONTH_PAGE)
                         }
@@ -401,11 +405,13 @@ private fun CalendarMonthlyContent(
 
             CalendarChevrons(
                 onPreviousClick = {
+                    onPeriodChange("previous")
                     scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage - 1)
                     }
                 },
                 onNextClick = {
+                    onPeriodChange("next")
                     scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
@@ -438,12 +444,23 @@ private fun CalendarMonthlyContent(
             // Items only cover the selected month, so other pages stay blank while swiping.
             val isSelected = pageMonth == state.selectedMonth
             val isLoading = isSelected && state.loading.isLoading
-            CalendarMonthView(
-                month = pageMonth,
-                items = state.items.takeIf { isSelected && !isLoading },
-                loading = isLoading,
-                onDayClick = onDayClick,
-            )
+            val error = state.error.takeIf { isSelected && !isLoading && state.items == null }
+            if (error != null) {
+                Text(
+                    text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n$error",
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta,
+                    maxLines = 10,
+                    modifier = Modifier.padding(horizontal = pagerPadding, vertical = 16.dp),
+                )
+            } else {
+                CalendarMonthView(
+                    month = pageMonth,
+                    items = state.items.takeIf { isSelected && !isLoading },
+                    loading = isLoading,
+                    onDayClick = onDayClick,
+                )
+            }
         }
     }
 }

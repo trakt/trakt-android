@@ -10,23 +10,30 @@ import java.time.LocalDate
 
 internal typealias CalendarItems = ImmutableMap<LocalDate, ImmutableList<CalendarItem>>
 
-/** Optimistic local patches applied while a history change is in flight. */
-internal fun CalendarItems.withWatched(
+// Optimistic local patches applied while a history change is in flight. Episode and movie
+// ids are separate namespaces, so each patch matches its own media type only.
+internal fun CalendarItems.withEpisodeWatched(
     id: TraktId,
     watched: Boolean,
 ): CalendarItems {
-    return mapValues { entry ->
-        entry.value.map { item ->
-            when (item.id) {
-                id -> when (item) {
-                    is CalendarItem.EpisodeItem -> item.copy(watched = watched)
-                    is CalendarItem.MovieItem -> item.copy(watched = watched)
-                }
+    return mapItems { item ->
+        when {
+            item is CalendarItem.EpisodeItem && item.id == id -> item.copy(watched = watched)
+            else -> item
+        }
+    }
+}
 
-                else -> item
-            }
-        }.toImmutableList()
-    }.toImmutableMap()
+internal fun CalendarItems.withMovieWatched(
+    id: TraktId,
+    watched: Boolean,
+): CalendarItems {
+    return mapItems { item ->
+        when {
+            item is CalendarItem.MovieItem && item.id == id -> item.copy(watched = watched)
+            else -> item
+        }
+    }
 }
 
 internal fun CalendarItems.withoutMovie(id: TraktId): CalendarItems {
@@ -34,5 +41,11 @@ internal fun CalendarItems.withoutMovie(id: TraktId): CalendarItems {
         entry.value.filterNot { item ->
             item is CalendarItem.MovieItem && item.id == id
         }.toImmutableList()
+    }.toImmutableMap()
+}
+
+private fun CalendarItems.mapItems(transform: (CalendarItem) -> CalendarItem): CalendarItems {
+    return mapValues { entry ->
+        entry.value.map(transform).toImmutableList()
     }.toImmutableMap()
 }

@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.navigation.billingScreen
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
+import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.navigation.calendarMonthlyScreen
 import tv.trakt.trakt.core.calendar.navigation.calendarScreen
 import tv.trakt.trakt.core.calendar.navigation.switchCalendarView
@@ -116,7 +117,7 @@ internal fun NavGraphBuilder.homeScreens(
     controller: NavHostController,
     userLoading: Boolean,
     userId: TraktId?,
-    onNavigateToCalendar: () -> Unit,
+    onNavigateToCalendar: (CalendarView) -> Unit,
 ) {
     with(controller) {
         homeScreen(

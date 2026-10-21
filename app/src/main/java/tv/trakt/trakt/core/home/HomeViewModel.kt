@@ -18,11 +18,16 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_WELCOME_BANNER_ENABLED
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.core.calendar.model.CalendarView
+import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
@@ -31,6 +36,7 @@ import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
+@Suppress("UNCHECKED_CAST")
 internal class HomeViewModel(
     private val dismissWelcomeUseCase: DismissWelcomeBannerUseCase,
     private val getUserUsageUseCase: GetUserUsageUseCase,
@@ -38,6 +44,7 @@ internal class HomeViewModel(
     private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
+    private val getCalendarViewUseCase: GetCalendarViewUseCase,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
@@ -47,11 +54,13 @@ internal class HomeViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val welcomeBannerState = MutableStateFlow(initialState.welcomeBanner)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
+    private val calendarViewState = MutableStateFlow(initialState.calendarView)
 
     init {
         observeUser()
         observeMode()
         observeCollection()
+        observeCalendarView()
         loadWhatsNew()
 
         analytics.logScreenView(screenName = "home")
@@ -78,6 +87,12 @@ internal class HomeViewModel(
             .onEach { value ->
                 modeState.update { value.mode }
             }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeCalendarView() {
+        getCalendarViewUseCase.observeView()
+            .onEach { view -> calendarViewState.update { view } }
             .launchIn(viewModelScope)
     }
 
@@ -146,13 +161,15 @@ internal class HomeViewModel(
         welcomeBannerState,
         collectionStateProvider.stateFlow,
         whatsNewState,
-    ) { s1, s2, s3, s4, s5 ->
+        calendarViewState,
+    ) { state ->
         HomeState(
-            mode = s1,
-            user = s2,
-            welcomeBanner = s3,
-            collection = s4,
-            whatsNew = s5,
+            mode = state[0] as MediaMode,
+            user = state[1] as UserState,
+            welcomeBanner = state[2] as Boolean,
+            collection = state[3] as UserCollectionState,
+            whatsNew = state[4] as WhatsNew?,
+            calendarView = state[5] as CalendarView,
         )
     }.stateIn(
         scope = viewModelScope,

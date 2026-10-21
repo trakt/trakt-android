@@ -17,12 +17,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -42,7 +44,8 @@ import tv.trakt.trakt.core.calendar.feature.monthly.data.CalendarMonthlyItemsCac
 import tv.trakt.trakt.core.calendar.feature.monthly.usecases.GetMonthlyCalendarItemsUseCase
 import tv.trakt.trakt.core.calendar.model.CalendarItems
 import tv.trakt.trakt.core.calendar.model.CalendarView
-import tv.trakt.trakt.core.calendar.model.withWatched
+import tv.trakt.trakt.core.calendar.model.withEpisodeWatched
+import tv.trakt.trakt.core.calendar.model.withMovieWatched
 import tv.trakt.trakt.core.calendar.model.withoutMovie
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
@@ -67,6 +70,7 @@ internal class CalendarMonthlyViewModel(
     private val saveCalendarMediaUseCase: SaveCalendarMediaUseCase,
     private val updateCalendarHistoryUseCase: UpdateCalendarHistoryUseCase,
     private val dataChanges: DataChanges,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val origin = ChangeOrigin.unique()
 
@@ -129,6 +133,8 @@ internal class CalendarMonthlyViewModel(
                 return@launch
             }
 
+            errorState.update { null }
+
             try {
                 if (!typeSeeded) {
                     typeSeeded = true
@@ -160,12 +166,18 @@ internal class CalendarMonthlyViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    // Drop the previous month's items so they don't render under this month.
+                    itemsState.update { null }
                     errorState.update { error }
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { Done }
-                dataJob = null
+                // A cancelled load can finish after its replacement started. Only the active
+                // load may clear the job reference and the loading state.
+                if (dataJob == coroutineContext.job) {
+                    loadingState.update { Done }
+                    dataJob = null
+                }
             }
         }
     }
@@ -173,6 +185,10 @@ internal class CalendarMonthlyViewModel(
     fun refreshData() {
         calendarCache.clear()
         loadData()
+    }
+
+    fun logPeriodChange(action: String) {
+        analytics.logCalendarPeriod(action)
     }
 
     fun setMonth(month: YearMonth) {
@@ -211,7 +227,7 @@ internal class CalendarMonthlyViewModel(
                 origin = origin,
                 customDate = customDate,
             )
-            patchItems { it.withWatched(id = episode.ids.trakt, watched = true) }
+            patchItems { it.withEpisodeWatched(id = episode.ids.trakt, watched = true) }
         }
     }
 
@@ -228,7 +244,7 @@ internal class CalendarMonthlyViewModel(
                 origin = origin,
                 customDate = customDate,
             )
-            patchItems { it.withWatched(id = movie.ids.trakt, watched = true) }
+            patchItems { it.withMovieWatched(id = movie.ids.trakt, watched = true) }
         }
     }
 
@@ -238,7 +254,7 @@ internal class CalendarMonthlyViewModel(
             info = R.string.text_info_history_removed,
         ) {
             updateCalendarHistoryUseCase.removeFromWatched(episode = episode, origin = origin)
-            patchItems { it.withWatched(id = episode.ids.trakt, watched = false) }
+            patchItems { it.withEpisodeWatched(id = episode.ids.trakt, watched = false) }
         }
     }
 

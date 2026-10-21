@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.core.calendar.model.CalendarView
 
 @Immutable
 internal data class HomeState(
@@ -14,6 +15,7 @@ internal data class HomeState(
     val welcomeBanner: Boolean = false,
     val collection: UserCollectionState = UserCollectionState.Default,
     val whatsNew: WhatsNew? = null,
+    val calendarView: CalendarView = CalendarView.Weekly,
 ) {
     data class UserState(
         val user: User? = null,
