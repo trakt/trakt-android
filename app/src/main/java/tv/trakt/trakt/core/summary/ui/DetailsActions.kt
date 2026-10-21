@@ -12,13 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -34,7 +35,10 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade400
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.PillShape
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val ActionButtonSize = 40.dp
 
 @Composable
 internal fun DetailsActions(
@@ -54,7 +58,7 @@ internal fun DetailsActions(
     onMoreClick: (() -> Unit)? = null,
 ) {
     val isLight = TraktTheme.colors.isLight
-    val shape = RoundedCornerShape(18.dp)
+    val shape = PillShape
 
     val shadowColor = when (isLight) {
         true -> DefaultShadowColor.copy(alpha = 0.5F)
@@ -73,15 +77,7 @@ internal fun DetailsActions(
                 color = if (isLight) Shade10 else Shade900,
                 shape = shape,
             )
-            .padding(
-                top = 8.dp,
-                bottom = 8.dp,
-                start = 8.dp,
-                end = when {
-                    secondaryVisible -> 20.dp
-                    else -> 32.dp
-                },
-            ),
+            .padding(8.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -89,12 +85,12 @@ internal fun DetailsActions(
             Button(
                 modifier = Modifier
                     .weight(1F)
-                    .height(40.dp),
+                    .height(ActionButtonSize),
                 contentPadding = PaddingValues(
                     start = 16.dp,
                     end = 16.dp,
                 ),
-                shape = RoundedCornerShape(12.dp),
+                shape = PillShape,
                 colors = buttonColors(
                     containerColor = when (watched) {
                         true -> TraktTheme.colors.primaryButtonContainer
@@ -141,62 +137,81 @@ internal fun DetailsActions(
                 }
             }
 
-            Spacer(modifier = Modifier.width(32.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             if (secondaryVisible) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(ActionButtonSize)
+                        .clip(CircleShape)
+                        .onClickCombined(
+                            onClick = onSecondaryClick,
+                            onLongClick = onSecondaryLongClick,
+                        ),
+                ) {
+                    Icon(
+                        painter = when {
+                            watchlist == true -> painterResource(R.drawable.ic_bookmark_on)
+                            else -> painterResource(R.drawable.ic_bookmark_off)
+                        },
+                        tint = when {
+                            enabled -> TraktTheme.colors.textPrimary
+                            else -> TraktTheme.colors.primaryButtonContainerDisabled
+                        },
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(ActionButtonSize)
+                        .clip(CircleShape)
+                        .onClick(
+                            enabled = enabled && trailer,
+                            onClick = onTrailerClick ?: {},
+                        ),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_trailer),
+                        tint = when {
+                            enabled && trailer -> TraktTheme.colors.textPrimary
+                            else -> TraktTheme.colors.primaryButtonContainerDisabled
+                        },
+                        contentDescription = null,
+                        modifier = Modifier.size(21.dp),
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(ActionButtonSize)
+                    .clip(CircleShape)
+                    .onClick(
+                        enabled = enabled,
+                        onClick = onMoreClick ?: {},
+                    ),
+            ) {
                 Icon(
-                    painter = when {
-                        watchlist == true -> painterResource(R.drawable.ic_bookmark_on)
-                        else -> painterResource(R.drawable.ic_bookmark_off)
-                    },
+                    painter = painterResource(R.drawable.ic_more_vertical),
                     tint = when {
                         enabled -> TraktTheme.colors.textPrimary
                         else -> TraktTheme.colors.primaryButtonContainerDisabled
                     },
                     contentDescription = null,
                     modifier = Modifier
-                        .onClickCombined(
-                            onClick = onSecondaryClick,
-                            onLongClick = onSecondaryLongClick,
-                        )
-                        .size(24.dp),
-                )
-
-                Spacer(modifier = Modifier.width(32.dp))
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_trailer),
-                    tint = when {
-                        enabled && trailer -> TraktTheme.colors.textPrimary
-                        else -> TraktTheme.colors.primaryButtonContainerDisabled
-                    },
-                    contentDescription = null,
-                    modifier = Modifier
-                        .onClick(
-                            enabled = enabled && trailer,
-                            onClick = onTrailerClick ?: {},
-                        )
+                        .rotate(90F)
                         .size(21.dp),
                 )
-
-                Spacer(modifier = Modifier.width(32.dp))
             }
-
-            Icon(
-                painter = painterResource(R.drawable.ic_more_vertical),
-                tint = when {
-                    enabled -> TraktTheme.colors.textPrimary
-                    else -> TraktTheme.colors.primaryButtonContainerDisabled
-                },
-                contentDescription = null,
-                modifier = Modifier
-                    .onClick(
-                        enabled = enabled,
-                        onClick = onMoreClick ?: {},
-                    )
-                    .rotate(90F)
-                    .size(21.dp),
-            )
         }
     }
 }
