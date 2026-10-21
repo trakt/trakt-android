@@ -6,10 +6,15 @@ import timber.log.Timber
 import tv.trakt.trakt.common.data.remote.SearchRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.networking.SearchItemDto
+import tv.trakt.trakt.common.networking.TrendingSearchDto
 import kotlin.coroutines.cancellation.CancellationException
+import org.openapitools.client.models.GetSearchQuery200ResponseInner.Type as SearchItemType
+import org.openapitools.client.models.GetSearchTrending200ResponseInner.Type as TrendingSearchType
 
 private const val DEFAULT_SEARCH_LIMIT = 50
 private const val DEFAULT_EXACT_SEARCH_LIMIT = 20
+private const val TRENDING_SHOWS = "shows"
+private const val TRENDING_MOVIES = "movies"
 
 /**
  * Score at or above which an exact hit may outrank fuzzy results. The API's confidence
@@ -23,68 +28,29 @@ class GetSearchResultsUseCase(
     private val remoteSource: SearchRemoteSource,
 ) {
     suspend fun getSearchResults(query: String): List<SearchItemDto> {
-        if (query.trim().isBlank()) {
-            return emptyList()
-        }
-
-        return coroutineScope {
-            val exactResultsAsync = async {
-                exactOrEmpty {
-                    remoteSource.getShowsMovies(query, DEFAULT_EXACT_SEARCH_LIMIT, exact = true)
-                }
-            }
-            val normalResultsAsync = async {
-                remoteSource.getShowsMovies(query, DEFAULT_SEARCH_LIMIT, exact = false)
-            }
-
-            weave(
-                exactResults = exactResultsAsync.await(),
-                normalResults = normalResultsAsync.await(),
-            )
+        return searchMedia(
+            query = query,
+            trendingTypes = listOf(TRENDING_SHOWS, TRENDING_MOVIES),
+        ) { limit, exact ->
+            remoteSource.getShowsMovies(query, limit, exact)
         }
     }
 
     suspend fun getShowsSearchResults(query: String): List<SearchItemDto> {
-        if (query.trim().isBlank()) {
-            return emptyList()
-        }
-
-        return coroutineScope {
-            val exactResultsAsync = async {
-                exactOrEmpty {
-                    remoteSource.getShows(query, DEFAULT_EXACT_SEARCH_LIMIT, exact = true)
-                }
-            }
-            val normalResultsAsync = async {
-                remoteSource.getShows(query, DEFAULT_SEARCH_LIMIT, exact = false)
-            }
-
-            weave(
-                exactResults = exactResultsAsync.await(),
-                normalResults = normalResultsAsync.await(),
-            )
+        return searchMedia(
+            query = query,
+            trendingTypes = listOf(TRENDING_SHOWS),
+        ) { limit, exact ->
+            remoteSource.getShows(query, limit, exact)
         }
     }
 
     suspend fun getMoviesSearchResults(query: String): List<SearchItemDto> {
-        if (query.trim().isBlank()) {
-            return emptyList()
-        }
-
-        return coroutineScope {
-            val exactResultsAsync = async {
-                exactOrEmpty {
-                    remoteSource.getMovies(query, DEFAULT_EXACT_SEARCH_LIMIT, exact = true)
-                }
-            }
-            val normalResultsAsync = async {
-                remoteSource.getMovies(query, DEFAULT_SEARCH_LIMIT, exact = false)
-            }
-
-            weave(
-                exactResults = exactResultsAsync.await(),
-                normalResults = normalResultsAsync.await(),
-            )
+        return searchMedia(
+            query = query,
+            trendingTypes = listOf(TRENDING_MOVIES),
+        ) { limit, exact ->
+            remoteSource.getMovies(query, limit, exact)
         }
     }
 
@@ -102,29 +68,80 @@ class GetSearchResultsUseCase(
         return remoteSource.getLists(query, DEFAULT_SEARCH_LIMIT)
     }
 
+    private suspend fun searchMedia(
+        query: String,
+        trendingTypes: List<String>,
+        fetch: suspend (limit: Int, exact: Boolean) -> List<SearchItemDto>,
+    ): List<SearchItemDto> {
+        if (query.trim().isBlank()) {
+            return emptyList()
+        }
+
+        return coroutineScope {
+            val exactResultsAsync = async {
+                enrichmentOrEmpty { fetch(DEFAULT_EXACT_SEARCH_LIMIT, true) }
+            }
+            val trendingResultsAsync = trendingTypes.map { type ->
+                async { enrichmentOrEmpty { remoteSource.getTrending(query, type) } }
+            }
+            val normalResultsAsync = async {
+                fetch(DEFAULT_SEARCH_LIMIT, false)
+            }
+
+            weave(
+                exactResults = exactResultsAsync.await(),
+                trendingResults = trendingResultsAsync
+                    .flatMap { it.await() }
+                    .sortedByDescending { it.count }
+                    .mapNotNull(::toSearchItem),
+                normalResults = normalResultsAsync.await(),
+            )
+        }
+    }
+
     /**
-     * Only an unambiguous exact hit leads. A title shared with other entries trails the
-     * fuzzy results rather than displacing what the user most likely meant.
+     * Only an unambiguous exact hit leads, followed by what others search for with the same
+     * query. A title shared with other entries trails the fuzzy results rather than displacing
+     * what the user most likely meant.
      */
     private fun weave(
         exactResults: List<SearchItemDto>,
+        trendingResults: List<SearchItemDto>,
         normalResults: List<SearchItemDto>,
     ): List<SearchItemDto> {
         val (confident, deep) = exactResults.partition {
             it.score.toDouble() >= CONFIDENT_EXACT_SCORE
         }
 
-        return (confident + normalResults + deep)
+        return (confident + trendingResults + normalResults + deep)
             .distinctBy {
                 getDistinctKey(it)
             }
     }
 
+    private fun toSearchItem(dto: TrendingSearchDto): SearchItemDto? {
+        val type = when (dto.type) {
+            TrendingSearchType.MOVIE -> SearchItemType.MOVIE
+            TrendingSearchType.SHOW -> SearchItemType.SHOW
+            TrendingSearchType.PERSON -> return null
+        }
+
+        val traktId = dto.show?.ids?.trakt ?: dto.movie?.ids?.trakt
+        if (traktId == null || traktId == 0) return null
+
+        return SearchItemDto(
+            score = dto.count.toLong(),
+            type = type,
+            movie = dto.movie,
+            show = dto.show,
+        )
+    }
+
     /**
-     * The exact pass is an enrichment of the fuzzy one, so its failure degrades the
+     * The exact and trending passes enrich the fuzzy one, so their failure degrades the
      * results instead of failing the whole search.
      */
-    private suspend fun exactOrEmpty(fetch: suspend () -> List<SearchItemDto>): List<SearchItemDto> {
+    private suspend fun <T> enrichmentOrEmpty(fetch: suspend () -> List<T>): List<T> {
         return try {
             fetch()
         } catch (cancellation: CancellationException) {
