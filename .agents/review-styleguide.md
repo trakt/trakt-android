@@ -73,7 +73,7 @@ plain hyphens.
 - **Early exits** via guard `if (x == null) return`. No nested `let { }`
   pyramids.
 - **No `!!`** in production code. Use `requireNotNull(value) { … }` or
-  `?:`. `!!` is acceptable in tests and previews.
+  `?:`. `!!` is acceptable in previews.
 - **DI via constructor.** Koin `module { }` blocks wire dependencies.
   No `KoinJavaComponent.getKoin().get<T>()` inside type bodies.
 - **Functions with 3+ params take a single `data class` param.**
@@ -111,8 +111,7 @@ plain hyphens.
 
 ## State management
 
-- **`StateFlow`** for screen state. No `mutableStateOf` in ViewModels
-  (Compose-coupled, hard to test).
+- **`StateFlow`** for screen state. No `mutableStateOf` in ViewModels (Compose-coupled).
 - **`remember { mutableStateOf(...) }`** for transient UI that dies
   with the composable.
 - **`rememberSaveable`** for transient state that survives config
@@ -189,8 +188,7 @@ plain hyphens.
 
 ## Testing
 
-- No test suite yet. Don't add tests unless asked, and don't flag
-  missing tests in review.
+- No unit tests. Don't add tests and don't flag missing tests in review.
 
 ## Packages / Gradle
 
@@ -213,7 +211,7 @@ Severity-prioritised list:
 - DataBinding / ViewBinding in new code (Compose-only project).
 - `LiveData`, `RxJava`, `Observable` in new code.
 - `!!` non-null assertions in production code.
-- `runBlocking` / `GlobalScope` outside tests.
+- `runBlocking` / `GlobalScope`.
 - `KAPT` for newly introduced annotation processing — KSP only.
 - New `SharedPreferences` direct usage.
 - Raw `Color(0xFF…)` / `Color(red = …)` / `MaterialTheme.colorScheme.*`

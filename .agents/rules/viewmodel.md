@@ -217,7 +217,7 @@ fun ExampleScreen(
 - Single coroutine context per ViewModel.
 - `Dispatchers.Default` for CPU-bound work; `Dispatchers.IO` only when interop
   demands it (Ktor manages its own dispatchers).
-- **No `runBlocking`** in a ViewModel. Tests only.
+- **No `runBlocking`** in a ViewModel.
 - Respect cancellation — `withTimeout`, `ensureActive`. Don't wrap the whole
   body in `try { … } catch (e: Exception) { … }` and swallow
   `CancellationException`.

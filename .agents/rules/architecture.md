@@ -287,5 +287,5 @@ Guidelines:
 
 - Single coroutine context per ViewModel (`viewModelScope`).
 - Use `Dispatchers.Default` for CPU-bound work, `Dispatchers.IO` only when interop demands it (Ktor handles own dispatchers).
-- **No `runBlocking`** outside tests.
+- **No `runBlocking`.**
 - **No `GlobalScope`.** Anywhere.

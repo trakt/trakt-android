@@ -36,7 +36,6 @@ state, sheets, composition locals, side effects, stability.
 
 - Owned by single composable instance.
 - Doesn't survive config change.
-- Doesn't need testing without Compose runtime.
 
 Qualifies: sheet visibility, scroll position, dropdown expanded state, text field input committed elsewhere on "Done", focus management.
 

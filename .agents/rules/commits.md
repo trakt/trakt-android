@@ -31,7 +31,6 @@ Codebase follows Conventional Commits — history shows `feat:`, `fix:`, `refact
 | `perf`     | Performance improvement without behaviour change.          |
 | `refactor` | Code change that neither adds a feature nor fixes a bug.   |
 | `chore`    | Tooling, dependency bumps, generated files (e.g. OpenAPI). |
-| `test`     | Tests only.                                                |
 | `docs`     | Documentation only.                                        |
 | `style`    | Whitespace / formatting only, no semantic change.          |
 | `build`    | Build system or external dependency changes.               |

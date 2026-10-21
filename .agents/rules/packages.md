@@ -51,7 +51,7 @@ Single source of truth: `gradle/libs.versions.toml`. Rules:
 
 - **Add new deps to catalogue first.** No literal coordinates in `build.gradle.kts` (`implementation("com.example:foo:1.0")`).
 - Reference via alias: `implementation(libs.compose.material3)`, `implementation(libs.coil.compose)`.
-- Group related deps in bundles (`libs.bundles.compose.testing`).
+- Group related deps in bundles (`libs.bundles.androidx.media3`).
 - Plugin aliases via catalogue too: `alias(libs.plugins.kotlin.serialization)`.
 
 ## Adding new external dependency
@@ -63,7 +63,9 @@ PR description must include:
 3. **Footprint** — APK size impact (run `:app:reportDependencyGraphChange` or eyeball AAR size), transitive deps, R8 friendliness.
 4. **Exit plan** — how to remove if unmaintained.
 
-Defaults to **rejected** until justified. AndroidX, Jetpack, Compose ecosystem libs and well-established projects (Coil, Ktor, OkHttp, Coroutines, Turbine) clear bar trivially; for those, one PR-body line with coordinates and reason is enough (see "PR bodies" in `commits.md`).
+Defaults to **rejected** until justified. AndroidX, Jetpack, Compose ecosystem libs and
+well-established projects (Coil, Ktor, OkHttp, Coroutines) clear bar trivially; for those, one
+PR-body line with coordinates and reason is enough (see "PR bodies" in `commits.md`).
 
 ## Compose / Kotlin / Compiler alignment
 

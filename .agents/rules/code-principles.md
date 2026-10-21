@@ -68,8 +68,9 @@ Compose `when` handlers must be exhaustive — no `else ->` branches that swallo
 - **God ViewModels** — >~300 lines = smell; split by concern. See `viewmodel.md`.
 - **Abstraction leaks** — callers shouldn't know how type is built.
 - **Singleton-style lookups inside types** — accept deps via Koin `module { … }` + constructor injection. No `KoinJavaComponent.getKoin().get<T>()` inside class body.
-- **`!!` non-null assertions** in production code. Use `requireNotNull` with message, `checkNotNull` for internal invariants, or `?:` fallback. `!!` OK in tests and previews.
-- **`runBlocking`** in production code. Tests and CLI tools only.
+- **`!!` non-null assertions** in production code. Use `requireNotNull` with message, `checkNotNull`
+  for internal invariants, or `?:` fallback. `!!` OK in previews.
+- **`runBlocking`** in production code. CLI tools only.
 
 ## Function Design
 

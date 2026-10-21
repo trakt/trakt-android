@@ -15,19 +15,10 @@ Takes a set of trakt-android issues from the board to branches or PRs, one issue
 | Board | `gh project` owner `trakt`, number `11` ("Product") |
 | Status field ID | `PVTSSF_lADOAE01zc4BTaq0zhAqgtk` |
 | Status option IDs | Backlog `f75ad846`, Up Next `607d3ebd`, In Progress `47fc9ee4`, Under Review `df73e18b`, Done `98236657` |
-| Android code | `/Users/michal/Documents/Android/trakt/trakt-android-2025` |
-| Web code | `/Users/michal/Documents/Android/trakt/trakt-web` (read only, `git pull --ff-only` is fine) |
+| Android code | Repo root (`git rev-parse --show-toplevel`). Run all commands from there. |
+| Web code | `$WEB`: `$TRAKT_WEB` if set, else `../trakt-web` next to the repo root (read only, `git pull --ff-only` is fine) |
 
 If a field or option ID stops working, refresh it with `gh project field-list 11 --owner trakt --format json` and update this table.
-
-## Board status rule
-
-An issue stays In Progress (`47fc9ee4`) until its PR is merged. The merge closes the issue through
-the `Closes #N` line, and board automation sets the status from there.
-
-- This skill never merges PRs, so it always leaves its issues In Progress. Local branches, draft PRs and ready-for-review PRs all stay In Progress.
-- Never move an issue after merge by hand. The automation owns that step.
-- After every PR create, push or ready-flip, check the board item. If automation moved the issue to Under Review before the merge, move it back to In Progress.
 
 ## Step 1 - Ask
 
@@ -64,7 +55,14 @@ Keep raw dumps in the session scratchpad directory, referred to below as `$S`.
    gh project item-edit --project-id PVT_kwDOAE01zc4BTaq0 --id <item-id> \
      --field-id PVTSSF_lADOAE01zc4BTaq0zhAqgtk --single-select-option-id 47fc9ee4
    ```
-5. **Update trakt-web.** `git -C <web> pull --ff-only -q`.
+5. **Locate and update trakt-web.**
+   ```bash
+   WEB="${TRAKT_WEB:-$(git rev-parse --show-toplevel)/../trakt-web}"
+   git -C "$WEB" rev-parse --show-toplevel || echo "trakt-web not found"
+   git -C "$WEB" pull --ff-only -q
+   ```
+   If it is not found, ask the user for the path. Shell variables do not persist between calls, so
+   use the printed absolute path in later commands.
 
 ## Step 3 - Per issue, in the order given
 
@@ -81,8 +79,8 @@ Finish one issue completely before starting the next. Before each new branch, re
 6. **Implement.** Reuse existing helpers and tokens. Keep the diff small.
 7. **Sync tracking with web.** Read `analytics.md` first. Check whether the web code for this feature tracks anything:
    ```bash
-   W=<web>/projects/client/src/lib
-   grep -rnE "useTrack|AnalyticsEvent\." <web files touched by the linked PRs and their callers>
+   W=$WEB/projects/client/src/lib
+   grep -rnE "useTrack|AnalyticsEvent\." <$WEB files touched by the linked PRs and their callers>
    grep -n "<event>" $W/features/analytics/events/AnalyticsEvent.ts $W/features/analytics/events/AnalyticsEventDataMap.ts
    ```
    - Web tracks it: add the same event on Android. Same event name, dims, metrics and value strings, fired at the same moment as web. Check whether Android already has the event before adding it.
@@ -97,17 +95,17 @@ Finish one issue completely before starting the next. Before each new branch, re
    AI attribution, no em-dashes.
 10. **End state.**
    - Local branches only: stop here, `git checkout main`.
-- PRs: push with
-  `git -c credential.helper='!gh auth git-credential' push -q https://github.com/trakt/trakt-android.git <branch>`,
-  then
-  `gh pr create -R trakt/trakt-android --base main --head <branch> --title "<commit subject>" --body-file "$S/prN.md"`,
-  adding `--draft` for draft PRs.
-- PR body follows `commits.md`: one short paragraph on what changed for the user and why, then up
-  to ~3 bullets for edge cases, deviations from web, or parts of the issue that were already in
-  place. Do not write "ported from" in the prose. Then a line listing the issue and every web PR the
-  change mirrors: `Refs #N, trakt/trakt-web#A, trakt/trakt-web#B`, followed by a `Closes #N` line so
-  merging the PR closes the issue. When web shipped a plain commit, find its PR with
-  `gh api repos/trakt/trakt-web/commits/<sha>/pulls`. No AI attribution, no `Generated with` footer.
+   - PRs: push with
+     `git -c credential.helper='!gh auth git-credential' push -q https://github.com/trakt/trakt-android.git <branch>`,
+     then
+     `gh pr create -R trakt/trakt-android --base main --head <branch> --title "<commit subject>" --body-file "$S/prN.md"`,
+     adding `--draft` for draft PRs.
+   - PR body follows `commits.md`: one short paragraph on what changed for the user and why, then up
+     to ~3 bullets for edge cases, deviations from web, or parts of the issue that were already in
+     place. Do not write "ported from" in the prose. Then a line listing the issue and every web PR the
+     change mirrors: `Refs #N, trakt/trakt-web#A, trakt/trakt-web#B`, followed by a `Closes #N` line so
+     merging the PR closes the issue. When web shipped a plain commit, find its PR with
+     `gh api repos/trakt/trakt-web/commits/<sha>/pulls`. No AI attribution, no `Generated with` footer.
    - **Effort report.** Right before `gh pr create`, count this issue's tokens. The session ID is the name of the scratchpad's parent folder, so pass the transcript explicitly instead of letting the script guess the newest session:
      ```bash
      SID=$(basename "$(dirname "$S")")
@@ -118,8 +116,7 @@ Finish one issue completely before starting the next. Before each new branch, re
      end of the PR body, after the `Closes` line:
      `<!-- convergence-run {"web_pr": <first linked trakt-web PR number or null>, "issue": "trakt-android#N", "client": "android", "lead_model": "<model id>", "subagents": <its "subagents">, "started": "<start time>", "pr_opened": "<now, UTC>", "tokens": <its "tokens">, "tokens_by_model": <its "models">} -->`
      A daily job reads this block to measure how long ports take. When the script prints `"tokens": null`, write `null`. Never estimate.
-11. **Board after PR.** Follow the board status rule below.
-12. `git checkout main` and continue with the next issue.
+11. `git checkout main` and continue with the next issue.
 
 ## Step 4 - Report
 
