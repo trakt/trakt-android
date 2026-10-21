@@ -59,31 +59,14 @@ internal class CalendarItemsLoader(
                 days = days + 2 * DAYS_OFFSET.toInt(),
             )
 
-            val showsDataAsync = if (filters.mode.isMediaOrShows) {
-                async {
-                    windows.asyncMap {
-                        remoteUserSource.getShowsCalendar(
-                            startDate = it.startDate,
-                            days = it.days,
-                            filters = filters,
-                        )
-                    }.flatten()
-                }
-            } else {
-                null
-            }
-            val moviesDataAsync = if (filters.mode.isMediaOrMovies) {
-                async {
-                    windows.asyncMap {
-                        remoteUserSource.getMoviesCalendar(
-                            startDate = it.startDate,
-                            days = it.days,
-                            filters = filters,
-                        )
-                    }.flatten()
-                }
-            } else {
-                null
+            val mediaDataAsync = async {
+                windows.asyncMap {
+                    remoteUserSource.getMediaCalendar(
+                        startDate = it.startDate,
+                        days = it.days,
+                        filters = filters,
+                    )
+                }.flatten()
             }
 
             val showsProgressAsync = async {
@@ -112,22 +95,26 @@ internal class CalendarItemsLoader(
                 }
             }
 
-            val showsData = showsDataAsync?.await().orEmpty()
-            val moviesData = moviesDataAsync?.await().orEmpty()
+            val mediaData = mediaDataAsync.await()
 
             val showsProgress = showsProgressAsync.await()
                 .associateBy { it.showId }
             val moviesProgress = moviesProgressAsync.await()
                 .associateBy { it.movie.ids.trakt }
 
-            val rangeShowsData = showsData.filter {
-                val date = it.episode.effectiveReleaseDate ?: it.firstAired
+            val rangeShowsData = mediaData.mapNotNull { item ->
+                val show = item.show ?: return@mapNotNull null
+                val episode = item.episode ?: return@mapNotNull null
+                val date = episode.effectiveReleaseDate ?: item.firstAired ?: return@mapNotNull null
                 val localDate = date.toInstant().toLocalDay()
-                it.episode.season > 0 && localDate in startDate..endDate
+                if (episode.season <= 0 || localDate !in startDate..endDate) {
+                    return@mapNotNull null
+                }
+                show to episode
             }
 
             val episodes = rangeShowsData
-                .map { it.show to Episode.fromDto(it.episode) }
+                .map { (show, episode) -> show to Episode.fromDto(episode) }
                 // Group a show's episodes that share the same release day into one item,
                 // so a same-day batch renders as a single card with a combined list.
                 .groupBy { (show, episode) -> show.ids.trakt to episode.releasedAt?.toLocalDay() }
@@ -155,21 +142,22 @@ internal class CalendarItemsLoader(
             val movies = if (type != ReleaseType.All) {
                 emptyList()
             } else {
-                moviesData
-                    .filter {
+                mediaData
+                    .mapNotNull { item ->
+                        val movie = item.movie ?: return@mapNotNull null
+                        val released = item.released ?: return@mapNotNull null
                         // Same UTC-midnight-to-local conversion as CalendarItem.releasedAt, so
                         // filtering and day placement agree on which local day a movie belongs to.
-                        val localDate = LocalDate.parse(it.released)
+                        val localDate = LocalDate.parse(released)
                             .atStartOfDay(UTC)
                             .toInstant()
                             .toLocalDay()
-                        localDate in startDate..endDate
+                        movie.takeIf { localDate in startDate..endDate }
                     }
-                    .asyncMap {
-                        val id = it.movie.ids.trakt.toTraktId()
+                    .asyncMap { movie ->
                         CalendarItem.MovieItem(
-                            watched = moviesProgress.containsKey(id),
-                            movie = Movie.fromDto(it.movie),
+                            watched = moviesProgress.containsKey(movie.ids.trakt.toTraktId()),
+                            movie = Movie.fromDto(movie),
                         )
                     }
             }
