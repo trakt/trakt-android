@@ -54,7 +54,7 @@ internal fun DetailsActions(
     onMoreClick: (() -> Unit)? = null,
 ) {
     val isLight = TraktTheme.colors.isLight
-    val shape = RoundedCornerShape(18.dp)
+    val shape = RoundedCornerShape(100)
 
     val shadowColor = when (isLight) {
         true -> DefaultShadowColor.copy(alpha = 0.5F)
@@ -94,7 +94,7 @@ internal fun DetailsActions(
                     start = 16.dp,
                     end = 16.dp,
                 ),
-                shape = RoundedCornerShape(12.dp),
+                shape = shape,
                 colors = buttonColors(
                     containerColor = when (watched) {
                         true -> TraktTheme.colors.primaryButtonContainer
