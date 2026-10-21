@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,8 +23,7 @@ import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.ZoneId
 
-// Reserved above every card, so cards stay aligned whether or not they start a year.
-internal val FavoritesYearLabelHeight = 20.dp
+private val YearLabelMinHeight = 20.dp
 
 // Expects items sorted by listedAt, newest first, like web.
 internal fun List<FavoriteItem>.toFavoritesYearHeaders(): ImmutableMap<String, Int> {
@@ -44,9 +44,18 @@ internal fun FavoritesYearLabel(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .width(TraktTheme.size.verticalMediaCardSize)
-            .height(FavoritesYearLabelHeight),
+            .heightIn(min = YearLabelMinHeight),
     ) {
-        if (year == null) return@Box
+        // An empty label still measures one text line, so every card in the row
+        // reserves the same height at any font scale.
+        if (year == null) {
+            Text(
+                text = "",
+                style = TraktTheme.typography.meta,
+                maxLines = 1,
+            )
+            return@Box
+        }
 
         val lineColors = listOf(TraktTheme.colors.textSecondary, Color.Transparent)
         val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl

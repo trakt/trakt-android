@@ -54,7 +54,6 @@ import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovi
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoritesYearLabel
-import tv.trakt.trakt.core.profile.sections.favorites.views.FavoritesYearLabelHeight
 import tv.trakt.trakt.core.profile.sections.favorites.views.toFavoritesYearHeaders
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -168,10 +167,7 @@ internal fun ProfileFavoritesContent(
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
-                            modifier = Modifier.padding(
-                                top = FavoritesYearLabelHeight,
-                                bottom = 3.75.dp,
-                            ),
+                            modifier = Modifier.padding(bottom = 3.75.dp),
                         )
                     }
 
@@ -232,7 +228,10 @@ private fun ContentLoadingList(
             .alpha(if (visible) 1F else 0F),
     ) {
         items(count = 12) {
-            VerticalMediaSkeletonCard(chipRatio = 0.66F)
+            Column {
+                FavoritesYearLabel(year = null)
+                VerticalMediaSkeletonCard(chipRatio = 0.66F)
+            }
         }
     }
 }
