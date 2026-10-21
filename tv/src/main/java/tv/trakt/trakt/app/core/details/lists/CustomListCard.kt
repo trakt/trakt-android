@@ -259,8 +259,8 @@ private fun CustomListHeader(
                 Icon(
                     painter = painterResource(
                         when (liked) {
-                            true -> R.drawable.ic_thumb_up2_fill
-                            false -> R.drawable.ic_thumb_up2
+                            true -> R.drawable.ic_thumb_up_fill
+                            false -> R.drawable.ic_thumb_up_like
                         },
                     ),
                     contentDescription = null,

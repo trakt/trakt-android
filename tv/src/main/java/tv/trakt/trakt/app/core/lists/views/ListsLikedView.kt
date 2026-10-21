@@ -67,7 +67,7 @@ internal fun ListsLikedView(
             modifier = Modifier.padding(contentPadding),
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_thumb_up2),
+                painter = painterResource(R.drawable.ic_thumb_up_like),
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier.size(20.dp),

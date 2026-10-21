@@ -24,7 +24,7 @@ internal enum class PersonalListType(
     ),
     Liked(
         R.string.list_title_liked_lists,
-        R.drawable.ic_thumb_up2,
+        R.drawable.ic_thumb_up_like,
     ),
     Collaborations(
         R.string.list_title_collaborative_lists,
