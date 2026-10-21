@@ -42,7 +42,7 @@ internal fun PrimaryButton(
     enabled: Boolean = true,
     loading: Boolean = false,
     height: Dp = 46.dp,
-    corner: Dp = 16.dp,
+    corner: Int = 100,
     contentPadding: Dp = 14.dp,
     containerColor: Color = TraktTheme.colors.primaryButtonContainer,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,

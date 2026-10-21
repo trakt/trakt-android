@@ -50,7 +50,7 @@ internal fun ContinueWatchingShowView(
                 item.episodeId != null -> Image(
                     provider = ImageProvider(R.drawable.ic_check_2),
                     contentDescription = context.getString(R.string.button_text_mark_as_watched),
-                    colorFilter = ColorFilter.tint(WidgetTheme.colors.accent),
+                    colorFilter = ColorFilter.tint(WidgetTheme.colors.textPrimary),
                     modifier = GlanceModifier
                         .size(WidgetDimensions.checkIconSize)
                         .clickable(

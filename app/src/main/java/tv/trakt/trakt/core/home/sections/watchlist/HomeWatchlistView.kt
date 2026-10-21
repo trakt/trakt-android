@@ -549,7 +549,7 @@ private fun ContentItemCheck(
             Icon(
                 painter = painterResource(R.drawable.ic_check_2),
                 contentDescription = null,
-                tint = TraktTheme.colors.accent,
+                tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
                     .size(checkSize)
                     .onClickCombined(

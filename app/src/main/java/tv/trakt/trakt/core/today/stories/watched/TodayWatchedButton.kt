@@ -160,10 +160,7 @@ private fun TodayWatchedButtonContent(
                 if (isWatched) R.drawable.ic_check_double else R.drawable.ic_check_2,
             ),
             contentDescription = null,
-            tint = when {
-                isWatched -> TraktTheme.colors.textPrimary
-                else -> TraktTheme.colors.accent
-            },
+            tint = TraktTheme.colors.textPrimary,
             modifier = Modifier.size(IconSize),
         )
     }
