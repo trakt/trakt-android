@@ -81,8 +81,8 @@ class GetSearchResultsUseCase(
             val exactResultsAsync = async {
                 enrichmentOrEmpty { fetch(DEFAULT_EXACT_SEARCH_LIMIT, true) }
             }
-            val trendingResultsAsync = async {
-                enrichmentOrEmpty { getTrending(query, trendingTypes) }
+            val trendingResultsAsync = trendingTypes.map { type ->
+                async { enrichmentOrEmpty { remoteSource.getTrending(query, type) } }
             }
             val normalResultsAsync = async {
                 fetch(DEFAULT_SEARCH_LIMIT, false)
@@ -90,22 +90,12 @@ class GetSearchResultsUseCase(
 
             weave(
                 exactResults = exactResultsAsync.await(),
-                trendingResults = trendingResultsAsync.await(),
+                trendingResults = trendingResultsAsync
+                    .flatMap { it.await() }
+                    .sortedByDescending { it.count }
+                    .mapNotNull(::toSearchItem),
                 normalResults = normalResultsAsync.await(),
             )
-        }
-    }
-
-    private suspend fun getTrending(
-        query: String,
-        types: List<String>,
-    ): List<SearchItemDto> {
-        return coroutineScope {
-            types
-                .map { type -> async { remoteSource.getTrending(query, type) } }
-                .flatMap { it.await() }
-                .sortedByDescending { it.count }
-                .mapNotNull(::toSearchItem)
         }
     }
 
@@ -151,7 +141,7 @@ class GetSearchResultsUseCase(
      * The exact and trending passes enrich the fuzzy one, so their failure degrades the
      * results instead of failing the whole search.
      */
-    private suspend fun enrichmentOrEmpty(fetch: suspend () -> List<SearchItemDto>): List<SearchItemDto> {
+    private suspend fun <T> enrichmentOrEmpty(fetch: suspend () -> List<T>): List<T> {
         return try {
             fetch()
         } catch (cancellation: CancellationException) {
