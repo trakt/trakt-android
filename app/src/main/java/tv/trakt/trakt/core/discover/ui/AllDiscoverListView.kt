@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.MediaMode
@@ -49,6 +50,7 @@ internal fun AllDiscoverListView(
     title: @Composable (() -> Unit)? = null,
     loading: Boolean,
     loadingMore: Boolean,
+    filtered: Boolean = false,
     onItemClick: (DiscoverItem) -> Unit = {},
     onItemLongClick: (DiscoverItem) -> Unit = {},
     onEndOfList: () -> Unit = {},
@@ -122,6 +124,7 @@ internal fun AllDiscoverListView(
         if (items.isEmpty() && !loading) {
             item {
                 ContentEmptyView(
+                    filtered = filtered,
                     modifier = Modifier
                         .animateItem(
                             fadeInSpec = null,
@@ -259,9 +262,14 @@ private fun MovieListItem(
 }
 
 @Composable
-private fun ContentEmptyView(modifier: Modifier = Modifier) {
+private fun ContentEmptyView(
+    filtered: Boolean,
+    modifier: Modifier = Modifier,
+) {
     Text(
-        text = stringResource(R.string.list_placeholder_empty),
+        text = stringResource(
+            if (filtered) R.string.list_placeholder_no_filter_results else R.string.list_placeholder_empty,
+        ),
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.heading6,
         modifier = modifier,
@@ -290,6 +298,26 @@ private fun AllDiscoverListViewPreview() {
                     movie = PreviewData.movie1,
                 ),
             ).toImmutableList(),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun AllDiscoverListViewFilteredEmptyPreview() {
+    TraktTheme {
+        AllDiscoverListView(
+            state = LazyListState(),
+            collectionState = UserCollectionState.Default,
+            filter = MediaMode.Media,
+            loading = false,
+            loadingMore = false,
+            filtered = true,
+            items = EmptyImmutableList,
         )
     }
 }
