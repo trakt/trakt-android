@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberPercentFormat
 import tv.trakt.trakt.common.model.reactions.MediaReaction
 import tv.trakt.trakt.common.model.reactions.MediaReactionsSummary
@@ -44,12 +46,15 @@ import kotlin.math.roundToInt
 
 private const val PAGE_SIZE = 8
 private const val ROW_SIZE = 4
+private val SlotPadding = 4.dp
 
 @Composable
 internal fun MediaReactionsSummaryCard(
     summary: MediaReactionsSummary,
     userReactions: ImmutableList<MediaReaction>,
     modifier: Modifier = Modifier,
+    isLimitReached: Boolean = false,
+    onReactionClick: ((MediaReaction) -> Unit)? = null,
 ) {
     val pages = remember(summary) {
         summary.top(MediaReaction.entries.size).chunked(PAGE_SIZE)
@@ -58,8 +63,9 @@ internal fun MediaReactionsSummaryCard(
     val rowsPerPage = if (pages.size > 1 || pages.firstOrNull().orEmpty().size > ROW_SIZE) 2 else 1
     val pagerState = rememberPagerState { pages.size }
 
+    // Slot padding replaces part of the card spacing, so the gaps around emoji stay tappable.
     Column(
-        verticalArrangement = spacedBy(12.dp),
+        verticalArrangement = spacedBy(12.dp - SlotPadding),
         modifier = modifier
             .background(
                 color = TraktTheme.colors.reactionsSummaryContainer,
@@ -70,7 +76,8 @@ internal fun MediaReactionsSummaryCard(
                     bottomEnd = 20.dp,
                 ),
             )
-            .padding(horizontal = 8.dp, vertical = 12.dp),
+            .padding(horizontal = 8.dp)
+            .padding(top = 12.dp, bottom = 12.dp - SlotPadding),
     ) {
         Row(
             verticalAlignment = CenterVertically,
@@ -106,26 +113,42 @@ internal fun MediaReactionsSummaryCard(
             pageSpacing = 12.dp,
             modifier = Modifier.fillMaxWidth(),
         ) { page ->
-            Column(verticalArrangement = spacedBy(8.dp)) {
+            Column {
                 repeat(rowsPerPage) { rowIndex ->
                     val row = pages[page].drop(rowIndex * ROW_SIZE).take(ROW_SIZE)
                     Row(modifier = Modifier.fillMaxWidth()) {
                         repeat(ROW_SIZE) { slot ->
+                            val reaction = row.getOrNull(slot)
+                            val isCurrent = reaction != null && reaction in userReactions
+                            val onSlotClick = onReactionClick
+                                ?.takeIf { reaction != null && (isCurrent || !isLimitReached) }
+
                             Box(
                                 contentAlignment = Alignment.Center,
-                                modifier = Modifier.weight(1F),
-                            ) {
-                                val reaction = row.getOrNull(slot)
-                                when (reaction) {
-                                    null -> SummaryItemPlaceholder()
-                                    else -> SummaryItem(
-                                        reaction = reaction,
-                                        share = shareOf(
-                                            count = summary.distribution[reaction] ?: 0,
-                                            total = summary.reactionsCount,
-                                        ),
-                                        highlight = reaction in userReactions,
+                                modifier = Modifier
+                                    .weight(1F)
+                                    .ifOrElse(
+                                        condition = onSlotClick != null && reaction != null,
+                                        isTrue = Modifier.onClick(throttle = false) {
+                                            if (reaction != null) onSlotClick?.invoke(reaction)
+                                        },
                                     )
+                                    .padding(vertical = SlotPadding),
+                            ) {
+                                when (reaction) {
+                                    null -> {
+                                        SummaryItemPlaceholder()
+                                    }
+                                    else -> {
+                                        SummaryItem(
+                                            reaction = reaction,
+                                            share = shareOf(
+                                                count = summary.distribution[reaction] ?: 0,
+                                                total = summary.reactionsCount,
+                                            ),
+                                            highlight = isCurrent,
+                                        )
+                                    }
                                 }
                             }
                         }
