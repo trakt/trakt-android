@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Eller stanna 2 år till</string>
   <string name="header_vip_cancel_reason">Varför lämnar du?</string>
   <string name="header_vip_deal_paypal_switch">Byt till kort. Få 2 år VIP för %s</string>
-  <string name="header_vip_deal_welcome_back">Få 2 år VIP för %s</string>
   <string name="header_vip_paypal_switch">Byt till kreditkort</string>
   <string name="header_vip_streak">VIP-svit</string>
   <string name="header_writer">Manusförfattare</string>
@@ -1424,7 +1423,7 @@
   <string name="match_label_soulmates">Själsfränder</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Matchning:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Öppna matchningsdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Öppna matchningsdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beräknar kompatibilitetspoäng</string>
   <string name="mir_banner_body">Din månatliga sammanfattning är klar. Här är vad du tittade på i %s.</string>
   <string name="mir_banner_body_short">Din sammanfattning för %s är klar.</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_show_ending">Visar en avslutningsrad i en series detaljer: \"Avslutad\" när handlingen är klar, \"Oavslutad\" när den inte är det.</string>
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Ett nytt sätt att säga upp VIP: frågar varför, visar vad som ändras och erbjuder ett avtal för att stanna kvar.</string>
   <string name="preview_feature_description_vip_veteran">Visar hur länge medlemmar har behållit VIP utan avbrott, med ett Veteran- eller Legend-märke, en färgad avatarring och några firanden på din egen profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en scrollbar rulle med en tittarpersona, följt av en statistik sida med matchande stil.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Omtittning</string>
   <string name="preview_feature_title_show_ending">Serieavslutning</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_vip_cancel_flow">VIP-avbrutningsflöde</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteranstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Årsöversikt 2026</string>
   <string name="row_label_loading_title">Laddar namn</string>
@@ -1657,7 +1654,7 @@
   <string name="tag_media_sync_webhook_only">Endast Webhook</string>
   <string name="tag_mixtape_different_mood">Annan känsla</string>
   <string name="tag_mixtape_kept">Behållen</string>
-  <string name="tag_mixtape_match">%s%% matchning</string>
+  <string name="tag_mixtape_match">%s% matchning</string>
   <string name="tag_mixtape_tap_details">Tryck för detaljer</string>
   <string name="tag_text_blocked_user">Blockerad</string>
   <string name="tag_text_deal_price">Första 2 åren</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Innan du går · endast en gång</string>
   <string name="tag_text_vip_cancel_reason">Innan du går</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal till kort-erbjudande</string>
-  <string name="tag_text_vip_deal_welcome_back">Välkomsterbjudande</string>
   <string name="tag_text_vip_preview">VIP-förhandsvisning</string>
   <string name="tag_text_watch_count">Visningar</string>
   <string name="tag_text_watched">Sedd</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Allt sparat</string>
   <string name="text_vip_cancel_fact_data">Dina data</string>
   <string name="text_vip_cancel_fact_until">VIP till</string>
-  <string name="text_vip_cancel_failed_title">Kunde inte uppdatera din prenumeration</string>
   <string name="text_vip_cancel_feature_insights">Trivia, soundtrack och känslor</string>
   <string name="text_vip_cancel_feature_plex">Plex-skrobbling</string>
   <string name="text_vip_cancel_feature_reviews">Årsöversikt och Månadsöversikt</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Jämför alla planer</string>
   <string name="text_vip_deal_paypal_switch">%1$s betalas i förskott för 2 år, förnyas sedan automatiskt för %2$s varannat år. Rabatt tillämpas i kassan. Du behåller din återstående VIP-tid; vi avbryter PayPal automatiskt efter kassan.</string>
   <string name="text_vip_deal_term">2 år VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s betalas i förskott för 2 år, förnyas sedan automatiskt för %2$s varannat år. Rabatt tillämpas i kassan.</string>
   <string name="text_vip_features_tagline">Ingen hype, bara funktioner.</string>
   <string name="text_vip_get_insights">Få djupare insikter, smartare spårning och tidig tillgång till vad som kommer härnäst.</string>
   <string name="text_vip_grace_body">Förnya innan dess för att behålla den.</string>
@@ -2828,7 +2822,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ingen hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andraplats</string>
   <string name="yir_2026_preview_title">Personaförhandsvisning</string>
-  <string name="yir_2026_rarity">Endast %1$d%% är %2$s</string>
+  <string name="yir_2026_rarity">Endast %1$d% är %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Litegrann %s</string>
   <string name="yir_2026_reel_and_you_are">Och du är</string>
   <string name="yir_2026_reel_but_mostly">Men mestadels</string>

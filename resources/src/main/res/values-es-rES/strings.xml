@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">O quédate 2 años más</string>
   <string name="header_vip_cancel_reason">¿Por qué te vas?</string>
   <string name="header_vip_deal_paypal_switch">Cambia a tarjeta. Obtén 2 años de VIP por %s</string>
-  <string name="header_vip_deal_welcome_back">Obtén 2 años de VIP por %s</string>
   <string name="header_vip_paypal_switch">Cambiar a tarjeta de crédito</string>
   <string name="header_vip_streak">Racha VIP</string>
   <string name="header_writer">Guionista</string>
@@ -1424,7 +1423,7 @@
   <string name="match_label_soulmates">Almas gemelas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidencia:</string>
-  <string name="match_pill_aria_label">%1$d%% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
+  <string name="match_pill_aria_label">%1$d% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
   <string name="match_pill_loading_aria_label">Calculando puntuación de compatibilidad</string>
   <string name="mir_banner_body">Tu resumen mensual está listo. Esto es lo que viste en %s.</string>
   <string name="mir_banner_body_short">Tu resumen de %s está listo.</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Inicia sesiones de re-visualización para programas que ya has visto, registra o marca los episodios como vistos directamente desde el cajón de la sesión.</string>
   <string name="preview_feature_description_show_ending">Muestra una fila de Finalización en los detalles de una serie: Completa cuando la historia concluyó, Inconclusa cuando no lo hizo.</string>
   <string name="preview_feature_description_soundtrack">Añade una sección de banda sonora a las páginas de películas y series, con reproducción donde se pueda emparejar una pista.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Una nueva forma de cancelar VIP: pregunta el motivo, muestra los cambios y ofrece un trato para quedarse.</string>
   <string name="preview_feature_description_vip_veteran">Muestra cuánto tiempo los miembros han mantenido el VIP sin interrupción, con una insignia de Veterano o Leyenda, un anillo de avatar de color y algunas celebraciones en tu propio perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">Tu 2026 como un resumen interactivo desplazable con una personalidad de espectador, y luego una página de estadísticas diseñada para que coincida.</string>
   <string name="preview_feature_title_edit_mode">Modo de edición</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Re-visualización</string>
   <string name="preview_feature_title_show_ending">Finalización de la serie</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
-  <string name="preview_feature_title_vip_cancel_flow">Flujo de cancelación VIP</string>
   <string name="preview_feature_title_vip_veteran">Estado VIP veterano</string>
   <string name="preview_feature_title_year_in_review_2026">Resumen del año 2026</string>
   <string name="row_label_loading_title">Cargando nombre</string>
@@ -1657,7 +1654,7 @@
   <string name="tag_media_sync_webhook_only">Solo Webhook</string>
   <string name="tag_mixtape_different_mood">Otro ambiente</string>
   <string name="tag_mixtape_kept">Guardado</string>
-  <string name="tag_mixtape_match">%s%% de coincidencia</string>
+  <string name="tag_mixtape_match">%s% de coincidencia</string>
   <string name="tag_mixtape_tap_details">Toca para ver detalles</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
   <string name="tag_text_deal_price">Primeros 2 años</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Antes de irte · solo una vez</string>
   <string name="tag_text_vip_cancel_reason">Antes de irte</string>
   <string name="tag_text_vip_deal_paypal_switch">Oferta de PayPal a tarjeta</string>
-  <string name="tag_text_vip_deal_welcome_back">Oferta de regreso</string>
   <string name="tag_text_vip_preview">Vista previa VIP</string>
   <string name="tag_text_watch_count">Recuento de reproducciones</string>
   <string name="tag_text_watched">Visto</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Todo conservado</string>
   <string name="text_vip_cancel_fact_data">Tus datos</string>
   <string name="text_vip_cancel_fact_until">VIP hasta</string>
-  <string name="text_vip_cancel_failed_title">No se pudo actualizar tu suscripción</string>
   <string name="text_vip_cancel_feature_insights">Curiosidades, bandas sonoras y sentimiento</string>
   <string name="text_vip_cancel_feature_plex">Scrobbling de Plex</string>
   <string name="text_vip_cancel_feature_reviews">Resumen Anual y Resumen Mensual</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Comparar todos los planes</string>
   <string name="text_vip_deal_paypal_switch">%1$s por adelantado durante 2 años, luego se renueva automáticamente a %2$s cada 2 años. Descuento aplicado al finalizar la compra. Conservarás tu tiempo VIP restante; cancelaremos automáticamente PayPal después de la compra.</string>
   <string name="text_vip_deal_term">2 años de VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s por adelantado durante 2 años, luego se renueva automáticamente a %2$s cada 2 años. Descuento aplicado al finalizar la compra.</string>
   <string name="text_vip_features_tagline">Sin trucos, solo funciones.</string>
   <string name="text_vip_get_insights">Obtén información más profunda, seguimiento más inteligente y acceso anticipado a lo próximo.</string>
   <string name="text_vip_grace_body">Renueva antes para mantenerla activa.</string>
@@ -2828,7 +2822,7 @@
   <string name="yir_2026_preview_runner_none">Ninguno (sin híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo puesto</string>
   <string name="yir_2026_preview_title">Vista previa de personalidad</string>
-  <string name="yir_2026_rarity">Solo el %1$d%% son %2$s</string>
+  <string name="yir_2026_rarity">Solo el %1$d% son %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un poco %s</string>
   <string name="yir_2026_reel_and_you_are">Y eres</string>
   <string name="yir_2026_reel_but_mostly">Pero sobre todo</string>

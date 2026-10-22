@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Or stay 2 more years</string>
   <string name="header_vip_cancel_reason">Why are you leaving?</string>
   <string name="header_vip_deal_paypal_switch">Switch to card. Get 2 years of VIP for %s</string>
-  <string name="header_vip_deal_welcome_back">Get 2 years of VIP for %s</string>
   <string name="header_vip_paypal_switch">Switch to credit card</string>
   <string name="header_vip_streak">VIP streak</string>
   <string name="header_writer">Writer</string>
@@ -1424,7 +1423,7 @@
   <string name="match_label_soulmates">Soulmates</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open match details.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open match details.</string>
   <string name="match_pill_loading_aria_label">Computing match score</string>
   <string name="mir_banner_body">Your monthly recap is ready. Here\'s what you watched in %s.</string>
   <string name="mir_banner_body_short">Your %s recap is ready.</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_show_ending">Shows an Ending row in a show\'s details: Complete when the story wrapped up, Unresolved when it did not.</string>
   <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
-  <string name="preview_feature_description_vip_cancel_flow">A new way to cancel VIP: asks why, shows what changes and offers a deal to stay.</string>
   <string name="preview_feature_description_vip_veteran">Shows how long members have kept VIP without a break, with a Veteran or Legend badge, a coloured avatar ring and a few celebrations on your own profile.</string>
   <string name="preview_feature_description_year_in_review_2026">Your 2026 as a scroll-driven reel with a viewer persona, then a stats page styled to match it.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_show_ending">Show ending</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_vip_cancel_flow">VIP cancel flow</string>
   <string name="preview_feature_title_vip_veteran">VIP veteran status</string>
   <string name="preview_feature_title_year_in_review_2026">Year in Review 2026</string>
   <string name="row_label_loading_title">Loading name</string>
@@ -1657,7 +1654,7 @@
   <string name="tag_media_sync_webhook_only">Webhook only</string>
   <string name="tag_mixtape_different_mood">Different mood</string>
   <string name="tag_mixtape_kept">Kept</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tap for details</string>
   <string name="tag_text_blocked_user">Blocked</string>
   <string name="tag_text_deal_price">First 2 Years</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Before you go · one time only</string>
   <string name="tag_text_vip_cancel_reason">Before you go</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal to card offer</string>
-  <string name="tag_text_vip_deal_welcome_back">Welcome back offer</string>
   <string name="tag_text_vip_preview">VIP Preview</string>
   <string name="tag_text_watch_count">Watch count</string>
   <string name="tag_text_watched">Watched</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">All kept</string>
   <string name="text_vip_cancel_fact_data">Your data</string>
   <string name="text_vip_cancel_fact_until">VIP until</string>
-  <string name="text_vip_cancel_failed_title">Couldn\'t update your subscription</string>
   <string name="text_vip_cancel_feature_insights">Trivia, soundtracks and sentiment</string>
   <string name="text_vip_cancel_feature_plex">Plex scrobbling</string>
   <string name="text_vip_cancel_feature_reviews">Year in Review and Month in Review</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Compare all plans</string>
   <string name="text_vip_deal_paypal_switch">%1$s upfront for 2 years, then auto-renews at %2$s every 2 years. Discount applied at checkout. You keep your remaining VIP time; we automatically cancel PayPal after checkout.</string>
   <string name="text_vip_deal_term">2 years of VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s upfront for 2 years, then auto-renews at %2$s every 2 years. Discount applied at checkout.</string>
   <string name="text_vip_features_tagline">No hype, just features.</string>
   <string name="text_vip_get_insights">Get deeper insights, smarter tracking, and early access to what\'s next.</string>
   <string name="text_vip_grace_body">Renew before then to keep it going.</string>
@@ -2828,7 +2822,7 @@
   <string name="yir_2026_preview_runner_none">None (no hybrid)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona preview</string>
-  <string name="yir_2026_rarity">Only %1$d%% are %2$s</string>
+  <string name="yir_2026_rarity">Only %1$d% are %2$s</string>
   <string name="yir_2026_reel_a_little_bit">A little bit %s</string>
   <string name="yir_2026_reel_and_you_are">And you are</string>
   <string name="yir_2026_reel_but_mostly">But mostly</string>

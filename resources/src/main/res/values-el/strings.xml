@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Ή παραμείνετε για 2 ακόμη χρόνια</string>
   <string name="header_vip_cancel_reason">Γιατί φεύγετε;</string>
   <string name="header_vip_deal_paypal_switch">Αλλαγή σε κάρτα. Αποκτήστε 2 έτη VIP με %s</string>
-  <string name="header_vip_deal_welcome_back">Αποκτήστε 2 έτη VIP με %s</string>
   <string name="header_vip_paypal_switch">Μετάβαση σε πιστωτική κάρτα</string>
   <string name="header_vip_streak">Σερί VIP</string>
   <string name="header_writer">Σεναριογράφος</string>
@@ -1424,7 +1423,7 @@
   <string name="match_label_soulmates">Ψυχές Συγγενείς</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Ταίριασμα:</string>
-  <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
+  <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
   <string name="mir_banner_body">Η μηνιαία ανακεφαλαίωσή σου είναι έτοιμη. Δες τι παρακολούθησες τον %s.</string>
   <string name="mir_banner_body_short">Η ανακεφαλαίωση για τον %s είναι έτοιμη.</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_show_ending">Εμφανίζει μια γραμμή Τέλος στις λεπτομέρειες μιας σειράς: «Ολοκληρώθηκε» όταν η ιστορία ολοκληρώθηκε, «Άλυτο» όταν δεν ολοκληρώθηκε.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Ένας νέος τρόπος ακύρωσης του VIP: ρωτάει γιατί, δείχνει τι αλλάζει και προσφέρει μια συμφωνία για να παραμείνετε.</string>
   <string name="preview_feature_description_vip_veteran">Δείχνει πόσο καιρό οι χρήστες έχουν διατηρήσει το VIP χωρίς διακοπή, με σήμα Βετεράνου ή Θρύλου, ένα έγχρωμο δαχτυλίδι στο avatar και μερικούς εορτασμούς στο προφίλ σας.</string>
   <string name="preview_feature_description_year_in_review_2026">Το 2026 σας ως μια κυλιόμενη ταινία με ένα προφίλ θεατή, και στη συνέχεια μια σελίδα στατιστικών σχεδιασμένη να ταιριάζει.</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_show_ending">Τέλος σειράς</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
-  <string name="preview_feature_title_vip_cancel_flow">Ροή ακύρωσης VIP</string>
   <string name="preview_feature_title_vip_veteran">Κατάσταση βετεράνου VIP</string>
   <string name="preview_feature_title_year_in_review_2026">Ετήσια Ανασκόπηση 2026</string>
   <string name="row_label_loading_title">Φόρτωση ονόματος</string>
@@ -1657,7 +1654,7 @@
   <string name="tag_media_sync_webhook_only">Μόνο Webhook</string>
   <string name="tag_mixtape_different_mood">Διαφορετική διάθεση</string>
   <string name="tag_mixtape_kept">Διατηρήθηκε</string>
-  <string name="tag_mixtape_match">%s%% αντιστοιχία</string>
+  <string name="tag_mixtape_match">%s% αντιστοιχία</string>
   <string name="tag_mixtape_tap_details">Πατήστε για λεπτομέρειες</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
   <string name="tag_text_deal_price">Πρώτα 2 έτη</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Πριν φύγετε · μία μόνο φορά</string>
   <string name="tag_text_vip_cancel_reason">Πριν φύγετε</string>
   <string name="tag_text_vip_deal_paypal_switch">Προσφορά PayPal σε κάρτα</string>
-  <string name="tag_text_vip_deal_welcome_back">Προσφορά επανένταξης</string>
   <string name="tag_text_vip_preview">VIP Προεπισκόπηση</string>
   <string name="tag_text_watch_count">Αριθμός προβολών</string>
   <string name="tag_text_watched">Παρακολουθήθηκε</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Όλα διατηρούνται</string>
   <string name="text_vip_cancel_fact_data">Τα δεδομένα σας</string>
   <string name="text_vip_cancel_fact_until">VIP έως</string>
-  <string name="text_vip_cancel_failed_title">Δεν ήταν δυνατή η ενημέρωση της συνδρομής σας</string>
   <string name="text_vip_cancel_feature_insights">Trivia, soundtracks και sentiment</string>
   <string name="text_vip_cancel_feature_plex">Plex scrobbling</string>
   <string name="text_vip_cancel_feature_reviews">Ανασκόπηση Έτους και Ανασκόπηση Μήνα</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Σύγκριση όλων των πακέτων</string>
   <string name="text_vip_deal_paypal_switch">%1$s προκαταβολικά για 2 έτη, κατόπιν αυτόματη ανανέωση στα %2$s κάθε 2 έτη. Η έκπτωση εφαρμόζεται στο ταμείο. Διατηρείτε τον υπόλοιπο χρόνο VIP. Ακυρώνουμε αυτόματα το PayPal μετά την ολοκλήρωση της αγοράς.</string>
   <string name="text_vip_deal_term">2 έτη VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s προκαταβολικά για 2 έτη, κατόπιν αυτόματη ανανέωση στα %2$s κάθε 2 έτη. Η έκπτωση εφαρμόζεται στο ταμείο.</string>
   <string name="text_vip_features_tagline">Χωρίς διαφημίσεις, μόνο λειτουργίες.</string>
   <string name="text_vip_get_insights">Αποκτήστε βαθύτερες πληροφορίες, εξυπνότερη παρακολούθηση και πρόωρη πρόσβαση σε ό,τι ακολουθεί.</string>
   <string name="text_vip_grace_body">Ανανεώστε πριν από τότε για να το διατηρήσετε.</string>
@@ -2828,7 +2822,7 @@
   <string name="yir_2026_preview_runner_none">Κανένα (όχι υβρίδιο)</string>
   <string name="yir_2026_preview_runner_up">Επιλαχών</string>
   <string name="yir_2026_preview_title">Προεπισκόπηση προφίλ</string>
-  <string name="yir_2026_rarity">Μόνο το %1$d%% είναι %2$s</string>
+  <string name="yir_2026_rarity">Μόνο το %1$d% είναι %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Λίγο %s</string>
   <string name="yir_2026_reel_and_you_are">Και είστε</string>
   <string name="yir_2026_reel_but_mostly">Αλλά κυρίως</string>

@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Veya 2 yıl daha kalın</string>
   <string name="header_vip_cancel_reason">Neden ayrılıyorsunuz?</string>
   <string name="header_vip_deal_paypal_switch">Karta geçin. %s karşılığında 2 yıllık VIP edinin</string>
-  <string name="header_vip_deal_welcome_back">%s karşılığında 2 yıllık VIP edinin</string>
   <string name="header_vip_paypal_switch">Kredi kartına geç</string>
   <string name="header_vip_streak">VIP serisi</string>
   <string name="header_writer">Yazar</string>
@@ -1424,7 +1423,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
   <string name="mir_banner_body_short">%s özetiniz hazır.</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_show_ending">Bir dizinin ayrıntılarında Bitiş satırını gösterir: Hikaye tamamlandığında \'Tamamlandı\', tamamlanmadığında \'Çözümlenmemiş\'.</string>
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
-  <string name="preview_feature_description_vip_cancel_flow">VIP\'i iptal etmenin yeni bir yolu: nedenini sorar, nelerin değişeceğini gösterir ve kalmak için bir anlaşma sunar.</string>
   <string name="preview_feature_description_vip_veteran">Üyelerin VIP statüsünü ne kadar süre kesintisiz sürdürdüğünü, Kıdemli veya Efsane rozetiyle, renkli bir avatar halkasıyla ve kendi profilinizde birkaç kutlamayla gösterir.</string>
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_show_ending">Dizi Bitişi</string>
   <string name="preview_feature_title_soundtrack">Film Müziği</string>
-  <string name="preview_feature_title_vip_cancel_flow">VIP iptal akışı</string>
   <string name="preview_feature_title_vip_veteran">VIP kıdemli durumu</string>
   <string name="preview_feature_title_year_in_review_2026">2026 Yılına Genel Bakış</string>
   <string name="row_label_loading_title">İsim yükleniyor</string>
@@ -1657,7 +1654,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s%% eşleşme</string>
+  <string name="tag_mixtape_match">%s% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Gitmeden önce · sadece bir defaya mahsus</string>
   <string name="tag_text_vip_cancel_reason">Gitmeden önce</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal\'dan Karta Geçiş Teklifi</string>
-  <string name="tag_text_vip_deal_welcome_back">Hoş Geldiniz Teklifi</string>
   <string name="tag_text_vip_preview">VIP Önizleme</string>
   <string name="tag_text_watch_count">İzlenme sayısı</string>
   <string name="tag_text_watched">İzlendi</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Hepsi saklandı</string>
   <string name="text_vip_cancel_fact_data">Verileriniz</string>
   <string name="text_vip_cancel_fact_until">VIP geçerlilik tarihi</string>
-  <string name="text_vip_cancel_failed_title">Aboneliğiniz güncellenemedi</string>
   <string name="text_vip_cancel_feature_insights">Bilgiler, film müzikleri ve duygu analizleri</string>
   <string name="text_vip_cancel_feature_plex">Plex scrobbling</string>
   <string name="text_vip_cancel_feature_reviews">Yılın Özeti ve Ayın Özeti</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Tüm Planları Karşılaştır</string>
   <string name="text_vip_deal_paypal_switch">2 yıl için peşin %1$s, ardından her 2 yılda bir %2$s olarak otomatik yenilenir. İndirim ödeme sırasında uygulanır. Kalan VIP sürenizi korursunuz; ödeme sonrası PayPal\'ı otomatik olarak iptal ederiz.</string>
   <string name="text_vip_deal_term">2 yıllık VIP</string>
-  <string name="text_vip_deal_welcome_back">2 yıl için peşin %1$s, ardından her 2 yılda bir %2$s olarak otomatik yenilenir. İndirim ödeme sırasında uygulanır.</string>
   <string name="text_vip_features_tagline">Abartı yok, sadece özellikler.</string>
   <string name="text_vip_get_insights">Daha derin içgörüler, daha akıllı takip ve gelecek özelliklere erken erişim sağlayın.</string>
   <string name="text_vip_grace_body">Devam ettirmek için o zamana kadar yenileyin.</string>
@@ -2828,7 +2822,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

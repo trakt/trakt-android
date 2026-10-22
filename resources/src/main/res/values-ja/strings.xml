@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">または、さらに2年間継続する</string>
   <string name="header_vip_cancel_reason">なぜ解約するのですか？</string>
   <string name="header_vip_deal_paypal_switch">カード払いに変更。%sで2年間VIP会員に</string>
-  <string name="header_vip_deal_welcome_back">%sで2年間VIP会員に</string>
   <string name="header_vip_paypal_switch">クレジットカードに切り替える</string>
   <string name="header_vip_streak">VIP連続記録</string>
   <string name="header_writer">脚本家</string>
@@ -1424,7 +1423,7 @@
   <string name="match_label_soulmates">ソウルメイト</string>
   <string name="match_label_spin_off">スピンオフ</string>
   <string name="match_pill_anchor">マッチ:</string>
-  <string name="match_pill_aria_label">%1$d%%一致、%2$s。一致の詳細を開く。</string>
+  <string name="match_pill_aria_label">%1$d%一致、%2$s。一致の詳細を開く。</string>
   <string name="match_pill_loading_aria_label">マッチスコアを計算中</string>
   <string name="mir_banner_body">あなたの月間まとめができました。%sに視聴したコンテンツはこちらです。</string>
   <string name="mir_banner_body_short">あなたの%sのまとめができました。</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_show_ending">作品の詳細に完結情報行を表示します。ストーリーが完結した場合は「完結済み」、しなかった場合は「未完」と表示されます。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
-  <string name="preview_feature_description_vip_cancel_flow">VIPを解約する新しい方法: 理由を尋ね、変更点を示し、継続するための特典を提供します。</string>
   <string name="preview_feature_description_vip_veteran">VIPを途切れることなく継続した期間を表示します。ベテランまたはレジェンドバッジ、色付きのアバターリング、そしてプロフィールでのささやかなお祝いが贈られます。</string>
   <string name="preview_feature_description_year_in_review_2026">視聴者ペルソナに基づいたスクロールリール形式の2026年、そしてそれに合わせたスタイルの統計ページです。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_show_ending">完結情報</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
-  <string name="preview_feature_title_vip_cancel_flow">VIP解約フロー</string>
   <string name="preview_feature_title_vip_veteran">VIPベテランステータス</string>
   <string name="preview_feature_title_year_in_review_2026">年間レビュー 2026</string>
   <string name="row_label_loading_title">名前を読み込み中</string>
@@ -1657,7 +1654,7 @@
   <string name="tag_media_sync_webhook_only">ウェブフックのみ</string>
   <string name="tag_mixtape_different_mood">別の雰囲気</string>
   <string name="tag_mixtape_kept">キープ済み</string>
-  <string name="tag_mixtape_match">%s%%一致</string>
+  <string name="tag_mixtape_match">%s%一致</string>
   <string name="tag_mixtape_tap_details">タップで詳細</string>
   <string name="tag_text_blocked_user">ブロック済み</string>
   <string name="tag_text_deal_price">最初の2年間</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">解約前に · 一回限り</string>
   <string name="tag_text_vip_cancel_reason">解約前に</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPalからカードへの移行オファー</string>
-  <string name="tag_text_vip_deal_welcome_back">おかえりオファー</string>
   <string name="tag_text_vip_preview">VIPプレビュー</string>
   <string name="tag_text_watch_count">視聴回数</string>
   <string name="tag_text_watched">視聴済み</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">すべて保持</string>
   <string name="text_vip_cancel_fact_data">あなたのデータ</string>
   <string name="text_vip_cancel_fact_until">VIP期限</string>
-  <string name="text_vip_cancel_failed_title">サブスクリプションを更新できませんでした</string>
   <string name="text_vip_cancel_feature_insights">トリビア、サウンドトラック、センチメント</string>
   <string name="text_vip_cancel_feature_plex">Plexスクロブリング</string>
   <string name="text_vip_cancel_feature_reviews">年間レビューと月間レビュー</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">全プランを比較</string>
   <string name="text_vip_deal_paypal_switch">%1$sを2年間一括払い、以降2年ごとに%2$sで自動更新されます。割引は精算時に適用されます。残り期間のVIPは継続され、PayPalは精算後に自動的にキャンセルされます。</string>
   <string name="text_vip_deal_term">2年間のVIP</string>
-  <string name="text_vip_deal_welcome_back">%1$sを2年間一括払い、以降2年ごとに%2$sで自動更新されます。割引は精算時に適用されます。</string>
   <string name="text_vip_features_tagline">誇大広告なし、純粋な機能。</string>
   <string name="text_vip_get_insights">より深い洞察、スマートなトラッキング、そして次の機能への早期アクセスを手に入れましょう。</string>
   <string name="text_vip_grace_body">継続するには、それまでに更新してください。</string>
@@ -2828,7 +2822,7 @@
   <string name="yir_2026_preview_runner_none">なし（ハイブリッドなし）</string>
   <string name="yir_2026_preview_runner_up">次点</string>
   <string name="yir_2026_preview_title">ペルソナプレビュー</string>
-  <string name="yir_2026_rarity">%1$d%%だけが%2$sです</string>
+  <string name="yir_2026_rarity">%1$d%だけが%2$sです</string>
   <string name="yir_2026_reel_a_little_bit">少し%s</string>
   <string name="yir_2026_reel_and_you_are">そしてあなたは</string>
   <string name="yir_2026_reel_but_mostly">しかし、ほとんどは</string>

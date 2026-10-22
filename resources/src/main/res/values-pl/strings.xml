@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Albo zostań na kolejne 2 lata</string>
   <string name="header_vip_cancel_reason">Dlaczego odchodzisz?</string>
   <string name="header_vip_deal_paypal_switch">Przełącz się na kartę. Otrzymaj 2 lata VIP za %s</string>
-  <string name="header_vip_deal_welcome_back">Otrzymaj 2 lata VIP za %s</string>
   <string name="header_vip_paypal_switch">Przejdź na kartę kredytową</string>
   <string name="header_vip_streak">Seria VIP</string>
   <string name="header_writer">Scenarzysta</string>
@@ -1424,7 +1423,7 @@
   <string name="match_label_soulmates">Bratnie dusze</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Dopasowanie:</string>
-  <string name="match_pill_aria_label">%1$d%% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
+  <string name="match_pill_aria_label">%1$d% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
   <string name="match_pill_loading_aria_label">Obliczanie wyniku dopasowania</string>
   <string name="mir_banner_body">Twoje miesięczne podsumowanie jest gotowe. Oto, co obejrzałeś(-aś) w %s.</string>
   <string name="mir_banner_body_short">Twoje podsumowanie z %s jest gotowe.</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Rozpocznij sesje ponownego oglądania dla programów, które już widziałeś, melduj się lub oznaczaj obejrzane odcinki bezpośrednio z szuflady sesji.</string>
   <string name="preview_feature_description_show_ending">Wyświetla w szczegółach serialu wiersz „Zakończenie”: „Ukończone”, gdy historia została zakończona, „Nierozwiązane”, gdy nie.</string>
   <string name="preview_feature_description_soundtrack">Dodaje sekcję ścieżek dźwiękowych do stron filmów i seriali, z możliwością odtwarzania, gdy utwór może zostać dopasowany.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Nowy sposób anulowania VIP: pyta o przyczynę, pokazuje, co się zmieni i oferuje ofertę pozostania.</string>
   <string name="preview_feature_description_vip_veteran">Pokazuje, jak długo członkowie utrzymywali status VIP bez przerwy, wraz z odznaką Weterana lub Legendy, kolorową obwódką awatara i kilkoma wyróżnieniami na Twoim profilu.</string>
   <string name="preview_feature_description_year_in_review_2026">Twój rok 2026 w formie przewijanego nagrania z personą widza, a następnie strona ze statystykami dopasowana do niej.</string>
   <string name="preview_feature_title_edit_mode">Tryb edycji</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Ponowne oglądanie</string>
   <string name="preview_feature_title_show_ending">Zakończenie serialu</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_vip_cancel_flow">Przebieg anulowania VIP</string>
   <string name="preview_feature_title_vip_veteran">Status weterana VIP</string>
   <string name="preview_feature_title_year_in_review_2026">Podsumowanie roku 2026</string>
   <string name="row_label_loading_title">Ładowanie nazwy</string>
@@ -1657,7 +1654,7 @@
   <string name="tag_media_sync_webhook_only">Tylko Webhook</string>
   <string name="tag_mixtape_different_mood">Inny nastrój</string>
   <string name="tag_mixtape_kept">Zachowane</string>
-  <string name="tag_mixtape_match">%s%% dopasowania</string>
+  <string name="tag_mixtape_match">%s% dopasowania</string>
   <string name="tag_mixtape_tap_details">Stuknij, aby zobaczyć szczegóły</string>
   <string name="tag_text_blocked_user">Zablokowany</string>
   <string name="tag_text_deal_price">Pierwsze 2 lata</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Zanim odejdziesz · tylko raz</string>
   <string name="tag_text_vip_cancel_reason">Zanim odejdziesz</string>
   <string name="tag_text_vip_deal_paypal_switch">Zmiana PayPal na kartę</string>
-  <string name="tag_text_vip_deal_welcome_back">Oferta powitalna</string>
   <string name="tag_text_vip_preview">Podgląd VIP</string>
   <string name="tag_text_watch_count">Liczba obejrzeń</string>
   <string name="tag_text_watched">Obejrzany</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Wszystko zachowane</string>
   <string name="text_vip_cancel_fact_data">Twoje dane</string>
   <string name="text_vip_cancel_fact_until">VIP do</string>
-  <string name="text_vip_cancel_failed_title">Nie udało się zaktualizować subskrypcji</string>
   <string name="text_vip_cancel_feature_insights">Ciekawostki, ścieżki dźwiękowe i sentymenty</string>
   <string name="text_vip_cancel_feature_plex">Scrobbling Plex</string>
   <string name="text_vip_cancel_feature_reviews">Podsumowanie Roku i Podsumowanie Miesiąca</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Porównaj wszystkie plany</string>
   <string name="text_vip_deal_paypal_switch">%1$s z góry za 2 lata, następnie automatyczne odnowienie za %2$s co 2 lata. Zniżka zastosowana przy kasie. Zachowujesz pozostały czas VIP; automatycznie anulujemy PayPal po sfinalizowaniu zakupu.</string>
   <string name="text_vip_deal_term">2 lata VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s z góry za 2 lata, następnie automatyczne odnowienie za %2$s co 2 lata. Zniżka zastosowana przy kasie.</string>
   <string name="text_vip_features_tagline">Wszystko, czego potrzebujesz!</string>
   <string name="text_vip_get_insights">Uzyskaj głębsze analizy, inteligentniejsze śledzenie i wczesny dostęp do nowości.</string>
   <string name="text_vip_grace_body">Odnów status wcześniej, aby kontynuować serię.</string>
@@ -2828,7 +2822,7 @@
   <string name="yir_2026_preview_runner_none">Brak (bez hybrydy)</string>
   <string name="yir_2026_preview_runner_up">Drugie miejsce</string>
   <string name="yir_2026_preview_title">Podgląd persony</string>
-  <string name="yir_2026_rarity">Tylko %1$d%% to %2$s</string>
+  <string name="yir_2026_rarity">Tylko %1$d% to %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Trochę %s</string>
   <string name="yir_2026_reel_and_you_are">A Ty jesteś</string>
   <string name="yir_2026_reel_but_mostly">Ale głównie</string>
