@@ -82,7 +82,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
@@ -429,7 +428,7 @@ private fun SettingsAccount(
 
         SettingsValueField(
             text = stringResource(R.string.text_username),
-            value = state.user?.username?.let { "@$it" },
+            value = state.user?.username,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
                 usernameSheet = state.user?.username.orEmpty()
@@ -1088,27 +1087,6 @@ private fun Preview() {
 private fun PreviewLight() {
     TraktTheme(
         colors = LightColors,
-    ) {
-        SettingsScreenContent(
-            state = SettingsState(
-                user = PreviewData.user1.copy(
-                    settings = User.Settings(
-                        watchOnlyOnce = true,
-                        ratingPrompts = false,
-                        coverImage = null,
-                        shareCode = null,
-                    ),
-                ),
-            ),
-        )
-    }
-}
-
-@DevicePreview
-@Composable
-private fun HalloweenPreview() {
-    TraktTheme(
-        colors = HalloweenDarkColors,
     ) {
         SettingsScreenContent(
             state = SettingsState(
