@@ -122,6 +122,7 @@ internal fun CommentCard(
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     LaunchedEffect(comment.id) {
         if (reactions[comment.id] == null) {
@@ -157,6 +158,7 @@ internal fun CommentCard(
             onReportClick = { reportActive = true },
             onUserClick = { onUserClick?.invoke(it) },
             onTranslateClick = onTranslateClick,
+            onRevealSpoiler = onRevealSpoiler,
         )
     }
 
@@ -233,8 +235,13 @@ private fun CommentCardContent(
     onReportClick: (() -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     var isSpoilerRevealed by remember { mutableStateOf(false) }
+    val revealSpoiler: () -> Unit = {
+        isSpoilerRevealed = true
+        onRevealSpoiler?.invoke()
+    }
 
     val isUserComment = remember(user) {
         comment.user.ids.trakt == user?.ids?.trakt
@@ -262,7 +269,7 @@ private fun CommentCardContent(
             CommentBody(
                 text = translations.displayText(comment),
                 blurred = spoilerBlurred,
-                onRevealSpoiler = { isSpoilerRevealed = true },
+                onRevealSpoiler = revealSpoiler,
             )
         }
 
@@ -280,7 +287,7 @@ private fun CommentCardContent(
                     gif = gif,
                     blurred = spoilerBlurred,
                     paused = gifPaused,
-                    onRevealSpoiler = { isSpoilerRevealed = true },
+                    onRevealSpoiler = revealSpoiler,
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .padding(bottom = 20.dp),
@@ -298,7 +305,7 @@ private fun CommentCardContent(
                         shape = SideGifShape,
                         blurred = spoilerBlurred,
                         paused = gifPaused,
-                        onRevealSpoiler = { isSpoilerRevealed = true },
+                        onRevealSpoiler = revealSpoiler,
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(top = 14.dp, bottom = 20.dp),
@@ -318,7 +325,7 @@ private fun CommentCardContent(
                         shape = SideGifShape,
                         blurred = spoilerBlurred,
                         paused = gifPaused,
-                        onRevealSpoiler = { isSpoilerRevealed = true },
+                        onRevealSpoiler = revealSpoiler,
                         modifier = Modifier
                             .padding(top = 16.dp, end = 16.dp)
                             .sizeIn(
@@ -367,6 +374,7 @@ private fun CommentCardContent(
                 onReactionClick = onReactionClick,
                 onUserClick = onUserClick,
                 onTranslateClick = onTranslateClick,
+                onRevealSpoiler = onRevealSpoiler,
                 onReplyClick = { onReplyUserClick?.invoke(it.user) },
                 onDeleteClick = onDeleteReplyClick,
                 onRequestReactions = onRequestReactions,
@@ -433,6 +441,7 @@ private fun CommentRepliesContent(
     onReplyClick: ((Comment) -> Unit)? = null,
     onDeleteClick: ((Comment) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -450,6 +459,7 @@ private fun CommentRepliesContent(
                 progressTotal = progressTotal,
                 onUserClick = onUserClick,
                 onTranslateClick = onTranslateClick,
+                onRevealSpoiler = onRevealSpoiler,
                 onReactionClick = { onReactionClick?.invoke(it, reply) },
                 onRequestReactions = { onRequestReactions?.invoke(reply) },
                 onDeleteClick = { onDeleteClick?.invoke(reply) },

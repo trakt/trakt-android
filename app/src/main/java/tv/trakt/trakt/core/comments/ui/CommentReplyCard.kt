@@ -96,6 +96,7 @@ internal fun CommentReplyCard(
     onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     LaunchedEffect(reply.id) {
         if (reactions == null) {
@@ -128,6 +129,7 @@ internal fun CommentReplyCard(
             onReportClick = { reportActive = true },
             onUserClick = onUserClick,
             onTranslateClick = onTranslateClick,
+            onRevealSpoiler = onRevealSpoiler,
         )
     }
 
@@ -182,8 +184,13 @@ private fun CommentReplyCardContent(
     onDeleteClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     var showSpoilers by remember { mutableStateOf(false) }
+    val revealSpoiler: () -> Unit = {
+        showSpoilers = true
+        onRevealSpoiler?.invoke()
+    }
 
     val isUserReply = remember(user) {
         comment.user.ids.trakt == user?.ids?.trakt
@@ -216,14 +223,14 @@ private fun CommentReplyCardContent(
         CommentReplyBody(
             text = markdownText,
             blurred = spoilerBlurred,
-            onRevealSpoiler = { showSpoilers = true },
+            onRevealSpoiler = revealSpoiler,
         )
 
         comment.gif?.let { gif ->
             CommentGifView(
                 gif = gif,
                 blurred = spoilerBlurred,
-                onRevealSpoiler = { showSpoilers = true },
+                onRevealSpoiler = revealSpoiler,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 12.dp)

@@ -87,6 +87,7 @@ internal fun TodayStoryFrameContent(
     onHeldChange: (Boolean) -> Unit,
     onUserClick: (User) -> Unit,
     onConfirmVisibleChange: (Boolean) -> Unit,
+    onRevealSpoiler: () -> Unit,
 ) {
     Layout(
         content = {
@@ -104,7 +105,10 @@ internal fun TodayStoryFrameContent(
             ) {
                 if (frame is TodayStoryFrame.Friend) {
                     frame.action.comment?.let {
-                        TodayCommentBubble(comment = it)
+                        TodayCommentBubble(
+                            comment = it,
+                            onRevealSpoiler = onRevealSpoiler,
+                        )
                     }
                 }
 
@@ -429,6 +433,7 @@ private fun Preview() {
             onHeldChange = {},
             onUserClick = {},
             onConfirmVisibleChange = {},
+            onRevealSpoiler = {},
             modifier = Modifier
                 .background(TraktTheme.colors.backgroundPrimary),
         )

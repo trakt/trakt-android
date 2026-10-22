@@ -12,6 +12,10 @@ internal class HalEventStore {
         events.update { current -> (current + event).takeLast(MAX_STORED_EVENTS) }
     }
 
+    fun isNotEmpty(): Boolean {
+        return events.value.isNotEmpty()
+    }
+
     fun peek(limit: Int): List<HalEvent> {
         return events.value.take(limit)
     }

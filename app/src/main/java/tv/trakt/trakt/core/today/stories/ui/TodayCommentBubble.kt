@@ -47,13 +47,17 @@ private val BubbleShape = RoundedCornerShape(16.dp)
 internal fun TodayCommentBubble(
     comment: Detail.Comment,
     modifier: Modifier = Modifier,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     var isRevealed by remember(comment.id) { mutableStateOf(false) }
 
     TodayCommentBubbleContent(
         comment = comment,
         isSpoilerHidden = comment.isSpoiler && !isRevealed,
-        onReveal = { isRevealed = true },
+        onReveal = {
+            isRevealed = true
+            onRevealSpoiler?.invoke()
+        },
         modifier = modifier,
     )
 }

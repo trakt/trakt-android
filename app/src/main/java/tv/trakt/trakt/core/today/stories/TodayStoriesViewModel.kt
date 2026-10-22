@@ -147,6 +147,10 @@ internal class TodayStoriesViewModel(
         showGroup(current.groupIndex - 1, 0)
     }
 
+    fun logSpoilerReveal() {
+        analytics.comments.logSpoilerReveal()
+    }
+
     /** Called before navigating out of the viewer, e.g. to a user profile. */
     fun leave() {
         finishTracking(CLOSE_REASON_LEAVE)

@@ -71,6 +71,7 @@ internal fun AllShowSeasonsScreen(
         onCommentDeleteClick = { sheetState.deleteComment = it },
         onCommentReplyDeleteClick = { sheetState.deleteReply = it },
         onCommentTranslateClick = viewModel::toggleCommentTranslation,
+        onCommentRevealSpoiler = viewModel::logSpoilerReveal,
         onCommentUserClick = onUserClick,
         onPersonClick = { person, role -> state.show?.let { onPersonClick(it, person, role) } },
         onSeasonRatingClick = {

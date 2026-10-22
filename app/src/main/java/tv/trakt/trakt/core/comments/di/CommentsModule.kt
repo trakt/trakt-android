@@ -104,6 +104,7 @@ internal val commentsModule = module {
             loadUserReactionsUseCase = get(),
             dataChanges = get(),
             translationsStore = get(),
+            analytics = get(),
         )
     }
 
@@ -117,6 +118,7 @@ internal val commentsModule = module {
             loadUserReactionsUseCase = get(),
             dataChanges = get(),
             translationsStore = get(),
+            analytics = get(),
         )
     }
 

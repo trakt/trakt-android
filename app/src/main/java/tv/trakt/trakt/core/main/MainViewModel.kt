@@ -46,6 +46,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.auth.model.AuthorizationException
+import tv.trakt.trakt.core.auth.model.toLoginFailureCode
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.auth.usecase.authRedirectUriKey
@@ -149,6 +150,7 @@ internal class MainViewModel(
 
                     if (codeVerifier == null) {
                         val error = IllegalStateException("Missing PKCE code verifier")
+                        analytics.logLoginFailed("missing_verifier")
                         errorState.update { AuthorizationException(error) }
                         Timber.recordError(error)
                         return@collect
@@ -382,6 +384,7 @@ internal class MainViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
+                    analytics.logLoginFailed(error.toLoginFailureCode())
                     logoutUser()
                     errorState.update { AuthorizationException(error) }
                     Timber.recordError(error)

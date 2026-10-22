@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.social.recommendedby.usecases
 
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareMuteRequest
@@ -9,6 +10,7 @@ import tv.trakt.trakt.core.summary.social.recommendedby.model.RecommendedBy
 internal class RecommendedByUseCase(
     private val remoteSource: V3Api,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) {
     suspend fun getRecommendedBy(path: String): RecommendedBy? {
         if (!sessionManager.isAuthenticated()) {
@@ -24,5 +26,6 @@ internal class RecommendedByUseCase(
         remoteSource.postShareMute(
             V3ShareMuteRequest(sharerId = sharerId.value),
         )
+        analytics.logMuteSharer()
     }
 }

@@ -72,6 +72,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.lists.SmartList
+import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
@@ -149,7 +150,7 @@ internal fun ListsScreen(
         },
         onProfileClick = {
             if (state.user.user == null) {
-                startAuthorization()
+                startAuthorization(LoginSource.Gated)
             } else {
                 onNavigateToProfile()
             }

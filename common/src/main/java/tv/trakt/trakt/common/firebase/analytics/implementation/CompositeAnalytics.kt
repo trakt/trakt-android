@@ -103,6 +103,44 @@ internal class CompositeAnalytics(
     ) {
         targets.forEach { it.logFilter(id, set, mode) }
     }
+
+    override fun logLoginStart(source: String) {
+        targets.forEach { it.logLoginStart(source) }
+    }
+
+    override fun logLoginFailed(error: String) {
+        targets.forEach { it.logLoginFailed(error) }
+    }
+
+    override fun logStreamingService(
+        action: String,
+        service: String,
+    ) {
+        targets.forEach { it.logStreamingService(action, service) }
+    }
+
+    override fun logMuteSharer() {
+        targets.forEach { it.logMuteSharer() }
+    }
+
+    override fun logReportOpen(type: String) {
+        targets.forEach { it.logReportOpen(type) }
+    }
+
+    override fun logReport(
+        type: String,
+        reason: String,
+        outcome: String,
+    ) {
+        targets.forEach { it.logReport(type, reason, outcome) }
+    }
+
+    override fun logDrilldown(
+        source: String,
+        type: String?,
+    ) {
+        targets.forEach { it.logDrilldown(source, type) }
+    }
 }
 
 private class CompositeReactions(
@@ -195,6 +233,14 @@ private class CompositeComments(
 
     override fun logCommentTranslate(characters: Int) {
         targets.forEach { it.logCommentTranslate(characters) }
+    }
+
+    override fun logSpoilerReveal() {
+        targets.forEach { it.logSpoilerReveal() }
+    }
+
+    override fun logGifPicker(action: String) {
+        targets.forEach { it.logGifPicker(action) }
     }
 }
 

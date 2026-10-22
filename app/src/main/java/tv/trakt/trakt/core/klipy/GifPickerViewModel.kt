@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.core.klipy.model.GifPage
 import tv.trakt.trakt.common.core.klipy.model.GifsQuery
 import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.data.remote.GifsRemoteSource
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -36,6 +37,7 @@ internal class GifPickerViewModel(
     private val defaultQuery: String?,
     private val remoteSource: GifsRemoteSource,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = GifPickerState()
 
@@ -53,6 +55,8 @@ internal class GifPickerViewModel(
     private var userId: TraktId? = null
 
     init {
+        analytics.comments.logGifPicker("open")
+
         viewModelScope.launch {
             userId = sessionManager.getProfile()?.ids?.trakt
             loadGifs(debounce = Duration.ZERO)
@@ -92,6 +96,10 @@ internal class GifPickerViewModel(
                 }
             }
         }
+    }
+
+    fun onGifSelected() {
+        analytics.comments.logGifPicker("select")
     }
 
     /**

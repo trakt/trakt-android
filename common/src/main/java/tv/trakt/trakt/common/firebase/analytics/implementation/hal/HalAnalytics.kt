@@ -2,12 +2,15 @@ package tv.trakt.trakt.common.firebase.analytics.implementation.hal
 
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ACTION
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ERROR
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FLOW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ID
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_MODE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_OUTCOME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_PLAN
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_REASON
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ROUTE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SERVICE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SOURCE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_THEME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TYPE
@@ -15,12 +18,21 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_CALENDAR_PERIOD
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_COVER_IMAGE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DISCOVER_MODE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DRILLDOWN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_FILTER
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_FOLLOW
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LOGIN_COMPLETE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LOGIN_FAILED
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LOGIN_START
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LOGOUT
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_MUTE_SHARER
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_PAGE_VIEW
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REPORT
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REPORT_OPEN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SEARCH
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE_ARRIVAL
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAMING_SERVICE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_THEME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPGRADE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPSELL
@@ -54,9 +66,13 @@ internal class HalAnalytics(
         events.track(EVENT_PAGE_VIEW, dims = mapOf(DIM_ROUTE to halRoute(screenName)))
     }
 
-    override fun logUserLogin(source: String) = Unit
+    override fun logUserLogin(source: String) {
+        events.track(EVENT_LOGIN_COMPLETE)
+    }
 
-    override fun logUserLogout() = Unit
+    override fun logUserLogout() {
+        events.track(EVENT_LOGOUT)
+    }
 
     override fun logMediaModeClick(mode: String) {
         val mediaMode = halMediaMode(mode) ?: return
@@ -148,5 +164,53 @@ internal class HalAnalytics(
                 DIM_MODE to mode.lowercase(),
             ),
         )
+    }
+
+    override fun logLoginStart(source: String) {
+        events.track(EVENT_LOGIN_START, dims = mapOf(DIM_SOURCE to source), allowAnonymous = true)
+    }
+
+    override fun logLoginFailed(error: String) {
+        events.track(EVENT_LOGIN_FAILED, dims = mapOf(DIM_ERROR to error), allowAnonymous = true)
+    }
+
+    override fun logStreamingService(
+        action: String,
+        service: String,
+    ) {
+        events.track(
+            EVENT_STREAMING_SERVICE,
+            dims = mapOf(DIM_ACTION to action, DIM_SERVICE to service),
+        )
+    }
+
+    override fun logMuteSharer() {
+        events.track(EVENT_MUTE_SHARER)
+    }
+
+    override fun logReportOpen(type: String) {
+        events.track(EVENT_REPORT_OPEN, dims = mapOf(DIM_TYPE to type))
+    }
+
+    override fun logReport(
+        type: String,
+        reason: String,
+        outcome: String,
+    ) {
+        events.track(
+            EVENT_REPORT,
+            dims = mapOf(DIM_TYPE to type, DIM_REASON to reason, DIM_OUTCOME to outcome),
+        )
+    }
+
+    override fun logDrilldown(
+        source: String,
+        type: String?,
+    ) {
+        val dims = buildMap {
+            put(DIM_SOURCE, source)
+            type?.let { put(DIM_TYPE, it) }
+        }
+        events.track(EVENT_DRILLDOWN, dims = dims)
     }
 }

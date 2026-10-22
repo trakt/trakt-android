@@ -10,6 +10,7 @@ val gifPickerModule = module {
             defaultQuery = defaultQuery,
             remoteSource = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 }

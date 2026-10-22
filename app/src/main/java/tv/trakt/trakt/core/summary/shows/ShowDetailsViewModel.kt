@@ -779,6 +779,10 @@ internal class ShowDetailsViewModel(
                     )
                 }
 
+                analytics.ratings.logFavoriteRemove(
+                    mediaType = "show",
+                    source = "show_details",
+                )
                 infoState.update {
                     DynamicStringResource(R.string.text_info_favorites_removed)
                 }
