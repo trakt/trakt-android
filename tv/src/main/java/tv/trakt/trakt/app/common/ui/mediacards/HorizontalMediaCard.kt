@@ -127,25 +127,14 @@ internal fun HorizontalMediaCard(
                             )
                         } else {
                             Image(
-                                painter = painterResource(R.drawable.ic_placeholder_horizontal_border),
+                                painter = painterResource(R.drawable.ic_trakt_icon),
                                 contentDescription = title,
                                 contentScale = ContentScale.Fit,
                                 colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                                 modifier = Modifier
-                                    .padding(5.dp)
+                                    .padding(bottom = 18.dp)
+                                    .size(36.dp)
                                     .align(Alignment.Center),
-                            )
-                            Icon(
-                                painter = painterResource(R.drawable.ic_placeholder_trakt),
-                                contentDescription = title,
-                                tint = TraktTheme.colors.placeholderContent,
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .align(Alignment.TopEnd)
-                                    .graphicsLayer {
-                                        translationX = -22.dp.toPx()
-                                        translationY = -18.dp.toPx()
-                                    },
                             )
                         }
 
@@ -213,7 +202,7 @@ internal fun HorizontalMediaCard(
                                     .align(Alignment.BottomCenter)
                                     .padding(
                                         horizontal = 13.dp,
-                                        vertical = if (containerImageUrl == null || isContainerError) 14.dp else 8.dp,
+                                        vertical = if (containerImageUrl == null || isContainerError) 12.dp else 8.dp,
                                     ),
                             )
                         }

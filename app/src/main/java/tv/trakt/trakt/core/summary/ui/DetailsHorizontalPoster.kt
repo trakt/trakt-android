@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -109,37 +108,13 @@ internal fun DetailsHorizontalPoster(
                     .background(color = TraktTheme.colors.placeholderContainer),
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_placeholder_horizontal_border),
+                    painter = painterResource(R.drawable.ic_trakt_icon),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp)
+                        .size(64.dp)
                         .align(Alignment.Center),
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_placeholder_trakt),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.placeholderContent,
-                    modifier = Modifier
-                        .size(156.dp)
-                        .align(Alignment.TopEnd)
-                        .graphicsLayer {
-                            translationX = -64.dp.toPx()
-                            translationY = -32.dp.toPx()
-                        },
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_trakt_logo),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.placeholderContent,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .align(Alignment.Center)
-                        .graphicsLayer {
-                            translationY = 42.dp.toPx()
-                        },
                 )
             }
         }

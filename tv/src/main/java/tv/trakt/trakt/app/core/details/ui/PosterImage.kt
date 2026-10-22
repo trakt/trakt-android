@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -71,10 +72,12 @@ internal fun PosterImage(
             )
         } else {
             Icon(
-                painter = painterResource(R.drawable.ic_trakt_placeholder_big),
+                painter = painterResource(R.drawable.ic_trakt_icon),
                 contentDescription = null,
                 tint = TraktTheme.colors.placeholderContent,
-                modifier = Modifier.align(Center),
+                modifier = Modifier
+                    .size(64.dp)
+                    .align(Center),
             )
         }
     }

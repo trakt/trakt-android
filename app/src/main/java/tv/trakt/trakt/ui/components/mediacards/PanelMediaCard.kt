@@ -153,34 +153,13 @@ internal fun PanelMediaCard(
                         .onClick(onClick = onImageClick ?: {}),
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_placeholder_vertical_border),
+                        painter = painterResource(R.drawable.ic_trakt_icon),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
-                        modifier = Modifier.padding(6.dp),
-                    )
-                    Icon(
-                        painter = painterResource(R.drawable.ic_placeholder_trakt),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.placeholderContent,
                         modifier = Modifier
-                            .size(54.dp)
-                            .align(Alignment.TopEnd)
-                            .graphicsLayer {
-                                translationX = 4.dp.toPx() * translationDirection
-                                translationY = -4.dp.toPx()
-                            },
-                    )
-                    Icon(
-                        painter = painterResource(R.drawable.ic_trakt_logo),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.placeholderContent,
-                        modifier = Modifier
-                            .size(38.dp)
-                            .align(Alignment.Center)
-                            .graphicsLayer {
-                                translationY = 10.dp.toPx()
-                            },
+                            .size(36.dp)
+                            .align(Alignment.Center),
                     )
                     Box(
                         modifier = Modifier

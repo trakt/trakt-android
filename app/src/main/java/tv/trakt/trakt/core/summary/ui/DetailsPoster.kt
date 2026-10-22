@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -104,37 +102,14 @@ internal fun DetailsPoster(
                     .background(color = TraktTheme.colors.placeholderContainer),
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_placeholder_vertical_border),
+                    painter = painterResource(R.drawable.ic_trakt_icon),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(12.dp)
+                        .padding(64.dp)
                         .align(Alignment.Center),
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_placeholder_trakt),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.placeholderContent,
-                    modifier = Modifier
-                        .size(184.dp)
-                        .align(Alignment.TopEnd)
-                        .graphicsLayer {
-                            translationX = 0.dp.toPx()
-                            translationY = -0.dp.toPx()
-                        },
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_trakt_logo),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.placeholderContent,
-                    modifier = Modifier
-                        .size(112.dp)
-                        .align(Alignment.Center)
-                        .graphicsLayer {
-                            translationY = 24.dp.toPx()
-                        },
                 )
             }
         }

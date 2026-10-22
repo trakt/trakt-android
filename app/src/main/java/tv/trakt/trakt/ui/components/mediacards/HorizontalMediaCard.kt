@@ -143,25 +143,14 @@ internal fun HorizontalMediaCard(
                             )
                         } else {
                             Image(
-                                painter = painterResource(R.drawable.ic_placeholder_horizontal_border),
+                                painter = painterResource(R.drawable.ic_trakt_icon),
                                 contentDescription = title,
                                 contentScale = ContentScale.Fit,
                                 colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                                 modifier = Modifier
-                                    .padding(5.dp)
+                                    .padding(bottom = 20.dp)
+                                    .size(42.dp)
                                     .align(Alignment.Center),
-                            )
-                            Icon(
-                                painter = painterResource(R.drawable.ic_placeholder_trakt),
-                                contentDescription = title,
-                                tint = TraktTheme.colors.placeholderContent,
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .align(Alignment.TopEnd)
-                                    .graphicsLayer {
-                                        translationX = -22.dp.toPx()
-                                        translationY = -18.dp.toPx()
-                                    },
                             )
                         }
 
@@ -301,7 +290,7 @@ internal fun HorizontalMediaCard(
 }
 
 private val HighlightRingWidth = 2.dp
-private val HighlightRingGap = 1.5.dp
+private val HighlightRingGap = 2.dp
 
 private fun Modifier.highlightRing(
     color: Color,

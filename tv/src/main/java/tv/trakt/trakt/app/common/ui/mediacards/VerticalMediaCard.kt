@@ -123,25 +123,13 @@ internal fun VerticalMediaCard(
                             )
                         } else {
                             Image(
-                                painter = painterResource(R.drawable.ic_placeholder_vertical_border),
+                                painter = painterResource(R.drawable.ic_trakt_icon),
                                 contentDescription = title,
                                 contentScale = ContentScale.Fit,
                                 colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                                 modifier = Modifier
-                                    .padding(5.dp)
+                                    .size(36.dp)
                                     .align(Alignment.Center),
-                            )
-                            Icon(
-                                painter = painterResource(R.drawable.ic_placeholder_trakt),
-                                contentDescription = title,
-                                tint = TraktTheme.colors.placeholderContent,
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .align(Alignment.TopEnd)
-                                    .graphicsLayer {
-                                        translationX = 8.dp.toPx()
-                                        translationY = -8.dp.toPx()
-                                    },
                             )
 
                             if ((imageUrl == null || isError) && title.isNotBlank()) {

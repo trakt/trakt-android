@@ -53,7 +53,7 @@ internal fun InputField(
     enabled: Boolean = true,
     height: Dp = 48.dp,
     border: Dp = 1.5.dp,
-    containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
+    containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.5F),
     borderColor: Color = TraktTheme.colors.accent,
     lineLimits: TextFieldLineLimits = SingleLine,
     imeAction: ImeAction = ImeAction.Done,
