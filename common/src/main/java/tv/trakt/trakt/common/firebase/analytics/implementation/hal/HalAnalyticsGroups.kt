@@ -149,8 +149,14 @@ internal class HalAnalyticsComments(
         events.track(EVENT_SPOILER_REVEAL, dims = mapOf(DIM_TYPE to COMMENT))
     }
 
-    override fun logGifPicker(action: String) {
-        events.track(EVENT_GIF_PICKER, dims = mapOf(DIM_ACTION to action, DIM_SOURCE to COMMENT))
+    override fun logGifPicker(
+        action: String,
+        source: String,
+    ) {
+        events.track(
+            EVENT_GIF_PICKER,
+            dims = mapOf(DIM_ACTION to action, DIM_SOURCE to source),
+        )
     }
 
     private fun trackComment(

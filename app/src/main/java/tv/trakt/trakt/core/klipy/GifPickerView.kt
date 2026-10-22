@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +29,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -44,6 +47,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.klipy.model.GifCategory
 import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.core.klipy.model.KlipyGifFormats
 import tv.trakt.trakt.common.core.klipy.model.KlipyGifMedia
@@ -51,6 +55,7 @@ import tv.trakt.trakt.common.core.klipy.model.KlipyGifRenditions
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.core.klipy.ui.GifCard
+import tv.trakt.trakt.core.klipy.ui.GifCategoriesRow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.InputField
@@ -70,9 +75,10 @@ internal fun GifPickerView(
         state = state,
         onQueryChange = viewModel::updateQuery,
         onLoadMore = viewModel::loadMore,
-        onGifClick = { gif ->
-            viewModel.onGifSelected()
-            onGifClick(gif)
+        onCategoryClick = viewModel::selectCategory,
+        onGifClick = {
+            viewModel.selectGif()
+            onGifClick(it)
         },
         modifier = modifier,
     )
@@ -85,6 +91,7 @@ private fun GifPickerContent(
     modifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit = {},
     onLoadMore: () -> Unit = {},
+    onCategoryClick: (GifCategory) -> Unit = {},
     onGifClick: (KlipyGif) -> Unit = {},
 ) {
     val inputState = rememberTextFieldState()
@@ -129,21 +136,27 @@ private fun GifPickerContent(
     }
 
     val inputHeight = 48.dp
+    val horizontalPadding = 24.dp
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxHeight()
-            .imePadding()
-            .padding(horizontal = 24.dp),
+            .imePadding(),
     ) {
         when {
             state.error != null -> {
-                EmptyListCard(text = stringResource(R.string.error_text_unexpected_error_short))
+                EmptyListCard(
+                    text = stringResource(R.string.error_text_unexpected_error_short),
+                    modifier = Modifier.padding(horizontal = horizontalPadding),
+                )
             }
 
-            state.isEmpty -> {
-                EmptyListCard(text = stringResource(R.string.list_placeholder_empty))
+            state.isEmpty && !state.showCategories -> {
+                EmptyListCard(
+                    text = stringResource(R.string.list_placeholder_empty),
+                    modifier = Modifier.padding(horizontal = horizontalPadding),
+                )
             }
 
             else -> {
@@ -154,12 +167,41 @@ private fun GifPickerContent(
                     horizontalArrangement = spacedBy(spacing),
                     verticalItemSpacing = spacing,
                     contentPadding = PaddingValues(
-                        top = inputHeight / 2 + 16.dp,
+                        start = horizontalPadding,
+                        top = inputHeight / 2 + 8.dp,
+                        end = horizontalPadding,
                     ),
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(top = inputHeight / 2),
                 ) {
+                    if (state.showCategories) {
+                        item(
+                            key = "categories",
+                            span = StaggeredGridItemSpan.FullLine,
+                        ) {
+                            // Spans the full sheet width so tiles scroll edge to edge instead of
+                            // being clipped at the grid's horizontal content padding.
+                            GifCategoriesRow(
+                                categories = state.categories,
+                                contentPadding = PaddingValues(horizontal = horizontalPadding),
+                                modifier = Modifier.layout { measurable, constraints ->
+                                    val bleed = horizontalPadding.roundToPx()
+                                    val placeable = measurable.measure(
+                                        constraints.copy(maxWidth = constraints.maxWidth + bleed * 2),
+                                    )
+                                    layout(constraints.maxWidth, placeable.height) {
+                                        placeable.place(-bleed, 0)
+                                    }
+                                },
+                                onCategoryClick = { category ->
+                                    inputState.setTextAndPlaceCursorAtEnd(category.query)
+                                    onCategoryClick(category)
+                                },
+                            )
+                        }
+                    }
+
                     items(
                         items = state.gifs,
                         key = { it.id },
@@ -188,6 +230,7 @@ private fun GifPickerContent(
             imeAction = ImeAction.Done,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = horizontalPadding)
                 .align(Alignment.TopCenter)
                 .focusRequester(focusRequester),
         )

@@ -562,10 +562,16 @@ internal class FirebaseAnalyticsComments(
         )
     }
 
-    override fun logGifPicker(action: String) {
+    override fun logGifPicker(
+        action: String,
+        source: String,
+    ) {
         firebase.logEvent(
             eventName(COMMENTS_GIF_PICKER),
-            bundleOf(PARAMETER_ACTION to action),
+            bundleOf(
+                PARAMETER_ACTION to action,
+                PARAMETER_SOURCE to source,
+            ),
         )
     }
 }

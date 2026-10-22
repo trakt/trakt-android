@@ -239,8 +239,11 @@ private class CompositeComments(
         targets.forEach { it.logSpoilerReveal() }
     }
 
-    override fun logGifPicker(action: String) {
-        targets.forEach { it.logGifPicker(action) }
+    override fun logGifPicker(
+        action: String,
+        source: String,
+    ) {
+        targets.forEach { it.logGifPicker(action, source) }
     }
 }
 

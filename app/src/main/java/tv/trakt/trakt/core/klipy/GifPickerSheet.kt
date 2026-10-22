@@ -35,6 +35,7 @@ internal fun GifPickerSheet(
         enabledValues = setOf(Hidden, Expanded),
     ),
     defaultQuery: String? = null,
+    source: GifPickerSource,
     onGifSelected: (KlipyGif) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -51,7 +52,7 @@ internal fun GifPickerSheet(
             GifPickerView(
                 viewModel = koinViewModel(
                     key = viewModelKey,
-                    parameters = { parametersOf(defaultQuery) },
+                    parameters = { parametersOf(defaultQuery, source) },
                 ),
                 onGifClick = { gif ->
                     scope.dismissWithAction(

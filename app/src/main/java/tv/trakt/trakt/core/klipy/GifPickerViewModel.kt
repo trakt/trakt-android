@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.klipy.model.GIFS_DEFAULT_PER_PAGE
+import tv.trakt.trakt.common.core.klipy.model.GifCategory
 import tv.trakt.trakt.common.core.klipy.model.GifPage
 import tv.trakt.trakt.common.core.klipy.model.GifsQuery
 import tv.trakt.trakt.common.core.klipy.model.KlipyGif
@@ -35,6 +36,7 @@ private val SEARCH_DEBOUNCE = 350.milliseconds
 @Suppress("UNCHECKED_CAST")
 internal class GifPickerViewModel(
     private val defaultQuery: String?,
+    private val source: GifPickerSource,
     private val remoteSource: GifsRemoteSource,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
@@ -42,6 +44,8 @@ internal class GifPickerViewModel(
     private val initialState = GifPickerState()
 
     private val queryState = MutableStateFlow(initialState.query)
+    private val categoriesState = MutableStateFlow(initialState.categories)
+    private val categoriesLoadingState = MutableStateFlow(initialState.categoriesLoading)
     private val gifsState = MutableStateFlow(initialState.gifs)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
@@ -55,12 +59,39 @@ internal class GifPickerViewModel(
     private var userId: TraktId? = null
 
     init {
-        analytics.comments.logGifPicker("open")
+        analytics.comments.logGifPicker(action = "open", source = source.value)
 
         viewModelScope.launch {
             userId = sessionManager.getProfile()?.ids?.trakt
             loadGifs(debounce = Duration.ZERO)
+            loadCategories()
         }
+    }
+
+    private fun loadCategories() {
+        viewModelScope.launch {
+            try {
+                categoriesLoadingState.update { LoadingState.Loading }
+                categoriesState.update {
+                    remoteSource.getCategories(customerId = userId?.value?.toString())
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                categoriesLoadingState.update { LoadingState.Done }
+            }
+        }
+    }
+
+    fun selectCategory(category: GifCategory) {
+        analytics.comments.logGifPicker(action = "category", source = source.value)
+        updateQuery(category.query)
+    }
+
+    fun selectGif() {
+        analytics.comments.logGifPicker(action = "select", source = source.value)
     }
 
     fun updateQuery(query: String) {
@@ -96,10 +127,6 @@ internal class GifPickerViewModel(
                 }
             }
         }
-    }
-
-    fun onGifSelected() {
-        analytics.comments.logGifPicker("select")
     }
 
     /**
@@ -188,6 +215,8 @@ internal class GifPickerViewModel(
         loadingState,
         loadingMoreState,
         errorState,
+        categoriesState,
+        categoriesLoadingState,
     ) { state ->
         GifPickerState(
             query = state[0] as String,
@@ -195,6 +224,8 @@ internal class GifPickerViewModel(
             loading = state[2] as LoadingState,
             loadingMore = state[3] as LoadingState,
             error = state[4] as Exception?,
+            categories = state[5] as ImmutableList<GifCategory>,
+            categoriesLoading = state[6] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

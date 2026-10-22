@@ -232,8 +232,11 @@ internal class DebugAnalyticsComments : Analytics.Comments {
         Timber.d("logSpoilerReveal")
     }
 
-    override fun logGifPicker(action: String) {
-        Timber.d("logGifPicker: action=%s", action)
+    override fun logGifPicker(
+        action: String,
+        source: String,
+    ) {
+        Timber.d("logGifPicker: action=%s, source=%s", action, source)
     }
 }
 
