@@ -55,8 +55,10 @@ import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.core.billing.model.VipBillingProduct
+import tv.trakt.trakt.core.billing.model.VipUsageLimit
 import tv.trakt.trakt.core.billing.model.toVipFailureCode
 import tv.trakt.trakt.core.billing.navigation.BillingDestination
+import tv.trakt.trakt.core.billing.usecases.GetVipUsageLimitsUseCase
 import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import kotlin.time.Duration.Companion.milliseconds
@@ -75,11 +77,13 @@ internal class BillingViewModel(
     private val sessionManager: SessionManager,
     private val verifyPurchaseUseCase: VerifyPurchaseUseCase,
     private val loadUserUseCase: LoadUserProfileUseCase,
+    private val getUsageLimitsUseCase: GetVipUsageLimitsUseCase,
 ) : ViewModel() {
     private val initialState = BillingState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val productsState = MutableStateFlow(initialState.products)
+    private val limitsState = MutableStateFlow(initialState.limits)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -129,6 +133,7 @@ internal class BillingViewModel(
     init {
         loadUser()
         observeUser()
+        loadLimits()
 
         initPlayBilling()
         startPlayBilling()
@@ -153,6 +158,20 @@ internal class BillingViewModel(
         viewModelScope.launch {
             userState.update {
                 sessionManager.getProfile()
+            }
+        }
+    }
+
+    private fun loadLimits() {
+        viewModelScope.launch {
+            try {
+                limitsState.update {
+                    getUsageLimitsUseCase.getLimits()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }
@@ -437,12 +456,14 @@ internal class BillingViewModel(
         productsState,
         loadingState,
         errorState,
+        limitsState,
     ) { state ->
         BillingState(
             user = state[0] as User?,
             products = state[1] as ImmutableList<ProductDetails>?,
             loading = state[2] as LoadingState,
             error = state[3] as Exception?,
+            limits = state[4] as ImmutableList<VipUsageLimit>?,
         )
     }.stateIn(
         scope = viewModelScope,
