@@ -701,6 +701,7 @@ internal fun NavGraphBuilder.profileScreens(
             },
             onNavigateToSocial = { navigateToProfileSocial() },
             onNavigateToLeaderboard = { navigateToLeaderboard() },
+            onNavigateToVip = { navigateToBilling(source = "library-collection-limit") },
         )
 
         allFavoritesScreen(

@@ -45,6 +45,7 @@ import tv.trakt.trakt.core.profile.sections.leaderboard.LeaderboardViewModel
 import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryViewModel
 import tv.trakt.trakt.core.profile.sections.library.all.AllLibraryViewModel
+import tv.trakt.trakt.core.profile.sections.library.usecases.GetCollectionLimitServersUseCase
 import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressViewModel
 import tv.trakt.trakt.core.profile.sections.progress.all.AllProgressViewModel
 import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalSource
@@ -90,6 +91,7 @@ internal val profileDataModule = module {
 internal val profileModule = module {
 
     factoryOf(::LoadUserProfileUseCase)
+    factoryOf(::GetCollectionLimitServersUseCase)
     factoryOf(::GetProgressDroppedUseCase)
     factoryOf(::GetProgressWatchingUseCase)
     factoryOf(::GetProgressCompleteUseCase)

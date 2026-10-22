@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareMuteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsernameSettingsRequest
@@ -54,6 +55,11 @@ class V3Api(
     ) {
     suspend fun getUsage(): V3UsageResponse {
         val response = client.get("${baseV3Url}users/me/usage")
+        return response.body()
+    }
+
+    suspend fun getSyncConnections(): List<V3SyncConnectionResponse> {
+        val response = client.get("${baseV3Url}users/me/sync/connections")
         return response.body()
     }
 

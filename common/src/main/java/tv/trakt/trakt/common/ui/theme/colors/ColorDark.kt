@@ -107,4 +107,5 @@ val DarkColors: TraktColors = TraktColors(
     profileStatsContainer = Shade920,
     profileStatsChip = Shade920,
     justWatchAccent = Color(0xFFfcc405),
+    warningAccent = Orange400,
 )

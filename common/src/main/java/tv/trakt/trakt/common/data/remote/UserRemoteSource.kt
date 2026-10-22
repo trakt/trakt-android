@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserStatsDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class UserRemoteSource(
@@ -62,6 +63,10 @@ class UserRemoteSource(
             response.status == 204 -> null
             else -> response.body()
         }
+    }
+
+    suspend fun getSyncConnections(): List<V3SyncConnectionResponse> {
+        return v3Api.getSyncConnections()
     }
 
     suspend fun updateProfileLocation(location: String?) {

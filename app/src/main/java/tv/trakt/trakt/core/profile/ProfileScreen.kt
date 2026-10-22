@@ -106,6 +106,7 @@ internal fun ProfileScreen(
     onNavigateToUser: (User) -> Unit,
     onNavigateToSocial: () -> Unit,
     onNavigateToLeaderboard: () -> Unit,
+    onNavigateToVip: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -134,6 +135,7 @@ internal fun ProfileScreen(
         onNavigateToUser = onNavigateToUser,
         onNavigateToSocial = onNavigateToSocial,
         onLeaderboardClick = onNavigateToLeaderboard,
+        onVipClick = onNavigateToVip,
         onShareClick = {
             viewModel.logShare()
             shareProfile(
@@ -177,6 +179,7 @@ private fun ProfileScreen(
     onNavigateToUser: (User) -> Unit = {},
     onNavigateToSocial: () -> Unit = {},
     onLeaderboardClick: () -> Unit = {},
+    onVipClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
@@ -366,6 +369,7 @@ private fun ProfileScreen(
                             onShowClick = onNavigateToShow,
                             onMovieClick = onNavigateToMovie,
                             onMoreClick = onNavigateToLibrary,
+                            onVipClick = onVipClick,
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                         )

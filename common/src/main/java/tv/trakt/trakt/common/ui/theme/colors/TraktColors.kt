@@ -114,4 +114,5 @@ data class TraktColors(
     val profileStatsContainer: Color = Color.Unspecified,
     val profileStatsChip: Color = Color.Unspecified,
     val justWatchAccent: Color = Color.Unspecified,
+    val warningAccent: Color = Color.Unspecified,
 )

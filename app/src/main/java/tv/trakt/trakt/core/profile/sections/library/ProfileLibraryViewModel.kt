@@ -5,12 +5,15 @@ package tv.trakt.trakt.core.profile.sections.library
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -21,6 +24,7 @@ import tv.trakt.trakt.common.core.library.LibraryItem
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLibraryUseCase
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -35,16 +39,19 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_SECTION_LIMIT
 import tv.trakt.trakt.core.profile.sections.library.model.LibraryFilter
+import tv.trakt.trakt.core.profile.sections.library.usecases.GetCollectionLimitServersUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ProfileLibraryViewModel(
     private val loadLibraryUseCase: LoadUserLibraryUseCase,
+    private val getCollectionLimitServersUseCase: GetCollectionLimitServersUseCase,
     private val showLocalSource: ShowLocalSource,
     private val movieLocalSource: MovieLocalSource,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProfileLibraryState()
 
@@ -55,19 +62,55 @@ internal class ProfileLibraryViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val collapseState = MutableStateFlow(isCollapsed())
     private val errorState = MutableStateFlow(initialState.error)
+    private val collectionLimitState = MutableStateFlow(initialState.collectionLimitServers)
 
     private var loadDataJob: Job? = null
     private var collapseJob: Job? = null
+    private var collectionLimitJob: Job? = null
+    private var isVipUpsellSeenLogged = false
 
     init {
         loadData()
+        observeVipStatus()
         observeForeground()
+    }
+
+    private fun observeVipStatus() {
+        sessionManager.observeProfile()
+            .map { it?.isAnyVip }
+            .distinctUntilChanged()
+            .onEach { loadCollectionLimit() }
+            .launchIn(viewModelScope)
     }
 
     private fun observeForeground() {
         appLifecycleProvider.observeForegroundRefresh()
-            .onEach { loadData(ignoreErrors = true) }
+            .onEach {
+                loadData(ignoreErrors = true)
+                loadCollectionLimit()
+            }
             .launchIn(viewModelScope)
+    }
+
+    private fun loadCollectionLimit() {
+        collectionLimitJob?.cancel()
+        collectionLimitJob = viewModelScope.launch {
+            try {
+                val user = sessionManager.getProfile()
+                if (user == null || user.isAnyVip) {
+                    collectionLimitState.update { persistentListOf() }
+                    return@launch
+                }
+
+                collectionLimitState.update {
+                    getCollectionLimitServersUseCase.getServers()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
@@ -146,6 +189,12 @@ internal class ProfileLibraryViewModel(
         return false
     }
 
+    fun onVipUpsellSeen() {
+        if (isVipUpsellSeenLogged) return
+        isVipUpsellSeenLogged = true
+        analytics.vip.logUpsellImpression("library-collection-limit")
+    }
+
     fun setFilter(newFilter: LibraryFilter) {
         if (loadingState.value.isLoading) {
             return
@@ -188,6 +237,7 @@ internal class ProfileLibraryViewModel(
         collapseState,
         errorState,
         userState,
+        collectionLimitState,
     ) { states ->
         ProfileLibraryState(
             loading = states[0] as LoadingState,
@@ -196,6 +246,7 @@ internal class ProfileLibraryViewModel(
             collapsed = states[3] as Boolean,
             error = states[4] as Exception?,
             user = states[5] as User?,
+            collectionLimitServers = states[6] as ImmutableList<String?>,
         )
     }.stateIn(
         scope = viewModelScope,
