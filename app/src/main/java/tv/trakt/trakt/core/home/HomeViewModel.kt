@@ -140,7 +140,7 @@ internal class HomeViewModel(
         viewModelScope.launch {
             try {
                 monthReviewState.update {
-                    if (user?.isVip == true) {
+                    if (user?.isAnyVip == true) {
                         monthReviewBannerUseCase.getBannerMonth(nowLocalDay())
                     } else {
                         null
