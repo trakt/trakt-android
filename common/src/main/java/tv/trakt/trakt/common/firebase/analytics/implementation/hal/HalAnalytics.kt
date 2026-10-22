@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.D
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_REASON
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ROUTE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SERVICE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SETTINGS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SOURCE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_THEME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TYPE
@@ -30,6 +31,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REPORT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REPORT_OPEN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SEARCH
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SETTINGS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE_ARRIVAL
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAMING_SERVICE
@@ -145,6 +147,10 @@ internal class HalAnalytics(
 
     override fun logCoverImage(mediaType: String) {
         events.track(EVENT_COVER_IMAGE, dims = mapOf(DIM_TYPE to mediaType.lowercase()))
+    }
+
+    override fun logSettings(settings: String) {
+        events.track(EVENT_SETTINGS, dims = mapOf(DIM_SETTINGS to settings.lowercase()))
     }
 
     override fun logCalendarPeriod(action: String) {

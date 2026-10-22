@@ -121,6 +121,12 @@ interface Analytics {
     fun logCoverImage(mediaType: String)
 
     /**
+     * Logs saving a settings change.
+     * @param settings The settings group that changed (profile, theme, ...).
+     */
+    fun logSettings(settings: String)
+
+    /**
      * Logs moving the calendar period.
      * @param action The period change (next, previous, reset).
      */

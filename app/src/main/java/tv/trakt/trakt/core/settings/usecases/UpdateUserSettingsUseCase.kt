@@ -23,6 +23,13 @@ internal class UpdateUserSettingsUseCase(
         }
     }
 
+    suspend fun updateUsername(username: String) {
+        remoteSource.updateProfileUsername(username)
+        remoteSource.getProfile().let {
+            sessionManager.saveProfile(it)
+        }
+    }
+
     suspend fun updateAbout(about: String?) {
         remoteSource.updateProfileAbout(about)
         remoteSource.getProfile().let {

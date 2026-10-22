@@ -91,6 +91,10 @@ internal class DebugAnalytics(
         Timber.d("logCoverImage: mediaType=%s", mediaType)
     }
 
+    override fun logSettings(settings: String) {
+        Timber.d("logSettings: settings=%s", settings)
+    }
+
     override fun logCalendarPeriod(action: String) {
         Timber.d("logCalendarPeriod: action=%s", action)
     }
