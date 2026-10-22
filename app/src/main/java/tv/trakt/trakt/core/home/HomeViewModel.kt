@@ -154,6 +154,11 @@ internal class HomeViewModel(
         }
     }
 
+    fun refreshMonthReview() {
+        val user = userState.value.user ?: return
+        loadMonthReview(user)
+    }
+
     fun openMonthReview(target: String) {
         analytics.logLink(
             source = MONTH_REVIEW_LINK_SOURCE,

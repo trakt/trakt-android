@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalStartAuthorization
@@ -89,6 +90,11 @@ internal fun HomeScreen(
     var filtersSheet by remember { mutableStateOf(false) }
     var streaksSheet by remember { mutableStateOf(false) }
     var whatsNewSheet by remember { mutableStateOf<WhatsNew?>(null) }
+
+    LifecycleResumeEffect(Unit) {
+        viewModel.refreshMonthReview()
+        onPauseOrDispose {}
+    }
 
     HomeScreenContent(
         state = state,
