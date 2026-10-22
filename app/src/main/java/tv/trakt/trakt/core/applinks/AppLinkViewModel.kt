@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.common.data.remote.CommentsRemoteSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -20,8 +19,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.core.applinks.model.AppLink
+import tv.trakt.trakt.core.applinks.usecases.GetLinkedCommentUseCase
 import tv.trakt.trakt.core.applinks.usecases.RecordShareArrivalUseCase
 import tv.trakt.trakt.core.applinks.usecases.ResolveImdbLinkUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
@@ -34,7 +33,7 @@ internal class AppLinkViewModel(
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getPersonUseCase: GetPersonUseCase,
-    private val commentsRemoteSource: CommentsRemoteSource,
+    private val getLinkedCommentUseCase: GetLinkedCommentUseCase,
     private val resolveImdbLinkUseCase: ResolveImdbLinkUseCase,
     private val recordShareArrivalUseCase: RecordShareArrivalUseCase,
 ) : ViewModel() {
@@ -62,7 +61,7 @@ internal class AppLinkViewModel(
                         personId = getPersonUseCase.getPersonDetails(link.slug).ids.trakt,
                     )
                     is AppLink.Comment -> AppLinkEvent.OpenComment(
-                        comment = Comment.fromDto(commentsRemoteSource.getComment(link.id)),
+                        comment = getLinkedCommentUseCase.getComment(link.id),
                     )
                     is AppLink.Imdb -> resolveImdbLinkUseCase.resolve(link.imdbId)
                 }
