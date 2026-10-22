@@ -24,8 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.EmojiSupportMatch
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -48,6 +46,7 @@ import kotlin.math.roundToInt
 
 private const val PAGE_SIZE = 8
 private const val ROW_SIZE = 4
+private val SlotPadding = 4.dp
 
 @Composable
 internal fun MediaReactionsSummaryCard(
@@ -64,8 +63,9 @@ internal fun MediaReactionsSummaryCard(
     val rowsPerPage = if (pages.size > 1 || pages.firstOrNull().orEmpty().size > ROW_SIZE) 2 else 1
     val pagerState = rememberPagerState { pages.size }
 
+    // Slot padding replaces part of the card spacing, so the gaps around emoji stay tappable.
     Column(
-        verticalArrangement = spacedBy(12.dp),
+        verticalArrangement = spacedBy(12.dp - SlotPadding),
         modifier = modifier
             .background(
                 color = TraktTheme.colors.reactionsSummaryContainer,
@@ -76,7 +76,8 @@ internal fun MediaReactionsSummaryCard(
                     bottomEnd = 20.dp,
                 ),
             )
-            .padding(horizontal = 8.dp, vertical = 12.dp),
+            .padding(horizontal = 8.dp)
+            .padding(top = 12.dp, bottom = 12.dp - SlotPadding),
     ) {
         Row(
             verticalAlignment = CenterVertically,
@@ -112,22 +113,33 @@ internal fun MediaReactionsSummaryCard(
             pageSpacing = 12.dp,
             modifier = Modifier.fillMaxWidth(),
         ) { page ->
-            Column(verticalArrangement = spacedBy(8.dp)) {
+            Column {
                 repeat(rowsPerPage) { rowIndex ->
                     val row = pages[page].drop(rowIndex * ROW_SIZE).take(ROW_SIZE)
                     Row(modifier = Modifier.fillMaxWidth()) {
                         repeat(ROW_SIZE) { slot ->
+                            val reaction = row.getOrNull(slot)
+                            val isCurrent = reaction != null && reaction in userReactions
+                            val onSlotClick = onReactionClick
+                                ?.takeIf { reaction != null && (isCurrent || !isLimitReached) }
+
                             Box(
                                 contentAlignment = Alignment.Center,
-                                modifier = Modifier.weight(1F),
+                                modifier = Modifier
+                                    .weight(1F)
+                                    .ifOrElse(
+                                        condition = onSlotClick != null && reaction != null,
+                                        isTrue = Modifier.onClick(throttle = false) {
+                                            if (reaction != null) onSlotClick?.invoke(reaction)
+                                        },
+                                    )
+                                    .padding(vertical = SlotPadding),
                             ) {
-                                val reaction = row.getOrNull(slot)
                                 when (reaction) {
                                     null -> {
                                         SummaryItemPlaceholder()
                                     }
                                     else -> {
-                                        val isCurrent = reaction in userReactions
                                         SummaryItem(
                                             reaction = reaction,
                                             share = shareOf(
@@ -135,9 +147,6 @@ internal fun MediaReactionsSummaryCard(
                                                 total = summary.reactionsCount,
                                             ),
                                             highlight = isCurrent,
-                                            onClick = onReactionClick
-                                                ?.takeIf { isCurrent || !isLimitReached }
-                                                ?.let { { it(reaction) } },
                                         )
                                     }
                                 }
@@ -199,13 +208,7 @@ private fun SummaryItem(
     share: Int,
     highlight: Boolean,
     modifier: Modifier = Modifier,
-    onClick: (() -> Unit)? = null,
 ) {
-    val clickLabel = stringResource(
-        if (highlight) R.string.button_label_remove_reaction else R.string.button_label_react,
-        reaction.displayName,
-    )
-
     Row(
         horizontalArrangement = spacedBy(3.dp),
         verticalAlignment = CenterVertically,
@@ -213,15 +216,6 @@ private fun SummaryItem(
             .background(
                 color = if (highlight) TraktTheme.colors.reactionsSummaryHighlight else Color.Transparent,
                 shape = RoundedCornerShape(12.dp),
-            )
-            .ifOrElse(
-                condition = onClick != null,
-                isTrue = Modifier
-                    .semantics { contentDescription = clickLabel }
-                    .onClick(
-                        throttle = false,
-                        onClick = { onClick?.invoke() },
-                    ),
             )
             .padding(horizontal = 6.dp, vertical = 4.dp),
     ) {
