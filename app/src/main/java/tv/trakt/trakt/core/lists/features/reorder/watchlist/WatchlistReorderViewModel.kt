@@ -15,7 +15,6 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.data.remote.UserWatchlistRemoteSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -23,18 +22,11 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.common.model.sorting.SortOrder
-import tv.trakt.trakt.common.model.sorting.SortType
-import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.common.networking.WatchlistItemDto
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
+import tv.trakt.trakt.core.lists.features.reorder.watchlist.usecase.ReorderWatchlistUseCase
 
 @Suppress("UNCHECKED_CAST")
 internal class WatchlistReorderViewModel(
-    private val remoteSource: UserWatchlistRemoteSource,
+    private val reorderWatchlistUseCase: ReorderWatchlistUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -64,28 +56,7 @@ internal class WatchlistReorderViewModel(
             try {
                 loadingState.update { Loading }
 
-                val all = mutableListOf<WatchlistItemDto>()
-                var page = 1
-
-                while (true) {
-                    val pageItems = remoteSource.getWatchlist(
-                        page = page,
-                        limit = LISTS_ITEMS_ALL_LIMIT,
-                        extended = "full,images",
-                        sorting = RankSorting,
-                        filters = null,
-                    )
-
-                    all += pageItems
-
-                    if (pageItems.size < LISTS_ITEMS_ALL_LIMIT) break
-                    page += 1
-                }
-
-                val allItems = all
-                    .mapNotNull(::toEntry)
-                    .distinctBy { it.key }
-                    .toImmutableList()
+                val allItems = reorderWatchlistUseCase.getRankedItems()
 
                 itemsState.update { allItems }
                 initialItemsOrderState.update {
@@ -152,7 +123,7 @@ internal class WatchlistReorderViewModel(
             try {
                 loadingState.update { Loading }
 
-                remoteSource.reorderWatchlist(itemIds)
+                reorderWatchlistUseCase.reorderWatchlist(itemIds)
 
                 dataChanges.notify(Kind.Watchlist)
                 doneState.update { true }
@@ -194,35 +165,4 @@ internal class WatchlistReorderViewModel(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialState,
     )
-}
-
-private val RankSorting = Sorting(
-    type = SortType.Default,
-    order = SortOrder.Asc,
-)
-
-private fun toEntry(dto: WatchlistItemDto): WatchlistReorderEntry? {
-    dto.movie?.let {
-        val movie = Movie.fromDto(it)
-        return WatchlistReorderEntry(
-            id = dto.id,
-            key = "${movie.ids.trakt.value}-movie",
-            title = movie.title,
-            year = movie.year,
-            images = movie.images,
-        )
-    }
-
-    dto.show?.let {
-        val show = Show.fromDto(it)
-        return WatchlistReorderEntry(
-            id = dto.id,
-            key = "${show.ids.trakt.value}-show",
-            title = show.title,
-            year = show.year,
-            images = show.images,
-        )
-    }
-
-    return null
 }
