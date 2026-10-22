@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 internal data class GifPickerState(
     val query: String = "",
     val categories: ImmutableList<GifCategory> = persistentListOf(),
+    val categoriesLoading: LoadingState = LoadingState.Idle,
     val gifs: ImmutableList<KlipyGif> = persistentListOf(),
     val loading: LoadingState = LoadingState.Idle,
     val loadingMore: LoadingState = LoadingState.Idle,
@@ -21,5 +22,5 @@ internal data class GifPickerState(
         get() = gifs.isEmpty() && loading.isDone && error == null
 
     val showCategories: Boolean
-        get() = query.isBlank() && categories.isNotEmpty()
+        get() = query.isBlank() && (categories.isNotEmpty() || !categoriesLoading.isDone)
 }

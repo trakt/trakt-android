@@ -29,6 +29,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -135,21 +136,27 @@ private fun GifPickerContent(
     }
 
     val inputHeight = 48.dp
+    val horizontalPadding = 24.dp
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxHeight()
-            .imePadding()
-            .padding(horizontal = 24.dp),
+            .imePadding(),
     ) {
         when {
             state.error != null -> {
-                EmptyListCard(text = stringResource(R.string.error_text_unexpected_error_short))
+                EmptyListCard(
+                    text = stringResource(R.string.error_text_unexpected_error_short),
+                    modifier = Modifier.padding(horizontal = horizontalPadding),
+                )
             }
 
             state.isEmpty && !state.showCategories -> {
-                EmptyListCard(text = stringResource(R.string.list_placeholder_empty))
+                EmptyListCard(
+                    text = stringResource(R.string.list_placeholder_empty),
+                    modifier = Modifier.padding(horizontal = horizontalPadding),
+                )
             }
 
             else -> {
@@ -160,7 +167,9 @@ private fun GifPickerContent(
                     horizontalArrangement = spacedBy(spacing),
                     verticalItemSpacing = spacing,
                     contentPadding = PaddingValues(
-                        top = inputHeight / 2 + 16.dp,
+                        start = horizontalPadding,
+                        top = inputHeight / 2 + 8.dp,
+                        end = horizontalPadding,
                     ),
                     modifier = Modifier
                         .fillMaxSize()
@@ -171,8 +180,20 @@ private fun GifPickerContent(
                             key = "categories",
                             span = StaggeredGridItemSpan.FullLine,
                         ) {
+                            // Spans the full sheet width so tiles scroll edge to edge instead of
+                            // being clipped at the grid's horizontal content padding.
                             GifCategoriesRow(
                                 categories = state.categories,
+                                contentPadding = PaddingValues(horizontal = horizontalPadding),
+                                modifier = Modifier.layout { measurable, constraints ->
+                                    val bleed = horizontalPadding.roundToPx()
+                                    val placeable = measurable.measure(
+                                        constraints.copy(maxWidth = constraints.maxWidth + bleed * 2),
+                                    )
+                                    layout(constraints.maxWidth, placeable.height) {
+                                        placeable.place(-bleed, 0)
+                                    }
+                                },
                                 onCategoryClick = { category ->
                                     inputState.setTextAndPlaceCursorAtEnd(category.query)
                                     onCategoryClick(category)
@@ -209,6 +230,7 @@ private fun GifPickerContent(
             imeAction = ImeAction.Done,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = horizontalPadding)
                 .align(Alignment.TopCenter)
                 .focusRequester(focusRequester),
         )

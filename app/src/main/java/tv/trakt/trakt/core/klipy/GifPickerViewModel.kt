@@ -45,6 +45,7 @@ internal class GifPickerViewModel(
 
     private val queryState = MutableStateFlow(initialState.query)
     private val categoriesState = MutableStateFlow(initialState.categories)
+    private val categoriesLoadingState = MutableStateFlow(initialState.categoriesLoading)
     private val gifsState = MutableStateFlow(initialState.gifs)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
@@ -70,6 +71,7 @@ internal class GifPickerViewModel(
     private fun loadCategories() {
         viewModelScope.launch {
             try {
+                categoriesLoadingState.update { LoadingState.Loading }
                 categoriesState.update {
                     remoteSource.getCategories(customerId = userId?.value?.toString())
                 }
@@ -77,6 +79,8 @@ internal class GifPickerViewModel(
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+            } finally {
+                categoriesLoadingState.update { LoadingState.Done }
             }
         }
     }
@@ -212,6 +216,7 @@ internal class GifPickerViewModel(
         loadingMoreState,
         errorState,
         categoriesState,
+        categoriesLoadingState,
     ) { state ->
         GifPickerState(
             query = state[0] as String,
@@ -220,6 +225,7 @@ internal class GifPickerViewModel(
             loadingMore = state[3] as LoadingState,
             error = state[4] as Exception?,
             categories = state[5] as ImmutableList<GifCategory>,
+            categoriesLoading = state[6] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,
