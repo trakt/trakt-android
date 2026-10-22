@@ -14,6 +14,7 @@ internal data object ListsWatchlistDestination
 internal fun NavGraphBuilder.allWatchlistScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToReorder: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<ListsWatchlistDestination> {
@@ -21,6 +22,7 @@ internal fun NavGraphBuilder.allWatchlistScreen(
             viewModel = koinViewModel(),
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
+            onReorderClick = onNavigateToReorder,
             onNavigateBack = onNavigateBack,
         )
     }
