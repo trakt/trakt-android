@@ -1,6 +1,6 @@
 ---
-name: trakt-android-backlog-sizing
-description: Size trakt-android Backlog issues on the trakt Product board (XS/S/M/L) from issue scope, linked trakt-web PRs and the current Android code, publish a review table artifact, then write the approved sizes to the board's Size field. Default run sizes only Backlog items with no Size yet. Trigger: /trakt-android-backlog-sizing, "size the backlog", "re-run backlog sizing", "assess backlog sizes", "size new backlog issues".
+name: trakt-android-gh-backlog-size
+description: Size trakt-android Backlog issues on the trakt Product board (XS/S/M/L) from issue scope, linked trakt-web PRs and the current Android code, publish a review table artifact, then write the approved sizes to the board's Size field. Default run sizes only Backlog items with no Size yet. Trigger: /trakt-android-gh-backlog-size, "size the backlog", "re-run backlog sizing", "assess backlog sizes", "size new backlog issues".
 ---
 
 # Backlog sizing
