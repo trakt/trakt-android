@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.settings
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.ui.theme.model.ThemeMode
@@ -15,5 +14,4 @@ internal data class SettingsState(
     val themeMode: ThemeMode = ThemeMode.Default,
     val accountLoading: LoadingState = LoadingState.Idle,
     val logoutLoading: LoadingState = LoadingState.Idle,
-    val info: StringResource? = null,
 )

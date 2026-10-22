@@ -82,7 +82,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
@@ -117,7 +116,7 @@ internal fun SettingsScreen(
     val uriHandler = LocalUriHandler.current
     val snackbar = LocalSnackbarState.current
     val haptic = LocalHapticFeedback.current
-    val resources = LocalResources.current
+    val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -129,20 +128,20 @@ internal fun SettingsScreen(
         }
     }
 
-    LaunchedEffect(state.info) {
-        if (state.info != null) {
+    LaunchedEffect(Unit) {
+        viewModel.info.collect { info ->
             haptic.performHapticFeedback(Confirm)
             snackbar.showSnackbar(
-                message = resources.getString(R.string.text_info_cover_removed),
+                message = info.get(context),
                 duration = Short,
             )
-            viewModel.clearInfo()
         }
     }
 
     SettingsScreenContent(
         state = state,
         onSetDisplayName = viewModel::updateUserDisplayName,
+        onSetUsername = viewModel::updateUsername,
         onSetLocation = viewModel::updateUserLocation,
         onSetAbout = viewModel::updateUserAbout,
         onEnableMultiplePlays = viewModel::enableMultiplePlays,
@@ -193,6 +192,7 @@ private fun SettingsScreenContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onSetDisplayName: (String?) -> Unit = { },
+    onSetUsername: (String) -> Unit = { },
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
     onClearCoverImage: () -> Unit = { },
@@ -265,6 +265,7 @@ private fun SettingsScreenContent(
                 SettingsAccount(
                     state = state,
                     onSetDisplayName = onSetDisplayName,
+                    onSetUsername = onSetUsername,
                     onSetLocation = onSetLocation,
                     onSetAbout = onSetAbout,
                     onClearCoverImage = onClearCoverImage,
@@ -376,12 +377,14 @@ private fun SettingsAccount(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onSetDisplayName: (String?) -> Unit = { },
+    onSetUsername: (String) -> Unit = { },
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
     onClearCoverImage: () -> Unit = { },
     onEnablePrivateAccount: (Boolean) -> Unit = { },
 ) {
     var displayNameSheet by remember { mutableStateOf<String?>(null) }
+    var usernameSheet by remember { mutableStateOf<String?>(null) }
     var locationSheet by remember { mutableStateOf<String?>(null) }
     var aboutSheet by remember { mutableStateOf<String?>(null) }
 
@@ -420,6 +423,15 @@ private fun SettingsAccount(
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
                 displayNameSheet = state.user?.name
+            },
+        )
+
+        SettingsValueField(
+            text = stringResource(R.string.text_username),
+            value = state.user?.username,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+            onClick = {
+                usernameSheet = state.user?.username.orEmpty()
             },
         )
 
@@ -484,6 +496,22 @@ private fun SettingsAccount(
         },
         onDismiss = {
             displayNameSheet = null
+        },
+    )
+
+    SingleInputSheet(
+        active = usernameSheet != null,
+        title = stringResource(R.string.text_username),
+        description = stringResource(R.string.input_prompt_username),
+        initialInput = usernameSheet,
+        onApply = {
+            val username = it?.trim()
+            if (!username.isNullOrBlank() && usernameSheet != username) {
+                onSetUsername(username)
+            }
+        },
+        onDismiss = {
+            usernameSheet = null
         },
     )
 
@@ -1059,27 +1087,6 @@ private fun Preview() {
 private fun PreviewLight() {
     TraktTheme(
         colors = LightColors,
-    ) {
-        SettingsScreenContent(
-            state = SettingsState(
-                user = PreviewData.user1.copy(
-                    settings = User.Settings(
-                        watchOnlyOnce = true,
-                        ratingPrompts = false,
-                        coverImage = null,
-                        shareCode = null,
-                    ),
-                ),
-            ),
-        )
-    }
-}
-
-@DevicePreview
-@Composable
-private fun HalloweenPreview() {
-    TraktTheme(
-        colors = HalloweenDarkColors,
     ) {
         SettingsScreenContent(
             state = SettingsState(

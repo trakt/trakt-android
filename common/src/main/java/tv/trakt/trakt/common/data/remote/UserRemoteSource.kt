@@ -22,8 +22,8 @@ import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class UserRemoteSource(
     private val usersApi: UsersApi,
-    private val syncApi: SyncApi,
     private val v3Api: V3Api,
+    private val syncApi: SyncApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) {
     suspend fun getProfile(): User {
@@ -90,6 +90,11 @@ class UserRemoteSource(
             ),
         )
 
+        cacheMarkerProvider.invalidate()
+    }
+
+    suspend fun updateProfileUsername(username: String) {
+        v3Api.putUsername(username)
         cacheMarkerProvider.invalidate()
     }
 

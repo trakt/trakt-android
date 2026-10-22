@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationRespons
 import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3UsernameSettingsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReaction
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReactionsSummaryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3UserMediaReaction
@@ -294,6 +295,18 @@ class V3Api(
     suspend fun postShareMute(request: V3ShareMuteRequest) {
         client.post("${baseV3Url}shares/mutes") {
             setBody(request)
+        }
+    }
+
+    // Settings
+
+    suspend fun putUsername(username: String) {
+        client.put("${baseUrl}users/settings") {
+            setBody(
+                V3UsernameSettingsRequest(
+                    user = V3UsernameSettingsRequest.User(username = username),
+                ),
+            )
         }
     }
 
