@@ -77,6 +77,7 @@ import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.applinks.AppLinkViewModel
 import tv.trakt.trakt.core.auth.model.AuthorizationException
@@ -84,6 +85,7 @@ import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
+import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.translation.download.CommentTranslationDownloadSheet
 import tv.trakt.trakt.core.discover.navigation.DiscoverDestination
 import tv.trakt.trakt.core.home.navigation.HomeDestination
@@ -129,6 +131,7 @@ internal fun MainScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val appLinkState by appLinkViewModel.state.collectAsStateWithLifecycle()
+    var appLinkComment by remember { mutableStateOf<Comment?>(null) }
 
     val scope = rememberCoroutineScope()
     val localContext = LocalContext.current
@@ -194,6 +197,12 @@ internal fun MainScreen(
         events = appLinkViewModel.events,
         welcomeActive = state.welcome.isActive,
         navController = navController,
+        onOpenComment = { appLinkComment = it },
+    )
+
+    CommentDetailsSheet(
+        comment = appLinkComment,
+        onDismiss = { appLinkComment = null },
     )
 
     LaunchedIntentHandler(

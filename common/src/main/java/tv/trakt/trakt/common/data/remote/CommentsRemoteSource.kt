@@ -211,6 +211,14 @@ class CommentsRemoteSource(
         cacheMarker.invalidate()
     }
 
+    suspend fun getComment(commentId: TraktId): CommentDto {
+        val response = api.getCommentsSummary(
+            id = commentId.value.toString(),
+        )
+
+        return response.body()
+    }
+
     suspend fun getCommentReplies(commentId: Int): List<CommentDto> {
         val response = api.getCommentsReplies(
             id = commentId.toString(),

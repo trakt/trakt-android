@@ -2,11 +2,14 @@ package tv.trakt.trakt.core.applinks.model
 
 import android.net.Uri
 import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toSlugId
+import tv.trakt.trakt.common.model.toTraktId
 
 private const val APP_LINK_SCHEME = "https"
 private const val APP_LINK_HOST = "app.trakt.tv"
 private const val APP_LINK_SHARE_PARAM = "share"
+private const val APP_LINK_COMMENT_PARAM = "comment_id"
 
 internal sealed interface AppLink {
     val share: AppLinkShare?
@@ -14,15 +17,22 @@ internal sealed interface AppLink {
     data class Show(
         val slug: SlugId,
         override val share: AppLinkShare? = null,
+        val commentId: TraktId? = null,
     ) : AppLink
 
     data class Movie(
         val slug: SlugId,
         override val share: AppLinkShare? = null,
+        val commentId: TraktId? = null,
     ) : AppLink
 
     data class Person(
         val slug: SlugId,
+        override val share: AppLinkShare? = null,
+    ) : AppLink
+
+    data class Comment(
+        val id: TraktId,
         override val share: AppLinkShare? = null,
     ) : AppLink
 
@@ -60,11 +70,13 @@ internal fun parseAppLink(uri: Uri): AppLink? {
     val share = uri.getQueryParameter(APP_LINK_SHARE_PARAM)?.let {
         AppLinkShare(code = it, url = uri.toString())
     }
+    val commentId = uri.getQueryParameter(APP_LINK_COMMENT_PARAM)?.toIntOrNull()?.toTraktId()
 
     return when (type) {
-        "shows" -> AppLink.Show(slug.toSlugId(), share)
-        "movies" -> AppLink.Movie(slug.toSlugId(), share)
+        "shows" -> AppLink.Show(slug.toSlugId(), share, commentId)
+        "movies" -> AppLink.Movie(slug.toSlugId(), share, commentId)
         "people" -> AppLink.Person(slug.toSlugId(), share)
+        "comments" -> slug.toIntOrNull()?.let { AppLink.Comment(it.toTraktId(), share) }
         else -> null
     }
 }
