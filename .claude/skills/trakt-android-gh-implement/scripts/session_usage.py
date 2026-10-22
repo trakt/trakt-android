@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Sum this Claude Code session's token usage per model since a start time.
+"""Sum this Claude Code session's token usage per model inside one or more time windows.
 
-Usage: python3 session_usage.py --since 2026-10-19T12:00:00Z [--session PATH]
+Usage: python3 session_usage.py --since START [--until END] [--session PATH]
+       python3 session_usage.py --window START/END [--window START/END ...] [--session PATH]
 
 Prints one JSON object. Exits 0 with "tokens": null when no transcript is found.
 """
@@ -34,7 +35,16 @@ def newest_session():
     return max(files, key=os.path.getmtime) if files else None
 
 
-def replies(path, since):
+def in_windows(stamp, windows):
+    if not windows:
+        return True
+    if not stamp:
+        return False
+    moment = parse_time(stamp)
+    return any(start <= moment and (end is None or moment < end) for start, end in windows)
+
+
+def replies(path, windows):
     """Last usage line per message id: a reply with several parts is logged once per part."""
     latest = {}
     with open(path, encoding="utf-8") as handle:
@@ -46,8 +56,7 @@ def replies(path, since):
             message = entry.get("message")
             if not isinstance(message, dict) or not message.get("usage"):
                 continue
-            stamp = entry.get("timestamp")
-            if since and (not stamp or parse_time(stamp) < since):
+            if not in_windows(entry.get("timestamp"), windows):
                 continue
             latest[message.get("id") or id(entry)] = message
     return latest.values()
@@ -56,9 +65,13 @@ def replies(path, since):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--since", help="ISO time the work started (UTC)")
+    parser.add_argument("--until", help="ISO time the work ended (UTC); default: now")
+    parser.add_argument("--window", action="append", default=[], help="START/END in ISO UTC; repeatable")
     parser.add_argument("--session", help="transcript .jsonl; default: newest session on this machine")
     args = parser.parse_args()
-    since = parse_time(args.since) if args.since else None
+    windows = [tuple(parse_time(part) for part in window.split("/", 1)) for window in args.window]
+    if args.since:
+        windows.append((parse_time(args.since), parse_time(args.until) if args.until else None))
 
     session = args.session or newest_session()
     if not session or not os.path.exists(session):
@@ -70,7 +83,7 @@ def main():
     active_subagents = 0
     for path in [session, *subagent_files]:
         found = False
-        for message in replies(path, since):
+        for message in replies(path, windows):
             found = True
             bucket = models.setdefault(message.get("model") or "unknown", {v: 0 for v in FIELDS.values()} | {"replies": 0})
             bucket["replies"] += 1
@@ -83,7 +96,8 @@ def main():
     print(json.dumps({
         "session": os.path.basename(session)[: -len(".jsonl")],
         "since": args.since,
-        "until": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "until": args.until or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "windows": args.window,
         "subagents": active_subagents,
         "models": models,
         "tokens": totals,

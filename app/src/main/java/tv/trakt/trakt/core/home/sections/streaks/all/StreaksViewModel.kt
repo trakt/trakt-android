@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
@@ -17,11 +18,14 @@ import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
 internal class StreaksViewModel(
     streaksManager: StreaksManager,
     private val filtersManager: GlobalFilterManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val modeState = MutableStateFlow<MediaMode?>(null)
     private val dataState = MutableStateFlow<MonthlyStreakData?>(null)
 
     init {
+        analytics.logDrilldown(source = "stats", type = "streak")
+
         streaksManager.observeStreakData()
             .onEach { data ->
                 modeState.update { filtersManager.getFilter().mode }

@@ -1,6 +1,6 @@
 ---
-name: trakt-android-implement
-description: Implement trakt-android GitHub issues one by one - ask which issues and the end state (local branches, draft PRs or ready-for-review PRs), move them to In Progress on the trakt Product board, assess each issue against trakt-web and the Android code, implement, verify, commit and optionally open PRs. Trigger: /trakt-android-implement, "implement issues", "work on #499 #484", "take care of these issues".
+name: trakt-android-gh-implement
+description: Implement trakt-android GitHub issues one by one - ask which issues and the end state (local branches, draft PRs or ready-for-review PRs), move them to In Progress on the trakt Product board, assess each issue against trakt-web and the Android code, implement, verify, commit, optionally open PRs and handle up to 3 Codex review cycles on them. Trigger: /trakt-android-gh-implement, "implement issues", "work on #499 #484", "take care of these issues".
 ---
 
 # Implement issues
@@ -31,6 +31,9 @@ Use one `AskUserQuestion` call:
    - Local branches only - commit on a branch per issue, no push.
    - Draft PRs - push and open draft PRs.
    - Ready-for-review PRs - push and open PRs marked ready.
+3. **Monitor Codex reviews?** Only applies to ready-for-review PRs; ignore the answer otherwise.
+   - Yes - after the PRs are open, watch for the automatic Codex review and handle its comments (step 4), up to 3 cycles per PR.
+   - No - stop once the PRs are open.
 
 ## Step 2 - Prepare
 
@@ -68,16 +71,18 @@ Keep raw dumps in the session scratchpad directory, referred to below as `$S`.
 
 Finish one issue completely before starting the next. Before each new branch, repeat the pull and the `HEAD` = `FETCH_HEAD` check from step 2, so every branch starts from the latest `main`.
 
-1. **Read the issue.** `gh issue view N -R trakt/trakt-android --json title,body,labels,comments > "$S/iN.json"`. Read comments too: maintainers often extend the scope there (for example a follow-up web PR).
-2. **Read the web source.** For each `trakt-web#N` or `trakt-web/pull/N` link, read `gh pr view N -R trakt/trakt-web --json title,body,files` and the relevant part of `gh pr diff`. Then read the current web files, not only the diff, because later PRs may have changed them. Match web logic, ordering and edge cases.
-3. **Assess against Android.** Check every claim in the issue against current Android code. Issues often list items that already exist. Note those for the PR body instead of re-implementing them.
-4. **Load rules.** Read the `.agents/rules/` files that match the touched area, as `CLAUDE.md` lists.
-5. **Start the effort clock, then branch.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/startN.txt"` right
-   before `git checkout -b <type>/<short-slug>` (for example `feat/season-rail-highlight`,
-   `fix/season-progress-aired`). Each issue gets its own start time, so the effort report in step 10
-   counts only that issue's build work, not reading and assessment.
-6. **Implement.** Reuse existing helpers and tokens. Keep the diff small.
-7. **Sync tracking with web.** Read `analytics.md` first. Check whether the web code for this feature tracks anything:
+1. **Start the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/startN.txt"` before any other
+   work on the issue. Step 12 stops it in `$S/endN.txt`. Each issue gets its own window, so the
+   effort report counts only that issue: reading, assessment and build work. Never work on two
+   issues inside one window.
+2. **Read the issue.** `gh issue view N -R trakt/trakt-android --json title,body,labels,comments > "$S/iN.json"`. Read comments too: maintainers often extend the scope there (for example a follow-up web PR).
+3. **Read the web source.** For each `trakt-web#N` or `trakt-web/pull/N` link, read `gh pr view N -R trakt/trakt-web --json title,body,files` and the relevant part of `gh pr diff`. Then read the current web files, not only the diff, because later PRs may have changed them. Match web logic, ordering and edge cases.
+4. **Assess against Android.** Check every claim in the issue against current Android code. Issues often list items that already exist. Note those for the PR body instead of re-implementing them.
+5. **Load rules.** Read the `.agents/rules/` files that match the touched area, as `CLAUDE.md` lists.
+6. **Branch.** `git checkout -b <type>/<short-slug>` (for example `feat/season-rail-highlight`,
+   `fix/season-progress-aired`).
+7. **Implement.** Reuse existing helpers and tokens. Keep the diff small.
+8. **Sync tracking with web.** Read `analytics.md` first. Check whether the web code for this feature tracks anything:
    ```bash
    W=$WEB/projects/client/src/lib
    grep -rnE "useTrack|AnalyticsEvent\." <$WEB files touched by the linked PRs and their callers>
@@ -87,13 +92,13 @@ Finish one issue completely before starting the next. Before each new branch, re
    - Web does not track it, and the change is a new user-facing feature: add HAL tracking per `analytics.md` and `implementation.md`.
    - Web does not track it, and the change tweaks an existing screen: no tracking.
    - State the decision and the event names in the PR body and the report.
-8. **Verify.**
+9. **Verify.**
    - Compile: `./gradlew -q :app:compilePlaystoreDebugKotlin` (plain `compileDebugKotlin` is ambiguous because of flavors). Add `:tv:compileDebugKotlin` when `tv/` or shared code changed.
    - Lint: the Gradle `ktlintCheck` task is not wired. Run the CLI on changed files: `ktlint -F $(git diff --name-only main; git ls-files -o --exclude-standard)`, then `ktlint` again to confirm it is clean.
    - Fix all errors before committing. Do not claim device testing that did not happen.
-9. **Commit.** Follow `commits.md`: Conventional Commits, body explains why, `Refs: #N` footer, no
+10. **Commit.** Follow `commits.md`: Conventional Commits, body explains why, `Refs: #N` footer, no
    AI attribution, no em-dashes.
-10. **End state.**
+11. **End state.**
    - Local branches only: stop here, `git checkout main`.
    - PRs: push with
      `git -c credential.helper='!gh auth git-credential' push -q https://github.com/trakt/trakt-android.git <branch>`,
@@ -110,24 +115,79 @@ Finish one issue completely before starting the next. Before each new branch, re
      ```bash
      SID=$(basename "$(dirname "$S")")
      T=$(ls ~/.claude/projects/*/"$SID".jsonl | head -1)
-     python3 .claude/skills/trakt-android-implement/scripts/session_usage.py --since "$(cat "$S/startN.txt")" --session "$T"
+     python3 .claude/skills/trakt-android-gh-implement/scripts/session_usage.py --since "$(cat "$S/startN.txt")" --session "$T"
      ```
      It prints one JSON line with tokens per model, subagents included. Append one line at the very
      end of the PR body, after the `Closes` line:
      `<!-- convergence-run {"web_pr": <first linked trakt-web PR number or null>, "issue": "trakt-android#N", "client": "android", "lead_model": "<model id>", "subagents": <its "subagents">, "started": "<start time>", "pr_opened": "<now, UTC>", "tokens": <its "tokens">, "tokens_by_model": <its "models">} -->`
      A daily job reads this block to measure how long ports take. When the script prints `"tokens": null`, write `null`. Never estimate.
-11. `git checkout main` and continue with the next issue.
+12. **Stop the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/endN.txt"`, then `git checkout main`
+    and continue with the next issue.
 
-## Step 4 - Report
+## Step 4 - Monitor Codex reviews
+
+Only when the user chose ready-for-review PRs and monitoring in step 1. Start after all PRs are
+open. Opening a ready PR triggers the automatic Codex review. Codex posts as a bot whose login
+contains `codex` (for example `chatgpt-codex-connector[bot]`): a PR review with inline comments when
+it finds issues, or a PR comment or a 👍 reaction on the PR when it finds none.
+
+Track per PR: cycle count (starts at 1) and `SINCE`, the UTC time the PR was opened or the last
+`@codex review` comment was posted.
+
+1. **Wait for the review.** Use the Monitor tool with an until-loop that polls every 60 s, never a
+   foreground `sleep`. The review is in when any of these has a Codex author and a time after `SINCE`:
+   ```bash
+   R=repos/trakt/trakt-android
+   gh api "$R/pulls/N/reviews" --jq '.[] | select(.user.login|test("codex";"i")) | .submitted_at'
+   gh api "$R/issues/N/comments" --jq '.[] | select(.user.login|test("codex";"i")) | .created_at'
+   gh api "$R/issues/N/reactions" --jq '.[] | select(.user.login|test("codex";"i")) | select(.content=="+1") | .created_at'
+   ```
+   Time out after 30 min. On timeout, stop monitoring that PR and note it in the report.
+2. **Collect new comments.** Unresolved Codex threads, with IDs for replying and resolving:
+   ```bash
+   gh api graphql -f query='query { repository(owner:"trakt", name:"trakt-android") { pullRequest(number:N) {
+     reviewThreads(first:100) { nodes { id isResolved path line
+       comments(first:1) { nodes { databaseId author { login } body } } } } } } }' > "$S/threadsN.json"
+   ```
+   No unresolved Codex threads: the PR is clean. Stop monitoring it.
+   Comments found: open the Codex effort window for this PR's issue before reading them:
+   `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/codexN-start.txt"`.
+3. **Assess each comment.** Check the claim against the code. Do not accept it blindly. Decide:
+   fix, or decline with a concrete reason (wrong, out of scope, or intended behaviour).
+4. **Fix.** On the PR branch: apply the fixes, verify as in step 3.9, commit per `commits.md`
+   (`Refs: #N`), push with the same `push` command as step 3.11. Never force-push for review fixes.
+5. **Reply and resolve every handled thread.** Reply with what changed and the commit SHA, or why it
+   was declined, then resolve:
+   ```bash
+   gh api "$R/pulls/N/comments/<databaseId>/replies" -f body="<reply>"
+   gh api graphql -f query='mutation { resolveReviewThread(input:{threadId:"<thread id>"}) { thread { isResolved } } }'
+   ```
+   Close the window:
+   `echo "$(cat "$S/codexN-start.txt")/$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$S/codexN-windows.txt"`.
+6. **Next cycle.** If the cycle count is below 3, comment `gh pr comment N -R trakt/trakt-android --body "@codex review"`,
+   set `SINCE` to now, add 1 to the cycle count and go back to 4.1. After the 3rd cycle, do not
+   request another review. Stop monitoring and leave the PR as is.
+
+With several PRs, poll all of them in one loop. Handle one PR at a time, steps 4.2 to 4.5 in full,
+so Codex effort windows never overlap and each one counts only its own issue. Polling time sits
+outside all windows. Run `git checkout main` when done.
+
+## Step 5 - Report
 
 Lead with the result. Per issue: link (PR or branch name), what changed in plain words, what was already in place, any deviation from web. Then:
 
 - Tracking: events added and whether they mirror web, or why none.
-- Effort: tokens per issue from the effort report. For local-branch runs, run the script anyway and report the totals here, since there is no PR body to hold them.
+- Effort: tokens per issue, never one total for the run. PR runs: the numbers from each effort
+  report. Local-branch runs have no PR body, so run the script per issue with both ends of its window:
+  `--since "$(cat "$S/startN.txt")" --until "$(cat "$S/endN.txt")"`. A run without `--until`
+  would also count every later issue.
+- Codex effort, when monitored: tokens per PR, kept apart from the build effort above. Pass every
+  window of that PR: `--window` once per line of `$S/codexN-windows.txt`.
 - Verified: compile and ktlint per branch.
 - Not verified: device or emulator runs, unless done.
 - Blockers: missing scopes, issues not on the board, anything skipped.
 - Board status of each issue.
+- Codex review, when monitored: cycles run per PR, comments fixed or declined, and the final state (clean, 3-cycle limit reached, or timed out).
 
 ## Gotchas
 

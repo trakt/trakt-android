@@ -151,6 +151,7 @@ internal fun ShowCommentsView(
         onCollapse = viewModel::setCollapsed,
         onUserClick = onUserClick,
         onTranslateClick = viewModel::toggleTranslation,
+        onRevealSpoiler = viewModel::logSpoilerReveal,
     )
 
     val mentionSource = state.show?.ids?.trakt?.let { MentionSource.Show(it) }
@@ -218,6 +219,7 @@ private fun ShowCommentsContent(
     onCollapse: ((Boolean) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -342,6 +344,7 @@ private fun ShowCommentsContent(
                                     onReactionClick = onReactionClick,
                                     onUserClick = onUserClick,
                                     onTranslateClick = onTranslateClick,
+                                    onRevealSpoiler = onRevealSpoiler,
                                 )
                             }
                         }
@@ -370,6 +373,7 @@ private fun ContentList(
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -408,6 +412,7 @@ private fun ContentList(
                 onUserClick = onUserClick,
                 translations = translations,
                 onTranslateClick = onTranslateClick,
+                onRevealSpoiler = onRevealSpoiler,
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
                     .aspectRatio(HorizontalImageAspectRatio)

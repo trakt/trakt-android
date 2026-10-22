@@ -35,11 +35,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.core.trivia.model.TriviaCategory
 import tv.trakt.trakt.core.trivia.model.TriviaFilter
+import tv.trakt.trakt.core.trivia.ui.TriviaCategoryDropdown
 import tv.trakt.trakt.core.trivia.ui.TriviaFactCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -60,6 +65,7 @@ internal fun TriviaScreen(
     TriviaContent(
         state = state,
         onFilterClick = viewModel::setFilter,
+        onCategoryClick = viewModel::setCategory,
         onBackClick = onNavigateBack,
         onPersonLinkClick = onNavigateToPerson,
     )
@@ -69,6 +75,7 @@ internal fun TriviaScreen(
 private fun TriviaContent(
     state: TriviaState,
     onFilterClick: (TriviaFilter) -> Unit = {},
+    onCategoryClick: (TriviaCategory?) -> Unit = {},
     onBackClick: () -> Unit = {},
     onPersonLinkClick: (SlugId) -> Unit = {},
 ) {
@@ -120,7 +127,10 @@ private fun TriviaContent(
             item {
                 ContentFilters(
                     selectedFilter = state.filter,
-                    onClick = onFilterClick,
+                    categories = state.categories,
+                    selectedCategory = state.category,
+                    onFilterClick = onFilterClick,
+                    onCategoryClick = onCategoryClick,
                     modifier = Modifier
                         .padding(
                             top = 8.dp,
@@ -159,30 +169,47 @@ private fun TriviaContent(
 @Composable
 private fun ContentFilters(
     selectedFilter: TriviaFilter?,
-    onClick: (TriviaFilter) -> Unit,
+    categories: ImmutableList<TriviaCategory>?,
+    selectedCategory: TriviaCategory?,
+    onFilterClick: (TriviaFilter) -> Unit,
+    onCategoryClick: (TriviaCategory?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    FilterChipGroup(
-        paddingVertical = PaddingValues.Zero,
-        paddingHorizontal = PaddingValues.Zero,
-        modifier = modifier,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = spacedBy(TraktTheme.spacing.filterChipsSpace),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        for (filter in TriviaFilter.entries) {
-            FilterChip(
-                selected = selectedFilter == filter,
-                text = stringResource(filter.displayRes),
-                height = 32.dp,
-                leadingContent = {
-                    Icon(
-                        painter = painterResource(filter.iconRes),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimaryOnAccent,
-                        modifier = Modifier
-                            .size(FilterChipDefaults.IconSize)
-                            .rotate(180F),
-                    )
-                },
-                onClick = { onClick(filter) },
+        FilterChipGroup(
+            paddingVertical = PaddingValues.Zero,
+            paddingHorizontal = PaddingValues.Zero,
+            modifier = Modifier.weight(1F),
+        ) {
+            for (filter in TriviaFilter.entries) {
+                FilterChip(
+                    selected = selectedFilter == filter,
+                    text = stringResource(filter.displayRes),
+                    height = 32.dp,
+                    leadingContent = {
+                        Icon(
+                            painter = painterResource(filter.iconRes),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimaryOnAccent,
+                            modifier = Modifier
+                                .size(FilterChipDefaults.IconSize)
+                                .rotate(180F),
+                        )
+                    },
+                    onClick = { onFilterClick(filter) },
+                )
+            }
+        }
+
+        if (categories != null && categories.size > 1) {
+            TriviaCategoryDropdown(
+                categories = categories,
+                selectedCategory = selectedCategory,
+                onCategoryClick = onCategoryClick,
             )
         }
     }
@@ -225,5 +252,23 @@ private fun TitleBar(
                 subtitle = mediaTitle,
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun ContentFiltersPreview() {
+    TraktTheme {
+        ContentFilters(
+            selectedFilter = TriviaFilter.NoSpoilers,
+            categories = persistentListOf(
+                TriviaCategory.BehindTheScenes,
+                TriviaCategory.CastAndCrew,
+                TriviaCategory.ImpactAndLegacy,
+            ),
+            selectedCategory = TriviaCategory.CastAndCrew,
+            onFilterClick = {},
+            onCategoryClick = {},
+        )
     }
 }

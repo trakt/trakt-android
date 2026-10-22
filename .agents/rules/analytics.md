@@ -74,6 +74,10 @@ implementation/
 - HAL tracks signed-in users only. Events are dropped until the loaded profile sets
   `setUserProperty("vip", "true" | "false")`. Logout flows must call
   `setUserProperty("vip", null)` to stop tracking.
+  - Exception: login start and login failed pass `allowAnonymous = true` and send
+    `user_type=anonymous`, matching web, so the auth funnel is visible before sign-in.
+  - Clearing the user type reschedules `hal_send` when events are queued. Logout must cancel
+    WorkManager work before that call, or the queued logout event is never sent.
 
 ## Calling analytics
 

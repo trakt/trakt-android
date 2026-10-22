@@ -144,6 +144,61 @@ interface Analytics {
         mode: String,
     )
 
+    /**
+     * Logs the start of sign-in.
+     * @param source The entry point (landing-login, landing-get-started, navbar, redirect).
+     */
+    fun logLoginStart(source: String)
+
+    /**
+     * Logs a sign-in that failed after the user returned from the browser.
+     * @param error A short error code, never a message.
+     */
+    fun logLoginFailed(error: String)
+
+    /**
+     * Logs an action on a connected streaming service.
+     * @param action The action (connect, sync, unlink).
+     * @param service The streaming service id.
+     */
+    fun logStreamingService(
+        action: String,
+        service: String,
+    )
+
+    /**
+     * Logs muting a user from the recommended by list.
+     */
+    fun logMuteSharer()
+
+    /**
+     * Logs opening the report sheet.
+     * @param type The reported item type (comment, movie, show, episode).
+     */
+    fun logReportOpen(type: String)
+
+    /**
+     * Logs the outcome of sending a report.
+     * @param type The reported item type (comment, movie, show, episode).
+     * @param reason The fixed report reason key, never the message.
+     * @param outcome The result (sent, already-reported, rate-limited, unknown).
+     */
+    fun logReport(
+        type: String,
+        reason: String,
+        outcome: String,
+    )
+
+    /**
+     * Logs opening a stats surface.
+     * @param source The surface (stats, leaderboard).
+     * @param type The stats kind, when the surface has several.
+     */
+    fun logDrilldown(
+        source: String,
+        type: String?,
+    )
+
     enum class CommentContent {
         Text,
         Gif,
@@ -258,6 +313,21 @@ interface Analytics {
          * @param characters The number of characters sent for translation.
          */
         fun logCommentTranslate(characters: Int)
+
+        /**
+         * Logs revealing a blurred spoiler comment.
+         */
+        fun logSpoilerReveal()
+
+        /**
+         * Logs a GIF picker interaction.
+         * @param action The interaction (open, category, select).
+         * @param source Where the picker was opened from (comment, review).
+         */
+        fun logGifPicker(
+            action: String,
+            source: String,
+        )
     }
 
     interface Progress {

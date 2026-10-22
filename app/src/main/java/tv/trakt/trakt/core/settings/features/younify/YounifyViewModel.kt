@@ -190,6 +190,8 @@ internal class YounifyViewModel(
         registry: ActivityResultRegistry,
         promptSync: Boolean,
     ) {
+        analytics.logStreamingService("connect", service.id)
+
         viewModelScope.launch {
             loadingState.update { LoadingState.Loading }
             try {
@@ -237,6 +239,10 @@ internal class YounifyViewModel(
         info: StringResource?,
     ) {
         syncDataPromptState.update { null }
+
+        if (syncData) {
+            analytics.logStreamingService("sync", serviceId)
+        }
 
         refreshDataJob?.cancel()
         refreshDataJob = viewModelScope.launch {
@@ -320,6 +326,8 @@ internal class YounifyViewModel(
     }
 
     fun onServiceUnlink(service: StreamingService) {
+        analytics.logStreamingService("unlink", service.id)
+
         viewModelScope.launch {
             try {
                 loadingState.update { LoadingState.Loading }

@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.comments.model.CommentMention
 import tv.trakt.trakt.core.comments.ui.richtext.RichTextEditor
 import tv.trakt.trakt.core.comments.ui.richtext.rememberRichTextEditorState
 import tv.trakt.trakt.core.klipy.GifPickerSheet
+import tv.trakt.trakt.core.klipy.GifPickerSource
 import tv.trakt.trakt.core.klipy.ui.SelectedGifPreview
 import tv.trakt.trakt.core.klipy.ui.SelectedGifWidth
 import tv.trakt.trakt.resources.R
@@ -209,6 +210,7 @@ private fun ViewContent(
         GifPickerSheet(
             visible = isGifPickerVisible,
             defaultQuery = gifQuery,
+            source = GifPickerSource.Comment,
             onGifSelected = { gif -> selectedGif = gif },
             onDismiss = { isGifPickerVisible = false },
         )

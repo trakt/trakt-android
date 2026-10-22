@@ -4,11 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -106,22 +104,27 @@ internal fun InputField(
                     )
                     .padding(12.dp),
             ) {
-                if (loading) {
-                    FilmProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        color = TraktTheme.colors.textPrimary,
-                    )
-                    Spacer(Modifier.width(8.dp))
-                }
-
-                if (!loading && icon != null) {
-                    Icon(
-                        painter = icon,
-                        contentDescription = "Icon",
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(20.dp),
-                    )
-                    Spacer(Modifier.width(8.dp))
+                if (icon != null || loading) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(20.dp),
+                    ) {
+                        if (loading) {
+                            FilmProgressIndicator(
+                                size = 16.dp,
+                                color = TraktTheme.colors.textPrimary,
+                            )
+                        } else if (icon != null) {
+                            Icon(
+                                painter = icon,
+                                contentDescription = "Icon",
+                                tint = TraktTheme.colors.textPrimary,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+                    }
                 }
 
                 Box(modifier = Modifier.weight(1F)) {

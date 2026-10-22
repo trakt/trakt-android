@@ -40,6 +40,8 @@ private const val PARAMETER_ID = "id"
 private const val PARAMETER_SLUG = "slug"
 private const val PARAMETER_SORT_BY = "sort_by"
 private const val PARAMETER_SORT_HOW = "sort_how"
+private const val PARAMETER_SERVICE = "service"
+private const val PARAMETER_OUTCOME = "outcome"
 
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
@@ -84,6 +86,13 @@ internal class FirebaseAnalytics(
         const val SETTINGS_CHANGE = "settings_change"
         const val CALENDAR_PERIOD = "calendar_period"
         const val FILTER_CHANGE = "filter_change"
+        const val LOGIN_START = "login_start"
+        const val LOGIN_FAIL = "login_fail"
+        const val STREAMING_SERVICE = "streaming_service"
+        const val SOCIAL_MUTE_SHARER = "social_mute_sharer"
+        const val REPORT_OPEN = "report_open"
+        const val REPORT_SEND = "report_send"
+        const val STATS_DRILLDOWN = "stats_drilldown"
     }
 
     init {
@@ -101,6 +110,13 @@ internal class FirebaseAnalytics(
             SETTINGS_CHANGE,
             CALENDAR_PERIOD,
             FILTER_CHANGE,
+            LOGIN_START,
+            LOGIN_FAIL,
+            STREAMING_SERVICE,
+            SOCIAL_MUTE_SHARER,
+            REPORT_OPEN,
+            REPORT_SEND,
+            STATS_DRILLDOWN,
         )
     }
 
@@ -266,6 +282,75 @@ internal class FirebaseAnalytics(
             ),
         )
     }
+
+    override fun logLoginStart(source: String) {
+        firebaseAnalytics.logEvent(
+            eventName(LOGIN_START),
+            bundleOf(PARAMETER_SOURCE to source),
+        )
+    }
+
+    override fun logLoginFailed(error: String) {
+        firebaseAnalytics.logEvent(
+            eventName(LOGIN_FAIL),
+            bundleOf(PARAMETER_ERROR to error),
+        )
+    }
+
+    override fun logStreamingService(
+        action: String,
+        service: String,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(STREAMING_SERVICE),
+            bundleOf(
+                PARAMETER_ACTION to action,
+                PARAMETER_SERVICE to service,
+            ),
+        )
+    }
+
+    override fun logMuteSharer() {
+        firebaseAnalytics.logEvent(
+            eventName(SOCIAL_MUTE_SHARER),
+            null,
+        )
+    }
+
+    override fun logReportOpen(type: String) {
+        firebaseAnalytics.logEvent(
+            eventName(REPORT_OPEN),
+            bundleOf(PARAMETER_TYPE to type),
+        )
+    }
+
+    override fun logReport(
+        type: String,
+        reason: String,
+        outcome: String,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(REPORT_SEND),
+            bundleOf(
+                PARAMETER_TYPE to type,
+                PARAMETER_REASON to reason,
+                PARAMETER_OUTCOME to outcome,
+            ),
+        )
+    }
+
+    override fun logDrilldown(
+        source: String,
+        type: String?,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(STATS_DRILLDOWN),
+            bundleOf(
+                PARAMETER_SOURCE to source,
+                PARAMETER_TYPE to type,
+            ),
+        )
+    }
 }
 
 internal class FirebaseAnalyticsReactions(
@@ -419,13 +504,15 @@ internal class FirebaseAnalyticsComments(
         const val COMMENTS_REMOVE = "comments_remove"
         const val COMMENTS_TRANSLATE = "comments_translate"
         const val COMMENTS_EDIT = "comments_edit"
+        const val COMMENTS_SPOILER_REVEAL = "comments_spoiler_reveal"
+        const val COMMENTS_GIF_PICKER = "comments_gif_picker"
     }
 
     init {
         require(eventName(COMMENTS_ADD).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(COMMENTS_REMOVE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(COMMENTS_TRANSLATE).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
-        requireEventNames(COMMENTS_EDIT)
+        requireEventNames(COMMENTS_EDIT, COMMENTS_SPOILER_REVEAL, COMMENTS_GIF_PICKER)
     }
 
     override fun logCommentAdd(
@@ -474,6 +561,26 @@ internal class FirebaseAnalyticsComments(
             eventName(COMMENTS_TRANSLATE),
             bundleOf(
                 PARAMETER_COUNT to characters.toLong(),
+            ),
+        )
+    }
+
+    override fun logSpoilerReveal() {
+        firebase.logEvent(
+            eventName(COMMENTS_SPOILER_REVEAL),
+            null,
+        )
+    }
+
+    override fun logGifPicker(
+        action: String,
+        source: String,
+    ) {
+        firebase.logEvent(
+            eventName(COMMENTS_GIF_PICKER),
+            bundleOf(
+                PARAMETER_ACTION to action,
+                PARAMETER_SOURCE to source,
             ),
         )
     }

@@ -79,6 +79,7 @@ internal fun AllShowSeasonsContent(
     onCommentDeleteClick: ((Comment) -> Unit)? = null,
     onCommentReplyDeleteClick: ((Comment) -> Unit)? = null,
     onCommentTranslateClick: ((Comment) -> Unit)? = null,
+    onCommentRevealSpoiler: (() -> Unit)? = null,
     onCommentUserClick: ((User) -> Unit)? = null,
     onPersonClick: ((Person, PersonCreditsRole?) -> Unit)? = null,
     onSeasonRatingClick: ((Int) -> Unit)? = null,
@@ -245,6 +246,7 @@ internal fun AllShowSeasonsContent(
                         onDeleteCommentClick = { onCommentDeleteClick?.invoke(it) },
                         onDeleteReplyClick = { onCommentReplyDeleteClick?.invoke(it) },
                         onTranslateClick = { onCommentTranslateClick?.invoke(it) },
+                        onRevealSpoiler = onCommentRevealSpoiler,
                         onUserClick = onCommentUserClick,
                     )
                 }

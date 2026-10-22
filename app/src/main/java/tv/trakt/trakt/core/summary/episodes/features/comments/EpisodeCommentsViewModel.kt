@@ -31,6 +31,7 @@ import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -73,6 +74,7 @@ internal class EpisodeCommentsViewModel(
     private val dataChanges: DataChanges,
     private val collapsingManager: CollapsingManager,
     private val translationsStore: CommentTranslationsStore,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = EpisodeCommentsState()
     private val origin = ChangeOrigin.unique()
@@ -352,6 +354,10 @@ internal class EpisodeCommentsViewModel(
             source = ReactionSource.EpisodeComments,
             origin = origin,
         )
+    }
+
+    fun logSpoilerReveal() {
+        analytics.comments.logSpoilerReveal()
     }
 
     fun toggleTranslation(comment: Comment) {

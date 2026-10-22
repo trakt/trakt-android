@@ -137,6 +137,7 @@ internal fun TodayStoriesScreen(
             viewModel.leave()
             onNavigateToSocial()
         },
+        onRevealSpoiler = viewModel::logSpoilerReveal,
         onClose = onNavigateBack,
     )
 }
@@ -151,6 +152,7 @@ private fun TodayStoriesContent(
     onPreviousGroup: () -> Unit = {},
     onUserClick: (User) -> Unit = {},
     onSocialClick: () -> Unit = {},
+    onRevealSpoiler: () -> Unit = {},
     onClose: () -> Unit = {},
 ) {
     val background = TraktTheme.colors.backgroundPrimary
@@ -241,6 +243,7 @@ private fun TodayStoriesContent(
                     onHeldChange = { if (isActive) isHeld = it },
                     onUserClick = onUserClick,
                     onConfirmVisibleChange = { if (isActive) isConfirming = it },
+                    onRevealSpoiler = onRevealSpoiler,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = horizontalPadding),

@@ -12,7 +12,7 @@ import kotlin.time.Duration
 data class ScreenTimeData(
     val stats: Stats,
     val dailyHours: ImmutableMap<LocalDate, Duration>,
-    val peakHours: ImmutableMap<PeakHour, Int>,
+    val peakHours: ImmutableMap<PeakHour, PeakHourCount>,
 ) {
     data class Stats(
         val totalTime: Duration,
@@ -26,6 +26,14 @@ data class ScreenTimeData(
         val wakingHoursPercent: Int,
         val wakingHoursPercentChange: Int,
     )
+
+    data class PeakHourCount(
+        val movies: Int,
+        val episodes: Int,
+    ) {
+        val total: Int
+            get() = movies + episodes
+    }
 
     enum class PeakHour(
         @param:StringRes val displayRes: Int,

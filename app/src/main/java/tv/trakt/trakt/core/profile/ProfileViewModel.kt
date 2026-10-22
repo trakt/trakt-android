@@ -169,8 +169,8 @@ internal class ProfileViewModel(
             try {
                 logoutLoadingState.update { Loading }
 
-                logoutUseCase.logoutUser()
                 analytics.logUserLogout()
+                logoutUseCase.logoutUser()
 
                 logoutLoadingState.update { LoadingState.Done }
             } catch (error: Exception) {

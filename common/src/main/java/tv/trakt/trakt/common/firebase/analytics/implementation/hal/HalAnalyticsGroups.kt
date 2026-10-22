@@ -18,6 +18,8 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DELETE_COMMENT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DROP
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_EXTRAS
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_FAVORITE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_GIF_PICKER
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_HIDE_RECOMMENDATION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LIST_CREATE
@@ -30,6 +32,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REACT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_CREATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_DELETE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SPOILER_REVEAL
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAM_ON
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_ACTION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_CLOSE
@@ -50,6 +53,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.M
 
 private const val ACTION_ADD = "add"
 private const val ACTION_REMOVE = "remove"
+private const val COMMENT = "comment"
 
 internal class HalAnalyticsReactions(
     private val events: HalEvents,
@@ -100,12 +104,16 @@ internal class HalAnalyticsRatings(
         events.track(EVENT_RATE, dims = mapOf(DIM_ACTION to "removed"))
     }
 
-    override fun logFavoriteAdd(mediaType: String) = Unit
+    override fun logFavoriteAdd(mediaType: String) {
+        events.track(EVENT_FAVORITE, dims = mapOf(DIM_ACTION to ACTION_ADD))
+    }
 
     override fun logFavoriteRemove(
         mediaType: String,
         source: String,
-    ) = Unit
+    ) {
+        events.track(EVENT_FAVORITE, dims = mapOf(DIM_ACTION to ACTION_REMOVE))
+    }
 
     private fun rate(
         action: String,
@@ -136,6 +144,20 @@ internal class HalAnalyticsComments(
     override fun logReplyRemove() = deleteComment()
 
     override fun logCommentTranslate(characters: Int) = Unit
+
+    override fun logSpoilerReveal() {
+        events.track(EVENT_SPOILER_REVEAL, dims = mapOf(DIM_TYPE to COMMENT))
+    }
+
+    override fun logGifPicker(
+        action: String,
+        source: String,
+    ) {
+        events.track(
+            EVENT_GIF_PICKER,
+            dims = mapOf(DIM_ACTION to action, DIM_SOURCE to source),
+        )
+    }
 
     private fun trackComment(
         action: String,

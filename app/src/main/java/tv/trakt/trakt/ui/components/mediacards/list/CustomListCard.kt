@@ -297,7 +297,7 @@ private fun CustomListHeader(
             }
 
             Column(
-                verticalArrangement = spacedBy(1.dp),
+                verticalArrangement = spacedBy(2.dp),
             ) {
                 Text(
                     text = list.name,

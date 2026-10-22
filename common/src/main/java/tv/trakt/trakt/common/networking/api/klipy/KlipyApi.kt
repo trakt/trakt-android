@@ -7,6 +7,7 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import tv.trakt.trakt.common.data.dto.KlipyCategoriesDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifsRequest
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyPageDto
@@ -41,6 +42,14 @@ class KlipyApi(
         }
 
         return response.body<KlipyResponse<KlipyPageDto<KlipyGifDto>>>().requireData()
+    }
+
+    suspend fun getCategories(customerId: String?): KlipyCategoriesDto {
+        val response = client.get("$baseUrl$appKey/gifs/categories") {
+            parameter("customer_id", customerId)
+        }
+
+        return response.body<KlipyResponse<KlipyCategoriesDto>>().requireData()
     }
 
     private fun HttpRequestBuilder.applyCommonParameters(request: KlipyGifsRequest) {

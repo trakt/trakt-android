@@ -106,6 +106,44 @@ internal class DebugAnalytics(
     ) {
         Timber.d("logFilter: id=%s, set=%s, mode=%s", id, set, mode)
     }
+
+    override fun logLoginStart(source: String) {
+        Timber.d("logLoginStart: source=%s", source)
+    }
+
+    override fun logLoginFailed(error: String) {
+        Timber.d("logLoginFailed: error=%s", error)
+    }
+
+    override fun logStreamingService(
+        action: String,
+        service: String,
+    ) {
+        Timber.d("logStreamingService: action=%s, service=%s", action, service)
+    }
+
+    override fun logMuteSharer() {
+        Timber.d("logMuteSharer")
+    }
+
+    override fun logReportOpen(type: String) {
+        Timber.d("logReportOpen: type=%s", type)
+    }
+
+    override fun logReport(
+        type: String,
+        reason: String,
+        outcome: String,
+    ) {
+        Timber.d("logReport: type=%s, reason=%s, outcome=%s", type, reason, outcome)
+    }
+
+    override fun logDrilldown(
+        source: String,
+        type: String?,
+    ) {
+        Timber.d("logDrilldown: source=%s, type=%s", source, type)
+    }
 }
 
 internal class DebugAnalyticsReactions : Analytics.Reactions {
@@ -192,6 +230,17 @@ internal class DebugAnalyticsComments : Analytics.Comments {
 
     override fun logCommentTranslate(characters: Int) {
         Timber.d("logCommentTranslate: characters=%d", characters)
+    }
+
+    override fun logSpoilerReveal() {
+        Timber.d("logSpoilerReveal")
+    }
+
+    override fun logGifPicker(
+        action: String,
+        source: String,
+    ) {
+        Timber.d("logGifPicker: action=%s, source=%s", action, source)
     }
 }
 
