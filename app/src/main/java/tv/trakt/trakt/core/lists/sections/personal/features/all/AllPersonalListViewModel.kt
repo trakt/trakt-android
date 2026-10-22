@@ -91,6 +91,7 @@ internal class AllPersonalListViewModel(
 
     private var page: Int = 1
     private var hasMoreData: Boolean = false
+    private var appliedDefaultSorting: Sorting? = null
 
     init {
         loadDetails()
@@ -99,6 +100,7 @@ internal class AllPersonalListViewModel(
 
         observeCollection()
         observeReorder()
+        observeListDetails()
 
         analytics.logScreenView(
             screenName = "all_personal_list",
@@ -118,14 +120,23 @@ internal class AllPersonalListViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeListDetails() {
+        getListUseCase.observeLocalUpdates()
+            .debounce(250.milliseconds)
+            .onEach { loadDetails() }
+            .launchIn(viewModelScope)
+    }
+
     fun loadDetails() {
         viewModelScope.launch {
-            val previous = listState.value
             val list = getListUseCase.getLocalList(destination.listId.toTraktId())
             listState.update { list }
 
             val sorting = list?.sorting ?: return@launch
-            if (previous != null && previous.sorting != sorting) {
+            if (sorting == appliedDefaultSorting) return@launch
+
+            appliedDefaultSorting = sorting
+            if (sorting != sortingState.value) {
                 sortingState.update { sorting }
                 loadData()
             }
@@ -149,7 +160,10 @@ internal class AllPersonalListViewModel(
 
                 getListUseCase.getLocalList(destination.listId.toTraktId())
                     ?.sorting
-                    ?.let { sorting -> sortingState.update { sorting } }
+                    ?.let { sorting ->
+                        appliedDefaultSorting = sorting
+                        sortingState.update { sorting }
+                    }
 
                 val items = getListItemsUseCase.getRemoteItems(
                     listId = destination.listId.toTraktId(),
