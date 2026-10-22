@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Или останьтесь еще на 2 года</string>
   <string name="header_vip_cancel_reason">Почему вы уходите?</string>
   <string name="header_vip_deal_paypal_switch">Перейдите на карту. Получите 2 года VIP за %s</string>
-  <string name="header_vip_deal_welcome_back">Получите 2 года VIP за %s</string>
   <string name="header_vip_paypal_switch">Перейти на оплату картой</string>
   <string name="header_vip_streak">VIP-серия</string>
   <string name="header_writer">Сценарист</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
   <string name="preview_feature_description_show_ending">Отображает строку \"Окончание\" в деталях сериала: \"Завершено\", если история завершена, \"Незавершено\", если нет.</string>
   <string name="preview_feature_description_soundtrack">Добавляет раздел саундтреков на страницы фильмов и сериалов с возможностью воспроизведения, если трек может быть сопоставлен.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Новый способ отмены VIP: спрашивает, почему вы уходите, показывает, что изменится, и предлагает сделку, чтобы остаться.</string>
   <string name="preview_feature_description_vip_veteran">Показывает, как долго пользователи сохраняют VIP-статус без перерыва, с помощью значка \"Ветеран\" или \"Легенда\", цветного кольца аватара и нескольких празднований в вашем профиле.</string>
   <string name="preview_feature_description_year_in_review_2026">Ваш 2026 год в виде прокручиваемого ролика с персоной зрителя, затем страница статистики, оформленная в соответствующем стиле.</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Пересмотр</string>
   <string name="preview_feature_title_show_ending">Окончание сериала</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
-  <string name="preview_feature_title_vip_cancel_flow">Процесс отмены VIP</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
   <string name="preview_feature_title_year_in_review_2026">Обзор года 2026</string>
   <string name="row_label_loading_title">Загрузка названия</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Прежде чем уйти · только один раз</string>
   <string name="tag_text_vip_cancel_reason">Прежде чем уйти</string>
   <string name="tag_text_vip_deal_paypal_switch">Предложение PayPal на карту</string>
-  <string name="tag_text_vip_deal_welcome_back">Предложение для вернувшихся</string>
   <string name="tag_text_vip_preview">VIP Предпросмотр</string>
   <string name="tag_text_watch_count">Кол-во просмотров</string>
   <string name="tag_text_watched">Просмотрено</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Все сохранено</string>
   <string name="text_vip_cancel_fact_data">Ваши данные</string>
   <string name="text_vip_cancel_fact_until">VIP до</string>
-  <string name="text_vip_cancel_failed_title">Не удалось обновить подписку</string>
   <string name="text_vip_cancel_feature_insights">Викторины, саундтреки и анализ настроений</string>
   <string name="text_vip_cancel_feature_plex">Скробблинг Plex</string>
   <string name="text_vip_cancel_feature_reviews">Годовой и месячный обзоры</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Сравнить все тарифы</string>
   <string name="text_vip_deal_paypal_switch">%1$s сразу за 2 года, затем автоматическое продление за %2$s каждые 2 года. Скидка применяется при оформлении заказа. Вы сохраняете оставшееся VIP-время; мы автоматически отменяем PayPal после оформления заказа.</string>
   <string name="text_vip_deal_term">2 года VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s сразу за 2 года, затем автоматическое продление за %2$s каждые 2 года. Скидка применяется при оформлении заказа.</string>
   <string name="text_vip_features_tagline">Никакой шумихи, только функции.</string>
   <string name="text_vip_get_insights">Получите более глубокие инсайты, умное отслеживание и ранний доступ к будущим функциям.</string>
   <string name="text_vip_grace_body">Продлите его до этого срока, чтобы сохранить.</string>

@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Atau tetap berlangganan 2 tahun lagi</string>
   <string name="header_vip_cancel_reason">Mengapa Anda berhenti?</string>
   <string name="header_vip_deal_paypal_switch">Beralih ke kartu. Dapatkan VIP 2 tahun seharga %s</string>
-  <string name="header_vip_deal_welcome_back">Dapatkan VIP 2 tahun seharga %s</string>
   <string name="header_vip_paypal_switch">Beralih ke kartu kredit</string>
   <string name="header_vip_streak">Streak VIP</string>
   <string name="header_writer">Penulis</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_show_ending">Menampilkan baris Akhir di detail tayangan: Selesai saat cerita berakhir, Tidak Terselesaikan saat tidak berakhir.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Cara baru untuk membatalkan VIP: menanyakan alasannya, menunjukkan perubahan apa yang akan terjadi, dan menawarkan penawaran untuk tetap berlangganan.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_show_ending">Akhir Tayangan</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_vip_cancel_flow">Alur pembatalan VIP</string>
   <string name="preview_feature_title_vip_veteran">Status veteran VIP</string>
   <string name="preview_feature_title_year_in_review_2026">Kilas Balik Tahunan 2026</string>
   <string name="row_label_loading_title">Memuat nama</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Sebelum Anda pergi · sekali saja</string>
   <string name="tag_text_vip_cancel_reason">Sebelum Anda pergi</string>
   <string name="tag_text_vip_deal_paypal_switch">Penawaran PayPal ke kartu</string>
-  <string name="tag_text_vip_deal_welcome_back">Penawaran Kembali</string>
   <string name="tag_text_vip_preview">Pratinjau VIP</string>
   <string name="tag_text_watch_count">Jumlah tontonan</string>
   <string name="tag_text_watched">Ditonton</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Semua tersimpan</string>
   <string name="text_vip_cancel_fact_data">Data Anda</string>
   <string name="text_vip_cancel_fact_until">VIP hingga</string>
-  <string name="text_vip_cancel_failed_title">Gagal memperbarui langganan Anda</string>
   <string name="text_vip_cancel_feature_insights">Trivia, soundtrack, dan sentimen</string>
   <string name="text_vip_cancel_feature_plex">Plex scrobbling</string>
   <string name="text_vip_cancel_feature_reviews">Ringkasan Tahunan dan Ringkasan Bulanan</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Bandingkan semua paket</string>
   <string name="text_vip_deal_paypal_switch">%1$s di awal untuk 2 tahun, kemudian diperbarui otomatis dengan harga %2$s setiap 2 tahun. Diskon diterapkan saat checkout. Waktu VIP Anda yang tersisa akan tetap ada; kami akan otomatis membatalkan PayPal setelah checkout.</string>
   <string name="text_vip_deal_term">VIP 2 tahun</string>
-  <string name="text_vip_deal_welcome_back">%1$s di awal untuk 2 tahun, kemudian diperbarui otomatis dengan harga %2$s setiap 2 tahun. Diskon diterapkan saat checkout.</string>
   <string name="text_vip_features_tagline">Tanpa gembar-gembor, hanya fitur.</string>
   <string name="text_vip_get_insights">Dapatkan wawasan lebih dalam, pelacakan lebih cerdas, dan akses awal ke apa yang akan datang.</string>
   <string name="text_vip_grace_body">Perbarui sebelum itu agar tetap berlanjut.</string>

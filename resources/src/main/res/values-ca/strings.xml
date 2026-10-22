@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">O queda\'t 2 anys més</string>
   <string name="header_vip_cancel_reason">Per què marxes?</string>
   <string name="header_vip_deal_paypal_switch">Canvia a targeta. Aconsegueix 2 anys de VIP per %s</string>
-  <string name="header_vip_deal_welcome_back">Aconsegueix 2 anys de VIP per %s</string>
   <string name="header_vip_paypal_switch">Canviar a targeta de crèdit</string>
   <string name="header_vip_streak">Ratxa VIP</string>
   <string name="header_writer">Guionista</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_show_ending">Mostra una fila de Finalització als detalls d\'una sèrie: Completat quan la història ha conclòs, Sense resoldre quan no.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Una nova manera de cancel·lar el VIP: pregunta per què, mostra els canvis i ofereix una oferta per quedar-se.</string>
   <string name="preview_feature_description_vip_veteran">Mostra quant de temps els membres han mantingut el VIP sense interrupcions, amb una insígnia de Veterà o Llegenda, un anell d\'avatar de color i algunes celebracions al teu propi perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">El teu 2026 en un carrusel desplaçable amb una personalitat d\'espectador, i després una pàgina d\'estadístiques amb el mateix estil.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_show_ending">Finalització de la sèrie</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
-  <string name="preview_feature_title_vip_cancel_flow">Flux de cancel·lació VIP</string>
   <string name="preview_feature_title_vip_veteran">Estat VIP de veterà</string>
   <string name="preview_feature_title_year_in_review_2026">Resum de l\'Any 2026</string>
   <string name="row_label_loading_title">Carregant el nom</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Abans de marxar · només una vegada</string>
   <string name="tag_text_vip_cancel_reason">Abans de marxar</string>
   <string name="tag_text_vip_deal_paypal_switch">Oferta de PayPal a targeta</string>
-  <string name="tag_text_vip_deal_welcome_back">Oferta de benvinguda</string>
   <string name="tag_text_vip_preview">Previsualització VIP</string>
   <string name="tag_text_watch_count">Compte de vists</string>
   <string name="tag_text_watched">Vist</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Tot es conserva</string>
   <string name="text_vip_cancel_fact_data">Les teves dades</string>
   <string name="text_vip_cancel_fact_until">VIP fins</string>
-  <string name="text_vip_cancel_failed_title">No s\'ha pogut actualitzar la subscripció</string>
   <string name="text_vip_cancel_feature_insights">Curiositats, bandes sonores i sentiment</string>
   <string name="text_vip_cancel_feature_plex">Scrobbling de Plex</string>
   <string name="text_vip_cancel_feature_reviews">Resum anual i Resum mensual</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Compara tots els plans</string>
   <string name="text_vip_deal_paypal_switch">%1$s per avançat durant 2 anys, després es renova automàticament per %2$s cada 2 anys. Descompte aplicat a la compra. Conservaràs el temps VIP restant; cancel·larem automàticament PayPal després de la compra.</string>
   <string name="text_vip_deal_term">2 anys de VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s per avançat durant 2 anys, després es renova automàticament per %2$s cada 2 anys. Descompte aplicat a la compra.</string>
   <string name="text_vip_features_tagline">Sense bombo, només funcions.</string>
   <string name="text_vip_get_insights">Obtén informació més detallada, seguiment més intel·ligent i accés anticipat a les novetats.</string>
   <string name="text_vip_grace_body">Renova abans per mantenir-la.</string>

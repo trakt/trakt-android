@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">أو ابقَ لسنتين إضافيتين</string>
   <string name="header_vip_cancel_reason">لماذا تغادر؟</string>
   <string name="header_vip_deal_paypal_switch">حوّل إلى بطاقة. احصل على سنتين من VIP مقابل %s</string>
-  <string name="header_vip_deal_welcome_back">احصل على سنتين من VIP مقابل %s</string>
   <string name="header_vip_paypal_switch">التبديل إلى بطاقة الائتمان</string>
   <string name="header_vip_streak">سجل VIP المتواصل</string>
   <string name="header_writer">الكاتب</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_show_ending">يعرض صفًا لـ \"النهاية\" في تفاصيل العرض: \"مكتمل\" عندما تنتهي القصة، و\"غير محسوم\" عندما لا تنتهي.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
-  <string name="preview_feature_description_vip_cancel_flow">طريقة جديدة لإلغاء VIP: تسأل عن السبب، وتوضح التغييرات، وتقدم عرضًا للبقاء.</string>
   <string name="preview_feature_description_vip_veteran">تُظهر المدة التي احتفظ فيها الأعضاء بخدمة VIP دون انقطاع، مع شارة مخضرم أو أسطورة، وحلقة ملونة للصورة الرمزية، وبعض الاحتفالات على ملفك الشخصي.</string>
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_show_ending">نهاية العرض</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
-  <string name="preview_feature_title_vip_cancel_flow">سير إلغاء VIP</string>
   <string name="preview_feature_title_vip_veteran">حالة VIP المخضرم</string>
   <string name="preview_feature_title_year_in_review_2026">العام قيد المراجعة 2026</string>
   <string name="row_label_loading_title">جاري تحميل الاسم</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">قبل أن تغادر · لمرة واحدة فقط</string>
   <string name="tag_text_vip_cancel_reason">قبل أن تغادر</string>
   <string name="tag_text_vip_deal_paypal_switch">عرض التحويل لبطاقة</string>
-  <string name="tag_text_vip_deal_welcome_back">عرض العودة</string>
   <string name="tag_text_vip_preview">معاينة VIP</string>
   <string name="tag_text_watch_count">عدد المشاهدات</string>
   <string name="tag_text_watched">شاهدت</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">الكل محفوظ</string>
   <string name="text_vip_cancel_fact_data">بياناتك</string>
   <string name="text_vip_cancel_fact_until">VIP حتى</string>
-  <string name="text_vip_cancel_failed_title">تعذَّر تحديث اشتراكك</string>
   <string name="text_vip_cancel_feature_insights">معلومات عامة، موسيقى تصويرية، وتحليل المشاعر</string>
   <string name="text_vip_cancel_feature_plex">تدقيق Plex</string>
   <string name="text_vip_cancel_feature_reviews">ملخص السنة وملخص الشهر</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">قارن جميع الخطط</string>
   <string name="text_vip_deal_paypal_switch">%1$s مقدمًا لمدة سنتين، ثم يتجدد تلقائيًا بسعر %2$s كل سنتين. يطبق الخصم عند الدفع. ستحتفظ بوقت VIP المتبقي لديك؛ وسنلغي PayPal تلقائيًا بعد الدفع.</string>
   <string name="text_vip_deal_term">سنتان من VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s مقدمًا لمدة سنتين، ثم يتجدد تلقائيًا بسعر %2$s كل سنتين. يطبق الخصم عند الدفع.</string>
   <string name="text_vip_features_tagline">لا يوجد ضجيج، فقط الميزات.</string>
   <string name="text_vip_get_insights">احصل على رؤى أعمق وتتبع أكثر ذكاءً ووصولاً مبكرًا إلى الخطوة التالية.</string>
   <string name="text_vip_grace_body">جدّد قبل ذلك للمحافظة عليه.</string>

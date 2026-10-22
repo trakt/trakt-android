@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Oder bleiben Sie weitere 2 Jahre</string>
   <string name="header_vip_cancel_reason">Warum möchten Sie gehen?</string>
   <string name="header_vip_deal_paypal_switch">Wechsle zu Karte. Erhalte 2 Jahre VIP für %s</string>
-  <string name="header_vip_deal_welcome_back">Erhalte 2 Jahre VIP für %s</string>
   <string name="header_vip_paypal_switch">Auf Kreditkarte wechseln</string>
   <string name="header_vip_streak">VIP-Serie</string>
   <string name="header_writer">Autor</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Starten Sie Wiederholungssitzungen für bereits gesehene Serien, checken Sie Episoden ein oder markieren Sie diese direkt aus dem Sitzungs-Drawer als gesehen.</string>
   <string name="preview_feature_description_show_ending">Zeigt eine \"Ende\"-Zeile in den Details einer Serie an: \"Abgeschlossen\", wenn die Geschichte beendet wurde, \"Offen\", wenn dies nicht der Fall war.</string>
   <string name="preview_feature_description_soundtrack">Fügt einen Soundtrack-Bereich zu Film- und Serienseiten hinzu, mit Wiedergabe, wo ein Titel zugeordnet werden kann.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Eine neue Art, VIP zu kündigen: Fragt nach dem Grund, zeigt Änderungen auf und bietet ein Angebot zum Bleiben an.</string>
   <string name="preview_feature_description_vip_veteran">Zeigt, wie lange Mitglieder VIP ohne Unterbrechung waren, mit einem Veteranen- oder Legendenabzeichen, einem farbigen Avatarring und einigen Feiern auf Ihrem Profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Dein Jahr 2026 als scrollbares Reel mit einer Zuschauerpersönlichkeit und anschließend einer dazu passenden Statistikseite.</string>
   <string name="preview_feature_title_edit_mode">Bearbeitungsmodus</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Wiederholung</string>
   <string name="preview_feature_title_show_ending">Serienende</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
-  <string name="preview_feature_title_vip_cancel_flow">VIP-Kündigungsfluss</string>
   <string name="preview_feature_title_vip_veteran">VIP-Veteranenstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Jahresrückblick 2026</string>
   <string name="row_label_loading_title">Name wird geladen</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Bevor Sie gehen · einmalig</string>
   <string name="tag_text_vip_cancel_reason">Bevor Sie gehen</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal zu Karte Angebot</string>
-  <string name="tag_text_vip_deal_welcome_back">Willkommen zurück Angebot</string>
   <string name="tag_text_vip_preview">VIP Vorschau</string>
   <string name="tag_text_watch_count">Gesehen</string>
   <string name="tag_text_watched">Gesehen</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Alles bleibt erhalten</string>
   <string name="text_vip_cancel_fact_data">Ihre Daten</string>
   <string name="text_vip_cancel_fact_until">VIP bis</string>
-  <string name="text_vip_cancel_failed_title">Ihr Abonnement konnte nicht aktualisiert werden</string>
   <string name="text_vip_cancel_feature_insights">Trivia, Soundtracks und Stimmungen</string>
   <string name="text_vip_cancel_feature_plex">Plex-Scrobbling</string>
   <string name="text_vip_cancel_feature_reviews">Jahresrückblick und Monatsrückblick</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Alle Pläne vergleichen</string>
   <string name="text_vip_deal_paypal_switch">%1$s im Voraus für 2 Jahre, dann automatische Verlängerung für %2$s alle 2 Jahre. Rabatt wird beim Bezahlen angewendet. Deine verbleibende VIP-Zeit behältst du; PayPal wird nach dem Bezahlen automatisch gekündigt.</string>
   <string name="text_vip_deal_term">2 Jahre VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s im Voraus für 2 Jahre, dann automatische Verlängerung für %2$s alle 2 Jahre. Rabatt wird beim Bezahlen angewendet.</string>
   <string name="text_vip_features_tagline">Kein Hype, nur Funktionen.</string>
   <string name="text_vip_get_insights">Erhalten Sie tiefere Einblicke, intelligenteres Tracking und frühen Zugang zu kommenden Neuerungen.</string>
   <string name="text_vip_grace_body">Verlängern Sie vorher, um die Serie fortzusetzen.</string>

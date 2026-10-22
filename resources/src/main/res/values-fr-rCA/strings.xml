@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Ou restez 2 ans de plus</string>
   <string name="header_vip_cancel_reason">Pourquoi nous quittez-vous?</string>
   <string name="header_vip_deal_paypal_switch">Passez à la carte. Obtenez 2 ans de VIP pour %s</string>
-  <string name="header_vip_deal_welcome_back">Obtenez 2 ans de VIP pour %s</string>
   <string name="header_vip_paypal_switch">Passer à la carte de crédit</string>
   <string name="header_vip_streak">Série VIP</string>
   <string name="header_writer">Scénariste</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Démarrez des sessions de revisionnage pour les émissions que vous avez déjà vues, enregistrez-vous ou marquez les épisodes comme vus directement depuis le panneau de session.</string>
   <string name="preview_feature_description_show_ending">Affiche une ligne «Fin» dans les détails d\'une série : «Terminé» quand l\'histoire est bouclée, «Non résolu» quand ce n\'est pas le cas.</string>
   <string name="preview_feature_description_soundtrack">Ajoute une section bande originale aux pages de films et d\'émissions, avec lecture des pistes correspondantes.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Une nouvelle façon d\'annuler VIP : demande la raison, montre les changements et offre un forfait pour rester.</string>
   <string name="preview_feature_description_vip_veteran">Indique depuis combien de temps les membres ont conservé leur statut VIP sans interruption, avec un badge Vétéran ou Légende, un anneau d\'avatar coloré et quelques célébrations sur votre propre profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Votre année 2026 sous forme de bobine défilante avec un profil de spectateur, puis une page de statistiques stylisée pour correspondre.</string>
   <string name="preview_feature_title_edit_mode">Mode édition</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Revisionnage</string>
   <string name="preview_feature_title_show_ending">Fin de la série</string>
   <string name="preview_feature_title_soundtrack">Bande originale</string>
-  <string name="preview_feature_title_vip_cancel_flow">Processus d\'annulation VIP</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP vétéran</string>
   <string name="preview_feature_title_year_in_review_2026">Rétrospective annuelle 2026</string>
   <string name="row_label_loading_title">Chargement du nom</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Avant de partir · offre unique</string>
   <string name="tag_text_vip_cancel_reason">Avant de partir</string>
   <string name="tag_text_vip_deal_paypal_switch">Offre PayPal vers carte</string>
-  <string name="tag_text_vip_deal_welcome_back">Offre de retour</string>
   <string name="tag_text_vip_preview">Aperçu VIP</string>
   <string name="tag_text_watch_count">Vues</string>
   <string name="tag_text_watched">Vu</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Tout est conservé</string>
   <string name="text_vip_cancel_fact_data">Vos données</string>
   <string name="text_vip_cancel_fact_until">VIP jusqu\'au</string>
-  <string name="text_vip_cancel_failed_title">Impossible de mettre à jour votre abonnement</string>
   <string name="text_vip_cancel_feature_insights">Anecdotes, bandes sonores et analyses</string>
   <string name="text_vip_cancel_feature_plex">Scrobbling Plex</string>
   <string name="text_vip_cancel_feature_reviews">Bilan annuel et Bilan mensuel</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Comparer tous les forfaits</string>
   <string name="text_vip_deal_paypal_switch">%1$s à l\'avance pour 2 ans, puis renouvellement automatique à %2$s tous les 2 ans. Rabais appliqué à la caisse. Vous conservez votre temps VIP restant; nous annulerons automatiquement PayPal après le paiement.</string>
   <string name="text_vip_deal_term">2 ans de VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s à l\'avance pour 2 ans, puis renouvellement automatique à %2$s tous les 2 ans. Rabais appliqué à la caisse.</string>
   <string name="text_vip_features_tagline">Pas de chichis, juste des fonctionnalités.</string>
   <string name="text_vip_get_insights">Obtenez des aperçus plus approfondis, un suivi plus intelligent et un accès anticipé aux nouveautés.</string>
   <string name="text_vip_grace_body">Renouvelez avant cette date pour la maintenir.</string>

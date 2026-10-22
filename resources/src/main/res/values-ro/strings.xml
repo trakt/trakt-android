@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Sau rămâi încă 2 ani</string>
   <string name="header_vip_cancel_reason">De ce pleci?</string>
   <string name="header_vip_deal_paypal_switch">Treci la card. Primește 2 ani de VIP pentru %s</string>
-  <string name="header_vip_deal_welcome_back">Primește 2 ani de VIP pentru %s</string>
   <string name="header_vip_paypal_switch">Treci la card de credit</string>
   <string name="header_vip_streak">Serie VIP</string>
   <string name="header_writer">Scenarist</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_show_ending">Afișează un rând despre Final în detaliile unui serial: Finalizat când povestea s-a încheiat, Nerezolvat când nu s-a încheiat.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
-  <string name="preview_feature_description_vip_cancel_flow">O nouă modalitate de a anula VIP: întreabă de ce, arată ce se schimbă și oferă o înțelegere pentru a rămâne.</string>
   <string name="preview_feature_description_vip_veteran">Arată cât timp au păstrat membrii statutul VIP fără întrerupere, cu o insignă Veteran sau Legendă, un inel colorat de avatar și câteva celebrații pe propriul profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Anul tău 2026 sub forma unui rezumat derulabil cu o persona de spectator, apoi o pagină de statistici stilizată pentru a o egala.</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_show_ending">Finalul serialului</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
-  <string name="preview_feature_title_vip_cancel_flow">Flux de anulare VIP</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP veteran</string>
   <string name="preview_feature_title_year_in_review_2026">Retrospectiva Anului 2026</string>
   <string name="row_label_loading_title">Se încarcă numele</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Înainte să pleci · o singură dată</string>
   <string name="tag_text_vip_cancel_reason">Înainte să pleci</string>
   <string name="tag_text_vip_deal_paypal_switch">Ofertă PayPal la card</string>
-  <string name="tag_text_vip_deal_welcome_back">Ofertă de bun venit</string>
   <string name="tag_text_vip_preview">Previzualizare VIP</string>
   <string name="tag_text_watch_count">Număr vizionări</string>
   <string name="tag_text_watched">Vizionat</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Toate păstrate</string>
   <string name="text_vip_cancel_fact_data">Datele tale</string>
   <string name="text_vip_cancel_fact_until">VIP până la</string>
-  <string name="text_vip_cancel_failed_title">Abonamentul nu a putut fi actualizat</string>
   <string name="text_vip_cancel_feature_insights">Trivia, coloane sonore și sentiment</string>
   <string name="text_vip_cancel_feature_plex">Scrobbling Plex</string>
   <string name="text_vip_cancel_feature_reviews">Retrospectivă anuală și Retrospectivă lunară</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Compară toate planurile</string>
   <string name="text_vip_deal_paypal_switch">%1$s în avans pentru 2 ani, apoi se reînnoiește automat la %2$s la fiecare 2 ani. Reducere aplicată la finalizarea comenzii. Îți păstrezi timpul VIP rămas; anulăm automat PayPal după finalizarea comenzii.</string>
   <string name="text_vip_deal_term">2 ani de VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s în avans pentru 2 ani, apoi se reînnoiește automat la %2$s la fiecare 2 ani. Reducere aplicată la finalizarea comenzii.</string>
   <string name="text_vip_features_tagline">Fără tam-tam, doar funcții.</string>
   <string name="text_vip_get_insights">Obține informații mai detaliate, o urmărire mai inteligentă și acces timpuriu la ce urmează.</string>
   <string name="text_vip_grace_body">Reînnoiește până atunci pentru a o menține activă.</string>

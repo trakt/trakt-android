@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Ou fique por mais 2 anos</string>
   <string name="header_vip_cancel_reason">Por que você está saindo?</string>
   <string name="header_vip_deal_paypal_switch">Mude para cartão. Obtenha 2 anos de VIP por %s</string>
-  <string name="header_vip_deal_welcome_back">Obtenha 2 anos de VIP por %s</string>
   <string name="header_vip_paypal_switch">Mudar para cartão de crédito</string>
   <string name="header_vip_streak">Sequência VIP</string>
   <string name="header_writer">Roteirista</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Comece sessões de reassistência para séries que você já assistiu, faça check-in ou marque episódios como assistidos diretamente na gaveta da sessão.</string>
   <string name="preview_feature_description_show_ending">Mostra uma linha de Finalização nos detalhes de uma série: Concluído quando a história terminou, Não Resolvido quando não.</string>
   <string name="preview_feature_description_soundtrack">Adiciona uma seção de trilha sonora às páginas de filmes e séries, com reprodução onde uma faixa pode ser encontrada.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Uma nova forma de cancelar o VIP: pergunta o motivo, mostra o que muda e oferece uma oferta para você ficar.</string>
   <string name="preview_feature_description_vip_veteran">Mostra há quanto tempo os membros mantêm o VIP sem interrupção, com um selo de Veterano ou Lenda, um anel de avatar colorido e algumas celebrações no seu próprio perfil.</string>
   <string name="preview_feature_description_year_in_review_2026">Seu 2026 como um rolo de rolagem com uma persona de espectador, e depois uma página de estatísticas estilizada para combinar.</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Reassistir</string>
   <string name="preview_feature_title_show_ending">Finalização da série</string>
   <string name="preview_feature_title_soundtrack">Trilha Sonora</string>
-  <string name="preview_feature_title_vip_cancel_flow">Fluxo de cancelamento VIP</string>
   <string name="preview_feature_title_vip_veteran">Status VIP Veterano</string>
   <string name="preview_feature_title_year_in_review_2026">Retrospectiva do Ano 2026</string>
   <string name="row_label_loading_title">Carregando nome</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Antes de ir · oferta única</string>
   <string name="tag_text_vip_cancel_reason">Antes de ir</string>
   <string name="tag_text_vip_deal_paypal_switch">Oferta PayPal para cartão</string>
-  <string name="tag_text_vip_deal_welcome_back">Oferta de retorno</string>
   <string name="tag_text_vip_preview">Prévia VIP</string>
   <string name="tag_text_watch_count">Vezes assistido</string>
   <string name="tag_text_watched">Assistido</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Tudo mantido</string>
   <string name="text_vip_cancel_fact_data">Seus dados</string>
   <string name="text_vip_cancel_fact_until">VIP até</string>
-  <string name="text_vip_cancel_failed_title">Não foi possível atualizar sua assinatura</string>
   <string name="text_vip_cancel_feature_insights">Curiosidades, trilhas sonoras e sentimento</string>
   <string name="text_vip_cancel_feature_plex">Scrobbling do Plex</string>
   <string name="text_vip_cancel_feature_reviews">Retrospectiva do Ano e Retrospectiva do Mês</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Comparar todos os planos</string>
   <string name="text_vip_deal_paypal_switch">%1$s adiantado por 2 anos, depois renova automaticamente por %2$s a cada 2 anos. Desconto aplicado na finalização da compra. Você mantém seu tempo VIP restante; cancelaremos o PayPal automaticamente após a finalização da compra.</string>
   <string name="text_vip_deal_term">2 anos de VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s adiantado por 2 anos, depois renova automaticamente por %2$s a cada 2 anos. Desconto aplicado na finalização da compra.</string>
   <string name="text_vip_features_tagline">Sem alarde, apenas recursos.</string>
   <string name="text_vip_get_insights">Obtenha insights mais profundos, rastreamento mais inteligente e acesso antecipado ao que está por vir.</string>
   <string name="text_vip_grace_body">Renove antes para mantê-la.</string>

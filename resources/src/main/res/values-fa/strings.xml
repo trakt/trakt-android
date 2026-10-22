@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">یا ۲ سال دیگر بمانید</string>
   <string name="header_vip_cancel_reason">چرا ترک می‌کنید؟</string>
   <string name="header_vip_deal_paypal_switch">به کارت منتقل شوید. دو سال VIP را با %s دریافت کنید.</string>
-  <string name="header_vip_deal_welcome_back">دو سال VIP را با %s دریافت کنید</string>
   <string name="header_vip_paypal_switch">تغییر به کارت اعتباری</string>
   <string name="header_vip_streak">پیوستگی VIP</string>
   <string name="header_writer">نویسنده</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_show_ending">ردیف پایان را در جزئیات سریال نمایش می‌دهد: «تکمیل شده» وقتی داستان به سرانجام رسیده باشد، و «حل‌نشده» وقتی نرسیده باشد.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
-  <string name="preview_feature_description_vip_cancel_flow">راهی جدید برای لغو VIP: دلیل را می‌پرسد، تغییرات را نشان می‌دهد و برای ماندن پیشنهاد ویژه‌ای ارائه می‌کند.</string>
   <string name="preview_feature_description_vip_veteran">نشان می‌دهد که اعضا چقدر بدون وقفه اشتراک VIP را حفظ کرده‌اند، با نشان کهنه‌کار یا افسانه، حلقه‌ی آواتار رنگی و چند جشن در پروفایل خودتان.</string>
   <string name="preview_feature_description_year_in_review_2026">سال 2026 شما به صورت یک حلقه قابل پیمایش با یک پرسونای بیننده، و سپس یک صفحه آمار که با آن همخوانی دارد.</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_show_ending">پایان سریال</string>
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>
-  <string name="preview_feature_title_vip_cancel_flow">روند لغو VIP</string>
   <string name="preview_feature_title_vip_veteran">وضعیت VIP کهنه‌کار</string>
   <string name="preview_feature_title_year_in_review_2026">مرور سال 2026</string>
   <string name="row_label_loading_title">در حال بارگذاری نام</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">قبل از رفتن · فقط یک بار</string>
   <string name="tag_text_vip_cancel_reason">قبل از رفتن</string>
   <string name="tag_text_vip_deal_paypal_switch">پیشنهاد پی‌پال به کارت</string>
-  <string name="tag_text_vip_deal_welcome_back">پیشنهاد بازگشت</string>
   <string name="tag_text_vip_preview">پیش‌نمایش VIP</string>
   <string name="tag_text_watch_count">تعداد تماشا</string>
   <string name="tag_text_watched">تماشا شده</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">همه حفظ می‌شوند</string>
   <string name="text_vip_cancel_fact_data">داده‌های شما</string>
   <string name="text_vip_cancel_fact_until">VIP تا</string>
-  <string name="text_vip_cancel_failed_title">به‌روزرسانی اشتراک شما ممکن نبود</string>
   <string name="text_vip_cancel_feature_insights">اطلاعات جانبی، موسیقی متن و احساسات</string>
   <string name="text_vip_cancel_feature_plex">اسکرابلینگ Plex</string>
   <string name="text_vip_cancel_feature_reviews">مرور سال و مرور ماه</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">مقایسه تمام طرح‌ها</string>
   <string name="text_vip_deal_paypal_switch">%1$s پیش‌پرداخت برای ۲ سال، سپس هر ۲ سال با %2$s تمدید خودکار می‌شود. تخفیف در مرحله پرداخت اعمال می‌شود. زمان VIP باقیمانده شما حفظ می‌شود؛ ما پس از پرداخت، پی‌پال را به طور خودکار لغو می‌کنیم.</string>
   <string name="text_vip_deal_term">۲ سال VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s پیش‌پرداخت برای ۲ سال، سپس هر ۲ سال با %2$s تمدید خودکار می‌شود. تخفیف در مرحله پرداخت اعمال می‌شود.</string>
   <string name="text_vip_features_tagline">بدون هیاهو، فقط امکانات.</string>
   <string name="text_vip_get_insights">بینش‌های عمیق‌تر، ردیابی هوشمندتر، و دسترسی زودهنگام به آنچه در راه است را دریافت کنید.</string>
   <string name="text_vip_grace_body">قبل از آن تمدید کنید تا ادامه یابد.</string>

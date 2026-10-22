@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">Vagy maradj még 2 évig</string>
   <string name="header_vip_cancel_reason">Miért távozol?</string>
   <string name="header_vip_deal_paypal_switch">Váltson kártyára. Szerezzen 2 év VIP-et %s áron.</string>
-  <string name="header_vip_deal_welcome_back">Szerezz 2 év VIP-et %s áron</string>
   <string name="header_vip_paypal_switch">Váltás hitelkártyára</string>
   <string name="header_vip_streak">VIP sorozat</string>
   <string name="header_writer">Író</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_show_ending">Megjelenít egy „Befejezés” sort a sorozat részleteiben: „Befejezett”, ha a történet lezárult, „Lezáratlan”, ha nem.</string>
   <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
-  <string name="preview_feature_description_vip_cancel_flow">Új módja a VIP lemondásának: megkérdezi, miért, megmutatja a változásokat, és ajánlatot tesz a maradásra.</string>
   <string name="preview_feature_description_vip_veteran">Megmutatja, mennyi ideig tartották a tagok szünet nélkül a VIP státuszt, Veterán vagy Legenda jelvénnyel, színes avatargyűrűvel és néhány ünnepséggel a saját profilodon.</string>
   <string name="preview_feature_description_year_in_review_2026">A 2026-os éved egy görgethető videóként, egy nézői személyiséggel, majd egy hozzá illeszkedő statisztikai oldallal.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_show_ending">Sorozat befejezése</string>
   <string name="preview_feature_title_soundtrack">Filmzene</string>
-  <string name="preview_feature_title_vip_cancel_flow">VIP lemondási folyamat</string>
   <string name="preview_feature_title_vip_veteran">VIP veterán státusz</string>
   <string name="preview_feature_title_year_in_review_2026">Éves összefoglaló 2026</string>
   <string name="row_label_loading_title">Név betöltése</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">Mielőtt elmész · csak egyszer</string>
   <string name="tag_text_vip_cancel_reason">Mielőtt elmész</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal kártyára váltás</string>
-  <string name="tag_text_vip_deal_welcome_back">Visszatérő ajánlat</string>
   <string name="tag_text_vip_preview">VIP Előnézet</string>
   <string name="tag_text_watch_count">Megtekintések száma</string>
   <string name="tag_text_watched">Megnézve</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">Mind megmarad</string>
   <string name="text_vip_cancel_fact_data">Adataid</string>
   <string name="text_vip_cancel_fact_until">VIP eddig</string>
-  <string name="text_vip_cancel_failed_title">Nem sikerült frissíteni az előfizetését</string>
   <string name="text_vip_cancel_feature_insights">Érdekességek, filmzenék és vélemények</string>
   <string name="text_vip_cancel_feature_plex">Plex scrobbling</string>
   <string name="text_vip_cancel_feature_reviews">Éves és havi összefoglalók</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">Összes csomag összehasonlítása</string>
   <string name="text_vip_deal_paypal_switch">%1$s előre 2 évre, majd automatikusan megújul %2$s áron 2 évente. A kedvezményt a fizetéskor alkalmazzuk. Megtartja fennmaradó VIP idejét; a PayPal-t automatikusan lemondjuk a fizetés után.</string>
   <string name="text_vip_deal_term">2 év VIP</string>
-  <string name="text_vip_deal_welcome_back">%1$s előre 2 évre, majd automatikusan megújul %2$s áron 2 évente. A kedvezményt a fizetéskor alkalmazzuk.</string>
   <string name="text_vip_features_tagline">Semmi sallang, csak a funkciók.</string>
   <string name="text_vip_get_insights">Részletesebb statisztikák, okosabb követés és korai hozzáférés az újdonságokhoz.</string>
   <string name="text_vip_grace_body">Megújítás előtt ahhoz, hogy fennmaradjon.</string>

@@ -1040,7 +1040,6 @@
   <string name="header_vip_cancel_offer">或者再续订 2 年</string>
   <string name="header_vip_cancel_reason">您为何离开？</string>
   <string name="header_vip_deal_paypal_switch">切换到银行卡。以 %s 价格尊享两年 VIP</string>
-  <string name="header_vip_deal_welcome_back">以 %s 价格尊享两年 VIP</string>
   <string name="header_vip_paypal_switch">切换到信用卡</string>
   <string name="header_vip_streak">VIP 连贯记录</string>
   <string name="header_writer">编剧</string>
@@ -1544,7 +1543,6 @@
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_show_ending">在剧集详情中显示结局行：故事完结时为“已完成”，未完结时为“未完结”。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
-  <string name="preview_feature_description_vip_cancel_flow">取消 VIP 的新方式：询问原因，显示变更内容并提供挽留优惠。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
@@ -1552,7 +1550,6 @@
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_show_ending">剧集结局</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
-  <string name="preview_feature_title_vip_cancel_flow">VIP 取消流程</string>
   <string name="preview_feature_title_vip_veteran">VIP 资深会员身份</string>
   <string name="preview_feature_title_year_in_review_2026">2026 年度回顾</string>
   <string name="row_label_loading_title">正在加载名称</string>
@@ -1713,7 +1710,6 @@
   <string name="tag_text_vip_cancel_offer">在您离开之前 · 仅此一次</string>
   <string name="tag_text_vip_cancel_reason">在您离开之前</string>
   <string name="tag_text_vip_deal_paypal_switch">PayPal 转银行卡优惠</string>
-  <string name="tag_text_vip_deal_welcome_back">回归优惠</string>
   <string name="tag_text_vip_preview">VIP 预览</string>
   <string name="tag_text_watch_count">观看次数</string>
   <string name="tag_text_watched">已观看</string>
@@ -2262,7 +2258,6 @@
   <string name="text_vip_cancel_fact_all_kept">全部保留</string>
   <string name="text_vip_cancel_fact_data">您的数据</string>
   <string name="text_vip_cancel_fact_until">VIP 有效期至</string>
-  <string name="text_vip_cancel_failed_title">无法更新您的订阅</string>
   <string name="text_vip_cancel_feature_insights">琐事、原声带和情感分析</string>
   <string name="text_vip_cancel_feature_plex">Plex 记录</string>
   <string name="text_vip_cancel_feature_reviews">年度回顾和月度回顾</string>
@@ -2303,7 +2298,6 @@
   <string name="text_vip_deal_or_standard_plan">比较所有方案</string>
   <string name="text_vip_deal_paypal_switch">首次支付 %1$s 可享两年，之后每两年按 %2$s 自动续订。折扣将在结算时应用。您将保留剩余的 VIP 时长；我们将在结算后自动取消 PayPal 订阅。</string>
   <string name="text_vip_deal_term">两年 VIP</string>
-  <string name="text_vip_deal_welcome_back">首次支付 %1$s 可享两年，之后每两年按 %2$s 自动续订。折扣将在结算时应用。</string>
   <string name="text_vip_features_tagline">没有炒作，只有功能。</string>
   <string name="text_vip_get_insights">获取更深入的见解、更智能的追踪，并抢先体验未来的内容。</string>
   <string name="text_vip_grace_body">在此之前续订即可保持。</string>
