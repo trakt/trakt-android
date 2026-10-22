@@ -4,7 +4,7 @@ import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.model.sorting.SortOrder.Asc
 import tv.trakt.trakt.common.model.sorting.SortOrder.Desc
 import tv.trakt.trakt.common.model.sorting.SortType.Added
-import tv.trakt.trakt.common.model.sorting.SortType.Default
+import tv.trakt.trakt.common.model.sorting.SortType.Rank
 import tv.trakt.trakt.common.model.sorting.SortType.Rating
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Runtime
@@ -18,7 +18,7 @@ internal fun getWatchlistSorting(sort: Sorting?): Comparator<WatchlistItem> {
         return compareByDescending { it.listedAt }
     }
     return when (sort.type) {
-        Default -> when (sort.order) {
+        Rank -> when (sort.order) {
             Asc -> compareBy { it.rank }
             Desc -> compareByDescending { it.rank }
         }

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -10,6 +11,7 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.ListsSorting
 import tv.trakt.trakt.core.lists.sections.personal.model.sortPersonalLists
+import java.time.Instant
 
 internal class GetPersonalListsUseCase(
     private val remoteSource: UserPersonalListsRemoteSource,
@@ -19,6 +21,10 @@ internal class GetPersonalListsUseCase(
         return localSource
             .getItems()
             .firstOrNull { it.ids.trakt == listId }
+    }
+
+    fun observeLocalUpdates(): Flow<Instant?> {
+        return localSource.observeUpdates()
     }
 
     suspend fun getLocalLists(

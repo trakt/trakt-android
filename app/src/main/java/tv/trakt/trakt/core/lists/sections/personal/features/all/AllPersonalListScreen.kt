@@ -375,7 +375,7 @@ private fun TitleBar(
 
         Row(
             verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(20.dp),
+            horizontalArrangement = spacedBy(22.dp),
             modifier = Modifier.padding(start = 16.dp),
         ) {
             filters?.let {

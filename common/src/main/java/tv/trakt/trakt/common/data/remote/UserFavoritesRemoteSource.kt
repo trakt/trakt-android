@@ -2,7 +2,7 @@ package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.common.model.sorting.SortType.Default
+import tv.trakt.trakt.common.model.sorting.SortType.Rank
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
@@ -23,7 +23,7 @@ class UserFavoritesRemoteSource(
             page = pagination.page,
             limit = pagination.limit,
             sortBy = when (sorting?.type) {
-                Default, null -> null
+                Rank, null -> null
                 else -> sorting.type.value
             },
             sortHow = sorting?.order?.value,
@@ -45,7 +45,7 @@ class UserFavoritesRemoteSource(
             page = pagination.page,
             limit = pagination.limit,
             sortBy = when (sorting?.type) {
-                Default, null -> null
+                Rank, null -> null
                 else -> sorting.type.value
             },
             sortHow = sorting?.order?.value,

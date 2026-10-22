@@ -58,7 +58,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.SortType.Added
-import tv.trakt.trakt.common.model.sorting.SortType.Default
+import tv.trakt.trakt.common.model.sorting.SortType.Rank
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
@@ -145,7 +145,7 @@ internal fun AllFavoritesScreen(
         selectedSorting = sortSheet,
         typeOptions = remember {
             SortType.entries
-                .filter { it != Default }
+                .filter { it != Rank }
                 .toImmutableList()
         },
         onResult = viewModel::setSorting,

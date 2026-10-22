@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.LikedListDto
@@ -39,6 +40,7 @@ data class CustomList(
     val itemCount: Int? = null,
     val images: Images?,
     val user: User,
+    val sorting: Sorting? = null,
 ) {
     @Serializable
     enum class Type(
@@ -102,6 +104,10 @@ data class CustomList(
                     )
                 },
                 user = User.fromDto(dto.user),
+                sorting = Sorting.fromValues(
+                    sortBy = dto.sortBy,
+                    sortHow = dto.sortHow.value,
+                ),
             )
         }
 

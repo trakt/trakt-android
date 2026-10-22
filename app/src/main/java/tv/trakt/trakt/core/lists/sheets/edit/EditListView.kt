@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.sheets.edit
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -8,8 +9,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,6 +47,9 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Private
 import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Public
+import tv.trakt.trakt.common.model.sorting.SortOrder
+import tv.trakt.trakt.common.model.sorting.SortType
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -49,6 +57,7 @@ import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -79,12 +88,13 @@ internal fun EditListView(
     EditListContent(
         state = state,
         initialList = initialList,
-        onApplyClick = { name, description, privacy ->
+        onApplyClick = { name, description, privacy, sorting ->
             viewModel.editList(
                 id = initialList.ids.trakt,
                 name = name,
                 description = description,
                 privacy = privacy,
+                sorting = sorting,
             )
         },
         onDeleteClick = {
@@ -109,22 +119,28 @@ internal fun EditListView(
 private fun EditListContent(
     state: EditListState,
     initialList: CustomList,
-    onApplyClick: (String, String, CustomList.Privacy) -> Unit = { _, _, _ -> },
+    onApplyClick: (String, String, CustomList.Privacy, Sorting?) -> Unit = { _, _, _, _ -> },
     onDeleteClick: () -> Unit = { },
 ) {
+    var sortSheet by remember { mutableStateOf(false) }
+
     val nameInputState = rememberTextFieldState(initialList.name)
     val descriptionInputState = rememberTextFieldState(initialList.description ?: "")
 
     val initialPrivacy = initialList.privacy ?: Public
     var selectedPrivacy by remember(initialList) { mutableStateOf(initialPrivacy) }
 
+    val initialSorting = initialList.sorting ?: Sorting.Default
+    var selectedSorting by remember(initialList) { mutableStateOf(initialSorting) }
+
     val inputValid by remember(initialList) {
         derivedStateOf {
             val isDifferentName = initialList.name.trim() != nameInputState.text.trim()
             val isDifferentDescription = (initialList.description ?: "").trim() != descriptionInputState.text.trim()
             val isDifferentPrivacy = initialPrivacy != selectedPrivacy
+            val isDifferentSorting = initialSorting != selectedSorting
             nameInputState.text.isNotBlank() &&
-                (isDifferentName || isDifferentDescription || isDifferentPrivacy)
+                (isDifferentName || isDifferentDescription || isDifferentPrivacy || isDifferentSorting)
         }
     }
 
@@ -182,20 +198,87 @@ private fun EditListContent(
         )
 
         Column(
-            verticalArrangement = spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = spacedBy(6.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
         ) {
-            PrivacyButtons(
-                enabled = !isLoadingOrDone,
-                selected = selectedPrivacy,
-                onSelect = { privacy ->
-                    selectedPrivacy = privacy
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 21.dp),
+            Text(
+                text = stringResource(R.string.text_default_sort_order),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.meta.copy(fontWeight = W400),
+                maxLines = 1,
+                overflow = Ellipsis,
+                modifier = Modifier.padding(start = 1.dp),
             )
 
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 48.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .border(
+                        width = 1.5.dp,
+                        color = TraktTheme.colors.chipContainer,
+                        shape = RoundedCornerShape(16.dp),
+                    )
+                    .onClick(
+                        enabled = !isLoadingOrDone,
+                        indication = true,
+                    ) {
+                        sortSheet = true
+                    }
+                    .padding(start = 12.dp, end = 6.dp),
+            ) {
+                Text(
+                    text = stringResource(selectedSorting.type.displayStringRes),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.paragraph,
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                    modifier = Modifier.weight(1F),
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(8.dp),
+                    modifier = Modifier
+                        .heightIn(min = 36.dp)
+                        .clip(CircleShape)
+                        .onClick(
+                            enabled = !isLoadingOrDone,
+                            indication = true,
+                        ) {
+                            selectedSorting = selectedSorting.copy(
+                                order = selectedSorting.order.toggle(),
+                            )
+                        }
+                        .padding(horizontal = 10.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(selectedSorting.order.displayIconRes),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(16.dp),
+                    )
+                    Text(
+                        text = stringResource(selectedSorting.order.displayStringRes),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.paragraph,
+                        maxLines = 1,
+                    )
+                }
+            }
+        }
+
+        Column(
+            verticalArrangement = spacedBy(6.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+        ) {
             Text(
                 text = stringResource(selectedPrivacy.displayInfoRes),
                 color = TraktTheme.colors.textSecondary,
@@ -203,6 +286,15 @@ private fun EditListContent(
                 maxLines = 1,
                 overflow = Ellipsis,
                 modifier = Modifier.padding(start = 1.dp),
+            )
+
+            PrivacyButtons(
+                enabled = !isLoadingOrDone,
+                selected = selectedPrivacy,
+                onSelect = { privacy ->
+                    selectedPrivacy = privacy
+                },
+                modifier = Modifier.fillMaxWidth(),
             )
         }
 
@@ -221,6 +313,7 @@ private fun EditListContent(
                         nameInputState.text.toString(),
                         descriptionInputState.text.toString(),
                         selectedPrivacy,
+                        selectedSorting.takeIf { it != initialSorting },
                     )
                 },
                 modifier = Modifier
@@ -228,6 +321,14 @@ private fun EditListContent(
             )
         }
     }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    SortSelectionSheet(
+        active = sortSheet,
+        selectedSorting = selectedSorting,
+        onResult = { selectedSorting = it },
+        onDismiss = { sortSheet = false },
+    )
 }
 
 @Composable
@@ -320,7 +421,12 @@ private fun Preview() {
 private fun Preview2() {
     TraktThemeLightDark {
         EditListContent(
-            initialList = PreviewData.customList1,
+            initialList = PreviewData.customList1.copy(
+                sorting = Sorting(
+                    type = SortType.Released,
+                    order = SortOrder.Desc,
+                ),
+            ),
             state = EditListState(
                 loadingEdit = Loading,
             ),
