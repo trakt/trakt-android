@@ -47,11 +47,16 @@ class ListsRemoteSource(
         name: String,
         description: String?,
         privacy: String,
+        sorting: Sorting?,
     ) {
         val request = PutUsersListsListUpdateRequest(
             name = name,
             description = description,
             privacy = privacy,
+            sortBy = sorting?.type?.value,
+            sortHow = PutUsersListsListUpdateRequest.SortHow.entries.find {
+                it.value == sorting?.order?.value
+            },
         )
 
         listsApi.putUsersListsListUpdate(

@@ -9,6 +9,7 @@ import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -63,6 +64,7 @@ class ListsPersonalLocalSource {
         name: String,
         description: String?,
         privacy: CustomList.Privacy,
+        sorting: Sorting?,
         notify: Boolean,
     ) {
         mutex.withLock {
@@ -72,6 +74,7 @@ class ListsPersonalLocalSource {
                 name = name,
                 description = description,
                 privacy = privacy,
+                sorting = sorting ?: existing.sorting,
             )
 
             if (notify) {

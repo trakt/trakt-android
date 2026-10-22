@@ -120,8 +120,14 @@ internal class AllPersonalListViewModel(
 
     fun loadDetails() {
         viewModelScope.launch {
-            listState.update {
-                getListUseCase.getLocalList(destination.listId.toTraktId())
+            val previous = listState.value
+            val list = getListUseCase.getLocalList(destination.listId.toTraktId())
+            listState.update { list }
+
+            val sorting = list?.sorting ?: return@launch
+            if (previous != null && previous.sorting != sorting) {
+                sortingState.update { sorting }
+                loadData()
             }
         }
     }
@@ -140,6 +146,10 @@ internal class AllPersonalListViewModel(
             try {
                 if (loadEmptyIfNeeded()) return@launch
                 loadingIfNeeded()
+
+                getListUseCase.getLocalList(destination.listId.toTraktId())
+                    ?.sorting
+                    ?.let { sorting -> sortingState.update { sorting } }
 
                 val items = getListItemsUseCase.getRemoteItems(
                     listId = destination.listId.toTraktId(),

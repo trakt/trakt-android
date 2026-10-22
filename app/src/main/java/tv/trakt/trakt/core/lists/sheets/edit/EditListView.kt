@@ -42,6 +42,9 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Private
 import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Public
+import tv.trakt.trakt.common.model.sorting.SortOrder
+import tv.trakt.trakt.common.model.sorting.SortType
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
@@ -49,6 +52,8 @@ import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
+import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -79,12 +84,13 @@ internal fun EditListView(
     EditListContent(
         state = state,
         initialList = initialList,
-        onApplyClick = { name, description, privacy ->
+        onApplyClick = { name, description, privacy, sorting ->
             viewModel.editList(
                 id = initialList.ids.trakt,
                 name = name,
                 description = description,
                 privacy = privacy,
+                sorting = sorting,
             )
         },
         onDeleteClick = {
@@ -109,22 +115,28 @@ internal fun EditListView(
 private fun EditListContent(
     state: EditListState,
     initialList: CustomList,
-    onApplyClick: (String, String, CustomList.Privacy) -> Unit = { _, _, _ -> },
+    onApplyClick: (String, String, CustomList.Privacy, Sorting?) -> Unit = { _, _, _, _ -> },
     onDeleteClick: () -> Unit = { },
 ) {
+    var sortSheet by remember { mutableStateOf(false) }
+
     val nameInputState = rememberTextFieldState(initialList.name)
     val descriptionInputState = rememberTextFieldState(initialList.description ?: "")
 
     val initialPrivacy = initialList.privacy ?: Public
     var selectedPrivacy by remember(initialList) { mutableStateOf(initialPrivacy) }
 
+    val initialSorting = initialList.sorting ?: Sorting.Default
+    var selectedSorting by remember(initialList) { mutableStateOf(initialSorting) }
+
     val inputValid by remember(initialList) {
         derivedStateOf {
             val isDifferentName = initialList.name.trim() != nameInputState.text.trim()
             val isDifferentDescription = (initialList.description ?: "").trim() != descriptionInputState.text.trim()
             val isDifferentPrivacy = initialPrivacy != selectedPrivacy
+            val isDifferentSorting = initialSorting != selectedSorting
             nameInputState.text.isNotBlank() &&
-                (isDifferentName || isDifferentDescription || isDifferentPrivacy)
+                (isDifferentName || isDifferentDescription || isDifferentPrivacy || isDifferentSorting)
         }
     }
 
@@ -206,6 +218,35 @@ private fun EditListContent(
             )
         }
 
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.text_default_sort_order),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.paragraphSmall,
+                maxLines = 1,
+                overflow = Ellipsis,
+                modifier = Modifier.weight(1F, fill = false),
+            )
+
+            SortingSplitButton(
+                text = stringResource(selectedSorting.type.displayStringRes),
+                order = selectedSorting.order,
+                enabled = !isLoadingOrDone,
+                onLeadingClick = { sortSheet = true },
+                onTrailingClick = {
+                    selectedSorting = selectedSorting.copy(
+                        order = selectedSorting.order.toggle(),
+                    )
+                },
+            )
+        }
+
         Column(
             verticalArrangement = spacedBy(10.dp),
             modifier = Modifier
@@ -221,6 +262,7 @@ private fun EditListContent(
                         nameInputState.text.toString(),
                         descriptionInputState.text.toString(),
                         selectedPrivacy,
+                        selectedSorting.takeIf { it != initialSorting },
                     )
                 },
                 modifier = Modifier
@@ -228,6 +270,14 @@ private fun EditListContent(
             )
         }
     }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    SortSelectionSheet(
+        active = sortSheet,
+        selectedSorting = selectedSorting,
+        onResult = { selectedSorting = it },
+        onDismiss = { sortSheet = false },
+    )
 }
 
 @Composable
@@ -320,7 +370,12 @@ private fun Preview() {
 private fun Preview2() {
     TraktThemeLightDark {
         EditListContent(
-            initialList = PreviewData.customList1,
+            initialList = PreviewData.customList1.copy(
+                sorting = Sorting(
+                    type = SortType.Released,
+                    order = SortOrder.Desc,
+                ),
+            ),
             state = EditListState(
                 loadingEdit = Loading,
             ),

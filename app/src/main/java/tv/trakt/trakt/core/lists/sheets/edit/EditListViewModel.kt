@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
 
 internal class EditListViewModel(
@@ -35,6 +36,7 @@ internal class EditListViewModel(
         name: String,
         description: String?,
         privacy: CustomList.Privacy,
+        sorting: Sorting?,
     ) {
         if (loadingEditState.value.isLoading || loadingDeleteState.value.isLoading) {
             return
@@ -49,6 +51,7 @@ internal class EditListViewModel(
                     name = name,
                     description = description,
                     privacy = privacy,
+                    sorting = sorting,
                 )
                 analytics.lists.logListEdit()
 

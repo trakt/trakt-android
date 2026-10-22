@@ -4,6 +4,7 @@ import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class EditListUseCase(
     private val remoteSource: ListsRemoteSource,
@@ -14,18 +15,21 @@ internal class EditListUseCase(
         name: String,
         description: String?,
         privacy: CustomList.Privacy,
+        sorting: Sorting?,
     ) {
         remoteSource.editList(
             listId = listId,
             name = name.trim(),
             description = description?.trim(),
             privacy = privacy.value,
+            sorting = sorting,
         )
         localSource.editItem(
             listId = listId,
             name = name.trim(),
             description = description?.trim(),
             privacy = privacy,
+            sorting = sorting,
             notify = true,
         )
     }
