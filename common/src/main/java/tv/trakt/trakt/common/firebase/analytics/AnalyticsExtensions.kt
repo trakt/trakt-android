@@ -7,7 +7,7 @@ private const val SORT_BY_DEFAULT = "default"
 
 fun Analytics.Lists.logListSort(sorting: Sorting) {
     logListSort(
-        sortBy = if (sorting.type == SortType.Default) SORT_BY_DEFAULT else sorting.type.value,
+        sortBy = if (sorting.type == SortType.Rank) SORT_BY_DEFAULT else sorting.type.value,
         sortHow = sorting.order.value,
     )
 }

@@ -9,7 +9,7 @@ enum class SortType(
     @param:DrawableRes override val displayIconRes: Int?,
     override val value: String,
 ) : SortOption {
-    Default(R.string.button_text_sort_default, null, "rank"),
+    Rank(R.string.button_text_sort_rank, R.drawable.ic_format_bullet_list, "rank"),
     Added(R.string.button_text_sort_added_date, R.drawable.ic_calendar_check, "added"),
     Runtime(R.string.button_text_sort_runtime, R.drawable.ic_clock, "runtime"),
     Rating(R.string.button_text_sort_rating, R.drawable.ic_star, "percentage"),

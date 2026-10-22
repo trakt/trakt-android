@@ -9,7 +9,7 @@ data class Sorting(
 ) {
     companion object {
         val Default = Sorting(
-            type = SortType.Default,
+            type = SortType.Rank,
             order = SortOrder.Asc,
         )
 
