@@ -16,10 +16,11 @@ fun FilmProgressIndicator(
     modifier: Modifier = Modifier,
     color: Color = Shade300,
     size: Dp = 48.dp,
+    strokeWidth: Dp? = null,
 ) {
     CircularProgressIndicator(
         color = color,
-        strokeWidth = 5.dp * (size / DefaultIndicatorSize),
+        strokeWidth = strokeWidth ?: (5.dp * (size / DefaultIndicatorSize)),
         modifier = modifier.size(size),
     )
 }

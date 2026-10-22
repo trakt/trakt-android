@@ -29,8 +29,10 @@ import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.yearMonthFormat
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.home.sections.streaks.all.ui.StreaksMonthGrid
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
+import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData.StreakDataPoint
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -206,22 +208,6 @@ private fun StreakStatCard(
     backgroundColor = 0xFF212427,
 )
 @Composable
-private fun PreviewLoading() {
-    TraktTheme {
-        FilmProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 32.dp),
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
-@Composable
 private fun Preview() {
     TraktTheme {
         StreaksViewContent(
@@ -239,5 +225,79 @@ private fun Preview() {
                 activeDaysYear = 89,
             ),
         )
+    }
+}
+
+private val previewData = MonthlyStreakData(
+    activity = YearMonth.now().let { month ->
+        persistentMapOf(
+            month.atDay(2) to StreakDataPoint(episodes = 1, movies = 0),
+            month.atDay(3) to StreakDataPoint(episodes = 3, movies = 1),
+            month.atDay(4) to StreakDataPoint(episodes = 8, movies = 1),
+            month.atDay(5) to StreakDataPoint(episodes = 16, movies = 2),
+            month.atDay(9) to StreakDataPoint(episodes = 2, movies = 0),
+            month.atDay(10) to StreakDataPoint(episodes = 5, movies = 1),
+            month.atDay(11) to StreakDataPoint(episodes = 12, movies = 2),
+            month.atDay(16) to StreakDataPoint(episodes = 2, movies = 1),
+            month.atDay(17) to StreakDataPoint(episodes = 10, movies = 1),
+        )
+    },
+    weekActiveDays = persistentSetOf(),
+    currentStreakTotal = 12,
+    previousStreakTotal = 45,
+    currentStreak = 3,
+    previousStreak = 2,
+    droppedStreaks = 1,
+    activeDaysMonth = 9,
+    activeDaysMonthPercent = 41,
+    activeDaysYear = 189,
+)
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF212427,
+)
+@Composable
+private fun PreviewActivity() {
+    TraktTheme {
+        StreaksViewContent(
+            mode = MediaMode.Media,
+            data = previewData,
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFFFFFFFF,
+)
+@Composable
+private fun PreviewLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
+        StreaksViewContent(
+            mode = MediaMode.Shows,
+            data = previewData,
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF212427,
+)
+@Composable
+private fun PreviewLoading() {
+    TraktTheme {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            FilmProgressIndicator()
+        }
     }
 }

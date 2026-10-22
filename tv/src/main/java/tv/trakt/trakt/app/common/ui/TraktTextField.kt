@@ -83,10 +83,10 @@ internal fun TraktTextField(
             ) {
                 if (loading) {
                     FilmProgressIndicator(
-                        modifier = Modifier.size(20.dp),
+                        size = 18.dp,
                         color = TraktTheme.colors.textPrimary,
                     )
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(10.dp))
                 }
 
                 if (!loading && icon != null) {

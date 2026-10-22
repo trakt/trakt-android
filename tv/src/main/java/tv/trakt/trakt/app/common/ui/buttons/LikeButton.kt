@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.common.ui.buttons
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -88,11 +89,16 @@ internal fun LikeButton(
         enabled = enabled,
     ) {
         if (loading) {
-            FilmProgressIndicator(
-                size = 18.dp,
-                color = if (enabled) contentColor else disabledContentColor,
-                modifier = Modifier.widthIn(min = 64.dp),
-            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .widthIn(min = 64.dp),
+            ) {
+                FilmProgressIndicator(
+                    size = 18.dp,
+                    color = if (enabled) contentColor else disabledContentColor,
+                )
+            }
         } else {
             Row(
                 verticalAlignment = CenterVertically,
@@ -140,6 +146,69 @@ private fun Preview1() {
                 text = "12",
                 loading = true,
                 enabled = false,
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewLiked() {
+    TraktTheme {
+        LikeButton(
+            text = "13",
+            liked = true,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewDisabled() {
+    TraktTheme {
+        Column(
+            verticalArrangement = spacedBy(12.dp),
+        ) {
+            LikeButton(
+                text = "12",
+                enabled = false,
+            )
+            LikeButton(
+                text = "13",
+                liked = true,
+                enabled = false,
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewLoading() {
+    TraktTheme {
+        LikeButton(
+            text = "12",
+            loading = true,
+        )
+    }
+}
+
+@Preview(widthDp = 120)
+@Composable
+private fun PreviewLongText() {
+    TraktTheme {
+        Column(
+            verticalArrangement = spacedBy(12.dp),
+        ) {
+            LikeButton(
+                text = "1",
+            )
+            LikeButton(
+                text = "12.5K",
+                liked = true,
+            )
+            LikeButton(
+                text = "1234567890",
             )
         }
     }

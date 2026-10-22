@@ -285,11 +285,17 @@ private fun UserProfileContent(
             val isPrivate = state.user.isPrivate && !state.userFollowing.following
             if (isPrivate && state.userFollowing.loading) {
                 item {
-                    FilmProgressIndicator(
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 32.dp),
-                    )
+                        contentAlignment = Center,
+                    ) {
+                        FilmProgressIndicator(
+                            size = 48.dp,
+                            strokeWidth = 5.dp,
+                        )
+                    }
                 }
             } else if (isPrivate) {
                 userProfilePrivateContent(
