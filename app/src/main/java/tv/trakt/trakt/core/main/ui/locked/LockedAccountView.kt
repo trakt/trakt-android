@@ -13,11 +13,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +43,12 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val TouchTargetSize = 48.dp
+private val CloseIconSize = 24.dp
+private val MarkSize = 48.dp
+private val ContentSpace = 12.dp
+private val ActionsSpace = 8.dp
 
 @Composable
 internal fun LockedAccountView(
@@ -101,31 +108,24 @@ private fun LockedAccountContent(
                     indication = null,
                     interactionSource = null,
                 )
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-                .padding(24.dp),
+                .windowInsetsPadding(WindowInsets.safeDrawing),
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_close),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(24.dp)
-                    .onClick(onClick = onCloseClick),
-            )
-
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = spacedBy(12.dp),
+                verticalArrangement = spacedBy(ContentSpace, Alignment.CenterVertically),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+                        vertical = TouchTargetSize,
+                    ),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_home_off),
                     contentDescription = null,
                     tint = TraktTheme.colors.accent,
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(MarkSize),
                 )
 
                 Text(
@@ -153,8 +153,8 @@ private fun LockedAccountContent(
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = spacedBy(8.dp),
-                    modifier = Modifier.padding(top = 12.dp),
+                    verticalArrangement = spacedBy(ActionsSpace),
+                    modifier = Modifier.padding(top = ContentSpace),
                 ) {
                     if (lock != AccountLock.CollectionLimit) {
                         PrimaryButton(
@@ -169,6 +169,21 @@ private fun LockedAccountContent(
                         contentColor = TraktTheme.colors.textPrimary,
                     )
                 }
+            }
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .size(TouchTargetSize)
+                    .onClick(onClick = onCloseClick),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier.size(CloseIconSize),
+                )
             }
         }
     }
