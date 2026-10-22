@@ -20,6 +20,7 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.recordError
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.toTraktId
@@ -111,6 +112,7 @@ internal fun LaunchedAppLinkEvents(
     events: Flow<AppLinkEvent>,
     welcomeActive: Boolean,
     navController: NavController,
+    onOpenComment: (Comment) -> Unit,
 ) {
     val localRes = LocalResources.current
     val localSnackbar = LocalSnackbarState.current
@@ -135,6 +137,7 @@ internal fun LaunchedAppLinkEvents(
                     sourceMediaId = null,
                     backdropUrl = null,
                 )
+                is AppLinkEvent.OpenComment -> onOpenComment(event.comment)
                 AppLinkEvent.NotFound -> localSnackbar.showSnackbar(
                     message = localRes.getString(R.string.error_text_imdb_link_not_found),
                     duration = SnackbarDuration.Short,

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.applinks
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
 
 @Immutable
@@ -27,6 +28,10 @@ internal sealed interface AppLinkEvent {
 
     data class OpenPerson(
         val personId: TraktId,
+    ) : AppLinkEvent
+
+    data class OpenComment(
+        val comment: Comment,
     ) : AppLinkEvent
 
     data object NotFound : AppLinkEvent

@@ -91,6 +91,7 @@
         <data android:pathPrefix="/shows/" />
         <data android:pathPrefix="/movies/" />
         <data android:pathPrefix="/people/" />
+        <data android:pathPrefix="/comments/" />
 
         <!-- Groups are evaluated in order: shared links must be allowed before other queries are blocked. -->
         <uri-relative-filter-group

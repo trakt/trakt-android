@@ -66,6 +66,6 @@ private fun AppLink.shareType(): String {
         is AppLink.Show -> "show"
         is AppLink.Movie -> "movie"
         is AppLink.Person -> "person"
-        is AppLink.Imdb -> "other"
+        is AppLink.Comment, is AppLink.Imdb -> "other"
     }
 }

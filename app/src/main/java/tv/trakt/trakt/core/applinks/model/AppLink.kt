@@ -2,7 +2,9 @@ package tv.trakt.trakt.core.applinks.model
 
 import android.net.Uri
 import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toSlugId
+import tv.trakt.trakt.common.model.toTraktId
 
 private const val APP_LINK_SCHEME = "https"
 private const val APP_LINK_HOST = "app.trakt.tv"
@@ -23,6 +25,11 @@ internal sealed interface AppLink {
 
     data class Person(
         val slug: SlugId,
+        override val share: AppLinkShare? = null,
+    ) : AppLink
+
+    data class Comment(
+        val id: TraktId,
         override val share: AppLinkShare? = null,
     ) : AppLink
 
@@ -65,6 +72,7 @@ internal fun parseAppLink(uri: Uri): AppLink? {
         "shows" -> AppLink.Show(slug.toSlugId(), share)
         "movies" -> AppLink.Movie(slug.toSlugId(), share)
         "people" -> AppLink.Person(slug.toSlugId(), share)
+        "comments" -> slug.toIntOrNull()?.let { AppLink.Comment(it.toTraktId(), share) }
         else -> null
     }
 }
