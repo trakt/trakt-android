@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -40,6 +41,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -97,6 +99,7 @@ internal fun AllWatchlistScreen(
     onNavigateBack: () -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onReorderClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
@@ -170,6 +173,7 @@ internal fun AllWatchlistScreen(
                 ),
             )
         },
+        onReorderClick = onReorderClick,
         onBackClick = onNavigateBack,
     )
 
@@ -255,6 +259,7 @@ internal fun AllWatchlistContent(
     onFiltersClick: () -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
+    onReorderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMoreData: () -> Unit = {},
 ) {
@@ -310,6 +315,7 @@ internal fun AllWatchlistContent(
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onLongClick = onLongClick,
+            onReorderClick = onReorderClick,
             onBackClick = onBackClick,
             onEndOfList = onLoadMoreData,
         )
@@ -320,8 +326,10 @@ internal fun AllWatchlistContent(
 private fun TitleBar(
     enabled: Boolean,
     itemCount: Int?,
+    reorderEnabled: Boolean,
     filters: GlobalFilter?,
     onFiltersClick: () -> Unit,
+    onReorderClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -351,16 +359,31 @@ private fun TitleBar(
             )
         }
 
-        filters?.let {
-            MediaFilterIcon(
-                active = it.isActive,
-                enabled = enabled,
-                onClick = onFiltersClick,
+        Row(
+            horizontalArrangement = spacedBy(16.dp),
+            verticalAlignment = CenterVertically,
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_reorder),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .graphicsLayer {
-                        translationX = 2.dp.toPx()
-                    },
+                    .size(24.dp)
+                    .alpha(if (reorderEnabled) 1F else 0.5F)
+                    .onClick(enabled = reorderEnabled) { onReorderClick() },
             )
+
+            filters?.let {
+                MediaFilterIcon(
+                    active = it.isActive,
+                    enabled = enabled,
+                    onClick = onFiltersClick,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = 2.dp.toPx()
+                        },
+                )
+            }
         }
     }
 }
@@ -385,6 +408,7 @@ private fun ContentList(
     onFiltersClick: () -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
+    onReorderClick: () -> Unit,
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
@@ -419,9 +443,11 @@ private fun ContentList(
         item {
             TitleBar(
                 enabled = !loading,
+                reorderEnabled = !loading && listItems.isNotEmpty(),
                 itemCount = itemCount,
                 filters = listFilter,
                 onFiltersClick = onFiltersClick,
+                onReorderClick = onReorderClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .onClick { onBackClick() },

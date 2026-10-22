@@ -1,6 +1,8 @@
 package tv.trakt.trakt.common.data.remote
 
+import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.models.PostUsersListsReorderRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortType
@@ -9,10 +11,13 @@ import tv.trakt.trakt.common.networking.WatchlistItemDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class UserWatchlistRemoteSource(
     private val usersApi: UsersApi,
+    private val syncApi: SyncApi,
     private val v3Api: V3Api,
+    private val cacheMarker: CacheMarkerProvider,
 ) {
     suspend fun getWatchlistMinimal(): Pair<Set<TraktId>, Set<TraktId>> {
         return v3Api.getWatchlistMinimal()
@@ -50,6 +55,15 @@ class UserWatchlistRemoteSource(
         )
 
         return response.body()
+    }
+
+    suspend fun reorderWatchlist(itemIds: List<Int>) {
+        syncApi.postSyncWatchlistReorder(
+            postUsersListsReorderRequest = PostUsersListsReorderRequest(
+                rank = itemIds,
+            ),
+        )
+        cacheMarker.invalidate()
     }
 
     suspend fun getWatchlistShows(

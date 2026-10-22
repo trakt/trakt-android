@@ -41,6 +41,8 @@ import tv.trakt.trakt.core.lists.features.reorder.lists.navigation.listsReorderS
 import tv.trakt.trakt.core.lists.features.reorder.lists.navigation.navigateToListsReorder
 import tv.trakt.trakt.core.lists.features.reorder.navigation.listReorderScreen
 import tv.trakt.trakt.core.lists.features.reorder.navigation.navigateToListReorder
+import tv.trakt.trakt.core.lists.features.reorder.watchlist.navigation.navigateToWatchlistReorder
+import tv.trakt.trakt.core.lists.features.reorder.watchlist.navigation.watchlistReorderScreen
 import tv.trakt.trakt.core.lists.features.smart.navigation.createSmartListScreen
 import tv.trakt.trakt.core.lists.features.smart.navigation.navigateToCreateSmartList
 import tv.trakt.trakt.core.lists.navigation.listsScreen
@@ -599,6 +601,7 @@ internal fun NavGraphBuilder.listsScreens(
         allWatchlistScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToReorder = { navigateToWatchlistReorder() },
             onNavigateBack = { popBackStack() },
         )
         allPersonalListScreen(
@@ -631,6 +634,9 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateBack = { popBackStack() },
         )
         listsReorderScreen(
+            onNavigateBack = { popBackStack() },
+        )
+        watchlistReorderScreen(
             onNavigateBack = { popBackStack() },
         )
     }
