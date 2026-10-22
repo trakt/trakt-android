@@ -124,27 +124,43 @@ internal fun LaunchedAppLinkEvents(
             snapshotFlow { isWelcomeActive }.first { !it }
 
             when (event) {
-                is AppLinkEvent.OpenShow -> navController.navigateToShow(event.showId)
-                is AppLinkEvent.OpenMovie -> navController.navigateToMovie(event.movieId)
-                is AppLinkEvent.OpenEpisode -> navController.navigateToEpisode(
-                    showId = event.showId,
-                    episodeId = event.episodeId,
-                    episodeSeason = event.season,
-                    episodeNumber = event.number,
-                )
-                is AppLinkEvent.OpenPerson -> navController.navigateToPerson(
-                    personId = event.personId,
-                    sourceMediaId = null,
-                    backdropUrl = null,
-                )
-                is AppLinkEvent.OpenComment -> onOpenComment(event.comment)
-                AppLinkEvent.NotFound -> localSnackbar.showSnackbar(
-                    message = localRes.getString(R.string.error_text_imdb_link_not_found),
-                    duration = SnackbarDuration.Short,
-                )
-                AppLinkEvent.Error -> localSnackbar.showSnackbar(
-                    message = localRes.getString(R.string.error_text_unexpected_error_short),
-                )
+                is AppLinkEvent.OpenShow -> {
+                    navController.navigateToShow(event.showId)
+                    event.comment?.let(onOpenComment)
+                }
+                is AppLinkEvent.OpenMovie -> {
+                    navController.navigateToMovie(event.movieId)
+                    event.comment?.let(onOpenComment)
+                }
+                is AppLinkEvent.OpenEpisode -> {
+                    navController.navigateToEpisode(
+                        showId = event.showId,
+                        episodeId = event.episodeId,
+                        episodeSeason = event.season,
+                        episodeNumber = event.number,
+                    )
+                }
+                is AppLinkEvent.OpenPerson -> {
+                    navController.navigateToPerson(
+                        personId = event.personId,
+                        sourceMediaId = null,
+                        backdropUrl = null,
+                    )
+                }
+                is AppLinkEvent.OpenComment -> {
+                    onOpenComment(event.comment)
+                }
+                AppLinkEvent.NotFound -> {
+                    localSnackbar.showSnackbar(
+                        message = localRes.getString(R.string.error_text_imdb_link_not_found),
+                        duration = SnackbarDuration.Short,
+                    )
+                }
+                AppLinkEvent.Error -> {
+                    localSnackbar.showSnackbar(
+                        message = localRes.getString(R.string.error_text_unexpected_error_short),
+                    )
+                }
             }
         }
     }

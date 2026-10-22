@@ -102,6 +102,13 @@
         </uri-relative-filter-group>
 
         <uri-relative-filter-group
+          android:allow="true"
+          tools:targetApi="35"
+          >
+          <data android:queryAdvancedPattern="(.*&amp;)?comment_id=[0-9]+(&amp;.*)?" />
+        </uri-relative-filter-group>
+
+        <uri-relative-filter-group
           android:allow="false"
           tools:targetApi="35"
           >

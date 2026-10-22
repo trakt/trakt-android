@@ -13,10 +13,12 @@ internal data class AppLinkState(
 internal sealed interface AppLinkEvent {
     data class OpenShow(
         val showId: TraktId,
+        val comment: Comment? = null,
     ) : AppLinkEvent
 
     data class OpenMovie(
         val movieId: TraktId,
+        val comment: Comment? = null,
     ) : AppLinkEvent
 
     data class OpenEpisode(
