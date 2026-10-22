@@ -122,6 +122,8 @@ internal fun MediaReactionsQuickBar(
                 MediaReactionsSummaryCard(
                     summary = summary,
                     userReactions = userReactions,
+                    isLimitReached = isLimitReached,
+                    onReactionClick = onReactionClick,
                     modifier = Modifier
                         .padding(bottom = 3.dp),
                 )

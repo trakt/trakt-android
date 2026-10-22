@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.EmojiSupportMatch
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -34,6 +36,8 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberPercentFormat
 import tv.trakt.trakt.common.model.reactions.MediaReaction
 import tv.trakt.trakt.common.model.reactions.MediaReactionsSummary
@@ -50,6 +54,8 @@ internal fun MediaReactionsSummaryCard(
     summary: MediaReactionsSummary,
     userReactions: ImmutableList<MediaReaction>,
     modifier: Modifier = Modifier,
+    isLimitReached: Boolean = false,
+    onReactionClick: ((MediaReaction) -> Unit)? = null,
 ) {
     val pages = remember(summary) {
         summary.top(MediaReaction.entries.size).chunked(PAGE_SIZE)
@@ -117,15 +123,23 @@ internal fun MediaReactionsSummaryCard(
                             ) {
                                 val reaction = row.getOrNull(slot)
                                 when (reaction) {
-                                    null -> SummaryItemPlaceholder()
-                                    else -> SummaryItem(
-                                        reaction = reaction,
-                                        share = shareOf(
-                                            count = summary.distribution[reaction] ?: 0,
-                                            total = summary.reactionsCount,
-                                        ),
-                                        highlight = reaction in userReactions,
-                                    )
+                                    null -> {
+                                        SummaryItemPlaceholder()
+                                    }
+                                    else -> {
+                                        val isCurrent = reaction in userReactions
+                                        SummaryItem(
+                                            reaction = reaction,
+                                            share = shareOf(
+                                                count = summary.distribution[reaction] ?: 0,
+                                                total = summary.reactionsCount,
+                                            ),
+                                            highlight = isCurrent,
+                                            onClick = onReactionClick
+                                                ?.takeIf { isCurrent || !isLimitReached }
+                                                ?.let { { it(reaction) } },
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -185,7 +199,13 @@ private fun SummaryItem(
     share: Int,
     highlight: Boolean,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
 ) {
+    val clickLabel = stringResource(
+        if (highlight) R.string.button_label_remove_reaction else R.string.button_label_react,
+        reaction.displayName,
+    )
+
     Row(
         horizontalArrangement = spacedBy(3.dp),
         verticalAlignment = CenterVertically,
@@ -193,6 +213,15 @@ private fun SummaryItem(
             .background(
                 color = if (highlight) TraktTheme.colors.reactionsSummaryHighlight else Color.Transparent,
                 shape = RoundedCornerShape(12.dp),
+            )
+            .ifOrElse(
+                condition = onClick != null,
+                isTrue = Modifier
+                    .semantics { contentDescription = clickLabel }
+                    .onClick(
+                        throttle = false,
+                        onClick = { onClick?.invoke() },
+                    ),
             )
             .padding(horizontal = 6.dp, vertical = 4.dp),
     ) {
