@@ -5,6 +5,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpRequestRetry
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.api.createClientPlugin
@@ -25,6 +26,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
@@ -38,6 +40,7 @@ import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.recordError
+import tv.trakt.trakt.common.networking.helpers.AccountLockMonitor
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.milliseconds
@@ -59,11 +62,20 @@ private val mutex = Mutex()
 internal fun HttpClientConfig<*>.applyConfig(
     fileStorage: CacheStorage,
     cacheMarkerProvider: CacheMarkerProvider,
+    accountLockMonitor: AccountLockMonitor,
 ) {
     applyBaseConfig(
         fileStorage = fileStorage,
         debugLogLevel = LogLevel.ALL,
     )
+
+    HttpResponseValidator {
+        handleResponseExceptionWithRequest { cause, _ ->
+            if (cause is ClientRequestException && cause.response.status == HttpStatusCode.Locked) {
+                accountLockMonitor.reportLock(cause.message)
+            }
+        }
+    }
 
     install(CacheBusterPlugin) {
         this.cacheMarkerProvider = cacheMarkerProvider

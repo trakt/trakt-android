@@ -6,6 +6,7 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.cache.storage.CacheStorage
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.networking.helpers.AccountLockMonitor
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class KtorClientFactory(
@@ -13,12 +14,14 @@ internal class KtorClientFactory(
     private val tokenProvider: TokenProvider,
     private val sessionManager: SessionManager,
     private val fileStorage: CacheStorage,
+    private val accountLockMonitor: AccountLockMonitor,
 ) {
     fun createClientConfig(): (HttpClientConfig<*>) -> Unit {
         return {
             it.applyConfig(
                 fileStorage = fileStorage,
                 cacheMarkerProvider = cacheMarkerProvider,
+                accountLockMonitor = accountLockMonitor,
             )
         }
     }
@@ -28,6 +31,7 @@ internal class KtorClientFactory(
             it.applyConfig(
                 fileStorage = fileStorage,
                 cacheMarkerProvider = cacheMarkerProvider,
+                accountLockMonitor = accountLockMonitor,
             )
             it.applyAuthorizationConfig(
                 tokenProvider = tokenProvider,

@@ -5,6 +5,7 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.cache.storage.CacheStorage
 import io.ktor.client.plugins.cache.storage.FileStorage
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.openapitools.client.apis.CalendarsApi
@@ -41,6 +42,7 @@ import tv.trakt.trakt.common.networking.api.plex.PlexStreamApi
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
+import tv.trakt.trakt.common.networking.helpers.AccountLockMonitor
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.common.networking.helpers.DefaultCacheMarkerProvider
 import java.nio.file.Files
@@ -58,6 +60,7 @@ val networkingModule = module {
             tokenProvider = get(),
             sessionManager = get(),
             fileStorage = get(),
+            accountLockMonitor = get(),
         )
     }
 
@@ -84,6 +87,8 @@ val networkingModule = module {
     single<CacheMarkerProvider> {
         DefaultCacheMarkerProvider()
     }
+
+    singleOf(::AccountLockMonitor)
 }
 
 val networkingApiModule = module {

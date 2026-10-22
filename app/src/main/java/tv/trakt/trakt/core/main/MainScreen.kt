@@ -97,6 +97,7 @@ import tv.trakt.trakt.core.main.navigation.isStartDestination
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.checkin.MainCheckInView
 import tv.trakt.trakt.core.main.ui.inputhold.MainInputHoldView
+import tv.trakt.trakt.core.main.ui.locked.LockedAccountView
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.main.ui.rateprompt.MainRatePromptView
 import tv.trakt.trakt.core.main.ui.seasonal.SeasonalSplashView
@@ -303,6 +304,8 @@ internal fun MainScreen(
         enabled = yearInReviewVisible,
         onBack = viewModel::dismissYearInReview,
     )
+
+    LockedAccountView()
 }
 
 @Composable
