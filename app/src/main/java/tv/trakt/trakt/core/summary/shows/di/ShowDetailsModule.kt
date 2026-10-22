@@ -143,6 +143,7 @@ internal val showDetailsModule = module {
             sessionManager = get(),
             collapsingManager = get(),
             translationsStore = get(),
+            analytics = get(),
         )
     }
 }

@@ -135,11 +135,11 @@ internal class LogoutUserUseCase(
 
         appReviewUseCase.clear()
 
+        ScheduleNotificationsWorker.clear(appContext)
+        WorkManager.getInstance(appContext).cancelAllWork()
+
         analytics.setUserId(null)
         analytics.setUserProperty("vip", null)
         analytics.setUserProperty("director", null)
-
-        ScheduleNotificationsWorker.clear(appContext)
-        WorkManager.getInstance(appContext).cancelAllWork()
     }
 }

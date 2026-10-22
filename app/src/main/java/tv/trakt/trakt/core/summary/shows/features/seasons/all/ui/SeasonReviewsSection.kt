@@ -71,6 +71,7 @@ internal fun LazyListScope.SeasonReviewsSection(
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
 ) {
     item(
@@ -192,6 +193,7 @@ internal fun LazyListScope.SeasonReviewsSection(
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },
                     onTranslateClick = onTranslateClick,
+                    onRevealSpoiler = onRevealSpoiler,
                     onUserClick = onUserClick,
                     modifier = Modifier
                         .padding(contentPadding)

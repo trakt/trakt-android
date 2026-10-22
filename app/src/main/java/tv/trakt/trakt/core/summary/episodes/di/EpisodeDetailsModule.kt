@@ -96,6 +96,7 @@ internal val episodeDetailsModule = module {
             sessionManager = get(),
             collapsingManager = get(),
             translationsStore = get(),
+            analytics = get(),
         )
     }
 

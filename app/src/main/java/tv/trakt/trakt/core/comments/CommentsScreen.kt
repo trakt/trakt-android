@@ -147,6 +147,7 @@ internal fun CommentsScreen(
         },
         onUserClick = onNavigateToUser,
         onTranslateClick = viewModel::toggleTranslation,
+        onRevealSpoiler = viewModel::logSpoilerReveal,
         onBackClick = onNavigateBack,
     )
 
@@ -228,6 +229,7 @@ internal fun CommentsContent(
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val listState = rememberLazyListState(
@@ -288,6 +290,7 @@ internal fun CommentsContent(
             onDeleteReplyClick = onDeleteReplyClick,
             onUserClick = onUserClick,
             onTranslateClick = onTranslateClick,
+            onRevealSpoiler = onRevealSpoiler,
             onBackClick = onBackClick,
         )
 
@@ -358,6 +361,7 @@ private fun ContentList(
     onRepliesClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     LazyColumn(
@@ -432,6 +436,7 @@ private fun ContentList(
                     onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },
                     onUserClick = { onUserClick?.invoke(it) },
                     onTranslateClick = onTranslateClick,
+                    onRevealSpoiler = onRevealSpoiler,
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .animateItem(

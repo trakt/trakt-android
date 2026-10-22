@@ -441,6 +441,10 @@ internal class AllShowSeasonsViewModel(
         }
     }
 
+    fun logSpoilerReveal() {
+        analytics.comments.logSpoilerReveal()
+    }
+
     fun toggleCommentTranslation(comment: Comment) {
         viewModelScope.launch {
             if (!translationsStore.toggle(comment)) {

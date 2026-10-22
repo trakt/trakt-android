@@ -167,11 +167,11 @@ internal class HalAnalytics(
     }
 
     override fun logLoginStart(source: String) {
-        events.track(EVENT_LOGIN_START, dims = mapOf(DIM_SOURCE to source))
+        events.track(EVENT_LOGIN_START, dims = mapOf(DIM_SOURCE to source), allowAnonymous = true)
     }
 
     override fun logLoginFailed(error: String) {
-        events.track(EVENT_LOGIN_FAILED, dims = mapOf(DIM_ERROR to error))
+        events.track(EVENT_LOGIN_FAILED, dims = mapOf(DIM_ERROR to error), allowAnonymous = true)
     }
 
     override fun logStreamingService(

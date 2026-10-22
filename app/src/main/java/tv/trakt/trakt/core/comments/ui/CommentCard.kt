@@ -122,6 +122,7 @@ internal fun CommentCard(
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     LaunchedEffect(comment.id) {
         if (reactions[comment.id] == null) {
@@ -157,6 +158,7 @@ internal fun CommentCard(
             onReportClick = { reportActive = true },
             onUserClick = { onUserClick?.invoke(it) },
             onTranslateClick = onTranslateClick,
+            onRevealSpoiler = onRevealSpoiler,
         )
     }
 
@@ -233,12 +235,12 @@ private fun CommentCardContent(
     onReportClick: (() -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     var isSpoilerRevealed by remember { mutableStateOf(false) }
-    val logSpoilerReveal = rememberSpoilerRevealLogger()
-    val revealSpoiler = {
+    val revealSpoiler: () -> Unit = {
         isSpoilerRevealed = true
-        logSpoilerReveal()
+        onRevealSpoiler?.invoke()
     }
 
     val isUserComment = remember(user) {
@@ -372,6 +374,7 @@ private fun CommentCardContent(
                 onReactionClick = onReactionClick,
                 onUserClick = onUserClick,
                 onTranslateClick = onTranslateClick,
+                onRevealSpoiler = onRevealSpoiler,
                 onReplyClick = { onReplyUserClick?.invoke(it.user) },
                 onDeleteClick = onDeleteReplyClick,
                 onRequestReactions = onRequestReactions,
@@ -438,6 +441,7 @@ private fun CommentRepliesContent(
     onReplyClick: ((Comment) -> Unit)? = null,
     onDeleteClick: ((Comment) -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -455,6 +459,7 @@ private fun CommentRepliesContent(
                 progressTotal = progressTotal,
                 onUserClick = onUserClick,
                 onTranslateClick = onTranslateClick,
+                onRevealSpoiler = onRevealSpoiler,
                 onReactionClick = { onReactionClick?.invoke(it, reply) },
                 onRequestReactions = { onRequestReactions?.invoke(reply) },
                 onDeleteClick = { onDeleteClick?.invoke(reply) },

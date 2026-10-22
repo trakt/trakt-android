@@ -96,6 +96,7 @@ internal fun CommentReplyCard(
     onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     LaunchedEffect(reply.id) {
         if (reactions == null) {
@@ -128,6 +129,7 @@ internal fun CommentReplyCard(
             onReportClick = { reportActive = true },
             onUserClick = onUserClick,
             onTranslateClick = onTranslateClick,
+            onRevealSpoiler = onRevealSpoiler,
         )
     }
 
@@ -182,12 +184,12 @@ private fun CommentReplyCardContent(
     onDeleteClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onTranslateClick: ((Comment) -> Unit)? = null,
+    onRevealSpoiler: (() -> Unit)? = null,
 ) {
     var showSpoilers by remember { mutableStateOf(false) }
-    val logSpoilerReveal = rememberSpoilerRevealLogger()
-    val revealSpoiler = {
+    val revealSpoiler: () -> Unit = {
         showSpoilers = true
-        logSpoilerReveal()
+        onRevealSpoiler?.invoke()
     }
 
     val isUserReply = remember(user) {
