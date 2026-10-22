@@ -18,6 +18,7 @@ import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,14 +26,16 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val tooltipShape = RoundedCornerShape(8.dp)
+private const val TAG_CONTAINER_ALPHA = 0.16F
 
-// Widens the hit area of the one-line tag without changing the chip row height.
-private val tagTouchPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
+private val tooltipShape = RoundedCornerShape(8.dp)
+private val tagTouchPadding = PaddingValues(vertical = 8.dp)
 
 @Composable
 internal fun LibraryCollectionLimitTag(
@@ -78,11 +81,12 @@ internal fun LibraryCollectionLimitTag(
         enableUserInput = false,
         modifier = modifier,
     ) {
-        Text(
+        InfoChip(
+            iconPainter = painterResource(R.drawable.ic_info),
+            iconPadding = 2.dp,
             text = stringResource(R.string.label_library_collection_limit),
-            style = TraktTheme.typography.meta,
-            color = TraktTheme.colors.warningAccent,
-            maxLines = 1,
+            containerColor = TraktTheme.colors.warningAccent.copy(alpha = TAG_CONTAINER_ALPHA),
+            contentColor = TraktTheme.colors.warningAccent,
             modifier = Modifier
                 .onClick {
                     onShow()
@@ -99,6 +103,21 @@ internal fun LibraryCollectionLimitTag(
 @Composable
 private fun Preview() {
     TraktTheme {
+        LibraryCollectionLimitTag(
+            servers = persistentListOf("Living Room", null),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFFFFFF,
+)
+@Composable
+private fun PreviewLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
         LibraryCollectionLimitTag(
             servers = persistentListOf("Living Room", null),
         )

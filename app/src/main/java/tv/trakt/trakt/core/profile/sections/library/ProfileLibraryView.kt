@@ -7,6 +7,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -231,17 +233,23 @@ private fun ContentFilters(
     onVipClick: () -> Unit,
     onVipUpsellSeen: () -> Unit,
 ) {
-    FilterChipGroup(
-        paddingHorizontal = headerPadding,
-        paddingVertical = PaddingValues(top = 13.dp, bottom = 15.dp),
-        modifier = modifier,
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        for (filter in LibraryFilter.entries) {
-            FilterChip(
-                selected = filter == state.filter,
-                text = stringResource(filter.displayRes),
-                onClick = { onFilterClick(filter) },
-            )
+        FilterChipGroup(
+            paddingHorizontal = headerPadding,
+            paddingVertical = PaddingValues(top = 13.dp, bottom = 15.dp),
+            modifier = modifier,
+        ) {
+            for (filter in LibraryFilter.entries) {
+                FilterChip(
+                    selected = filter == state.filter,
+                    text = stringResource(filter.displayRes),
+                    onClick = { onFilterClick(filter) },
+                )
+            }
         }
 
         if (state.filter == LibraryFilter.DIGITAL && state.collectionLimitServers.isNotEmpty()) {
@@ -354,6 +362,24 @@ private fun Preview2() {
         ProfileLibraryView(
             state = ProfileLibraryState(
                 loading = Loading,
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview3() {
+    TraktTheme {
+        ProfileLibraryView(
+            state = ProfileLibraryState(
+                loading = Loading,
+                filter = LibraryFilter.DIGITAL,
+                collectionLimitServers = persistentListOf("Living Room", null),
             ),
         )
     }

@@ -33,6 +33,7 @@ internal fun InfoChip(
     iconPainter: Painter? = null,
     iconPadding: Dp = 0.dp,
     containerColor: Color = TraktTheme.colors.chipContainer,
+    contentColor: Color = TraktTheme.colors.textPrimaryOnAccent,
     contentTextStyle: TextStyle = TraktTheme.typography.meta,
     endPadding: Dp = 0.dp,
 ) {
@@ -55,7 +56,7 @@ internal fun InfoChip(
             Icon(
                 imageVector = iconVector,
                 contentDescription = text,
-                tint = TraktTheme.colors.textPrimaryOnAccent,
+                tint = contentColor,
                 modifier = Modifier.size(12.dp),
             )
         }
@@ -63,14 +64,14 @@ internal fun InfoChip(
             Icon(
                 painter = iconPainter,
                 contentDescription = text,
-                tint = TraktTheme.colors.textPrimaryOnAccent,
+                tint = contentColor,
                 modifier = Modifier.size(12.dp),
             )
         }
         Text(
             text = text,
             style = contentTextStyle,
-            color = TraktTheme.colors.textPrimaryOnAccent,
+            color = contentColor,
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
