@@ -29,6 +29,7 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUs
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
+import tv.trakt.trakt.core.home.sections.monthreview.usecases.MonthReviewBannerUseCase
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedViewModel
 import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
@@ -81,6 +82,12 @@ internal val homeModule = module {
     factoryOf(::GetUpcomingUseCase)
     factoryOf(::GetUserUsageUseCase)
     factoryOf(::GetRecommendedMediaUseCase)
+
+    factory {
+        MonthReviewBannerUseCase(
+            dataStore = get(named(HOME_PREFERENCES)),
+        )
+    }
 
     viewModelOf(::HomeViewModel)
     viewModelOf(::HomeSocialViewModel)

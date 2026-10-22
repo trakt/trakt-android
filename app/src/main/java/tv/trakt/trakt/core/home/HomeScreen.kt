@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalStartAuthorization
 import tv.trakt.trakt.common.Config.WEB_DATA_IMPORT_URL
+import tv.trakt.trakt.common.Config.webMonthReviewUrl
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -47,6 +48,7 @@ import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
+import tv.trakt.trakt.core.home.sections.monthreview.HomeMonthReviewView
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedView
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksView
 import tv.trakt.trakt.core.home.sections.streaks.all.StreaksSheet
@@ -131,6 +133,8 @@ internal fun HomeScreen(
             }
         },
         onDismissWelcomeClick = viewModel::dismissWelcomeBanner,
+        onMonthReviewClick = viewModel::openMonthReview,
+        onDismissMonthReviewClick = viewModel::dismissMonthReview,
     )
 
     GlobalFiltersSheet(
@@ -180,6 +184,8 @@ private fun HomeScreenContent(
     onTodayClick: (groupKey: String) -> Unit = {},
     onUserClick: (user: User) -> Unit = {},
     onDismissWelcomeClick: () -> Unit = {},
+    onMonthReviewClick: (target: String) -> Unit = {},
+    onDismissMonthReviewClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
     val headerState = rememberHeaderState()
@@ -257,6 +263,30 @@ private fun HomeScreenContent(
                             )
                         }
                     }
+                }
+            }
+
+            val monthReview = state.monthReview
+            val userSlug = state.user.user?.ids?.slug?.value
+            if (monthReview != null && userSlug != null) {
+                item(key = "month_review") {
+                    HomeMonthReviewView(
+                        month = monthReview,
+                        onClick = {
+                            uriHandler.openUri(
+                                webMonthReviewUrl(
+                                    user = userSlug,
+                                    month = monthReview.monthValue,
+                                    year = monthReview.year,
+                                ),
+                            )
+                            onMonthReviewClick("/users/me/mir/${monthReview.year}/${monthReview.monthValue}")
+                        },
+                        onDismissClick = onDismissMonthReviewClick,
+                        modifier = Modifier
+                            .padding(sectionPadding)
+                            .animateItem(),
+                    )
                 }
             }
 

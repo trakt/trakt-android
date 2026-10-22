@@ -144,6 +144,20 @@ internal class DebugAnalytics(
     ) {
         Timber.d("logDrilldown: source=%s, type=%s", source, type)
     }
+
+    override fun logLink(
+        source: String,
+        target: String,
+    ) {
+        Timber.d("logLink: source=%s, target=%s", source, target)
+    }
+
+    override fun logBannerDismiss(
+        id: String,
+        value: String,
+    ) {
+        Timber.d("logBannerDismiss: id=%s, value=%s", id, value)
+    }
 }
 
 internal class DebugAnalyticsReactions : Analytics.Reactions {
