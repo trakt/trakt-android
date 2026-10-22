@@ -16,12 +16,12 @@ import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserStatsDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
-import tv.trakt.trakt.common.networking.api.users.UsersExtrasApi
+import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class UserRemoteSource(
     private val usersApi: UsersApi,
-    private val usersExtrasApi: UsersExtrasApi,
+    private val v3Api: V3Api,
     private val syncApi: SyncApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) {
@@ -89,7 +89,7 @@ class UserRemoteSource(
     }
 
     suspend fun updateProfileUsername(username: String) {
-        usersExtrasApi.putUsersSaveUsername(username)
+        v3Api.putUsername(username)
         cacheMarkerProvider.invalidate()
     }
 
