@@ -1423,7 +1423,7 @@
   <string name="match_label_soulmates">Ànimes bessones</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidència:</string>
-  <string name="match_pill_aria_label">%1$d% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
+  <string name="match_pill_aria_label">%1$d%% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
   <string name="mir_banner_body">El teu resum mensual està llest. Aquí teniu el que vau veure a %s.</string>
   <string name="mir_banner_body_short">El teu resum de %s està llest.</string>
@@ -1654,7 +1654,7 @@
   <string name="tag_media_sync_webhook_only">Només Webhook</string>
   <string name="tag_mixtape_different_mood">Un altre ambient</string>
   <string name="tag_mixtape_kept">Guardat</string>
-  <string name="tag_mixtape_match">%s% de coincidència</string>
+  <string name="tag_mixtape_match">%s%% de coincidència</string>
   <string name="tag_mixtape_tap_details">Toca per als detalls</string>
   <string name="tag_text_blocked_user">Bloquejat</string>
   <string name="tag_text_deal_price">Primers 2 anys</string>
@@ -2822,7 +2822,7 @@
   <string name="yir_2026_preview_runner_none">Cap (sense híbrid)</string>
   <string name="yir_2026_preview_runner_up">Subcampió</string>
   <string name="yir_2026_preview_title">Vista prèvia de la personalitat</string>
-  <string name="yir_2026_rarity">Només el %1$d% són %2$s</string>
+  <string name="yir_2026_rarity">Només el %1$d%% són %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Una mica %s</string>
   <string name="yir_2026_reel_and_you_are">I tu ets</string>
   <string name="yir_2026_reel_but_mostly">Però majoritàriament</string>
