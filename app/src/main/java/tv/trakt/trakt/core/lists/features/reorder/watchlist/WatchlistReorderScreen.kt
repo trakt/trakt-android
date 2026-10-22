@@ -1,10 +1,12 @@
 package tv.trakt.trakt.core.lists.features.reorder.watchlist
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.Images
@@ -62,7 +64,7 @@ internal fun WatchlistReorderScreen(
     ReorderLayout(
         state = uiState,
         actions = actions,
-        modifier = modifier,
+        modifier = modifier.padding(top = 2.dp),
         onNavigateBack = onNavigateBack,
     )
 }

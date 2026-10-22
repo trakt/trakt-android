@@ -47,7 +47,7 @@ internal class ReorderWatchlistUseCase(
 }
 
 private val RankSorting = Sorting(
-    type = SortType.Default,
+    type = SortType.Rank,
     order = SortOrder.Asc,
 )
 
