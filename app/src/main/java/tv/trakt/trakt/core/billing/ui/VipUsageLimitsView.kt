@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,9 +25,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -42,6 +45,7 @@ private const val FREE_ZONE_FRACTION = 0.3F
 
 private val BarHeight = 16.dp
 private val VipZoneOverlap = 24.dp
+private val TouchTargetSize = 48.dp
 
 @Composable
 internal fun VipUsageLimitsView(
@@ -68,14 +72,20 @@ internal fun VipUsageLimitsView(
         }
 
         if (limits.size > COLLAPSED_ITEMS && !expanded) {
-            Text(
-                text = stringResource(R.string.button_label_see_more_limits),
-                style = TraktTheme.typography.buttonSecondary,
-                color = TraktTheme.colors.textSecondary,
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .onClick { expanded = true },
-            )
+                    .heightIn(min = TouchTargetSize)
+                    .onClick { expanded = true }
+                    .padding(horizontal = 16.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.button_label_see_more_limits),
+                    style = TraktTheme.typography.buttonSecondary,
+                    color = TraktTheme.colors.textSecondary,
+                )
+            }
         }
     }
 }
@@ -124,39 +134,14 @@ private fun VipUsageBar(limit: VipUsageLimit) {
             .fillMaxWidth()
             .height(BarHeight)
             .drawBehind {
-                val radius = CornerRadius(size.height / 2)
-                val borderColor = barColor.copy(alpha = 0.3F)
-
-                if (hasVipZone) {
-                    val start = size.width * zoneFraction - VipZoneOverlap.toPx()
-                    drawZoneBorder(
-                        color = borderColor,
-                        start = start,
-                        end = size.width,
-                        radius = radius,
-                        dashed = true,
-                    )
-                }
-
-                val zoneWidth = size.width * zoneFraction
-                drawRoundRect(
-                    color = barColor.copy(alpha = 0.15F),
-                    size = Size(zoneWidth, size.height),
-                    cornerRadius = radius,
-                )
-                drawZoneBorder(
-                    color = borderColor,
-                    start = 0F,
-                    end = zoneWidth,
-                    radius = radius,
-                    dashed = false,
-                )
-
-                if (progress > 0F) {
-                    drawRoundRect(
-                        color = fillColor,
-                        size = Size(size.width * progress, size.height),
-                        cornerRadius = radius,
+                val mirror = if (layoutDirection == LayoutDirection.Rtl) -1F else 1F
+                scale(scaleX = mirror, scaleY = 1F) {
+                    drawUsageBar(
+                        hasVipZone = hasVipZone,
+                        zoneFraction = zoneFraction,
+                        progress = progress,
+                        barColor = barColor,
+                        fillColor = fillColor,
                     )
                 }
             },
@@ -169,6 +154,50 @@ private fun VipUsageBar(limit: VipUsageLimit) {
                 modifier = Modifier.padding(end = 8.dp),
             )
         }
+    }
+}
+
+private fun DrawScope.drawUsageBar(
+    hasVipZone: Boolean,
+    zoneFraction: Float,
+    progress: Float,
+    barColor: Color,
+    fillColor: Color,
+) {
+    val radius = CornerRadius(size.height / 2)
+    val borderColor = barColor.copy(alpha = 0.3F)
+
+    if (hasVipZone) {
+        val start = size.width * zoneFraction - VipZoneOverlap.toPx()
+        drawZoneBorder(
+            color = borderColor,
+            start = start,
+            end = size.width,
+            radius = radius,
+            dashed = true,
+        )
+    }
+
+    val zoneWidth = size.width * zoneFraction
+    drawRoundRect(
+        color = barColor.copy(alpha = 0.15F),
+        size = Size(zoneWidth, size.height),
+        cornerRadius = radius,
+    )
+    drawZoneBorder(
+        color = borderColor,
+        start = 0F,
+        end = zoneWidth,
+        radius = radius,
+        dashed = false,
+    )
+
+    if (progress > 0F) {
+        drawRoundRect(
+            color = fillColor,
+            size = Size(size.width * progress, size.height),
+            cornerRadius = radius,
+        )
     }
 }
 
