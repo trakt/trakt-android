@@ -42,6 +42,8 @@ private const val PARAMETER_SORT_BY = "sort_by"
 private const val PARAMETER_SORT_HOW = "sort_how"
 private const val PARAMETER_SERVICE = "service"
 private const val PARAMETER_OUTCOME = "outcome"
+private const val PARAMETER_TARGET = "target"
+private const val PARAMETER_VALUE = "value"
 
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
@@ -93,6 +95,8 @@ internal class FirebaseAnalytics(
         const val REPORT_OPEN = "report_open"
         const val REPORT_SEND = "report_send"
         const val STATS_DRILLDOWN = "stats_drilldown"
+        const val LINK_OPEN = "link_open"
+        const val BANNER_DISMISS = "banner_dismiss"
     }
 
     init {
@@ -117,6 +121,8 @@ internal class FirebaseAnalytics(
             REPORT_OPEN,
             REPORT_SEND,
             STATS_DRILLDOWN,
+            LINK_OPEN,
+            BANNER_DISMISS,
         )
     }
 
@@ -348,6 +354,32 @@ internal class FirebaseAnalytics(
             bundleOf(
                 PARAMETER_SOURCE to source,
                 PARAMETER_TYPE to type,
+            ),
+        )
+    }
+
+    override fun logLink(
+        source: String,
+        target: String,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(LINK_OPEN),
+            bundleOf(
+                PARAMETER_SOURCE to source,
+                PARAMETER_TARGET to target,
+            ),
+        )
+    }
+
+    override fun logBannerDismiss(
+        id: String,
+        value: String,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(BANNER_DISMISS),
+            bundleOf(
+                PARAMETER_ID to id,
+                PARAMETER_VALUE to value,
             ),
         )
     }

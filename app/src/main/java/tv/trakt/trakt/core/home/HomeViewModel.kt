@@ -21,22 +21,30 @@ import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_WELCOME_BANNER_ENABLED
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeState.UserState
+import tv.trakt.trakt.core.home.sections.monthreview.usecases.MonthReviewBannerUseCase
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
+import java.time.YearMonth
 import kotlin.time.Duration.Companion.milliseconds
+
+private const val MONTH_REVIEW_BANNER_ID = "month-in-review"
+private const val MONTH_REVIEW_LINK_SOURCE = "mir-banner"
 
 @Suppress("UNCHECKED_CAST")
 internal class HomeViewModel(
     private val dismissWelcomeUseCase: DismissWelcomeBannerUseCase,
+    private val monthReviewBannerUseCase: MonthReviewBannerUseCase,
     private val getUserUsageUseCase: GetUserUsageUseCase,
     private val loadWhatsNewUseCase: LoadWhatsNewUseCase,
     private val filterManager: GlobalFilterManager,
@@ -51,6 +59,7 @@ internal class HomeViewModel(
     private val modeState = MutableStateFlow(initialMode)
     private val userState = MutableStateFlow(initialState.user)
     private val welcomeBannerState = MutableStateFlow(initialState.welcomeBanner)
+    private val monthReviewState = MutableStateFlow(initialState.monthReview)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
     private val calendarViewState = MutableStateFlow(initialState.calendarView)
 
@@ -70,6 +79,7 @@ internal class HomeViewModel(
             .distinctUntilChanged()
             .onEach { user ->
                 loadData()
+                loadMonthReview(user)
                 userState.update {
                     UserState(
                         user = user,
@@ -126,6 +136,53 @@ internal class HomeViewModel(
         }
     }
 
+    private fun loadMonthReview(user: User?) {
+        viewModelScope.launch {
+            try {
+                monthReviewState.update {
+                    if (user?.isAnyVip == true) {
+                        monthReviewBannerUseCase.getBannerMonth(nowLocalDay())
+                    } else {
+                        null
+                    }
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun refreshMonthReview() {
+        val user = userState.value.user ?: return
+        loadMonthReview(user)
+    }
+
+    fun openMonthReview(target: String) {
+        analytics.logLink(
+            source = MONTH_REVIEW_LINK_SOURCE,
+            target = target,
+        )
+    }
+
+    fun dismissMonthReview() {
+        viewModelScope.launch {
+            try {
+                monthReviewState.update { null }
+                val value = monthReviewBannerUseCase.dismissBanner(nowLocalDay())
+                analytics.logBannerDismiss(
+                    id = MONTH_REVIEW_BANNER_ID,
+                    value = value,
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     private fun loadWhatsNew() {
         viewModelScope.launch {
             try {
@@ -164,6 +221,7 @@ internal class HomeViewModel(
         collectionStateProvider.stateFlow,
         whatsNewState,
         calendarViewState,
+        monthReviewState,
     ) { state ->
         HomeState(
             mode = state[0] as MediaMode,
@@ -172,6 +230,7 @@ internal class HomeViewModel(
             collection = state[3] as UserCollectionState,
             whatsNew = state[4] as WhatsNew?,
             calendarView = state[5] as CalendarView,
+            monthReview = state[6] as YearMonth?,
         )
     }.stateIn(
         scope = viewModelScope,

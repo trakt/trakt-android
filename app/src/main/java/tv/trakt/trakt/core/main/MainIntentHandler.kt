@@ -11,6 +11,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.Config.webMonthReviewUrl
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType.Episode
@@ -34,6 +36,8 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigate
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EXTRAS
+import tv.trakt.trakt.core.notifications.data.work.mir.INTENT_NOTIFICATION_MONTH_REVIEW_EXTRAS
+import tv.trakt.trakt.core.notifications.model.MonthReviewIntentExtras
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.search.navigation.SearchDestination
@@ -46,6 +50,7 @@ import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.INTENT_WIDGET_TARGET_EXTRA
 import tv.trakt.trakt.widgets.WidgetIntentTarget
+import java.time.YearMonth
 
 @Composable
 internal fun LaunchedIntentHandler(
@@ -55,7 +60,9 @@ internal fun LaunchedIntentHandler(
     currentDestination: NavBackStackEntry?,
     searchState: MainSearchStateHolder,
     onAppLink: (AppLink) -> Unit,
+    onMonthReviewOpen: (YearMonth) -> Unit,
 ) {
+    val uriHandler = LocalUriHandler.current
     var pendingSearchQuery by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(intent, newIntent) {
@@ -85,6 +92,16 @@ internal fun LaunchedIntentHandler(
         handleNotificationIntent(
             intent = currentIntent,
             navController = navController,
+            onMonthReview = { review ->
+                uriHandler.openUri(
+                    webMonthReviewUrl(
+                        user = review.userSlug,
+                        month = review.month,
+                        year = review.year,
+                    ),
+                )
+                onMonthReviewOpen(YearMonth.of(review.year, review.month))
+            },
         )
 
         handleWidgetIntent(
@@ -284,6 +301,7 @@ private fun handleWidgetIntent(
 private fun handleNotificationIntent(
     intent: Intent?,
     navController: NavController,
+    onMonthReview: (MonthReviewIntentExtras) -> Unit,
 ) {
     val extras = intent?.extras
     Timber.d("Handling notification intent with extras: ${intent?.extras}")
@@ -311,6 +329,16 @@ private fun handleNotificationIntent(
             mediaTitle = triviaExtras.mediaTitle,
             navSource = "check_in_notif",
         )
+        return
+    }
+
+    if (extras?.containsKey(INTENT_NOTIFICATION_MONTH_REVIEW_EXTRAS) == true) {
+        val extrasJson = extras.getString(INTENT_NOTIFICATION_MONTH_REVIEW_EXTRAS)
+        if (extrasJson.isNullOrBlank()) {
+            return
+        }
+
+        onMonthReview(Json.decodeFromString<MonthReviewIntentExtras>(extrasJson))
         return
     }
 

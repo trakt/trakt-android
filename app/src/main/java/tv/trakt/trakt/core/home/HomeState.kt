@@ -7,12 +7,14 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.calendar.model.CalendarView
+import java.time.YearMonth
 
 @Immutable
 internal data class HomeState(
     val mode: MediaMode? = null,
     val user: UserState = UserState(),
     val welcomeBanner: Boolean = false,
+    val monthReview: YearMonth? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val whatsNew: WhatsNew? = null,
     val calendarView: CalendarView = CalendarView.Weekly,

@@ -27,6 +27,12 @@ enum class TraktNotificationChannel(
         description = "Notifications related to your current watching activity",
         importance = NotificationManager.IMPORTANCE_DEFAULT,
     ),
+    MONTH_REVIEW(
+        id = "id_channel_month_review",
+        title = "Month in Review",
+        description = "Monthly watching recap notifications",
+        importance = NotificationManager.IMPORTANCE_DEFAULT,
+    ),
     ;
 
     fun createChannel(): NotificationChannel {

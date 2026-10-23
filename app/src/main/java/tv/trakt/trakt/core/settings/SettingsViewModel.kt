@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotificationWorker
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
@@ -225,6 +226,7 @@ internal class SettingsViewModel(
                     ScheduleNotificationsWorker.schedule(appContext)
                 } else {
                     ScheduleNotificationsWorker.clear(appContext)
+                    ScheduleMonthReviewNotificationWorker.clear(appContext)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

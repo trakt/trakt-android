@@ -13,8 +13,11 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.D
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SERVICE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SETTINGS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SOURCE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TARGET
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_THEME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TYPE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_VALUE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_BANNER_DISMISS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_BLOCK
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_CALENDAR_PERIOD
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_COVER_IMAGE
@@ -22,6 +25,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DRILLDOWN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_FILTER
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_FOLLOW
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LINK
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LOGIN_COMPLETE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LOGIN_FAILED
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_LOGIN_START
@@ -218,5 +222,19 @@ internal class HalAnalytics(
             type?.let { put(DIM_TYPE, it) }
         }
         events.track(EVENT_DRILLDOWN, dims = dims)
+    }
+
+    override fun logLink(
+        source: String,
+        target: String,
+    ) {
+        events.track(EVENT_LINK, dims = mapOf(DIM_SOURCE to source, DIM_TARGET to target))
+    }
+
+    override fun logBannerDismiss(
+        id: String,
+        value: String,
+    ) {
+        events.track(EVENT_BANNER_DISMISS, dims = mapOf(DIM_ID to id, DIM_VALUE to value))
     }
 }

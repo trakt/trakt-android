@@ -35,7 +35,7 @@ import tv.trakt.trakt.resources.R
 import java.time.Duration
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-private const val MAIN_ACTIVITY_PATH = "tv.trakt.trakt.MainActivity"
+internal const val MAIN_ACTIVITY_PATH = "tv.trakt.trakt.MainActivity"
 private const val WORK_ID = "post_notif_work"
 internal const val WORK_NOTIFICATION_TAG = "post_notif_work_tag"
 

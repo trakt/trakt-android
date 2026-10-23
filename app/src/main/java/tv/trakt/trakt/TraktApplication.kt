@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.CHECK_IN
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.MEDIA
+import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.RECAP
 import tv.trakt.trakt.core.notifications.di.notificationsModule
 import tv.trakt.trakt.core.people.di.peopleModule
 import tv.trakt.trakt.core.profile.di.profileDataModule
@@ -229,8 +230,9 @@ internal class TraktApplication : Application() {
             notificationManager
                 .createNotificationChannel(
                     channel.createChannel().apply {
-                        group = when {
-                            channel == TraktNotificationChannel.CHECK_IN -> CHECK_IN.id
+                        group = when (channel) {
+                            TraktNotificationChannel.CHECK_IN -> CHECK_IN.id
+                            TraktNotificationChannel.MONTH_REVIEW -> RECAP.id
                             else -> MEDIA.id
                         }
                     },

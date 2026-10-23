@@ -54,10 +54,12 @@ import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.home.sections.monthreview.usecases.MonthReviewBannerUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
 import tv.trakt.trakt.core.main.usecases.YearInReviewBannerUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotificationWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
@@ -65,8 +67,11 @@ import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.widgets.data.WidgetsUpdater
 import java.time.Instant
+import java.time.YearMonth
 import java.time.temporal.ChronoUnit.MINUTES
 import kotlin.time.Duration.Companion.milliseconds
+
+private const val MONTH_REVIEW_NOTIFICATION_SOURCE = "mir-notification"
 
 @OptIn(FlowPreview::class)
 internal class MainViewModel(
@@ -86,6 +91,7 @@ internal class MainViewModel(
     private val inAppReviewUseCase: RequestAppReviewUseCase,
     private val installPromptUseCase: InstallPromptUseCase,
     private val yearInReviewBannerUseCase: YearInReviewBannerUseCase,
+    private val monthReviewBannerUseCase: MonthReviewBannerUseCase,
     private val inAppUpdateManager: AppUpdateManager,
     private val errorsManager: GlobalErrorsManager,
     private val widgetsUpdates: WidgetsUpdater,
@@ -311,11 +317,30 @@ internal class MainViewModel(
         }
     }
 
-    fun loadNotifications(context: Context) {
+    fun loadNotifications() {
         ScheduleNotificationsWorker.schedule(
-            appContext = context.applicationContext,
+            appContext = appContext,
             forceRemote = true,
         )
+        ScheduleMonthReviewNotificationWorker.schedule(
+            appContext = appContext,
+        )
+    }
+
+    fun openMonthReviewNotification(month: YearMonth) {
+        viewModelScope.launch {
+            try {
+                monthReviewBannerUseCase.dismissBanner(month.plusMonths(1).atDay(1))
+                analytics.logLink(
+                    source = MONTH_REVIEW_NOTIFICATION_SOURCE,
+                    target = "/users/me/mir/${month.year}/${month.monthValue}",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     fun loadCheckIn() {

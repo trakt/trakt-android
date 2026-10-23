@@ -5,7 +5,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -22,7 +21,7 @@ internal fun CalendarViewToggle(
 
     Icon(
         painter = painterResource(target.iconRes),
-        contentDescription = stringResource(target.textRes),
+        contentDescription = null,
         tint = TraktTheme.colors.textPrimary,
         modifier = modifier
             .size(25.dp)

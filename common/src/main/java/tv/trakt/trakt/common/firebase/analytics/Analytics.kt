@@ -199,6 +199,26 @@ interface Analytics {
         type: String?,
     )
 
+    /**
+     * Logs opening a promotional link, such as a banner.
+     * @param source The surface the link lives on (mir-banner).
+     * @param target The opened route.
+     */
+    fun logLink(
+        source: String,
+        target: String,
+    )
+
+    /**
+     * Logs dismissing a banner.
+     * @param id The banner id (month-in-review).
+     * @param value The banner period that was dismissed.
+     */
+    fun logBannerDismiss(
+        id: String,
+        value: String,
+    )
+
     enum class CommentContent {
         Text,
         Gif,

@@ -9,6 +9,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION_CODES.TIRAMISU
 import android.provider.Settings.ACTION_APP_LOCALE_SETTINGS
+import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
+import android.provider.Settings.EXTRA_APP_PACKAGE
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
@@ -859,6 +861,16 @@ private fun SettingsNotifications(
             text = stringResource(R.string.text_settings_adjust_delivery),
             onClick = {
                 adjustTimeSheet = true
+            },
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.text_all_settings),
+            onClick = {
+                val intent = Intent(ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                    putExtra(EXTRA_APP_PACKAGE, context.packageName)
+                }
+                context.startActivity(intent)
             },
         )
     }

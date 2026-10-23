@@ -64,6 +64,8 @@ internal object HalContract {
     const val EVENT_SPOILER_REVEAL = "action.spoiler-reveal"
     const val EVENT_GIF_PICKER = "action.gif-picker"
     const val EVENT_DRILLDOWN = "action.drilldown"
+    const val EVENT_LINK = "action.link"
+    const val EVENT_BANNER_DISMISS = "banner-action.dismiss"
 
     const val DIM_ROUTE = "route"
     const val DIM_SOURCE = "source"
@@ -84,6 +86,8 @@ internal object HalContract {
     const val DIM_SORT_BY = "sortBy"
     const val DIM_SORT_HOW = "sortHow"
     const val DIM_SERVICE = "service"
+    const val DIM_TARGET = "target"
+    const val DIM_VALUE = "value"
 
     const val METRIC_RATING = "rating"
     const val METRIC_DURATION = "duration"

@@ -14,6 +14,10 @@ enum class TraktNotificationChannelGroup(
         id = "id_channel_group_checkin",
         title = "Now Watching (Check In)",
     ),
+    RECAP(
+        id = "id_channel_group_recap",
+        title = "Recap",
+    ),
     ;
 
     fun createChannelGroup(): NotificationChannelGroup {
