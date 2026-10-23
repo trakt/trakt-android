@@ -6,10 +6,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,14 +23,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,8 +39,10 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.billing.model.VipUsageLimit
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -44,8 +50,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private const val COLLAPSED_ITEMS = 3
 private const val FREE_ZONE_FRACTION = 0.3F
 
-private val BarHeight = 16.dp
-private val VipZoneOverlap = 24.dp
+private val BarHeight = 8.dp
+private val BarGap = 4.dp
+private val StopIndicatorSize = 4.dp
 private val TouchTargetSize = 48.dp
 
 @Composable
@@ -97,8 +104,11 @@ internal fun VipUsageLimitsView(
 
 @Composable
 private fun VipUsageLimitItem(limit: VipUsageLimit) {
+    val isOverLimit = limit.current > limit.free
+    val hasVipZone = limit.vip != limit.free
+
     Column(
-        verticalArrangement = spacedBy(6.dp),
+        verticalArrangement = spacedBy(8.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -113,28 +123,67 @@ private fun VipUsageLimitItem(limit: VipUsageLimit) {
             Text(
                 text = "${rememberNumberFormat(limit.current)} / ${rememberNumberFormat(limit.free)}",
                 style = TraktTheme.typography.paragraphSmall,
-                color = TraktTheme.colors.textSecondary,
+                color = if (isOverLimit) Red400 else TraktTheme.colors.textSecondary,
             )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            if (hasVipZone) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(2.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.tag_text_vip),
+                        style = TraktTheme.typography.meta,
+                        color = TraktTheme.colors.textPrimary,
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_back_arrow),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .rotate(180F)
+                            .size(12.dp),
+                    )
+                    Text(
+                        text = rememberNumberFormat(limit.vip),
+                        style = TraktTheme.typography.meta,
+                        color = TraktTheme.colors.textPrimary,
+                    )
+                }
+            }
         }
 
-        VipUsageBar(limit = limit)
+        VipUsageBar(
+            limit = limit,
+            hasVipZone = hasVipZone,
+            isOverLimit = isOverLimit,
+        )
     }
 }
 
 @Composable
-private fun VipUsageBar(limit: VipUsageLimit) {
-    val barColor = TraktTheme.colors.vipAccent
-    val fillColor = if (limit.current > limit.free) Red500 else barColor
-    val hasVipZone = limit.vip != limit.free
+private fun VipUsageBar(
+    limit: VipUsageLimit,
+    hasVipZone: Boolean,
+    isOverLimit: Boolean,
+) {
+    val accent = TraktTheme.colors.vipAccent
+    val colors = UsageBarColors(
+        indicator = if (isOverLimit) Red500 else accent,
+        track = accent.copy(alpha = 0.32F),
+        vipTrack = accent.copy(alpha = 0.12F),
+        stop = accent,
+    )
 
     val zoneFraction = if (hasVipZone) FREE_ZONE_FRACTION else 1F
     val progress = when {
         limit.free <= 0 -> 0F
-        else -> (limit.current.toFloat() / limit.free).coerceIn(0F, 1F) * zoneFraction
+        else -> (limit.current.toFloat() / limit.free).coerceIn(0F, 1F)
     }
 
-    Box(
-        contentAlignment = Alignment.CenterEnd,
+    Spacer(
         modifier = Modifier
             .fillMaxWidth()
             .height(BarHeight)
@@ -142,95 +191,77 @@ private fun VipUsageBar(limit: VipUsageLimit) {
                 val mirror = if (layoutDirection == LayoutDirection.Rtl) -1F else 1F
                 scale(scaleX = mirror, scaleY = 1F) {
                     drawUsageBar(
-                        hasVipZone = hasVipZone,
                         zoneFraction = zoneFraction,
                         progress = progress,
-                        barColor = barColor,
-                        fillColor = fillColor,
+                        hasVipZone = hasVipZone,
+                        colors = colors,
                     )
                 }
             },
-    ) {
-        if (hasVipZone) {
-            Text(
-                text = rememberNumberFormat(limit.vip),
-                style = TraktTheme.typography.meta,
-                color = TraktTheme.colors.textSecondary,
-                modifier = Modifier.padding(end = 8.dp),
-            )
-        }
-    }
+    )
 }
 
+private data class UsageBarColors(
+    val indicator: Color,
+    val track: Color,
+    val vipTrack: Color,
+    val stop: Color,
+)
+
 private fun DrawScope.drawUsageBar(
-    hasVipZone: Boolean,
     zoneFraction: Float,
     progress: Float,
-    barColor: Color,
-    fillColor: Color,
+    hasVipZone: Boolean,
+    colors: UsageBarColors,
 ) {
-    val radius = CornerRadius(size.height / 2)
-    val borderColor = barColor.copy(alpha = 0.3F)
+    val height = size.height
+    val radius = CornerRadius(height / 2)
+    val gap = BarGap.toPx()
+    val zoneEnd = size.width * zoneFraction
 
-    if (hasVipZone) {
-        val start = size.width * zoneFraction - VipZoneOverlap.toPx()
-        drawZoneBorder(
-            color = borderColor,
-            start = start,
-            end = size.width,
-            radius = radius,
-            dashed = true,
+    val indicatorEnd = if (progress > 0F) (zoneEnd * progress).coerceAtLeast(height) else 0F
+    if (indicatorEnd > 0F) {
+        drawRoundRect(
+            color = colors.indicator,
+            size = Size(indicatorEnd, height),
+            cornerRadius = radius,
         )
     }
 
-    val zoneWidth = size.width * zoneFraction
-    drawRoundRect(
-        color = barColor.copy(alpha = 0.15F),
-        size = Size(zoneWidth, size.height),
-        cornerRadius = radius,
-    )
-    drawZoneBorder(
-        color = borderColor,
-        start = 0F,
-        end = zoneWidth,
-        radius = radius,
-        dashed = false,
-    )
-
-    if (progress > 0F) {
+    val trackStart = if (indicatorEnd > 0F) indicatorEnd + gap else 0F
+    if (progress < 1F && zoneEnd - trackStart > 0F) {
         drawRoundRect(
-            color = fillColor,
-            size = Size(size.width * progress, size.height),
+            color = colors.track,
+            topLeft = Offset(trackStart, 0F),
+            size = Size(zoneEnd - trackStart, height),
+            cornerRadius = radius,
+        )
+        drawCircle(
+            color = colors.stop,
+            radius = StopIndicatorSize.toPx() / 2,
+            center = Offset(zoneEnd - height / 2, height / 2),
+        )
+    }
+
+    if (hasVipZone) {
+        val vipStart = zoneEnd + gap
+        drawRoundRect(
+            color = colors.vipTrack,
+            topLeft = Offset(vipStart, 0F),
+            size = Size(size.width - vipStart, height),
             cornerRadius = radius,
         )
     }
 }
 
-private fun DrawScope.drawZoneBorder(
-    color: Color,
-    start: Float,
-    end: Float,
-    radius: CornerRadius,
-    dashed: Boolean,
-) {
-    val strokeWidth = 1.dp.toPx()
-    val inset = strokeWidth / 2
-    drawRoundRect(
-        color = color,
-        topLeft = Offset(start + inset, inset),
-        size = Size(end - start - strokeWidth, size.height - strokeWidth),
-        cornerRadius = radius,
-        style = Stroke(
-            width = strokeWidth,
-            pathEffect = if (dashed) PathEffect.dashPathEffect(floatArrayOf(6F, 4F)) else null,
-        ),
-    )
-}
-
-@Preview(widthDp = 380, showBackground = true, backgroundColor = 0xFF131517)
+@Preview(
+    widthDp = 380,
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         VipUsageLimitsView(
             limits = persistentListOf(
                 VipUsageLimit(R.string.limit_title_total_list_items, current = 64, free = 100, vip = 5000),
