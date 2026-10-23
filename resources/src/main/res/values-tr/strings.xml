@@ -123,7 +123,7 @@
   <string name="button_label_filter_settings">%s ayarları</string>
   <string name="button_label_filter_settings_modified">%s ayarları, değiştirildi</string>
   <string name="button_label_filters">Filtreler</string>
-  <string name="button_label_finish_season">%1$s için kalan %2$d bölümü izlendi olarak işaretle</string>
+  <string name="button_label_finish_season">Kalan %1$d bölümü (%2$s) izlendi olarak işaretle</string>
   <string name="button_label_follow">%s takip et</string>
   <string name="button_label_follow_requests">Takip istekleri</string>
   <string name="button_label_followers">Takipçiler</string>

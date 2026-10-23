@@ -123,7 +123,7 @@
   <string name="button_label_filter_settings">%s の設定</string>
   <string name="button_label_filter_settings_modified">%s の設定、変更済み</string>
   <string name="button_label_filters">フィルター</string>
-  <string name="button_label_finish_season">%1$sの残り%2$dエピソードを視聴済みにする</string>
+  <string name="button_label_finish_season">残りの%1$dエピソード（%2$s）を視聴済みにする</string>
   <string name="button_label_follow">%sをフォロー</string>
   <string name="button_label_follow_requests">フォローリクエスト</string>
   <string name="button_label_followers">フォロワー</string>

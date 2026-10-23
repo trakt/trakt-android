@@ -123,7 +123,7 @@
   <string name="button_label_filter_settings">%s 设置</string>
   <string name="button_label_filter_settings_modified">%s 设置，已更改</string>
   <string name="button_label_filters">筛选器</string>
-  <string name="button_label_finish_season">将 %1$s 剩余的 %2$d 集标记为已看</string>
+  <string name="button_label_finish_season">将剩余的 %1$d 集（%2$s）标记为已看</string>
   <string name="button_label_follow">关注 %s</string>
   <string name="button_label_follow_requests">关注请求</string>
   <string name="button_label_followers">关注者</string>

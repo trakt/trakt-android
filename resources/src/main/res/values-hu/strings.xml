@@ -123,7 +123,7 @@
   <string name="button_label_filter_settings">%s beállítások</string>
   <string name="button_label_filter_settings_modified">%s beállítások, módosítva</string>
   <string name="button_label_filters">Szűrők</string>
-  <string name="button_label_finish_season">%1$s hátralévő %2$d epizódjának megjelölése megnézettként</string>
+  <string name="button_label_finish_season">A hátralévő %1$d epizód megjelölése megnézettként (%2$s)</string>
   <string name="button_label_follow">%s követése</string>
   <string name="button_label_follow_requests">Követési kérelmek</string>
   <string name="button_label_followers">Követők</string>
