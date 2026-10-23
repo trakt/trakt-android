@@ -50,6 +50,7 @@ import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.INTENT_WIDGET_TARGET_EXTRA
 import tv.trakt.trakt.widgets.WidgetIntentTarget
+import java.time.YearMonth
 
 @Composable
 internal fun LaunchedIntentHandler(
@@ -59,7 +60,7 @@ internal fun LaunchedIntentHandler(
     currentDestination: NavBackStackEntry?,
     searchState: MainSearchStateHolder,
     onAppLink: (AppLink) -> Unit,
-    onMonthReviewOpen: (target: String) -> Unit,
+    onMonthReviewOpen: (YearMonth) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
     var pendingSearchQuery by remember { mutableStateOf<String?>(null) }
@@ -99,7 +100,7 @@ internal fun LaunchedIntentHandler(
                         year = review.year,
                     ),
                 )
-                onMonthReviewOpen("/users/me/mir/${review.year}/${review.month}")
+                onMonthReviewOpen(YearMonth.of(review.year, review.month))
             },
         )
 

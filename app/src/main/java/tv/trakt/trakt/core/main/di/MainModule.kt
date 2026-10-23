@@ -97,6 +97,7 @@ internal val mainModule = module {
             inAppReviewUseCase = get(),
             installPromptUseCase = get(),
             yearInReviewBannerUseCase = get(),
+            monthReviewBannerUseCase = get(),
             inAppUpdateManager = get(),
             errorsManager = get(),
             widgetsUpdates = get(),
