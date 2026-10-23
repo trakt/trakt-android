@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.billing.ui
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.billing.model.VipUsageLimit
@@ -54,14 +57,30 @@ private val BarHeight = 8.dp
 private val BarGap = 4.dp
 private val StopIndicatorSize = 4.dp
 private val TouchTargetSize = 48.dp
+private val LoadingIndicatorSize = 32.dp
+
+private val PlaceholderLimits = persistentListOf(
+    VipUsageLimit(R.string.limit_title_total_list_items, current = 0, free = 1, vip = 2),
+    VipUsageLimit(R.string.limit_title_watchlist_items, current = 0, free = 1, vip = 2),
+    VipUsageLimit(R.string.limit_title_smart_lists, current = 0, free = 1, vip = 2),
+    VipUsageLimit(R.string.limit_title_personal_lists, current = 0, free = 1, vip = 2),
+    VipUsageLimit(R.string.limit_title_digital_library, current = 0, free = 1, vip = 2),
+)
 
 @Composable
 internal fun VipUsageLimitsView(
-    limits: ImmutableList<VipUsageLimit>,
+    limits: ImmutableList<VipUsageLimit>?,
+    loading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
-    val visibleLimits = if (expanded) limits else limits.take(COLLAPSED_ITEMS)
+    val contentAlpha by animateFloatAsState(
+        targetValue = if (loading) 0F else 1F,
+        label = "contentAlpha",
+    )
+
+    val displayLimits = if (loading) PlaceholderLimits else limits ?: persistentListOf()
+    val visibleLimits = if (expanded) displayLimits else displayLimits.take(COLLAPSED_ITEMS)
 
     Column(
         verticalArrangement = spacedBy(16.dp),
@@ -75,28 +94,46 @@ internal fun VipUsageLimitsView(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        visibleLimits.forEach { limit ->
-            VipUsageLimitItem(limit = limit)
-        }
-
-        if (limits.size > COLLAPSED_ITEMS && !expanded) {
-            Box(
-                contentAlignment = Alignment.Center,
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Column(
+                verticalArrangement = spacedBy(16.dp),
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .heightIn(min = TouchTargetSize)
-                    .padding(horizontal = 16.dp),
+                    .fillMaxWidth()
+                    .graphicsLayer { alpha = contentAlpha },
             ) {
-                FilterChip(
-                    selected = false,
-                    text = stringResource(R.string.button_label_see_more_limits),
-                    height = 36.dp,
-                    paddingHorizontal = PaddingValues(
-                        start = 12.dp,
-                        end = 16.dp,
-                    ),
-                    onClick = { expanded = true },
-                )
+                visibleLimits.forEach { limit ->
+                    VipUsageLimitItem(limit = limit)
+                }
+
+                if (displayLimits.size > COLLAPSED_ITEMS && !expanded) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .heightIn(min = TouchTargetSize)
+                            .padding(horizontal = 16.dp),
+                    ) {
+                        FilterChip(
+                            selected = false,
+                            text = stringResource(R.string.button_label_see_more_limits),
+                            height = 36.dp,
+                            paddingHorizontal = PaddingValues(
+                                start = 12.dp,
+                                end = 16.dp,
+                            ),
+                            onClick = {
+                                if (!loading) expanded = true
+                            },
+                        )
+                    }
+                }
+            }
+
+            if (loading) {
+                FilmProgressIndicator(size = LoadingIndicatorSize)
             }
         }
     }
@@ -269,6 +306,23 @@ private fun Preview() {
                 VipUsageLimit(R.string.limit_title_smart_lists, current = 1, free = 2, vip = 20),
                 VipUsageLimit(R.string.limit_title_personal_lists, current = 2, free = 2, vip = 2),
             ),
+            loading = false,
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+@Preview(
+    widthDp = 380,
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun LoadingPreview() {
+    TraktThemeLightDark {
+        VipUsageLimitsView(
+            limits = null,
+            loading = true,
             modifier = Modifier.padding(16.dp),
         )
     }

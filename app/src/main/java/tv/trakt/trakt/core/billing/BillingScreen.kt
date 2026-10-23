@@ -205,8 +205,10 @@ private fun BillingScreen(
                     .height(spacerHeight),
             )
 
+            val showLimits = state.user?.isVip != true
             VipOfferView(
-                limits = state.limits.takeIf { state.user?.isVip != true },
+                limits = state.limits.takeIf { showLimits },
+                limitsLoading = showLimits && !state.loadingLimits.isDone,
                 modifier = Modifier
                     .padding(bottom = 272.dp),
             )
@@ -324,6 +326,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 @Composable
 private fun VipOfferView(
     limits: ImmutableList<VipUsageLimit>?,
+    limitsLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -439,9 +442,10 @@ private fun VipOfferView(
             )
         }
 
-        if (!limits.isNullOrEmpty()) {
+        if (limitsLoading || !limits.isNullOrEmpty()) {
             VipUsageLimitsView(
                 limits = limits,
+                loading = limitsLoading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -781,6 +785,7 @@ private fun Preview() {
                     VipUsageLimit(R.string.limit_title_watchlist_items, current = 120, free = 100, vip = 5000),
                     VipUsageLimit(R.string.limit_title_smart_lists, current = 1, free = 2, vip = 20),
                 ),
+                loadingLimits = LoadingState.Done,
             ),
         )
     }

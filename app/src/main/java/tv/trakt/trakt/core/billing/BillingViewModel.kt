@@ -83,6 +83,7 @@ internal class BillingViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val productsState = MutableStateFlow(initialState.products)
     private val limitsState = MutableStateFlow(initialState.limits)
+    private val loadingLimitsState = MutableStateFlow(initialState.loadingLimits)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -163,6 +164,7 @@ internal class BillingViewModel(
 
     private fun loadLimits() {
         viewModelScope.launch {
+            loadingLimitsState.update { LoadingState.Loading }
             try {
                 limitsState.update {
                     getUsageLimitsUseCase.getLimits()
@@ -172,6 +174,7 @@ internal class BillingViewModel(
                     Timber.recordError(error)
                 }
             }
+            loadingLimitsState.update { LoadingState.Done }
         }
     }
 
@@ -456,6 +459,7 @@ internal class BillingViewModel(
         loadingState,
         errorState,
         limitsState,
+        loadingLimitsState,
     ) { state ->
         BillingState(
             user = state[0] as User?,
@@ -463,6 +467,7 @@ internal class BillingViewModel(
             loading = state[2] as LoadingState,
             error = state[3] as Exception?,
             limits = state[4] as ImmutableList<VipUsageLimit>?,
+            loadingLimits = state[5] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

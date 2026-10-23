@@ -12,6 +12,7 @@ internal data class BillingState(
     val user: User? = null,
     val products: ImmutableList<ProductDetails>? = null,
     val limits: ImmutableList<VipUsageLimit>? = null,
+    val loadingLimits: LoadingState = LoadingState.Idle,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )
