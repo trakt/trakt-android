@@ -35,7 +35,9 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Shade10
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.YearMonth
 import java.time.format.TextStyle
@@ -44,10 +46,13 @@ import java.util.Locale
 private val BannerBase = Shade900
 private val BannerPill = Purple600
 private val BannerForeground = Shade10
-private val BannerShape = RoundedCornerShape(16.dp)
-private val BannerHeight = 52.dp
+private val BannerRadius = 24.dp
+private val BannerShape = DefaultCardShape
+private val BannerHeight = 64.dp
+private val PillInset = 6.dp
+private val PillShape = RoundedCornerShape(BannerRadius - PillInset)
 private val PillMinWidth = 80.dp
-private val TouchTargetSize = 48.dp
+private val TouchTargetSize = 42.dp
 
 @Composable
 internal fun HomeMonthReviewView(
@@ -69,7 +74,7 @@ internal fun HomeMonthReviewView(
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .heightIn(min = BannerHeight)
-            .shadow(4.dp, BannerShape)
+            .shadow(TraktTheme.colors.shadowSmall, BannerShape)
             .background(BannerBase, BannerShape)
             .border(1.dp, BannerForeground.copy(alpha = 0.08F), BannerShape)
             .clip(BannerShape),
@@ -86,9 +91,10 @@ internal fun HomeMonthReviewView(
                 verticalArrangement = spacedBy(1.dp, Alignment.CenterVertically),
                 modifier = Modifier
                     .fillMaxHeight()
+                    .padding(PillInset)
                     .widthIn(min = PillMinWidth)
-                    .background(BannerPill)
-                    .padding(horizontal = 12.dp, vertical = 6.dp),
+                    .background(BannerPill, PillShape)
+                    .padding(horizontal = 12.dp, vertical = 4.dp),
             ) {
                 Text(
                     text = monthName,
@@ -106,7 +112,7 @@ internal fun HomeMonthReviewView(
 
             Text(
                 text = stringResource(R.string.mir_banner_body_short, monthName),
-                color = BannerForeground.copy(alpha = 0.9F),
+                color = BannerForeground,
                 style = TraktTheme.typography.paragraphSmall,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
@@ -134,10 +140,10 @@ internal fun HomeMonthReviewView(
     }
 }
 
-@Preview(widthDp = 380)
+@Preview(device = "id:pixel")
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         HomeMonthReviewView(
             month = YearMonth.of(2026, 9),
             modifier = Modifier.padding(16.dp),
