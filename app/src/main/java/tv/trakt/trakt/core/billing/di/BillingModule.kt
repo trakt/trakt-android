@@ -5,10 +5,12 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.core.billing.BillingViewModel
+import tv.trakt.trakt.core.billing.usecases.GetVipUsageLimitsUseCase
 import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
 
 internal val billingModule = module {
     factoryOf(::VerifyPurchaseUseCase)
+    factoryOf(::GetVipUsageLimitsUseCase)
 
     viewModel {
         BillingViewModel(
@@ -18,6 +20,7 @@ internal val billingModule = module {
             analytics = get(),
             verifyPurchaseUseCase = get(),
             loadUserUseCase = get(),
+            getUsageLimitsUseCase = get(),
         )
     }
 }

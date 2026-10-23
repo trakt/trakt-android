@@ -55,8 +55,10 @@ import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.core.billing.model.VipBillingProduct
+import tv.trakt.trakt.core.billing.model.VipUsageLimit
 import tv.trakt.trakt.core.billing.model.toVipFailureCode
 import tv.trakt.trakt.core.billing.navigation.BillingDestination
+import tv.trakt.trakt.core.billing.usecases.GetVipUsageLimitsUseCase
 import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import kotlin.time.Duration.Companion.milliseconds
@@ -65,7 +67,6 @@ private const val VIP_FLOW = "new"
 private const val KEY_OPEN_LOGGED = "vip_open_logged"
 private const val KEY_PENDING_PLAN = "vip_pending_plan"
 
-// The paywall opens on its own after login and at a VIP limit, so those opens are not upsell taps.
 private val AUTO_OPEN_SOURCES = setOf("onboarding", "vip-limit")
 
 internal class BillingViewModel(
@@ -75,11 +76,14 @@ internal class BillingViewModel(
     private val sessionManager: SessionManager,
     private val verifyPurchaseUseCase: VerifyPurchaseUseCase,
     private val loadUserUseCase: LoadUserProfileUseCase,
+    private val getUsageLimitsUseCase: GetVipUsageLimitsUseCase,
 ) : ViewModel() {
     private val initialState = BillingState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val productsState = MutableStateFlow(initialState.products)
+    private val limitsState = MutableStateFlow(initialState.limits)
+    private val loadingLimitsState = MutableStateFlow(initialState.loadingLimits)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -128,6 +132,7 @@ internal class BillingViewModel(
 
     init {
         loadUser()
+        loadLimits()
         observeUser()
 
         initPlayBilling()
@@ -154,6 +159,22 @@ internal class BillingViewModel(
             userState.update {
                 sessionManager.getProfile()
             }
+        }
+    }
+
+    private fun loadLimits() {
+        viewModelScope.launch {
+            loadingLimitsState.update { LoadingState.Loading }
+            try {
+                limitsState.update {
+                    getUsageLimitsUseCase.getLimits()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+            loadingLimitsState.update { LoadingState.Done }
         }
     }
 
@@ -437,12 +458,16 @@ internal class BillingViewModel(
         productsState,
         loadingState,
         errorState,
+        limitsState,
+        loadingLimitsState,
     ) { state ->
         BillingState(
             user = state[0] as User?,
             products = state[1] as ImmutableList<ProductDetails>?,
             loading = state[2] as LoadingState,
             error = state[3] as Exception?,
+            limits = state[4] as ImmutableList<VipUsageLimit>?,
+            loadingLimits = state[5] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

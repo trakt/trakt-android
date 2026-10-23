@@ -62,6 +62,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.billingclient.api.ProductDetails
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_VIP_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -74,6 +76,8 @@ import tv.trakt.trakt.core.billing.model.InternalVersionError
 import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
+import tv.trakt.trakt.core.billing.model.VipUsageLimit
+import tv.trakt.trakt.core.billing.ui.VipUsageLimitsView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -201,7 +205,10 @@ private fun BillingScreen(
                     .height(spacerHeight),
             )
 
+            val showLimits = state.user?.isVip != true
             VipOfferView(
+                limits = state.limits.takeIf { showLimits },
+                limitsLoading = showLimits && !state.loadingLimits.isDone,
                 modifier = Modifier
                     .padding(bottom = 272.dp),
             )
@@ -317,7 +324,11 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun VipOfferView(modifier: Modifier = Modifier) {
+private fun VipOfferView(
+    limits: ImmutableList<VipUsageLimit>?,
+    limitsLoading: Boolean,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier,
     ) {
@@ -428,6 +439,17 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 description = stringResource(R.string.vip_feature_description_vip_status),
                 icon = painterResource(R.drawable.ic_vip_crown),
                 iconPadding = 4.dp,
+            )
+        }
+
+        if (limitsLoading || !limits.isNullOrEmpty()) {
+            VipUsageLimitsView(
+                limits = limits,
+                loading = limitsLoading,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .padding(top = 48.dp),
             )
         }
 
@@ -758,6 +780,12 @@ private fun Preview() {
             state = BillingState(
                 user = PreviewData.user1,
                 loading = LoadingState.Idle,
+                limits = persistentListOf(
+                    VipUsageLimit(R.string.limit_title_total_list_items, current = 64, free = 100, vip = 5000),
+                    VipUsageLimit(R.string.limit_title_watchlist_items, current = 120, free = 100, vip = 5000),
+                    VipUsageLimit(R.string.limit_title_smart_lists, current = 1, free = 2, vip = 20),
+                ),
+                loadingLimits = LoadingState.Done,
             ),
         )
     }
