@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.auth.usecase.forceLoginKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotificationWorker
 import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalSource
 import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalSource
@@ -136,6 +137,8 @@ internal class LogoutUserUseCase(
         appReviewUseCase.clear()
 
         ScheduleNotificationsWorker.clear(appContext)
+        ScheduleMonthReviewNotificationWorker.clear(appContext)
+
         WorkManager.getInstance(appContext).cancelAllWork()
 
         analytics.setUserId(null)

@@ -58,6 +58,7 @@ import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
 import tv.trakt.trakt.core.main.usecases.YearInReviewBannerUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotificationWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
@@ -67,6 +68,8 @@ import tv.trakt.trakt.widgets.data.WidgetsUpdater
 import java.time.Instant
 import java.time.temporal.ChronoUnit.MINUTES
 import kotlin.time.Duration.Companion.milliseconds
+
+private const val MONTH_REVIEW_NOTIFICATION_SOURCE = "mir-notification"
 
 @OptIn(FlowPreview::class)
 internal class MainViewModel(
@@ -311,10 +314,20 @@ internal class MainViewModel(
         }
     }
 
-    fun loadNotifications(context: Context) {
+    fun loadNotifications() {
         ScheduleNotificationsWorker.schedule(
-            appContext = context.applicationContext,
+            appContext = appContext,
             forceRemote = true,
+        )
+        ScheduleMonthReviewNotificationWorker.schedule(
+            appContext = appContext,
+        )
+    }
+
+    fun openMonthReviewNotification(target: String) {
+        analytics.logLink(
+            source = MONTH_REVIEW_NOTIFICATION_SOURCE,
+            target = target,
         )
     }
 

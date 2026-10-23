@@ -149,7 +149,7 @@ internal fun MainScreen(
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
         viewModel.loadCheckIn()
-        viewModel.loadNotifications(localContext)
+        viewModel.loadNotifications()
         viewModel.loadYearInReview()
     }
 
@@ -212,6 +212,7 @@ internal fun MainScreen(
         currentDestination = currentDestination.value,
         searchState = searchState,
         onAppLink = appLinkViewModel::openAppLink,
+        onMonthReviewOpen = viewModel::openMonthReviewNotification,
     )
 
     LaunchedEffect(state.error) {
