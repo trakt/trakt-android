@@ -67,7 +67,6 @@ private const val VIP_FLOW = "new"
 private const val KEY_OPEN_LOGGED = "vip_open_logged"
 private const val KEY_PENDING_PLAN = "vip_pending_plan"
 
-// The paywall opens on its own after login and at a VIP limit, so those opens are not upsell taps.
 private val AUTO_OPEN_SOURCES = setOf("onboarding", "vip-limit")
 
 internal class BillingViewModel(
@@ -132,8 +131,8 @@ internal class BillingViewModel(
 
     init {
         loadUser()
-        observeUser()
         loadLimits()
+        observeUser()
 
         initPlayBilling()
         startPlayBilling()

@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,11 +34,11 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.billing.model.VipUsageLimit
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val COLLAPSED_ITEMS = 3
@@ -77,13 +78,17 @@ internal fun VipUsageLimitsView(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .heightIn(min = TouchTargetSize)
-                    .onClick { expanded = true }
                     .padding(horizontal = 16.dp),
             ) {
-                Text(
+                FilterChip(
+                    selected = false,
                     text = stringResource(R.string.button_label_see_more_limits),
-                    style = TraktTheme.typography.buttonSecondary,
-                    color = TraktTheme.colors.textSecondary,
+                    height = 36.dp,
+                    paddingHorizontal = PaddingValues(
+                        start = 12.dp,
+                        end = 16.dp,
+                    ),
+                    onClick = { expanded = true },
                 )
             }
         }

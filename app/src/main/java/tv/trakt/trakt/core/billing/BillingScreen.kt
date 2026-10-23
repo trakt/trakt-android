@@ -444,7 +444,8 @@ private fun VipOfferView(
                 limits = limits,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 56.dp),
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 48.dp),
             )
         }
 
