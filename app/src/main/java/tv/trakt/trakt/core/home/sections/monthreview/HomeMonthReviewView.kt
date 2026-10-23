@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.home.sections.monthreview
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -74,9 +73,8 @@ internal fun HomeMonthReviewView(
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .heightIn(min = BannerHeight)
-            .shadow(TraktTheme.colors.shadowSmall, BannerShape)
+            .shadow(TraktTheme.colors.shadowDefault, BannerShape)
             .background(BannerBase, BannerShape)
-            .border(1.dp, BannerForeground.copy(alpha = 0.08F), BannerShape)
             .clip(BannerShape),
     ) {
         Row(
