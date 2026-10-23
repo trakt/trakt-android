@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">%s-innstillinger</string>
   <string name="button_label_filter_settings_modified">%s-innstillinger, endret</string>
   <string name="button_label_filters">Filtre</string>
+  <string name="button_label_finish_season">Marker de resterende %1$d episodene i %2$s som sett</string>
   <string name="button_label_follow">Følg %s</string>
   <string name="button_label_follow_requests">Følgeforspørsler</string>
   <string name="button_label_followers">Følgere</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Logg ut</string>
   <string name="button_label_manage_collaborators">Administrer samarbeidspartnere for %s</string>
   <string name="button_label_manage_passkey">Administrer Passkey</string>
+  <string name="button_label_manage_progress">Administrer fremdrift for \"%s\"</string>
   <string name="button_label_manage_subscription">Administrer VIP-abonnement</string>
   <string name="button_label_manage_vip">Administrer abonnement</string>
   <string name="button_label_mark_as_watched">Merk \"%s\" som sett</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Søk etter filmer</string>
   <string name="button_label_toggle_search_people">Søk etter personer</string>
   <string name="button_label_toggle_search_shows">Søk etter serier</string>
+  <string name="button_label_toggle_season_episodes">Vis eller skjul episodene i %s</string>
   <string name="button_label_toggle_streaming_countries">Veksle land for %s</string>
   <string name="button_label_trivia_no_spoilers">Ingen spoilere</string>
   <string name="button_label_trivia_spoilers">Spoilere</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finaler</string>
   <string name="button_text_episode_type_premieres">Premierer</string>
   <string name="button_text_exit_edit_mode">Avslutt redigeringsmodus</string>
+  <string name="button_text_finish_season">Fullfør</string>
   <string name="button_text_follow">Følg</string>
   <string name="button_text_follow_requests">Forespørsler</string>
   <string name="button_text_followers">Følgere</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">Vi kunne ikke finne denne IMDb-tittelen på Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">Ikke inkluder brukernavn og passord i adressen.</string>
   <string name="error_text_jellyfin_invalid_credentials">Det brukernavnet og passordet fungerte ikke.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Skriv inn serverens fulle adresse, for eksempel https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Dette er ikke en nettadresse Trakt kan bruke. Skriv inn den offentlige adressen du bruker til å åpne Jellyfin utenfor hjemmet ditt, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect er deaktivert på denne serveren. Slå den på i Jellyfin-dashboardet, eller logg på med passordet ditt.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Bruk serverens domenenavn. Trakt kan ikke nå en bare IP-adresse.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt kan ikke nå en lokal adresse eller IP-adresse. Skriv inn den offentlige adressen du bruker til å åpne Jellyfin utenfor hjemmet ditt, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Gratiskontoer kan synkronisere 1 medieserver. Gå VIP for å legge til flere.</string>
   <string name="error_text_jellyfin_server_not_found">Ingen Jellyfin-server svarte på den adressen. Sjekk den og prøv igjen.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt kan ikke nå den serveren. Sørg for at den er online og tilgjengelig fra internett.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt kan ikke nå den serveren fra internett. Sjekk at Jellyfin er på nett og konfigurert for ekstern tilgang, for eksempel bak en omvendt proxy, og at du har skrevet inn den offentlige adressen.</string>
   <string name="error_text_jellyfin_unsupported_port">Bruk port 80, 443, 8096 eller 8920, eller plasser serveren bak en omvendt proxy.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Start adressen med https:// eller http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Adressen må starte med https:// eller http://. Skriv inn den offentlige adressen du bruker til å åpne Jellyfin utenfor hjemmet ditt, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">Jellyfin-synkronisering er foreløpig en VIP-beta.</string>
   <string name="error_text_lists_limit">Du har nådd grensen for dine personlige lister. Oppgrader til VIP for ubegrenset antall lister!</string>
   <string name="error_text_locked_account_collection_limit">Denne brukerkontoen er blitt låst fordi samlingen har overskredet grensen. Vennligst <a>kontakt support</a> for å løse dette problemet.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Tilkoblede Fellesskapsapper</string>
   <string name="heading_meet_the_team">Møt teamet</string>
   <string name="heading_what_is_trakt">Hva er Trakt?</string>
-  <string name="hint_jellyfin_server_url">Adressen du åpner Jellyfin med. Trakt må kunne nå den fra internett.</string>
+  <string name="hint_jellyfin_server_url">Den offentlige adressen du bruker til å åpne Jellyfin utenfor hjemmet ditt. Trakt kobler til over internett, så lokale adresser og IP-adresser fungerer ikke.</string>
   <string name="hint_media_sync_history_resync">Du kan importere tidligere avspillinger senere fra serverens administrasjonsmeny.</string>
   <string name="image_alt_comment_gif">GIF vedlagt kommentaren</string>
   <string name="image_alt_list_preview_poster">Plakat for et element i %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Kommer snart</string>
   <string name="label_today_day">Velg en dag</string>
   <string name="label_today_grouping">Grupper dagens aktivitet</string>
+  <string name="label_usage_limit_loading">Laster inn bruken din</string>
+  <string name="label_usage_limit_with_vip">%1$s av %2$s, %3$s med VIP</string>
   <string name="limit_title_connected_apps">Tilkoblede apper</string>
   <string name="limit_title_digital_library">Digitalt bibliotek</string>
   <string name="limit_title_personal_lists">Personlige lister</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller for å skjule eller vise konfigurerbare seksjoner i hele appen.</string>
   <string name="preview_feature_description_large_screen_cards">På større skjermer bruker alle lister de samme kortene som resten av appen. Ved å velge ett åpnes en hurtigvisning i stedet for å forlate listen.</string>
+  <string name="preview_feature_description_progress_manager">Sporingsknappen på en serie fylles opp etter hvert som du ser, og åpner en skuff med fremdriften din per sesong og episode.</string>
   <string name="preview_feature_description_rewatch">Start gjensynsøkter for serier du allerede har sett, sjekk inn eller merk episoder som sett direkte fra gjensynsskuffen.</string>
   <string name="preview_feature_description_show_ending">Viser en Avslutning-rad i en series detaljer: Fullført når historien er avsluttet, Uavsluttet når den ikke er det.</string>
   <string name="preview_feature_description_soundtrack">Legger til en lydspor-seksjon på film- og seriesider, med avspilling der et spor kan matches.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en rulle-drevet film med en seerpersona, deretter en statistikkside stylet for å matche den.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
   <string name="preview_feature_title_large_screen_cards">Store skjermkort</string>
+  <string name="preview_feature_title_progress_manager">Fremdriftsbehandler</string>
   <string name="preview_feature_title_rewatch">Gjensyn</string>
   <string name="preview_feature_title_show_ending">Serieavslutning</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Ingenting her ennå. Begynn med titler du allerede har lagret i dine andre lister.</string>
   <string name="text_empty_plex_library">Koble til Plex-kontoen din for å synkronisere Plex-biblioteket ditt med Trakt.</string>
   <string name="text_ends_at">Slutter kl. %s</string>
+  <string name="text_episode_watch_state_unwatched">Episode %d, ikke sett</string>
+  <string name="text_episode_watch_state_upcoming">Episode %d, ikke sendt ennå</string>
+  <string name="text_episode_watch_state_watched">Episode %d, sett</string>
   <string name="text_episodes_short">EPS</string>
   <string name="text_episodes_watched">%s episoder</string>
   <string name="text_export_status_complete">Eksport fullført.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">Din %1$s-årige VIP-rekke avsluttes om %2$s dager</string>
   <string name="text_vip_join_now">Bli med i fellesskapet av seere som behandler hver sesong og hver premiere som en milepæl. Hev statusen din og få nøklene til en mer sofistikert verden av oppdagelser.</string>
   <string name="text_vip_join_now_tagline">Du har sett overflaten, nå er det på tide å se hele bildet.</string>
+  <string name="text_vip_limits_dashed_potential">De stiplede områdene viser potensialet ditt med VIP</string>
   <string name="text_vip_make_it_official">Offisielt, du klarer det!</string>
   <string name="text_vip_manage_failed_title">Kunne ikke åpne abonnementsinnstillingene dine</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Du er nå en %s</string>
   <string name="text_vip_veteran_title_legend">Legende</string>
   <string name="text_vip_veteran_title_veteran">Veteran</string>
+  <string name="text_watch_state_complete">Fullført</string>
+  <string name="text_watch_state_count">%1$d av %2$d</string>
+  <string name="text_watch_state_episodes">episoder</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Ikke sendt ennå</string>
   <string name="text_watch_until_here_episode_count">%d episoder</string>
   <string name="text_watch_until_here_preview_title">Sett tidsstempler</string>
   <string name="text_year_in_review_banner_tagline">Tolv personligheter. Én av dem er deg.</string>

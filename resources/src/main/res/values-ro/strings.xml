@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">Setări %s</string>
   <string name="button_label_filter_settings_modified">Setări %s, modificate</string>
   <string name="button_label_filters">Filtre</string>
+  <string name="button_label_finish_season">Marchează cele %1$d episoade rămase din %2$s ca vizionate</string>
   <string name="button_label_follow">Urmărește-l pe %s</string>
   <string name="button_label_follow_requests">Cereri de urmărire</string>
   <string name="button_label_followers">Urmăritori</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Deconectare</string>
   <string name="button_label_manage_collaborators">Gestionați colaboratorii pentru %s</string>
   <string name="button_label_manage_passkey">Gestionează cheia de acces</string>
+  <string name="button_label_manage_progress">Gestionează progresul pentru „%s”</string>
   <string name="button_label_manage_subscription">Gestionează abonamentul VIP</string>
   <string name="button_label_manage_vip">Gestionează abonamentul</string>
   <string name="button_label_mark_as_watched">Marchează \"%s\" ca vizionat</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Caută filme</string>
   <string name="button_label_toggle_search_people">Căută persoane</string>
   <string name="button_label_toggle_search_shows">Caută seriale</string>
+  <string name="button_label_toggle_season_episodes">Afișează sau ascunde episoadele din %s</string>
   <string name="button_label_toggle_streaming_countries">Comutați țările pentru %s</string>
   <string name="button_label_trivia_no_spoilers">Fără spoilere</string>
   <string name="button_label_trivia_spoilers">Spoilere</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finale</string>
   <string name="button_text_episode_type_premieres">Premiere</string>
   <string name="button_text_exit_edit_mode">Ieși din modul de editare</string>
+  <string name="button_text_finish_season">Finalizează</string>
   <string name="button_text_follow">Urmărește</string>
   <string name="button_text_follow_requests">Cereri</string>
   <string name="button_text_followers">Urmăritori</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">Nu am putut găsi acest titlu IMDb pe Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">Nu includeți numele de utilizator și parola în adresă.</string>
   <string name="error_text_jellyfin_invalid_credentials">Numele de utilizator și parola introduse nu au funcționat.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Introduceți adresa completă a serverului dvs., cum ar fi https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Aceasta nu este o adresă web pe care Trakt o poate folosi. Introdu adresa publică pe care o folosești pentru a deschide Jellyfin din afara casei, de exemplu https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Conectarea Rapidă este dezactivată pe acest server. Activați-o în tabloul de bord Jellyfin, sau conectați-vă cu parola dumneavoastră.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Utilizați numele de domeniu al serverului dvs. Trakt nu poate accesa o adresă IP brută.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt nu poate accesa o adresă locală sau o adresă IP. Introdu adresa publică pe care o folosești pentru a deschide Jellyfin din afara casei, de exemplu https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Conturile gratuite pot sincroniza 1 server media. Treceți la VIP pentru a adăuga mai multe.</string>
   <string name="error_text_jellyfin_server_not_found">Niciun server Jellyfin nu a răspuns la acea adresă. Verificați-o și încercați din nou.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt nu poate accesa acel server. Asigurați-vă că este online și accesibil de pe internet.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt nu poate accesa acel server de pe internet. Verifică dacă Jellyfin este online și configurat pentru acces la distanță, de exemplu în spatele unui reverse proxy, și dacă ai introdus adresa sa publică.</string>
   <string name="error_text_jellyfin_unsupported_port">Utilizați portul 80, 443, 8096 sau 8920, sau plasați serverul în spatele unui proxy invers.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Începeți adresa cu https:// sau http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Adresa trebuie să înceapă cu https:// sau http://. Introdu adresa publică pe care o folosești pentru a deschide Jellyfin din afara casei, de exemplu https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">Sincronizarea Jellyfin este momentan în versiune beta VIP.</string>
   <string name="error_text_lists_limit">Ai atins limita listelor personale. Fă upgrade la VIP pentru liste nelimitate!</string>
   <string name="error_text_locked_account_collection_limit">Acest cont de utilizator a fost blocat deoarece colecția a depășit limita. Vă rugăm să <a>contactați asistența</a> pentru a rezolva această problemă.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Aplicații comunitare conectate</string>
   <string name="heading_meet_the_team">Fă cunoștință cu echipa</string>
   <string name="heading_what_is_trakt">Ce este Trakt?</string>
-  <string name="hint_jellyfin_server_url">Adresa cu care deschideți Jellyfin. Trakt trebuie să o poată accesa de pe internet.</string>
+  <string name="hint_jellyfin_server_url">Adresa publică pe care o folosești pentru a deschide Jellyfin din afara casei. Trakt o accesează prin internet, așa că adresele locale și IP nu vor funcționa.</string>
   <string name="hint_media_sync_history_resync">Poți importa vizionări anterioare mai târziu din meniul Gestionare al serverului.</string>
   <string name="image_alt_comment_gif">GIF atașat comentariului</string>
   <string name="image_alt_list_preview_poster">Afiș pentru o intrare în %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">În curând</string>
   <string name="label_today_day">Alege o zi</string>
   <string name="label_today_grouping">Grupează activitatea de astăzi</string>
+  <string name="label_usage_limit_loading">Se încarcă utilizarea ta</string>
+  <string name="label_usage_limit_with_vip">%1$s din %2$s, %3$s cu VIP</string>
   <string name="limit_title_connected_apps">Aplicații conectate</string>
   <string name="limit_title_digital_library">Bibliotecă digitală</string>
   <string name="limit_title_personal_lists">Liste personale</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">Anul curent</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_large_screen_cards">Pe ecrane mai mari, toate listele folosesc aceleași carduri ca și restul aplicației. Selectarea unui card deschide o vizualizare rapidă, în loc să părăsească lista.</string>
+  <string name="preview_feature_description_progress_manager">Butonul de urmărire al unui serial se umple pe măsură ce vizionezi și deschide un panou cu progresul tău pe sezoane și episoade.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_show_ending">Afișează un rând despre Final în detaliile unui serial: Finalizat când povestea s-a încheiat, Nerezolvat când nu s-a încheiat.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">Anul tău 2026 sub forma unui rezumat derulabil cu o persona de spectator, apoi o pagină de statistici stilizată pentru a o egala.</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_large_screen_cards">Carduri pe Ecrane Mari</string>
+  <string name="preview_feature_title_progress_manager">Manager de progres</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_show_ending">Finalul serialului</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Încă nu este nimic aici. Începe cu titluri pe care le-ai salvat deja în celelalte liste ale tale.</string>
   <string name="text_empty_plex_library">Conectează-ți contul Plex pentru a sincroniza Biblioteca ta Plex cu Trakt.</string>
   <string name="text_ends_at">Se termină la %s</string>
+  <string name="text_episode_watch_state_unwatched">Episodul %d, nevizionat</string>
+  <string name="text_episode_watch_state_upcoming">Episodul %d, nedifuzat încă</string>
+  <string name="text_episode_watch_state_watched">Episodul %d, vizionat</string>
   <string name="text_episodes_short">EP.</string>
   <string name="text_episodes_watched">%s episoade</string>
   <string name="text_export_status_complete">Export finalizat.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">Seria ta VIP de %1$s ani se încheie în %2$s zile</string>
   <string name="text_vip_join_now">Alătură-te societății de spectatori care tratează fiecare sezon și fiecare premieră ca pe o piatră de hotar. Ridică-ți statutul și obține cheile către o lume mai sofisticată a descoperirii.</string>
   <string name="text_vip_join_now_tagline">Ai văzut suprafața, acum e timpul să vezi imaginea completă.</string>
+  <string name="text_vip_limits_dashed_potential">Zonele punctate arată potențialul tău cu VIP</string>
   <string name="text_vip_make_it_official">Fă-o oficial!</string>
   <string name="text_vip_manage_failed_title">Setările abonamentului nu au putut fi deschise</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Acum ești un %s</string>
   <string name="text_vip_veteran_title_legend">Legendă</string>
   <string name="text_vip_veteran_title_veteran">Veteran</string>
+  <string name="text_watch_state_complete">Finalizat</string>
+  <string name="text_watch_state_count">%1$d din %2$d</string>
+  <string name="text_watch_state_episodes">episoade</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Nedifuzat încă</string>
   <string name="text_watch_until_here_episode_count">%d episoade</string>
   <string name="text_watch_until_here_preview_title">Marcaje orare vizionate</string>
   <string name="text_year_in_review_banner_tagline">Douăsprezece personalități. Una dintre ele ești tu.</string>

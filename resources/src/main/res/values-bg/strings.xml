@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">Настройки за %s</string>
   <string name="button_label_filter_settings_modified">Настройки за %s, променени</string>
   <string name="button_label_filters">Филтри</string>
+  <string name="button_label_finish_season">Маркирай оставащите %1$d епизода от %2$s като изгледани</string>
   <string name="button_label_follow">Следвай %s</string>
   <string name="button_label_follow_requests">Заявки за следване</string>
   <string name="button_label_followers">Последователи</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Изход</string>
   <string name="button_label_manage_collaborators">Управление на сътрудници за %s</string>
   <string name="button_label_manage_passkey">Управление на пропускателен ключ</string>
+  <string name="button_label_manage_progress">Управление на напредъка за „%s“</string>
   <string name="button_label_manage_subscription">Управление на VIP абонамент</string>
   <string name="button_label_manage_vip">Управление на абонамент</string>
   <string name="button_label_mark_as_watched">Маркирай \"%s\" като гледано</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Търсене на филми</string>
   <string name="button_label_toggle_search_people">Търсене на хора</string>
   <string name="button_label_toggle_search_shows">Търсене на сериали</string>
+  <string name="button_label_toggle_season_episodes">Покажи или скрий епизодите от %s</string>
   <string name="button_label_toggle_streaming_countries">Превключване на държавите за %s</string>
   <string name="button_label_trivia_no_spoilers">Без спойлери</string>
   <string name="button_label_trivia_spoilers">Спойлери</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Финали</string>
   <string name="button_text_episode_type_premieres">Премиери</string>
   <string name="button_text_exit_edit_mode">Изход от режим на редактиране</string>
+  <string name="button_text_finish_season">Завърши</string>
   <string name="button_text_follow">Следвай</string>
   <string name="button_text_follow_requests">Заявки</string>
   <string name="button_text_followers">Последователи</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">Не успяхме да намерим това IMDb заглавие в Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">Не включвайте вашето потребителско име и парола в адреса.</string>
   <string name="error_text_jellyfin_invalid_credentials">Това потребителско име и парола не бяха правилни.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Въведете пълния адрес на вашия сървър, например https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Това не е уеб адрес, който Trakt може да използва. Въведете публичния адрес, който използвате за достъп до Jellyfin извън дома си, като например https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Бързото свързване е изключено на този сървър. Включете го в таблото за управление на Jellyfin или влезте с паролата си.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Използвайте името на домейна на вашия сървър. Trakt не може да достигне само IP адрес.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt не може да се свърже с локален или IP адрес. Въведете публичния адрес, който използвате за достъп до Jellyfin извън дома си, като например https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Безплатните акаунти могат да синхронизират 1 медиен сървър. Станете VIP, за да добавите повече.</string>
   <string name="error_text_jellyfin_server_not_found">Няма Jellyfin сървър, който да е отговорил на този адрес. Проверете го и опитайте отново.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt не може да достигне до този сървър. Уверете се, че е онлайн и достъпен от интернет.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt не може да се свърже с този сървър през интернет. Проверете дали Jellyfin е онлайн и е настроен за отдалечен достъп, например зад обратен прокси сървър, и дали сте въвели неговия публичен адрес.</string>
   <string name="error_text_jellyfin_unsupported_port">Използвайте порт 80, 443, 8096 или 8920, или поставете сървъра зад обратен прокси.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Започнете адреса с https:// или http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Адресът трябва да започва с https:// или http://. Въведете публичния адрес, който използвате за достъп до Jellyfin извън дома си, като например https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">Синхронизацията с Jellyfin засега е VIP бета.</string>
   <string name="error_text_lists_limit">Достигнали сте лимита на личните си списъци. Надстройте до VIP за неограничен брой списъци!</string>
   <string name="error_text_locked_account_collection_limit">Този потребителски акаунт е заключен, защото колекцията е надвишила лимита. Моля, <a>свържете се с поддръжката</a>, за да разрешите този проблем.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Свързани общностни приложения</string>
   <string name="heading_meet_the_team">Запознайте се с екипа</string>
   <string name="heading_what_is_trakt">Какво е Trakt?</string>
-  <string name="hint_jellyfin_server_url">Адресът, с който отваряте Jellyfin. Trakt трябва да го достига от интернет.</string>
+  <string name="hint_jellyfin_server_url">Публичният адрес, който използвате за достъп до Jellyfin извън дома си. Trakt осъществява връзка през интернет, така че локални и IP адреси няма да работят.</string>
   <string name="hint_media_sync_history_resync">Можете да импортирате предишни гледания по-късно от менюто за управление на сървъра.</string>
   <string name="image_alt_comment_gif">GIF, прикачен към коментара</string>
   <string name="image_alt_list_preview_poster">Плакат за запис в %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Скоро</string>
   <string name="label_today_day">Изберете ден</string>
   <string name="label_today_grouping">Групиране на днешната активност</string>
+  <string name="label_usage_limit_loading">Зареждане на потреблението ви</string>
+  <string name="label_usage_limit_with_vip">%1$s от %2$s, %3$s с VIP</string>
   <string name="limit_title_connected_apps">Свързани приложения</string>
   <string name="limit_title_digital_library">Дигитална библиотека</string>
   <string name="limit_title_personal_lists">Лични списъци</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">От началото на годината</string>
   <string name="preview_feature_description_edit_mode">Активирайте контроли за скриване или показване на конфигурируеми секции в цялото приложение.</string>
   <string name="preview_feature_description_large_screen_cards">На по-големи екрани, всички списъци използват същите карти като останалата част от приложението. Избирането на елемент отваря бърз преглед, вместо да напускате списъка.</string>
+  <string name="preview_feature_description_progress_manager">Бутонът за проследяване на сериал се запълва, докато гледате, и отваря панел с напредъка ви по сезони и епизоди.</string>
   <string name="preview_feature_description_rewatch">Започнете сесии за повторно гледане на предавания, които вече сте гледали, отбележете гледани епизоди директно от прозореца на сесията.</string>
   <string name="preview_feature_description_show_ending">Показва ред за край в детайлите на сериала: Завършен, когато историята е приключила, Неразрешен, когато не е.</string>
   <string name="preview_feature_description_soundtrack">Добавя секция за саундтрак към страниците на филми и предавания, с възпроизвеждане, където може да бъде намерена песен.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">Вашата 2026 като превъртащ се клип с потребителска персона, след което страница със статистика, оформена според нея.</string>
   <string name="preview_feature_title_edit_mode">Режим на редактиране</string>
   <string name="preview_feature_title_large_screen_cards">Карти за голям екран</string>
+  <string name="preview_feature_title_progress_manager">Управление на напредъка</string>
   <string name="preview_feature_title_rewatch">Преглед</string>
   <string name="preview_feature_title_show_ending">Край на сериала</string>
   <string name="preview_feature_title_soundtrack">Саундтрак</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Все още няма нищо тук. Започнете със заглавия, които вече сте запазили в другите си списъци.</string>
   <string name="text_empty_plex_library">Свържете вашия Plex акаунт, за да синхронизирате вашата Plex библиотека с Trakt.</string>
   <string name="text_ends_at">Приключва в %s</string>
+  <string name="text_episode_watch_state_unwatched">Епизод %d, неизгледан</string>
+  <string name="text_episode_watch_state_upcoming">Епизод %d, все още не е излъчен</string>
+  <string name="text_episode_watch_state_watched">Епизод %d, изгледан</string>
   <string name="text_episodes_short">Еп.</string>
   <string name="text_episodes_watched">%s епизода</string>
   <string name="text_export_status_complete">Експортирането е завършено.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">Вашата %1$s-годишна VIP поредица приключва след %2$s дни</string>
   <string name="text_vip_join_now">Присъединете се към общността от зрители, които третират всеки сезон и всяка премиера като събитие. Повишете статуса си и получете достъп до по-изискан свят на открития.</string>
   <string name="text_vip_join_now_tagline">Видяхте повърхността, време е да видите цялата картина.</string>
+  <string name="text_vip_limits_dashed_potential">Пунктираните зони показват потенциала ви с VIP</string>
   <string name="text_vip_make_it_official">Направете го официално!</string>
   <string name="text_vip_manage_failed_title">Не може да отвори настройките за абонамент</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Вече сте %s</string>
   <string name="text_vip_veteran_title_legend">Легенда</string>
   <string name="text_vip_veteran_title_veteran">Ветеран</string>
+  <string name="text_watch_state_complete">Завършен</string>
+  <string name="text_watch_state_count">%1$d от %2$d</string>
+  <string name="text_watch_state_episodes">епизода</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Все още не е излъчен</string>
   <string name="text_watch_until_here_episode_count">%d епизода</string>
   <string name="text_watch_until_here_preview_title">Времеви отметки на гледани</string>
   <string name="text_year_in_review_banner_tagline">Дванадесет персони. Една от тях сте вие.</string>

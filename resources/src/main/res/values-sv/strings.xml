@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">%s inställningar</string>
   <string name="button_label_filter_settings_modified">%s inställningar, ändrade</string>
   <string name="button_label_filters">Filter</string>
+  <string name="button_label_finish_season">Markera de återstående %1$d avsnitten i %2$s som sedda</string>
   <string name="button_label_follow">Följ %s</string>
   <string name="button_label_follow_requests">Följningsförfrågningar</string>
   <string name="button_label_followers">Följare</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Logga ut</string>
   <string name="button_label_manage_collaborators">Hantera samarbetspartners för %s</string>
   <string name="button_label_manage_passkey">Hantera Passkey</string>
+  <string name="button_label_manage_progress">Hantera framsteg för \"%s\"</string>
   <string name="button_label_manage_subscription">Hantera VIP-prenumeration</string>
   <string name="button_label_manage_vip">Hantera prenumeration</string>
   <string name="button_label_mark_as_watched">Markera \"%s\" som sedd</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Sök efter filmer</string>
   <string name="button_label_toggle_search_people">Sök efter personer</string>
   <string name="button_label_toggle_search_shows">Sök efter serier</string>
+  <string name="button_label_toggle_season_episodes">Visa eller dölj avsnitten i %s</string>
   <string name="button_label_toggle_streaming_countries">Växla länder för %s</string>
   <string name="button_label_trivia_no_spoilers">Inga spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finaler</string>
   <string name="button_text_episode_type_premieres">Premiärer</string>
   <string name="button_text_exit_edit_mode">Avsluta redigeringsläge</string>
+  <string name="button_text_finish_season">Slutför</string>
   <string name="button_text_follow">Följ</string>
   <string name="button_text_follow_requests">Förfrågningar</string>
   <string name="button_text_followers">Följare</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">Vi kunde inte hitta denna IMDb-titel på Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">Lämna ditt användarnamn och lösenord utanför adressen.</string>
   <string name="error_text_jellyfin_invalid_credentials">Det användarnamnet och lösenordet fungerade inte.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Ange serverns fullständiga adress, som https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Det där är inte en webbadress som Trakt kan använda. Ange den publika adressen du använder för att öppna Jellyfin utanför hemmet, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect är avstängd på den här servern. Slå på den i Jellyfin-panelen, eller logga in med ditt lösenord.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Använd din servers domännamn. Trakt kan inte nå enbart en IP-adress.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt kan inte nå en lokal adress eller IP-adress. Ange den publika adressen du använder för att öppna Jellyfin utanför hemmet, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Gratiskonton kan synkronisera 1 medieserver. Bli VIP för att lägga till fler.</string>
   <string name="error_text_jellyfin_server_not_found">Ingen Jellyfin-server svarade på den adressen. Kontrollera den och försök igen.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt kan inte nå den servern. Se till att den är online och nåbar från internet.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt kan inte nå den servern från internet. Kontrollera att Jellyfin är online och inställt för fjärråtkomst, till exempel bakom en reverse proxy, samt att du har angett dess publika adress.</string>
   <string name="error_text_jellyfin_unsupported_port">Använd port 80, 443, 8096 eller 8920, eller placera servern bakom en omvänd proxy.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Börja adressen med https:// eller http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Adressen måste börja med https:// eller http://. Ange den publika adressen du använder för att öppna Jellyfin utanför hemmet, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">Jellyfin-synkronisering är en VIP-beta för närvarande.</string>
   <string name="error_text_lists_limit">Du har nått gränsen för dina personliga listor. Uppgradera till VIP för obegränsat antal listor!</string>
   <string name="error_text_locked_account_collection_limit">Detta användarkonto har låsts eftersom samlingen har överskridit gränsen. Vänligen <a>kontakta supporten</a> för att lösa detta problem.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Anslutna community-appar</string>
   <string name="heading_meet_the_team">Möt teamet</string>
   <string name="heading_what_is_trakt">Vad är Trakt?</string>
-  <string name="hint_jellyfin_server_url">Adressen du öppnar Jellyfin med. Trakt måste kunna nå den från internet.</string>
+  <string name="hint_jellyfin_server_url">Den publika adressen du använder för att öppna Jellyfin utanför hemmet. Trakt når den över internet, så lokala adresser och IP-adresser fungerar inte.</string>
   <string name="hint_media_sync_history_resync">Du kan importera tidigare visningar senare från serverns Hantera-meny.</string>
   <string name="image_alt_comment_gif">GIF bifogad till kommentaren</string>
   <string name="image_alt_list_preview_poster">Affisch för ett objekt i %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Snart</string>
   <string name="label_today_day">Välj en dag</string>
   <string name="label_today_grouping">Gruppera dagens aktivitet</string>
+  <string name="label_usage_limit_loading">Laddar din användning</string>
+  <string name="label_usage_limit_with_vip">%1$s av %2$s, %3$s med VIP</string>
   <string name="limit_title_connected_apps">Anslutna appar</string>
   <string name="limit_title_digital_library">Digitalt bibliotek</string>
   <string name="limit_title_personal_lists">Personliga listor</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">År hittills</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
   <string name="preview_feature_description_large_screen_cards">På större skärmar används samma kort för alla listor som i resten av appen. Att välja ett kort öppnar en snabböverblick istället för att lämna listan.</string>
+  <string name="preview_feature_description_progress_manager">Spårningsknappen på en serie fylls på allt eftersom du tittar och öppnar en panel med dina framsteg per säsong och avsnitt.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_show_ending">Visar en avslutningsrad i en series detaljer: \"Avslutad\" när handlingen är klar, \"Oavslutad\" när den inte är det.</string>
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en scrollbar rulle med en tittarpersona, följt av en statistik sida med matchande stil.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_large_screen_cards">Kort för stor skärm</string>
+  <string name="preview_feature_title_progress_manager">Framstegshanterare</string>
   <string name="preview_feature_title_rewatch">Omtittning</string>
   <string name="preview_feature_title_show_ending">Serieavslutning</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Inget här än. Börja med titlar du redan har sparat i dina andra listor.</string>
   <string name="text_empty_plex_library">Anslut ditt Plex-konto för att synkronisera ditt Plex-bibliotek med Trakt.</string>
   <string name="text_ends_at">Slutar klockan %s</string>
+  <string name="text_episode_watch_state_unwatched">Avsnitt %d, inte sett</string>
+  <string name="text_episode_watch_state_upcoming">Avsnitt %d, inte sänt ännu</string>
+  <string name="text_episode_watch_state_watched">Avsnitt %d, sett</string>
   <string name="text_episodes_short">AVSN</string>
   <string name="text_episodes_watched">%s avsnitt</string>
   <string name="text_export_status_complete">Exporten slutförd.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">Din %1$s-åriga VIP-svit avslutas om %2$s dagar</string>
   <string name="text_vip_join_now">Gå med i gemenskapen av tittare som behandlar varje säsong och varje premiär som en milstolpe. Höj din status och få nycklarna till en mer sofistikerad värld av upptäckt.</string>
   <string name="text_vip_join_now_tagline">Du har sett ytan, dags att se hela bilden.</string>
+  <string name="text_vip_limits_dashed_potential">De streckade områdena visar din potential med VIP</string>
   <string name="text_vip_make_it_official">Gör det officiellt!</string>
   <string name="text_vip_manage_failed_title">Kunde inte öppna dina prenumerationsinställningar</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Du är nu en %s</string>
   <string name="text_vip_veteran_title_legend">Legend</string>
   <string name="text_vip_veteran_title_veteran">Veteran</string>
+  <string name="text_watch_state_complete">Avslutad</string>
+  <string name="text_watch_state_count">%1$d av %2$d</string>
+  <string name="text_watch_state_episodes">avsnitt</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Inte sänts ännu</string>
   <string name="text_watch_until_here_episode_count">%d avsnitt</string>
   <string name="text_watch_until_here_preview_title">Tittade tidsstämplar</string>
   <string name="text_year_in_review_banner_tagline">Tolv personligheter. En av dem är du.</string>

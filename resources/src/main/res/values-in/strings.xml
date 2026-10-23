@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">Setelan %s</string>
   <string name="button_label_filter_settings_modified">Setelan %s, diubah</string>
   <string name="button_label_filters">Filter</string>
+  <string name="button_label_finish_season">Tandai %1$d episode tersisa dari %2$s sebagai sudah ditonton</string>
   <string name="button_label_follow">Ikuti %s</string>
   <string name="button_label_follow_requests">Permintaan ikuti</string>
   <string name="button_label_followers">Pengikut</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Keluar</string>
   <string name="button_label_manage_collaborators">Kelola kolaborator untuk %s</string>
   <string name="button_label_manage_passkey">Kelola Kunci Masuk</string>
+  <string name="button_label_manage_progress">Kelola progres untuk \"%s\"</string>
   <string name="button_label_manage_subscription">Kelola Langganan VIP</string>
   <string name="button_label_manage_vip">Kelola Langganan</string>
   <string name="button_label_mark_as_watched">Tandai \"%s\" sudah ditonton</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Cari film</string>
   <string name="button_label_toggle_search_people">Cari orang</string>
   <string name="button_label_toggle_search_shows">Cari acara TV</string>
+  <string name="button_label_toggle_season_episodes">Tampilkan atau sembunyikan episode %s</string>
   <string name="button_label_toggle_streaming_countries">Alihkan negara untuk %s</string>
   <string name="button_label_trivia_no_spoilers">Tanpa spoiler</string>
   <string name="button_label_trivia_spoilers">Spoiler</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finale</string>
   <string name="button_text_episode_type_premieres">Tayangan Perdana</string>
   <string name="button_text_exit_edit_mode">Keluar mode edit</string>
+  <string name="button_text_finish_season">Selesaikan</string>
   <string name="button_text_follow">Ikuti</string>
   <string name="button_text_follow_requests">Permintaan</string>
   <string name="button_text_followers">Pengikut</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">Kami tidak dapat menemukan judul IMDb ini di Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">Jangan sertakan nama pengguna dan kata sandi Anda di alamat.</string>
   <string name="error_text_jellyfin_invalid_credentials">Nama pengguna dan kata sandi tersebut tidak berfungsi.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Masukkan alamat lengkap server Anda, seperti https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Itu bukan alamat web yang dapat digunakan Trakt. Masukkan alamat publik yang Anda gunakan untuk membuka Jellyfin dari luar rumah, seperti https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect mati di server ini. Aktifkan di dasbor Jellyfin, atau masuk dengan kata sandi Anda.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Gunakan nama domain server Anda. Trakt tidak dapat menjangkau alamat IP murni.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt tidak dapat menjangkau alamat lokal atau IP. Masukkan alamat publik yang Anda gunakan untuk membuka Jellyfin dari luar rumah, seperti https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Akun gratis dapat menyinkronkan 1 server media. Tingkatkan ke VIP untuk menambahkan lebih banyak.</string>
   <string name="error_text_jellyfin_server_not_found">Tidak ada server Jellyfin yang merespons di alamat tersebut. Periksa dan coba lagi.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt tidak dapat menjangkau server tersebut. Pastikan server online dan dapat dijangkau dari internet.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt tidak dapat menjangkau server tersebut dari internet. Pastikan Jellyfin sedang online dan disiapkan untuk akses jarak jauh, misalnya di balik reverse proxy, serta Anda telah memasukkan alamat publiknya.</string>
   <string name="error_text_jellyfin_unsupported_port">Gunakan port 80, 443, 8096, atau 8920, atau letakkan server di belakang reverse proxy.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Mulai alamat dengan https:// atau http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Alamat harus diawali dengan https:// atau http://. Masukkan alamat publik yang Anda gunakan untuk membuka Jellyfin dari luar rumah, seperti https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">Sinkronisasi Jellyfin saat ini adalah beta VIP.</string>
   <string name="error_text_lists_limit">Anda telah mencapai batas daftar pribadi Anda. Tingkatkan ke VIP untuk daftar tanpa batas!</string>
   <string name="error_text_locked_account_collection_limit">Akun pengguna ini telah dikunci karena koleksi telah melampaui batas. Harap <a>hubungi dukungan</a> untuk menyelesaikan masalah ini.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Aplikasi Komunitas Terhubung</string>
   <string name="heading_meet_the_team">Temui Tim</string>
   <string name="heading_what_is_trakt">Apa itu Trakt?</string>
-  <string name="hint_jellyfin_server_url">Alamat yang Anda gunakan untuk membuka Jellyfin. Trakt harus dapat menjangkaunya dari internet.</string>
+  <string name="hint_jellyfin_server_url">Alamat publik yang Anda gunakan untuk membuka Jellyfin dari luar rumah. Trakt menjangkaunya melalui internet, jadi alamat lokal dan IP tidak akan berfungsi.</string>
   <string name="hint_media_sync_history_resync">Anda dapat mengimpor riwayat tontonan nanti dari menu Kelola server.</string>
   <string name="image_alt_comment_gif">GIF terlampir pada komentar</string>
   <string name="image_alt_list_preview_poster">Poster untuk entri di %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Segera Hadir</string>
   <string name="label_today_day">Pilih hari</string>
   <string name="label_today_grouping">Kelompokkan aktivitas hari ini</string>
+  <string name="label_usage_limit_loading">Memuat penggunaan Anda</string>
+  <string name="label_usage_limit_with_vip">%1$s dari %2$s, %3$s dengan VIP</string>
   <string name="limit_title_connected_apps">Aplikasi Terhubung</string>
   <string name="limit_title_digital_library">Perpustakaan Digital</string>
   <string name="limit_title_personal_lists">Daftar Pribadi</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">Tahun Berjalan</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
+  <string name="preview_feature_description_progress_manager">Tombol lacak pada acara akan terisi seiring Anda menonton, dan membuka laci yang menampilkan progres Anda per musim dan episode.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_show_ending">Menampilkan baris Akhir di detail tayangan: Selesai saat cerita berakhir, Tidak Terselesaikan saat tidak berakhir.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
+  <string name="preview_feature_title_progress_manager">Pengelola progres</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_show_ending">Akhir Tayangan</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Belum ada apa pun di sini. Mulailah dengan judul yang sudah Anda simpan di daftar Anda yang lain.</string>
   <string name="text_empty_plex_library">Hubungkan akun Plex Anda untuk menyinkronkan Perpustakaan Plex Anda dengan Trakt.</string>
   <string name="text_ends_at">Berakhir pukul %s</string>
+  <string name="text_episode_watch_state_unwatched">Episode %d, belum ditonton</string>
+  <string name="text_episode_watch_state_upcoming">Episode %d, belum tayang</string>
+  <string name="text_episode_watch_state_watched">Episode %d, sudah ditonton</string>
   <string name="text_episodes_short">Eps</string>
   <string name="text_episodes_watched">%s episode</string>
   <string name="text_export_status_complete">Ekspor selesai.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">Streak VIP %1$s tahun Anda berakhir dalam %2$s hari</string>
   <string name="text_vip_join_now">Bergabunglah dengan komunitas penonton yang memperlakukan setiap musim dan setiap premier sebagai tonggak sejarah. Tingkatkan status Anda dan dapatkan kunci menuju dunia penemuan yang lebih canggih.</string>
   <string name="text_vip_join_now_tagline">Anda sudah melihat permukaannya, saatnya melihat gambaran lengkapnya.</string>
+  <string name="text_vip_limits_dashed_potential">Area bergaris putus-putus menunjukkan potensi Anda dengan VIP</string>
   <string name="text_vip_make_it_official">Resmi, Anda berhasil!</string>
   <string name="text_vip_manage_failed_title">Gagal membuka pengaturan langganan Anda</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Anda sekarang adalah seorang %s</string>
   <string name="text_vip_veteran_title_legend">Legenda</string>
   <string name="text_vip_veteran_title_veteran">Veteran</string>
+  <string name="text_watch_state_complete">Selesai</string>
+  <string name="text_watch_state_count">%1$d dari %2$d</string>
+  <string name="text_watch_state_episodes">episode</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Belum tayang</string>
   <string name="text_watch_until_here_episode_count">%d episode</string>
   <string name="text_watch_until_here_preview_title">Waktu Tonton</string>
   <string name="text_year_in_review_banner_tagline">Dua belas persona. Salah satunya adalah Anda.</string>

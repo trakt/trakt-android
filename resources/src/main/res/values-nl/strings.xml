@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">%s instellingen</string>
   <string name="button_label_filter_settings_modified">%s instellingen, gewijzigd</string>
   <string name="button_label_filters">Filters</string>
+  <string name="button_label_finish_season">Markeer de resterende %1$d afleveringen van %2$s als bekeken</string>
   <string name="button_label_follow">Volg %s</string>
   <string name="button_label_follow_requests">Volgverzoeken</string>
   <string name="button_label_followers">Volgers</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Afmelden</string>
   <string name="button_label_manage_collaborators">Beheer medewerkers voor %s</string>
   <string name="button_label_manage_passkey">Passkey beheren</string>
+  <string name="button_label_manage_progress">Voortgang beheren voor \"%s\"</string>
   <string name="button_label_manage_subscription">VIP-abonnement beheren</string>
   <string name="button_label_manage_vip">Abonnement beheren</string>
   <string name="button_label_mark_as_watched">\"%s\" als bekeken markeren</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Zoek naar films</string>
   <string name="button_label_toggle_search_people">Zoek naar personen</string>
   <string name="button_label_toggle_search_shows">Zoek naar series</string>
+  <string name="button_label_toggle_season_episodes">Toon of verberg de afleveringen van %s</string>
   <string name="button_label_toggle_streaming_countries">Landen voor %s in-/uitschakelen</string>
   <string name="button_label_trivia_no_spoilers">Geen spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finales</string>
   <string name="button_text_episode_type_premieres">Premières</string>
   <string name="button_text_exit_edit_mode">Bewerkmodus verlaten</string>
+  <string name="button_text_finish_season">Voltooien</string>
   <string name="button_text_follow">Volgen</string>
   <string name="button_text_follow_requests">Verzoeken</string>
   <string name="button_text_followers">Volgers</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">We konden deze IMDb-titel niet vinden op Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">Laat je gebruikersnaam en wachtwoord buiten het adres.</string>
   <string name="error_text_jellyfin_invalid_credentials">Die gebruikersnaam en dat wachtwoord werkten niet.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Voer het volledige adres van je server in, zoals https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Dat is geen webadres dat Trakt kan gebruiken. Voer het openbare adres in dat je gebruikt om Jellyfin buitenshuis te openen, zoals https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect staat uit op deze server. Schakel het in via het Jellyfin-dashboard, of meld je aan met je wachtwoord.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Gebruik de domeinnaam van je server. Trakt kan een kaal IP-adres niet bereiken.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt kan geen lokaal adres of IP-adres bereiken. Voer het openbare adres in dat je gebruikt om Jellyfin buitenshuis te openen, zoals https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Gratis accounts kunnen 1 mediaserver synchroniseren. Ga VIP om meer toe te voegen.</string>
   <string name="error_text_jellyfin_server_not_found">Geen Jellyfin-server reageerde op dat adres. Controleer het en probeer het opnieuw.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt kan die server niet bereiken. Zorg ervoor dat deze online is en vanaf internet bereikbaar.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt kan die server niet bereiken via het internet. Controleer of Jellyfin online is en is ingesteld voor externe toegang, bijvoorbeeld achter een reverse proxy, en of je het openbare adres hebt ingevoerd.</string>
   <string name="error_text_jellyfin_unsupported_port">Gebruik poort 80, 443, 8096 of 8920, of plaats de server achter een reverse proxy.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Begin het adres met https:// of http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Het adres moet beginnen met https:// of http://. Voer het openbare adres in dat je gebruikt om Jellyfin buitenshuis te openen, zoals https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">Jellyfin-synchronisatie is vooralsnog een VIP-bèta.</string>
   <string name="error_text_lists_limit">Je hebt de limiet voor persoonlijke lijsten bereikt. Upgrade naar VIP voor een onbeperkt aantal lijsten!</string>
   <string name="error_text_locked_account_collection_limit">Dit gebruikersaccount is vergrendeld omdat de collectie de limiet heeft overschreden. Neem alstublieft <a>contact op met de ondersteuning</a> om dit probleem op te lossen.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Gekoppelde community-apps</string>
   <string name="heading_meet_the_team">Maak kennis met het team</string>
   <string name="heading_what_is_trakt">Wat is Trakt?</string>
-  <string name="hint_jellyfin_server_url">Het adres waarmee je Jellyfin opent. Trakt moet het vanaf internet kunnen bereiken.</string>
+  <string name="hint_jellyfin_server_url">Het openbare adres dat je gebruikt om Jellyfin buitenshuis te openen. Trakt maakt verbinding via het internet, dus lokale adressen en IP-adressen werken niet.</string>
   <string name="hint_media_sync_history_resync">Je kunt eerdere kijkgeschiedenis later importeren via het Beheer-menu van de server.</string>
   <string name="image_alt_comment_gif">GIF toegevoegd aan de reactie</string>
   <string name="image_alt_list_preview_poster">Poster voor een item in %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Binnenkort</string>
   <string name="label_today_day">Kies een dag</string>
   <string name="label_today_grouping">Groepeer de activiteit van vandaag</string>
+  <string name="label_usage_limit_loading">Je gebruik wordt geladen</string>
+  <string name="label_usage_limit_with_vip">%1$s van %2$s, %3$s met VIP</string>
   <string name="limit_title_connected_apps">Verbonden apps</string>
   <string name="limit_title_digital_library">Digitale bibliotheek</string>
   <string name="limit_title_personal_lists">Persoonlijke lijsten</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_large_screen_cards">Op grotere schermen gebruiken alle lijsten dezelfde kaarten als de rest van de app. Het selecteren van een item opent een snel overzicht in plaats van de lijst te verlaten.</string>
+  <string name="preview_feature_description_progress_manager">De volgknop bij een serie vult zich naarmate je kijkt en opent een lade met je voortgang per seizoen en aflevering.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_show_ending">Toont een \'Einde\'-rij in de details van een serie: \'Voltooid\' als het verhaal is afgesloten, \'Onopgelost\' als dat niet het geval is.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">Jouw 2026 als een scroll-gedreven reel met een kijkerspersoonlijkheid, gevolgd door een statistiekenpagina die daarbij past.</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_large_screen_cards">Grote Scherm Kaarten</string>
+  <string name="preview_feature_title_progress_manager">Voortgangsbeheer</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_show_ending">Serieeinde</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Nog niets hier. Begin met titels die je al in je andere lijsten hebt opgeslagen.</string>
   <string name="text_empty_plex_library">Koppel je Plex-account om je Plex-bibliotheek met Trakt te synchroniseren.</string>
   <string name="text_ends_at">Eindigt om %s</string>
+  <string name="text_episode_watch_state_unwatched">Aflevering %d, niet bekeken</string>
+  <string name="text_episode_watch_state_upcoming">Aflevering %d, nog niet uitgezonden</string>
+  <string name="text_episode_watch_state_watched">Aflevering %d, bekeken</string>
   <string name="text_episodes_short">afl.</string>
   <string name="text_episodes_watched">%s afleveringen</string>
   <string name="text_export_status_complete">Export voltooid.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">Je %1$s-jarige VIP-reeks eindigt over %2$s dagen</string>
   <string name="text_vip_join_now">Sluit u aan bij de gemeenschap van kijkers die elk seizoen en elke première als een mijlpaal behandelen. Verhoog uw status en krijg de sleutels tot een meer verfijnde wereld van ontdekking.</string>
   <string name="text_vip_join_now_tagline">U heeft de oppervlakte gezien, tijd om het volledige plaatje te zien.</string>
+  <string name="text_vip_limits_dashed_potential">De gestreepte vlakken tonen je potentieel met VIP</string>
   <string name="text_vip_make_it_official">Officieel, u maakt het waar!</string>
   <string name="text_vip_manage_failed_title">Kon je abonnementsinstellingen niet openen</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Je bent nu een %s</string>
   <string name="text_vip_veteran_title_legend">Legende</string>
   <string name="text_vip_veteran_title_veteran">Veteraan</string>
+  <string name="text_watch_state_complete">Voltooid</string>
+  <string name="text_watch_state_count">%1$d van %2$d</string>
+  <string name="text_watch_state_episodes">afleveringen</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Nog niet uitgezonden</string>
   <string name="text_watch_until_here_episode_count">%d afleveringen</string>
   <string name="text_watch_until_here_preview_title">Bekeken tijdstippen</string>
   <string name="text_year_in_review_banner_tagline">Twaalf persona\'s. Eén daarvan bent u.</string>

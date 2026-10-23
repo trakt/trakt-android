@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">إعدادات %s</string>
   <string name="button_label_filter_settings_modified">إعدادات %s، تم تغييرها</string>
   <string name="button_label_filters">مرشحات</string>
+  <string name="button_label_finish_season">تحديد الحلقات الـ %1$d المتبقية من %2$s كمشاهدة</string>
   <string name="button_label_follow">متابعة %s</string>
   <string name="button_label_follow_requests">متابعة الطلبات</string>
   <string name="button_label_followers">متابعون</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">تسجيل الخروج</string>
   <string name="button_label_manage_collaborators">إدارة المتعاونين لـ %s</string>
   <string name="button_label_manage_passkey">إدارة مفتاح المرور</string>
+  <string name="button_label_manage_progress">إدارة التقدم لـ \"%s\"</string>
   <string name="button_label_manage_subscription">إدارة اشتراك VIP</string>
   <string name="button_label_manage_vip">إدارة الاشتراك</string>
   <string name="button_label_mark_as_watched">حدِّد \"%s\" كمُشاهَد</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">البحث عن الأفلام</string>
   <string name="button_label_toggle_search_people">البحث عن أشخاص</string>
   <string name="button_label_toggle_search_shows">البحث عن المسلسلات</string>
+  <string name="button_label_toggle_season_episodes">إظهار أو إخفاء حلقات %s</string>
   <string name="button_label_toggle_streaming_countries">تبديل البلدان لـ %s</string>
   <string name="button_label_trivia_no_spoilers">لا يوجد حرق</string>
   <string name="button_label_trivia_spoilers">المفسدين</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">الحلقات الختامية</string>
   <string name="button_text_episode_type_premieres">العروض الأولى</string>
   <string name="button_text_exit_edit_mode">الخروج من وضع التحرير</string>
+  <string name="button_text_finish_season">إنهاء</string>
   <string name="button_text_follow">متابعة</string>
   <string name="button_text_follow_requests">طلبات</string>
   <string name="button_text_followers">متابعون</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">لم نتمكن من العثور على عنوان IMDb هذا في Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">لا تضع اسم المستخدم وكلمة المرور الخاصين بك في العنوان.</string>
   <string name="error_text_jellyfin_invalid_credentials">اسم المستخدم وكلمة المرور هذان لم يعملا.</string>
-  <string name="error_text_jellyfin_invalid_server_url">أدخل العنوان الكامل لخادمك، مثل https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">هذا ليس عنوان ويب يمكن لـ Trakt استخدامه. أدخل العنوان العام الذي تستخدمه لفتح Jellyfin من خارج منزلك، مثل https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">الاتصال السريع معطّل على هذا الخادم. قم بتشغيله في لوحة تحكم Jellyfin، أو سجّل الدخول بكلمة مرورك.</string>
-  <string name="error_text_jellyfin_raw_ip_address">استخدم اسم نطاق خادمك. لا يمكن لـ Trakt الوصول إلى عنوان IP خام.</string>
+  <string name="error_text_jellyfin_raw_ip_address">لا يمكن لـ Trakt الوصول إلى عنوان محلي أو عنوان IP. أدخل العنوان العام الذي تستخدمه لفتح Jellyfin من خارج منزلك، مثل https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">يمكن للحسابات المجانية مزامنة خادم وسائط واحد. قم بالترقية إلى VIP لإضافة المزيد.</string>
   <string name="error_text_jellyfin_server_not_found">لم يستجب أي خادم Jellyfin على هذا العنوان. تحقق منه وحاول مرة أخرى.</string>
-  <string name="error_text_jellyfin_server_unreachable">لا يمكن لـ Trakt الوصول إلى هذا الخادم. تأكد من أنه متصل بالإنترنت ويمكن الوصول إليه من الإنترنت.</string>
+  <string name="error_text_jellyfin_server_unreachable">لا يمكن لـ Trakt الوصول إلى ذلك الخادم من الإنترنت. تأكد من أن Jellyfin متصل ومُعدّ للوصول عن بُعد، كأن يكون خلف وكيل عكسي مثلًا، ومن أنك أدخلت عنوانه العام.</string>
   <string name="error_text_jellyfin_unsupported_port">استخدم المنفذ 80، 443، 8096 أو 8920، أو ضع الخادم خلف وكيل عكسي.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">ابدأ العنوان بـ https:// أو http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">يجب أن يبدأ العنوان بـ https:// أو http://. أدخل العنوان العام الذي تستخدمه لفتح Jellyfin من خارج منزلك، مثل https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">مزامنة Jellyfin هي نسخة تجريبية لـ VIP في الوقت الحالي.</string>
   <string name="error_text_lists_limit">لقد وصلت إلى الحد الأقصى لقوائمك الشخصية. الترقية إلى VIP لعدد غير محدود من القوائم!</string>
   <string name="error_text_locked_account_collection_limit">تم قفل حساب المستخدم هذا لأن المجموعة تجاوزت الحد المسموح به. يرجى <a>الاتصال بالدعم</a> لحل هذه المشكلة.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">تطبيقات مجتمعية متصلة</string>
   <string name="heading_meet_the_team">تعرف على الفريق</string>
   <string name="heading_what_is_trakt">ما هو Trakt؟</string>
-  <string name="hint_jellyfin_server_url">العنوان الذي تفتح به Jellyfin. يجب أن يتمكن Trakt من الوصول إليه من الإنترنت.</string>
+  <string name="hint_jellyfin_server_url">العنوان العام الذي تستخدمه لفتح Jellyfin من خارج منزلك. يتصل Trakt به عبر الإنترنت، لذا لن تعمل العناوين المحلية وعناوين IP.</string>
   <string name="hint_media_sync_history_resync">يمكنك استيراد المشاهدات السابقة لاحقًا من قائمة إدارة الخادم.</string>
   <string name="image_alt_comment_gif">صورة GIF مرفقة بالتعليق</string>
   <string name="image_alt_list_preview_poster">ملصق لإدخال في %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">قريبًا</string>
   <string name="label_today_day">اختر يومًا</string>
   <string name="label_today_grouping">تجميع أنشطة اليوم</string>
+  <string name="label_usage_limit_loading">جارٍ تحميل استخدامك</string>
+  <string name="label_usage_limit_with_vip">%1$s من %2$s، %3$s مع VIP</string>
   <string name="limit_title_connected_apps">التطبيقات المتصلة</string>
   <string name="limit_title_digital_library">المكتبة الرقمية</string>
   <string name="limit_title_personal_lists">القوائم الشخصية</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">منذ بداية العام</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
+  <string name="preview_feature_description_progress_manager">يمتلئ زر المتابعة في العرض أثناء مشاهدتك، ويفتح قائمة جانبية تعرض تقدمك لكل موسم وحلقة.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_show_ending">يعرض صفًا لـ \"النهاية\" في تفاصيل العرض: \"مكتمل\" عندما تنتهي القصة، و\"غير محسوم\" عندما لا تنتهي.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
+  <string name="preview_feature_title_progress_manager">مدير التقدم</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_show_ending">نهاية العرض</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">لا يوجد شيء هنا بعد. ابدأ بالعناوين التي قمت بحفظها بالفعل في قوائمك الأخرى.</string>
   <string name="text_empty_plex_library">قم بتوصيل حساب Plex الخاص بك لمزامنة مكتبة Plex الخاصة بك مع Trakt.</string>
   <string name="text_ends_at">ينتهي في %s</string>
+  <string name="text_episode_watch_state_unwatched">الحلقة %d، لم تتم مشاهدتها</string>
+  <string name="text_episode_watch_state_upcoming">الحلقة %d، لم تُعرض بعد</string>
+  <string name="text_episode_watch_state_watched">الحلقة %d، تمت مشاهدتها</string>
   <string name="text_episodes_short">حل.</string>
   <string name="text_episodes_watched">%s من الحلَقات</string>
   <string name="text_export_status_complete">اكتمل التصدير.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">ينتهي سجل VIP المتواصل الذي دام %1$s سنوات في %2$s أيام</string>
   <string name="text_vip_join_now">انضم إلى مجتمع المشاهدين الذين يتعاملون مع كل موسم وكل عرض أول باعتباره علامة فارقة. ارفع حالتك واحصل على المفاتيح لعالم اكتشاف أكثر تطورًا.</string>
   <string name="text_vip_join_now_tagline">لقد رأيت السطح، حان الوقت لرؤية الصورة كاملة.</string>
+  <string name="text_vip_limits_dashed_potential">تُظهر المناطق المتقطعة إمكاناتك مع VIP</string>
   <string name="text_vip_make_it_official">رسميًا، يمكنك القيام بذلك!</string>
   <string name="text_vip_manage_failed_title">تعذَّر فتح إعدادات اشتراكك</string>
   <string name="text_vip_payment_method_apple">متجر التطبيقات</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">أنت الآن %s</string>
   <string name="text_vip_veteran_title_legend">أسطورة</string>
   <string name="text_vip_veteran_title_veteran">مخضرم</string>
+  <string name="text_watch_state_complete">مكتمل</string>
+  <string name="text_watch_state_count">%1$d من %2$d</string>
+  <string name="text_watch_state_episodes">حلقات</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">لم يُعرض بعد</string>
   <string name="text_watch_until_here_episode_count">عدد الحلقات: %d</string>
   <string name="text_watch_until_here_preview_title">الطوابع الزمنية التي تمت مشاهدتها</string>
   <string name="text_year_in_review_banner_tagline">اثنا عشر شخصية. واحدة منها هي أنت.</string>

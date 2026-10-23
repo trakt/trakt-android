@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">تنظیمات %s</string>
   <string name="button_label_filter_settings_modified">تنظیمات %s، تغییر کرده است</string>
   <string name="button_label_filters">فیلترها</string>
+  <string name="button_label_finish_season">علامت‌گذاری %1$d قسمت باقی‌مانده از %2$s به‌عنوان تماشاشده</string>
   <string name="button_label_follow">دنبال کردن %s</string>
   <string name="button_label_follow_requests">درخواست‌های دنبال کردن</string>
   <string name="button_label_followers">دنبال‌شوندگان</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">خروج</string>
   <string name="button_label_manage_collaborators">مدیریت همکاران برای %s</string>
   <string name="button_label_manage_passkey">مدیریت کلید عبور</string>
+  <string name="button_label_manage_progress">مدیریت پیشرفت \"%s\"</string>
   <string name="button_label_manage_subscription">مدیریت اشتراک VIP</string>
   <string name="button_label_manage_vip">مدیریت اشتراک</string>
   <string name="button_label_mark_as_watched">\" %s \" را به عنوان تماشا شده علامت‌گذاری کنید</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">جستجو برای فیلم‌ها</string>
   <string name="button_label_toggle_search_people">جستجو برای افراد</string>
   <string name="button_label_toggle_search_shows">جستجو برای سریال‌ها</string>
+  <string name="button_label_toggle_season_episodes">نمایش یا پنهان‌سازی قسمت‌های %s</string>
   <string name="button_label_toggle_streaming_countries">تغییر وضعیت کشورها برای %s</string>
   <string name="button_label_trivia_no_spoilers">بدون اسپویلر</string>
   <string name="button_label_trivia_spoilers">اسپویلرها</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">قسمت‌های پایانی</string>
   <string name="button_text_episode_type_premieres">اولین نمایش‌ها</string>
   <string name="button_text_exit_edit_mode">خروج از حالت ویرایش</string>
+  <string name="button_text_finish_season">اتمام</string>
   <string name="button_text_follow">دنبال کردن</string>
   <string name="button_text_follow_requests">درخواست‌ها</string>
   <string name="button_text_followers">دنبال‌شوندگان</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">نتوانستیم این عنوان IMDb را در Trakt پیدا کنیم.</string>
   <string name="error_text_jellyfin_embedded_credentials">نام کاربری و رمز عبور خود را از آدرس حذف کنید.</string>
   <string name="error_text_jellyfin_invalid_credentials">نام کاربری و رمز عبور کار نکرد.</string>
-  <string name="error_text_jellyfin_invalid_server_url">آدرس کامل سرور خود را وارد کنید، مانند https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">این آدرس وب برای Trakt قابل استفاده نیست. آدرس عمومی‌ای را وارد کنید که برای باز کردن Jellyfin از خارج از خانه استفاده می‌کنید، مانند https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">اتصال سریع در این سرور خاموش است. آن را در داشبورد Jellyfin روشن کنید، یا با رمز عبور خود وارد شوید.</string>
-  <string name="error_text_jellyfin_raw_ip_address">از نام دامنه سرور خود استفاده کنید. Trakt نمی‌تواند به یک آدرس IP خالی دسترسی پیدا کند.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt نمی‌تواند به یک آدرس محلی یا IP دسترسی پیدا کند. آدرس عمومی‌ای را وارد کنید که برای باز کردن Jellyfin از خارج از خانه استفاده می‌کنید، مانند https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">حساب‌های رایگان می‌توانند ۱ سرور رسانه را همگام‌سازی کنند. برای افزودن بیشتر، VIP شوید.</string>
   <string name="error_text_jellyfin_server_not_found">هیچ سرور Jellyfin در آن آدرس پاسخ نداد. آن را بررسی کنید و دوباره امتحان کنید.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt نمی‌تواند به آن سرور دسترسی پیدا کند. مطمئن شوید که آنلاین است و از طریق اینترنت قابل دسترسی است.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt نمی‌تواند از طریق اینترنت به آن سرور دسترسی پیدا کند. بررسی کنید که Jellyfin آنلاین و برای دسترسی از راه دور تنظیم شده باشد (برای مثال پشت یک reverse proxy) و اینکه آدرس عمومی آن را وارد کرده باشید.</string>
   <string name="error_text_jellyfin_unsupported_port">از پورت 80، 443، 8096 یا 8920 استفاده کنید، یا سرور را پشت یک پروکسی معکوس قرار دهید.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">آدرس را با https:// یا http:// شروع کنید.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">آدرس باید با https:// یا http:// شروع شود. آدرس عمومی‌ای را وارد کنید که برای باز کردن Jellyfin از خارج از خانه استفاده می‌کنید، مانند https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">همگام‌سازی Jellyfin فعلاً یک بتای VIP است.</string>
   <string name="error_text_lists_limit">شما به حد مجاز لیست‌های شخصی خود رسیده‌اید. برای لیست‌های نامحدود به VIP ارتقا دهید!</string>
   <string name="error_text_locked_account_collection_limit">این حساب کاربری قفل شده است زیرا مجموعه از حد مجاز فراتر رفته است. لطفاً برای حل این مشکل <a>با پشتیبانی تماس بگیرید</a>.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">برنامه‌های متصل انجمن</string>
   <string name="heading_meet_the_team">با تیم آشنا شوید</string>
   <string name="heading_what_is_trakt">Trakt چیست؟</string>
-  <string name="hint_jellyfin_server_url">آدرسی که با آن Jellyfin را باز می‌کنید. Trakt باید بتواند از اینترنت به آن دسترسی داشته باشد.</string>
+  <string name="hint_jellyfin_server_url">آدرس عمومی‌ای که برای باز کردن Jellyfin از خارج از خانه استفاده می‌کنید. Trakt از طریق اینترنت به آن متصل می‌شود، بنابراین آدرس‌های محلی و IP کار نخواهند کرد.</string>
   <string name="hint_media_sync_history_resync">می‌توانید تماشا‌های قبلی را بعداً از منوی مدیریت سرور وارد کنید.</string>
   <string name="image_alt_comment_gif">گیف پیوست‌شده به نظر</string>
   <string name="image_alt_list_preview_poster">پوستر برای یک ورودی در %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">به زودی</string>
   <string name="label_today_day">انتخاب یک روز</string>
   <string name="label_today_grouping">گروه‌بندی فعالیت‌های امروز</string>
+  <string name="label_usage_limit_loading">در حال بارگذاری میزان مصرف شما</string>
+  <string name="label_usage_limit_with_vip">%1$s از %2$s، %3$s با VIP</string>
   <string name="limit_title_connected_apps">برنامه‌های متصل</string>
   <string name="limit_title_digital_library">کتابخانه دیجیتال</string>
   <string name="limit_title_personal_lists">لیست‌های شخصی</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">سال تا به امروز</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_large_screen_cards">در صفحه‌های نمایش بزرگ‌تر، همه لیست‌ها از همان طراحی کارت‌های مورد استفاده در بقیه برنامه بهره می‌برند. با انتخاب هر کدام، به جای ترک لیست، یک نمای کلی سریع نمایش داده می‌شود.</string>
+  <string name="preview_feature_description_progress_manager">دکمه پیگیری سریال با تماشای شما پر می‌شود و کشویی را با پیشرفت شما در هر فصل و قسمت باز می‌کند.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_show_ending">ردیف پایان را در جزئیات سریال نمایش می‌دهد: «تکمیل شده» وقتی داستان به سرانجام رسیده باشد، و «حل‌نشده» وقتی نرسیده باشد.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">سال 2026 شما به صورت یک حلقه قابل پیمایش با یک پرسونای بیننده، و سپس یک صفحه آمار که با آن همخوانی دارد.</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_large_screen_cards">کارت‌های صفحه نمایش بزرگ</string>
+  <string name="preview_feature_title_progress_manager">مدیریت پیشرفت</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_show_ending">پایان سریال</string>
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">هنوز چیزی اینجا نیست. با عنوان‌هایی که قبلاً در دیگر لیست‌های خود ذخیره کرده‌اید، شروع کنید.</string>
   <string name="text_empty_plex_library">حساب Plex خود را متصل کنید تا کتابخانه Plex خود را با Trakt همگام‌سازی کنید.</string>
   <string name="text_ends_at">در %s به پایان می‌رسد</string>
+  <string name="text_episode_watch_state_unwatched">قسمت %d، تماشا‌نشده</string>
+  <string name="text_episode_watch_state_upcoming">قسمت %d، هنوز پخش نشده</string>
+  <string name="text_episode_watch_state_watched">قسمت %d، تماشاشده</string>
   <string name="text_episodes_short">اپ.</string>
   <string name="text_episodes_watched">%s اپیزود</string>
   <string name="text_export_status_complete">خروجی کامل شد.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">پیوستگی VIP شما (%1$s ساله) در %2$s روز به پایان می‌رسد</string>
   <string name="text_vip_join_now">به جامعه تماشاگرانی بپیوندید که هر فصل و هر افتتاحیه را یک نقطه عطف می‌دانند. وضعیت خود را ارتقا دهید و کلیدهای دنیایی پیچیده‌تر از کشف را به دست آورید.</string>
   <string name="text_vip_join_now_tagline">سطح را دیده‌اید، زمان آن است که تصویر کامل را ببینید.</string>
+  <string name="text_vip_limits_dashed_potential">بخش‌های خط‌چین پتانسیل شما با VIP را نشان می‌دهند</string>
   <string name="text_vip_make_it_official">رسمی، شما آن را می‌سازید!</string>
   <string name="text_vip_manage_failed_title">باز کردن تنظیمات اشتراک شما ممکن نبود</string>
   <string name="text_vip_payment_method_apple">اپ استور</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">شما اکنون یک %s هستید</string>
   <string name="text_vip_veteran_title_legend">افسانه</string>
   <string name="text_vip_veteran_title_veteran">کهنه‌کار</string>
+  <string name="text_watch_state_complete">تکمیل شده</string>
+  <string name="text_watch_state_count">%1$d از %2$d</string>
+  <string name="text_watch_state_episodes">اپیزودها</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">هنوز پخش نشده</string>
   <string name="text_watch_until_here_episode_count">%d اپیزود</string>
   <string name="text_watch_until_here_preview_title">مهر زمانی تماشا شده</string>
   <string name="text_year_in_review_banner_tagline">دوازده شخصیت. یکی از آن‌ها شمایید.</string>

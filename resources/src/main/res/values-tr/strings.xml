@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">%s ayarları</string>
   <string name="button_label_filter_settings_modified">%s ayarları, değiştirildi</string>
   <string name="button_label_filters">Filtreler</string>
+  <string name="button_label_finish_season">%1$s için kalan %2$d bölümü izlendi olarak işaretle</string>
   <string name="button_label_follow">%s takip et</string>
   <string name="button_label_follow_requests">Takip istekleri</string>
   <string name="button_label_followers">Takipçiler</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Çıkış Yap</string>
   <string name="button_label_manage_collaborators">%s için iş birlikçilerini yönet</string>
   <string name="button_label_manage_passkey">Geçiş anahtarını yönet</string>
+  <string name="button_label_manage_progress">\"%s\" için ilerlemeyi yönet</string>
   <string name="button_label_manage_subscription">VIP Aboneliğini Yönet</string>
   <string name="button_label_manage_vip">Aboneliği Yönet</string>
   <string name="button_label_mark_as_watched">\"%s\" izlendi olarak işaretle</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Filmleri ara</string>
   <string name="button_label_toggle_search_people">Kişi ara</string>
   <string name="button_label_toggle_search_shows">Dizileri ara</string>
+  <string name="button_label_toggle_season_episodes">%s bölümlerini göster veya gizle</string>
   <string name="button_label_toggle_streaming_countries">%s için ülkeleri aç/kapat</string>
   <string name="button_label_trivia_no_spoilers">Spoiler yok</string>
   <string name="button_label_trivia_spoilers">Spoilerlar</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finaller</string>
   <string name="button_text_episode_type_premieres">İlk Gösterimler</string>
   <string name="button_text_exit_edit_mode">Düzenleme modundan çık</string>
+  <string name="button_text_finish_season">Bitir</string>
   <string name="button_text_follow">Takip Et</string>
   <string name="button_text_follow_requests">İstekler</string>
   <string name="button_text_followers">Takipçiler</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">Bu IMDb başlığını Trakt\'te bulamadık.</string>
   <string name="error_text_jellyfin_embedded_credentials">Kullanıcı adınızı ve parolanızı adresten çıkarın.</string>
   <string name="error_text_jellyfin_invalid_credentials">Bu kullanıcı adı ve parola çalışmadı.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Sunucunuzun tam adresini, örneğin https://jellyfin.example.com gibi girin.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Bu, Trakt\'ın kullanabileceği bir web adresi değil. https://jellyfin.example.com gibi evinizin dışındayken Jellyfin\'i açmak için kullandığınız genel adresi girin.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Bu sunucuda Hızlı Bağlantı kapalı. Jellyfin kontrol panelinde açın veya parolanızla oturum açın.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Sunucunuzun alan adını kullanın. Trakt çıplak bir IP adresine ulaşamaz.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt yerel bir adrese veya IP adresine erişemez. https://jellyfin.example.com gibi evinizin dışındayken Jellyfin\'i açmak için kullandığınız genel adresi girin.</string>
   <string name="error_text_jellyfin_server_limit">Ücretsiz hesaplar 1 medya sunucusunu senkronize edebilir. Daha fazlasını eklemek için VIP olun.</string>
   <string name="error_text_jellyfin_server_not_found">Bu adreste hiçbir Jellyfin sunucusu yanıt vermedi. Kontrol edin ve tekrar deneyin.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt bu sunucuya ulaşamıyor. Çevrimiçi olduğundan ve internetten erişilebilir olduğundan emin olun.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt internet üzerinden bu sunucuya erişemiyor. Jellyfin\'in çevrim içi olduğunu, uzaktan erişim için ayarlandığını (örneğin bir ters proxy arkasında) ve genel adresini girdiğinizi kontrol edin.</string>
   <string name="error_text_jellyfin_unsupported_port">80, 443, 8096 veya 8920 numaralı bağlantı noktasını kullanın ya da sunucuyu bir ters proxy arkasına yerleştirin.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Adresi https:// veya http:// ile başlatın.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Adres https:// veya http:// ile başlamalıdır. https://jellyfin.example.com gibi evinizin dışındayken Jellyfin\'i açmak için kullandığınız genel adresi girin.</string>
   <string name="error_text_jellyfin_vip_required">Jellyfin senkronizasyonu şimdilik bir VIP beta sürümüdür.</string>
   <string name="error_text_lists_limit">Kişisel listelerinizin sınırına ulaştınız. Sınırsız liste için VIP\'ye yükseltin!</string>
   <string name="error_text_locked_account_collection_limit">Bu kullanıcı hesabı, koleksiyon limiti aşıldığı için kilitlenmiştir. Lütfen bu sorunu çözmek için <a>destek ile iletişime geçin</a>.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Bağlı Topluluk Uygulamaları</string>
   <string name="heading_meet_the_team">Ekiple Tanışın</string>
   <string name="heading_what_is_trakt">Trakt Nedir?</string>
-  <string name="hint_jellyfin_server_url">Jellyfin\'i açtığınız adres. Trakt\'in internetten bu adrese ulaşabilmesi gerekir.</string>
+  <string name="hint_jellyfin_server_url">Evinizin dışındayken Jellyfin\'i açmak için kullandığınız genel adres. Trakt bu adrese internet üzerinden erişir; bu nedenle yerel adresler ve IP adresleri çalışmaz.</string>
   <string name="hint_media_sync_history_resync">Geçmiş izlemeleri daha sonra sunucunun Yönet menüsünden içe aktarabilirsiniz.</string>
   <string name="image_alt_comment_gif">Yoruma eklenmiş GIF</string>
   <string name="image_alt_list_preview_poster">%s listesindeki bir öğenin afişi</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Yakında</string>
   <string name="label_today_day">Bir gün seçin</string>
   <string name="label_today_grouping">Bugünün etkinliğini grupla</string>
+  <string name="label_usage_limit_loading">Kullanımınız yükleniyor</string>
+  <string name="label_usage_limit_with_vip">%1$s üzerinden %2$s, VIP ile %3$s</string>
   <string name="limit_title_connected_apps">Bağlı Uygulamalar</string>
   <string name="limit_title_digital_library">Dijital Kütüphane</string>
   <string name="limit_title_personal_lists">Kişisel Listeler</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_large_screen_cards">Daha büyük ekranlarda, tüm listeler uygulamanın geri kalanıyla aynı kartları kullanır. Birini seçmek, listeden ayrılmak yerine hızlı bir bakış açar.</string>
+  <string name="preview_feature_description_progress_manager">Bir dizideki takip butonu siz izledikçe dolar ve sezon ile bölüm bazındaki ilerlemenizi içeren bir çekmece açar.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_show_ending">Bir dizinin ayrıntılarında Bitiş satırını gösterir: Hikaye tamamlandığında \'Tamamlandı\', tamamlanmadığında \'Çözümlenmemiş\'.</string>
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_large_screen_cards">Geniş Ekran Kartları</string>
+  <string name="preview_feature_title_progress_manager">İlerleme yöneticisi</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_show_ending">Dizi Bitişi</string>
   <string name="preview_feature_title_soundtrack">Film Müziği</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Burada henüz hiçbir şey yok. Diğer listelerinize kaydettiğiniz başlıklarla başlayın.</string>
   <string name="text_empty_plex_library">Plex Kütüphanenizi Trakt ile senkronize etmek için Plex hesabınızı bağlayın.</string>
   <string name="text_ends_at">%sda biter</string>
+  <string name="text_episode_watch_state_unwatched">Bölüm %d, izlenmedi</string>
+  <string name="text_episode_watch_state_upcoming">Bölüm %d, henüz yayınlanmadı</string>
+  <string name="text_episode_watch_state_watched">Bölüm %d, izlendi</string>
   <string name="text_episodes_short">BÖL.</string>
   <string name="text_episodes_watched">%s bölüm</string>
   <string name="text_export_status_complete">Dışa aktarma tamamlandı.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">%1$s yıllık VIP seriniz %2$s gün içinde sona erecek</string>
   <string name="text_vip_join_now">Her sezonu ve her galayı bir dönüm noktası olarak gören izleyiciler topluluğuna katılın. Statünüzü yükseltin ve daha sofistike bir keşif dünyasının anahtarlarını kazanın.</string>
   <string name="text_vip_join_now_tagline">Yüzeyi gördünüz, şimdi tam resmi görme zamanı.</string>
+  <string name="text_vip_limits_dashed_potential">Kesikli alanlar VIP ile potansiyelinizi gösterir</string>
   <string name="text_vip_make_it_official">Resmileştir, sen yaparsın!</string>
   <string name="text_vip_manage_failed_title">Abonelik ayarlarınız açılamadı</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Artık bir %s oldunuz</string>
   <string name="text_vip_veteran_title_legend">Efsane</string>
   <string name="text_vip_veteran_title_veteran">Kıdemli</string>
+  <string name="text_watch_state_complete">Tamamlandı</string>
+  <string name="text_watch_state_count">%1$d üzerinden %2$d</string>
+  <string name="text_watch_state_episodes">bölüm</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Henüz yayınlanmadı</string>
   <string name="text_watch_until_here_episode_count">%d bölüm</string>
   <string name="text_watch_until_here_preview_title">İzleme zaman damgaları</string>
   <string name="text_year_in_review_banner_tagline">On iki kişiden biri sizsiniz.</string>
