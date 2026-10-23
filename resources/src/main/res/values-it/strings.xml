@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">Impostazioni %s</string>
   <string name="button_label_filter_settings_modified">Impostazioni %s, modificate</string>
   <string name="button_label_filters">Filtri</string>
+  <string name="button_label_finish_season">Segna i restanti %1$d episodi di %2$s come visti</string>
   <string name="button_label_follow">Segui %s</string>
   <string name="button_label_follow_requests">Richieste di follow</string>
   <string name="button_label_followers">Follower</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Esci</string>
   <string name="button_label_manage_collaborators">Gestisci i collaboratori per %s</string>
   <string name="button_label_manage_passkey">Gestisci Passkey</string>
+  <string name="button_label_manage_progress">Gestisci i progressi per \"%s\"</string>
   <string name="button_label_manage_subscription">Gestisci abbonamento VIP</string>
   <string name="button_label_manage_vip">Gestisci abbonamento</string>
   <string name="button_label_mark_as_watched">Segna \"%s\" come visto</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Cerca film</string>
   <string name="button_label_toggle_search_people">Cerca persone</string>
   <string name="button_label_toggle_search_shows">Cerca serie TV</string>
+  <string name="button_label_toggle_season_episodes">Mostra o nascondi gli episodi di %s</string>
   <string name="button_label_toggle_streaming_countries">Attiva/disattiva i paesi per %s</string>
   <string name="button_label_trivia_no_spoilers">Senza spoiler</string>
   <string name="button_label_trivia_spoilers">Spoiler</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finali</string>
   <string name="button_text_episode_type_premieres">Anteprime</string>
   <string name="button_text_exit_edit_mode">Esci dalla modalità di modifica</string>
+  <string name="button_text_finish_season">Completa</string>
   <string name="button_text_follow">Segui</string>
   <string name="button_text_follow_requests">Richieste</string>
   <string name="button_text_followers">Follower</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">Non è stato possibile trovare questo titolo IMDb su Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">Non includere nome utente e password nell\'indirizzo.</string>
   <string name="error_text_jellyfin_invalid_credentials">Nome utente e password non hanno funzionato.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Inserisci l\'indirizzo completo del tuo server, come https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Questo non è un indirizzo web utilizzabile da Trakt. Inserisci l\'indirizzo pubblico che usi per aprire Jellyfin da fuori casa, ad esempio https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect è disattivato su questo server. Attivalo nella dashboard di Jellyfin, oppure accedi con la tua password.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Usa il nome di dominio del tuo server. Trakt non può raggiungere un indirizzo IP grezzo.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt non può raggiungere un indirizzo locale o IP. Inserisci l\'indirizzo pubblico che usi per aprire Jellyfin da fuori casa, ad esempio https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Gli account gratuiti possono sincronizzare 1 server multimediale. Diventa VIP per aggiungerne altri.</string>
   <string name="error_text_jellyfin_server_not_found">Nessun server Jellyfin ha risposto a quell\'indirizzo. Controlla e riprova.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt non può raggiungere quel server. Assicurati che sia online e raggiungibile da internet.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt non riesce a raggiungere questo server da Internet. Verifica che Jellyfin sia online e configurato per l\'accesso remoto, ad esempio tramite un reverse proxy, e di aver inserito il suo indirizzo pubblico.</string>
   <string name="error_text_jellyfin_unsupported_port">Usa le porte 80, 443, 8096 o 8920, oppure metti il server dietro un proxy inverso.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Inizia l\'indirizzo con https:// o http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">L\'indirizzo deve iniziare con https:// o http://. Inserisci l\'indirizzo pubblico che usi per aprire Jellyfin da fuori casa, ad esempio https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">La sincronizzazione Jellyfin è per ora una beta VIP.</string>
   <string name="error_text_lists_limit">Hai raggiunto il limite delle tue liste personali. Passa a VIP per un numero illimitato di liste!</string>
   <string name="error_text_locked_account_collection_limit">Questo account utente è stato bloccato perché la collezione ha superato il limite. Si prega di <a>contattare il supporto</a> per risolvere questo problema.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">App della community connesse</string>
   <string name="heading_meet_the_team">Incontra il team</string>
   <string name="heading_what_is_trakt">Cos\'è Trakt?</string>
-  <string name="hint_jellyfin_server_url">L\'indirizzo con cui apri Jellyfin. Trakt deve raggiungerlo da internet.</string>
+  <string name="hint_jellyfin_server_url">L\'indirizzo pubblico che usi per aprire Jellyfin da fuori casa. Trakt vi accede tramite Internet, quindi gli indirizzi locali e gli indirizzi IP non funzionano.</string>
   <string name="hint_media_sync_history_resync">Puoi importare le visualizzazioni passate in seguito dal menu Gestisci del server.</string>
   <string name="image_alt_comment_gif">GIF allegata al commento</string>
   <string name="image_alt_list_preview_poster">Locandina per una voce in %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Prossimamente</string>
   <string name="label_today_day">Scegli un giorno</string>
   <string name="label_today_grouping">Raggruppa l\'attività di oggi</string>
+  <string name="label_usage_limit_loading">Caricamento dell\'utilizzo</string>
+  <string name="label_usage_limit_with_vip">%1$s su %2$s, %3$s con VIP</string>
   <string name="limit_title_connected_apps">App Connesse</string>
   <string name="limit_title_digital_library">Libreria digitale</string>
   <string name="limit_title_personal_lists">Liste personali</string>
@@ -1423,7 +1429,7 @@
   <string name="match_label_soulmates">Anime gemelle</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Corrispondenza:</string>
-  <string name="match_pill_aria_label">%1$d%% di corrispondenza, %2$s. Apri dettagli corrispondenza.</string>
+  <string name="match_pill_aria_label">%1$d% di corrispondenza, %2$s. Apri dettagli corrispondenza.</string>
   <string name="match_pill_loading_aria_label">Calcolo del punteggio di corrispondenza</string>
   <string name="mir_banner_body">Il tuo riepilogo mensile è pronto. Ecco cosa hai guardato a %s.</string>
   <string name="mir_banner_body_short">Il tuo riepilogo di %s è pronto.</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">Dall\'inizio dell\'anno</string>
   <string name="preview_feature_description_edit_mode">Abilita i controlli per nascondere o mostrare sezioni configurabili in tutta l\'app.</string>
   <string name="preview_feature_description_large_screen_cards">Su schermi più grandi, tutte le liste utilizzano le stesse schede del resto dell\'app. Selezionandone una si apre una rapida occhiata invece di abbandonare la lista.</string>
+  <string name="preview_feature_description_progress_manager">Il pulsante di tracciamento di una serie si riempie man mano che guardi e apre un riquadro con i tuoi progressi per stagione ed episodio.</string>
   <string name="preview_feature_description_rewatch">Avvia sessioni di riguardato per le serie TV che hai già visto, registrando la visione o contrassegnando gli episodi come guardati direttamente dal pannello della sessione.</string>
   <string name="preview_feature_description_show_ending">Mostra una riga \'Conclusione\' nei dettagli di una serie: Completata quando la storia si è conclusa, Irrisolta quando non lo è stato.</string>
   <string name="preview_feature_description_soundtrack">Aggiunge una sezione colonna sonora alle pagine di film e serie TV, con riproduzione dove un brano può essere trovato.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">Il tuo 2026 come un reel scorrevole con una personalità di spettatore, poi una pagina di statistiche stilizzata per abbinarla.</string>
   <string name="preview_feature_title_edit_mode">Modalità di modifica</string>
   <string name="preview_feature_title_large_screen_cards">Schede a schermo grande</string>
+  <string name="preview_feature_title_progress_manager">Gestione progressi</string>
   <string name="preview_feature_title_rewatch">Riguarda</string>
   <string name="preview_feature_title_show_ending">Conclusione serie</string>
   <string name="preview_feature_title_soundtrack">Colonna sonora</string>
@@ -1654,7 +1662,7 @@
   <string name="tag_media_sync_webhook_only">Solo Webhook</string>
   <string name="tag_mixtape_different_mood">Atmosfera diversa</string>
   <string name="tag_mixtape_kept">Conservato</string>
-  <string name="tag_mixtape_match">%s%% di corrispondenza</string>
+  <string name="tag_mixtape_match">%s% di corrispondenza</string>
   <string name="tag_mixtape_tap_details">Tocca per i dettagli</string>
   <string name="tag_text_blocked_user">Bloccato</string>
   <string name="tag_text_deal_price">Primi 2 Anni</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Nessun elemento presente. Inizia con i titoli che hai già salvato nelle tue altre liste.</string>
   <string name="text_empty_plex_library">Collega il tuo account Plex per sincronizzare la tua Libreria Plex con Trakt.</string>
   <string name="text_ends_at">Termina alle %s</string>
+  <string name="text_episode_watch_state_unwatched">Episodio %d, non visto</string>
+  <string name="text_episode_watch_state_upcoming">Episodio %d, non ancora trasmesso</string>
+  <string name="text_episode_watch_state_watched">Episodio %d, visto</string>
   <string name="text_episodes_short">EP.</string>
   <string name="text_episodes_watched">%s episodi</string>
   <string name="text_export_status_complete">Esportazione completata.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">La tua serie VIP di %1$s anni termina tra %2$s giorni</string>
   <string name="text_vip_join_now">Unisciti alla comunità di spettatori che trattano ogni stagione e ogni première come una pietra miliare. Eleva il tuo status e ottieni le chiavi per un mondo di scoperta più sofisticato.</string>
   <string name="text_vip_join_now_tagline">Hai visto la superficie, è ora di vedere il quadro completo.</string>
+  <string name="text_vip_limits_dashed_potential">Le aree tratteggiate mostrano il tuo potenziale con VIP</string>
   <string name="text_vip_make_it_official">Rendilo ufficiale!</string>
   <string name="text_vip_manage_failed_title">Impossibile aprire le impostazioni dell\'abbonamento</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Ora sei un %s</string>
   <string name="text_vip_veteran_title_legend">LEGGENDA</string>
   <string name="text_vip_veteran_title_veteran">VETERANO</string>
+  <string name="text_watch_state_complete">Completata</string>
+  <string name="text_watch_state_count">%1$d di %2$d</string>
+  <string name="text_watch_state_episodes">episodi</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Non ancora trasmesso</string>
   <string name="text_watch_until_here_episode_count">%d episodi</string>
   <string name="text_watch_until_here_preview_title">Timestamp visti</string>
   <string name="text_year_in_review_banner_tagline">Dodici personalità. Una di queste sei tu.</string>
@@ -2822,7 +2839,7 @@
   <string name="yir_2026_preview_runner_none">Nessuno (no ibrido)</string>
   <string name="yir_2026_preview_runner_up">Secondo classificato</string>
   <string name="yir_2026_preview_title">Anteprima personalità</string>
-  <string name="yir_2026_rarity">Solo il %1$d%% sono %2$s</string>
+  <string name="yir_2026_rarity">Solo il %1$d% sono %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un po\' %s</string>
   <string name="yir_2026_reel_and_you_are">E tu sei</string>
   <string name="yir_2026_reel_but_mostly">Ma soprattutto</string>

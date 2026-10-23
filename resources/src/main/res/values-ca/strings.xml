@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">Configuració de %s</string>
   <string name="button_label_filter_settings_modified">Configuració de %s, canviada</string>
   <string name="button_label_filters">Filtres</string>
+  <string name="button_label_finish_season">Marca els %1$d episodis restants de %2$s com a vistos</string>
   <string name="button_label_follow">Segueix %s</string>
   <string name="button_label_follow_requests">Sol·licituds de seguiment</string>
   <string name="button_label_followers">Seguidors</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Tanca la sessió</string>
   <string name="button_label_manage_collaborators">Gestiona els col·laboradors de %s</string>
   <string name="button_label_manage_passkey">Gestionar la clau d\'accés</string>
+  <string name="button_label_manage_progress">Gestiona el progrés de \"%s\"</string>
   <string name="button_label_manage_subscription">Gestiona la subscripció VIP</string>
   <string name="button_label_manage_vip">Gestiona la subscripció</string>
   <string name="button_label_mark_as_watched">Marca \"%s\" com a vist</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Cerca pel·lícules</string>
   <string name="button_label_toggle_search_people">Cerca persones</string>
   <string name="button_label_toggle_search_shows">Cerca sèries</string>
+  <string name="button_label_toggle_season_episodes">Mostra o amaga els episodis de %s</string>
   <string name="button_label_toggle_streaming_countries">Alternar països per a %s</string>
   <string name="button_label_trivia_no_spoilers">Sense spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finals</string>
   <string name="button_text_episode_type_premieres">Estrenes</string>
   <string name="button_text_exit_edit_mode">Surt del mode d\'edició</string>
+  <string name="button_text_finish_season">Finalitza</string>
   <string name="button_text_follow">Segueix</string>
   <string name="button_text_follow_requests">Sol·licituds</string>
   <string name="button_text_followers">Seguidors</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">No hem pogut trobar aquest títol d\'IMDb a Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">No incloguis el teu nom d\'usuari i contrasenya a l\'adreça.</string>
   <string name="error_text_jellyfin_invalid_credentials">Aquest nom d\'usuari i contrasenya no han funcionat.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Introdueix l\'adreça completa del teu servidor, com https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Aquesta no és una adreça web que Trakt pugui utilitzar. Introdueix l\'adreça pública que utilitzes per obrir Jellyfin des de fora de casa, com ara https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect està desactivat en aquest servidor. Activa\'l al panell de control de Jellyfin, o inicia sessió amb la teva contrasenya.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Utilitza el nom de domini del teu servidor. Trakt no pot accedir a una adreça IP nua.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt no pot accedir a una adreça local o IP. Introdueix l\'adreça pública que utilitzes per obrir Jellyfin des de fora de casa, com ara https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Els comptes gratuïts poden sincronitzar 1 servidor de contingut. Fes-te VIP per afegir-ne més.</string>
   <string name="error_text_jellyfin_server_not_found">Cap servidor Jellyfin ha respost a aquesta adreça. Revisa-la i torna a provar-ho.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt no pot accedir a aquest servidor. Assegura\'t que estigui en línia i sigui accessible des d\'Internet.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt no pot accedir a aquest servidor des d\'internet. Comprova que Jellyfin estigui en línia i configurat per a l\'accés remot, per exemple darrere d\'un servidor intermediari invers, i que n\'hagis introduït l\'adreça pública.</string>
   <string name="error_text_jellyfin_unsupported_port">Utilitza el port 80, 443, 8096 o 8920, o posa el servidor darrere d\'un proxy invers.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Comença l\'adreça amb https:// o http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">L\'adreça ha de començar per https:// o http://. Introdueix l\'adreça pública que utilitzes per obrir Jellyfin des de fora de casa, com ara https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">La sincronització de Jellyfin és una beta VIP de moment.</string>
   <string name="error_text_lists_limit">Has arribat al límit de les teves llistes personals. Actualitza a VIP per obtenir una quantitat il·limitada de llistes!</string>
   <string name="error_text_locked_account_collection_limit">Aquest compte d\'usuari s\'ha bloquejat perquè la col·lecció ha superat el límit. Si us plau, <a>contacta amb el suport</a> per resoldre aquest problema.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Aplicacions de comunitat connectades</string>
   <string name="heading_meet_the_team">Coneix l\'equip</string>
   <string name="heading_what_is_trakt">Què és Trakt?</string>
-  <string name="hint_jellyfin_server_url">L\'adreça amb què obres Jellyfin. Trakt ha de poder accedir-hi des d\'Internet.</string>
+  <string name="hint_jellyfin_server_url">L\'adreça pública que utilitzes per obrir Jellyfin des de fora de casa. Trakt hi accedeix a través d\'internet, de manera que les adreces locals i IP no funcionaran.</string>
   <string name="hint_media_sync_history_resync">Podeu importar visualitzacions passades més tard des del menú Gestionar del servidor.</string>
   <string name="image_alt_comment_gif">GIF adjunt al comentari</string>
   <string name="image_alt_list_preview_poster">Pòster d\'una entrada a %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Pròximament</string>
   <string name="label_today_day">Tria un dia</string>
   <string name="label_today_grouping">Agrupa l\'activitat d\'avui</string>
+  <string name="label_usage_limit_loading">S\'està carregant el teu ús</string>
+  <string name="label_usage_limit_with_vip">%1$s de %2$s, %3$s amb VIP</string>
   <string name="limit_title_connected_apps">Aplicacions connectades</string>
   <string name="limit_title_digital_library">Biblioteca digital</string>
   <string name="limit_title_personal_lists">Llistes personals</string>
@@ -1423,7 +1429,7 @@
   <string name="match_label_soulmates">Ànimes bessones</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidència:</string>
-  <string name="match_pill_aria_label">%1$d%% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
+  <string name="match_pill_aria_label">%1$d% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
   <string name="mir_banner_body">El teu resum mensual està llest. Aquí teniu el que vau veure a %s.</string>
   <string name="mir_banner_body_short">El teu resum de %s està llest.</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_large_screen_cards">A pantalles més grans, totes les llistes utilitzen les mateixes targetes que la resta de l\'aplicació. Si en seleccioneu una, s\'obre una vista ràpida en lloc de sortir de la llista.</string>
+  <string name="preview_feature_description_progress_manager">El botó de seguiment d\'una sèrie s\'omple a mesura que mires, i obre un calaix amb el teu progrés per temporada i episodi.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_show_ending">Mostra una fila de Finalització als detalls d\'una sèrie: Completat quan la història ha conclòs, Sense resoldre quan no.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">El teu 2026 en un carrusel desplaçable amb una personalitat d\'espectador, i després una pàgina d\'estadístiques amb el mateix estil.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_large_screen_cards">Targetes per a pantalles grans</string>
+  <string name="preview_feature_title_progress_manager">Gestor de progrés</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_show_ending">Finalització de la sèrie</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
@@ -1654,7 +1662,7 @@
   <string name="tag_media_sync_webhook_only">Només Webhook</string>
   <string name="tag_mixtape_different_mood">Un altre ambient</string>
   <string name="tag_mixtape_kept">Guardat</string>
-  <string name="tag_mixtape_match">%s%% de coincidència</string>
+  <string name="tag_mixtape_match">%s% de coincidència</string>
   <string name="tag_mixtape_tap_details">Toca per als detalls</string>
   <string name="tag_text_blocked_user">Bloquejat</string>
   <string name="tag_text_deal_price">Primers 2 anys</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Encara no hi ha res aquí. Comença amb títols que ja has desat a les teves altres llistes.</string>
   <string name="text_empty_plex_library">Connecta el teu compte de Plex per sincronitzar la teva biblioteca de Plex amb Trakt.</string>
   <string name="text_ends_at">Acaba a les %s</string>
+  <string name="text_episode_watch_state_unwatched">Episodi %d, no vist</string>
+  <string name="text_episode_watch_state_upcoming">Episodi %d, encara no emès</string>
+  <string name="text_episode_watch_state_watched">Episodi %d, vist</string>
   <string name="text_episodes_short">EPS</string>
   <string name="text_episodes_watched">%s episodis</string>
   <string name="text_export_status_complete">Exportació completada.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">La teva ratxa VIP de %1$s anys finalitza en %2$s dies</string>
   <string name="text_vip_join_now">Uneix-te a la societat d\'espectadors que tracten cada temporada i cada estrena com una fita. Eleva el teu estatus i obtén les claus per a un món de descobriment més sofisticat.</string>
   <string name="text_vip_join_now_tagline">Has vist la superfície, ara és el moment de veure la imatge completa.</string>
+  <string name="text_vip_limits_dashed_potential">Les zones discontínues mostren el teu potencial amb VIP</string>
   <string name="text_vip_make_it_official">Oficial, tu ho fas possible!</string>
   <string name="text_vip_manage_failed_title">No s\'han pogut obrir els ajustos de la subscripció</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Ara ets un %s</string>
   <string name="text_vip_veteran_title_legend">Llegenda</string>
   <string name="text_vip_veteran_title_veteran">Veterà</string>
+  <string name="text_watch_state_complete">Completat</string>
+  <string name="text_watch_state_count">%1$d de %2$d</string>
+  <string name="text_watch_state_episodes">episodis</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Encara no s\'ha emès</string>
   <string name="text_watch_until_here_episode_count">%d episodis</string>
   <string name="text_watch_until_here_preview_title">Marques de temps visualitzades</string>
   <string name="text_year_in_review_banner_tagline">Dotze personalitats. Una d\'elles ets tu.</string>
@@ -2822,7 +2839,7 @@
   <string name="yir_2026_preview_runner_none">Cap (sense híbrid)</string>
   <string name="yir_2026_preview_runner_up">Subcampió</string>
   <string name="yir_2026_preview_title">Vista prèvia de la personalitat</string>
-  <string name="yir_2026_rarity">Només el %1$d%% són %2$s</string>
+  <string name="yir_2026_rarity">Només el %1$d% són %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Una mica %s</string>
   <string name="yir_2026_reel_and_you_are">I tu ets</string>
   <string name="yir_2026_reel_but_mostly">Però majoritàriament</string>

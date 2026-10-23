@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">%s 设置</string>
   <string name="button_label_filter_settings_modified">%s 设置，已更改</string>
   <string name="button_label_filters">筛选器</string>
+  <string name="button_label_finish_season">将 %1$s 剩余的 %2$d 集标记为已看</string>
   <string name="button_label_follow">关注 %s</string>
   <string name="button_label_follow_requests">关注请求</string>
   <string name="button_label_followers">关注者</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">退出</string>
   <string name="button_label_manage_collaborators">管理“%s”的协作者</string>
   <string name="button_label_manage_passkey">管理通行密钥</string>
+  <string name="button_label_manage_progress">管理“%s”的进度</string>
   <string name="button_label_manage_subscription">管理VIP订阅</string>
   <string name="button_label_manage_vip">管理订阅</string>
   <string name="button_label_mark_as_watched">标记“%s”为已观看</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">搜索电影</string>
   <string name="button_label_toggle_search_people">搜索人物</string>
   <string name="button_label_toggle_search_shows">搜索节目</string>
+  <string name="button_label_toggle_season_episodes">显示或隐藏 %s 的剧集</string>
   <string name="button_label_toggle_streaming_countries">切换%s的国家/地区</string>
   <string name="button_label_trivia_no_spoilers">无剧透</string>
   <string name="button_label_trivia_spoilers">剧透</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">结局</string>
   <string name="button_text_episode_type_premieres">首映</string>
   <string name="button_text_exit_edit_mode">退出编辑模式</string>
+  <string name="button_text_finish_season">完成</string>
   <string name="button_text_follow">关注</string>
   <string name="button_text_follow_requests">请求</string>
   <string name="button_text_followers">关注者</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">我们无法在 Trakt 上找到此 IMDb 影片。</string>
   <string name="error_text_jellyfin_embedded_credentials">请勿在地址中包含您的用户名和密码。</string>
   <string name="error_text_jellyfin_invalid_credentials">用户名或密码不正确。</string>
-  <string name="error_text_jellyfin_invalid_server_url">请输入您的服务器完整地址，例如 https://jellyfin.example.com。</string>
+  <string name="error_text_jellyfin_invalid_server_url">这不是 Trakt 可以使用的网络地址。请输入您在家庭网络外访问 Jellyfin 所使用的公网地址，例如 https://jellyfin.example.com。</string>
   <string name="error_text_jellyfin_quick_connect_disabled">此服务器上的快速连接已关闭。请在 Jellyfin 控制面板中将其打开，或使用您的密码登录。</string>
-  <string name="error_text_jellyfin_raw_ip_address">请使用您的服务器域名。Trakt 无法访问裸 IP 地址。</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt 无法访问本地或 IP 地址。请输入您在家庭网络外访问 Jellyfin 所使用的公网地址，例如 https://jellyfin.example.com。</string>
   <string name="error_text_jellyfin_server_limit">免费账户只能同步 1 个媒体服务器。升级 VIP 以添加更多。</string>
   <string name="error_text_jellyfin_server_not_found">该地址没有 Jellyfin 服务器响应。请检查并重试。</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt 无法连接到该服务器。请确保它在线并可从互联网访问。</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt 无法通过互联网连接到该服务器。请确认 Jellyfin 处于在线状态并已设置远程访问（例如位于反向代理之后），且您输入的是其公网地址。</string>
   <string name="error_text_jellyfin_unsupported_port">请使用 80、443、8096 或 8920 端口，或者将服务器放在反向代理后面。</string>
-  <string name="error_text_jellyfin_unsupported_scheme">地址应以 https:// 或 http:// 开头。</string>
+  <string name="error_text_jellyfin_unsupported_scheme">地址必须以 https:// 或 http:// 开头。请输入您在家庭网络外访问 Jellyfin 所使用的公网地址，例如 https://jellyfin.example.com。</string>
   <string name="error_text_jellyfin_vip_required">Jellyfin 同步目前是 VIP 测试版。</string>
   <string name="error_text_lists_limit">你已达到个人列表数量上限。升级至VIP可获得无限量列表！</string>
   <string name="error_text_locked_account_collection_limit">此用户帐户已被锁定，因为收藏已超出限制。请<a>联系支持</a>以解决此问题。</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">已连接的社区应用</string>
   <string name="heading_meet_the_team">认识团队</string>
   <string name="heading_what_is_trakt">Trakt 是什么？</string>
-  <string name="hint_jellyfin_server_url">您用来打开 Jellyfin 的地址。Trakt 必须能从互联网访问它。</string>
+  <string name="hint_jellyfin_server_url">您在家庭网络外访问 Jellyfin 所使用的公网地址。Trakt 需要通过互联网进行访问，因此本地和 IP 地址无法使用。</string>
   <string name="hint_media_sync_history_resync">您可以稍后从服务器的“管理”菜单导入过去的观看记录。</string>
   <string name="image_alt_comment_gif">评论附带的GIF</string>
   <string name="image_alt_list_preview_poster">%s 中的条目海报</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">即将推出</string>
   <string name="label_today_day">选择日期</string>
   <string name="label_today_grouping">今日动态分组</string>
+  <string name="label_usage_limit_loading">正在加载您的用量</string>
+  <string name="label_usage_limit_with_vip">%1$s / %2$s，开通 VIP 可达 %3$s</string>
   <string name="limit_title_connected_apps">已连接应用</string>
   <string name="limit_title_digital_library">数字媒体库</string>
   <string name="limit_title_personal_lists">个人列表</string>
@@ -1423,7 +1429,7 @@
   <string name="match_label_soulmates">灵魂伴侣</string>
   <string name="match_label_spin_off">衍生作品</string>
   <string name="match_pill_anchor">匹配:</string>
-  <string name="match_pill_aria_label">%1$d%% 匹配，%2$s。打开匹配详情。</string>
+  <string name="match_pill_aria_label">%1$d% 匹配，%2$s。打开匹配详情。</string>
   <string name="match_pill_loading_aria_label">正在计算匹配度</string>
   <string name="mir_banner_body">您的月度回顾已就绪。这是您在 %s 中观看的内容。</string>
   <string name="mir_banner_body_short">您的 %s 回顾已就绪。</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">年至今</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
+  <string name="preview_feature_description_progress_manager">剧集的追踪按钮会随着您的观看进度逐渐填满，并可打开抽屉面板查看每季和每集的进度。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_show_ending">在剧集详情中显示结局行：故事完结时为“已完成”，未完结时为“未完结”。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
+  <string name="preview_feature_title_progress_manager">进度管理器</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_show_ending">剧集结局</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
@@ -1654,7 +1662,7 @@
   <string name="tag_media_sync_webhook_only">仅限 Webhook</string>
   <string name="tag_mixtape_different_mood">风格不符</string>
   <string name="tag_mixtape_kept">已保留</string>
-  <string name="tag_mixtape_match">%s%% 匹配</string>
+  <string name="tag_mixtape_match">%s% 匹配</string>
   <string name="tag_mixtape_tap_details">轻触查看详情</string>
   <string name="tag_text_blocked_user">已屏蔽</string>
   <string name="tag_text_deal_price">前两年</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">此处尚无内容。请从你的其他列表中保存的条目开始。</string>
   <string name="text_empty_plex_library">连接您的 Plex 帐户，将您的 Plex 媒体库与 Trakt 同步。</string>
   <string name="text_ends_at">结束于 %s</string>
+  <string name="text_episode_watch_state_unwatched">第 %d 集，未看</string>
+  <string name="text_episode_watch_state_upcoming">第 %d 集，尚未播出</string>
+  <string name="text_episode_watch_state_watched">第 %d 集，已看</string>
   <string name="text_episodes_short">集</string>
   <string name="text_episodes_watched">%s 集</string>
   <string name="text_export_status_complete">导出完成。</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">您的 %1$s 年 VIP 连贯记录将在 %2$s 天内结束</string>
   <string name="text_vip_join_now">加入将每个季节和每部首播剧都视为里程碑的观众群体。提升您的地位，获得探索更精致世界的钥匙。</string>
   <string name="text_vip_join_now_tagline">您只看到了表面，是时候了解全貌了。</string>
+  <string name="text_vip_limits_dashed_potential">虚线区域显示升级 VIP 后的额度空间</string>
   <string name="text_vip_make_it_official">官方认可，您做到了！</string>
   <string name="text_vip_manage_failed_title">无法打开您的订阅设置</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">您现在是 %s</string>
   <string name="text_vip_veteran_title_legend">传奇</string>
   <string name="text_vip_veteran_title_veteran">资深</string>
+  <string name="text_watch_state_complete">已完成</string>
+  <string name="text_watch_state_count">%1$d 中的 %2$d</string>
+  <string name="text_watch_state_episodes">集</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">尚未播出</string>
   <string name="text_watch_until_here_episode_count">%d 集</string>
   <string name="text_watch_until_here_preview_title">观看时间戳</string>
   <string name="text_year_in_review_banner_tagline">十二种观影人格。您是其中之一。</string>
@@ -2822,7 +2839,7 @@
   <string name="yir_2026_preview_runner_none">无（非混合）</string>
   <string name="yir_2026_preview_runner_up">第二名</string>
   <string name="yir_2026_preview_title">角色预览</string>
-  <string name="yir_2026_rarity">仅有 %1$d%% 是 %2$s</string>
+  <string name="yir_2026_rarity">仅有 %1$d% 是 %2$s</string>
   <string name="yir_2026_reel_a_little_bit">有点 %s</string>
   <string name="yir_2026_reel_and_you_are">而您是</string>
   <string name="yir_2026_reel_but_mostly">但主要是</string>

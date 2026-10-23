@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">%s indstillinger</string>
   <string name="button_label_filter_settings_modified">%s indstillinger, ændret</string>
   <string name="button_label_filters">Filtre</string>
+  <string name="button_label_finish_season">Markér de resterende %1$d episoder af %2$s som set</string>
   <string name="button_label_follow">Følg %s</string>
   <string name="button_label_follow_requests">Følgeanmodninger</string>
   <string name="button_label_followers">Følgere</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">Log ud</string>
   <string name="button_label_manage_collaborators">Administrer samarbejdspartnere for %s</string>
   <string name="button_label_manage_passkey">Administrer adgangsnøgle</string>
+  <string name="button_label_manage_progress">Administrer fremskridt for \"%s\"</string>
   <string name="button_label_manage_subscription">Administrer VIP-abonnement</string>
   <string name="button_label_manage_vip">Administrer abonnement</string>
   <string name="button_label_mark_as_watched">Markér \"%s\" som set</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">Søg efter film</string>
   <string name="button_label_toggle_search_people">Søg efter personer</string>
   <string name="button_label_toggle_search_shows">Søg efter serier</string>
+  <string name="button_label_toggle_season_episodes">Vis eller skjul episoderne for %s</string>
   <string name="button_label_toggle_streaming_countries">Skift lande for %s</string>
   <string name="button_label_trivia_no_spoilers">Ingen spoilere</string>
   <string name="button_label_trivia_spoilers">Spoilere</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">Finaler</string>
   <string name="button_text_episode_type_premieres">Premierer</string>
   <string name="button_text_exit_edit_mode">Afslut redigeringstilstand</string>
+  <string name="button_text_finish_season">Afslut</string>
   <string name="button_text_follow">Følg</string>
   <string name="button_text_follow_requests">Anmodninger</string>
   <string name="button_text_followers">Følgere</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">Vi kunne ikke finde denne IMDb-titel på Trakt.</string>
   <string name="error_text_jellyfin_embedded_credentials">Udelad dit brugernavn og din adgangskode fra adressen.</string>
   <string name="error_text_jellyfin_invalid_credentials">Det brugernavn og den adgangskode virkede ikke.</string>
-  <string name="error_text_jellyfin_invalid_server_url">Indtast din servers fulde adresse, f.eks. https://jellyfin.example.com.</string>
+  <string name="error_text_jellyfin_invalid_server_url">Det er ikke en webadresse, Trakt kan bruge. Indtast den offentlige adresse, du bruger til at åbne Jellyfin uden for dit hjem, f.eks. https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect er slået fra på denne server. Slå det til i Jellyfin-dashboardet, eller log ind med din adgangskode.</string>
-  <string name="error_text_jellyfin_raw_ip_address">Brug din servers domænenavn. Trakt kan ikke nå en bar IP-adresse.</string>
+  <string name="error_text_jellyfin_raw_ip_address">Trakt kan ikke få forbindelse til en lokal adresse eller en IP-adresse. Indtast den offentlige adresse, du bruger til at åbne Jellyfin uden for dit hjem, f.eks. https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Gratis konti kan synkronisere 1 medieserver. Bliv VIP for at tilføje flere.</string>
   <string name="error_text_jellyfin_server_not_found">Ingen Jellyfin-server svarede på den adresse. Kontroller den, og prøv igen.</string>
-  <string name="error_text_jellyfin_server_unreachable">Trakt kan ikke nå den server. Sørg for, at den er online og kan nås fra internettet.</string>
+  <string name="error_text_jellyfin_server_unreachable">Trakt kan ikke få forbindelse til den server fra internettet. Tjek, at Jellyfin er online og konfigureret til fjernadgang, for eksempel bag en reverse proxy, og at du har indtastet dens offentlige adresse.</string>
   <string name="error_text_jellyfin_unsupported_port">Brug port 80, 443, 8096 eller 8920, eller placer serveren bag en reverse proxy.</string>
-  <string name="error_text_jellyfin_unsupported_scheme">Start adressen med https:// eller http://.</string>
+  <string name="error_text_jellyfin_unsupported_scheme">Adressen skal starte med https:// eller http://. Indtast den offentlige adresse, du bruger til at åbne Jellyfin uden for dit hjem, f.eks. https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_vip_required">Jellyfin-synkronisering er en VIP-beta indtil videre.</string>
   <string name="error_text_lists_limit">Du har nået grænsen for dine personlige lister. Opgrader til VIP for ubegrænsede lister!</string>
   <string name="error_text_locked_account_collection_limit">Denne brugerkonto er blevet låst, fordi samlingen har overskredet grænsen. Venligst <a>kontakt support</a> for at løse dette problem.</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">Forbundne fællesskabsapps</string>
   <string name="heading_meet_the_team">Mød teamet</string>
   <string name="heading_what_is_trakt">Hvad er Trakt?</string>
-  <string name="hint_jellyfin_server_url">Adressen du bruger til at åbne Jellyfin med. Trakt skal kunne nå den fra internettet.</string>
+  <string name="hint_jellyfin_server_url">Den offentlige adresse, du bruger til at åbne Jellyfin uden for dit hjem. Trakt tilgår den via internettet, så lokale adresser og IP-adresser fungerer ikke.</string>
   <string name="hint_media_sync_history_resync">Du kan importere tidligere visninger senere fra serverens Administrer-menu.</string>
   <string name="image_alt_comment_gif">GIF vedhæftet kommentaren</string>
   <string name="image_alt_list_preview_poster">Plakat for et element i %s</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">Snart</string>
   <string name="label_today_day">Vælg en dag</string>
   <string name="label_today_grouping">Gruppér dagens aktivitet</string>
+  <string name="label_usage_limit_loading">Indlæser dit forbrug</string>
+  <string name="label_usage_limit_with_vip">%1$s af %2$s, %3$s med VIP</string>
   <string name="limit_title_connected_apps">Forbundne apps</string>
   <string name="limit_title_digital_library">Digitalt bibliotek</string>
   <string name="limit_title_personal_lists">Personlige lister</string>
@@ -1423,7 +1429,7 @@
   <string name="match_label_soulmates">Sjælevenner</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Åbn matchdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Åbn matchdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beregner matchscore</string>
   <string name="mir_banner_body">Dit månedlige resumé er klar. Her er hvad du så i %s.</string>
   <string name="mir_banner_body_short">Dit %s resumé er klar.</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller til at skjule eller vise konfigurerbare sektioner i hele appen.</string>
   <string name="preview_feature_description_large_screen_cards">På større skærme bruger alle lister de samme kort som resten af appen. Ved at vælge et, åbnes en hurtig oversigt i stedet for at forlade listen.</string>
+  <string name="preview_feature_description_progress_manager">Track-knappen på en serie fyldes op, efterhånden som du ser, og åbner et panel med dine fremskridt for hver sæson og episode.</string>
   <string name="preview_feature_description_rewatch">Start gensynssessioner for serier, du allerede har set, tjek ind eller marker sete episoder direkte fra sessionsskuffen.</string>
   <string name="preview_feature_description_show_ending">Viser en \"Afslutning\"-række i en series detaljer: \"Afsluttet\", når historien er fuldendt, \"Uafsluttet\", når den ikke er.</string>
   <string name="preview_feature_description_soundtrack">Tilføjer en soundtrack-sektion til film- og seriesider, med afspilning hvor et nummer kan matches.</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">Dit 2026 som en scroll-baseret oversigt med en seerpersona, og derefter en statistikside designet til at matche den.</string>
   <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
   <string name="preview_feature_title_large_screen_cards">Kort til stor skærm</string>
+  <string name="preview_feature_title_progress_manager">Fremskridtshåndtering</string>
   <string name="preview_feature_title_rewatch">Gensyn</string>
   <string name="preview_feature_title_show_ending">Serieafslutning</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1654,7 +1662,7 @@
   <string name="tag_media_sync_webhook_only">Kun Webhook</string>
   <string name="tag_mixtape_different_mood">Anden stemning</string>
   <string name="tag_mixtape_kept">Beholdt</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tryk for detaljer</string>
   <string name="tag_text_blocked_user">Blokeret</string>
   <string name="tag_text_deal_price">De første 2 år</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">Intet her endnu. Start med titler du allerede har gemt på dine andre lister.</string>
   <string name="text_empty_plex_library">Forbind din Plex-konto for at synkronisere dit Plex-bibliotek med Trakt.</string>
   <string name="text_ends_at">Slutter kl. %s</string>
+  <string name="text_episode_watch_state_unwatched">Episode %d, ikke set</string>
+  <string name="text_episode_watch_state_upcoming">Episode %d, ikke sendt endnu</string>
+  <string name="text_episode_watch_state_watched">Episode %d, set</string>
   <string name="text_episodes_short">afs.</string>
   <string name="text_episodes_watched">%s afsnit</string>
   <string name="text_export_status_complete">Eksport fuldført.</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">Din %1$s-årige VIP-serie slutter om %2$s dage</string>
   <string name="text_vip_join_now">Slut dig til seersamfundet, der behandler hver sæson og hver premiere som en milepæl. Hæv din status og få nøglerne til en mere sofistikeret verden af opdagelse.</string>
   <string name="text_vip_join_now_tagline">Du har set overfladen, nu er det tid til at se det fulde billede.</string>
+  <string name="text_vip_limits_dashed_potential">De stiplede områder viser dit potentiale med VIP</string>
   <string name="text_vip_make_it_official">Officielt, du klarer det!</string>
   <string name="text_vip_manage_failed_title">Kunne ikke åbne dine abonnementsindstillinger</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">Du er nu en %s</string>
   <string name="text_vip_veteran_title_legend">Legende</string>
   <string name="text_vip_veteran_title_veteran">Veteran</string>
+  <string name="text_watch_state_complete">Afsluttet</string>
+  <string name="text_watch_state_count">%1$d af %2$d</string>
+  <string name="text_watch_state_episodes">afsnit</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">Ikke sendt endnu</string>
   <string name="text_watch_until_here_episode_count">%d afsnit</string>
   <string name="text_watch_until_here_preview_title">Set-tidspunkter</string>
   <string name="text_year_in_review_banner_tagline">Tolv personaer. Én af dem er dig.</string>
@@ -2822,7 +2839,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ikke hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andenplads</string>
   <string name="yir_2026_preview_title">Persona-forhåndsvisning</string>
-  <string name="yir_2026_rarity">Kun %1$d%% er %2$s</string>
+  <string name="yir_2026_rarity">Kun %1$d% er %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Lidt %s</string>
   <string name="yir_2026_reel_and_you_are">Og du er</string>
   <string name="yir_2026_reel_but_mostly">Men mest</string>

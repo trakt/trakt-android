@@ -123,6 +123,7 @@
   <string name="button_label_filter_settings">%s の設定</string>
   <string name="button_label_filter_settings_modified">%s の設定、変更済み</string>
   <string name="button_label_filters">フィルター</string>
+  <string name="button_label_finish_season">%1$sの残り%2$dエピソードを視聴済みにする</string>
   <string name="button_label_follow">%sをフォロー</string>
   <string name="button_label_follow_requests">フォローリクエスト</string>
   <string name="button_label_followers">フォロワー</string>
@@ -164,6 +165,7 @@
   <string name="button_label_logout">ログアウト</string>
   <string name="button_label_manage_collaborators">%sのコラボレーターを管理</string>
   <string name="button_label_manage_passkey">パスキーを管理</string>
+  <string name="button_label_manage_progress">「%s」の進捗を管理</string>
   <string name="button_label_manage_subscription">VIPサブスクリプションを管理</string>
   <string name="button_label_manage_vip">サブスクリプションを管理</string>
   <string name="button_label_mark_as_watched">「%s」を視聴済みにする</string>
@@ -305,6 +307,7 @@
   <string name="button_label_toggle_search_movies">映画を検索</string>
   <string name="button_label_toggle_search_people">人物を検索</string>
   <string name="button_label_toggle_search_shows">番組を検索</string>
+  <string name="button_label_toggle_season_episodes">%sのエピソードを表示または非表示</string>
   <string name="button_label_toggle_streaming_countries">%s の国を切り替える</string>
   <string name="button_label_trivia_no_spoilers">ネタバレなし</string>
   <string name="button_label_trivia_spoilers">ネタバレあり</string>
@@ -436,6 +439,7 @@
   <string name="button_text_episode_type_finales">最終回</string>
   <string name="button_text_episode_type_premieres">初公開</string>
   <string name="button_text_exit_edit_mode">編集モードを終了</string>
+  <string name="button_text_finish_season">完了</string>
   <string name="button_text_follow">フォロー</string>
   <string name="button_text_follow_requests">リクエスト</string>
   <string name="button_text_followers">フォロワー</string>
@@ -818,14 +822,14 @@
   <string name="error_text_imdb_link_not_found">このIMDbタイトルはTraktで見つかりませんでした。</string>
   <string name="error_text_jellyfin_embedded_credentials">アドレスにユーザー名とパスワードを含めないでください。</string>
   <string name="error_text_jellyfin_invalid_credentials">そのユーザー名とパスワードは無効です。</string>
-  <string name="error_text_jellyfin_invalid_server_url">サーバーの完全なアドレスをhttps://jellyfin.example.comのように入力してください。</string>
+  <string name="error_text_jellyfin_invalid_server_url">Traktで使用できるウェブアドレスではありません。自宅の外からJellyfinを開く際に使用するパブリックアドレス（例: https://jellyfin.example.com）を入力してください。</string>
   <string name="error_text_jellyfin_quick_connect_disabled">このサーバーではクイックコネクトがオフになっています。Jellyfinダッシュボードでオンにするか、パスワードでサインインしてください。</string>
-  <string name="error_text_jellyfin_raw_ip_address">サーバーのドメイン名を使用してください。Traktは裸のIPアドレスには到達できません。</string>
+  <string name="error_text_jellyfin_raw_ip_address">TraktはローカルアドレスやIPアドレスにアクセスできません。自宅の外からJellyfinを開く際に使用するパブリックアドレス（例: https://jellyfin.example.com）を入力してください。</string>
   <string name="error_text_jellyfin_server_limit">無料アカウントはメディアサーバーを1つ同期できます。追加するにはVIPに登録してください。</string>
   <string name="error_text_jellyfin_server_not_found">そのアドレスでJellyfinサーバーからの応答がありませんでした。確認してもう一度お試しください。</string>
-  <string name="error_text_jellyfin_server_unreachable">Traktはそのサーバーに到達できません。サーバーがオンラインでインターネットからアクセス可能であることを確認してください。</string>
+  <string name="error_text_jellyfin_server_unreachable">Traktがインターネットからそのサーバーにアクセスできません。Jellyfinがオンラインで、リバースプロキシ経由などリモートアクセス用に設定されていること、および正しいパブリックアドレスが入力されていることを確認してください。</string>
   <string name="error_text_jellyfin_unsupported_port">ポート80、443、8096、または8920を使用するか、サーバーをリバースプロキシの背後に置いてください。</string>
-  <string name="error_text_jellyfin_unsupported_scheme">アドレスはhttps://またはhttp://で始めてください。</string>
+  <string name="error_text_jellyfin_unsupported_scheme">アドレスは https:// または http:// で始まる必要があります。自宅の外からJellyfinを開く際に使用するパブリックアドレス（例: https://jellyfin.example.com）を入力してください。</string>
   <string name="error_text_jellyfin_vip_required">Jellyfin同期は現在VIPベータ版です。</string>
   <string name="error_text_lists_limit">個人のリストの制限に達しました。VIPにアップグレードして無制限のリストを入手しましょう！</string>
   <string name="error_text_locked_account_collection_limit">このユーザーアカウントは、コレクションが上限を超過したためロックされました。この問題を解決するには、<a>サポートに連絡してください</a>。</string>
@@ -1053,7 +1057,7 @@
   <string name="heading_connected_community_apps">連携済みコミュニティアプリ</string>
   <string name="heading_meet_the_team">チーム紹介</string>
   <string name="heading_what_is_trakt">Traktとは？</string>
-  <string name="hint_jellyfin_server_url">Jellyfinを開く際に使用するアドレスです。Traktはインターネット経由でこのアドレスにアクセスする必要があります。</string>
+  <string name="hint_jellyfin_server_url">自宅の外からJellyfinを開く際に使用するパブリックアドレスです。Traktはインターネット経由でアクセスするため、ローカルアドレスやIPアドレスは使用できません。</string>
   <string name="hint_media_sync_history_resync">過去の視聴履歴は、後でサーバーの管理メニューからインポートできます。</string>
   <string name="image_alt_comment_gif">コメントに添付されたGIF</string>
   <string name="image_alt_list_preview_poster">%sのリスト内のエントリのポスター</string>
@@ -1265,6 +1269,8 @@
   <string name="label_sync_webhooks_soon">近日公開</string>
   <string name="label_today_day">日付を選択</string>
   <string name="label_today_grouping">今日のアクティビティをグループ化</string>
+  <string name="label_usage_limit_loading">利用状況を読み込み中</string>
+  <string name="label_usage_limit_with_vip">%1$s / %2$s、VIPでは%3$s</string>
   <string name="limit_title_connected_apps">接続済みアプリ</string>
   <string name="limit_title_digital_library">デジタルライブラリ</string>
   <string name="limit_title_personal_lists">個人リスト</string>
@@ -1423,7 +1429,7 @@
   <string name="match_label_soulmates">ソウルメイト</string>
   <string name="match_label_spin_off">スピンオフ</string>
   <string name="match_pill_anchor">マッチ:</string>
-  <string name="match_pill_aria_label">%1$d%%一致、%2$s。一致の詳細を開く。</string>
+  <string name="match_pill_aria_label">%1$d%一致、%2$s。一致の詳細を開く。</string>
   <string name="match_pill_loading_aria_label">マッチスコアを計算中</string>
   <string name="mir_banner_body">あなたの月間まとめができました。%sに視聴したコンテンツはこちらです。</string>
   <string name="mir_banner_body_short">あなたの%sのまとめができました。</string>
@@ -1540,6 +1546,7 @@
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_large_screen_cards">大画面では、すべてのリストでアプリの他の部分と同じカードを使用します。いずれかを選択すると、リストを離れることなくクイック概要が開きます。</string>
+  <string name="preview_feature_description_progress_manager">番組のトラックボタンは視聴するにつれて満たされ、シーズンやエピソードごとの進捗を管理できるドロワーが開きます。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_show_ending">作品の詳細に完結情報行を表示します。ストーリーが完結した場合は「完結済み」、しなかった場合は「未完」と表示されます。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
@@ -1547,6 +1554,7 @@
   <string name="preview_feature_description_year_in_review_2026">視聴者ペルソナに基づいたスクロールリール形式の2026年、そしてそれに合わせたスタイルの統計ページです。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_large_screen_cards">大画面カード</string>
+  <string name="preview_feature_title_progress_manager">進捗マネージャー</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_show_ending">完結情報</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
@@ -1654,7 +1662,7 @@
   <string name="tag_media_sync_webhook_only">ウェブフックのみ</string>
   <string name="tag_mixtape_different_mood">別の雰囲気</string>
   <string name="tag_mixtape_kept">キープ済み</string>
-  <string name="tag_mixtape_match">%s%%一致</string>
+  <string name="tag_mixtape_match">%s%一致</string>
   <string name="tag_mixtape_tap_details">タップで詳細</string>
   <string name="tag_text_blocked_user">ブロック済み</string>
   <string name="tag_text_deal_price">最初の2年間</string>
@@ -1841,6 +1849,9 @@
   <string name="text_empty_list_add_from_lists">まだ何もありません。他のリストに保存済みのタイトルから始めてください。</string>
   <string name="text_empty_plex_library">Plexアカウントを接続して、PlexライブラリをTraktと同期してください。</string>
   <string name="text_ends_at">%sに終了</string>
+  <string name="text_episode_watch_state_unwatched">エピソード%d、未視聴</string>
+  <string name="text_episode_watch_state_upcoming">エピソード%d、未放送</string>
+  <string name="text_episode_watch_state_watched">エピソード%d、視聴済み</string>
   <string name="text_episodes_short">話</string>
   <string name="text_episodes_watched">%sエピソード</string>
   <string name="text_export_status_complete">エクスポートが完了しました。</string>
@@ -2305,6 +2316,7 @@
   <string name="text_vip_grace_ends_other">あなたの%1$s年間のVIP連続記録は、あと%2$s日で終了します</string>
   <string name="text_vip_join_now">すべてのシーズンとすべてのプレミアをマイルストーンとして扱う視聴者のコミュニティに参加しましょう。ステータスを高め、より洗練された発見の世界への鍵を手に入れてください。</string>
   <string name="text_vip_join_now_tagline">表面はご覧になりました。今度は全体像を見る時です。</string>
+  <string name="text_vip_limits_dashed_potential">破線部分はVIPで利用可能な上限を示しています</string>
   <string name="text_vip_make_it_official">さあ、公式の仲間入りを！</string>
   <string name="text_vip_manage_failed_title">サブスクリプション設定を開けませんでした</string>
   <string name="text_vip_payment_method_apple">App Store</string>
@@ -2349,6 +2361,11 @@
   <string name="text_vip_veteran_promoted">あなたは現在、%sです</string>
   <string name="text_vip_veteran_title_legend">レジェンド</string>
   <string name="text_vip_veteran_title_veteran">ベテラン</string>
+  <string name="text_watch_state_complete">完結済み</string>
+  <string name="text_watch_state_count">%1$dの%2$d</string>
+  <string name="text_watch_state_episodes">エピソード</string>
+  <string name="text_watch_state_fraction">%1$d / %2$d</string>
+  <string name="text_watch_state_not_aired">未放送</string>
   <string name="text_watch_until_here_episode_count">%d話</string>
   <string name="text_watch_until_here_preview_title">視聴日時</string>
   <string name="text_year_in_review_banner_tagline">12種類のペルソナ。そのうちの1つはあなたです。</string>
@@ -2822,7 +2839,7 @@
   <string name="yir_2026_preview_runner_none">なし（ハイブリッドなし）</string>
   <string name="yir_2026_preview_runner_up">次点</string>
   <string name="yir_2026_preview_title">ペルソナプレビュー</string>
-  <string name="yir_2026_rarity">%1$d%%だけが%2$sです</string>
+  <string name="yir_2026_rarity">%1$d%だけが%2$sです</string>
   <string name="yir_2026_reel_a_little_bit">少し%s</string>
   <string name="yir_2026_reel_and_you_are">そしてあなたは</string>
   <string name="yir_2026_reel_but_mostly">しかし、ほとんどは</string>
