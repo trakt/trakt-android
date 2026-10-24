@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="150" height="150" alt="logo" src="https://github.com/user-attachments/assets/3ae10e8f-11fa-461d-8046-4502ae005d3a" />
+  <img width="150" height="150" alt="Logo" src="https://github.com/user-attachments/assets/31a702ff-bbaa-485d-8f58-18aa9b80d984" />
   <h1>Trakt for Android</h1>
   <p><em>Track everything you watch, wherever you stream it.</em></p>
 </div>
