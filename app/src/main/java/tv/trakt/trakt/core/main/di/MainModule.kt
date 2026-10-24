@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.main.MainViewModel
+import tv.trakt.trakt.core.main.ui.locked.LockedAccountViewModel
 import tv.trakt.trakt.core.main.ui.seasonal.SeasonalSplashViewModel
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
@@ -78,6 +79,7 @@ internal val mainModule = module {
     }
 
     viewModelOf(::SeasonalSplashViewModel)
+    viewModelOf(::LockedAccountViewModel)
 
     viewModel {
         MainViewModel(
