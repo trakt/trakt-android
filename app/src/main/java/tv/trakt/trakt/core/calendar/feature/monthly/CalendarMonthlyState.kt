@@ -10,12 +10,14 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import java.time.LocalDate
 import java.time.YearMonth
 
 @Immutable
 internal data class CalendarMonthlyState(
+    val source: CalendarSource = CalendarSource.Personal,
     val selectedMonth: YearMonth? = null,
     val filter: GlobalFilter? = null,
     val type: ReleaseType = ReleaseType.All,

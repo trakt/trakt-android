@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
@@ -142,7 +143,7 @@ internal class HomeUpcomingViewModel(
             }
 
             try {
-                typeState.update { getCalendarTypeUseCase.getType() }
+                typeState.update { getCalendarTypeUseCase.getType(CalendarSource.Personal) }
 
                 val localItems = getUpcomingUseCase.getLocalUpcoming(
                     filter = filterState.value,

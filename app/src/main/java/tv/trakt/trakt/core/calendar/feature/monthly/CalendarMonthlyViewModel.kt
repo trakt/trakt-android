@@ -1,8 +1,10 @@
 package tv.trakt.trakt.core.calendar.feature.monthly
 
 import androidx.annotation.StringRes
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
@@ -47,6 +49,7 @@ import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.model.withEpisodeWatched
 import tv.trakt.trakt.core.calendar.model.withMovieWatched
 import tv.trakt.trakt.core.calendar.model.withoutMovie
+import tv.trakt.trakt.core.calendar.navigation.CalendarMonthlyDestination
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.calendar.usecases.SaveCalendarMediaUseCase
@@ -61,6 +64,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
 internal class CalendarMonthlyViewModel(
+    savedStateHandle: SavedStateHandle,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val calendarCache: CalendarMonthlyItemsCache,
@@ -72,9 +76,10 @@ internal class CalendarMonthlyViewModel(
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
+    private val source = savedStateHandle.toRoute<CalendarMonthlyDestination>().source
     private val origin = ChangeOrigin.unique()
 
-    private val initialState = CalendarMonthlyState()
+    private val initialState = CalendarMonthlyState(source = source)
 
     private val selectedMonthState = MutableStateFlow(initialState.selectedMonth)
     private val filterState = MutableStateFlow(filterManager.getFilter())
@@ -99,11 +104,15 @@ internal class CalendarMonthlyViewModel(
         rememberView()
         observeFilters()
         observeData()
+
+        source.screenName?.let {
+            analytics.logScreenView(screenName = it)
+        }
     }
 
     private fun rememberView() {
         viewModelScope.launch {
-            getCalendarViewUseCase.setView(CalendarView.Monthly)
+            getCalendarViewUseCase.setView(source = source, view = CalendarView.Monthly)
         }
     }
 
@@ -128,7 +137,7 @@ internal class CalendarMonthlyViewModel(
 
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
+            if (source.requiresAuth && !sessionManager.isAuthenticated()) {
                 loadingState.update { Done }
                 return@launch
             }
@@ -138,7 +147,7 @@ internal class CalendarMonthlyViewModel(
             try {
                 if (!typeSeeded) {
                     typeSeeded = true
-                    typeState.update { getCalendarTypeUseCase.getType() }
+                    typeState.update { getCalendarTypeUseCase.getType(source) }
                 }
 
                 val key = CalendarMonthKey(
@@ -157,6 +166,7 @@ internal class CalendarMonthlyViewModel(
 
                 itemsState.update {
                     val calendarItems = getMonthlyCalendarItemsUseCase.getCalendarItems(
+                        source = source,
                         month = month,
                         filters = filterState.value,
                         type = typeState.value,
@@ -224,6 +234,7 @@ internal class CalendarMonthlyViewModel(
         ) {
             updateCalendarHistoryUseCase.addToHistory(
                 episode = episode,
+                source = source,
                 origin = origin,
                 customDate = customDate,
             )
@@ -241,6 +252,7 @@ internal class CalendarMonthlyViewModel(
         ) {
             updateCalendarHistoryUseCase.addToHistory(
                 movie = movie,
+                source = source,
                 origin = origin,
                 customDate = customDate,
             )
@@ -253,7 +265,11 @@ internal class CalendarMonthlyViewModel(
             id = episode.ids.trakt,
             info = R.string.text_info_history_removed,
         ) {
-            updateCalendarHistoryUseCase.removeFromWatched(episode = episode, origin = origin)
+            updateCalendarHistoryUseCase.removeFromWatched(
+                episode = episode,
+                source = source,
+                origin = origin,
+            )
             patchItems { it.withEpisodeWatched(id = episode.ids.trakt, watched = false) }
         }
     }
@@ -263,7 +279,11 @@ internal class CalendarMonthlyViewModel(
             id = movie.ids.trakt,
             info = R.string.text_info_history_removed,
         ) {
-            updateCalendarHistoryUseCase.removeFromWatched(movie = movie, origin = origin)
+            updateCalendarHistoryUseCase.removeFromWatched(
+                movie = movie,
+                source = source,
+                origin = origin,
+            )
             patchItems { it.withoutMovie(movie.ids.trakt) }
         }
     }
@@ -369,6 +389,7 @@ internal class CalendarMonthlyViewModel(
         errorState,
     ) { states ->
         CalendarMonthlyState(
+            source = source,
             selectedMonth = states[0] as YearMonth?,
             filter = states[1] as GlobalFilter?,
             type = states[2] as ReleaseType,

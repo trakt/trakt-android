@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.applinks.AppLinkEvent
 import tv.trakt.trakt.core.applinks.model.AppLink
 import tv.trakt.trakt.core.applinks.model.parseAppLink
+import tv.trakt.trakt.core.calendar.model.CalendarSource.Personal
 import tv.trakt.trakt.core.calendar.model.CalendarView.Weekly
 import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
@@ -291,7 +292,7 @@ private fun handleWidgetIntent(
             movieId = target.movieId.toTraktId(),
         )
 
-        is WidgetIntentTarget.Calendar -> navController.navigateToCalendar(Weekly)
+        is WidgetIntentTarget.Calendar -> navController.navigateToCalendar(Weekly, Personal)
 
         is WidgetIntentTarget.UpNext -> navController.navigateToAllUpNext()
     }

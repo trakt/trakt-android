@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.feature.weekly.usecases.GetCalendarItemsUseCase
+import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.WidgetIntentTarget
@@ -75,6 +76,7 @@ internal class CalendarWidgetDataSource(
         return coroutineScope {
             val itemsByDay = runCatching {
                 getCalendarItemsUseCase.getCalendarItems(
+                    source = CalendarSource.Personal,
                     day = LocalDate.now(),
                     filters = GlobalFilter.Default,
                     type = ReleaseType.All,

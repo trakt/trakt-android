@@ -271,8 +271,8 @@ internal fun CalendarScreen(
 
     CalendarEpisodeContextSheet(
         item = contextEpisodeSheet,
-        showWatchlist = false,
-        showDrop = true,
+        showWatchlist = state.source.showWatchlistAction,
+        showDrop = state.source.showDropAction,
         onDataChange = viewModel::refreshData,
         onDismiss = { contextEpisodeSheet = null },
     )

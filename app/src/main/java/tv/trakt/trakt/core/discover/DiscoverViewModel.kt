@@ -13,23 +13,31 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.core.calendar.model.CalendarSource
+import tv.trakt.trakt.core.calendar.model.CalendarView
+import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.discover.DiscoverState.UserState
 
 @OptIn(FlowPreview::class)
+@Suppress("UNCHECKED_CAST")
 internal class DiscoverViewModel(
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
+    private val getCalendarViewUseCase: GetCalendarViewUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = DiscoverState()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val releasesViewState = MutableStateFlow(initialState.releasesView)
 
     init {
         observeUser()
         observeData()
+        observeReleasesView()
 
         analytics.logScreenView(
             screenName = "discover",
@@ -55,6 +63,12 @@ internal class DiscoverViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeReleasesView() {
+        getCalendarViewUseCase.observeView(CalendarSource.Releases)
+            .onEach { view -> releasesViewState.update { view } }
+            .launchIn(viewModelScope)
+    }
+
     fun onVipUpsellSeen() {
         analytics.vip.logUpsellImpression("discover")
     }
@@ -62,10 +76,12 @@ internal class DiscoverViewModel(
     val state = combine(
         userState,
         collectionStateProvider.stateFlow,
-    ) { s1, s2 ->
+        releasesViewState,
+    ) { state ->
         DiscoverState(
-            user = s1,
-            collection = s2,
+            user = state[0] as UserState,
+            collection = state[1] as UserCollectionState,
+            releasesView = state[2] as CalendarView,
         )
     }.stateIn(
         scope = viewModelScope,

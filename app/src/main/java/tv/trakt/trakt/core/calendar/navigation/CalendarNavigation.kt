@@ -3,34 +3,41 @@ package tv.trakt.trakt.core.calendar.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.calendar.feature.monthly.CalendarMonthlyScreen
 import tv.trakt.trakt.core.calendar.feature.weekly.CalendarScreen
+import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 
 @Serializable
-internal data object CalendarDestination
+internal data class CalendarDestination(
+    val source: CalendarSource,
+)
 
 @Serializable
-internal data object CalendarMonthlyDestination
+internal data class CalendarMonthlyDestination(
+    val source: CalendarSource,
+)
 
 internal fun NavGraphBuilder.calendarScreen(
     onNavigateBack: () -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
-    onViewClick: (CalendarView) -> Unit,
+    onViewClick: (CalendarView, CalendarSource) -> Unit,
 ) {
-    composable<CalendarDestination> {
+    composable<CalendarDestination> { entry ->
+        val source = entry.toRoute<CalendarDestination>().source
         CalendarScreen(
             viewModel = koinViewModel(),
             onEpisodeClick = onEpisodeClick,
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
-            onViewClick = onViewClick,
+            onViewClick = { onViewClick(it, source) },
             onNavigateBack = onNavigateBack,
         )
     }
@@ -41,37 +48,42 @@ internal fun NavGraphBuilder.calendarMonthlyScreen(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
-    onViewClick: (CalendarView) -> Unit,
+    onViewClick: (CalendarView, CalendarSource) -> Unit,
 ) {
-    composable<CalendarMonthlyDestination> {
+    composable<CalendarMonthlyDestination> { entry ->
+        val source = entry.toRoute<CalendarMonthlyDestination>().source
         CalendarMonthlyScreen(
             viewModel = koinViewModel(),
             onEpisodeClick = onEpisodeClick,
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
-            onViewClick = onViewClick,
+            onViewClick = { onViewClick(it, source) },
             onNavigateBack = onNavigateBack,
         )
     }
 }
 
-internal fun NavController.navigateToCalendar(view: CalendarView) {
+internal fun NavController.navigateToCalendar(
+    view: CalendarView,
+    source: CalendarSource,
+) {
     when (view) {
-        CalendarView.Weekly -> navigate(route = CalendarDestination)
-        CalendarView.Monthly -> navigate(route = CalendarMonthlyDestination)
+        CalendarView.Weekly -> navigate(route = CalendarDestination(source))
+        CalendarView.Monthly -> navigate(route = CalendarMonthlyDestination(source))
     }
 }
 
-// Swaps the calendar layout in place, so switching views doesn't stack up on the
-// back stack. Popping a destination that isn't on the stack is a no-op.
-internal fun NavController.switchCalendarView(view: CalendarView) {
+internal fun NavController.switchCalendarView(
+    view: CalendarView,
+    source: CalendarSource,
+) {
     when (view) {
-        CalendarView.Weekly -> navigate(route = CalendarDestination) {
-            popUpTo(CalendarMonthlyDestination) { inclusive = true }
+        CalendarView.Weekly -> navigate(route = CalendarDestination(source)) {
+            popUpTo<CalendarMonthlyDestination> { inclusive = true }
         }
 
-        CalendarView.Monthly -> navigate(route = CalendarMonthlyDestination) {
-            popUpTo(CalendarDestination) { inclusive = true }
+        CalendarView.Monthly -> navigate(route = CalendarMonthlyDestination(source)) {
+            popUpTo<CalendarDestination> { inclusive = true }
         }
     }
 }

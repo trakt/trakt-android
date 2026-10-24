@@ -8,11 +8,11 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 
-private const val ANALYTICS_SOURCE = "calendar"
 private const val ANALYTICS_EPISODE = "episode"
 private const val ANALYTICS_MOVIE = "movie"
 
@@ -30,6 +30,7 @@ internal class UpdateCalendarHistoryUseCase(
 ) {
     suspend fun addToHistory(
         episode: Episode,
+        source: CalendarSource,
         origin: ChangeOrigin,
         customDate: DateSelectionResult? = null,
     ) {
@@ -42,13 +43,14 @@ internal class UpdateCalendarHistoryUseCase(
 
         analytics.progress.logAddWatchedMedia(
             mediaType = ANALYTICS_EPISODE,
-            source = ANALYTICS_SOURCE,
+            source = source.analyticsSource,
             date = customDate?.analyticsStrings,
         )
     }
 
     suspend fun addToHistory(
         movie: Movie,
+        source: CalendarSource,
         origin: ChangeOrigin,
         customDate: DateSelectionResult? = null,
     ) {
@@ -61,7 +63,7 @@ internal class UpdateCalendarHistoryUseCase(
 
         analytics.progress.logAddWatchedMedia(
             mediaType = ANALYTICS_MOVIE,
-            source = ANALYTICS_SOURCE,
+            source = source.analyticsSource,
             date = customDate?.analyticsStrings,
         )
 
@@ -70,6 +72,7 @@ internal class UpdateCalendarHistoryUseCase(
 
     suspend fun removeFromWatched(
         episode: Episode,
+        source: CalendarSource,
         origin: ChangeOrigin,
     ) {
         updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
@@ -78,12 +81,13 @@ internal class UpdateCalendarHistoryUseCase(
 
         analytics.progress.logRemoveWatchedMedia(
             mediaType = ANALYTICS_EPISODE,
-            source = ANALYTICS_SOURCE,
+            source = source.analyticsSource,
         )
     }
 
     suspend fun removeFromWatched(
         movie: Movie,
+        source: CalendarSource,
         origin: ChangeOrigin,
     ) {
         updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
@@ -92,7 +96,7 @@ internal class UpdateCalendarHistoryUseCase(
 
         analytics.progress.logRemoveWatchedMedia(
             mediaType = ANALYTICS_MOVIE,
-            source = ANALYTICS_SOURCE,
+            source = source.analyticsSource,
         )
     }
 }

@@ -42,6 +42,7 @@ internal val calendarModule = module {
     factory {
         GetCalendarTypeUseCase(
             dataStore = get(named(CALENDAR_PREFERENCES)),
+            getReleasesTypeUseCase = get(),
         )
     }
 
@@ -52,7 +53,15 @@ internal val calendarModule = module {
     }
 
     factoryOf(::CalendarMonthlyItemsCache)
-    factoryOf(::CalendarItemsLoader)
+    factory {
+        CalendarItemsLoader(
+            sessionManager = get(),
+            loadUserProgressUseCase = get(),
+            remoteUserSource = get(),
+            getReleasesShowsUseCase = get(named("defaultReleasesShowsUseCase")),
+            getReleasesMoviesUseCase = get(named("defaultReleasesMoviesUseCase")),
+        )
+    }
     factoryOf(::GetCalendarItemsUseCase)
     factoryOf(::GetMonthlyCalendarItemsUseCase)
     factoryOf(::SaveCalendarMediaUseCase)

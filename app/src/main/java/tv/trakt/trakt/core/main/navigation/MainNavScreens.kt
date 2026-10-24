@@ -11,9 +11,11 @@ import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.navigation.billingScreen
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
+import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.navigation.calendarMonthlyScreen
 import tv.trakt.trakt.core.calendar.navigation.calendarScreen
+import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
 import tv.trakt.trakt.core.calendar.navigation.switchCalendarView
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
 import tv.trakt.trakt.core.comments.navigation.navigateToComments
@@ -21,8 +23,6 @@ import tv.trakt.trakt.core.discover.navigation.discoverScreen
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.discover.sections.all.navigation.discoverAllScreen
 import tv.trakt.trakt.core.discover.sections.all.navigation.navigateToDiscoverAll
-import tv.trakt.trakt.core.discover.sections.releases.all.navigation.allReleasesScreen
-import tv.trakt.trakt.core.discover.sections.releases.all.navigation.navigateToAllReleases
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.home.navigation.navigateToHome
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivityPersonalScreen
@@ -216,8 +216,8 @@ internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
             onNavigateToAllAnticipated = {
                 navigateToDiscoverAll(DiscoverSection.Anticipated)
             },
-            onNavigateToAllReleases = {
-                navigateToAllReleases()
+            onNavigateToAllReleases = { view ->
+                navigateToCalendar(view, CalendarSource.Releases)
             },
             onNavigateToVip = {
                 navigateToBilling(source = "discover")
@@ -227,14 +227,6 @@ internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
-        )
-        allReleasesScreen(
-            onNavigateBack = { popBackStack() },
-            onEpisodeClick = { showId, episode ->
-                navigateToEpisode(showId, episode)
-            },
-            onShowClick = { navigateToShow(it) },
-            onMovieClick = { navigateToMovie(it) },
         )
     }
 }

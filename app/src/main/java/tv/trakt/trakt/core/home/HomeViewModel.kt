@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
@@ -99,7 +100,7 @@ internal class HomeViewModel(
     }
 
     private fun observeCalendarView() {
-        getCalendarViewUseCase.observeView()
+        getCalendarViewUseCase.observeView(CalendarSource.Personal)
             .onEach { view -> calendarViewState.update { view } }
             .launchIn(viewModelScope)
     }

@@ -32,6 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
 import tv.trakt.trakt.core.discover.sections.releases.DiscoverReleasesView
@@ -52,7 +53,7 @@ internal fun DiscoverScreen(
     onNavigateToAllTrending: () -> Unit,
     onNavigateToAllPopular: () -> Unit,
     onNavigateToAllAnticipated: () -> Unit,
-    onNavigateToAllReleases: () -> Unit,
+    onNavigateToAllReleases: (CalendarView) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -67,7 +68,7 @@ internal fun DiscoverScreen(
         onMoreTrendingClick = onNavigateToAllTrending,
         onMorePopularClick = onNavigateToAllPopular,
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
-        onMoreReleasesClick = onNavigateToAllReleases,
+        onMoreReleasesClick = { onNavigateToAllReleases(state.releasesView) },
         onVipClick = onNavigateToVip,
         onVipSeen = viewModel::onVipUpsellSeen,
         onFiltersClick = {

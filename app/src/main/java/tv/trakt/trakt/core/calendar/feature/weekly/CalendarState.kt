@@ -11,11 +11,13 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import java.time.LocalDate
 
 @Immutable
 internal data class CalendarState(
+    val source: CalendarSource = CalendarSource.Personal,
     val selectedStartDay: LocalDate,
     val filter: GlobalFilter? = null,
     val type: ReleaseType = ReleaseType.All,
