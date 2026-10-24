@@ -147,6 +147,11 @@ internal class TodayStoriesViewModel(
         showGroup(current.groupIndex - 1, 0)
     }
 
+    fun selectGroup(index: Int) {
+        if (index == current().groupIndex) return
+        showGroup(index, 0)
+    }
+
     fun logSpoilerReveal() {
         analytics.comments.logSpoilerReveal()
     }

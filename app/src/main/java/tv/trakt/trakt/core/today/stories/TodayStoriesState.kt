@@ -31,4 +31,10 @@ internal data class TodayStoriesState(
         .coerceAtLeast(0)
 
     val frame: TodayStoryFrame? = group?.frames?.getOrNull(frameIndex)
+
+    /** The current frame for the open group, the first frame for any other group. */
+    fun frameForGroup(index: Int): TodayStoryFrame? {
+        if (index == groupIndex) return frame
+        return groups.getOrNull(index)?.frames?.firstOrNull()
+    }
 }

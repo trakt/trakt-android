@@ -1,21 +1,11 @@
 package tv.trakt.trakt.core.today.stories
 
 import android.os.SystemClock
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.EnterExitState
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,58 +20,75 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.today.model.TodayStoryFrame
 import tv.trakt.trakt.core.today.model.TodayStoryGroup
 import tv.trakt.trakt.core.today.stories.ui.TodayStoryFrameContent
 import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
+import kotlin.math.floor
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val FRAME_DURATION_MS = 10_000
 private const val BACKDROP_ALPHA = 0.35F
-private const val STORY_TRANSITION_MS = 150
+private const val MIN_PAGE_ALPHA = 0.3F
 
 private val BackdropBlur = 24.dp
 private val SegmentHeight = 3.dp
@@ -127,6 +134,7 @@ internal fun TodayStoriesScreen(
         state = state,
         onNext = viewModel::next,
         onPrevious = viewModel::previous,
+        onSelectGroup = viewModel::selectGroup,
         onNextGroup = viewModel::nextGroup,
         onPreviousGroup = viewModel::previousGroup,
         onUserClick = { user ->
@@ -148,6 +156,7 @@ private fun TodayStoriesContent(
     modifier: Modifier = Modifier,
     onNext: () -> Unit = {},
     onPrevious: () -> Unit = {},
+    onSelectGroup: (Int) -> Unit = {},
     onNextGroup: () -> Unit = {},
     onPreviousGroup: () -> Unit = {},
     onUserClick: (User) -> Unit = {},
@@ -161,11 +170,7 @@ private fun TodayStoriesContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(background)
-            .storySwipe(
-                onNextGroup = onNextGroup,
-                onPreviousGroup = onPreviousGroup,
-            ),
+            .background(background),
     ) {
         val group = state.group ?: return@Box
         val frame = state.frame ?: return@Box
@@ -174,10 +179,19 @@ private fun TodayStoriesContent(
         var isHeld by remember(group.key) { mutableStateOf(false) }
         var isConfirming by remember(group.key) { mutableStateOf(false) }
 
-        val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
-        val isPaused = isHeld || isFlipped || isConfirming || !lifecycle.isAtLeast(Lifecycle.State.RESUMED)
+        val pagerState = rememberPagerState(initialPage = state.groupIndex) { state.groups.size }
 
-        TodayStoryBackdrop(state = state)
+        val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+        val isPaused = isHeld ||
+            isFlipped ||
+            isConfirming ||
+            pagerState.isScrollInProgress ||
+            !lifecycle.isAtLeast(Lifecycle.State.RESUMED)
+
+        TodayStoryBackdrop(
+            state = state,
+            pagerState = pagerState,
+        )
 
         // Only the story moves between groups. The progress bar and header stay put,
         // since sliding the whole screen causes motion sickness.
@@ -226,20 +240,22 @@ private fun TodayStoriesContent(
             )
 
             // Spans the full width so the sliding story is not cut off at the page padding.
-            TodayStoryFrameTransition(
+            TodayStoryPager(
                 state = state,
+                pagerState = pagerState,
+                onSelectGroup = onSelectGroup,
+                onSwipePastStart = onPreviousGroup,
+                onSwipePastEnd = onNextGroup,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1F),
-            ) { story, isActive ->
-                val storyFrame = story.frame ?: return@TodayStoryFrameTransition
-
+            ) { storyFrame, isActive ->
                 TodayStoryFrameContent(
                     frame = storyFrame,
-                    isFlipped = isFlipped && storyFrame.key == frame.key,
+                    isFlipped = isActive && isFlipped,
                     onFlip = { if (isActive) isFlipped = !isFlipped },
-                    onNext = onNext,
-                    onPrevious = onPrevious,
+                    onNext = { if (isActive) onNext() },
+                    onPrevious = { if (isActive) onPrevious() },
                     onHeldChange = { if (isActive) isHeld = it },
                     onUserClick = onUserClick,
                     onConfirmVisibleChange = { if (isActive) isConfirming = it },
@@ -253,94 +269,152 @@ private fun TodayStoriesContent(
     }
 }
 
+/** Blends the backdrops of the two pages around the swipe position, so it fades as the story slides. */
 @Composable
-private fun TodayStoryBackdrop(state: TodayStoriesState) {
-    val animationsDisabled = rememberAnimationsDisabled()
+private fun TodayStoryBackdrop(
+    state: TodayStoriesState,
+    pagerState: PagerState,
+) {
+    val startPage by remember(pagerState) {
+        derivedStateOf {
+            floor(pagerState.currentPage + pagerState.currentPageOffsetFraction).toInt()
+        }
+    }
 
-    AnimatedContent(
-        targetState = state,
-        contentKey = { it.group?.key },
-        transitionSpec = {
-            if (animationsDisabled) {
-                return@AnimatedContent EnterTransition.None togetherWith ExitTransition.None
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .alpha(BACKDROP_ALPHA)
+            .blur(BackdropBlur),
+    ) {
+        listOf(startPage, startPage + 1).forEach { page ->
+            val frame = state.frameForGroup(page) ?: return@forEach
+
+            key(page) {
+                AsyncImage(
+                    model = frame.media.images?.getPosterUrl(Images.Size.MEDIUM),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            if (page == startPage) return@graphicsLayer
+                            alpha = pagerState.pageVisibility(page)
+                        },
+                )
             }
-            fadeIn(tween(STORY_TRANSITION_MS)) togetherWith fadeOut(tween(STORY_TRANSITION_MS))
-        },
-        label = "todayStoryBackdrop",
-        modifier = Modifier.fillMaxSize(),
-    ) { story ->
-        AsyncImage(
-            model = story.frame?.media?.images?.getPosterUrl(Images.Size.MEDIUM),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
+        }
+    }
+}
+
+@Composable
+private fun TodayStoryPager(
+    state: TodayStoriesState,
+    pagerState: PagerState,
+    onSelectGroup: (Int) -> Unit,
+    onSwipePastStart: () -> Unit,
+    onSwipePastEnd: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable (frame: TodayStoryFrame, isActive: Boolean) -> Unit,
+) {
+    val animationsDisabled = rememberAnimationsDisabled()
+    val selectGroup by rememberUpdatedState(onSelectGroup)
+    var isUserSwipe by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.groupIndex) {
+        if (pagerState.currentPage == state.groupIndex) return@LaunchedEffect
+
+        isUserSwipe = false
+        if (animationsDisabled) {
+            pagerState.scrollToPage(state.groupIndex)
+        } else {
+            pagerState.animateScrollToPage(state.groupIndex)
+        }
+    }
+
+    // Only swipes report the page back, so a programmatic scroll cancelled midway cannot select
+    // the page it stopped on. A swipe that interrupts one still reports, even when it returns to
+    // the page it started from.
+    LaunchedEffect(pagerState) {
+        launch {
+            pagerState.interactionSource.interactions
+                .filterIsInstance<DragInteraction.Start>()
+                .collect { isUserSwipe = true }
+        }
+        snapshotFlow { pagerState.isScrollInProgress }
+            .filter { !it }
+            .collect {
+                if (!isUserSwipe) return@collect
+                isUserSwipe = false
+                selectGroup(pagerState.currentPage)
+            }
+    }
+
+    HorizontalPager(
+        state = pagerState,
+        key = { state.groups[it].key },
+        modifier = modifier.nestedScroll(
+            rememberEdgeSwipeConnection(
+                onSwipePastStart = onSwipePastStart,
+                onSwipePastEnd = onSwipePastEnd,
+            ),
+        ),
+    ) { page ->
+        val frame = state.frameForGroup(page) ?: return@HorizontalPager
+
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .alpha(BACKDROP_ALPHA)
-                .blur(BackdropBlur),
-        )
+                .graphicsLayer {
+                    alpha = lerp(MIN_PAGE_ALPHA, 1F, pagerState.pageVisibility(page))
+                },
+        ) {
+            content(frame, page == state.groupIndex)
+        }
     }
 }
 
-/** Slides the story between groups; `isActive` is false for the one animating out. */
-@Composable
-private fun TodayStoryFrameTransition(
-    state: TodayStoriesState,
-    modifier: Modifier = Modifier,
-    content: @Composable (story: TodayStoriesState, isActive: Boolean) -> Unit,
-) {
-    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-    val animationsDisabled = rememberAnimationsDisabled()
+/** 1 when the page is centred, falling to 0 once it is a full page away. */
+private fun PagerState.pageVisibility(page: Int): Float {
+    return 1F - abs(getOffsetDistanceInPages(page)).coerceAtMost(1F)
+}
 
-    AnimatedContent(
-        targetState = state,
-        contentKey = { it.group?.key },
-        transitionSpec = {
-            if (animationsDisabled) {
-                return@AnimatedContent EnterTransition.None togetherWith ExitTransition.None
+/** Swiping past the first or last story closes the viewer. */
+@Composable
+private fun rememberEdgeSwipeConnection(
+    onSwipePastStart: () -> Unit,
+    onSwipePastEnd: () -> Unit,
+): NestedScrollConnection {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    val threshold = with(LocalDensity.current) { SwipeThreshold.toPx() }
+    val swipePastStart by rememberUpdatedState(onSwipePastStart)
+    val swipePastEnd by rememberUpdatedState(onSwipePastEnd)
+
+    return remember(isRtl, threshold) {
+        object : NestedScrollConnection {
+            private var overscroll = 0F
+
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource,
+            ): Offset {
+                if (source == NestedScrollSource.UserInput) {
+                    overscroll += available.x
+                }
+                return Offset.Zero
             }
 
-            val forward = targetState.groupIndex >= initialState.groupIndex
-            val direction = if (forward != isRtl) 1 else -1
-            val spec = tween<IntOffset>(STORY_TRANSITION_MS)
-
-            (slideInHorizontally(spec) { it * direction / 3 } + fadeIn(tween(STORY_TRANSITION_MS)))
-                .togetherWith(
-                    slideOutHorizontally(spec) { -it * direction / 3 } + fadeOut(tween(STORY_TRANSITION_MS)),
-                )
-                .using(SizeTransform(clip = false))
-        },
-        label = "todayStory",
-        modifier = modifier,
-    ) { story ->
-        content(story, transition.targetState == EnterExitState.Visible)
-    }
-}
-
-@Composable
-private fun Modifier.storySwipe(
-    onNextGroup: () -> Unit,
-    onPreviousGroup: () -> Unit,
-): Modifier {
-    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-    val nextGroup by rememberUpdatedState(onNextGroup)
-    val previousGroup by rememberUpdatedState(onPreviousGroup)
-
-    return pointerInput(isRtl) {
-        var total = 0F
-
-        detectHorizontalDragGestures(
-            onDragStart = { total = 0F },
-            onDragEnd = {
-                if (abs(total) < SwipeThreshold.toPx()) return@detectHorizontalDragGestures
+            override suspend fun onPreFling(available: Velocity): Velocity {
+                val total = overscroll
+                overscroll = 0F
+                if (abs(total) < threshold) return Velocity.Zero
 
                 val towardsStart = (total > 0) != isRtl
-                if (towardsStart) previousGroup() else nextGroup()
-            },
-            onHorizontalDrag = { change, amount ->
-                change.consume()
-                total += amount
-            },
-        )
+                if (towardsStart) swipePastStart() else swipePastEnd()
+                return Velocity.Zero
+            }
+        }
     }
 }
 
