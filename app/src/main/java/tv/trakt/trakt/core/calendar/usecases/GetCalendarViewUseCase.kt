@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.calendar.usecases
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -11,6 +12,7 @@ import tv.trakt.trakt.core.calendar.model.CalendarView
 
 private val KEY_CALENDAR_VIEW = stringPreferencesKey("key_calendar_view")
 private val KEY_RELEASES_VIEW = stringPreferencesKey("key_releases_view")
+private val KEY_VIEW_HINT_SEEN = booleanPreferencesKey("key_view_hint_seen")
 
 internal class GetCalendarViewUseCase(
     private val dataStore: DataStore<Preferences>,
@@ -31,6 +33,20 @@ internal class GetCalendarViewUseCase(
         dataStore.updateData {
             it.toMutablePreferences().apply {
                 this[source.viewKey] = view.name
+            }
+        }
+    }
+
+    fun observeViewHint(): Flow<Boolean> {
+        return dataStore.data
+            .map { preferences -> preferences[KEY_VIEW_HINT_SEEN] != true }
+            .distinctUntilChanged()
+    }
+
+    suspend fun dismissViewHint() {
+        dataStore.updateData {
+            it.toMutablePreferences().apply {
+                this[KEY_VIEW_HINT_SEEN] = true
             }
         }
     }

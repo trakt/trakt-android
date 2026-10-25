@@ -93,6 +93,7 @@ internal class CalendarViewModel(
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+    private val viewHintState = MutableStateFlow(initialState.viewHint)
 
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -106,6 +107,7 @@ internal class CalendarViewModel(
 
     init {
         rememberView()
+        observeViewHint()
         loadUser()
         loadData()
 
@@ -130,6 +132,12 @@ internal class CalendarViewModel(
             .distinctUntilChanged()
             .debounce(200.milliseconds)
             .onEach { user -> userState.update { user } }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeViewHint() {
+        getCalendarViewUseCase.observeViewHint()
+            .onEach { visible -> viewHintState.update { visible } }
             .launchIn(viewModelScope)
     }
 
@@ -256,6 +264,16 @@ internal class CalendarViewModel(
             } finally {
                 loadingMoreState.update { Done }
             }
+        }
+    }
+
+    fun dismissViewHint() {
+        if (!viewHintState.value) {
+            return
+        }
+        viewHintState.update { false }
+        viewModelScope.launch {
+            getCalendarViewUseCase.dismissViewHint()
         }
     }
 
@@ -435,6 +453,7 @@ internal class CalendarViewModel(
         infoState,
         errorState,
         typeState,
+        viewHintState,
     ) { states ->
         CalendarState(
             source = source,
@@ -451,6 +470,7 @@ internal class CalendarViewModel(
             info = states[10] as DynamicStringResource?,
             error = states[11] as Exception?,
             type = states[12] as ReleaseType,
+            viewHint = states[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -29,4 +29,5 @@ internal data class CalendarMonthlyState(
     val loading: LoadingState = LoadingState.Idle,
     val info: DynamicStringResource? = null,
     val error: Exception? = null,
+    val viewHint: Boolean = false,
 )

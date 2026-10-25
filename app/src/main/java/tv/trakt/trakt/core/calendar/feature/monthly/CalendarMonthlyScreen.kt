@@ -161,7 +161,10 @@ internal fun CalendarMonthlyScreen(
             filtersSheet = true
         },
         onTypeClick = viewModel::setType,
-        onViewClick = onViewClick,
+        onViewClick = {
+            viewModel.dismissViewHint()
+            onViewClick(it)
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -359,6 +362,7 @@ private fun CalendarMonthlyContent(
 
                 CalendarViewToggle(
                     current = CalendarView.Monthly,
+                    attention = state.viewHint,
                     onViewClick = onViewClick,
                     modifier = Modifier
                         .graphicsLayer {

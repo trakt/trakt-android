@@ -31,4 +31,5 @@ internal data class CalendarState(
     val loadingMore: LoadingState = LoadingState.Idle,
     val info: DynamicStringResource? = null,
     val error: Exception? = null,
+    val viewHint: Boolean = false,
 )

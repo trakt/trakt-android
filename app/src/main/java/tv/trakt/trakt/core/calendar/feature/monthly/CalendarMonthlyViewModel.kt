@@ -89,6 +89,7 @@ internal class CalendarMonthlyViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+    private val viewHintState = MutableStateFlow(initialState.viewHint)
 
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -102,6 +103,7 @@ internal class CalendarMonthlyViewModel(
 
     init {
         rememberView()
+        observeViewHint()
         observeFilters()
         observeData()
 
@@ -114,6 +116,12 @@ internal class CalendarMonthlyViewModel(
         viewModelScope.launch {
             getCalendarViewUseCase.setView(source = source, view = CalendarView.Monthly)
         }
+    }
+
+    private fun observeViewHint() {
+        getCalendarViewUseCase.observeViewHint()
+            .onEach { visible -> viewHintState.update { visible } }
+            .launchIn(viewModelScope)
     }
 
     private fun observeFilters() {
@@ -207,6 +215,16 @@ internal class CalendarMonthlyViewModel(
         }
         selectedMonthState.update { month }
         loadData()
+    }
+
+    fun dismissViewHint() {
+        if (!viewHintState.value) {
+            return
+        }
+        viewHintState.update { false }
+        viewModelScope.launch {
+            getCalendarViewUseCase.dismissViewHint()
+        }
     }
 
     fun setFilter(filter: GlobalFilter) {
@@ -387,6 +405,7 @@ internal class CalendarMonthlyViewModel(
         loadingState,
         infoState,
         errorState,
+        viewHintState,
     ) { states ->
         CalendarMonthlyState(
             source = source,
@@ -401,6 +420,7 @@ internal class CalendarMonthlyViewModel(
             loading = states[8] as LoadingState,
             info = states[9] as DynamicStringResource?,
             error = states[10] as Exception?,
+            viewHint = states[11] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
