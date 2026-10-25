@@ -343,6 +343,7 @@
   <string name="button_label_view_import_guidelines">Просмотреть рекомендации</string>
   <string name="button_label_view_photo">Посмотреть ваше фото профиля</string>
   <string name="button_label_view_ratings_breakdown">Посмотреть детали оценок</string>
+  <string name="button_label_view_reality_check">Посмотреть проверку достоверности</string>
   <string name="button_label_view_releases">Посмотреть релизы</string>
   <string name="button_label_view_sentiment_analysis">Просмотреть анализ настроений</string>
   <string name="button_label_view_smart_list_recipe">Посмотреть рецепт %s</string>
@@ -921,6 +922,7 @@
   <string name="header_import_example">Пример</string>
   <string name="header_import_fields">Поля</string>
   <string name="header_import_json_guidelines">Рекомендации по JSON</string>
+  <string name="header_insights">Инсайты</string>
   <string name="header_jellyfin_synced_servers">Серверы Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">Синхронизация с Jellyfin – это VIP-бета</string>
   <string name="header_landing_discover">Находите</string>
@@ -983,6 +985,12 @@
   <string name="header_ratings_official">Официальные рейтинги</string>
   <string name="header_ratings_quality_over_time">Качество со временем</string>
   <string name="header_ratings_trakt">Рейтинг Trakt</string>
+  <string name="header_reality_check">Проверка достоверности</string>
+  <string name="header_reality_claims">На экране и в реальности</string>
+  <string name="header_reality_left_out">Что не вошло</string>
+  <string name="header_reality_people">Люди</string>
+  <string name="header_reality_real_story">Реальная история</string>
+  <string name="header_reality_timeline">Хронология</string>
   <string name="header_region">Регион</string>
   <string name="header_renewal_date">Дата продления</string>
   <string name="header_runtime">Продолжительность</string>
@@ -1223,6 +1231,10 @@
   <string name="label_rating_hidden_hint">Показать рейтинг</string>
   <string name="label_rating_user">%s из 5</string>
   <string name="label_ratings_season_chart">Динамика рейтингов сезонов</string>
+  <string name="label_reality_claim_on_screen">На экране</string>
+  <string name="label_reality_claim_reality">Реалити-шоу</string>
+  <string name="label_reality_row_protagonist">Главный герой</string>
+  <string name="label_reality_row_story">Сюжет</string>
   <string name="label_registered_accounts">Зарегистрированные аккаунты</string>
   <string name="label_report_reason_abusive">Оскорбительный</string>
   <string name="label_report_reason_adult">Контент для взрослых</string>
@@ -1429,7 +1441,7 @@
   <string name="match_label_soulmates">Родственные души</string>
   <string name="match_label_spin_off">Спин-офф</string>
   <string name="match_pill_anchor">Совпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% совпадения, %2$s. Открыть подробности совпадения.</string>
+  <string name="match_pill_aria_label">%1$d% совпадения, %2$s. Открыть подробности совпадения.</string>
   <string name="match_pill_loading_aria_label">Вычисляется оценка соответствия</string>
   <string name="mir_banner_body">Ваш ежемесячный обзор готов. Вот что вы посмотрели в %s.</string>
   <string name="mir_banner_body_short">Ваш обзор за %s готов.</string>
@@ -1662,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Только вебхук</string>
   <string name="tag_mixtape_different_mood">Другое настроение</string>
   <string name="tag_mixtape_kept">Сохранено</string>
-  <string name="tag_mixtape_match">Совпадение: %s%%</string>
+  <string name="tag_mixtape_match">Совпадение: %s%</string>
   <string name="tag_mixtape_tap_details">Нажмите для подробностей</string>
   <string name="tag_text_blocked_user">Заблокировано</string>
   <string name="tag_text_deal_price">Первые 2 года</string>
@@ -2080,6 +2092,22 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s голосов</string>
   <string name="text_raw_export">Исходный экспорт</string>
+  <string name="text_reality_check_basis">В сравнении с Википедией и публикациями в прессе</string>
+  <string name="text_reality_claim_accurate">Точно</string>
+  <string name="text_reality_claim_changed">Изменено</string>
+  <string name="text_reality_claim_composite">Объединено</string>
+  <string name="text_reality_claim_compressed">Сжато</string>
+  <string name="text_reality_claim_invented">Выдумано</string>
+  <string name="text_reality_claim_minor">незначительно</string>
+  <string name="text_reality_early_verdict">Предварительный вердикт</string>
+  <string name="text_reality_kind_composite">Объединено</string>
+  <string name="text_reality_kind_invented">Выдумано</string>
+  <string name="text_reality_kind_real">Реальный</string>
+  <string name="text_reality_tier_faithful">Достоверно</string>
+  <string name="text_reality_tier_in_name_only">Лишь номинально</string>
+  <string name="text_reality_tier_loose">По мотивам</string>
+  <string name="text_reality_tier_mostly_true">В основном правда</string>
+  <string name="text_reality_tier_unclear">Неясно</string>
   <string name="text_recommendation_person_more_titles">+Еще %d</string>
   <string name="text_recommendation_person_watched_acting_one">Снялся в %d просмотренном вами проекте</string>
   <string name="text_recommendation_person_watched_acting_other">Снялся в %d просмотренных вами проектах</string>
@@ -2623,7 +2651,7 @@
   <string name="vip_feature_description_more_lists">Создавайте еще больше пользовательских списков, чтобы организовать свои шоу и фильмы именно так, как вы хотите.</string>
   <string name="vip_feature_description_plex_sync">Держите свою библиотеку Plex идеально синхронизированной с более частыми автоматическими обновлениями в течение дня.</string>
   <string name="vip_feature_description_recaps">Получите более глубокие инсайты с подробными ежемесячными и годовыми обзорами, показывающими все, что вы посмотрели, оценили и открыли для себя.</string>
-  <string name="vip_feature_description_sentiment_trivia">Разблокируйте подробный анализ настроений и увлекательные факты о фильмах и шоу, которые вы смотрите.</string>
+  <string name="vip_feature_description_sentiment_trivia">Разблокируйте подробный анализ настроений, узнайте, что произошло на самом деле в реальных историях, и откройте увлекательные факты о фильмах и шоу, которые вы смотрите.</string>
   <string name="vip_feature_description_soundtrack">Смотрите все треки, указанные в фильме или сериале, и воспроизводите те, которые мы можем сопоставить.</string>
   <string name="vip_feature_description_streaming_services">Подключайтесь и синхронизируйтесь с дополнительными стриминговыми платформами, чтобы отслеживать свои просмотры на всех сервисах.</string>
   <string name="vip_feature_description_support">Получите приоритетный доступ к нашим форумам поддержки и отправляйте свои отзывы напрямую команде.</string>
@@ -2637,7 +2665,7 @@
   <string name="vip_feature_title_more_lists">Больше списков</string>
   <string name="vip_feature_title_plex_sync">Синхронизировать Plex чаще</string>
   <string name="vip_feature_title_recaps">Больше статистики: Ежемесячный и годовой обзор</string>
-  <string name="vip_feature_title_sentiment_trivia">Больше информации: Анализ настроений и факты</string>
+  <string name="vip_feature_title_sentiment_trivia">Больше информации: Анализ настроений, проверка достоверности и факты</string>
   <string name="vip_feature_title_streaming_services">Синхронизировать больше стриминговых сервисов</string>
   <string name="vip_feature_title_support">Улучшенная поддержка: Форум и обратная связь</string>
   <string name="vip_feature_title_unlock">Раскройте весь потенциал с</string>
@@ -2839,7 +2867,7 @@
   <string name="yir_2026_preview_runner_none">Нет (без гибрида)</string>
   <string name="yir_2026_preview_runner_up">Второй</string>
   <string name="yir_2026_preview_title">Предварительный просмотр персоны</string>
-  <string name="yir_2026_rarity">Только %1$d%% являются %2$s</string>
+  <string name="yir_2026_rarity">Только %1$d% являются %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Немного %s</string>
   <string name="yir_2026_reel_and_you_are">И вы</string>
   <string name="yir_2026_reel_but_mostly">Но в основном</string>

@@ -343,6 +343,7 @@
   <string name="button_label_view_import_guidelines">Ver orientações</string>
   <string name="button_label_view_photo">Vê a tua foto de perfil</string>
   <string name="button_label_view_ratings_breakdown">Ver distribuição das classificações</string>
+  <string name="button_label_view_reality_check">Ver Reality Check</string>
   <string name="button_label_view_releases">Ver lançamentos</string>
   <string name="button_label_view_sentiment_analysis">Ver análise de sentimento</string>
   <string name="button_label_view_smart_list_recipe">Ver a receita de %s</string>
@@ -921,6 +922,7 @@
   <string name="header_import_example">Exemplo</string>
   <string name="header_import_fields">Campos</string>
   <string name="header_import_json_guidelines">Orientações para JSON</string>
+  <string name="header_insights">Insights</string>
   <string name="header_jellyfin_synced_servers">Servidores Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">A sincronização com o Jellyfin está em beta para VIPs</string>
   <string name="header_landing_discover">Explora</string>
@@ -983,6 +985,12 @@
   <string name="header_ratings_official">Classificações oficiais</string>
   <string name="header_ratings_quality_over_time">Evolução das classificações</string>
   <string name="header_ratings_trakt">Classificação Trakt</string>
+  <string name="header_reality_check">Reality Check</string>
+  <string name="header_reality_claims">No ecrã vs. na realidade</string>
+  <string name="header_reality_left_out">O que ficou de fora</string>
+  <string name="header_reality_people">Pessoas</string>
+  <string name="header_reality_real_story">A história real</string>
+  <string name="header_reality_timeline">Cronologia</string>
   <string name="header_region">Região</string>
   <string name="header_renewal_date">Data de renovação</string>
   <string name="header_runtime">Duração</string>
@@ -1223,6 +1231,10 @@
   <string name="label_rating_hidden_hint">Revela a classificação</string>
   <string name="label_rating_user">Classificado com %s em 5</string>
   <string name="label_ratings_season_chart">Classificações das temporadas ao longo do tempo</string>
+  <string name="label_reality_claim_on_screen">No ecrã</string>
+  <string name="label_reality_claim_reality">Realidade</string>
+  <string name="label_reality_row_protagonist">Protagonista</string>
+  <string name="label_reality_row_story">História</string>
   <string name="label_registered_accounts">Contas registadas</string>
   <string name="label_report_reason_abusive">Abusivo</string>
   <string name="label_report_reason_adult">Conteúdo para adultos</string>
@@ -1429,7 +1441,7 @@
   <string name="match_label_soulmates">Almas gémeas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Compatibilidade:</string>
-  <string name="match_pill_aria_label">%1$d%% de compatibilidade, %2$s. Abre os detalhes da compatibilidade.</string>
+  <string name="match_pill_aria_label">%1$d% de compatibilidade, %2$s. Abre os detalhes da compatibilidade.</string>
   <string name="match_pill_loading_aria_label">A calcular a compatibilidade</string>
   <string name="mir_banner_body">O teu resumo mensal está pronto. Eis o que viste em %s.</string>
   <string name="mir_banner_body_short">O teu resumo de %s está pronto.</string>
@@ -1662,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Apenas webhook</string>
   <string name="tag_mixtape_different_mood">Sensação diferente</string>
   <string name="tag_mixtape_kept">Mantido</string>
-  <string name="tag_mixtape_match">%s%% de compatibilidade</string>
+  <string name="tag_mixtape_match">%s% de compatibilidade</string>
   <string name="tag_mixtape_tap_details">Toca para ver detalhes</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
   <string name="tag_text_deal_price">Primeiros 2 anos</string>
@@ -2080,6 +2092,22 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votos</string>
   <string name="text_raw_export">Exportação em bruto</string>
+  <string name="text_reality_check_basis">Comparado com a Wikipédia e a cobertura mediática</string>
+  <string name="text_reality_claim_accurate">Preciso</string>
+  <string name="text_reality_claim_changed">Alterado</string>
+  <string name="text_reality_claim_composite">Composto</string>
+  <string name="text_reality_claim_compressed">Condensado</string>
+  <string name="text_reality_claim_invented">Inventado</string>
+  <string name="text_reality_claim_minor">ligeira</string>
+  <string name="text_reality_early_verdict">Veredito preliminar</string>
+  <string name="text_reality_kind_composite">Composto</string>
+  <string name="text_reality_kind_invented">Inventado</string>
+  <string name="text_reality_kind_real">Real</string>
+  <string name="text_reality_tier_faithful">Fiel à realidade</string>
+  <string name="text_reality_tier_in_name_only">Só no nome</string>
+  <string name="text_reality_tier_loose">Vagamente baseado</string>
+  <string name="text_reality_tier_mostly_true">Maioritariamente verdadeiro</string>
+  <string name="text_reality_tier_unclear">Inconclusivo</string>
   <string name="text_recommendation_person_more_titles">+%d</string>
   <string name="text_recommendation_person_watched_acting_one">Participou em %d título que viste</string>
   <string name="text_recommendation_person_watched_acting_other">Participou em %d títulos que viste</string>
@@ -2623,7 +2651,7 @@
   <string name="vip_feature_description_more_lists">Cria ainda mais listas personalizadas para organizares os teus filmes e séries exatamente como quiseres.</string>
   <string name="vip_feature_description_plex_sync">Mantém a tua biblioteca do Plex perfeitamente sincronizada com atualizações automáticas mais frequentes ao longo do dia.</string>
   <string name="vip_feature_description_recaps">Obtém insights mais profundos com resumos mensais e anuais completos que mostram tudo o que viste, classificaste e descobriste.</string>
-  <string name="vip_feature_description_sentiment_trivia">Desbloqueia análises de sentimento detalhadas e curiosidades fascinantes sobre os filmes e séries que vês.</string>
+  <string name="vip_feature_description_sentiment_trivia">Desbloqueia análises detalhadas de opiniões, descobre o que realmente aconteceu nas histórias verídicas e explora curiosidades fascinantes sobre os filmes e séries que vês.</string>
   <string name="vip_feature_description_soundtrack">Vê todas as faixas creditadas num filme ou série e reproduz as que conseguirmos associar.</string>
   <string name="vip_feature_description_streaming_services">Associa e sincroniza mais plataformas de streaming para registares o que vês em todos os serviços.</string>
   <string name="vip_feature_description_support">Obtém acesso prioritário aos nossos fóruns de suporte e partilha o teu feedback diretamente com a equipa.</string>
@@ -2637,7 +2665,7 @@
   <string name="vip_feature_title_more_lists">Mais listas</string>
   <string name="vip_feature_title_plex_sync">Sincroniza o Plex com mais frequência</string>
   <string name="vip_feature_title_recaps">Mais estatísticas: resumo mensal e anual</string>
-  <string name="vip_feature_title_sentiment_trivia">Mais informações: opiniões e curiosidades</string>
+  <string name="vip_feature_title_sentiment_trivia">Mais informações: opiniões, Reality Check e curiosidades</string>
   <string name="vip_feature_title_streaming_services">Sincroniza mais serviços de streaming</string>
   <string name="vip_feature_title_support">Melhor apoio: fórum e feedback</string>
   <string name="vip_feature_title_unlock">Desbloqueia todo o potencial com</string>
@@ -2839,7 +2867,7 @@
   <string name="yir_2026_preview_runner_none">Nenhum (sem híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo classificado</string>
   <string name="yir_2026_preview_title">Pré-visualização da persona</string>
-  <string name="yir_2026_rarity">Só %1$d%% são %2$s</string>
+  <string name="yir_2026_rarity">Só %1$d% são %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Um bocadinho %s</string>
   <string name="yir_2026_reel_and_you_are">E tu és</string>
   <string name="yir_2026_reel_but_mostly">Mas sobretudo</string>

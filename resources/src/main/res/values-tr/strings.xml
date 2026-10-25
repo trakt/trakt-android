@@ -343,6 +343,7 @@
   <string name="button_label_view_import_guidelines">Yönergeleri görüntüle</string>
   <string name="button_label_view_photo">Profil fotoğrafınızı görüntüle</string>
   <string name="button_label_view_ratings_breakdown">Derecelendirme dökümünü görüntüle</string>
+  <string name="button_label_view_reality_check">Gerçeklik Kontrolünü Görüntüle</string>
   <string name="button_label_view_releases">Yayınları görüntüle</string>
   <string name="button_label_view_sentiment_analysis">Duygu analizini görüntüle</string>
   <string name="button_label_view_smart_list_recipe">%s tarifini görüntüle</string>
@@ -921,6 +922,7 @@
   <string name="header_import_example">Örnek</string>
   <string name="header_import_fields">Alanlar</string>
   <string name="header_import_json_guidelines">JSON Yönergeleri</string>
+  <string name="header_insights">İçgörüler</string>
   <string name="header_jellyfin_synced_servers">Jellyfin Sunucuları</string>
   <string name="header_jellyfin_vip_upsell">Jellyfin senkronizasyonu bir VIP beta sürümüdür</string>
   <string name="header_landing_discover">Keşfet</string>
@@ -983,6 +985,12 @@
   <string name="header_ratings_official">Resmi Derecelendirmeler</string>
   <string name="header_ratings_quality_over_time">Zamanla Kalite</string>
   <string name="header_ratings_trakt">Trakt Derecelendirmesi</string>
+  <string name="header_reality_check">Gerçeklik Kontrolü</string>
+  <string name="header_reality_claims">Ekranda görünenler ve gerçekte yaşananlar</string>
+  <string name="header_reality_left_out">Dışarıda bırakılanlar</string>
+  <string name="header_reality_people">Kişiler</string>
+  <string name="header_reality_real_story">Gerçek hikâye</string>
+  <string name="header_reality_timeline">Zaman çizelgesi</string>
   <string name="header_region">Bölge</string>
   <string name="header_renewal_date">Yenileme Tarihi</string>
   <string name="header_runtime">Süre</string>
@@ -1223,6 +1231,10 @@
   <string name="label_rating_hidden_hint">Derecelendirmeyi gösterir</string>
   <string name="label_rating_user">5 üzerinden %s olarak derecelendirildi</string>
   <string name="label_ratings_season_chart">Zaman içinde sezon derecelendirmeleri</string>
+  <string name="label_reality_claim_on_screen">Ekranda</string>
+  <string name="label_reality_claim_reality">Reality</string>
+  <string name="label_reality_row_protagonist">Başkarakter</string>
+  <string name="label_reality_row_story">Hikaye</string>
   <string name="label_registered_accounts">Kayıtlı hesaplar</string>
   <string name="label_report_reason_abusive">Kötüye Kullanım</string>
   <string name="label_report_reason_adult">Yetişkin içerik</string>
@@ -1429,7 +1441,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
   <string name="mir_banner_body_short">%s özetiniz hazır.</string>
@@ -1662,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s%% eşleşme</string>
+  <string name="tag_mixtape_match">%s% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
@@ -2080,6 +2092,22 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s oy</string>
   <string name="text_raw_export">Ham dışa aktarım</string>
+  <string name="text_reality_check_basis">Vikipedi ve basında çıkan haberlerle karşılaştırıldı</string>
+  <string name="text_reality_claim_accurate">Doğru</string>
+  <string name="text_reality_claim_changed">Değiştirilmiş</string>
+  <string name="text_reality_claim_composite">Birleştirilmiş</string>
+  <string name="text_reality_claim_compressed">Sıkıştırılmış</string>
+  <string name="text_reality_claim_invented">Kurgulanmış</string>
+  <string name="text_reality_claim_minor">küçük</string>
+  <string name="text_reality_early_verdict">Erken karar</string>
+  <string name="text_reality_kind_composite">Birleştirilmiş</string>
+  <string name="text_reality_kind_invented">Kurgulanmış</string>
+  <string name="text_reality_kind_real">Gerçek</string>
+  <string name="text_reality_tier_faithful">Aslına sadık</string>
+  <string name="text_reality_tier_in_name_only">Sadece isimden ibaret</string>
+  <string name="text_reality_tier_loose">Serbest uyarlama</string>
+  <string name="text_reality_tier_mostly_true">Çoğunlukla doğru</string>
+  <string name="text_reality_tier_unclear">Belirsiz</string>
   <string name="text_recommendation_person_more_titles">+%d daha</string>
   <string name="text_recommendation_person_watched_acting_one">İzlediğiniz %d yapımda rol aldı</string>
   <string name="text_recommendation_person_watched_acting_other">İzlediğiniz %d yapımda rol aldı</string>
@@ -2623,7 +2651,7 @@
   <string name="vip_feature_description_more_lists">Dizilerinizi ve filmlerinizi tam istediğiniz gibi düzenlemek için daha da fazla özel liste oluşturun.</string>
   <string name="vip_feature_description_plex_sync">Plex kütüphanenizi gün boyunca daha sık otomatik güncellemelerle mükemmel bir şekilde senkronize tutun.</string>
   <string name="vip_feature_description_recaps">İzlediğiniz, derecelendirdiğiniz ve keşfettiğiniz her şeyi gösteren kapsamlı aylık ve yıllık özetlerle daha derin içgörüler edinin.</string>
-  <string name="vip_feature_description_sentiment_trivia">İzlediğiniz filmler ve diziler hakkında ayrıntılı duygu analizini ve büyüleyici bilgileri açın.</string>
+  <string name="vip_feature_description_sentiment_trivia">İzlediğiniz filmler ve diziler hakkında ayrıntılı duygu analizini, gerçek hikâyelerde aslında nelerin yaşandığını ve büyüleyici bilgileri açın.</string>
   <string name="vip_feature_description_soundtrack">Bir film veya dizide geçen tüm parçaları görün ve eşleşenleri oynatın.</string>
   <string name="vip_feature_description_streaming_services">Tüm hizmetlerde izlemenizi takip etmek için ek yayın platformlarıyla bağlantı kurun ve senkronize edin.</string>
   <string name="vip_feature_description_support">Destek forumlarımıza öncelikli erişim sağlayın ve geri bildirimlerinizin doğrudan ekip tarafından duyulmasını sağlayın.</string>
@@ -2637,7 +2665,7 @@
   <string name="vip_feature_title_more_lists">Daha Fazla Liste</string>
   <string name="vip_feature_title_plex_sync">Plex\'i daha sık senkronize et</string>
   <string name="vip_feature_title_recaps">Daha Fazla İstatistik: Aylık &amp; Yıllık Özet</string>
-  <string name="vip_feature_title_sentiment_trivia">Daha Fazla Bilgi: Duygu &amp; Trivia</string>
+  <string name="vip_feature_title_sentiment_trivia">Daha Fazla Bilgi: Duygu, Gerçeklik Kontrolü &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Daha Fazla Yayın Hizmeti Senkronize Et</string>
   <string name="vip_feature_title_support">Daha İyi Destek: Forum &amp; Geri Bildirim</string>
   <string name="vip_feature_title_unlock">Tüm potansiyelinizi şunlarla açın:</string>
@@ -2839,7 +2867,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

@@ -343,6 +343,7 @@
   <string name="button_label_view_import_guidelines">Richtlijnen bekijken</string>
   <string name="button_label_view_photo">Bekijk je profielfoto</string>
   <string name="button_label_view_ratings_breakdown">Bekijk beoordelingsoverzicht</string>
+  <string name="button_label_view_reality_check">Reality Check bekijken</string>
   <string name="button_label_view_releases">Bekijk uitgaven</string>
   <string name="button_label_view_sentiment_analysis">Bekijk sentimentanalyse</string>
   <string name="button_label_view_smart_list_recipe">Bekijk het recept van %s</string>
@@ -921,6 +922,7 @@
   <string name="header_import_example">Voorbeeld</string>
   <string name="header_import_fields">Velden</string>
   <string name="header_import_json_guidelines">JSON-richtlijnen</string>
+  <string name="header_insights">Inzichten</string>
   <string name="header_jellyfin_synced_servers">Jellyfin-servers</string>
   <string name="header_jellyfin_vip_upsell">Jellyfin-synchronisatie is een VIP-bèta</string>
   <string name="header_landing_discover">Ontdekken</string>
@@ -983,6 +985,12 @@
   <string name="header_ratings_official">Officiële beoordelingen</string>
   <string name="header_ratings_quality_over_time">Kwaliteit over tijd</string>
   <string name="header_ratings_trakt">Trakt-beoordeling</string>
+  <string name="header_reality_check">Reality Check</string>
+  <string name="header_reality_claims">Op het scherm vs. wat er gebeurde</string>
+  <string name="header_reality_left_out">Weggelaten</string>
+  <string name="header_reality_people">Personen</string>
+  <string name="header_reality_real_story">Het echte verhaal</string>
+  <string name="header_reality_timeline">Tijdlijn</string>
   <string name="header_region">Regio</string>
   <string name="header_renewal_date">Verlengingsdatum</string>
   <string name="header_runtime">Speelduur</string>
@@ -1223,6 +1231,10 @@
   <string name="label_rating_hidden_hint">Onthult de beoordeling</string>
   <string name="label_rating_user">Beoordeeld met %s van de 5</string>
   <string name="label_ratings_season_chart">Seizoenbeoordelingen over tijd</string>
+  <string name="label_reality_claim_on_screen">Op het scherm</string>
+  <string name="label_reality_claim_reality">Reality</string>
+  <string name="label_reality_row_protagonist">Hoofdpersoon</string>
+  <string name="label_reality_row_story">Verhaal</string>
   <string name="label_registered_accounts">Geregistreerde accounts</string>
   <string name="label_report_reason_abusive">Beledigend</string>
   <string name="label_report_reason_adult">Erotische inhoud</string>
@@ -1429,7 +1441,7 @@
   <string name="match_label_soulmates">Zielsverwanten</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Overeenkomst:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open matchdetails.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open matchdetails.</string>
   <string name="match_pill_loading_aria_label">Matchscore berekenen</string>
   <string name="mir_banner_body">Je maandelijkse overzicht is klaar. Dit is wat je hebt gekeken in %s.</string>
   <string name="mir_banner_body_short">Je %s overzicht is klaar.</string>
@@ -1662,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Alleen webhook</string>
   <string name="tag_mixtape_different_mood">Andere sfeer</string>
   <string name="tag_mixtape_kept">Bewaard</string>
-  <string name="tag_mixtape_match">%s%% overeenkomst</string>
+  <string name="tag_mixtape_match">%s% overeenkomst</string>
   <string name="tag_mixtape_tap_details">Tik voor details</string>
   <string name="tag_text_blocked_user">Geblokkeerd</string>
   <string name="tag_text_deal_price">Eerste 2 jaar</string>
@@ -2080,6 +2092,22 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s stemmen</string>
   <string name="text_raw_export">Ruwe export</string>
+  <string name="text_reality_check_basis">Vergeleken met Wikipedia en berichtgeving in de pers</string>
+  <string name="text_reality_claim_accurate">Accuraat</string>
+  <string name="text_reality_claim_changed">Gewijzigd</string>
+  <string name="text_reality_claim_composite">Samengesteld</string>
+  <string name="text_reality_claim_compressed">Gecomprimeerd</string>
+  <string name="text_reality_claim_invented">Verzonnen</string>
+  <string name="text_reality_claim_minor">klein</string>
+  <string name="text_reality_early_verdict">Voorlopig oordeel</string>
+  <string name="text_reality_kind_composite">Samengesteld</string>
+  <string name="text_reality_kind_invented">Verzonnen</string>
+  <string name="text_reality_kind_real">Echt</string>
+  <string name="text_reality_tier_faithful">Natuurgetrouw</string>
+  <string name="text_reality_tier_in_name_only">Alleen in naam</string>
+  <string name="text_reality_tier_loose">Losjes gebaseerd</string>
+  <string name="text_reality_tier_mostly_true">Grotendeels waar</string>
+  <string name="text_reality_tier_unclear">Onduidelijk</string>
   <string name="text_recommendation_person_more_titles">+%d meer</string>
   <string name="text_recommendation_person_watched_acting_one">Speelde in %d titel die je hebt gekeken</string>
   <string name="text_recommendation_person_watched_acting_other">Speelde in %d titels die je hebt gekeken</string>
@@ -2623,7 +2651,7 @@
   <string name="vip_feature_description_more_lists">Maak nog meer aangepaste lijsten om uw series en films precies zo te organiseren als u wilt.</string>
   <string name="vip_feature_description_plex_sync">Houd uw Plex-bibliotheek perfect gesynchroniseerd met frequentere automatische updates gedurende de dag.</string>
   <string name="vip_feature_description_recaps">Krijg diepere inzichten met uitgebreide maand- en jaaroverzichten die alles tonen wat u heeft bekeken, beoordeeld en ontdekt.</string>
-  <string name="vip_feature_description_sentiment_trivia">Ontgrendel gedetailleerde sentimentanalyse en fascinerende weetjes over de films en series die u kijkt.</string>
+  <string name="vip_feature_description_sentiment_trivia">Ontgrendel gedetailleerde sentimentanalyse, wat er werkelijk gebeurde in waargebeurde verhalen en fascinerende weetjes over de films en series die u kijkt.</string>
   <string name="vip_feature_description_soundtrack">Bekijk elk nummer dat in een film of serie wordt genoemd en speel de nummers af die we kunnen matchen.</string>
   <string name="vip_feature_description_streaming_services">Verbind en synchroniseer met extra streamingplatforms om uw kijkgedrag overal bij te houden.</string>
   <string name="vip_feature_description_support">Krijg prioriteitstoegang tot onze ondersteuningsforums en laat uw feedback direct horen aan het team.</string>
@@ -2637,7 +2665,7 @@
   <string name="vip_feature_title_more_lists">Meer lijsten</string>
   <string name="vip_feature_title_plex_sync">Plex vaker synchroniseren</string>
   <string name="vip_feature_title_recaps">Meer Statistieken: Maandelijks &amp; Jaarlijks Overzicht</string>
-  <string name="vip_feature_title_sentiment_trivia">Meer info: Sentiment &amp; Trivia</string>
+  <string name="vip_feature_title_sentiment_trivia">Meer info: Sentiment, Reality Check &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Meer streamingdiensten synchroniseren</string>
   <string name="vip_feature_title_support">Betere ondersteuning: Forum &amp; Feedback</string>
   <string name="vip_feature_title_unlock">Ontgrendel het volledige potentieel met</string>
@@ -2839,7 +2867,7 @@
   <string name="yir_2026_preview_runner_none">Geen (geen hybride)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona voorbeeld</string>
-  <string name="yir_2026_rarity">Slechts %1$d%% is %2$s</string>
+  <string name="yir_2026_rarity">Slechts %1$d% is %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Een beetje %s</string>
   <string name="yir_2026_reel_and_you_are">En jij bent</string>
   <string name="yir_2026_reel_but_mostly">Maar meestal</string>

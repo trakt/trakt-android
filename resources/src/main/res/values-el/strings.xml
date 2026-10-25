@@ -343,6 +343,7 @@
   <string name="button_label_view_import_guidelines">Προβολή οδηγιών</string>
   <string name="button_label_view_photo">Προβολή της φωτογραφίας προφίλ σας</string>
   <string name="button_label_view_ratings_breakdown">Προβολή ανάλυσης αξιολογήσεων</string>
+  <string name="button_label_view_reality_check">Προβολή ελέγχου πραγματικότητας</string>
   <string name="button_label_view_releases">Προβολή κυκλοφοριών</string>
   <string name="button_label_view_sentiment_analysis">Προβολή ανάλυσης συναισθήματος</string>
   <string name="button_label_view_smart_list_recipe">Προβολή της συνταγής για %s</string>
@@ -921,6 +922,7 @@
   <string name="header_import_example">Παράδειγμα</string>
   <string name="header_import_fields">Πεδία</string>
   <string name="header_import_json_guidelines">Οδηγίες JSON</string>
+  <string name="header_insights">Αναλύσεις</string>
   <string name="header_jellyfin_synced_servers">Διακομιστές Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">Ο συγχρονισμός Jellyfin είναι VIP beta</string>
   <string name="header_landing_discover">Ανακαλύψτε</string>
@@ -983,6 +985,12 @@
   <string name="header_ratings_official">Επίσημες Αξιολογήσεις</string>
   <string name="header_ratings_quality_over_time">Ποιότητα με την πάροδο του χρόνου</string>
   <string name="header_ratings_trakt">Αξιολόγηση Trakt</string>
+  <string name="header_reality_check">Έλεγχος πραγματικότητας</string>
+  <string name="header_reality_claims">Στην οθόνη έναντι του τι συνέβη</string>
+  <string name="header_reality_left_out">Παραλείψεις</string>
+  <string name="header_reality_people">Άτομα</string>
+  <string name="header_reality_real_story">Η πραγματική ιστορία</string>
+  <string name="header_reality_timeline">Χρονολόγιο</string>
   <string name="header_region">Περιοχή</string>
   <string name="header_renewal_date">Ημερομηνία Ανανέωσης</string>
   <string name="header_runtime">Διάρκεια</string>
@@ -1223,6 +1231,10 @@
   <string name="label_rating_hidden_hint">Αποκαλύπτει τη βαθμολογία</string>
   <string name="label_rating_user">Βαθμολογήθηκε %s στα 5</string>
   <string name="label_ratings_season_chart">Αξιολογήσεις σεζόν με την πάροδο του χρόνου</string>
+  <string name="label_reality_claim_on_screen">Στην οθόνη</string>
+  <string name="label_reality_claim_reality">Ριάλιτι</string>
+  <string name="label_reality_row_protagonist">Πρωταγωνιστής</string>
+  <string name="label_reality_row_story">Ιστορία</string>
   <string name="label_registered_accounts">Εγγεγραμμένοι λογαριασμοί</string>
   <string name="label_report_reason_abusive">Υβριστικό</string>
   <string name="label_report_reason_adult">Περιεχόμενο ενηλίκων</string>
@@ -1429,7 +1441,7 @@
   <string name="match_label_soulmates">Ψυχές Συγγενείς</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Ταίριασμα:</string>
-  <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
+  <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
   <string name="mir_banner_body">Η μηνιαία ανακεφαλαίωσή σου είναι έτοιμη. Δες τι παρακολούθησες τον %s.</string>
   <string name="mir_banner_body_short">Η ανακεφαλαίωση για τον %s είναι έτοιμη.</string>
@@ -1662,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Μόνο Webhook</string>
   <string name="tag_mixtape_different_mood">Διαφορετική διάθεση</string>
   <string name="tag_mixtape_kept">Διατηρήθηκε</string>
-  <string name="tag_mixtape_match">%s%% αντιστοιχία</string>
+  <string name="tag_mixtape_match">%s% αντιστοιχία</string>
   <string name="tag_mixtape_tap_details">Πατήστε για λεπτομέρειες</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
   <string name="tag_text_deal_price">Πρώτα 2 έτη</string>
@@ -2080,6 +2092,22 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s ψήφοι</string>
   <string name="text_raw_export">Ακατέργαστη εξαγωγή</string>
+  <string name="text_reality_check_basis">Σε σύγκριση με τη Wikipedia και τα δημοσιεύματα του τύπου</string>
+  <string name="text_reality_claim_accurate">Ακριβές</string>
+  <string name="text_reality_claim_changed">Αλλαγμένο</string>
+  <string name="text_reality_claim_composite">Σύνθετο</string>
+  <string name="text_reality_claim_compressed">Συμπυκνωμένο</string>
+  <string name="text_reality_claim_invented">Επινοημένο</string>
+  <string name="text_reality_claim_minor">μικρής σημασίας</string>
+  <string name="text_reality_early_verdict">Πρώιμη ετυμηγορία</string>
+  <string name="text_reality_kind_composite">Σύνθετο</string>
+  <string name="text_reality_kind_invented">Επινοημένο</string>
+  <string name="text_reality_kind_real">Υπαρκτό πρόσωπο</string>
+  <string name="text_reality_tier_faithful">Πιστό</string>
+  <string name="text_reality_tier_in_name_only">Μόνο κατ\' όνομα</string>
+  <string name="text_reality_tier_loose">Χαλαρά βασισμένο</string>
+  <string name="text_reality_tier_mostly_true">Κυρίως αληθές</string>
+  <string name="text_reality_tier_unclear">Ασαφές</string>
   <string name="text_recommendation_person_more_titles">+%d ακόμη</string>
   <string name="text_recommendation_person_watched_acting_one">Πρωταγωνίστησε σε %d τίτλο που παρακολουθήσατε</string>
   <string name="text_recommendation_person_watched_acting_other">Πρωταγωνίστησε σε %d τίτλους που παρακολουθήσατε</string>
@@ -2623,7 +2651,7 @@
   <string name="vip_feature_description_more_lists">Δημιουργήστε ακόμα περισσότερες προσαρμοσμένες λίστες για να οργανώσετε τις σειρές και τις ταινίες σας ακριβώς όπως θέλετε.</string>
   <string name="vip_feature_description_plex_sync">Διατηρήστε τη βιβλιοθήκη Plex σας τέλεια συγχρονισμένη με πιο συχνές αυτόματες ενημερώσεις καθ\' όλη τη διάρκεια της ημέρας.</string>
   <string name="vip_feature_description_recaps">Αποκτήστε βαθύτερες πληροφορίες με αναλυτικές μηνιαίες και ετήσιες ανακεφαλαιώσεις που δείχνουν όλα όσα παρακολουθήσατε, αξιολογήσατε και ανακαλύψατε.</string>
-  <string name="vip_feature_description_sentiment_trivia">Ξεκλειδώστε λεπτομερή ανάλυση συναισθήματος και συναρπαστικά trivia για τις ταινίες και τις σειρές που παρακολουθείτε.</string>
+  <string name="vip_feature_description_sentiment_trivia">Ξεκλειδώστε λεπτομερή ανάλυση συναισθήματος, το τι συνέβη πραγματικά σε αληθινές ιστορίες και συναρπαστικά trivia για τις ταινίες και τις σειρές που παρακολουθείτε.</string>
   <string name="vip_feature_description_soundtrack">Δείτε κάθε κομμάτι που αναφέρεται σε μια ταινία ή εκπομπή και παίξτε αυτά που μπορούμε να αντιστοιχίσουμε.</string>
   <string name="vip_feature_description_streaming_services">Συνδέστε και συγχρονίστε με επιπλέον πλατφόρμες streaming για να παρακολουθείτε τις προβολές σας σε όλες τις υπηρεσίες.</string>
   <string name="vip_feature_description_support">Αποκτήστε προτεραιότητα πρόσβασης στα φόρουμ υποστήριξής μας και ακούστε τα σχόλιά σας απευθείας από την ομάδα.</string>
@@ -2637,7 +2665,7 @@
   <string name="vip_feature_title_more_lists">Περισσότερες λίστες</string>
   <string name="vip_feature_title_plex_sync">Συγχρονισμός Plex πιο συχνά</string>
   <string name="vip_feature_title_recaps">Περισσότερα Στατιστικά: Μηνιαία &amp; Ετήσια Ανακεφαλαίωση</string>
-  <string name="vip_feature_title_sentiment_trivia">Περισσότερες πληροφορίες: Συναισθηματική ανάλυση &amp; Trivia</string>
+  <string name="vip_feature_title_sentiment_trivia">Περισσότερες πληροφορίες: Συναισθηματική ανάλυση, Έλεγχος πραγματικότητας &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Συγχρονισμός περισσότερων υπηρεσιών streaming</string>
   <string name="vip_feature_title_support">Καλύτερη υποστήριξη: Φόρουμ &amp; Σχόλια</string>
   <string name="vip_feature_title_unlock">Ξεκλειδώστε πλήρως τις δυνατότητες με</string>
@@ -2839,7 +2867,7 @@
   <string name="yir_2026_preview_runner_none">Κανένα (όχι υβρίδιο)</string>
   <string name="yir_2026_preview_runner_up">Επιλαχών</string>
   <string name="yir_2026_preview_title">Προεπισκόπηση προφίλ</string>
-  <string name="yir_2026_rarity">Μόνο το %1$d%% είναι %2$s</string>
+  <string name="yir_2026_rarity">Μόνο το %1$d% είναι %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Λίγο %s</string>
   <string name="yir_2026_reel_and_you_are">Και είστε</string>
   <string name="yir_2026_reel_but_mostly">Αλλά κυρίως</string>

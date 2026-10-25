@@ -343,6 +343,7 @@
   <string name="button_label_view_import_guidelines">Veure les directrius</string>
   <string name="button_label_view_photo">Mostra la teva foto de perfil</string>
   <string name="button_label_view_ratings_breakdown">Veure desglossament de les valoracions</string>
+  <string name="button_label_view_reality_check">Mostra la comprovació de la realitat</string>
   <string name="button_label_view_releases">Veure estrenes</string>
   <string name="button_label_view_sentiment_analysis">Veure anàlisi de sentiments</string>
   <string name="button_label_view_smart_list_recipe">Veure la recepta de %s</string>
@@ -921,6 +922,7 @@
   <string name="header_import_example">Exemple</string>
   <string name="header_import_fields">Camps</string>
   <string name="header_import_json_guidelines">Directrius JSON</string>
+  <string name="header_insights">Perspectives</string>
   <string name="header_jellyfin_synced_servers">Servidors Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">La sincronització de Jellyfin és una beta VIP</string>
   <string name="header_landing_discover">Descobreix</string>
@@ -983,6 +985,12 @@
   <string name="header_ratings_official">Valoracions oficials</string>
   <string name="header_ratings_quality_over_time">Qualitat al llarg del temps</string>
   <string name="header_ratings_trakt">Valoració de Trakt</string>
+  <string name="header_reality_check">Comprovació de la realitat</string>
+  <string name="header_reality_claims">A la pantalla vs. el que va passar</string>
+  <string name="header_reality_left_out">Deixat de banda</string>
+  <string name="header_reality_people">Persones</string>
+  <string name="header_reality_real_story">La història real</string>
+  <string name="header_reality_timeline">Cronologia</string>
   <string name="header_region">Regió</string>
   <string name="header_renewal_date">Data de renovació</string>
   <string name="header_runtime">Durada</string>
@@ -1223,6 +1231,10 @@
   <string name="label_rating_hidden_hint">Revela la puntuació</string>
   <string name="label_rating_user">Puntuat amb %s de 5</string>
   <string name="label_ratings_season_chart">Valoracions de temporada al llarg del temps</string>
+  <string name="label_reality_claim_on_screen">A la pantalla</string>
+  <string name="label_reality_claim_reality">Reality show</string>
+  <string name="label_reality_row_protagonist">Protagonista</string>
+  <string name="label_reality_row_story">Història</string>
   <string name="label_registered_accounts">Comptes registrats</string>
   <string name="label_report_reason_abusive">Abusiu</string>
   <string name="label_report_reason_adult">Contingut per a adults</string>
@@ -1429,7 +1441,7 @@
   <string name="match_label_soulmates">Ànimes bessones</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidència:</string>
-  <string name="match_pill_aria_label">%1$d%% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
+  <string name="match_pill_aria_label">%1$d% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
   <string name="mir_banner_body">El teu resum mensual està llest. Aquí teniu el que vau veure a %s.</string>
   <string name="mir_banner_body_short">El teu resum de %s està llest.</string>
@@ -1662,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Només Webhook</string>
   <string name="tag_mixtape_different_mood">Un altre ambient</string>
   <string name="tag_mixtape_kept">Guardat</string>
-  <string name="tag_mixtape_match">%s%% de coincidència</string>
+  <string name="tag_mixtape_match">%s% de coincidència</string>
   <string name="tag_mixtape_tap_details">Toca per als detalls</string>
   <string name="tag_text_blocked_user">Bloquejat</string>
   <string name="tag_text_deal_price">Primers 2 anys</string>
@@ -2080,6 +2092,22 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s vots</string>
   <string name="text_raw_export">Exportació en brut</string>
+  <string name="text_reality_check_basis">Comparat amb la Viquipèdia i la cobertura de premsa</string>
+  <string name="text_reality_claim_accurate">Precís</string>
+  <string name="text_reality_claim_changed">Modificat</string>
+  <string name="text_reality_claim_composite">Compost</string>
+  <string name="text_reality_claim_compressed">Comprimit</string>
+  <string name="text_reality_claim_invented">Inventat</string>
+  <string name="text_reality_claim_minor">menor</string>
+  <string name="text_reality_early_verdict">Veredicte preliminar</string>
+  <string name="text_reality_kind_composite">Compost</string>
+  <string name="text_reality_kind_invented">Inventat</string>
+  <string name="text_reality_kind_real">Real</string>
+  <string name="text_reality_tier_faithful">Fidel</string>
+  <string name="text_reality_tier_in_name_only">Només de nom</string>
+  <string name="text_reality_tier_loose">Lliurement basat</string>
+  <string name="text_reality_tier_mostly_true">Majoritàriament cert</string>
+  <string name="text_reality_tier_unclear">Poc clar</string>
   <string name="text_recommendation_person_more_titles">+%d més</string>
   <string name="text_recommendation_person_watched_acting_one">Ha actuat en %d títol que has vist</string>
   <string name="text_recommendation_person_watched_acting_other">Ha actuat en %d títols que has vist</string>
@@ -2623,7 +2651,7 @@
   <string name="vip_feature_description_more_lists">Crea encara més llistes personalitzades per organitzar les teves sèries i pel·lícules exactament com vols.</string>
   <string name="vip_feature_description_plex_sync">Mantén la teva biblioteca de Plex perfectament sincronitzada amb actualitzacions automàtiques més freqüents durant tot el dia.</string>
   <string name="vip_feature_description_recaps">Obtén informació més detallada amb resums mensuals i anuals complets que mostren tot el que has vist, valorat i descobert.</string>
-  <string name="vip_feature_description_sentiment_trivia">Desbloqueja una anàlisi de sentiments detallada i curiositats fascinants sobre les pel·lícules i sèries que veus.</string>
+  <string name="vip_feature_description_sentiment_trivia">Desbloqueja una anàlisi de sentiments detallada, què va passar realment en les històries reals i curiositats fascinants sobre les pel·lícules i sèries que veus.</string>
   <string name="vip_feature_description_soundtrack">Consulta totes les pistes acreditades en una pel·lícula o sèrie, i reprodueix les que puguem trobar.</string>
   <string name="vip_feature_description_streaming_services">Connecta i sincronitza amb plataformes de streaming addicionals per fer un seguiment de les teves visualitzacions a tots els serveis.</string>
   <string name="vip_feature_description_support">Obtén accés prioritari als nostres fòrums de suport i fes que el teu feedback sigui escoltat directament per l\'equip.</string>
@@ -2637,7 +2665,7 @@
   <string name="vip_feature_title_more_lists">Més llistes</string>
   <string name="vip_feature_title_plex_sync">Sincronitza Plex amb més freqüència</string>
   <string name="vip_feature_title_recaps">Més estadístiques: resums mensuals i anuals</string>
-  <string name="vip_feature_title_sentiment_trivia">Més informació: sentiments i curiositats</string>
+  <string name="vip_feature_title_sentiment_trivia">Més informació: sentiments, comprovació de la realitat i curiositats</string>
   <string name="vip_feature_title_streaming_services">Sincronitza més serveis de streaming</string>
   <string name="vip_feature_title_support">Millor suport: Fòrum i suggeriments</string>
   <string name="vip_feature_title_unlock">Desbloqueja tot el potencial amb</string>
@@ -2839,7 +2867,7 @@
   <string name="yir_2026_preview_runner_none">Cap (sense híbrid)</string>
   <string name="yir_2026_preview_runner_up">Subcampió</string>
   <string name="yir_2026_preview_title">Vista prèvia de la personalitat</string>
-  <string name="yir_2026_rarity">Només el %1$d%% són %2$s</string>
+  <string name="yir_2026_rarity">Només el %1$d% són %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Una mica %s</string>
   <string name="yir_2026_reel_and_you_are">I tu ets</string>
   <string name="yir_2026_reel_but_mostly">Però majoritàriament</string>

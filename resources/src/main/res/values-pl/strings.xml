@@ -343,6 +343,7 @@
   <string name="button_label_view_import_guidelines">Zobacz instrukcje</string>
   <string name="button_label_view_photo">Zobacz swoje zdjęcie profilowe</string>
   <string name="button_label_view_ratings_breakdown">Pokaż szczegóły ocen</string>
+  <string name="button_label_view_reality_check">Zobacz Reality Check</string>
   <string name="button_label_view_releases">Zobacz premiery</string>
   <string name="button_label_view_sentiment_analysis">Zobacz analizę nastrojów</string>
   <string name="button_label_view_smart_list_recipe">Wyświetl przepis dla %s</string>
@@ -921,6 +922,7 @@
   <string name="header_import_example">Przykład</string>
   <string name="header_import_fields">Pola</string>
   <string name="header_import_json_guidelines">Instrukcje JSON</string>
+  <string name="header_insights">Wnioski</string>
   <string name="header_jellyfin_synced_servers">Serwery Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">Synchronizacja Jellyfin to beta dla VIP-ów</string>
   <string name="header_landing_discover">Odkrywaj</string>
@@ -983,6 +985,12 @@
   <string name="header_ratings_official">Oficjalne oceny</string>
   <string name="header_ratings_quality_over_time">Jakość w czasie</string>
   <string name="header_ratings_trakt">Ocena Trakt</string>
+  <string name="header_reality_check">Reality Check</string>
+  <string name="header_reality_claims">Na ekranie a rzeczywistość</string>
+  <string name="header_reality_left_out">Pominięte</string>
+  <string name="header_reality_people">Osoby</string>
+  <string name="header_reality_real_story">Prawdziwa historia</string>
+  <string name="header_reality_timeline">Oś czasu</string>
   <string name="header_region">Region</string>
   <string name="header_renewal_date">Data odnowienia</string>
   <string name="header_runtime">Czas trwania</string>
@@ -1223,6 +1231,10 @@
   <string name="label_rating_hidden_hint">Odsłania ocenę</string>
   <string name="label_rating_user">Ocena: %s na 5</string>
   <string name="label_ratings_season_chart">Oceny sezonów w czasie</string>
+  <string name="label_reality_claim_on_screen">Na ekranie</string>
+  <string name="label_reality_claim_reality">Reality</string>
+  <string name="label_reality_row_protagonist">Główny bohater</string>
+  <string name="label_reality_row_story">Historia</string>
   <string name="label_registered_accounts">Zarejestrowane konta</string>
   <string name="label_report_reason_abusive">Obraźliwe</string>
   <string name="label_report_reason_adult">Treści dla dorosłych</string>
@@ -1429,7 +1441,7 @@
   <string name="match_label_soulmates">Bratnie dusze</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Dopasowanie:</string>
-  <string name="match_pill_aria_label">%1$d%% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
+  <string name="match_pill_aria_label">%1$d% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
   <string name="match_pill_loading_aria_label">Obliczanie wyniku dopasowania</string>
   <string name="mir_banner_body">Twoje miesięczne podsumowanie jest gotowe. Oto, co obejrzałeś(-aś) w %s.</string>
   <string name="mir_banner_body_short">Twoje podsumowanie z %s jest gotowe.</string>
@@ -1662,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Tylko Webhook</string>
   <string name="tag_mixtape_different_mood">Inny nastrój</string>
   <string name="tag_mixtape_kept">Zachowane</string>
-  <string name="tag_mixtape_match">%s%% dopasowania</string>
+  <string name="tag_mixtape_match">%s% dopasowania</string>
   <string name="tag_mixtape_tap_details">Stuknij, aby zobaczyć szczegóły</string>
   <string name="tag_text_blocked_user">Zablokowany</string>
   <string name="tag_text_deal_price">Pierwsze 2 lata</string>
@@ -2080,6 +2092,22 @@
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s głosów</string>
   <string name="text_raw_export">Eksport danych</string>
+  <string name="text_reality_check_basis">W porównaniu z Wikipedią i doniesieniami prasowymi</string>
+  <string name="text_reality_claim_accurate">Zgodne z faktami</string>
+  <string name="text_reality_claim_changed">Zmienione</string>
+  <string name="text_reality_claim_composite">Postać zbiorowa</string>
+  <string name="text_reality_claim_compressed">Skompresowane</string>
+  <string name="text_reality_claim_invented">Wymyślone</string>
+  <string name="text_reality_claim_minor">drobne</string>
+  <string name="text_reality_early_verdict">Wstępny werdykt</string>
+  <string name="text_reality_kind_composite">Postać zbiorowa</string>
+  <string name="text_reality_kind_invented">Wymyślone</string>
+  <string name="text_reality_kind_real">Postać autentyczna</string>
+  <string name="text_reality_tier_faithful">Wierne faktom</string>
+  <string name="text_reality_tier_in_name_only">Tylko z nazwy</string>
+  <string name="text_reality_tier_loose">Luźno oparte na faktach</string>
+  <string name="text_reality_tier_mostly_true">W większości prawdziwe</string>
+  <string name="text_reality_tier_unclear">Niejasne</string>
   <string name="text_recommendation_person_more_titles">+Jeszcze %d</string>
   <string name="text_recommendation_person_watched_acting_one">Zagrał w %d tytule, który oglądałeś</string>
   <string name="text_recommendation_person_watched_acting_other">Zagrał w %d tytułach, które oglądałeś</string>
@@ -2623,7 +2651,7 @@
   <string name="vip_feature_description_more_lists">Twórz jeszcze więcej list osobistych, aby organizować swoje seriale i filmy tak, jak chcesz.</string>
   <string name="vip_feature_description_plex_sync">Utrzymuj swoją bibliotekę Plex idealnie zsynchronizowaną dzięki częstszym automatycznym aktualizacjom w ciągu dnia.</string>
   <string name="vip_feature_description_recaps">Odblokuj głębsze analizy dzięki kompleksowym miesięcznym i rocznym podsumowaniom, pokazującym wszystko, co obejrzałeś, oceniłeś i odkryłeś.</string>
-  <string name="vip_feature_description_sentiment_trivia">Odblokuj szczegółową analizę sentymentu i fascynujące ciekawostki na temat filmów i seriali, które oglądasz.</string>
+  <string name="vip_feature_description_sentiment_trivia">Odblokuj szczegółową analizę nastrojów, fakty kryjące się za prawdziwymi historiami oraz fascynujące ciekawostki o filmach i serialach, które oglądasz.</string>
   <string name="vip_feature_description_soundtrack">Zobacz każdy utwór przypisany do filmu lub serialu i odtwórz te, które możemy dopasować.</string>
   <string name="vip_feature_description_streaming_services">Połącz swoje konto z dodatkowymi serwisami streamingowymi aby jeszcze lepiej śledzić swoją historię oglądania.</string>
   <string name="vip_feature_description_support">Uzyskaj priorytetowy dostęp do naszych forów wsparcia i kontaktu bezpośrednio z zespołem Trakt.</string>
@@ -2637,7 +2665,7 @@
   <string name="vip_feature_title_more_lists">Więcej list</string>
   <string name="vip_feature_title_plex_sync">Częstsza synchronizacja Plex</string>
   <string name="vip_feature_title_recaps">Więcej statystyk: Miesięczne i roczne podsumowanie</string>
-  <string name="vip_feature_title_sentiment_trivia">Więcej informacji: Sentyment i ciekawostki</string>
+  <string name="vip_feature_title_sentiment_trivia">Więcej informacji: Nastroje, Reality Check i ciekawostki</string>
   <string name="vip_feature_title_streaming_services">Synchronizuj więcej usług streamingowych</string>
   <string name="vip_feature_title_support">Lepsze wsparcie: forum użytkowników i opinie</string>
   <string name="vip_feature_title_unlock">Odblokuj pełny potencjał dzięki</string>
@@ -2839,7 +2867,7 @@
   <string name="yir_2026_preview_runner_none">Brak (bez hybrydy)</string>
   <string name="yir_2026_preview_runner_up">Drugie miejsce</string>
   <string name="yir_2026_preview_title">Podgląd persony</string>
-  <string name="yir_2026_rarity">Tylko %1$d%% to %2$s</string>
+  <string name="yir_2026_rarity">Tylko %1$d% to %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Trochę %s</string>
   <string name="yir_2026_reel_and_you_are">A Ty jesteś</string>
   <string name="yir_2026_reel_but_mostly">Ale głównie</string>
