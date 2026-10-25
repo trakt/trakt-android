@@ -66,6 +66,7 @@ import tv.trakt.trakt.core.calendar.feature.monthly.ui.CalendarWeekDaysView
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.INITIAL_MONTH_PAGE
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.MONTH_PAGE_COUNT
 import tv.trakt.trakt.core.calendar.feature.monthly.ui.monthForPage
+import tv.trakt.trakt.core.calendar.feature.weekly.CalendarHeaderTopSpacing
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.ui.CalendarChevrons
 import tv.trakt.trakt.core.calendar.ui.CalendarTodayIcon
@@ -300,7 +301,9 @@ private fun CalendarMonthlyContent(
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
             .padding(
-                top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
+                top = WindowInsets.statusBars.asPaddingValues()
+                    .calculateTopPadding()
+                    .plus(CalendarHeaderTopSpacing),
             ),
     ) {
         Row(

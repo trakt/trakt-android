@@ -109,6 +109,8 @@ import java.time.LocalDate
 import java.time.YearMonth
 import kotlin.time.Duration.Companion.milliseconds
 
+internal val CalendarHeaderTopSpacing = 8.dp
+
 private val MinAlpha = 0.25F
 private val LoadMoreThreshold = 4
 private val FiltersRowHeight = 44.dp
@@ -338,6 +340,7 @@ private fun CalendarScreen(
         end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
+            .plus(CalendarHeaderTopSpacing)
             .plus(150.dp)
             .plus(FiltersRowHeight),
         bottom = WindowInsets.navigationBars.asPaddingValues()
@@ -537,7 +540,8 @@ private fun CalendarScreen(
                 }
                 .padding(
                     top = WindowInsets.statusBars.asPaddingValues()
-                        .calculateTopPadding(),
+                        .calculateTopPadding()
+                        .plus(CalendarHeaderTopSpacing),
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
