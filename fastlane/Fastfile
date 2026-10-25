@@ -4,7 +4,10 @@ platform :android do
   desc "Distribute Firebase version to me only"
   lane :firebase_distribute_me do
     gradle(
-      task: "assembleInternalRelease"
+      task: "assembleInternalRelease",
+      properties: {
+        "abiFilters" => "arm64-v8a"
+      }
     )
 
     # Ensure using mike@trakt.tv for this project
@@ -27,7 +30,10 @@ platform :android do
     release_notes = UI.input("Enter release notes (optional, press Enter to skip): ") || ""
 
     gradle(
-      task: "assembleInternalRelease"
+      task: "assembleInternalRelease",
+      properties: {
+        "abiFilters" => "arm64-v8a"
+      }
     )
 
     # Ensure using mike@trakt.tv for this project
