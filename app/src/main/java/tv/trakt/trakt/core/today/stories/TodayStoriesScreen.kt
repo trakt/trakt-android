@@ -4,6 +4,7 @@ import android.os.SystemClock
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -32,11 +33,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -53,6 +56,9 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.input.pointer.util.VelocityTracker
+import androidx.compose.ui.input.pointer.util.addPointerInputChange
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
@@ -72,6 +78,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import coil3.compose.AsyncImage
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
@@ -87,7 +94,9 @@ import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
+import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val FRAME_DURATION_MS = 10_000
@@ -105,6 +114,7 @@ private val HeaderButtonSize = 40.dp
 private val BackArrowInset = (HeaderButtonSize - HeaderIconSize) / 2 + 3.dp
 private val InfoInset = (HeaderButtonSize - HeaderIconSize) / 2 + 1.dp
 private val SwipeThreshold = 56.dp
+private val SnapVelocityThreshold = 400.dp
 
 private val PosterTopGap = 24.dp
 
@@ -224,15 +234,12 @@ private fun TodayStoriesContent(
             )
 
             TodayStoryHeader(
-                title = when (group) {
-                    is TodayStoryGroup.Title -> group.media.title
-                    is TodayStoryGroup.ForYou -> stringResource(R.string.text_today_for_you)
+                title = {
+                    TodayStoryPagerTitle(
+                        state = state,
+                        pagerState = pagerState,
+                    )
                 },
-                position = stringResource(
-                    R.string.text_today_story_position,
-                    state.groupIndex + 1,
-                    state.groups.size,
-                ),
                 onDetailsClick = { isFlipped = !isFlipped },
                 onSocialClick = onSocialClick,
                 onClose = onClose,
@@ -275,17 +282,70 @@ private fun TodayStoriesContent(
     }
 }
 
+/** Blends the titles of the two pages around the swipe position. */
+@Composable
+private fun TodayStoryPagerTitle(
+    state: TodayStoriesState,
+    pagerState: PagerState,
+) {
+    val startPage by rememberStartPage(pagerState)
+
+    Box {
+        listOf(startPage, startPage + 1).forEach { page ->
+            val group = state.groups.getOrNull(page) ?: return@forEach
+
+            key(page) {
+                TodayStoryTitle(
+                    title = when (group) {
+                        is TodayStoryGroup.Title -> group.media.title
+                        is TodayStoryGroup.ForYou -> stringResource(R.string.text_today_for_you)
+                    },
+                    position = stringResource(
+                        R.string.text_today_story_position,
+                        page + 1,
+                        state.groups.size,
+                    ),
+                    modifier = Modifier.graphicsLayer {
+                        alpha = pagerState.pageVisibility(page)
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TodayStoryTitle(
+    title: String,
+    position: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = title,
+            style = TraktTheme.typography.cardTitle.copy(
+                fontSize = 14.sp,
+            ),
+            color = TraktTheme.colors.textPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(
+            text = position,
+            style = TraktTheme.typography.cardSubtitle,
+            color = TraktTheme.colors.textSecondary,
+            maxLines = 1,
+        )
+    }
+}
+
 /** Blends the backdrops of the two pages around the swipe position, so it fades as the story slides. */
 @Composable
 private fun TodayStoryBackdrop(
     state: TodayStoriesState,
     pagerState: PagerState,
 ) {
-    val startPage by remember(pagerState) {
-        derivedStateOf {
-            floor(pagerState.currentPage + pagerState.currentPageOffsetFraction).toInt()
-        }
-    }
+    val startPage by rememberStartPage(pagerState)
 
     Box(
         modifier = Modifier
@@ -388,65 +448,132 @@ private fun TodayStoryPager(
             }
         }
 
-        // A touch on a settling pager would grab it and stop the slide. This layer takes those
-        // touches instead, so stories can be tapped or swiped through in quick succession.
+        // A touch on a settling pager would grab it and hold the slide. This layer takes those
+        // touches instead, so stories can be tapped or dragged through in quick succession.
         if (isSettling || isSkipPressed) {
             Box(
                 modifier = Modifier
                     .matchParentSize()
                     .skipGestures(
+                        pagerState = pagerState,
                         onPressedChange = { isSkipPressed = it },
                         onNext = onNext,
                         onPrevious = onPrevious,
-                        onNextGroup = onNextGroup,
-                        onPreviousGroup = onPreviousGroup,
+                        onSelectGroup = onSelectGroup,
                     ),
             )
         }
     }
 }
 
-/** Taps step by half of the screen, swipes jump a whole story. */
+/** Taps step by half of the screen, drags carry on from wherever the slide is. */
 @Composable
 private fun Modifier.skipGestures(
+    pagerState: PagerState,
     onPressedChange: (Boolean) -> Unit,
     onNext: () -> Unit,
     onPrevious: () -> Unit,
-    onNextGroup: () -> Unit,
-    onPreviousGroup: () -> Unit,
+    onSelectGroup: (Int) -> Unit,
 ): Modifier {
     val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    val animationsDisabled = rememberAnimationsDisabled()
+    val scope = rememberCoroutineScope()
     val pressedChange by rememberUpdatedState(onPressedChange)
     val next by rememberUpdatedState(onNext)
     val previous by rememberUpdatedState(onPrevious)
-    val nextGroup by rememberUpdatedState(onNextGroup)
-    val previousGroup by rememberUpdatedState(onPreviousGroup)
+    val selectGroup by rememberUpdatedState(onSelectGroup)
 
-    return pointerInput(isRtl) {
+    return pointerInput(isRtl, pagerState) {
+        val velocityThreshold = SnapVelocityThreshold.toPx()
+
         awaitEachGesture {
             val down = awaitFirstDown()
             down.consume()
             pressedChange(true)
 
-            try {
-                var distance: Float
-                do {
-                    val change = awaitPointerEvent().changes.firstOrNull { it.id == down.id } ?: return@awaitEachGesture
-                    change.consume()
-                    distance = change.position.x - down.position.x
-                } while (change.pressed)
+            val velocityTracker = VelocityTracker()
+            velocityTracker.addPosition(down.uptimeMillis, down.position)
 
-                if (abs(distance) > viewConfiguration.touchSlop) {
-                    val towardsStart = (distance > 0) != isRtl
-                    if (towardsStart) previousGroup() else nextGroup()
+            var drag: Channel<Float>? = null
+            var releaseVelocity = 0F
+            var distance = 0F
+            var isReleased = false
+
+            try {
+                while (true) {
+                    val change = awaitPointerEvent().changes.firstOrNull { it.id == down.id } ?: break
+                    val delta = change.positionChange().x
+                    change.consume()
+
+                    if (!change.pressed) {
+                        isReleased = true
+                        break
+                    }
+
+                    velocityTracker.addPointerInputChange(change)
+                    distance += delta
+
+                    if (drag == null && abs(distance) > viewConfiguration.touchSlop) {
+                        val deltas = Channel<Float>(Channel.UNLIMITED)
+                        drag = deltas
+                        scope.launch {
+                            pagerState.scroll(MutatePriority.UserInput) {
+                                for (scrollDelta in deltas) scrollBy(scrollDelta)
+                            }
+
+                            val target = pagerState.settleTarget(
+                                forwardVelocity = releaseVelocity,
+                                velocityThreshold = velocityThreshold,
+                            )
+                            selectGroup(target)
+                            if (animationsDisabled) {
+                                pagerState.scrollToPage(target)
+                            } else {
+                                pagerState.animateScrollToPage(target)
+                            }
+                        }
+                    }
+
+                    drag?.trySend(if (isRtl) delta else -delta)
+                }
+
+                if (drag != null) {
+                    val velocity = velocityTracker.calculateVelocity().x
+                    releaseVelocity = if (isRtl) velocity else -velocity
                     return@awaitEachGesture
                 }
+                if (!isReleased) return@awaitEachGesture
 
                 val isStart = (down.position.x < size.width / 2) != isRtl
                 if (isStart) previous() else next()
             } finally {
+                drag?.close()
                 pressedChange(false)
             }
+        }
+    }
+}
+
+/** Picks the page a released drag lands on, flinging one page past the swipe position when fast. */
+private fun PagerState.settleTarget(
+    forwardVelocity: Float,
+    velocityThreshold: Float,
+): Int {
+    val position = currentPage + currentPageOffsetFraction
+    val target = when {
+        forwardVelocity > velocityThreshold -> floor(position).toInt() + 1
+        forwardVelocity < -velocityThreshold -> ceil(position).toInt() - 1
+        else -> position.roundToInt()
+    }
+    return target.coerceIn(0, pageCount - 1)
+}
+
+/** The page at or just before the swipe position; the next page is the one fading in. */
+@Composable
+private fun rememberStartPage(pagerState: PagerState): State<Int> {
+    return remember(pagerState) {
+        derivedStateOf {
+            floor(pagerState.currentPage + pagerState.currentPageOffsetFraction).toInt()
         }
     }
 }
@@ -568,8 +695,7 @@ private fun TodayStoryProgress(
 
 @Composable
 private fun TodayStoryHeader(
-    title: String,
-    position: String,
+    title: @Composable () -> Unit,
     onDetailsClick: () -> Unit,
     onSocialClick: () -> Unit,
     onClose: () -> Unit,
@@ -591,24 +717,10 @@ private fun TodayStoryHeader(
                 .weight(1F)
                 .padding(end = 8.dp),
         ) {
-            Column(
+            Box(
                 modifier = Modifier.onClick(onClick = onClose),
             ) {
-                Text(
-                    text = title,
-                    style = TraktTheme.typography.cardTitle.copy(
-                        fontSize = 14.sp,
-                    ),
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = position,
-                    style = TraktTheme.typography.cardSubtitle,
-                    color = TraktTheme.colors.textSecondary,
-                    maxLines = 1,
-                )
+                title()
             }
         }
 
@@ -667,8 +779,12 @@ private fun Modifier.pullTowardsEdge(
 private fun PreviewHeader() {
     TraktTheme {
         TodayStoryHeader(
-            title = "Severance",
-            position = "1 / 12",
+            title = {
+                TodayStoryTitle(
+                    title = "Severance",
+                    position = "1 / 12",
+                )
+            },
             onDetailsClick = {},
             onSocialClick = {},
             onClose = {},
@@ -684,8 +800,12 @@ private fun PreviewHeader() {
 private fun PreviewHeaderLongTitle() {
     TraktTheme {
         TodayStoryHeader(
-            title = "The Lord of the Rings: The Rings of Power - Extended Edition Special",
-            position = "3 / 12",
+            title = {
+                TodayStoryTitle(
+                    title = "The Lord of the Rings: The Rings of Power - Extended Edition Special",
+                    position = "3 / 12",
+                )
+            },
             onDetailsClick = {},
             onSocialClick = {},
             onClose = {},
