@@ -5,7 +5,10 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.interaction.DragInteraction
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,6 +52,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
@@ -88,7 +92,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 private const val FRAME_DURATION_MS = 10_000
 private const val BACKDROP_ALPHA = 0.35F
-private const val MIN_PAGE_ALPHA = 0.3F
+private const val MIN_PAGE_ALPHA = 0.05F
 
 private val BackdropBlur = 24.dp
 private val SegmentHeight = 3.dp
@@ -244,8 +248,10 @@ private fun TodayStoriesContent(
                 state = state,
                 pagerState = pagerState,
                 onSelectGroup = onSelectGroup,
-                onSwipePastStart = onPreviousGroup,
-                onSwipePastEnd = onNextGroup,
+                onNext = onNext,
+                onPrevious = onPrevious,
+                onNextGroup = onNextGroup,
+                onPreviousGroup = onPreviousGroup,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1F),
@@ -312,14 +318,20 @@ private fun TodayStoryPager(
     state: TodayStoriesState,
     pagerState: PagerState,
     onSelectGroup: (Int) -> Unit,
-    onSwipePastStart: () -> Unit,
-    onSwipePastEnd: () -> Unit,
+    onNext: () -> Unit,
+    onPrevious: () -> Unit,
+    onNextGroup: () -> Unit,
+    onPreviousGroup: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable (frame: TodayStoryFrame, isActive: Boolean) -> Unit,
 ) {
     val animationsDisabled = rememberAnimationsDisabled()
     val selectGroup by rememberUpdatedState(onSelectGroup)
     var isUserSwipe by remember { mutableStateOf(false) }
+
+    val isDragged by pagerState.interactionSource.collectIsDraggedAsState()
+    var isSkipPressed by remember { mutableStateOf(false) }
+    val isSettling = pagerState.isScrollInProgress && !isDragged
 
     LaunchedEffect(state.groupIndex) {
         if (pagerState.currentPage == state.groupIndex) return@LaunchedEffect
@@ -350,26 +362,91 @@ private fun TodayStoryPager(
             }
     }
 
-    HorizontalPager(
-        state = pagerState,
-        key = { state.groups[it].key },
-        modifier = modifier.nestedScroll(
-            rememberEdgeSwipeConnection(
-                onSwipePastStart = onSwipePastStart,
-                onSwipePastEnd = onSwipePastEnd,
-            ),
-        ),
-    ) { page ->
-        val frame = state.frameForGroup(page) ?: return@HorizontalPager
-
-        Box(
+    Box(modifier = modifier) {
+        HorizontalPager(
+            state = pagerState,
+            key = { state.groups[it].key },
             modifier = Modifier
                 .fillMaxSize()
-                .graphicsLayer {
-                    alpha = lerp(MIN_PAGE_ALPHA, 1F, pagerState.pageVisibility(page))
-                },
-        ) {
-            content(frame, page == state.groupIndex)
+                .nestedScroll(
+                    rememberEdgeSwipeConnection(
+                        onSwipePastStart = onPreviousGroup,
+                        onSwipePastEnd = onNextGroup,
+                    ),
+                ),
+        ) { page ->
+            val frame = state.frameForGroup(page) ?: return@HorizontalPager
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        alpha = lerp(MIN_PAGE_ALPHA, 1F, pagerState.pageVisibility(page))
+                    },
+            ) {
+                content(frame, page == state.groupIndex)
+            }
+        }
+
+        // A touch on a settling pager would grab it and stop the slide. This layer takes those
+        // touches instead, so stories can be tapped or swiped through in quick succession.
+        if (isSettling || isSkipPressed) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .skipGestures(
+                        onPressedChange = { isSkipPressed = it },
+                        onNext = onNext,
+                        onPrevious = onPrevious,
+                        onNextGroup = onNextGroup,
+                        onPreviousGroup = onPreviousGroup,
+                    ),
+            )
+        }
+    }
+}
+
+/** Taps step by half of the screen, swipes jump a whole story. */
+@Composable
+private fun Modifier.skipGestures(
+    onPressedChange: (Boolean) -> Unit,
+    onNext: () -> Unit,
+    onPrevious: () -> Unit,
+    onNextGroup: () -> Unit,
+    onPreviousGroup: () -> Unit,
+): Modifier {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    val pressedChange by rememberUpdatedState(onPressedChange)
+    val next by rememberUpdatedState(onNext)
+    val previous by rememberUpdatedState(onPrevious)
+    val nextGroup by rememberUpdatedState(onNextGroup)
+    val previousGroup by rememberUpdatedState(onPreviousGroup)
+
+    return pointerInput(isRtl) {
+        awaitEachGesture {
+            val down = awaitFirstDown()
+            down.consume()
+            pressedChange(true)
+
+            try {
+                var distance: Float
+                do {
+                    val change = awaitPointerEvent().changes.firstOrNull { it.id == down.id } ?: return@awaitEachGesture
+                    change.consume()
+                    distance = change.position.x - down.position.x
+                } while (change.pressed)
+
+                if (abs(distance) > viewConfiguration.touchSlop) {
+                    val towardsStart = (distance > 0) != isRtl
+                    if (towardsStart) previousGroup() else nextGroup()
+                    return@awaitEachGesture
+                }
+
+                val isStart = (down.position.x < size.width / 2) != isRtl
+                if (isStart) previous() else next()
+            } finally {
+                pressedChange(false)
+            }
         }
     }
 }
