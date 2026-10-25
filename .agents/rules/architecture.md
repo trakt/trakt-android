@@ -168,6 +168,12 @@ NavHost(navController, startDestination = HomeRoute) {
 ```
 
 - **No string routes.** Typed routes only for new screens.
+- **Annotate every enum used as a route argument with `@Keep`** (`androidx.annotation.Keep`),
+  directly on the enum class. Navigation resolves enum args by class name via reflection; R8
+  strips or renames an unkept enum and release builds crash on `NavHost` setup with
+  `Cannot find class with name "..."`. Debug builds are not minified, so the crash only shows
+  in release. Do not rely on package-wide `-keep` rules in `proguard-rules.pro`: they break
+  silently when the enum moves package. Applies to enums nested in route data classes too.
 - **No global navigator singleton.** Pass `navController` callbacks down as lambdas (`onMovieClick: (Long) -> Unit`) so feature composables stay framework-agnostic.
 - **Feature-local `NavGraphBuilder` extensions** expose feature destinations:
 
