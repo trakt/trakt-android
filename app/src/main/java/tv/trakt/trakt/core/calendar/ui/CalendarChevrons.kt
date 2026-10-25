@@ -26,7 +26,7 @@ internal fun CalendarChevrons(
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(16.dp),
+        horizontalArrangement = spacedBy(17.dp),
         modifier = modifier.offset(x = GlyphEdgeOffset),
     ) {
         Icon(
