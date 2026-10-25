@@ -1,5 +1,8 @@
 package tv.trakt.trakt.core.calendar.model
 
+import androidx.annotation.Keep
+
+@Keep
 internal enum class CalendarSource(
     val analyticsSource: String,
     val screenName: String?,
