@@ -1,5 +1,23 @@
 [
   {
+    "id": 29,
+    "version": "3.25.0",
+    "notes": [
+      {
+        "title": "Monthly Calendar",
+        "text": "Switch the calendar to a monthly view with the toggle at the top. Tap any day to see what's releasing."
+      },
+      {
+        "title": "UI Refresh",
+        "text": "The app has a fresh new look with updated colors, icons and typography!"
+      },
+      {
+        "title": "Month in Review",
+        "text": "VIP members get a recap of last month on Home during the first week of each month. Tap it to see your stats."
+      }
+    ]
+  },
+  {
     "id": 28,
     "version": "3.24.1",
     "notes": [
