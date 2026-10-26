@@ -7,17 +7,20 @@ import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.usecase.RevokeTokenUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 
 internal class LogoutProfileUseCase(
     private val apiClients: Array<ApiClient>,
     private val sessionManager: SessionManager,
+    private val revokeTokenUseCase: RevokeTokenUseCase,
     private val showsSyncLocalSource: ShowsSyncLocalSource,
     private val moviesSyncLocalSource: MoviesSyncLocalSource,
     private val episodesSyncLocalSource: EpisodesSyncLocalSource,
     private val analytics: Analytics,
 ) {
     suspend fun logoutUser() {
+        revokeTokenUseCase.revokeToken()
         sessionManager.clear()
         analytics.setUserId(null)
         analytics.setUserProperty("vip", null)

@@ -9,6 +9,7 @@ import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.usecase.RevokeTokenUseCase
 import tv.trakt.trakt.common.data.local.HomeSocialLocalSource
 import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
 import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
@@ -51,6 +52,7 @@ import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 internal class LogoutUserUseCase(
     private val appContext: Context,
     private val sessionManager: SessionManager,
+    private val revokeTokenUseCase: RevokeTokenUseCase,
     private val authPreferences: DataStore<Preferences>,
     private val collapsingManager: CollapsingManager,
     private val checkInManager: CheckInManager,
@@ -90,6 +92,7 @@ internal class LogoutUserUseCase(
     private val analytics: Analytics,
 ) {
     suspend fun logoutUser() {
+        revokeTokenUseCase.revokeToken()
         sessionManager.clear()
         authPreferences.edit { it[forceLoginKey] = true }
         collapsingManager.clear()

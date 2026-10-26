@@ -133,6 +133,7 @@ internal val profileModule = module {
         LogoutUserUseCase(
             appContext = androidApplication(),
             sessionManager = get(),
+            revokeTokenUseCase = get(),
             authPreferences = get(named(AUTH_PREFERENCES)),
             collapsingManager = get(),
             checkInManager = get(),

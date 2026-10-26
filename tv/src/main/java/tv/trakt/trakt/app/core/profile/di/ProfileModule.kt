@@ -27,6 +27,7 @@ internal val profileModule = module {
         LogoutProfileUseCase(
             apiClients = get(named("apiClients")),
             sessionManager = get(),
+            revokeTokenUseCase = get(),
             analytics = get(),
             showsSyncLocalSource = get(),
             moviesSyncLocalSource = get(),
