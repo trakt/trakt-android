@@ -32,6 +32,11 @@ internal class AuthBrowser(
     private val browserPackage: String?
         get() = CustomTabsClient.getPackageName(activity, null)
 
+    fun supportsAuthTab(): Boolean {
+        val browser = browserPackage ?: return false
+        return CustomTabsClient.isAuthTabSupported(activity, browser)
+    }
+
     fun open(
         url: Uri,
         redirectUri: String,

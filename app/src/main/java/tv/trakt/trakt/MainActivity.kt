@@ -256,7 +256,9 @@ internal class MainActivity : AppCompatActivity() {
 
     private fun openAuthorization(allowHttpsRedirect: Boolean = true) {
         lifecycleScope.launch {
-            val redirectUri = authRedirectUri(allowHttpsRedirect)
+            val redirectUri = authRedirectUri(
+                httpsSupported = allowHttpsRedirect && authBrowser.supportsAuthTab(),
+            )
             val forceLogin = authPreferences.data.first()[forceLoginKey] == true
             val codeVerifier = Pkce.generateCodeVerifier()
             authPreferences.edit { it[codeVerifierKey] = codeVerifier }
@@ -271,9 +273,13 @@ internal class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun authRedirectUri(allowHttpsRedirect: Boolean): String {
+    /**
+     * The https redirect is only used through an Auth Tab. A regular browser often fails to hand
+     * the final redirect off to the app, leaving the user on the web handoff page.
+     */
+    private fun authRedirectUri(httpsSupported: Boolean): String {
         return when {
-            allowHttpsRedirect && Firebase.remoteConfig.getBoolean(MOBILE_HTTPS_AUTH_CALLBACK_ENABLED) -> {
+            httpsSupported && Firebase.remoteConfig.getBoolean(MOBILE_HTTPS_AUTH_CALLBACK_ENABLED) -> {
                 OAUTH_HTTPS_REDIRECT_URI
             }
             else -> {
