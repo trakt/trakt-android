@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.work.WorkManager
 import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.auth.usecase.RevokeTokenUseCase
@@ -92,60 +94,63 @@ internal class LogoutUserUseCase(
     private val analytics: Analytics,
 ) {
     suspend fun logoutUser() {
-        revokeTokenUseCase.revokeToken()
-        sessionManager.clear()
-        authPreferences.edit { it[forceLoginKey] = true }
-        collapsingManager.clear()
-        checkInManager.stop(context = appContext)
+        // Local sign-out must finish even when the screen that started it goes away.
+        withContext(NonCancellable) {
+            revokeTokenUseCase.revokeToken()
+            sessionManager.clear()
+            authPreferences.edit { it[forceLoginKey] = true }
+            collapsingManager.clear()
+            checkInManager.stop(context = appContext)
 
-        apiClients
-            .forEach { api ->
-                api.client.authProvider<BearerAuthProvider>()?.clearToken()
-            }.also {
-                younifyRemoteSource.clear()
-                billingRemoteSource.clear()
-            }
+            apiClients
+                .forEach { api ->
+                    api.client.authProvider<BearerAuthProvider>()?.clearToken()
+                }.also {
+                    younifyRemoteSource.clear()
+                    billingRemoteSource.clear()
+                }
 
-        localUpNext.clear()
-        localWatchlistUpNext.clear()
-        localUpcoming.clear()
-        localSocial.clear()
-        localPersonal.clear()
-        localToday.clear()
-        localTodaySeen.clear()
-        localListsPersonal.clear()
-        localListsLiked.clear()
-        localListsCollab.clear()
-        localUserProgress.clear()
-        localUserWatchlist.clear()
-        localUserWatchlistMin.clear()
-        localUserLists.clear()
-        localUserLikedLists.clear()
-        localUserFavorites.clear()
-        localUserLibrary.clear()
-        localUserReactions.clear()
-        localUserMediaReactions.clear()
-        localUserRatings.clear()
-        localProfileCompleted.clear()
-        localProfileWatching.clear()
-        localProfileDropped.clear()
-        localScreenTime.clear()
-        localLeaderboard.clear()
-        localProfileRatings.clear()
-        localProfileComments.clear()
+            localUpNext.clear()
+            localWatchlistUpNext.clear()
+            localUpcoming.clear()
+            localSocial.clear()
+            localPersonal.clear()
+            localToday.clear()
+            localTodaySeen.clear()
+            localListsPersonal.clear()
+            localListsLiked.clear()
+            localListsCollab.clear()
+            localUserProgress.clear()
+            localUserWatchlist.clear()
+            localUserWatchlistMin.clear()
+            localUserLists.clear()
+            localUserLikedLists.clear()
+            localUserFavorites.clear()
+            localUserLibrary.clear()
+            localUserReactions.clear()
+            localUserMediaReactions.clear()
+            localUserRatings.clear()
+            localProfileCompleted.clear()
+            localProfileWatching.clear()
+            localProfileDropped.clear()
+            localScreenTime.clear()
+            localLeaderboard.clear()
+            localProfileRatings.clear()
+            localProfileComments.clear()
 
-        localRecommendedShows.clear()
-        localRecommendedMovies.clear()
+            localRecommendedShows.clear()
+            localRecommendedMovies.clear()
 
-        appReviewUseCase.clear()
+            appReviewUseCase.clear()
 
-        ScheduleNotificationsWorker.clear(appContext)
-        ScheduleMonthReviewNotificationWorker.clear(appContext)
+            ScheduleNotificationsWorker.clear(appContext)
+            ScheduleMonthReviewNotificationWorker.clear(appContext)
 
-        WorkManager.getInstance(appContext).cancelAllWork()
+            WorkManager.getInstance(appContext).cancelAllWork()
 
-        analytics.setUserId(null)
-        analytics.setUserProperty("vip", null)
-        analytics.setUserProperty("director", null)
+            analytics.setUserId(null)
+            analytics.setUserProperty("vip", null)
+            analytics.setUserProperty("director", null)
+        }
     }
 }

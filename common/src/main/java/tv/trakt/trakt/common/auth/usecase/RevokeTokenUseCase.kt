@@ -1,17 +1,20 @@
 package tv.trakt.trakt.common.auth.usecase
 
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.data.remote.AuthRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import kotlin.time.Duration.Companion.seconds
 
-private const val MAX_ATTEMPTS = 3
+private val RevokeTimeout = 15.seconds
 
 /**
- * Revokes the stored access token on the server before a local sign-out. Failures are logged
- * and swallowed, so a server that keeps refusing never blocks the user from signing out.
+ * Revokes the stored access token on the server before a local sign-out. Retries come from the
+ * shared HTTP client. The call is bounded and survives the caller's cancellation, and failures
+ * are only logged, so the local sign-out that follows always runs.
  */
 class RevokeTokenUseCase(
     private val tokenProvider: TokenProvider,
@@ -21,19 +24,16 @@ class RevokeTokenUseCase(
         val token = tokenProvider.getToken()?.accessToken
         if (token.isNullOrBlank()) return
 
-        repeat(MAX_ATTEMPTS) { attempt ->
-            try {
-                authRemoteSource.revokeToken(token)
-                return
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.w(error, "Failed to revoke token, attempt %d", attempt + 1)
+        withContext(NonCancellable) {
+            withTimeoutOrNull(RevokeTimeout) {
+                try {
+                    authRemoteSource.revokeToken(token)
+                } catch (error: Exception) {
+                    error.rethrowCancellation {
+                        Timber.w(error, "Failed to revoke token")
+                    }
                 }
-            }
-
-            if (attempt < MAX_ATTEMPTS - 1) {
-                delay((1L shl attempt).seconds)
-            }
+            } ?: Timber.w("Token revoke timed out")
         }
     }
 }

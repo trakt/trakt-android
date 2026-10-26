@@ -2,6 +2,8 @@ package tv.trakt.trakt.app.core.profile.usecases
 
 import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
@@ -20,18 +22,21 @@ internal class LogoutProfileUseCase(
     private val analytics: Analytics,
 ) {
     suspend fun logoutUser() {
-        revokeTokenUseCase.revokeToken()
-        sessionManager.clear()
-        analytics.setUserId(null)
-        analytics.setUserProperty("vip", null)
+        // Local sign-out must finish even when the screen that started it goes away.
+        withContext(NonCancellable) {
+            revokeTokenUseCase.revokeToken()
+            sessionManager.clear()
+            analytics.setUserId(null)
+            analytics.setUserProperty("vip", null)
 
-        apiClients
-            .forEach { api ->
-                api.client.authProvider<BearerAuthProvider>()?.clearToken()
-            }
+            apiClients
+                .forEach { api ->
+                    api.client.authProvider<BearerAuthProvider>()?.clearToken()
+                }
 
-        showsSyncLocalSource.clear()
-        moviesSyncLocalSource.clear()
-        episodesSyncLocalSource.clear()
+            showsSyncLocalSource.clear()
+            moviesSyncLocalSource.clear()
+            episodesSyncLocalSource.clear()
+        }
     }
 }
