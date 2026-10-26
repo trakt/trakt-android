@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.profile.di
 
 import androidx.lifecycle.SavedStateHandle
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -25,9 +26,10 @@ import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 internal val profileModule = module {
     factory {
         LogoutProfileUseCase(
+            appContext = androidApplication(),
             apiClients = get(named("apiClients")),
             sessionManager = get(),
-            revokeTokenUseCase = get(),
+            tokenProvider = get(),
             analytics = get(),
             showsSyncLocalSource = get(),
             moviesSyncLocalSource = get(),

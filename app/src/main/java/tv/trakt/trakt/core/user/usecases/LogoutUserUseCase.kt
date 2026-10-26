@@ -7,11 +7,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.work.WorkManager
 import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.withContext
 import org.openapitools.client.infrastructure.ApiClient
+import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.auth.usecase.RevokeTokenUseCase
+import tv.trakt.trakt.common.auth.work.RevokeTokenWorker
 import tv.trakt.trakt.common.data.local.HomeSocialLocalSource
 import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
 import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
@@ -54,7 +53,7 @@ import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 internal class LogoutUserUseCase(
     private val appContext: Context,
     private val sessionManager: SessionManager,
-    private val revokeTokenUseCase: RevokeTokenUseCase,
+    private val tokenProvider: TokenProvider,
     private val authPreferences: DataStore<Preferences>,
     private val collapsingManager: CollapsingManager,
     private val checkInManager: CheckInManager,
@@ -94,63 +93,65 @@ internal class LogoutUserUseCase(
     private val analytics: Analytics,
 ) {
     suspend fun logoutUser() {
-        // Local sign-out must finish even when the screen that started it goes away.
-        withContext(NonCancellable) {
-            revokeTokenUseCase.revokeToken()
-            sessionManager.clear()
-            authPreferences.edit { it[forceLoginKey] = true }
-            collapsingManager.clear()
-            checkInManager.stop(context = appContext)
+        val accessToken = tokenProvider.getToken()?.accessToken
 
-            apiClients
-                .forEach { api ->
-                    api.client.authProvider<BearerAuthProvider>()?.clearToken()
-                }.also {
-                    younifyRemoteSource.clear()
-                    billingRemoteSource.clear()
-                }
+        sessionManager.clear()
+        authPreferences.edit { it[forceLoginKey] = true }
+        collapsingManager.clear()
+        checkInManager.stop(context = appContext)
 
-            localUpNext.clear()
-            localWatchlistUpNext.clear()
-            localUpcoming.clear()
-            localSocial.clear()
-            localPersonal.clear()
-            localToday.clear()
-            localTodaySeen.clear()
-            localListsPersonal.clear()
-            localListsLiked.clear()
-            localListsCollab.clear()
-            localUserProgress.clear()
-            localUserWatchlist.clear()
-            localUserWatchlistMin.clear()
-            localUserLists.clear()
-            localUserLikedLists.clear()
-            localUserFavorites.clear()
-            localUserLibrary.clear()
-            localUserReactions.clear()
-            localUserMediaReactions.clear()
-            localUserRatings.clear()
-            localProfileCompleted.clear()
-            localProfileWatching.clear()
-            localProfileDropped.clear()
-            localScreenTime.clear()
-            localLeaderboard.clear()
-            localProfileRatings.clear()
-            localProfileComments.clear()
+        apiClients
+            .forEach { api ->
+                api.client.authProvider<BearerAuthProvider>()?.clearToken()
+            }.also {
+                younifyRemoteSource.clear()
+                billingRemoteSource.clear()
+            }
 
-            localRecommendedShows.clear()
-            localRecommendedMovies.clear()
+        localUpNext.clear()
+        localWatchlistUpNext.clear()
+        localUpcoming.clear()
+        localSocial.clear()
+        localPersonal.clear()
+        localToday.clear()
+        localTodaySeen.clear()
+        localListsPersonal.clear()
+        localListsLiked.clear()
+        localListsCollab.clear()
+        localUserProgress.clear()
+        localUserWatchlist.clear()
+        localUserWatchlistMin.clear()
+        localUserLists.clear()
+        localUserLikedLists.clear()
+        localUserFavorites.clear()
+        localUserLibrary.clear()
+        localUserReactions.clear()
+        localUserMediaReactions.clear()
+        localUserRatings.clear()
+        localProfileCompleted.clear()
+        localProfileWatching.clear()
+        localProfileDropped.clear()
+        localScreenTime.clear()
+        localLeaderboard.clear()
+        localProfileRatings.clear()
+        localProfileComments.clear()
 
-            appReviewUseCase.clear()
+        localRecommendedShows.clear()
+        localRecommendedMovies.clear()
 
-            ScheduleNotificationsWorker.clear(appContext)
-            ScheduleMonthReviewNotificationWorker.clear(appContext)
+        appReviewUseCase.clear()
 
-            WorkManager.getInstance(appContext).cancelAllWork()
+        ScheduleNotificationsWorker.clear(appContext)
+        ScheduleMonthReviewNotificationWorker.clear(appContext)
 
-            analytics.setUserId(null)
-            analytics.setUserProperty("vip", null)
-            analytics.setUserProperty("director", null)
+        WorkManager.getInstance(appContext).cancelAllWork()
+
+        if (!accessToken.isNullOrBlank()) {
+            RevokeTokenWorker.schedule(appContext, accessToken)
         }
+
+        analytics.setUserId(null)
+        analytics.setUserProperty("vip", null)
+        analytics.setUserProperty("director", null)
     }
 }
