@@ -19,8 +19,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -31,20 +29,15 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun DetailsYouTubeSpecialItem(
     special: YouTubeSpecial,
+    modifier: Modifier = Modifier,
     onClick: (YouTubeSpecial) -> Unit,
 ) {
     val itemShape = RoundedCornerShape(16.dp)
-    val description = stringResource(
-        when {
-            special.isOfficial -> R.string.button_label_watch_official_upload_on_youtube
-            else -> R.string.button_label_watch_fan_upload_on_youtube
-        },
-    )
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(4.dp, CenterVertically),
-        modifier = Modifier
+        modifier = modifier
             .height(86.dp)
             .shadow(
                 elevation = TraktTheme.colors.shadowDynamicDefault,
@@ -59,7 +52,6 @@ internal fun DetailsYouTubeSpecialItem(
                 },
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .semantics { contentDescription = description }
             .onClick { onClick(special) },
     ) {
         Box(

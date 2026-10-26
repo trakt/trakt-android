@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.summary.movies.features.streaming
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -66,7 +65,8 @@ internal class MovieStreamingsViewModel(
                     return@launch
                 }
 
-                val youTubeSpecialAsync = async { loadYouTubeSpecial() }
+                loadYouTubeSpecial()
+
                 val items = getStreamingsUseCase.getStreamings(
                     user = user,
                     request = StreamingsRequest(
@@ -76,7 +76,6 @@ internal class MovieStreamingsViewModel(
                 )
 
                 itemsState.update { items }
-                youTubeSpecialState.update { youTubeSpecialAsync.await() }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -88,23 +87,25 @@ internal class MovieStreamingsViewModel(
         }
     }
 
-    private suspend fun loadYouTubeSpecial(): YouTubeSpecial? {
+    private fun loadYouTubeSpecial() {
         if (MediaGenre.Comedy !in movie.genres) {
-            return null
+            return
         }
 
-        return try {
-            moviesRemoteSource
-                .getYouTubeSpecial(
-                    movieId = movie.ids.trakt,
-                    locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
-                )
-                ?.let(YouTubeSpecial::fromDto)
-        } catch (error: Exception) {
-            error.rethrowCancellation {
-                Timber.recordError(error)
+        viewModelScope.launch {
+            try {
+                val special = moviesRemoteSource
+                    .getYouTubeSpecial(
+                        movieId = movie.ids.trakt,
+                        locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
+                    )
+                    ?.let(YouTubeSpecial::fromDto)
+                youTubeSpecialState.update { special }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
-            null
         }
     }
 

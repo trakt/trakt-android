@@ -5,7 +5,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3YouTubeSpecialResponse
 
 /**
  * A free YouTube upload of a stand-up special, published by the comedian or their label
- * (official) or by someone else (fan upload).
+ * (official) or by someone else (fan upload). The API omits the source for official uploads.
  */
 @Immutable
 data class YouTubeSpecial(
@@ -19,8 +19,10 @@ data class YouTubeSpecial(
         fun fromDto(dto: V3YouTubeSpecialResponse): YouTubeSpecial {
             return YouTubeSpecial(
                 videoId = dto.videoId,
-                isOfficial = dto.source != "unofficial",
+                isOfficial = dto.source == null || dto.source == OFFICIAL_SOURCE,
             )
         }
     }
 }
+
+private const val OFFICIAL_SOURCE = "official"
