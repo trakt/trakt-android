@@ -346,6 +346,7 @@ private fun ContentList(
                     order = listSorting.order,
                     height = 32.dp,
                     enabled = !loading,
+                    orderEnabled = !listSorting.isDefault,
                     onLeadingClick = onSortTypeClick,
                     onTrailingClick = onSortOrderClick,
                 )
