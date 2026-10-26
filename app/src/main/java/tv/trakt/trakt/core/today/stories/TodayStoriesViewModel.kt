@@ -94,7 +94,7 @@ internal class TodayStoriesViewModel(
                 val seenAt = seenSource.observeSeen().first()
                 startTracking(hasUnseen = groups.any { !it.isSeen(seenAt) })
                 enterGroup(group)
-                markSeen(group.key)
+                markAllSeen(groups)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -184,7 +184,6 @@ internal class TodayStoriesViewModel(
             )
         }
         enterGroup(group)
-        markSeen(group.key)
     }
 
     private fun startTracking(hasUnseen: Boolean) {
@@ -228,10 +227,10 @@ internal class TodayStoriesViewModel(
         super.onCleared()
     }
 
-    private fun markSeen(key: String) {
+    private fun markAllSeen(groups: List<TodayStoryGroup>) {
         viewModelScope.launch {
             try {
-                seenSource.markSeen(keys = listOf(key), seenAt = nowUtcInstant())
+                seenSource.markSeen(keys = groups.map { it.key }, seenAt = nowUtcInstant())
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
