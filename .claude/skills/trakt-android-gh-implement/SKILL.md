@@ -1,6 +1,6 @@
 ---
 name: trakt-android-gh-implement
-description: Implement trakt-android GitHub issues one by one - ask which issues and the end state (local branches, draft PRs or ready-for-review PRs), move them to In Progress on the trakt Product board, assess each issue against trakt-web and the Android code, implement, verify, commit, optionally open PRs and handle up to 3 Codex review cycles on them. Trigger: /trakt-android-gh-implement, "implement issues", "work on #499 #484", "take care of these issues".
+description: Implement trakt-android GitHub issues one by one - ask which issues and the end state (local branches, draft PRs or ready-for-review PRs), move them to In Progress on the trakt Product board, assess each issue against trakt-web and the Android code, implement each in a fresh subagent, verify, commit, optionally open PRs and handle up to 3 Codex review cycles on them. Trigger: /trakt-android-gh-implement, "implement issues", "work on #499 #484", "take care of these issues".
 ---
 
 # Implement issues
@@ -67,14 +67,50 @@ Keep raw dumps in the session scratchpad directory, referred to below as `$S`.
    If it is not found, ask the user for the path. Shell variables do not persist between calls, so
    use the printed absolute path in later commands.
 
-## Step 3 - Per issue, in the order given
+## Step 3 - Per issue, one fresh subagent each
 
-Finish one issue completely before starting the next. Before each new branch, repeat the pull and the `HEAD` = `FETCH_HEAD` check from step 2, so every branch starts from the latest `main`.
+Each issue runs in its own subagent, so every issue starts with an empty context and earlier
+issues do not crowd it. Running this skill is the explicit request for subagents that `CLAUDE.md`
+asks for. Rules:
 
-1. **Start the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/startN.txt"` before any other
-   work on the issue. Step 12 stops it in `$S/endN.txt`. Each issue gets its own window, so the
-   effort report counts only that issue: reading, assessment and build work. Never work on two
-   issues inside one window.
+- One subagent per issue, in the order given. Never run two at once.
+- The subagent spawns no agents of its own.
+- The main thread does not redo or re-check the subagent's work. It only keeps the returned summary.
+
+Main thread, per issue:
+
+1. **Start the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/startN.txt"` right before
+   spawning. Each issue gets its own window, so the effort report counts only that issue. The
+   subagent transcript is counted too: `session_usage.py` reads the session's `subagents/` folder.
+2. **Spawn the subagent** with the Agent tool, `subagent_type: "general-purpose"`, and this prompt
+   with the placeholders filled in:
+   ```
+   Implement trakt-android issue #N. Read .claude/skills/trakt-android-gh-implement/SKILL.md and
+   follow its "Issue steps" section exactly. Read the baseline rules CLAUDE.md lists first.
+
+   - End state: <local branch | draft PR | ready-for-review PR>
+   - Scratchpad S: <absolute $S path>
+   - Web repo WEB: <absolute trakt-web path>
+   - Effort window start: <contents of $S/startN.txt>
+
+   Do not spawn agents. Do not touch other issues or the board. Do not monitor Codex reviews.
+   When done, reply with: branch, PR URL or "none", what changed in plain words, what was already
+   in place, deviations from web, tracking decision and event names, compile and ktlint results,
+   blockers, and the effort JSON line if one was produced.
+   ```
+3. **Wait for it.** Do not start the next issue until it returns.
+4. **Stop the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/endN.txt"`. Save the returned
+   summary to `$S/resultN.md` for step 5.
+5. **Check the tree.** `git status --short` must be empty and the branch must be `main`. If not,
+   stop and ask before the next issue. If the subagent reported a blocker, note it and continue.
+
+### Issue steps
+
+The subagent runs these for its one issue. `$S`, `$WEB`, the end state and the effort window start
+come from the prompt.
+
+1. **Fresh `main`.** Repeat the pull and the `HEAD` = `FETCH_HEAD` check from step 2, so the branch
+   starts from the latest `main`. Stop and report if it fails.
 2. **Read the issue.** `gh issue view N -R trakt/trakt-android --json title,body,labels,comments > "$S/iN.json"`. Read comments too: maintainers often extend the scope there (for example a follow-up web PR).
 3. **Read the web source.** For each `trakt-web#N` or `trakt-web/pull/N` link, read `gh pr view N -R trakt/trakt-web --json title,body,files` and the relevant part of `gh pr diff`. Then read the current web files, not only the diff, because later PRs may have changed them. Match web logic, ordering and edge cases.
 4. **Assess against Android.** Check every claim in the issue against current Android code. Issues often list items that already exist. Note those for the PR body instead of re-implementing them.
@@ -99,7 +135,7 @@ Finish one issue completely before starting the next. Before each new branch, re
 10. **Commit.** Follow `commits.md`: Conventional Commits, body explains why, `Refs: #N` footer, no
    AI attribution, no em-dashes.
 11. **End state.**
-   - Local branches only: stop here, `git checkout main`.
+   - Local branches only: skip to step 12.
    - PRs: push with
      `git -c credential.helper='!gh auth git-credential' push -q https://github.com/trakt/trakt-android.git <branch>`,
      then
@@ -115,14 +151,13 @@ Finish one issue completely before starting the next. Before each new branch, re
      ```bash
      SID=$(basename "$(dirname "$S")")
      T=$(ls ~/.claude/projects/*/"$SID".jsonl | head -1)
-     python3 .claude/skills/trakt-android-gh-implement/scripts/session_usage.py --since "$(cat "$S/startN.txt")" --session "$T"
+     python3 .claude/skills/trakt-android-gh-implement/scripts/session_usage.py --since "<effort window start>" --session "$T"
      ```
      It prints one JSON line with tokens per model, subagents included. Append one line at the very
      end of the PR body, after the `Closes` line:
      `<!-- convergence-run {"web_pr": <first linked trakt-web PR number or null>, "issue": "trakt-android#N", "client": "android", "lead_model": "<model id>", "subagents": <its "subagents">, "started": "<start time>", "pr_opened": "<now, UTC>", "tokens": <its "tokens">, "tokens_by_model": <its "models">} -->`
      A daily job reads this block to measure how long ports take. When the script prints `"tokens": null`, write `null`. Never estimate.
-12. **Stop the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/endN.txt"`, then `git checkout main`
-    and continue with the next issue.
+12. **Back to `main`.** `git checkout main`, then reply with the summary the prompt asks for.
 
 ## Step 4 - Monitor Codex reviews
 
@@ -154,8 +189,8 @@ Track per PR: cycle count (starts at 1) and `SINCE`, the UTC time the PR was ope
    `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/codexN-start.txt"`.
 3. **Assess each comment.** Check the claim against the code. Do not accept it blindly. Decide:
    fix, or decline with a concrete reason (wrong, out of scope, or intended behaviour).
-4. **Fix.** On the PR branch: apply the fixes, verify as in step 3.9, commit per `commits.md`
-   (`Refs: #N`), push with the same `push` command as step 3.11. Never force-push for review fixes.
+4. **Fix.** On the PR branch: apply the fixes, verify as in "Issue steps" 9, commit per `commits.md`
+   (`Refs: #N`), push with the same `push` command as "Issue steps" 11. Never force-push for review fixes.
 5. **Reply and resolve every handled thread.** Reply with what changed and the commit SHA, or why it
    was declined, then resolve:
    ```bash
@@ -174,7 +209,7 @@ outside all windows. Run `git checkout main` when done.
 
 ## Step 5 - Report
 
-Lead with the result. Per issue: link (PR or branch name), what changed in plain words, what was already in place, any deviation from web. Then:
+Build it from the `$S/resultN.md` summaries. Lead with the result. Per issue: link (PR or branch name), what changed in plain words, what was already in place, any deviation from web. Then:
 
 - Tracking: events added and whether they mirror web, or why none.
 - Effort: tokens per issue, never one total for the run. PR runs: the numbers from each effort
