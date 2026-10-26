@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsernameSettingsRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3YouTubeSpecialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReaction
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReactionsSummaryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3UserMediaReaction
@@ -149,6 +150,21 @@ class V3Api(
         mediaId: TraktId,
     ): V3ParentalGuideResponse? {
         val response = client.get("${baseV3Url}media/${type.value}/${mediaId.value}/info/16/version/1")
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
+        }
+        return response.body()
+    }
+
+    // YouTube Specials
+
+    suspend fun getMovieYouTubeSpecial(
+        movieId: TraktId,
+        locale: Locale,
+    ): V3YouTubeSpecialResponse? {
+        val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/17/version/1") {
+            parameter("locale", locale.toLanguageTag())
+        }
         if (response.status == HttpStatusCode.NoContent) {
             return null
         }

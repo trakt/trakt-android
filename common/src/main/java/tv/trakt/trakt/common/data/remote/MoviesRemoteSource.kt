@@ -23,8 +23,10 @@ import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3YouTubeSpecialResponse
 import java.time.Instant
 import java.time.temporal.ChronoUnit.DAYS
+import java.util.Locale
 
 class MoviesRemoteSource(
     private val moviesApi: MoviesApi,
@@ -320,6 +322,21 @@ class MoviesRemoteSource(
             v3Api.getMovieSentiment(movieId)
         } catch (error: Exception) {
             // 404 means no sentiment data is available for this movie, so we return null.
+            if (error.getHttpCode() == 404) {
+                return null
+            }
+            throw error
+        }
+    }
+
+    suspend fun getYouTubeSpecial(
+        movieId: TraktId,
+        locale: Locale,
+    ): V3YouTubeSpecialResponse? {
+        return try {
+            v3Api.getMovieYouTubeSpecial(movieId, locale)
+        } catch (error: Exception) {
+            // 404 means the movie has no free YouTube upload.
             if (error.getHttpCode() == 404) {
                 return null
             }
