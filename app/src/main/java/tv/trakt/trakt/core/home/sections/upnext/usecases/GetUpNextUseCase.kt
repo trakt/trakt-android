@@ -20,6 +20,8 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextSorting
+import tv.trakt.trakt.core.home.sections.upnext.model.interleaveUpNext
 
 internal class GetUpNextUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteSource,
@@ -41,16 +43,21 @@ internal class GetUpNextUseCase(
         limit: Int,
         filters: GlobalFilter?,
         skipLocal: Boolean = false,
+        sorting: UpNextSorting = UpNextSorting.Default,
     ): ImmutableList<UpNextItem> {
-        val shows = getRemoteShows(page, limit, filters)
+        val shows = getRemoteShows(page, limit, filters, sorting)
         val movies = getRemoteMovies(page, limit, filters)
 
-        return (shows + movies)
+        val items = when {
+            sorting.isDefault -> (shows + movies).sortedByDescending { it.sortKey }
+            else -> interleaveUpNext(shows, movies, sorting)
+        }
+
+        return items
             .distinctBy { it.key }
-            .sortedByDescending { it.sortKey }
             .toImmutableList()
             .also {
-                if (!skipLocal) {
+                if (!skipLocal && sorting.isDefault) {
                     when (page) {
                         1 -> localDataSource.setItems(items = it)
                         else -> localDataSource.addItems(items = it)
@@ -71,13 +78,14 @@ internal class GetUpNextUseCase(
         page: Int,
         limit: Int,
         filters: GlobalFilter?,
+        sorting: UpNextSorting,
     ): List<UpNextShow> {
         val remoteItems = remoteShowsSyncSource.getUpNext(
             limit = limit,
             page = page,
             intent = "continue",
-            sortHow = null,
-            sortBy = null,
+            sortHow = if (sorting.isDefault) null else sorting.order.value,
+            sortBy = sorting.type.apiValue,
             filters = filters,
         )
 

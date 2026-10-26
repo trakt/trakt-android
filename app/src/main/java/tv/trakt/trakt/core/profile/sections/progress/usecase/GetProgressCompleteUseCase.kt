@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalSource
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
 
 internal class GetProgressCompleteUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteSource,
@@ -27,22 +28,29 @@ internal class GetProgressCompleteUseCase(
     suspend fun getCompleted(
         page: Int,
         limit: Int,
+        sorting: ProgressSorting = ProgressSorting.Default,
     ): ImmutableList<ProfileProgressItem> {
         val remoteItems = remoteShowsSyncSource.getUpNext(
             limit = limit,
             page = page,
             intent = "completed",
-            sortHow = null,
-            sortBy = null,
+            sortHow = if (sorting.isDefault) null else sorting.order.value,
+            sortBy = sorting.type.apiValue,
             filters = null,
         )
 
-        return remoteItems
+        val items = remoteItems
             .asyncMap {
                 ProfileProgressItem.ShowItem(
                     show = Show.fromDto(it.show),
                 )
             }
+
+        if (!sorting.isDefault) {
+            return items.toImmutableList()
+        }
+
+        return items
             .also {
                 when (page) {
                     1 -> localDataSource.setItems(it)

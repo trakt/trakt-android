@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.profile.sections.progress.all
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,9 +30,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -50,12 +53,16 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.all.views.AllProgressShowView
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSortType
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
 import tv.trakt.trakt.core.profile.sections.progress.views.ProgressFilters
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
+import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -67,6 +74,8 @@ internal fun AllProgressScreen(
 ) {
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var sortSheet by remember { mutableStateOf<ProgressSorting?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -89,7 +98,22 @@ internal fun AllProgressScreen(
             }
         },
         onFilterClick = { viewModel.setFilter(it) },
+        onSortTypeClick = { sortSheet = state.sorting },
+        onSortOrderClick = {
+            viewModel.setSorting(state.sorting.copy(order = state.sorting.order.toggle()))
+        },
         onBackClick = onNavigateBack,
+    )
+
+    SortSelectionSheet(
+        active = sortSheet != null,
+        selectedType = sortSheet?.type,
+        selectedOrder = sortSheet?.order,
+        typeOptions = remember { ProgressSortType.entries.toImmutableList() },
+        onResult = { type, order ->
+            viewModel.setSorting(ProgressSorting(type = type, order = order))
+        },
+        onDismiss = { sortSheet = null },
     )
 }
 
@@ -100,6 +124,8 @@ internal fun AllProgressContent(
     onLoadMore: () -> Unit = {},
     onClick: (ProfileProgressItem) -> Unit = {},
     onFilterClick: (ProgressFilter) -> Unit = {},
+    onSortTypeClick: () -> Unit = {},
+    onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -136,12 +162,15 @@ internal fun AllProgressContent(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter ?: ProgressFilter.UpToDate,
+            listSorting = state.sorting,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
             onClick = onClick,
             onFilterClick = onFilterClick,
+            onSortTypeClick = onSortTypeClick,
+            onSortOrderClick = onSortOrderClick,
             onBackClick = onBackClick,
         )
 
@@ -191,12 +220,15 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<ProfileProgressItem>,
     listFilter: ProgressFilter,
+    listSorting: ProgressSorting,
     contentPadding: PaddingValues,
     loading: Boolean,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
     onClick: (ProfileProgressItem) -> Unit,
     onFilterClick: (ProgressFilter) -> Unit,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -219,11 +251,28 @@ private fun ContentList(
         modifier = modifier,
     ) {
         item {
-            TitleBar(
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .padding(top = 3.dp)
-                    .onClick { onBackClick() },
-            )
+                    .fillMaxWidth()
+                    .padding(top = 3.dp),
+            ) {
+                TitleBar(
+                    modifier = Modifier.onClick { onBackClick() },
+                )
+
+                if (listFilter != ProgressFilter.Dropped) {
+                    SortingSplitButton(
+                        text = stringResource(listSorting.type.displayStringRes),
+                        order = listSorting.order,
+                        height = 32.dp,
+                        enabled = !loading,
+                        onLeadingClick = onSortTypeClick,
+                        onTrailingClick = onSortOrderClick,
+                    )
+                }
+            }
         }
 
         item {

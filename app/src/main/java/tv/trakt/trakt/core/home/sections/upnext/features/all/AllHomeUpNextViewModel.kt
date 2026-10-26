@@ -44,6 +44,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextSorting
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.resources.R
@@ -68,6 +69,7 @@ internal class AllHomeUpNextViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
     private val filterState = MutableStateFlow(filterManager.getFilter())
+    private val sortingState = MutableStateFlow(initialState.sorting)
     private val userState = MutableStateFlow(initialState.user)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
@@ -154,6 +156,7 @@ internal class AllHomeUpNextViewModel(
                     limit = HOME_ALL_LIMIT,
                     filters = filterState.value,
                     skipLocal = true,
+                    sorting = sortingState.value,
                 ).filter {
                     when (filterState.value.mode) {
                         MediaMode.Shows -> it is UpNextShow
@@ -198,6 +201,7 @@ internal class AllHomeUpNextViewModel(
                     limit = HOME_ALL_LIMIT,
                     filters = filterState.value,
                     skipLocal = true,
+                    sorting = sortingState.value,
                 ).filter {
                     when (filterState.value.mode) {
                         MediaMode.Shows -> it is UpNextShow
@@ -243,6 +247,7 @@ internal class AllHomeUpNextViewModel(
                     limit = HOME_ALL_LIMIT,
                     filters = filterState.value,
                     skipLocal = true,
+                    sorting = sortingState.value,
                 )
 
                 itemsState.update { items ->
@@ -324,6 +329,7 @@ internal class AllHomeUpNextViewModel(
                         limit = HOME_ALL_LIMIT,
                         filters = filterState.value,
                         skipLocal = true,
+                        sorting = sortingState.value,
                     )
                     itemsOrder?.let { order ->
                         items
@@ -387,6 +393,7 @@ internal class AllHomeUpNextViewModel(
                         limit = HOME_ALL_LIMIT,
                         filters = filterState.value,
                         skipLocal = true,
+                        sorting = sortingState.value,
                     )
                     itemsOrder?.let { order ->
                         items
@@ -417,6 +424,18 @@ internal class AllHomeUpNextViewModel(
                 }
             }
         }
+    }
+
+    fun setSorting(newSorting: UpNextSorting) {
+        if (newSorting == sortingState.value) {
+            return
+        }
+        sortingState.update { newSorting }
+        analytics.lists.logListSort(
+            sortBy = newSorting.type.value,
+            sortHow = newSorting.order.value,
+        )
+        loadData()
     }
 
     fun setFilter(newFilter: GlobalFilter) {
@@ -462,6 +481,7 @@ internal class AllHomeUpNextViewModel(
         userState,
         infoState,
         errorState,
+        sortingState,
     ) { state ->
         AllHomeUpNextState(
             items = state[0] as ImmutableList<UpNextShow>?,
@@ -471,6 +491,7 @@ internal class AllHomeUpNextViewModel(
             user = state[4] as User?,
             info = state[5] as StringResource?,
             error = state[6] as Exception?,
+            sorting = state[7] as UpNextSorting,
         )
     }.stateIn(
         scope = viewModelScope,

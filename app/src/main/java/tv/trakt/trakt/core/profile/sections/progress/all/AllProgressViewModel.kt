@@ -21,6 +21,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.ShowLocalSource
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -39,6 +40,7 @@ import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Ended
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.InProgress
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.UpToDate
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressPage
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
 import tv.trakt.trakt.core.profile.sections.progress.model.asPage
 import tv.trakt.trakt.core.profile.sections.progress.model.pageOfEnded
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
@@ -53,12 +55,14 @@ internal class AllProgressViewModel(
     private val getWatchingUseCase: GetProgressWatchingUseCase,
     private val localShowSource: ShowLocalSource,
     private val dataChanges: DataChanges,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllProgressState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
@@ -99,9 +103,10 @@ internal class AllProgressViewModel(
                 }
 
                 itemsState.update {
-                    fetchLocalData(
-                        filter = filterState.value ?: UpToDate,
-                    )
+                    when {
+                        sortingState.value.isDefault -> fetchLocalData(filter = filterState.value ?: UpToDate)
+                        else -> null
+                    }
                 }
 
                 loadingState.update {
@@ -193,19 +198,19 @@ internal class AllProgressViewModel(
         return when (filter) {
             UpToDate -> {
                 getCompletedUseCase
-                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT, sorting = sortingState.value)
                     .pageOfEnded(ended = false)
             }
 
             Ended -> {
                 getCompletedUseCase
-                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT, sorting = sortingState.value)
                     .pageOfEnded(ended = true)
             }
 
             InProgress -> {
                 getWatchingUseCase
-                    .getWatching(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .getWatching(page = page, limit = PROGRESS_PAGE_LIMIT, sorting = sortingState.value)
                     .asPage()
             }
 
@@ -225,6 +230,18 @@ internal class AllProgressViewModel(
             filterState.update { newFilter }
             loadData()
         }
+    }
+
+    fun setSorting(newSorting: ProgressSorting) {
+        if (newSorting == sortingState.value || loadingState.value.isLoading) {
+            return
+        }
+        sortingState.update { newSorting }
+        analytics.lists.logListSort(
+            sortBy = newSorting.type.value,
+            sortHow = newSorting.order.value,
+        )
+        loadData()
     }
 
     fun navigateToShow(show: Show) {
@@ -252,6 +269,7 @@ internal class AllProgressViewModel(
         navigateShow,
         userState,
         errorState,
+        sortingState,
     ) { states ->
         AllProgressState(
             loading = states[0] as LoadingState,
@@ -261,6 +279,7 @@ internal class AllProgressViewModel(
             navigateShow = states[4] as? TraktId,
             user = states[5] as? User,
             error = states[6] as? Exception,
+            sorting = states[7] as ProgressSorting,
         )
     }.stateIn(
         scope = viewModelScope,

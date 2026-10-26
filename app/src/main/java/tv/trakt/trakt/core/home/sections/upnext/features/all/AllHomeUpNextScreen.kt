@@ -63,6 +63,8 @@ import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.upnext.features.all.ui.AllUpNextMovieView
 import tv.trakt.trakt.core.home.sections.upnext.features.all.ui.AllUpNextShowView
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextSortType
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextSorting
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
@@ -70,6 +72,8 @@ import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
+import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
+import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -87,6 +91,7 @@ internal fun AllHomeUpNextScreen(
     var contextSheet by remember { mutableStateOf<UpNextItem?>(null) }
     var dateSheet by remember { mutableStateOf<UpNextShow?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
+    var sortSheet by remember { mutableStateOf<UpNextSorting?>(null) }
 
     LaunchedEffect(state.info) {
         if (state.info != null) {
@@ -106,6 +111,10 @@ internal fun AllHomeUpNextScreen(
         },
         onFiltersClick = {
             filtersSheet = true
+        },
+        onSortTypeClick = { sortSheet = state.sorting },
+        onSortOrderClick = {
+            viewModel.setSorting(state.sorting.copy(order = state.sorting.order.toggle()))
         },
         onClick = {
             if (!it.loading && it is UpNextShow && it.progress.nextEpisode != null) {
@@ -155,6 +164,17 @@ internal fun AllHomeUpNextScreen(
                 is UpNextMovie -> viewModel.removeMovie(it.movie.ids.trakt)
             }
         },
+    )
+
+    SortSelectionSheet(
+        active = sortSheet != null,
+        selectedType = sortSheet?.type,
+        selectedOrder = sortSheet?.order,
+        typeOptions = remember { UpNextSortType.entries.toImmutableList() },
+        onResult = { type, order ->
+            viewModel.setSorting(UpNextSorting(type = type, order = order))
+        },
+        onDismiss = { sortSheet = null },
     )
 
     GlobalFiltersSheet(
@@ -207,6 +227,8 @@ internal fun AllHomeUpNextContent(
     onMovieClick: (UpNextMovie) -> Unit = {},
     onModeClick: (MediaMode) -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onSortTypeClick: () -> Unit = {},
+    onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
 ) {
@@ -245,12 +267,15 @@ internal fun AllHomeUpNextContent(
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listFilter = state.filter,
+            listSorting = state.sorting,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
             onFilterClick = onModeClick,
             onFiltersClick = onFiltersClick,
+            onSortTypeClick = onSortTypeClick,
+            onSortOrderClick = onSortOrderClick,
             onClick = onClick,
             onLongClick = onLongClick,
             onCheckClick = onCheckClick,
@@ -268,12 +293,15 @@ private fun ContentList(
     listItems: ImmutableList<UpNextItem>,
     listState: LazyListState,
     listFilter: GlobalFilter?,
+    listSorting: UpNextSorting,
     contentPadding: PaddingValues,
     loading: Boolean,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
     onFilterClick: (MediaMode) -> Unit,
     onFiltersClick: () -> Unit,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
     onClick: (UpNextItem) -> Unit,
     onLongClick: (UpNextItem) -> Unit,
     onCheckClick: (UpNextItem) -> Unit,
@@ -302,11 +330,26 @@ private fun ContentList(
         modifier = modifier,
     ) {
         item {
-            TitleBar(
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .padding(bottom = 2.dp)
-                    .onClick { onBackClick() },
-            )
+                    .fillMaxWidth()
+                    .padding(bottom = 2.dp),
+            ) {
+                TitleBar(
+                    modifier = Modifier.onClick { onBackClick() },
+                )
+
+                SortingSplitButton(
+                    text = stringResource(listSorting.type.displayStringRes),
+                    order = listSorting.order,
+                    height = 32.dp,
+                    enabled = !loading,
+                    onLeadingClick = onSortTypeClick,
+                    onTrailingClick = onSortOrderClick,
+                )
+            }
         }
 
         if (listFilter != null) {

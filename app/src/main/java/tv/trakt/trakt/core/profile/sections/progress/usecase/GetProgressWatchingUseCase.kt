@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalSource
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
 
 internal class GetProgressWatchingUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteSource,
@@ -24,17 +25,18 @@ internal class GetProgressWatchingUseCase(
     suspend fun getWatching(
         page: Int,
         limit: Int,
+        sorting: ProgressSorting = ProgressSorting.Default,
     ): ImmutableList<ProfileProgressItem> {
         val remoteItems = remoteShowsSyncSource.getUpNext(
             limit = limit,
             page = page,
             intent = "continue",
-            sortBy = "remaining",
-            sortHow = "asc",
+            sortBy = sorting.type.apiValue ?: "remaining",
+            sortHow = if (sorting.isDefault) "asc" else sorting.order.value,
             filters = null,
         )
 
-        return remoteItems
+        val items = remoteItems
             .asyncMap {
                 ProfileProgressItem.ShowItem(
                     show = Show.fromDto(it.show),
@@ -42,6 +44,12 @@ internal class GetProgressWatchingUseCase(
                         .coerceAtLeast(0),
                 )
             }
+
+        if (!sorting.isDefault) {
+            return items.toImmutableList()
+        }
+
+        return items
             .sortedWith(compareBy({ it.remainingEpisodes }, { it.show.title }))
             .also {
                 when (page) {
