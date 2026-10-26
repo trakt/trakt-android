@@ -80,6 +80,7 @@ internal class AllHomeUpNextViewModel(
     private var pages: Int = 1
     private var hasMoreData: Boolean = true
     private var itemsOrder: List<Int>? = null
+    private var loadMoreJob: Job? = null
 
     init {
         loadUser()
@@ -238,7 +239,7 @@ internal class AllHomeUpNextViewModel(
             return
         }
 
-        viewModelScope.launch {
+        loadMoreJob = viewModelScope.launch {
             try {
                 loadingMoreState.update { Loading }
 
@@ -430,6 +431,7 @@ internal class AllHomeUpNextViewModel(
         if (newSorting == sortingState.value) {
             return
         }
+        loadMoreJob?.cancel()
         sortingState.update { newSorting }
         analytics.lists.logListSort(
             sortBy = newSorting.type.value,

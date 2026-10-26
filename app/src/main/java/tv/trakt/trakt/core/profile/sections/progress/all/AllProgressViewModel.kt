@@ -69,6 +69,7 @@ internal class AllProgressViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
+    private var loadMoreJob: Job? = null
 
     private var page: Int = 1
     private var hasMoreData: Boolean = false
@@ -142,7 +143,7 @@ internal class AllProgressViewModel(
         if (itemsState.value.isNullOrEmpty() || !hasMoreData) return
         if (loadingMoreState.value.isLoading || loadingState.value.isLoading) return
 
-        viewModelScope.launch {
+        loadMoreJob = viewModelScope.launch {
             try {
                 loadingMoreState.update { Loading }
 
@@ -236,6 +237,7 @@ internal class AllProgressViewModel(
         if (newSorting == sortingState.value || loadingState.value.isLoading) {
             return
         }
+        loadMoreJob?.cancel()
         sortingState.update { newSorting }
         analytics.lists.logListSort(
             sortBy = newSorting.type.value,
