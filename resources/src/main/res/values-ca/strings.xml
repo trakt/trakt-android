@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Data de renovació</string>
   <string name="header_runtime">Durada</string>
   <string name="header_screen_time">Temps de pantalla</string>
+  <string name="header_seasonal_greeting_christmas">Bon Nadal</string>
   <string name="header_seasonal_greeting_halloween">Feliç Halloween</string>
+  <string name="header_seasonal_greeting_new_year">Feliç Any Nou</string>
   <string name="header_sentiment_aspects">Pros i contres</string>
   <string name="header_sentiment_highlight">Destacat</string>
   <string name="header_sentiment_mixed">Mixt</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Temporada %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Especials</string>
+  <string name="text_seasonal_greeting_christmas">Agafa una manta, t\'esperen seleccions festives a Descobrir.</string>
   <string name="text_seasonal_greeting_halloween">Les nostres seleccions esgarrifoses t\'esperen!</string>
+  <string name="text_seasonal_greeting_new_year">Per un any ple de grans visualitzacions.</string>
   <string name="text_seasonal_greeting_signoff">De part de tot l\'equip de Trakt</string>
   <string name="text_select_searching">Cercant</string>
   <string name="text_selected_from_lists">de %s llistes</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">vistos en els 3 dies posteriors a l\'emissió</string>
   <string name="yir_2026_highlight_premieres">estrenes</string>
   <string name="yir_2026_highlight_ratings">valoracions</string>
+  <string name="yir_2026_highlight_rewatches">revisions</string>
   <string name="yir_2026_highlight_shows">sèries</string>
   <string name="yir_2026_highlight_streak_days">ratxa de dies</string>
   <string name="yir_2026_highlight_top_show_episodes">episodis de la teva sèrie número 1</string>

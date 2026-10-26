@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Yenileme Tarihi</string>
   <string name="header_runtime">Süre</string>
   <string name="header_screen_time">Ekran Süresi</string>
+  <string name="header_seasonal_greeting_christmas">Mutlu Noeller</string>
   <string name="header_seasonal_greeting_halloween">Mutlu Cadılar Bayramı</string>
+  <string name="header_seasonal_greeting_new_year">Mutlu Yıllar</string>
   <string name="header_sentiment_aspects">Artıları ve Eksileri</string>
   <string name="header_sentiment_highlight">Öne Çıkanlar</string>
   <string name="header_sentiment_mixed">Karışık</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Sezon %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Özel Bölümler</string>
+  <string name="text_seasonal_greeting_christmas">Battaniyenizi alın, yılbaşına özel seçkiler Keşfet\'te sizi bekliyor.</string>
   <string name="text_seasonal_greeting_halloween">Ürkütücü seçtiklerimiz seni bekliyor!</string>
+  <string name="text_seasonal_greeting_new_year">Harika seyirlerle dolu bir yıla!</string>
   <string name="text_seasonal_greeting_signoff">Trakt ekibi olarak</string>
   <string name="text_select_searching">Aranıyor</string>
   <string name="text_selected_from_lists">%s listeden</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">yayınlandıktan sonraki 3 gün içinde izlenen</string>
   <string name="yir_2026_highlight_premieres">ilk gösterimler</string>
   <string name="yir_2026_highlight_ratings">derecelendirme</string>
+  <string name="yir_2026_highlight_rewatches">yeniden izleme</string>
   <string name="yir_2026_highlight_shows">dizi</string>
   <string name="yir_2026_highlight_streak_days">günlük seri</string>
   <string name="yir_2026_highlight_top_show_episodes">1 numaralı dizinizin bölümleri</string>

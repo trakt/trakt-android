@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Tanggal Perpanjangan</string>
   <string name="header_runtime">Durasi</string>
   <string name="header_screen_time">Waktu Layar</string>
+  <string name="header_seasonal_greeting_christmas">Selamat Natal</string>
   <string name="header_seasonal_greeting_halloween">Selamat Halloween</string>
+  <string name="header_seasonal_greeting_new_year">Selamat Tahun Baru</string>
   <string name="header_sentiment_aspects">Pro &amp; Kontra</string>
   <string name="header_sentiment_highlight">Sorotan</string>
   <string name="header_sentiment_mixed">Campuran</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Musim %d</string>
   <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Spesial</string>
+  <string name="text_seasonal_greeting_christmas">Ambil selimut, pilihan bertema liburan menanti di Jelajahi.</string>
   <string name="text_seasonal_greeting_halloween">Pilihan horor kami menanti Anda!</string>
+  <string name="text_seasonal_greeting_new_year">Semoga tahun ini penuh dengan tontonan seru.</string>
   <string name="text_seasonal_greeting_signoff">Dari kami semua di Trakt</string>
   <string name="text_select_searching">Mencari</string>
   <string name="text_selected_from_lists">dari %s daftar</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">ditonton dalam 3 hari penayangan</string>
   <string name="yir_2026_highlight_premieres">tayangan perdana</string>
   <string name="yir_2026_highlight_ratings">peringkat</string>
+  <string name="yir_2026_highlight_rewatches">tontonan ulang</string>
   <string name="yir_2026_highlight_shows">acara</string>
   <string name="yir_2026_highlight_streak_days">streak hari</string>
   <string name="yir_2026_highlight_top_show_episodes">episode acara #1 Anda</string>

@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Дата продления</string>
   <string name="header_runtime">Продолжительность</string>
   <string name="header_screen_time">Экранное время</string>
+  <string name="header_seasonal_greeting_christmas">Счастливого Рождества!</string>
   <string name="header_seasonal_greeting_halloween">Счастливого Хэллоуина</string>
+  <string name="header_seasonal_greeting_new_year">С Новым годом!</string>
   <string name="header_sentiment_aspects">Плюсы и минусы</string>
   <string name="header_sentiment_highlight">Основные моменты</string>
   <string name="header_sentiment_mixed">Смешанный</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Сезон %d</string>
   <string name="text_season_number_with_title">%1$d из %2$s</string>
   <string name="text_season_specials">Спецвыпуски</string>
+  <string name="text_seasonal_greeting_christmas">Укутайтесь в плед: праздничные подборки уже ждут вас в разделе «Навигатор».</string>
   <string name="text_seasonal_greeting_halloween">Наши жуткие подборки ждут вас!</string>
+  <string name="text_seasonal_greeting_new_year">Пусть этот год будет полон отличных просмотров!</string>
   <string name="text_seasonal_greeting_signoff">От всех нас в Trakt</string>
   <string name="text_select_searching">Поиск…</string>
   <string name="text_selected_from_lists">из %s списков</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">просмотрено в течение 3 дней после выхода в эфир</string>
   <string name="yir_2026_highlight_premieres">премьеры</string>
   <string name="yir_2026_highlight_ratings">рейтинги</string>
+  <string name="yir_2026_highlight_rewatches">пересмотры</string>
   <string name="yir_2026_highlight_shows">сериалы</string>
   <string name="yir_2026_highlight_streak_days">дней подряд</string>
   <string name="yir_2026_highlight_top_show_episodes">эпизодов вашего главного шоу</string>

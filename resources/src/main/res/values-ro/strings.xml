@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Data reînnoirii</string>
   <string name="header_runtime">Durată</string>
   <string name="header_screen_time">Timp petrecut în fața ecranului</string>
+  <string name="header_seasonal_greeting_christmas">Crăciun fericit</string>
   <string name="header_seasonal_greeting_halloween">La mulți ani de Halloween!</string>
+  <string name="header_seasonal_greeting_new_year">Un An Nou fericit</string>
   <string name="header_sentiment_aspects">Pro &amp; Contra</string>
   <string name="header_sentiment_highlight">Punct cheie</string>
   <string name="header_sentiment_mixed">Mixt</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Sezonul %d</string>
   <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Speciale</string>
+  <string name="text_seasonal_greeting_christmas">Ia o pătură, selecțiile de sărbătoare te așteaptă în Descoperă.</string>
   <string name="text_seasonal_greeting_halloween">Selecțiile noastre înfricoșătoare vă așteaptă!</string>
+  <string name="text_seasonal_greeting_new_year">Pentru un an plin de vizionări grozave.</string>
   <string name="text_seasonal_greeting_signoff">Din partea întregii echipe Trakt</string>
   <string name="text_select_searching">Se caută</string>
   <string name="text_selected_from_lists">din %s liste</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">vizionate în primele 3 zile de la lansare</string>
   <string name="yir_2026_highlight_premieres">premiere</string>
   <string name="yir_2026_highlight_ratings">evaluări</string>
+  <string name="yir_2026_highlight_rewatches">revizionări</string>
   <string name="yir_2026_highlight_shows">seriale</string>
   <string name="yir_2026_highlight_streak_days">serie de zile</string>
   <string name="yir_2026_highlight_top_show_episodes">episoade din emisiunea ta #1</string>

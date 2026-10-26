@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Data odnowienia</string>
   <string name="header_runtime">Czas trwania</string>
   <string name="header_screen_time">Czas przed ekranem</string>
+  <string name="header_seasonal_greeting_christmas">Wesołych Świąt</string>
   <string name="header_seasonal_greeting_halloween">Wesołego Halloween</string>
+  <string name="header_seasonal_greeting_new_year">Szczęśliwego Nowego Roku</string>
   <string name="header_sentiment_aspects">Zalety i wady</string>
   <string name="header_sentiment_highlight">Wyróżnione</string>
   <string name="header_sentiment_mixed">Mieszany</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Sezon %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Specjalne</string>
+  <string name="text_seasonal_greeting_christmas">Weź koc, świąteczne propozycje czekają w sekcji Odkrywaj.</string>
   <string name="text_seasonal_greeting_halloween">Nasze straszne propozycje czekają na Ciebie!</string>
+  <string name="text_seasonal_greeting_new_year">Za rok pełen świetnych seansów.</string>
   <string name="text_seasonal_greeting_signoff">Od nas wszystkich w Trakt</string>
   <string name="text_select_searching">Wyszukiwanie</string>
   <string name="text_selected_from_lists">z %s list</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">obejrzanych w ciągu 3 dni od premiery</string>
   <string name="yir_2026_highlight_premieres">premiery</string>
   <string name="yir_2026_highlight_ratings">oceny</string>
+  <string name="yir_2026_highlight_rewatches">ponowne obejrzenia</string>
   <string name="yir_2026_highlight_shows">seriale</string>
   <string name="yir_2026_highlight_streak_days">dniowa seria</string>
   <string name="yir_2026_highlight_top_show_episodes">odcinków Twojego ulubionego serialu</string>

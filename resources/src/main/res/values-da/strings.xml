@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Fornyelsesdato</string>
   <string name="header_runtime">Spilletid</string>
   <string name="header_screen_time">Skærmtid</string>
+  <string name="header_seasonal_greeting_christmas">Glædelig jul</string>
   <string name="header_seasonal_greeting_halloween">Glædelig Halloween</string>
+  <string name="header_seasonal_greeting_new_year">Godt nytår</string>
   <string name="header_sentiment_aspects">Fordele og ulemper</string>
   <string name="header_sentiment_highlight">Højdepunkt</string>
   <string name="header_sentiment_mixed">Blandet</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Sæson %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Særafsnit</string>
+  <string name="text_seasonal_greeting_christmas">Find et tæppe frem, festlige anbefalinger venter i Opdag.</string>
   <string name="text_seasonal_greeting_halloween">Vores uhyggelige anbefalinger venter på dig!</string>
+  <string name="text_seasonal_greeting_new_year">Skål for et år fyldt med gode seeroplevelser.</string>
   <string name="text_seasonal_greeting_signoff">Fra os alle hos Trakt</string>
   <string name="text_select_searching">Søger</string>
   <string name="text_selected_from_lists">fra %s lister</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">set inden for 3 dage efter udsendelse</string>
   <string name="yir_2026_highlight_premieres">premierer</string>
   <string name="yir_2026_highlight_ratings">bedømmelser</string>
+  <string name="yir_2026_highlight_rewatches">gensyn</string>
   <string name="yir_2026_highlight_shows">serier</string>
   <string name="yir_2026_highlight_streak_days">dages serie</string>
   <string name="yir_2026_highlight_top_show_episodes">afsnit af dit #1 show</string>

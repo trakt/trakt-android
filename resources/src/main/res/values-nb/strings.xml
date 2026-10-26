@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Fornyelsesdato</string>
   <string name="header_runtime">Spilletid</string>
   <string name="header_screen_time">Skjermtid</string>
+  <string name="header_seasonal_greeting_christmas">God jul</string>
   <string name="header_seasonal_greeting_halloween">God Halloween</string>
+  <string name="header_seasonal_greeting_new_year">Godt nytt år</string>
   <string name="header_sentiment_aspects">Fordeler og ulemper</string>
   <string name="header_sentiment_highlight">Høydepunkt</string>
   <string name="header_sentiment_mixed">Blandet</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Sesong %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Spesialer</string>
+  <string name="text_seasonal_greeting_christmas">Finn frem et pledd, festlige anbefalinger venter i Utforsk.</string>
   <string name="text_seasonal_greeting_halloween">Våre skumle utvalg venter på deg!</string>
+  <string name="text_seasonal_greeting_new_year">Skål for et år fullt av gode seeropplevelser.</string>
   <string name="text_seasonal_greeting_signoff">Fra oss alle i Trakt</string>
   <string name="text_select_searching">Søker</string>
   <string name="text_selected_from_lists">fra %s lister</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">sett innen 3 dager etter sending</string>
   <string name="yir_2026_highlight_premieres">premierer</string>
   <string name="yir_2026_highlight_ratings">vurderinger</string>
+  <string name="yir_2026_highlight_rewatches">gjensyn</string>
   <string name="yir_2026_highlight_shows">serier</string>
   <string name="yir_2026_highlight_streak_days">dagsrekke</string>
   <string name="yir_2026_highlight_top_show_episodes">episoder av din #1 serie</string>

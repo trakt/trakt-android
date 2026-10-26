@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Data de Renovação</string>
   <string name="header_runtime">Duração</string>
   <string name="header_screen_time">Tempo de Tela</string>
+  <string name="header_seasonal_greeting_christmas">Feliz Natal</string>
   <string name="header_seasonal_greeting_halloween">Feliz Halloween</string>
+  <string name="header_seasonal_greeting_new_year">Feliz Ano-Novo</string>
   <string name="header_sentiment_aspects">Prós e Contras</string>
   <string name="header_sentiment_highlight">Destaque</string>
   <string name="header_sentiment_mixed">Misto</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Temporada %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Especiais</string>
+  <string name="text_seasonal_greeting_christmas">Pegue um cobertor, seleções festivas estão esperando no Descobrir.</string>
   <string name="text_seasonal_greeting_halloween">Nossas sugestões assustadoras estão esperando por você!</string>
+  <string name="text_seasonal_greeting_new_year">Um brinde a um ano repleto de ótimas produções.</string>
   <string name="text_seasonal_greeting_signoff">De toda a equipe Trakt</string>
   <string name="text_select_searching">Pesquisando</string>
   <string name="text_selected_from_lists">de %s listas</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">assistidos em até 3 dias da exibição</string>
   <string name="yir_2026_highlight_premieres">estreias</string>
   <string name="yir_2026_highlight_ratings">avaliações</string>
+  <string name="yir_2026_highlight_rewatches">reassistidas</string>
   <string name="yir_2026_highlight_shows">séries</string>
   <string name="yir_2026_highlight_streak_days">dias em sequência</string>
   <string name="yir_2026_highlight_top_show_episodes">episódios do seu programa #1</string>

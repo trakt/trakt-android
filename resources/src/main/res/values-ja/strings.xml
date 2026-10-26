@@ -995,7 +995,9 @@
   <string name="header_renewal_date">更新日</string>
   <string name="header_runtime">上映時間</string>
   <string name="header_screen_time">視聴時間</string>
+  <string name="header_seasonal_greeting_christmas">メリークリスマス</string>
   <string name="header_seasonal_greeting_halloween">ハッピーハロウィン</string>
+  <string name="header_seasonal_greeting_new_year">あけましておめでとうございます</string>
   <string name="header_sentiment_aspects">長所と短所</string>
   <string name="header_sentiment_highlight">ハイライト</string>
   <string name="header_sentiment_mixed">どちらとも言えない</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">シーズン%d</string>
   <string name="text_season_number_with_title">%1$d：%2$s</string>
   <string name="text_season_specials">スペシャル</string>
+  <string name="text_seasonal_greeting_christmas">ブランケットを用意して、「見つける」でホリデーシーズンにぴったりの作品をチェックしましょう。</string>
   <string name="text_seasonal_greeting_halloween">不気味な作品があなたを待っています！</string>
+  <string name="text_seasonal_greeting_new_year">素晴らしい作品との出会いに満ちた1年になりますように。</string>
   <string name="text_seasonal_greeting_signoff">Trakt一同より</string>
   <string name="text_select_searching">検索中</string>
   <string name="text_selected_from_lists">%sつのリストから</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">放送から3日以内に視聴</string>
   <string name="yir_2026_highlight_premieres">初公開</string>
   <string name="yir_2026_highlight_ratings">評価</string>
+  <string name="yir_2026_highlight_rewatches">再視聴</string>
   <string name="yir_2026_highlight_shows">番組</string>
   <string name="yir_2026_highlight_streak_days">日の連続記録</string>
   <string name="yir_2026_highlight_top_show_episodes">あなたの一番好きな番組のエピソード</string>

@@ -995,7 +995,9 @@
   <string name="header_renewal_date">续订日期</string>
   <string name="header_runtime">时长</string>
   <string name="header_screen_time">屏幕时间</string>
+  <string name="header_seasonal_greeting_christmas">圣诞快乐</string>
   <string name="header_seasonal_greeting_halloween">万圣节快乐</string>
+  <string name="header_seasonal_greeting_new_year">新年快乐</string>
   <string name="header_sentiment_aspects">优点与缺点</string>
   <string name="header_sentiment_highlight">亮点</string>
   <string name="header_sentiment_mixed">混合</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">第 %d 季</string>
   <string name="text_season_number_with_title">%1$d：%2$s</string>
   <string name="text_season_specials">特别篇</string>
+  <string name="text_seasonal_greeting_christmas">裹上毛毯，节日精选已在“发现”中等你。</string>
   <string name="text_seasonal_greeting_halloween">我们的万圣节精选等着您！</string>
+  <string name="text_seasonal_greeting_new_year">愿新的一年满是精彩佳作。</string>
   <string name="text_seasonal_greeting_signoff">Trakt 全体人员</string>
   <string name="text_select_searching">正在搜索</string>
   <string name="text_selected_from_lists">来自 %s 个列表</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">播出后 3 天内观看</string>
   <string name="yir_2026_highlight_premieres">首映</string>
   <string name="yir_2026_highlight_ratings">评分</string>
+  <string name="yir_2026_highlight_rewatches">重温</string>
   <string name="yir_2026_highlight_shows">剧集</string>
   <string name="yir_2026_highlight_streak_days">连看天数</string>
   <string name="yir_2026_highlight_top_show_episodes">您最爱的节目剧集</string>

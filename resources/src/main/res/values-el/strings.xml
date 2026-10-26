@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Ημερομηνία Ανανέωσης</string>
   <string name="header_runtime">Διάρκεια</string>
   <string name="header_screen_time">Χρόνος Οθόνης</string>
+  <string name="header_seasonal_greeting_christmas">Καλά Χριστούγεννα</string>
   <string name="header_seasonal_greeting_halloween">Ευτυχισμένο Χάλογουιν</string>
+  <string name="header_seasonal_greeting_new_year">Καλή Χρονιά</string>
   <string name="header_sentiment_aspects">Πλεονεκτήματα &amp; Μειονεκτήματα</string>
   <string name="header_sentiment_highlight">Αποκορύφωμα</string>
   <string name="header_sentiment_mixed">Μεικτό</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Σεζόν %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Ειδικά</string>
+  <string name="text_seasonal_greeting_christmas">Πάρτε μια κουβέρτα, γιορτινές επιλογές σας περιμένουν στην Ανακάλυψη.</string>
   <string name="text_seasonal_greeting_halloween">Οι τρομακτικές μας επιλογές σας περιμένουν!</string>
+  <string name="text_seasonal_greeting_new_year">Σε μια χρονιά γεμάτη υπέροχες προβολές.</string>
   <string name="text_seasonal_greeting_signoff">Από όλους εμάς στο Trakt</string>
   <string name="text_select_searching">Αναζήτηση</string>
   <string name="text_selected_from_lists">από %s λίστες</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">παρακολουθήθηκαν εντός 3 ημερών από την προβολή</string>
   <string name="yir_2026_highlight_premieres">πρεμιέρες</string>
   <string name="yir_2026_highlight_ratings">αξιολογήσεις</string>
+  <string name="yir_2026_highlight_rewatches">επαναλήψεις</string>
   <string name="yir_2026_highlight_shows">σειρές</string>
   <string name="yir_2026_highlight_streak_days">σερί ημερών</string>
   <string name="yir_2026_highlight_top_show_episodes">επεισόδια της #1 εκπομπής σας</string>

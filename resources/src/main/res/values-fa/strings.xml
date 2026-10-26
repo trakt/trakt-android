@@ -995,7 +995,9 @@
   <string name="header_renewal_date">تاریخ تمدید</string>
   <string name="header_runtime">مدت زمان</string>
   <string name="header_screen_time">زمان نمایش</string>
+  <string name="header_seasonal_greeting_christmas">کریسمس مبارک</string>
   <string name="header_seasonal_greeting_halloween">هالوین مبارک</string>
+  <string name="header_seasonal_greeting_new_year">سال نو مبارک</string>
   <string name="header_sentiment_aspects">مزایا و معایب</string>
   <string name="header_sentiment_highlight">برجسته</string>
   <string name="header_sentiment_mixed">ترکیبی</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">فصل %d</string>
   <string name="text_season_number_with_title">%1$d : %2$s</string>
   <string name="text_season_specials">ویژه‌ها</string>
+  <string name="text_seasonal_greeting_christmas">پتویی بردارید، عناوین مناسبتی در بخش کاوش منتظرتان هستند.</string>
   <string name="text_seasonal_greeting_halloween">برترین‌های ترسناک ما منتظر شما هستند!</string>
+  <string name="text_seasonal_greeting_new_year">به امید سالی سرشار از تماشای آثار فوق‌العاده.</string>
   <string name="text_seasonal_greeting_signoff">از طرف همه ما در Trakt</string>
   <string name="text_select_searching">در حال جستجو</string>
   <string name="text_selected_from_lists">از %s لیست</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">در ۳ روز اول پخش دیده شده</string>
   <string name="yir_2026_highlight_premieres">اولین نمایش‌ها</string>
   <string name="yir_2026_highlight_ratings">امتیازات</string>
+  <string name="yir_2026_highlight_rewatches">بازتماشا</string>
   <string name="yir_2026_highlight_shows">برنامه‌ها</string>
   <string name="yir_2026_highlight_streak_days">روز پیوستگی</string>
   <string name="yir_2026_highlight_top_show_episodes">قسمت‌های برنامه شماره یک شما</string>
