@@ -259,7 +259,7 @@ private fun formatParentalRange(
     resources: Resources,
 ): String? {
     val min = range.getOrNull(0) ?: return null
-    val max = range.getOrNull(1) ?: min
+    val max = range.getOrNull(1) ?: ParentalGuideSeverity.Max
 
     return resources.getString(
         R.string.advanced_filter_label_parental_guide,
