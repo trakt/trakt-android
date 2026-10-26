@@ -46,6 +46,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -199,7 +200,7 @@ internal fun ProfileStatsCard(
 
                 if (showAllStats) {
                     AllTimeStatsRow(
-                        visible = pagerState.currentPage == 1,
+                        visible = pagerState.currentPage == 1 && stats != null,
                         onClick = onAllTimeStatsClick,
                     )
                 }
@@ -428,8 +429,9 @@ private fun StatsChipsRow(
         )
         if (ratings != null) {
             StatsChip(
-                text = stringResource(
-                    R.string.text_ratings_count,
+                text = pluralStringResource(
+                    R.plurals.text_ratings_count,
+                    ratings,
                     rememberNumberFormat(ratings),
                 ),
                 icon = painterResource(R.drawable.ic_star),
@@ -438,8 +440,9 @@ private fun StatsChipsRow(
         }
         if (comments != null) {
             StatsChip(
-                text = stringResource(
-                    R.string.text_comments_count,
+                text = pluralStringResource(
+                    R.plurals.text_comments_count,
+                    comments,
                     rememberNumberFormat(comments),
                 ),
                 icon = painterResource(R.drawable.ic_comment),

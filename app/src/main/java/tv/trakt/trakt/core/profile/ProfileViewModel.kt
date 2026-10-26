@@ -122,13 +122,15 @@ internal class ProfileViewModel(
     }
 
     private fun loadData(showLoading: Boolean = true) {
+        loadAllTimeStats()
         viewModelScope.launch {
             try {
                 if (showLoading) {
                     loadingMonthStatsState.update { Loading }
                 }
+                val stats = getProfileStatsUseCase.getProfileStats()
                 monthStatsState.update {
-                    getProfileStatsUseCase.getProfileStats()
+                    stats.copy(allTime = it?.allTime)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -136,6 +138,21 @@ internal class ProfileViewModel(
                 }
             } finally {
                 loadingMonthStatsState.update { LoadingState.Done }
+            }
+        }
+    }
+
+    private fun loadAllTimeStats() {
+        viewModelScope.launch {
+            try {
+                val allTime = getProfileStatsUseCase.getAllTimeStats()
+                monthStatsState.update {
+                    (it ?: ProfileStats()).copy(allTime = allTime)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }

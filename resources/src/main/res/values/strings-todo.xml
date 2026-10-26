@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="text_ratings_count">%s ratings</string>
-  <string name="text_comments_count">%s comments</string>
+  <plurals name="text_ratings_count">
+    <item quantity="one">%s rating</item>
+    <item quantity="other">%s ratings</item>
+  </plurals>
+  <plurals name="text_comments_count">
+    <item quantity="one">%s comment</item>
+    <item quantity="other">%s comments</item>
+  </plurals>
 </resources>

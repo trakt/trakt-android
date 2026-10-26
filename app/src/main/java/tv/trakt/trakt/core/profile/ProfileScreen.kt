@@ -159,6 +159,7 @@ internal fun ProfileScreen(
 
     AllTimeStatsSheet(
         stats = state.monthStats,
+        isVip = state.user?.isAnyVip == true,
         visible = allTimeStatsSheet,
         onYearClick = { year ->
             viewModel.logAllTimeStatsLink(target = "/users/me/year/$year")
