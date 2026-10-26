@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.data.remote
 import org.openapitools.client.apis.SmartListsApi
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.CreateSmartListRequestDto
@@ -109,6 +110,8 @@ private fun SmartListFilters.toPreviewParams(): Map<String, String> {
         "rt_user_meters" to rtUserMeters?.joinToRange(),
         "ignore_watched" to ignoreWatched.takeIf { it }?.toString(),
         "ignore_watchlisted" to ignoreWatchlisted.takeIf { it }?.toString(),
+    ).plus(
+        ParentalGuideCategory.entries.map { it.apiKey to parentalRange(it)?.joinToRange() },
     ).mapNotNull { (key, value) -> value?.let { key to it } }
         .toMap()
 }

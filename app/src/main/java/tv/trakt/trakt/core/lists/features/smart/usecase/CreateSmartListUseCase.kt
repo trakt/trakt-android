@@ -82,6 +82,11 @@ private fun SmartListFilters.toFiltersDto(): SmartListFiltersDto {
         imdbRatings = imdbRatings.orNullIfEmpty(),
         rtMeters = rtMeters.orNullIfEmpty(),
         rtUserMeters = rtUserMeters.orNullIfEmpty(),
+        parentalNudity = parentalNudity.orNullIfEmpty(),
+        parentalViolence = parentalViolence.orNullIfEmpty(),
+        parentalProfanity = parentalProfanity.orNullIfEmpty(),
+        parentalAlcohol = parentalAlcohol.orNullIfEmpty(),
+        parentalFrightening = parentalFrightening.orNullIfEmpty(),
         ignoreWatched = ignoreWatched.takeIf { it },
         ignoreWatchlisted = ignoreWatchlisted.takeIf { it },
     )

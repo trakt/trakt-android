@@ -31,6 +31,8 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Availability
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
+import tv.trakt.trakt.common.model.lists.ParentalGuideSeverity
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.filters.ColumnsSpacing
 import tv.trakt.trakt.core.filters.RowsSpacing
@@ -116,6 +118,12 @@ internal fun CreateSmartListFiltersAdvancedView(
             )
 
             RatingFilter(
+                state = state,
+                onUpdateFilter = onFiltersChange,
+                enabled = enabled,
+            )
+
+            ParentalGuideFilters(
                 state = state,
                 onUpdateFilter = onFiltersChange,
                 enabled = enabled,
@@ -683,6 +691,124 @@ private fun RatingFilter(
                         modifier = Modifier.weight(1f),
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ParentalGuideFilters(
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
+) {
+    Column(
+        verticalArrangement = spacedBy(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.option_text_certification_parental_guidance),
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.heading6,
+        )
+
+        ParentalGuideCategory.entries.forEach { category ->
+            ParentalGuideFilter(
+                category = category,
+                state = state,
+                onUpdateFilter = onUpdateFilter,
+                enabled = enabled,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ParentalGuideFilter(
+    category: ParentalGuideCategory,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
+) {
+    val severityMin = ParentalGuideSeverity.Min
+    val severityMax = ParentalGuideSeverity.Max
+    val savedRange = state.filters.parentalRange(category)
+
+    val rangeValue = remember(savedRange) {
+        mutableStateOf(
+            (savedRange?.getOrNull(0) ?: severityMin).toFloat()..(savedRange?.getOrNull(1) ?: severityMax).toFloat(),
+        )
+    }
+
+    Column(
+        verticalArrangement = spacedBy(8.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = stringResource(
+                R.string.advanced_filter_label_parental_guide,
+                stringResource(category.displayRes),
+                stringResource(ParentalGuideSeverity.fromValue(rangeValue.value.start.toInt()).displayRes),
+                stringResource(ParentalGuideSeverity.fromValue(rangeValue.value.endInclusive.toInt()).displayRes),
+            ),
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.buttonTertiary,
+            maxLines = 1,
+            overflow = Ellipsis,
+        )
+
+        RangeSlider(
+            value = rangeValue.value,
+            enabled = enabled,
+            valueRange = severityMin.toFloat()..severityMax.toFloat(),
+            steps = severityMax - severityMin - 1,
+            onValueChange = { range ->
+                rangeValue.value = range
+            },
+            onValueChangeFinished = {
+                val start = rangeValue.value.start.toInt()
+                val end = rangeValue.value.endInclusive.toInt()
+                onUpdateFilter(
+                    state.filters.withParentalRange(
+                        category = category,
+                        range = when {
+                            start == severityMin && end == severityMax -> null
+                            else -> persistentListOf(start, end)
+                        },
+                    ),
+                    true,
+                )
+            },
+            colors = SliderDefaults.colors(
+                activeTrackColor = TraktTheme.colors.accent,
+                inactiveTrackColor = Color.White,
+                thumbColor = TraktTheme.colors.accent,
+                activeTickColor = Color.Transparent,
+                inactiveTickColor = Color.Transparent,
+                disabledActiveTrackColor = TraktTheme.colors.dialogOnContainer,
+                disabledActiveTickColor = TraktTheme.colors.dialogOnContainer,
+                disabledThumbColor = TraktTheme.colors.dialogOnContainer,
+                disabledInactiveTrackColor = TraktTheme.colors.dialogOnContainer,
+                disabledInactiveTickColor = TraktTheme.colors.dialogOnContainer,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(25.dp),
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            ParentalGuideSeverity.entries.forEach { severity ->
+                Text(
+                    text = stringResource(severity.displayRes),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.meta,
+                    textAlign = TextAlign.Center,
+                )
             }
         }
     }
