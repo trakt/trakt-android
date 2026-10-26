@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Megújítás dátuma</string>
   <string name="header_runtime">Játékidő</string>
   <string name="header_screen_time">Képernyőidő</string>
+  <string name="header_seasonal_greeting_christmas">Boldog karácsonyt</string>
   <string name="header_seasonal_greeting_halloween">Boldog Halloweent</string>
+  <string name="header_seasonal_greeting_new_year">Boldog új évet</string>
   <string name="header_sentiment_aspects">Előnyök és hátrányok</string>
   <string name="header_sentiment_highlight">Kiemelés</string>
   <string name="header_sentiment_mixed">Vegyes</string>
@@ -1441,7 +1443,7 @@
   <string name="match_label_soulmates">Lelkitársak</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Egyezés:</string>
-  <string name="match_pill_aria_label">%1$d%% egyezés, %2$s. Egyezési részletek megnyitása.</string>
+  <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
   <string name="mir_banner_body">Havi összefoglalód kész. Íme, amit %s hónapban néztél.</string>
   <string name="mir_banner_body_short">%s havi összefoglalód kész.</string>
@@ -1674,7 +1676,7 @@
   <string name="tag_media_sync_webhook_only">Csak Webhook</string>
   <string name="tag_mixtape_different_mood">Más hangulat</string>
   <string name="tag_mixtape_kept">Megtartva</string>
-  <string name="tag_mixtape_match">%s%% egyezés</string>
+  <string name="tag_mixtape_match">%s% egyezés</string>
   <string name="tag_mixtape_tap_details">Koppints a részletekért</string>
   <string name="tag_text_blocked_user">Blokkolva</string>
   <string name="tag_text_deal_price">Első 2 év</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">%d. évad</string>
   <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Különkiadások</string>
+  <string name="text_seasonal_greeting_christmas">Bújj egy takaró alá, ünnepi válogatások várnak a Felfedezésben.</string>
   <string name="text_seasonal_greeting_halloween">Kísérteties válogatásaink várnak rád!</string>
+  <string name="text_seasonal_greeting_new_year">Legyen ez az év tele nagyszerű néznivalókkal.</string>
   <string name="text_seasonal_greeting_signoff">A Trakt csapatától</string>
   <string name="text_select_searching">Keresés…</string>
   <string name="text_selected_from_lists">%s listából</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">az adásba kerülés után 3 napon belül megnézve</string>
   <string name="yir_2026_highlight_premieres">premierek</string>
   <string name="yir_2026_highlight_ratings">értékelések</string>
+  <string name="yir_2026_highlight_rewatches">újranézés</string>
   <string name="yir_2026_highlight_shows">sorozatok</string>
   <string name="yir_2026_highlight_streak_days">napos sorozat</string>
   <string name="yir_2026_highlight_top_show_episodes">a kedvenc sorozatod epizódjai</string>
@@ -2867,7 +2872,7 @@
   <string name="yir_2026_preview_runner_none">Nincs (nem hibrid)</string>
   <string name="yir_2026_preview_runner_up">Második helyezett</string>
   <string name="yir_2026_preview_title">Személyiség előnézet</string>
-  <string name="yir_2026_rarity">Csak %1$d%% %2$s</string>
+  <string name="yir_2026_rarity">Csak %1$d% %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Kicsit %s</string>
   <string name="yir_2026_reel_and_you_are">És te vagy</string>
   <string name="yir_2026_reel_but_mostly">De leginkább</string>

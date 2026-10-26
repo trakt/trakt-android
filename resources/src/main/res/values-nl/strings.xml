@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Verlengingsdatum</string>
   <string name="header_runtime">Speelduur</string>
   <string name="header_screen_time">Schermtijd</string>
+  <string name="header_seasonal_greeting_christmas">Vrolijk kerstfeest</string>
   <string name="header_seasonal_greeting_halloween">Fijne Halloween</string>
+  <string name="header_seasonal_greeting_new_year">Gelukkig nieuwjaar</string>
   <string name="header_sentiment_aspects">Voor- en nadelen</string>
   <string name="header_sentiment_highlight">Hoogtepunt</string>
   <string name="header_sentiment_mixed">Gemengd</string>
@@ -1441,7 +1443,7 @@
   <string name="match_label_soulmates">Zielsverwanten</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Overeenkomst:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open matchdetails.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open matchdetails.</string>
   <string name="match_pill_loading_aria_label">Matchscore berekenen</string>
   <string name="mir_banner_body">Je maandelijkse overzicht is klaar. Dit is wat je hebt gekeken in %s.</string>
   <string name="mir_banner_body_short">Je %s overzicht is klaar.</string>
@@ -1674,7 +1676,7 @@
   <string name="tag_media_sync_webhook_only">Alleen webhook</string>
   <string name="tag_mixtape_different_mood">Andere sfeer</string>
   <string name="tag_mixtape_kept">Bewaard</string>
-  <string name="tag_mixtape_match">%s%% overeenkomst</string>
+  <string name="tag_mixtape_match">%s% overeenkomst</string>
   <string name="tag_mixtape_tap_details">Tik voor details</string>
   <string name="tag_text_blocked_user">Geblokkeerd</string>
   <string name="tag_text_deal_price">Eerste 2 jaar</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Seizoen %d</string>
   <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Specials</string>
+  <string name="text_seasonal_greeting_christmas">Pak een dekentje, feestelijke kijktips wachten op je in Ontdekken.</string>
   <string name="text_seasonal_greeting_halloween">Onze griezelige aanraders wachten op je!</string>
+  <string name="text_seasonal_greeting_new_year">Op een jaar vol geweldig kijkplezier.</string>
   <string name="text_seasonal_greeting_signoff">Van ons allemaal bij Trakt</string>
   <string name="text_select_searching">Bezig met zoeken</string>
   <string name="text_selected_from_lists">vanuit %s lijsten</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">bekeken binnen 3 dagen na uitzending</string>
   <string name="yir_2026_highlight_premieres">premières</string>
   <string name="yir_2026_highlight_ratings">beoordelingen</string>
+  <string name="yir_2026_highlight_rewatches">keer opnieuw bekeken</string>
   <string name="yir_2026_highlight_shows">series</string>
   <string name="yir_2026_highlight_streak_days">dagenreeks</string>
   <string name="yir_2026_highlight_top_show_episodes">afleveringen van je #1 serie</string>
@@ -2867,7 +2872,7 @@
   <string name="yir_2026_preview_runner_none">Geen (geen hybride)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona voorbeeld</string>
-  <string name="yir_2026_rarity">Slechts %1$d%% is %2$s</string>
+  <string name="yir_2026_rarity">Slechts %1$d% is %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Een beetje %s</string>
   <string name="yir_2026_reel_and_you_are">En jij bent</string>
   <string name="yir_2026_reel_but_mostly">Maar meestal</string>

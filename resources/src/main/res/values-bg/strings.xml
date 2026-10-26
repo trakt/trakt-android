@@ -995,7 +995,9 @@
   <string name="header_renewal_date">Дата на подновяване</string>
   <string name="header_runtime">Времетраене</string>
   <string name="header_screen_time">Екранно време</string>
+  <string name="header_seasonal_greeting_christmas">Весела Коледа</string>
   <string name="header_seasonal_greeting_halloween">Честит Хелоуин</string>
+  <string name="header_seasonal_greeting_new_year">Честита Нова година</string>
   <string name="header_sentiment_aspects">Плюсове и минуси</string>
   <string name="header_sentiment_highlight">Акцент</string>
   <string name="header_sentiment_mixed">Смесено</string>
@@ -1441,7 +1443,7 @@
   <string name="match_label_soulmates">Сродни души</string>
   <string name="match_label_spin_off">Спин-оф</string>
   <string name="match_pill_anchor">Съвпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
+  <string name="match_pill_aria_label">%1$d% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
   <string name="match_pill_loading_aria_label">Изчисляване на резултат за съвпадение</string>
   <string name="mir_banner_body">Вашият месечен преглед е готов. Ето какво сте гледали през %s.</string>
   <string name="mir_banner_body_short">Вашият преглед за %s е готов.</string>
@@ -1674,7 +1676,7 @@
   <string name="tag_media_sync_webhook_only">Само Webhook</string>
   <string name="tag_mixtape_different_mood">Различно усещане</string>
   <string name="tag_mixtape_kept">Запазено</string>
-  <string name="tag_mixtape_match">%s%% съвпадение</string>
+  <string name="tag_mixtape_match">%s% съвпадение</string>
   <string name="tag_mixtape_tap_details">Докоснете за подробности</string>
   <string name="tag_text_blocked_user">Блокиран</string>
   <string name="tag_text_deal_price">Първите 2 години</string>
@@ -2131,7 +2133,9 @@
   <string name="text_season_number">Сезон %d</string>
   <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Специални</string>
+  <string name="text_seasonal_greeting_christmas">Вземете одеяло, празничните предложения ви очакват в Откриване.</string>
   <string name="text_seasonal_greeting_halloween">Нашите страховити предложения ви очакват!</string>
+  <string name="text_seasonal_greeting_new_year">За една година, пълна със страхотни заглавия за гледане.</string>
   <string name="text_seasonal_greeting_signoff">От всички нас в Trakt</string>
   <string name="text_select_searching">Търсене…</string>
   <string name="text_selected_from_lists">от %s списъка</string>
@@ -2825,6 +2829,7 @@
   <string name="yir_2026_highlight_premiere_share">гледани до 3 дни след излъчване</string>
   <string name="yir_2026_highlight_premieres">премиери</string>
   <string name="yir_2026_highlight_ratings">оценки</string>
+  <string name="yir_2026_highlight_rewatches">повторни гледания</string>
   <string name="yir_2026_highlight_shows">сериали</string>
   <string name="yir_2026_highlight_streak_days">дневна поредица</string>
   <string name="yir_2026_highlight_top_show_episodes">епизоди от вашето шоу №1</string>
@@ -2867,7 +2872,7 @@
   <string name="yir_2026_preview_runner_none">Няма (без хибрид)</string>
   <string name="yir_2026_preview_runner_up">Подгласник</string>
   <string name="yir_2026_preview_title">Предварителен преглед на персона</string>
-  <string name="yir_2026_rarity">Само %1$d%% са %2$s</string>
+  <string name="yir_2026_rarity">Само %1$d% са %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Малко %s</string>
   <string name="yir_2026_reel_and_you_are">И вие сте</string>
   <string name="yir_2026_reel_but_mostly">Но предимно</string>
