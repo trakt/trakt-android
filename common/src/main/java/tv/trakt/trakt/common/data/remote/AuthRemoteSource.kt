@@ -11,6 +11,7 @@ import io.ktor.client.request.url
 import org.openapitools.client.apis.OauthApi
 import org.openapitools.client.models.PostOauthDeviceCodeRequest
 import org.openapitools.client.models.PostOauthDeviceTokenRequest
+import org.openapitools.client.models.PostOauthRevokeRequest
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.auth.model.AuthDeviceCode
 import tv.trakt.trakt.common.auth.model.AuthDeviceTokenCode
@@ -50,6 +51,15 @@ class AuthRemoteSource(
             url("${baseUrl}oauth/token")
             setBody(request)
         }.body<TraktAccessToken>()
+    }
+
+    suspend fun revokeToken(token: String) {
+        oauthApi.postOauthRevoke(
+            PostOauthRevokeRequest(
+                token = token,
+                clientId = BuildConfig.TRAKT_API_KEY,
+            ),
+        )
     }
 
     suspend fun getDeviceCode(): AuthDeviceCode {

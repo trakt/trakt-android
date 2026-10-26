@@ -23,6 +23,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType.Application
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
@@ -42,6 +43,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.networking.helpers.AccountLockMonitor
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
+import tv.trakt.trakt.common.networking.helpers.isFatalRefreshError
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -225,7 +227,11 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                     } catch (error: CancellationException) {
                         throw error
                     } catch (error: ClientRequestException) {
-                        // 4xx = refresh token rejected by server, session is dead.
+                        if (!isFatalRefreshError(error.response.bodyAsText())) {
+                            Timber.w(error, "Refresh request rejected, keeping session")
+                            return@withLock null
+                        }
+
                         sessionManager.clear()
                         tokenProvider.clear()
 
