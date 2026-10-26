@@ -6,16 +6,20 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -25,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -41,13 +46,12 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.networking.helpers.AccountLock
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
-import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val TouchTargetSize = 48.dp
 private val CloseIconSize = 24.dp
 private val MarkSize = 48.dp
-private val ContentSpace = 12.dp
+private val ContentSpace = 16.dp
 private val ActionsSpace = 8.dp
 
 @Composable
@@ -122,16 +126,10 @@ private fun LockedAccountContent(
                     ),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_home_off),
+                    painter = painterResource(R.drawable.ic_block),
                     contentDescription = null,
                     tint = TraktTheme.colors.accent,
                     modifier = Modifier.size(MarkSize),
-                )
-
-                Text(
-                    text = stringResource(R.string.error_kicker_account_locked).uppercase(),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta,
                 )
 
                 Text(
@@ -154,18 +152,23 @@ private fun LockedAccountContent(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = spacedBy(ActionsSpace),
-                    modifier = Modifier.padding(top = ContentSpace),
+                    modifier = Modifier
+                        .padding(top = ContentSpace)
+                        .width(IntrinsicSize.Max),
                 ) {
                     if (lock != AccountLock.CollectionLimit) {
                         PrimaryButton(
-                            text = stringResource(R.string.link_text_advanced_settings),
+                            text = stringResource(R.string.action_open_system_settings_tvos),
                             onClick = onAdvancedSettingsClick,
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
-                    TertiaryButton(
+                    PrimaryButton(
                         text = stringResource(R.string.link_text_support),
                         onClick = onSupportClick,
-                        containerColor = TraktTheme.colors.dialogContainer,
+                        modifier = Modifier.fillMaxWidth(),
+                        border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
+                        containerColor = Color.Transparent,
                         contentColor = TraktTheme.colors.textPrimary,
                     )
                 }
