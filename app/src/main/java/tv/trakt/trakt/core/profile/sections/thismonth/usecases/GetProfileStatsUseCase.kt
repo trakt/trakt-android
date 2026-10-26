@@ -2,16 +2,22 @@ package tv.trakt.trakt.core.profile.sections.thismonth.usecases
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import timber.log.Timber
 import tv.trakt.trakt.common.core.sync.model.ProgressItem
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
+import tv.trakt.trakt.common.helpers.extensions.recordError
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import java.time.Instant
 import java.time.ZonedDateTime
 
 internal class GetProfileStatsUseCase(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val userRemoteSource: UserRemoteSource,
 ) {
     suspend fun getProfileStats(): ProfileStats {
         return coroutineScope {
@@ -19,6 +25,7 @@ internal class GetProfileStatsUseCase(
 
             val showsAsync = async { loadShowsEpisodesCount(currentDate) }
             val moviesAsync = async { loadMoviesCount(currentDate) }
+            val allTimeAsync = async { loadAllTimeStats() }
 
             val shows = showsAsync.await()
             val movies = moviesAsync.await()
@@ -30,7 +37,19 @@ internal class GetProfileStatsUseCase(
                 allShowsCount = shows.allShows,
                 allEpisodesCount = shows.allEpisodes,
                 allMoviesCount = movies.allMovies,
+                allTime = allTimeAsync.await(),
             )
+        }
+    }
+
+    private suspend fun loadAllTimeStats(): UserStats? {
+        return try {
+            userRemoteSource.getStats(userId = "me")?.let(UserStats::fromDto)
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            null
         }
     }
 

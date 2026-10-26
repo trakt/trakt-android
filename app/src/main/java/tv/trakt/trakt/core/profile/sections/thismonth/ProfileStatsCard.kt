@@ -79,6 +79,7 @@ internal fun ProfileStatsCard(
     loading: Boolean = false,
     showAllStats: Boolean = true,
     stats: ProfileStats?,
+    onAllTimeStatsClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
     val currentDate = remember { nowLocal() }
@@ -159,28 +160,50 @@ internal fun ProfileStatsCard(
                 modifier = Modifier.fillMaxWidth(),
             ) { page ->
                 val showAll = showAllStats && page == 1
+                val allTime = stats?.allTime
 
-                StatsChipsRow(
-                    episodes = (if (showAll) stats?.allEpisodesCount else stats?.episodesCount) ?: 0,
-                    shows = (if (showAll) stats?.allShowsCount else stats?.showsCount) ?: 0,
-                    movies = (if (showAll) stats?.allMoviesCount else stats?.moviesCount) ?: 0,
-                    loading = loading,
-                )
+                if (showAll && allTime != null) {
+                    StatsChipsRow(
+                        plays = allTime.totalPlays,
+                        episodes = allTime.episodesWatched,
+                        shows = allTime.showsWatched,
+                        movies = allTime.moviesWatched,
+                        ratings = allTime.ratings,
+                        comments = allTime.comments,
+                        loading = loading,
+                    )
+                } else {
+                    StatsChipsRow(
+                        episodes = (if (showAll) stats?.allEpisodesCount else stats?.episodesCount) ?: 0,
+                        shows = (if (showAll) stats?.allShowsCount else stats?.showsCount) ?: 0,
+                        movies = (if (showAll) stats?.allMoviesCount else stats?.moviesCount) ?: 0,
+                        loading = loading,
+                    )
+                }
             }
 
-            PreviousMonthRow(
-                visible = pagerState.currentPage == 0,
-                previousMonth = previousMonth,
-                onClick = {
-                    uriHandler.openUri(
-                        webMonthReviewUrl(
-                            user = user.ids.slug.value,
-                            month = previousMonth.monthValue,
-                            year = previousMonth.year,
-                        ),
+            Box {
+                PreviousMonthRow(
+                    visible = pagerState.currentPage == 0,
+                    previousMonth = previousMonth,
+                    onClick = {
+                        uriHandler.openUri(
+                            webMonthReviewUrl(
+                                user = user.ids.slug.value,
+                                month = previousMonth.monthValue,
+                                year = previousMonth.year,
+                            ),
+                        )
+                    },
+                )
+
+                if (showAllStats) {
+                    AllTimeStatsRow(
+                        visible = pagerState.currentPage == 1,
+                        onClick = onAllTimeStatsClick,
                     )
-                },
-            )
+                }
+            }
         }
 
         if (showAllStats) {
@@ -315,11 +338,48 @@ private fun PreviousMonthRow(
 }
 
 @Composable
+private fun AllTimeStatsRow(
+    visible: Boolean,
+    onClick: () -> Unit,
+) {
+    val animatedAlpha by animateFloatAsState(
+        targetValue = if (visible) 1f else 0F,
+        label = "alpha",
+    )
+
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = spacedBy(6.dp),
+        modifier = Modifier
+            .alpha(animatedAlpha)
+            .padding(horizontal = 16.dp)
+            .onClick(enabled = visible) {
+                onClick()
+            },
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_vip_stats),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimaryOnAccent,
+            modifier = Modifier.size(20.dp),
+        )
+        Text(
+            text = stringResource(R.string.button_text_all_time_stats).uppercase(),
+            color = TraktTheme.colors.textPrimaryOnAccent,
+            style = TraktTheme.typography.heading6,
+        )
+    }
+}
+
+@Composable
 private fun StatsChipsRow(
     episodes: Int,
     shows: Int,
     movies: Int,
     loading: Boolean,
+    plays: Int? = null,
+    ratings: Int? = null,
+    comments: Int? = null,
 ) {
     Row(
         horizontalArrangement = spacedBy(6.dp),
@@ -332,6 +392,16 @@ private fun StatsChipsRow(
             .padding(horizontal = 16.dp)
             .padding(bottom = 2.dp),
     ) {
+        if (plays != null) {
+            StatsChip(
+                text = stringResource(
+                    R.string.text_plays_watched,
+                    rememberNumberFormat(plays),
+                ),
+                icon = painterResource(R.drawable.ic_play),
+                loading = loading,
+            )
+        }
         StatsChip(
             text = stringResource(
                 R.string.text_episodes_watched,
@@ -356,6 +426,26 @@ private fun StatsChipsRow(
             icon = painterResource(R.drawable.ic_movies_off),
             loading = loading,
         )
+        if (ratings != null) {
+            StatsChip(
+                text = stringResource(
+                    R.string.text_ratings_count,
+                    rememberNumberFormat(ratings),
+                ),
+                icon = painterResource(R.drawable.ic_star),
+                loading = loading,
+            )
+        }
+        if (comments != null) {
+            StatsChip(
+                text = stringResource(
+                    R.string.text_comments_count,
+                    rememberNumberFormat(comments),
+                ),
+                icon = painterResource(R.drawable.ic_comment),
+                loading = loading,
+            )
+        }
     }
 }
 

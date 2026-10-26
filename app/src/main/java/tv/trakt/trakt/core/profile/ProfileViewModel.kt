@@ -182,6 +182,14 @@ internal class ProfileViewModel(
         }
     }
 
+    fun logAllTimeStatsOpen() {
+        analytics.logDrilldown(source = "stats", type = "all-time")
+    }
+
+    fun logAllTimeStatsLink(target: String) {
+        analytics.logLink(source = "all-time-stats", target = target)
+    }
+
     fun logShare() {
         analytics.logShare(source = "profile", type = "own")
     }
