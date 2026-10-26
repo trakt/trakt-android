@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
@@ -58,6 +59,8 @@ internal class ProfileViewModel(
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
     private val checkInState = MutableStateFlow(initialState.checkIn)
     private val hasLeaderboardState = MutableStateFlow(initialState.hasLeaderboard)
+
+    private var latestAllTime: UserStats? = null
 
     init {
         loadMonthBackground()
@@ -130,7 +133,7 @@ internal class ProfileViewModel(
                 }
                 val stats = getProfileStatsUseCase.getProfileStats()
                 monthStatsState.update {
-                    stats.copy(allTime = it?.allTime)
+                    stats.copy(allTime = it?.allTime ?: latestAllTime)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -146,8 +149,9 @@ internal class ProfileViewModel(
         viewModelScope.launch {
             try {
                 val allTime = getProfileStatsUseCase.getAllTimeStats()
+                latestAllTime = allTime
                 monthStatsState.update {
-                    (it ?: ProfileStats()).copy(allTime = allTime)
+                    it?.copy(allTime = allTime)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

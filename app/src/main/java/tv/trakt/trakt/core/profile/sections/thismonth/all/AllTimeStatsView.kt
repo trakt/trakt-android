@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -172,7 +173,9 @@ private fun ReviewLink(
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(8.dp),
-        modifier = Modifier.onClick(onClick = onClick),
+        modifier = Modifier
+            .heightIn(min = 48.dp)
+            .onClick(onClick = onClick),
     ) {
         Icon(
             painter = painterResource(iconRes),
