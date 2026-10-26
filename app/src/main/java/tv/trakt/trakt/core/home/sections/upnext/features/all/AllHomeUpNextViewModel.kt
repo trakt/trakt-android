@@ -428,7 +428,7 @@ internal class AllHomeUpNextViewModel(
     }
 
     fun setSorting(newSorting: UpNextSorting) {
-        if (newSorting == sortingState.value) {
+        if (newSorting == sortingState.value || processingJob?.isActive == true) {
             return
         }
         loadMoreJob?.cancel()
