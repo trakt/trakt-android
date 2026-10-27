@@ -130,6 +130,7 @@ internal fun UserProfileScreen(
     var matchSheet by remember { mutableStateOf(false) }
 
     val matchViewModel: UserMatchViewModel = koinViewModel(
+        key = "user_match_${state.user.ids.slug.value}",
         parameters = { parametersOf(state.user) },
     )
     val matchState by matchViewModel.state.collectAsStateWithLifecycle()

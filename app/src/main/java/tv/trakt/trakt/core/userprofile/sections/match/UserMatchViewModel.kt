@@ -89,6 +89,7 @@ internal class UserMatchViewModel(
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
+                if (user.ids.slug.value.isBlank()) return@launch
                 if (!sessionManager.isAuthenticated()) return@launch
 
                 val viewer = sessionManager.getProfile() ?: return@launch

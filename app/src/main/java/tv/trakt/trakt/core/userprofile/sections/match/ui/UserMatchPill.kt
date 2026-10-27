@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,6 +43,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val PillShape = RoundedCornerShape(100)
 private val PillHeight = 28.dp
+private val PillTouchHeight = 48.dp
 
 @Composable
 internal fun UserMatchPill(
@@ -49,13 +52,16 @@ internal fun UserMatchPill(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
-    when {
-        match != null -> MatchPillContent(
-            score = match.score,
-            onClick = onClick,
-            modifier = modifier,
-        )
-        loading -> MatchPillSkeleton(modifier)
+    Box(
+        contentAlignment = CenterStart,
+        modifier = modifier
+            .heightIn(min = PillTouchHeight)
+            .then(if (match != null) Modifier.onClick(onClick = onClick) else Modifier),
+    ) {
+        when {
+            match != null -> MatchPillContent(score = match.score)
+            loading -> MatchPillSkeleton()
+        }
     }
 }
 
@@ -63,7 +69,6 @@ internal fun UserMatchPill(
 private fun MatchPillContent(
     score: Int,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
 ) {
     val accent = TraktTheme.colors.textPrimary
     val fill = score / 100F
@@ -95,7 +100,6 @@ private fun MatchPillContent(
             .clip(PillShape)
             .background(background, PillShape)
             .border(1.dp, borderColor, PillShape)
-            .onClick(onClick = onClick)
             .padding(horizontal = 12.dp),
     ) {
         Text(
