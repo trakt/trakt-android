@@ -40,6 +40,7 @@ import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
+import tv.trakt.trakt.common.core.streamings.usecase.GetYouTubeSpecialUseCase
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
@@ -65,6 +66,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
 import java.util.Locale
@@ -81,6 +83,7 @@ internal class MovieDetailsViewModel(
     private val getListsUseCase: GetCustomListsUseCase,
     private val getStreamingsUseCase: GetPriorityStreamingUseCase,
     private val getPlexUseCase: GetPlexUseCase,
+    private val getYouTubeSpecialUseCase: GetYouTubeSpecialUseCase,
     private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val getCollectionUseCase: GetCollectionUseCase,
     private val watchlistUseCase: ChangeWatchlistUseCase,
@@ -305,13 +308,14 @@ internal class MovieDetailsViewModel(
                     mediaId = movieIds.trakt,
                 ),
             )
+            val noServices = streamingService.noServices && !hasYouTubeSpecial()
 
             movieStreamingsState.update {
                 it.copy(
                     slug = movieIds.plex,
                     loading = false,
                     service = streamingService.streamingService,
-                    noServices = streamingService.noServices,
+                    noServices = noServices,
                     info = null,
                 )
             }
@@ -321,6 +325,22 @@ internal class MovieDetailsViewModel(
                 movieStreamingsState.update { StreamingsState() }
                 Timber.e("Error loading streaming services: ${e.message}")
             }
+        }
+    }
+
+    private suspend fun hasYouTubeSpecial(): Boolean {
+        val movie = movieDetailsState.value ?: return false
+        if (!YouTubeSpecial.isSupported(movie.genres)) {
+            return false
+        }
+
+        return try {
+            getYouTubeSpecialUseCase.getYouTubeSpecial(movie.ids.trakt) != null
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.e(error, "Error loading YouTube special")
+            }
+            false
         }
     }
 

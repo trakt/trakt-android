@@ -49,10 +49,10 @@ import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
 import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
+import tv.trakt.trakt.common.core.streamings.model.withFreeSection
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
-import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
@@ -407,14 +407,6 @@ private fun ImmutableList<AllStreamingsSection>.filterByQuery(query: String): Im
             else -> section.copy(rows = rows.toImmutableList())
         }
     }.toImmutableList()
-}
-
-private fun ImmutableList<AllStreamingsSection>.withFreeSection(needed: Boolean): ImmutableList<AllStreamingsSection> {
-    if (!needed || any { it.type == Free }) return this
-
-    return (this + AllStreamingsSection(type = Free, rows = EmptyImmutableList))
-        .sortedBy { it.type.order }
-        .toImmutableList()
 }
 
 @DevicePreview

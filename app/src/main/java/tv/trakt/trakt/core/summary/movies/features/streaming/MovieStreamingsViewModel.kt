@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.summary.movies.features.streaming
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +13,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.common.core.streamings.usecase.GetStreamingsUseCase
-import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.core.streamings.usecase.GetYouTubeSpecialUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -27,14 +26,13 @@ import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
-import java.util.Locale
 
 @Suppress("UNCHECKED_CAST")
 internal class MovieStreamingsViewModel(
     private val movie: Movie,
     private val sessionManager: SessionManager,
     private val getStreamingsUseCase: GetStreamingsUseCase,
-    private val moviesRemoteSource: MoviesRemoteSource,
+    private val getYouTubeSpecialUseCase: GetYouTubeSpecialUseCase,
     private val collapsingManager: CollapsingManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -93,12 +91,7 @@ internal class MovieStreamingsViewModel(
 
         viewModelScope.launch {
             try {
-                val special = moviesRemoteSource
-                    .getYouTubeSpecial(
-                        movieId = movie.ids.trakt,
-                        locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
-                    )
-                    ?.let(YouTubeSpecial::fromDto)
+                val special = getYouTubeSpecialUseCase.getYouTubeSpecial(movie.ids.trakt)
                 youTubeSpecialState.update { special }
             } catch (error: Exception) {
                 error.rethrowCancellation {

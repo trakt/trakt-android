@@ -36,14 +36,18 @@ import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.streamings.views.AllStreamingItemView
+import tv.trakt.trakt.app.core.streamings.views.AllStreamingYouTubeItemView
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
 import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
+import tv.trakt.trakt.common.core.streamings.model.withFreeSection
 import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
+import tv.trakt.trakt.common.model.streamings.StreamingType.Free
 import tv.trakt.trakt.common.model.streamings.StreamingType.Purchase
 import tv.trakt.trakt.common.model.streamings.StreamingType.Rent
+import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -126,7 +130,7 @@ internal fun AllStreamingsContent(
                     )
                 }
 
-                state.error == null && state.sections.isEmpty() -> {
+                state.error == null && state.sections.isEmpty() && state.youTubeSpecial == null -> {
                     Text(
                         text = stringResource(R.string.button_text_no_services),
                         color = TraktTheme.colors.textSecondary,
@@ -142,6 +146,7 @@ internal fun AllStreamingsContent(
                 else -> {
                     AllStreamingsContentGrid(
                         sections = state.sections,
+                        youTubeSpecial = state.youTubeSpecial,
                         focusRequesters = focusRequesters,
                         onItemClick = {
                             openWatchNowLink(
@@ -149,6 +154,9 @@ internal fun AllStreamingsContent(
                                 uriHandler = uriHandler,
                                 link = it.linkDirect,
                             )
+                        },
+                        onYouTubeSpecialClick = {
+                            uriHandler.openUri(it.link)
                         },
                         modifier = Modifier
                             .padding(top = 8.dp),
@@ -171,9 +179,11 @@ internal fun AllStreamingsContent(
 @Composable
 private fun AllStreamingsContentGrid(
     sections: ImmutableList<AllStreamingsSection>,
+    youTubeSpecial: YouTubeSpecial?,
     modifier: Modifier = Modifier,
     focusRequesters: Map<String, FocusRequester>,
     onItemClick: (StreamingService) -> Unit,
+    onYouTubeSpecialClick: (YouTubeSpecial) -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -186,13 +196,17 @@ private fun AllStreamingsContentGrid(
                 focusRequesters.getValue("content"),
             ),
     ) {
-        sections.forEach { section ->
-            StreamingsListSection(
-                type = section.type,
-                rows = section.rows,
-                onItemClick = onItemClick,
-            )
-        }
+        sections
+            .withFreeSection(youTubeSpecial != null)
+            .forEach { section ->
+                StreamingsListSection(
+                    type = section.type,
+                    rows = section.rows,
+                    youTubeSpecial = youTubeSpecial.takeIf { section.type == Free },
+                    onItemClick = onItemClick,
+                    onYouTubeSpecialClick = onYouTubeSpecialClick,
+                )
+            }
     }
 }
 
@@ -200,7 +214,9 @@ private fun AllStreamingsContentGrid(
 private fun StreamingsListSection(
     type: StreamingType,
     rows: ImmutableList<StreamingServiceRow>,
+    youTubeSpecial: YouTubeSpecial?,
     onItemClick: (StreamingService) -> Unit,
+    onYouTubeSpecialClick: (YouTubeSpecial) -> Unit,
 ) {
     Text(
         text = stringResource(type.labelRes).uppercase(),
@@ -209,6 +225,21 @@ private fun StreamingsListSection(
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.padding(top = 12.dp, start = 32.dp),
     )
+
+    if (youTubeSpecial != null) {
+        PositionFocusLazyRow(
+            mainContentStart = 32.dp,
+            contentPadding = PaddingValues(horizontal = 32.dp),
+        ) {
+            item(key = "youtube-special") {
+                AllStreamingYouTubeItemView(
+                    special = youTubeSpecial,
+                    onClick = { onYouTubeSpecialClick(youTubeSpecial) },
+                    modifier = Modifier.width(200.dp),
+                )
+            }
+        }
+    }
 
     rows.forEach { (source, items) ->
         PositionFocusLazyRow(
@@ -261,6 +292,23 @@ private fun Preview() {
     TraktTheme {
         AllStreamingsContent(
             state = AllStreamingsState(),
+        )
+    }
+}
+
+@Preview(
+    device = "id:tv_4k",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun PreviewYouTubeSpecial() {
+    TraktTheme {
+        AllStreamingsContent(
+            state = AllStreamingsState(
+                loading = false,
+                youTubeSpecial = YouTubeSpecial(videoId = "abc", isOfficial = false),
+            ),
         )
     }
 }

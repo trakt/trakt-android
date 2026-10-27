@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.streamings
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +16,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.usecase.GetAllStreamingsUseCase
-import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.core.streamings.usecase.GetYouTubeSpecialUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -30,14 +29,13 @@ import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.streamings.navigation.AllStreamingsDestination
-import java.util.Locale
 
 @Suppress("UNCHECKED_CAST")
 internal class AllStreamingsViewModel(
     savedStateHandle: SavedStateHandle,
     private val sessionManager: SessionManager,
     private val getAllStreamingsUseCase: GetAllStreamingsUseCase,
-    private val moviesRemoteSource: MoviesRemoteSource,
+    private val getYouTubeSpecialUseCase: GetYouTubeSpecialUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val route = savedStateHandle.toRoute<AllStreamingsDestination>()
@@ -103,12 +101,7 @@ internal class AllStreamingsViewModel(
 
         viewModelScope.launch {
             try {
-                val special = moviesRemoteSource
-                    .getYouTubeSpecial(
-                        movieId = route.mediaId.toTraktId(),
-                        locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
-                    )
-                    ?.let(YouTubeSpecial::fromDto)
+                val special = getYouTubeSpecialUseCase.getYouTubeSpecial(route.mediaId.toTraktId())
                 youTubeSpecialState.update { special }
             } catch (error: Exception) {
                 error.rethrowCancellation {

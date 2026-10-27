@@ -109,6 +109,7 @@ import tv.trakt.trakt.app.core.streamings.navigation.navigateToShowStreamings
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SeasonEpisode
+import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -396,7 +397,12 @@ private fun MainNavHost(
                 onNavigateToPerson = { navigateToPerson(it) },
                 onNavigateToList = { navigateToCustomListMedia(it, MediaType.Movie) },
                 onNavigateToVideo = { navigateToPlayer(it) },
-                onNavigateToStreamings = { navigateToMovieStreamings(mediaId = it) },
+                onNavigateToStreamings = {
+                    navigateToMovieStreamings(
+                        mediaId = it.ids.trakt,
+                        checkYouTubeSpecial = YouTubeSpecial.isSupported(it.genres),
+                    )
+                },
             )
             episodeDetailsScreen(
                 onNavigateToShow = { navigateToShow(it) },

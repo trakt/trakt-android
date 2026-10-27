@@ -16,6 +16,7 @@ internal data class AllStreamingsDestination(
     val mediaType: MediaType,
     val season: Int? = null,
     val episode: Int? = null,
+    val checkYouTubeSpecial: Boolean = false,
 ) {
     init {
         require(mediaType != MediaType.Season) {
@@ -41,11 +42,15 @@ internal fun NavController.navigateToShowStreamings(mediaId: TraktId) {
     )
 }
 
-internal fun NavController.navigateToMovieStreamings(mediaId: TraktId) {
+internal fun NavController.navigateToMovieStreamings(
+    mediaId: TraktId,
+    checkYouTubeSpecial: Boolean,
+) {
     navigate(
         route = AllStreamingsDestination(
             mediaId = mediaId.value,
             mediaType = MediaType.Movie,
+            checkYouTubeSpecial = checkYouTubeSpecial,
         ),
     )
 }

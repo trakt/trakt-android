@@ -114,6 +114,7 @@ internal val movieDetailsModule = module {
             getListsUseCase = get(),
             getStreamingsUseCase = get(),
             getPlexUseCase = get(),
+            getYouTubeSpecialUseCase = get(),
             getCollectionUseCase = get(),
             dropPlaybackUseCase = get(),
             watchlistUseCase = get(),

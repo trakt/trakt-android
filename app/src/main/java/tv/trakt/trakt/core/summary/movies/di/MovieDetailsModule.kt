@@ -96,7 +96,7 @@ internal val movieDetailsModule = module {
             movie = movie,
             sessionManager = get(),
             getStreamingsUseCase = get(),
-            moviesRemoteSource = get(),
+            getYouTubeSpecialUseCase = get(),
             collapsingManager = get(),
             analytics = get(),
         )
