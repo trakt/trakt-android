@@ -36,6 +36,7 @@ import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Month
 import kotlin.math.roundToInt
@@ -58,6 +59,7 @@ internal fun AllTimeStatsView(
     modifier: Modifier = Modifier,
     isVip: Boolean = false,
     onYearClick: (year: Int) -> Unit = {},
+    onVipClick: () -> Unit = {},
 ) {
     val sections = remember(stats) { stats.toSections() }
     val currentYear = remember {
@@ -90,6 +92,7 @@ internal fun AllTimeStatsView(
                             StatTileView(
                                 tile = tile,
                                 locked = !isVip,
+                                onVipClick = onVipClick,
                                 modifier = Modifier.weight(1F),
                             )
                         }
@@ -137,6 +140,7 @@ private fun StatTileView(
     tile: StatTile,
     modifier: Modifier = Modifier,
     locked: Boolean = true,
+    onVipClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(2.dp),
@@ -154,13 +158,10 @@ private fun StatTileView(
         )
 
         if (tile.value == null && locked) {
-            Icon(
-                painter = painterResource(R.drawable.ic_vip_crown),
-                contentDescription = null,
-                tint = TraktTheme.colors.textSecondary,
+            VipChip(
+                onClick = onVipClick,
                 modifier = Modifier
-                    .padding(vertical = 3.dp)
-                    .size(18.dp),
+                    .padding(top = 4.dp),
             )
         } else {
             Text(
@@ -274,6 +275,22 @@ private fun Preview() {
                     progressFinished = 30,
                     progressDropped = 5,
                 ),
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewFree() {
+    TraktThemePreview {
+        AllTimeStatsView(
+            isVip = false,
+            stats = ProfileStats(
+                allMoviesCount = 145,
+                allShowsCount = 87,
+                allEpisodesCount = 2310,
+                allPlaysCount = 2601,
             ),
         )
     }

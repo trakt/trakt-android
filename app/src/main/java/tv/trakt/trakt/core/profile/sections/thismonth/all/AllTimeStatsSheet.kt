@@ -24,6 +24,7 @@ internal fun AllTimeStatsSheet(
     isVip: Boolean,
     visible: Boolean,
     onYearClick: (year: Int) -> Unit,
+    onVipClick: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     if (visible && stats != null) {
@@ -35,6 +36,7 @@ internal fun AllTimeStatsSheet(
                 stats = stats,
                 isVip = isVip,
                 onYearClick = onYearClick,
+                onVipClick = onVipClick,
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
                     .padding(top = 8.dp, bottom = 20.dp),

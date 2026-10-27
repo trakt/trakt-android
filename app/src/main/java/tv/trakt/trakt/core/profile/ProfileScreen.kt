@@ -167,6 +167,10 @@ internal fun ProfileScreen(
                 uriHandler.openUri(webYearReviewUrl(user = it.ids.slug.value, year = year))
             }
         },
+        onVipClick = {
+            allTimeStatsSheet = false
+            onNavigateToVip()
+        },
         onDismiss = { allTimeStatsSheet = false },
     )
 
