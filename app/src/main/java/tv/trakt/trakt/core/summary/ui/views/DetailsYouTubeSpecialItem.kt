@@ -16,13 +16,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktDark
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLight
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
+import tv.trakt.trakt.helpers.extensions.TraktThemeLight
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -47,7 +51,7 @@ internal fun DetailsYouTubeSpecialItem(
             .background(TraktTheme.colors.commentContainer, itemShape)
             .then(
                 when {
-                    special.isOfficial -> Modifier.border(1.dp, TraktTheme.colors.accent, itemShape)
+                    special.isOfficial -> Modifier.border(1.5.dp, TraktTheme.colors.accent, itemShape)
                     else -> Modifier
                 },
             )
@@ -62,6 +66,7 @@ internal fun DetailsYouTubeSpecialItem(
                 painter = painterResource(R.drawable.ic_youtube_full),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight,
+                colorFilter = ColorFilter.tint(TraktTheme.colors.textPrimary),
                 modifier = Modifier.height(24.dp),
             )
         }
@@ -80,24 +85,40 @@ internal fun DetailsYouTubeSpecialItem(
                 Text(
                     text = stringResource(R.string.tag_label_fan_upload),
                     color = TraktTheme.colors.tagChipContent,
-                    style = TraktTheme.typography.meta,
+                    style = TraktTheme.typography.meta.copy(
+                        fontSize = 8.sp,
+                    ),
                     maxLines = 1,
                     modifier = Modifier
                         .background(TraktTheme.colors.tagChipContainer, RoundedCornerShape(100))
-                        .padding(horizontal = 6.dp, vertical = 1.dp),
+                        .padding(horizontal = 6.dp, vertical = 2.dp),
                 )
             }
         }
     }
 }
 
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
+@PreviewTraktDark
 @Composable
 private fun Preview() {
     TraktTheme {
+        Row(horizontalArrangement = spacedBy(12.dp)) {
+            DetailsYouTubeSpecialItem(
+                special = YouTubeSpecial(videoId = "abc", isOfficial = true),
+                onClick = {},
+            )
+            DetailsYouTubeSpecialItem(
+                special = YouTubeSpecial(videoId = "abc", isOfficial = false),
+                onClick = {},
+            )
+        }
+    }
+}
+
+@PreviewTraktLight
+@Composable
+private fun PreviewLight() {
+    TraktThemeLight {
         Row(horizontalArrangement = spacedBy(12.dp)) {
             DetailsYouTubeSpecialItem(
                 special = YouTubeSpecial(videoId = "abc", isOfficial = true),
