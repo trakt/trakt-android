@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -38,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
@@ -51,6 +53,7 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
+import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.core.profile.sections.progress.all.views.AllProgressShowView
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSortType
@@ -61,7 +64,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
-import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -98,10 +100,7 @@ internal fun AllProgressScreen(
             }
         },
         onFilterClick = { viewModel.setFilter(it) },
-        onSortTypeClick = { sortSheet = state.sorting },
-        onSortOrderClick = {
-            viewModel.setSorting(state.sorting.copy(order = state.sorting.order.toggle()))
-        },
+        onSortClick = { sortSheet = state.sorting },
         onBackClick = onNavigateBack,
     )
 
@@ -124,8 +123,7 @@ internal fun AllProgressContent(
     onLoadMore: () -> Unit = {},
     onClick: (ProfileProgressItem) -> Unit = {},
     onFilterClick: (ProgressFilter) -> Unit = {},
-    onSortTypeClick: () -> Unit = {},
-    onSortOrderClick: () -> Unit = {},
+    onSortClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -169,8 +167,7 @@ internal fun AllProgressContent(
             onEndOfList = onLoadMore,
             onClick = onClick,
             onFilterClick = onFilterClick,
-            onSortTypeClick = onSortTypeClick,
-            onSortOrderClick = onSortOrderClick,
+            onSortClick = onSortClick,
             onBackClick = onBackClick,
         )
 
@@ -193,24 +190,57 @@ internal fun AllProgressContent(
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    sorting: ProgressSorting,
+    sortVisible: Boolean,
+    sortEnabled: Boolean,
+    onSortClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .height(TraktTheme.size.titleBarHeight)
             .graphicsLayer {
                 translationX = -2.dp.toPx()
             },
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_back_arrow),
-            tint = TraktTheme.colors.textPrimary,
-            contentDescription = null,
-        )
-        TraktHeader(
-            title = stringResource(R.string.list_title_progress),
-        )
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+            TraktHeader(
+                title = stringResource(R.string.list_title_progress),
+                subtitle = when {
+                    sortVisible && !sorting.isDefault -> {
+                        val type = stringResource(sorting.type.displayStringRes)
+                        val order = stringResource(sorting.order.displayStringRes)
+                        "$type • $order"
+                    }
+                    else -> {
+                        null
+                    }
+                },
+            )
+        }
+
+        if (sortVisible) {
+            Icon(
+                painter = painterResource(R.drawable.ic_sort),
+                contentDescription = stringResource(R.string.button_label_sort_list),
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(22.dp)
+                    .alpha(if (sortEnabled) 1F else 0.5F)
+                    .onClick(enabled = sortEnabled, onClick = onSortClick),
+            )
+        }
     }
 }
 
@@ -227,8 +257,7 @@ private fun ContentList(
     onEndOfList: () -> Unit,
     onClick: (ProfileProgressItem) -> Unit,
     onFilterClick: (ProgressFilter) -> Unit,
-    onSortTypeClick: () -> Unit,
-    onSortOrderClick: () -> Unit,
+    onSortClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -251,29 +280,16 @@ private fun ContentList(
         modifier = modifier,
     ) {
         item {
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+            TitleBar(
+                sorting = listSorting,
+                sortVisible = listFilter != ProgressFilter.Dropped,
+                sortEnabled = !loading,
+                onSortClick = onSortClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 3.dp),
-            ) {
-                TitleBar(
-                    modifier = Modifier.onClick { onBackClick() },
-                )
-
-                if (listFilter != ProgressFilter.Dropped) {
-                    SortingSplitButton(
-                        text = stringResource(listSorting.type.displayStringRes),
-                        order = listSorting.order,
-                        height = 32.dp,
-                        enabled = !loading,
-                        orderEnabled = !listSorting.isDefault,
-                        onLeadingClick = onSortTypeClick,
-                        onTrailingClick = onSortOrderClick,
-                    )
-                }
-            }
+                    .padding(top = 3.dp)
+                    .onClick { onBackClick() },
+            )
         }
 
         item {
@@ -355,6 +371,25 @@ private fun Preview() {
     TraktTheme {
         AllProgressContent(
             state = AllProgressState(),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun SortedPreview() {
+    TraktTheme {
+        AllProgressContent(
+            state = AllProgressState(
+                sorting = ProgressSorting(
+                    type = ProgressSortType.Released,
+                    order = SortOrder.Desc,
+                ),
+            ),
         )
     }
 }
