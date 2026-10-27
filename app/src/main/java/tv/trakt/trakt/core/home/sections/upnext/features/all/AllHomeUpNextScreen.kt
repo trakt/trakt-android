@@ -171,6 +171,7 @@ internal fun AllHomeUpNextScreen(
         selectedType = sortSheet?.type,
         selectedOrder = sortSheet?.order,
         typeOptions = remember { UpNextSortType.entries.toImmutableList() },
+        descriptionsVisible = true,
         onResult = { type, order ->
             viewModel.setSorting(UpNextSorting(type = type, order = order))
         },
@@ -330,36 +331,25 @@ private fun ContentList(
         modifier = modifier,
     ) {
         item {
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+            TitleBar(
+                enabled = !loading,
+                filters = listFilter,
+                onFiltersClick = onFiltersClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 2.dp),
-            ) {
-                TitleBar(
-                    modifier = Modifier.onClick { onBackClick() },
-                )
-
-                SortingSplitButton(
-                    text = stringResource(listSorting.type.displayStringRes),
-                    order = listSorting.order,
-                    height = 32.dp,
-                    enabled = !loading,
-                    orderEnabled = !listSorting.isDefault,
-                    onLeadingClick = onSortTypeClick,
-                    onTrailingClick = onSortOrderClick,
-                )
-            }
+                    .onClick { onBackClick() },
+            )
         }
 
         if (listFilter != null) {
             item {
                 ContentFilters(
                     filters = listFilter,
+                    sorting = listSorting,
                     enabled = !loading,
                     onFilterClick = onFilterClick,
-                    onFiltersClick = onFiltersClick,
+                    onSortTypeClick = onSortTypeClick,
+                    onSortOrderClick = onSortOrderClick,
                 )
             }
         }
@@ -438,9 +428,11 @@ private fun ContentList(
 @Composable
 private fun ContentFilters(
     filters: GlobalFilter,
+    sorting: UpNextSorting,
     enabled: Boolean,
     onFilterClick: (MediaMode) -> Unit,
-    onFiltersClick: () -> Unit,
+    onSortTypeClick: () -> Unit,
+    onSortOrderClick: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -452,12 +444,18 @@ private fun ContentFilters(
         MediaModeFilters(
             selected = filters.mode,
             height = 32.dp,
+            unselectedTextVisible = false,
             onClick = onFilterClick,
         )
-        MediaFilterIcon(
-            active = filters.isActive,
+
+        SortingSplitButton(
+            text = stringResource(sorting.type.displayStringRes),
+            order = sorting.order,
+            height = 32.dp,
             enabled = enabled,
-            onClick = onFiltersClick,
+            orderEnabled = !sorting.isDefault,
+            onLeadingClick = onSortTypeClick,
+            onTrailingClick = onSortOrderClick,
         )
     }
 }
@@ -473,26 +471,48 @@ private fun ContentEmptyView(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    enabled: Boolean,
+    filters: GlobalFilter?,
+    onFiltersClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .height(TraktTheme.size.titleBarHeight)
             .graphicsLayer {
                 translationX = -2.dp.toPx()
             },
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_back_arrow),
-            tint = TraktTheme.colors.textPrimary,
-            contentDescription = null,
-        )
-        Text(
-            text = stringResource(R.string.list_title_up_next),
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading5,
-        )
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+            Text(
+                text = stringResource(R.string.list_title_up_next),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading5,
+            )
+        }
+
+        filters?.let {
+            MediaFilterIcon(
+                active = it.isActive,
+                enabled = enabled,
+                onClick = onFiltersClick,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = 2.dp.toPx()
+                    },
+            )
+        }
     }
 }
 

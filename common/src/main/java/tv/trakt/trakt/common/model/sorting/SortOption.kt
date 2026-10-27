@@ -11,4 +11,7 @@ interface SortOption {
 
     @get:DrawableRes
     val displayIconRes: Int?
+
+    @StringRes
+    fun descriptionRes(order: SortOrder): Int? = null
 }

@@ -60,6 +60,7 @@ internal fun <T : SortOption> SortSelectionSheet(
     selectedType: T?,
     selectedOrder: SortOrder?,
     typeOptions: ImmutableList<T>,
+    descriptionsVisible: Boolean = false,
     onResult: (type: T, order: SortOrder) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -86,6 +87,7 @@ internal fun <T : SortOption> SortSelectionSheet(
                 selectedType = currentType,
                 selectedOrder = currentOrder,
                 typeOptions = typeOptions,
+                descriptionsVisible = descriptionsVisible,
                 onSortClick = { type ->
                     if (currentType != null) {
                         currentType = type
