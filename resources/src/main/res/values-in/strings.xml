@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Secara otomatis menyinkronkan riwayat tontonan dan rating Anda.</string>
   <string name="description_streaming_vip_services">Tingkatkan untuk menghubungkan dan menyinkronkan layanan streaming ini.</string>
   <string name="description_sync_detail">Beberapa detail tentang sinkronisasi ini.</string>
-  <string name="description_sync_webhooks_jellyfin">Progres langsung melalui plugin Webhook Jellyfin akan segera hadir.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt menampilkan apa yang sedang Anda tonton saat ini, dan pustaka Anda disinkronkan beberapa menit setelah Anda selesai menonton. Atur sekali di plugin Webhook Jellyfin. Ini mencakup %s.</string>
   <string name="description_sync_webhooks_live_progress">Server media Anda memberi tahu Trakt apa yang sedang Anda tonton saat ini dan di mana Anda menjeda. Tontonan masih berasal dari sinkronisasi.</string>
   <string name="description_sync_webhooks_plex">Tempel alamat ini sekali di Plex › Pengaturan › Webhook. Ini mencakup %s. Membutuhkan Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">Pada server yang tidak dapat dijangkau Trakt, ini juga menambahkan tontonan dan penilaian Anda.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Wawasan</string>
   <string name="header_jellyfin_synced_servers">Server Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">Sinkronisasi Jellyfin adalah beta VIP</string>
+  <string name="header_jellyfin_webhook_steps">Atur di Jellyfin</string>
   <string name="header_landing_discover">Temukan</string>
   <string name="header_landing_hero">Favorit Anda berikutnya sudah ada.</string>
   <string name="header_landing_share">Bagikan</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Acara</string>
   <string name="label_streaming_country">Negara</string>
   <string name="label_sync_webhooks_server_count">%s server</string>
-  <string name="label_sync_webhooks_soon">Segera Hadir</string>
   <string name="label_today_day">Pilih hari</string>
   <string name="label_today_grouping">Kelompokkan aktivitas hari ini</string>
   <string name="label_usage_limit_loading">Memuat penggunaan Anda</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Tahun Berjalan</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
-  <string name="preview_feature_description_progress_manager">Tombol lacak pada acara akan terisi seiring Anda menonton, dan membuka laci yang menampilkan progres Anda per musim dan episode.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_show_ending">Menampilkan baris Akhir di detail tayangan: Selesai saat cerita berakhir, Tidak Terselesaikan saat tidak berakhir.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
-  <string name="preview_feature_title_progress_manager">Pengelola progres</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_show_ending">Akhir Tayangan</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Layanan streaming telah ditautkan.</string>
   <string name="text_info_younify_service_unlinked">Layanan streaming telah dilepas tautan.</string>
   <string name="text_jellyfin_quick_connect_waiting">Menunggu Anda menyetujuinya</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Buka Dashboard &gt; Plugins &gt; Webhook dan pilih \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">Di Jellyfin, buka Dashboard &gt; Plugins &gt; Catalog, instal \"Webhook\", lalu mulai ulang server.</string>
+  <string name="text_jellyfin_webhook_step_item_types">Di bagian jenis item, centang \"Movies\" dan \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">Di bagian jenis notifikasi, centang \"Playback Start\" dan \"Playback Stop\" saja.</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Tempelkan alamat di atas ke \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Centang \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">Di bagian filter pengguna, pilih pengguna Jellyfin Anda sendiri, lalu simpan.</string>
   <string name="text_landing_discover">film dan acara yang akan Anda sukai dan di mana mereka sedang streaming saat ini.</string>
   <string name="text_landing_discover_eyebrow">Temukan</string>
   <string name="text_landing_hero">Lacak apa yang sudah Anda tonton, temukan tontonan berikutnya, dan lihat di mana itu streaming malam ini.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Buka analisis sentimen terperinci, apa yang sebenarnya terjadi dalam kisah nyata, dan trivia menarik tentang film dan acara yang Anda tonton.</string>
   <string name="vip_feature_description_soundtrack">Lihat setiap lagu yang dikreditkan dalam film atau acara, dan putar yang dapat kami cocokkan.</string>
   <string name="vip_feature_description_streaming_services">Hubungkan dan sinkronkan dengan platform streaming tambahan untuk melacak tontonan Anda di semua layanan.</string>
-  <string name="vip_feature_description_support">Dapatkan akses prioritas ke forum dukungan kami dan sampaikan masukan Anda langsung kepada tim.</string>
+  <string name="vip_feature_description_support">Dapatkan akses prioritas ke dukungan dan sampaikan masukan Anda langsung kepada tim.</string>
   <string name="vip_feature_description_trivia">Dapatkan lebih banyak trivia dan wawasan tentang film dan acara yang Anda tonton.</string>
   <string name="vip_feature_description_vip_status">Pamerkan status VIP Anda di seluruh aplikasi dan situs web.</string>
   <string name="vip_feature_title_api_apps">Lebih Banyak Aplikasi Terhubung</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Lebih Banyak Statistik: Ringkasan Bulanan &amp; Tahunan</string>
   <string name="vip_feature_title_sentiment_trivia">Info Lebih Lanjut: Sentimen, Reality Check &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Sinkronkan Lebih Banyak Layanan Streaming</string>
-  <string name="vip_feature_title_support">Dukungan Lebih Baik: Forum &amp; Masukan</string>
+  <string name="vip_feature_title_support">Dukungan Lebih Baik: Bantuan &amp; Masukan</string>
   <string name="vip_feature_title_unlock">Buka potensi penuh dengan</string>
   <string name="vip_feature_title_vip_status">Status VIP</string>
   <string name="vip_text_vip_go_beyond_limits">Melampaui batas Anda</string>

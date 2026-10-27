@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">به‌طور خودکار سابقه تماشا و امتیازات خود را همگام‌سازی کنید.</string>
   <string name="description_streaming_vip_services">برای اتصال و همگام‌سازی این سرویس‌های پخش، ارتقا دهید.</string>
   <string name="description_sync_detail">برخی جزئیات در مورد این همگام‌سازی.</string>
-  <string name="description_sync_webhooks_jellyfin">پیشرفت زنده از طریق افزونه وب‌هوک جلی‌فین در راه است.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt نشان می‌دهد که در حال حاضر چه چیزی تماشا می‌کنید و چند دقیقه پس از اتمام تماشا، کتابخانه شما همگام‌سازی می‌شود. آن را یک‌بار در افزونه Webhook در Jellyfin راه‌اندازی کنید. این موارد شامل %s می‌شود.</string>
   <string name="description_sync_webhooks_live_progress">سرور رسانه شما به تراکت می‌گوید که در حال حاضر چه چیزی تماشا می‌کنید و کجا مکث کرده‌اید. اطلاعات تماشا همچنان از همگام‌سازی حاصل می‌شوند.</string>
   <string name="description_sync_webhooks_plex">این آدرس را یک بار در Plex › Settings › Webhooks بچسبانید. این شامل %s می‌شود. نیاز به Plex Pass دارد.</string>
   <string name="description_sync_webhooks_unreachable_servers">در سرورهایی که Trakt نمی‌تواند به آن‌ها دسترسی پیدا کند، تماشاها و امتیازات شما را نیز اضافه می‌کند.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">بینش‌ها</string>
   <string name="header_jellyfin_synced_servers">سرورهای Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">همگام‌سازی Jellyfin یک بتای VIP است</string>
+  <string name="header_jellyfin_webhook_steps">راه‌اندازی در Jellyfin</string>
   <string name="header_landing_discover">کشف کنید</string>
   <string name="header_landing_hero">سرگرمی بعدی شما همین الان در دسترس است.</string>
   <string name="header_landing_share">به اشتراک بگذارید</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">برنامه‌ها</string>
   <string name="label_streaming_country">کشور</string>
   <string name="label_sync_webhooks_server_count">%s سرور</string>
-  <string name="label_sync_webhooks_soon">به زودی</string>
   <string name="label_today_day">انتخاب یک روز</string>
   <string name="label_today_grouping">گروه‌بندی فعالیت‌های امروز</string>
   <string name="label_usage_limit_loading">در حال بارگذاری میزان مصرف شما</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">سال تا به امروز</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_large_screen_cards">در صفحه‌های نمایش بزرگ‌تر، همه لیست‌ها از همان طراحی کارت‌های مورد استفاده در بقیه برنامه بهره می‌برند. با انتخاب هر کدام، به جای ترک لیست، یک نمای کلی سریع نمایش داده می‌شود.</string>
-  <string name="preview_feature_description_progress_manager">دکمه پیگیری سریال با تماشای شما پر می‌شود و کشویی را با پیشرفت شما در هر فصل و قسمت باز می‌کند.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_show_ending">ردیف پایان را در جزئیات سریال نمایش می‌دهد: «تکمیل شده» وقتی داستان به سرانجام رسیده باشد، و «حل‌نشده» وقتی نرسیده باشد.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">سال 2026 شما به صورت یک حلقه قابل پیمایش با یک پرسونای بیننده، و سپس یک صفحه آمار که با آن همخوانی دارد.</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_large_screen_cards">کارت‌های صفحه نمایش بزرگ</string>
-  <string name="preview_feature_title_progress_manager">مدیریت پیشرفت</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_show_ending">پایان سریال</string>
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">سرویس پخش پیوند داده شد.</string>
   <string name="text_info_younify_service_unlinked">سرویس پخش قطع پیوند شد.</string>
   <string name="text_jellyfin_quick_connect_waiting">در انتظار تأیید شما</string>
+  <string name="text_jellyfin_webhook_step_add_destination">مسیر Dashboard &gt; Plugins &gt; Webhook را باز کرده و \"Add Generic Destination\" را انتخاب کنید.</string>
+  <string name="text_jellyfin_webhook_step_install">در Jellyfin، مسیر Dashboard &gt; Plugins &gt; Catalog را باز کنید، \"Webhook\" را نصب کرده و سرور را مجدداً راه‌اندازی کنید.</string>
+  <string name="text_jellyfin_webhook_step_item_types">در زیر item types، گزینه‌های \"Movies\" و \"Episodes\" را علامت بزنید.</string>
+  <string name="text_jellyfin_webhook_step_notification_types">در زیر notification types، فقط گزینه‌های \"Playback Start\" و \"Playback Stop\" را علامت بزنید.</string>
+  <string name="text_jellyfin_webhook_step_paste_url">آدرس بالا را در \"Webhook Url\" جای‌گذاری کنید.</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">گزینه \"Send All Properties (ignores template)\" را علامت بزنید.</string>
+  <string name="text_jellyfin_webhook_step_user_filter">در زیر user filter، کاربر Jellyfin خود را انتخاب کرده و سپس ذخیره کنید.</string>
   <string name="text_landing_discover">فیلم‌ها و برنامه‌هایی که دوست خواهید داشت و همین حالا در کجا پخش می‌شوند.</string>
   <string name="text_landing_discover_eyebrow">پیدایش کن</string>
   <string name="text_landing_hero">آنچه دیده‌اید را ردیابی کنید، مورد بعدی برای تماشا را پیدا کنید و ببینید امشب کجا در حال پخش است.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">تحلیل دقیق احساسات، آنچه واقعاً در داستان‌های واقعی رخ داده و دانستنی‌های جذاب درباره فیلم‌ها و سریال‌هایی که تماشا می‌کنید را باز کنید.</string>
   <string name="vip_feature_description_soundtrack">هر قطعه اعتبار داده شده در یک فیلم یا نمایش را مشاهده کنید و آنهایی را که می‌توانیم مطابقت دهیم، پخش کنید.</string>
   <string name="vip_feature_description_streaming_services">با پلتفرم‌های پخش آنلاین اضافی متصل شوید و همگام‌سازی کنید تا تماشای خود را در همه سرویس‌ها ردیابی کنید.</string>
-  <string name="vip_feature_description_support">دسترسی اولویت‌دار به انجمن‌های پشتیبانی ما را دریافت کنید و بازخورد خود را مستقیماً توسط تیم شنیده کنید.</string>
+  <string name="vip_feature_description_support">دسترسی اولویت‌دار به پشتیبانی دریافت کنید و بازخورد خود را مستقیماً به گوش تیم برسانید.</string>
   <string name="vip_feature_description_trivia">اطلاعات بیشتر و بینش‌های عمیق‌تر درباره فیلم‌ها و نمایش‌هایی که تماشا می‌کنید، دریافت کنید.</string>
   <string name="vip_feature_description_vip_status">وضعیت VIP خود را در سراسر برنامه‌ها و وب‌سایت به نمایش بگذارید.</string>
   <string name="vip_feature_title_api_apps">برنامه‌های متصل بیشتر</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">آمار بیشتر: خلاصه ماهانه و سالانه</string>
   <string name="vip_feature_title_sentiment_trivia">اطلاعات بیشتر: احساسات، سنجش واقعیت و دانستنی‌ها</string>
   <string name="vip_feature_title_streaming_services">همگام‌سازی سرویس‌های پخش آنلاین بیشتر</string>
-  <string name="vip_feature_title_support">پشتیبانی بهتر: انجمن و بازخورد</string>
+  <string name="vip_feature_title_support">پشتیبانی بهتر: راهنما و بازخورد</string>
   <string name="vip_feature_title_unlock">پتانسیل کامل را با</string>
   <string name="vip_feature_title_vip_status">وضعیت VIP</string>
   <string name="vip_text_vip_go_beyond_limits">فراتر از محدودیت‌های خود بروید</string>

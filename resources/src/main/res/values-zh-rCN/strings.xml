@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">自动同步您的观看历史和评分。</string>
   <string name="description_streaming_vip_services">升级即可连接并同步这些流媒体服务。</string>
   <string name="description_sync_detail">此同步的一些详细信息。</string>
-  <string name="description_sync_webhooks_jellyfin">通过 Jellyfin Webhook 插件实现的实时进度即将推出。</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt 会实时显示你当前正在观看的内容，并在你观看结束后几分钟内同步媒体库。只需在 Jellyfin Webhook 插件中设置一次即可。适用于 %s。</string>
   <string name="description_sync_webhooks_live_progress">您的媒体服务器会告诉 Trakt 您正在观看的内容以及您暂停的位置。观看记录仍然来自同步。</string>
   <string name="description_sync_webhooks_plex">将此地址粘贴到 Plex › 设置 › Webhooks 中。它覆盖 %s。需要 Plex Pass。</string>
   <string name="description_sync_webhooks_unreachable_servers">对于 Trakt 无法连接的服务器，它还会添加您的观看记录和评分。</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">洞察</string>
   <string name="header_jellyfin_synced_servers">Jellyfin 服务器</string>
   <string name="header_jellyfin_vip_upsell">Jellyfin 同步是 VIP 测试版</string>
+  <string name="header_jellyfin_webhook_steps">在 Jellyfin 中设置</string>
   <string name="header_landing_discover">发现</string>
   <string name="header_landing_hero">你的下一部心头好已上线。</string>
   <string name="header_landing_share">分享</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">剧集</string>
   <string name="label_streaming_country">国家/地区</string>
   <string name="label_sync_webhooks_server_count">%s 个服务器</string>
-  <string name="label_sync_webhooks_soon">即将推出</string>
   <string name="label_today_day">选择日期</string>
   <string name="label_today_grouping">今日动态分组</string>
   <string name="label_usage_limit_loading">正在加载您的用量</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">年至今</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
-  <string name="preview_feature_description_progress_manager">剧集的追踪按钮会随着您的观看进度逐渐填满，并可打开抽屉面板查看每季和每集的进度。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_show_ending">在剧集详情中显示结局行：故事完结时为“已完成”，未完结时为“未完结”。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
-  <string name="preview_feature_title_progress_manager">进度管理器</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_show_ending">剧集结局</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">流媒体服务已关联。</string>
   <string name="text_info_younify_service_unlinked">流媒体服务已取消关联。</string>
   <string name="text_jellyfin_quick_connect_waiting">等待您批准</string>
+  <string name="text_jellyfin_webhook_step_add_destination">打开控制台 &gt; 插件 &gt; Webhook，然后选择“Add Generic Destination”。</string>
+  <string name="text_jellyfin_webhook_step_install">在 Jellyfin 中，打开控制台 &gt; 插件 &gt; 目录，安装“Webhook”并重启服务器。</string>
+  <string name="text_jellyfin_webhook_step_item_types">在项目类型下，勾选“Movies”和“Episodes”。</string>
+  <string name="text_jellyfin_webhook_step_notification_types">在通知类型下，仅勾选“Playback Start”和“Playback Stop”。</string>
+  <string name="text_jellyfin_webhook_step_paste_url">将上方地址粘贴到“Webhook Url”中。</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">勾选“Send All Properties (ignores template)”。</string>
+  <string name="text_jellyfin_webhook_step_user_filter">在用户筛选下，选择你自己的 Jellyfin 用户，然后保存。</string>
   <string name="text_landing_discover">你会喜欢的电影和剧集以及它们当前正在哪里播放。</string>
   <string name="text_landing_discover_eyebrow">发现</string>
   <string name="text_landing_hero">追踪你看过的内容，发现接下来要看什么，并查看今晚在哪里播放。</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">解锁针对您观看的电影和剧集的详细情感分析、真实故事揭秘以及精彩冷知识。</string>
   <string name="vip_feature_description_soundtrack">查看电影或节目中列出的所有曲目，并播放我们能匹配到的。</string>
   <string name="vip_feature_description_streaming_services">连接并同步更多流媒体平台，以追踪您在所有服务上的观看情况。</string>
-  <string name="vip_feature_description_support">优先访问我们的支持论坛，并让团队直接听取您的反馈。</string>
+  <string name="vip_feature_description_support">优先获得支持，并让团队直接听取您的反馈。</string>
   <string name="vip_feature_description_trivia">获取更多关于您观看的电影和节目的趣闻和见解。</string>
   <string name="vip_feature_description_vip_status">在应用程序和网站上展示您的 VIP 身份。</string>
   <string name="vip_feature_title_api_apps">连接更多 API 应用程序</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">更多统计：月度与年度回顾</string>
   <string name="vip_feature_title_sentiment_trivia">更多信息：情感分析、真实度核验与冷知识</string>
   <string name="vip_feature_title_streaming_services">同步更多流媒体服务</string>
-  <string name="vip_feature_title_support">更好支持：论坛与反馈</string>
+  <string name="vip_feature_title_support">更好支持：帮助与反馈</string>
   <string name="vip_feature_title_unlock">解锁全部潜力，尽享</string>
   <string name="vip_feature_title_vip_status">VIP 身份</string>
   <string name="vip_text_vip_go_beyond_limits">超越您的极限</string>

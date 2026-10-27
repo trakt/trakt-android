@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Sincronitza automàticament el teu historial vist i les puntuacions.</string>
   <string name="description_streaming_vip_services">Actualitza per connectar i sincronitzar aquests serveis de streaming.</string>
   <string name="description_sync_detail">Alguns detalls sobre aquesta sincronització.</string>
-  <string name="description_sync_webhooks_jellyfin">El progrés en directe a través del connector de Webhook de Jellyfin està en camí.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt mostra el que estàs mirant ara mateix, i la teva biblioteca se sincronitza uns minuts després d\'acabar alguna cosa. Configura-ho un cop al complement Webhook de Jellyfin. Cobreix %s.</string>
   <string name="description_sync_webhooks_live_progress">El teu servidor multimèdia informa a Trakt què estàs veient ara mateix i on has fet una pausa. Les visualitzacions continuen venint de la sincronització.</string>
   <string name="description_sync_webhooks_plex">Enganxa aquesta adreça una vegada a Plex › Configuració › Webhooks. Cobreix %s. Requereix Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">En els servidors als quals Trakt no pot accedir, també afegeix les teves reproduccions i puntuacions.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Perspectives</string>
   <string name="header_jellyfin_synced_servers">Servidors Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">La sincronització de Jellyfin és una beta VIP</string>
+  <string name="header_jellyfin_webhook_steps">Configura-ho a Jellyfin</string>
   <string name="header_landing_discover">Descobreix</string>
   <string name="header_landing_hero">El teu pròxim favorit ja és a fora.</string>
   <string name="header_landing_share">Comparteix</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Sèries</string>
   <string name="label_streaming_country">País</string>
   <string name="label_sync_webhooks_server_count">%s servidors</string>
-  <string name="label_sync_webhooks_soon">Pròximament</string>
   <string name="label_today_day">Tria un dia</string>
   <string name="label_today_grouping">Agrupa l\'activitat d\'avui</string>
   <string name="label_usage_limit_loading">S\'està carregant el teu ús</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_large_screen_cards">A pantalles més grans, totes les llistes utilitzen les mateixes targetes que la resta de l\'aplicació. Si en seleccioneu una, s\'obre una vista ràpida en lloc de sortir de la llista.</string>
-  <string name="preview_feature_description_progress_manager">El botó de seguiment d\'una sèrie s\'omple a mesura que mires, i obre un calaix amb el teu progrés per temporada i episodi.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_show_ending">Mostra una fila de Finalització als detalls d\'una sèrie: Completat quan la història ha conclòs, Sense resoldre quan no.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">El teu 2026 en un carrusel desplaçable amb una personalitat d\'espectador, i després una pàgina d\'estadístiques amb el mateix estil.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_large_screen_cards">Targetes per a pantalles grans</string>
-  <string name="preview_feature_title_progress_manager">Gestor de progrés</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_show_ending">Finalització de la sèrie</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">El servei de streaming s\'ha vinculat.</string>
   <string name="text_info_younify_service_unlinked">El servei de streaming s\'ha desvinculat.</string>
   <string name="text_jellyfin_quick_connect_waiting">Esperant la teva aprovació</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Obre Tauler de control &gt; Complements &gt; Webhook i tria \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">A Jellyfin, obre Tauler de control &gt; Complements &gt; Catàleg, instal·la \"Webhook\" i reinicia el servidor.</string>
+  <string name="text_jellyfin_webhook_step_item_types">A tipus d\'elements, marca \"Movies\" i \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">A tipus de notificació, marca només \"Playback Start\" i \"Playback Stop\".</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Enganxa l\'adreça anterior a \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Marca \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">Al filtre d\'usuaris, tria el teu usuari de Jellyfin i desa.</string>
   <string name="text_landing_discover">pel·lícules i sèries que t\'encantaran i on les pots veure ara mateix.</string>
   <string name="text_landing_discover_eyebrow">Troba-ho</string>
   <string name="text_landing_hero">Fes un seguiment del que has vist, troba què veure a continuació i descobreix on s\'estrena aquesta nit.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Desbloqueja una anàlisi de sentiments detallada, què va passar realment en les històries reals i curiositats fascinants sobre les pel·lícules i sèries que veus.</string>
   <string name="vip_feature_description_soundtrack">Consulta totes les pistes acreditades en una pel·lícula o sèrie, i reprodueix les que puguem trobar.</string>
   <string name="vip_feature_description_streaming_services">Connecta i sincronitza amb plataformes de streaming addicionals per fer un seguiment de les teves visualitzacions a tots els serveis.</string>
-  <string name="vip_feature_description_support">Obtén accés prioritari als nostres fòrums de suport i fes que el teu feedback sigui escoltat directament per l\'equip.</string>
+  <string name="vip_feature_description_support">Obtén accés prioritari al suport i fes que el teu feedback sigui escoltat directament per l\'equip.</string>
   <string name="vip_feature_description_trivia">Obtén més curiositats i informació sobre les pel·lícules i sèries que veus.</string>
   <string name="vip_feature_description_vip_status">Mostra el teu estat VIP a totes les aplicacions i al lloc web.</string>
   <string name="vip_feature_title_api_apps">Més APPs connectades</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Més estadístiques: resums mensuals i anuals</string>
   <string name="vip_feature_title_sentiment_trivia">Més informació: sentiments, comprovació de la realitat i curiositats</string>
   <string name="vip_feature_title_streaming_services">Sincronitza més serveis de streaming</string>
-  <string name="vip_feature_title_support">Millor suport: Fòrum i suggeriments</string>
+  <string name="vip_feature_title_support">Millor suport: Ajuda i suggeriments</string>
   <string name="vip_feature_title_unlock">Desbloqueja tot el potencial amb</string>
   <string name="vip_feature_title_vip_status">Estat VIP</string>
   <string name="vip_text_vip_go_beyond_limits">Vés més enllà dels teus límits</string>

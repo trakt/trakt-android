@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">مزامنة سجل المشاهدة والتقييمات تلقائيًا.</string>
   <string name="description_streaming_vip_services">قم بالترقية للاتصال بخدمات البث هذه ومزامنتها.</string>
   <string name="description_sync_detail">بعض التفاصيل حول هذه المزامنة.</string>
-  <string name="description_sync_webhooks_jellyfin">التقدم المباشر عبر إضافة ويب هوك Jellyfin قادم.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">يعرض Trakt ما تشاهده الآن، وتتم مزامنة مكتبتك بعد دقائق قليلة من إنهائك للمشاهدة. اضبطه لمرة واحدة في ملحق Jellyfin Webhook. وهو يغطي %s.</string>
   <string name="description_sync_webhooks_live_progress">يخبر خادم الوسائط الخاص بك Trakt بما تشاهده الآن ومكان التوقف. تستمر المشاهدات في القدوم من المزامنة.</string>
   <string name="description_sync_webhooks_plex">الصق هذا العنوان مرة واحدة في Plex &gt; الإعدادات &gt; Webhooks. يغطي %s. يتطلب Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">على الخوادم التي لا يمكن لـ Trakt الوصول إليها، يقوم أيضًا بإضافة مشاهداتك وتقييماتك.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">رؤى</string>
   <string name="header_jellyfin_synced_servers">خوادم Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">مزامنة Jellyfin هي نسخة تجريبية لـ VIP</string>
+  <string name="header_jellyfin_webhook_steps">الإعداد في Jellyfin</string>
   <string name="header_landing_discover">اكتشف</string>
   <string name="header_landing_hero">مفضلتك التالية بانتظارك.</string>
   <string name="header_landing_share">شارك</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">عروض</string>
   <string name="label_streaming_country">البلد</string>
   <string name="label_sync_webhooks_server_count">%s خوادم</string>
-  <string name="label_sync_webhooks_soon">قريبًا</string>
   <string name="label_today_day">اختر يومًا</string>
   <string name="label_today_grouping">تجميع أنشطة اليوم</string>
   <string name="label_usage_limit_loading">جارٍ تحميل استخدامك</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">منذ بداية العام</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
-  <string name="preview_feature_description_progress_manager">يمتلئ زر المتابعة في العرض أثناء مشاهدتك، ويفتح قائمة جانبية تعرض تقدمك لكل موسم وحلقة.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_show_ending">يعرض صفًا لـ \"النهاية\" في تفاصيل العرض: \"مكتمل\" عندما تنتهي القصة، و\"غير محسوم\" عندما لا تنتهي.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
-  <string name="preview_feature_title_progress_manager">مدير التقدم</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_show_ending">نهاية العرض</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">تم ربط خدمة البث.</string>
   <string name="text_info_younify_service_unlinked">تم إلغاء ربط خدمة البث.</string>
   <string name="text_jellyfin_quick_connect_waiting">في انتظار موافقتك</string>
+  <string name="text_jellyfin_webhook_step_add_destination">افتح Dashboard &gt; Plugins &gt; Webhook واختر \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">في Jellyfin، افتح Dashboard &gt; Plugins &gt; Catalog، وثبّت \"Webhook\" ثم أعد تشغيل الخادم.</string>
+  <string name="text_jellyfin_webhook_step_item_types">ضمن أنواع العناصر، حدد \"Movies\" و\"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">ضمن أنواع الإشعارات، حدد \"Playback Start\" و\"Playback Stop\" فقط.</string>
+  <string name="text_jellyfin_webhook_step_paste_url">الصق العنوان أعلاه في \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">حدد \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">ضمن فلتر المستخدمين، اختر مستخدم Jellyfin الخاص بك، ثم احفظ.</string>
   <string name="text_landing_discover">أفلام ومسلسلات ستحبها ومعرفة أين تُعرض الآن.</string>
   <string name="text_landing_discover_eyebrow">اعثر عليه</string>
   <string name="text_landing_hero">تتبع ما شاهدته، واكتشف ما ستشاهده لاحقًا، واعرف أين يتم بثه الليلة.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">احصل على تحليل مفصل للمشاعر، وتعرّف على ما حدث بالفعل في القصص الحقيقية، ومعلومات شيقة حول الأفلام والعروض التي تشاهدها.</string>
   <string name="vip_feature_description_soundtrack">شاهد كل مقطع موسيقي معتمد في فيلم أو عرض، وقم بتشغيل تلك التي يمكننا مطابقتها.</string>
   <string name="vip_feature_description_streaming_services">قم بالاتصال والمزامنة مع منصات البث الإضافية لتتبع مشاهدتك عبر جميع الخدمات.</string>
-  <string name="vip_feature_description_support">احصل على أولوية الوصول إلى منتديات الدعم الخاصة بنا واستمع إلى تعليقاتك مباشرة من قبل الفريق.</string>
+  <string name="vip_feature_description_support">احصل على أولوية الوصول إلى الدعم لتصل تعليقاتك مباشرة إلى الفريق.</string>
   <string name="vip_feature_description_trivia">احصل على المزيد من المعلومات التافهة والأفكار حول الأفلام والعروض التي تشاهدها.</string>
   <string name="vip_feature_description_vip_status">أظهر حالة VIP الخاصة بك عبر التطبيقات وموقع الويب.</string>
   <string name="vip_feature_title_api_apps">المزيد من التطبيقات المتصلة</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">المزيد من الإحصائيات: خلاصة شهرية وسنوية</string>
   <string name="vip_feature_title_sentiment_trivia">مزيد من المعلومات: المشاعر، التحقق من الواقع والمعلومات الطريفة</string>
   <string name="vip_feature_title_streaming_services">مزامنة المزيد من خدمات البث</string>
-  <string name="vip_feature_title_support">دعم أفضل: المنتدى والتعليقات</string>
+  <string name="vip_feature_title_support">دعم أفضل: المساعدة والتعليقات</string>
   <string name="vip_feature_title_unlock">أطلق العنان للإمكانات الكاملة مع</string>
   <string name="vip_feature_title_vip_status">حالة VIP</string>
   <string name="vip_text_vip_go_beyond_limits">تجاوز حدودك</string>

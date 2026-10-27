@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Sincroniza automáticamente tu historial de reproducciones y calificaciones.</string>
   <string name="description_streaming_vip_services">Actualiza para conectar y sincronizar estos servicios de streaming.</string>
   <string name="description_sync_detail">Algunos detalles sobre esta sincronización.</string>
-  <string name="description_sync_webhooks_jellyfin">El progreso en vivo a través del plugin Webhook de Jellyfin está en camino.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt muestra lo que estás viendo ahora mismo y tu biblioteca se sincroniza unos minutos después de que termines algo. Configúralo una vez en el plugin Webhook de Jellyfin. Cubre %s.</string>
   <string name="description_sync_webhooks_live_progress">Tu servidor multimedia le dice a Trakt qué estás viendo ahora mismo y dónde pausaste. Los registros de visualización aún provienen de la sincronización.</string>
   <string name="description_sync_webhooks_plex">Pega esta dirección una vez en Plex \nRuta › Ajustes › Webhooks. Cubre %s. Requiere Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">En los servidores a los que Trakt no puede acceder, también añade tus reproducciones y calificaciones.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Análisis</string>
   <string name="header_jellyfin_synced_servers">Servidores de Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">La sincronización de Jellyfin es una beta VIP</string>
+  <string name="header_jellyfin_webhook_steps">Configurar en Jellyfin</string>
   <string name="header_landing_discover">Descubre</string>
   <string name="header_landing_hero">Tu próximo favorito ya te espera.</string>
   <string name="header_landing_share">Comparte</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Series</string>
   <string name="label_streaming_country">País</string>
   <string name="label_sync_webhooks_server_count">%s servidores</string>
-  <string name="label_sync_webhooks_soon">Próximamente</string>
   <string name="label_today_day">Elegir un día</string>
   <string name="label_today_grouping">Agrupar la actividad de hoy</string>
   <string name="label_usage_limit_loading">Cargando tu uso</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">En lo que va del año</string>
   <string name="preview_feature_description_edit_mode">Habilita los controles para ocultar o mostrar secciones configurables en toda la aplicación.</string>
   <string name="preview_feature_description_large_screen_cards">En pantallas más grandes, todas las listas usan las mismas tarjetas que el resto de la aplicación. Al seleccionar una, se abre un vistazo rápido en lugar de salir de la lista.</string>
-  <string name="preview_feature_description_progress_manager">El botón de seguimiento de una serie se va llenando a medida que la ves y abre un panel con tu progreso por temporada y episodio.</string>
   <string name="preview_feature_description_rewatch">Inicia sesiones de re-visualización para programas que ya has visto, registra o marca los episodios como vistos directamente desde el cajón de la sesión.</string>
   <string name="preview_feature_description_show_ending">Muestra una fila de Finalización en los detalles de una serie: Completa cuando la historia concluyó, Inconclusa cuando no lo hizo.</string>
   <string name="preview_feature_description_soundtrack">Añade una sección de banda sonora a las páginas de películas y series, con reproducción donde se pueda emparejar una pista.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Tu 2026 como un resumen interactivo desplazable con una personalidad de espectador, y luego una página de estadísticas diseñada para que coincida.</string>
   <string name="preview_feature_title_edit_mode">Modo de edición</string>
   <string name="preview_feature_title_large_screen_cards">Tarjetas de pantalla grande</string>
-  <string name="preview_feature_title_progress_manager">Gestor de progreso</string>
   <string name="preview_feature_title_rewatch">Re-visualización</string>
   <string name="preview_feature_title_show_ending">Finalización de la serie</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">El servicio de streaming ha sido vinculado.</string>
   <string name="text_info_younify_service_unlinked">El servicio de streaming ha sido desvinculado.</string>
   <string name="text_jellyfin_quick_connect_waiting">Esperando a que lo apruebes</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Abre Dashboard &gt; Plugins &gt; Webhook y elige \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">En Jellyfin, abre Dashboard &gt; Plugins &gt; Catalog, instala \"Webhook\" y reinicia el servidor.</string>
+  <string name="text_jellyfin_webhook_step_item_types">En tipos de elemento, marca \"Movies\" y \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">En tipos de notificación, marca solo \"Playback Start\" y \"Playback Stop\".</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Pega la dirección de arriba en \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Marca \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">En el filtro de usuario, elige tu propio usuario de Jellyfin y luego guarda.</string>
   <string name="text_landing_discover">películas y series que te encantarán y dónde se están transmitiendo ahora mismo.</string>
   <string name="text_landing_discover_eyebrow">Encuéntralo</string>
   <string name="text_landing_hero">Haz seguimiento de lo que has visto, encuentra qué ver a continuación y descubre dónde se transmite esta noche.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Desbloquea un análisis de sentimiento detallado, lo que realmente sucedió en las historias reales y curiosidades fascinantes sobre las películas y series que ves.</string>
   <string name="vip_feature_description_soundtrack">Ve cada pista acreditada en una película o serie, y reproduce las que podamos emparejar.</string>
   <string name="vip_feature_description_streaming_services">Conecta y sincroniza con plataformas de streaming adicionales para llevar un registro de tus visualizaciones en todos los servicios.</string>
-  <string name="vip_feature_description_support">Obtén acceso prioritario a nuestros foros de soporte y haz que tu opinión sea escuchada directamente por el equipo.</string>
+  <string name="vip_feature_description_support">Obtén acceso prioritario al soporte y haz que tu opinión sea escuchada directamente por el equipo.</string>
   <string name="vip_feature_description_trivia">Obtén más curiosidades e información sobre las películas y series que ves.</string>
   <string name="vip_feature_description_vip_status">Muestra tu estado VIP en todas las apps y el sitio web.</string>
   <string name="vip_feature_title_api_apps">Más apps conectadas</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Más estadísticas: Resumen Mensual y Anual</string>
   <string name="vip_feature_title_sentiment_trivia">Más información: Sentimiento, Verificación de realidad y Curiosidades</string>
   <string name="vip_feature_title_streaming_services">Sincronizar más servicios de streaming</string>
-  <string name="vip_feature_title_support">Mejor soporte: Foro y comentarios</string>
+  <string name="vip_feature_title_support">Mejor soporte: Ayuda y comentarios</string>
   <string name="vip_feature_title_unlock">Desbloquea todo el potencial con</string>
   <string name="vip_feature_title_vip_status">Estado VIP</string>
   <string name="vip_text_vip_go_beyond_limits">Supera tus límites</string>

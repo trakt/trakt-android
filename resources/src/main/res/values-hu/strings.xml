@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Automatikusan szinkronizálja megtekintett előzményeit és értékeléseit.</string>
   <string name="description_streaming_vip_services">Frissíts a csatlakozáshoz és a szinkronizáláshoz ezekkel a streaming szolgáltatásokkal.</string>
   <string name="description_sync_detail">Néhány részlet erről a szinkronizálásról.</string>
-  <string name="description_sync_webhooks_jellyfin">Az élő előrehaladás a Jellyfin Webhook beépülő modulon keresztül hamarosan elérhető lesz.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">A Trakt mutatja, mit nézel éppen, a gyűjteményed pedig pár perccel azután szinkronizál, hogy befejeztél valamit. Állítsd be egyszer a Jellyfin Webhook bővítményében. A következőkre érvényes: %s.</string>
   <string name="description_sync_webhooks_live_progress">A médiaszervered elmondja a Traktnek, hogy mit nézel éppen, és hol szüneteltetted. A megtekintések továbbra is szinkronizálásból érkeznek.</string>
   <string name="description_sync_webhooks_plex">Illeszd be ezt a címet egyszer a Plex › Beállítások › Webhooks menüpontba. Ez a %s szerverre érvényes. Plex Pass szükséges.</string>
   <string name="description_sync_webhooks_unreachable_servers">Azoknál a szervereknél, amelyeket a Trakt nem ér el, szintén hozzáadja a megtekintéseidet és értékeléseidet.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Betekintések</string>
   <string name="header_jellyfin_synced_servers">Jellyfin szerverek</string>
   <string name="header_jellyfin_vip_upsell">A Jellyfin szinkronizálás VIP béta</string>
+  <string name="header_jellyfin_webhook_steps">Beállítás a Jellyfinben</string>
   <string name="header_landing_discover">Felfedezés</string>
   <string name="header_landing_hero">A következő kedvenced már vár rád.</string>
   <string name="header_landing_share">Megosztás</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Sorozatok</string>
   <string name="label_streaming_country">Ország</string>
   <string name="label_sync_webhooks_server_count">%s szerver</string>
-  <string name="label_sync_webhooks_soon">Hamarosan</string>
   <string name="label_today_day">Válassz napot</string>
   <string name="label_today_grouping">Mai tevékenység csoportosítása</string>
   <string name="label_usage_limit_loading">Használati adatok betöltése</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Éves összesítés</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_large_screen_cards">Nagyobb képernyőkön minden lista ugyanazokat a kártyákat használja, mint az alkalmazás többi része. Egy elem kiválasztása gyors áttekintést nyit meg ahelyett, hogy elhagyná a listát.</string>
-  <string name="preview_feature_description_progress_manager">A sorozat követése gomb feltöltődik, ahogy nézed az epizódokat, és megnyit egy panelt az évadonkénti és epizódonkénti előrehaladásoddal.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_show_ending">Megjelenít egy „Befejezés” sort a sorozat részleteiben: „Befejezett”, ha a történet lezárult, „Lezáratlan”, ha nem.</string>
   <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">A 2026-os éved egy görgethető videóként, egy nézői személyiséggel, majd egy hozzá illeszkedő statisztikai oldallal.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_large_screen_cards">Nagyképernyős kártyák</string>
-  <string name="preview_feature_title_progress_manager">Előrehaladás-kezelő</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_show_ending">Sorozat befejezése</string>
   <string name="preview_feature_title_soundtrack">Filmzene</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">A streaming szolgáltatás összekapcsolva.</string>
   <string name="text_info_younify_service_unlinked">A streaming szolgáltatás leválasztva.</string>
   <string name="text_jellyfin_quick_connect_waiting">Jóváhagyásra várunk</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Nyisd meg a Dashboard &gt; Plugins &gt; Webhook menüpontot, és válaszd az \"Add Generic Destination\" lehetőséget.</string>
+  <string name="text_jellyfin_webhook_step_install">A Jellyfinben nyisd meg a Dashboard &gt; Plugins &gt; Catalog menüpontot, telepítsd a \"Webhook\" bővítményt, és indítsd újra a szervert.</string>
+  <string name="text_jellyfin_webhook_step_item_types">Az elemtípusok alatt jelöld be a \"Movies\" és az \"Episodes\" lehetőséget.</string>
+  <string name="text_jellyfin_webhook_step_notification_types">Az értesítési típusok alatt csak a \"Playback Start\" és a \"Playback Stop\" lehetőséget jelöld be.</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Illeszd be a fenti címet a \"Webhook Url\" mezőbe.</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Jelöld be a \"Send All Properties (ignores template)\" lehetőséget.</string>
+  <string name="text_jellyfin_webhook_step_user_filter">A felhasználói szűrőnél válaszd ki a saját Jellyfin-felhasználódat, majd mentsd el.</string>
   <string name="text_landing_discover">filmeket és sorozatokat, amiket imádni fogsz, és tudd meg, hogy hol streamelhetők most.</string>
   <string name="text_landing_discover_eyebrow">Találd meg</string>
   <string name="text_landing_hero">Kövesd nyomon, mit láttál, találd meg, mit nézz meg legközelebb, és nézd meg, hol streamelhető ma este.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Oldd fel a részletes hangulatelemzést, hogy mi történt valójában az igaz történetekben, és a lenyűgöző érdekességeket a nézett filmekről és sorozatokról.</string>
   <string name="vip_feature_description_soundtrack">Tekintse meg az összes, egy filmben vagy műsorban feltüntetett számot, és játssza le azokat, amelyeket párosítani tudunk.</string>
   <string name="vip_feature_description_streaming_services">Kapcsolódj és szinkronizálj további streaming platformokkal, hogy nyomon követhesd a nézési szokásaidat az összes szolgáltatásban.</string>
-  <string name="vip_feature_description_support">Prioritásos hozzáférést kapsz támogatási fórumainkhoz, és visszajelzéseidet közvetlenül a csapat hallja meg.</string>
+  <string name="vip_feature_description_support">Prioritásos hozzáférést kapsz a támogatáshoz, és visszajelzéseidet közvetlenül a csapat hallja meg.</string>
   <string name="vip_feature_description_trivia">Tudj meg több érdekességet és betekintést a filmekről és sorozatokról, amiket nézel.</string>
   <string name="vip_feature_description_vip_status">Mutasd meg VIP státuszodat az alkalmazásokban és a weboldalon.</string>
   <string name="vip_feature_title_api_apps">Több alkalmazás csatlakoztatva</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Több statisztika: Havi és Éves Összefoglaló</string>
   <string name="vip_feature_title_sentiment_trivia">Több infó: Hangulat, Valóságellenőrzés és Trivia</string>
   <string name="vip_feature_title_streaming_services">Több streaming szolgáltatás szinkronizálása</string>
-  <string name="vip_feature_title_support">Jobb támogatás: Fórum és visszajelzés</string>
+  <string name="vip_feature_title_support">Jobb támogatás: Súgó és visszajelzés</string>
   <string name="vip_feature_title_unlock">A teljes potenciál feloldása a következővel:</string>
   <string name="vip_feature_title_vip_status">VIP státusz</string>
   <string name="vip_text_vip_go_beyond_limits">Lépd át a határaidat</string>

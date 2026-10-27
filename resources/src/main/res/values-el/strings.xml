@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Αυτόματος συγχρονισμός του ιστορικού παρακολούθησης και των αξιολογήσεών σας.</string>
   <string name="description_streaming_vip_services">Αναβαθμίστε για να συνδέσετε και να συγχρονίσετε αυτές τις υπηρεσίες streaming.</string>
   <string name="description_sync_detail">Ορισμένες λεπτομέρειες σχετικά με αυτόν τον συγχρονισμό.</string>
-  <string name="description_sync_webhooks_jellyfin">Η ζωντανή πρόοδος μέσω του plugin Jellyfin Webhook έρχεται σύντομα.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Το Trakt εμφανίζει τι παρακολουθείτε αυτή τη στιγμή, και η βιβλιοθήκη σας συγχρονίζεται λίγα λεπτά αφού ολοκληρώσετε κάτι. Ρυθμίστε το μία φορά στο πρόσθετο Webhook του Jellyfin. Καλύπτει %s.</string>
   <string name="description_sync_webhooks_live_progress">Ο διακομιστής πολυμέσων σας ενημερώνει το Trakt για το τι παρακολουθείτε αυτή τη στιγμή και πού σταματήσατε. Οι παρακολουθήσεις εξακολουθούν να προέρχονται από τον συγχρονισμό.</string>
   <string name="description_sync_webhooks_plex">Επικολλήστε αυτή τη διεύθυνση μία φορά στο Plex › Ρυθμίσεις › Webhooks. Καλύπτει %s. Απαιτείται Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">Στους διακομιστές που το Trakt δεν μπορεί να προσεγγίσει, προσθέτει επίσης τις παρακολουθήσεις και τις αξιολογήσεις σας.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Αναλύσεις</string>
   <string name="header_jellyfin_synced_servers">Διακομιστές Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">Ο συγχρονισμός Jellyfin είναι VIP beta</string>
+  <string name="header_jellyfin_webhook_steps">Ρύθμιση στο Jellyfin</string>
   <string name="header_landing_discover">Ανακαλύψτε</string>
   <string name="header_landing_hero">Το επόμενο αγαπημένο σου σε περιμένει.</string>
   <string name="header_landing_share">Μοιραστείτε</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Σειρές</string>
   <string name="label_streaming_country">Χώρα</string>
   <string name="label_sync_webhooks_server_count">%s διακομιστές</string>
-  <string name="label_sync_webhooks_soon">Σύντομα</string>
   <string name="label_today_day">Επιλέξτε μια ημέρα</string>
   <string name="label_today_grouping">Ομαδοποίηση δραστηριότητας σήμερα</string>
   <string name="label_usage_limit_loading">Φόρτωση της χρήσης σας</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
   <string name="preview_feature_description_large_screen_cards">Σε μεγαλύτερες οθόνες, όλες οι λίστες χρησιμοποιούν τις ίδιες κάρτες με την υπόλοιπη εφαρμογή. Η επιλογή μιας ανοίγει μια γρήγορη επισκόπηση αντί να αποχωρήσετε από τη λίστα.</string>
-  <string name="preview_feature_description_progress_manager">Το κουμπί παρακολούθησης σε μια σειρά γεμίζει καθώς παρακολουθείτε και ανοίγει ένα πλαίσιο με την πρόοδό σας ανά σεζόν και επεισόδιο.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_show_ending">Εμφανίζει μια γραμμή Τέλος στις λεπτομέρειες μιας σειράς: «Ολοκληρώθηκε» όταν η ιστορία ολοκληρώθηκε, «Άλυτο» όταν δεν ολοκληρώθηκε.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Το 2026 σας ως μια κυλιόμενη ταινία με ένα προφίλ θεατή, και στη συνέχεια μια σελίδα στατιστικών σχεδιασμένη να ταιριάζει.</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_large_screen_cards">Κάρτες Μεγάλης Οθόνης</string>
-  <string name="preview_feature_title_progress_manager">Διαχειριστής προόδου</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_show_ending">Τέλος σειράς</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Η υπηρεσία ροής έχει συνδεθεί.</string>
   <string name="text_info_younify_service_unlinked">Η υπηρεσία ροής έχει αποσυνδεθεί.</string>
   <string name="text_jellyfin_quick_connect_waiting">Αναμονή για την έγκρισή σας</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Ανοίξτε το Dashboard &gt; Plugins &gt; Webhook και επιλέξτε \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">Στο Jellyfin, ανοίξτε το Dashboard &gt; Plugins &gt; Catalog, εγκαταστήστε το \"Webhook\" και επανεκκινήστε τον διακομιστή.</string>
+  <string name="text_jellyfin_webhook_step_item_types">Στους τύπους στοιχείων, επιλέξτε τα \"Movies\" και \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">Στους τύπους ειδοποιήσεων, επιλέξτε μόνο τα \"Playback Start\" και \"Playback Stop\".</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Επικολλήστε την παραπάνω διεύθυνση στο \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Επιλέξτε το \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">Στο φίλτρο χρήστη, επιλέξτε τον δικό σας χρήστη Jellyfin και, στη συνέχεια, αποθηκεύστε.</string>
   <string name="text_landing_discover">ταινίες και σειρές που θα λατρέψετε και πού προβάλλονται αυτή τη στιγμή.</string>
   <string name="text_landing_discover_eyebrow">Βρες το</string>
   <string name="text_landing_hero">Παρακολούθησε τι έχεις δει, βρες τι να παρακολουθήσεις μετά, και δες πού μεταδίδεται απόψε.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Ξεκλειδώστε λεπτομερή ανάλυση συναισθήματος, το τι συνέβη πραγματικά σε αληθινές ιστορίες και συναρπαστικά trivia για τις ταινίες και τις σειρές που παρακολουθείτε.</string>
   <string name="vip_feature_description_soundtrack">Δείτε κάθε κομμάτι που αναφέρεται σε μια ταινία ή εκπομπή και παίξτε αυτά που μπορούμε να αντιστοιχίσουμε.</string>
   <string name="vip_feature_description_streaming_services">Συνδέστε και συγχρονίστε με επιπλέον πλατφόρμες streaming για να παρακολουθείτε τις προβολές σας σε όλες τις υπηρεσίες.</string>
-  <string name="vip_feature_description_support">Αποκτήστε προτεραιότητα πρόσβασης στα φόρουμ υποστήριξής μας και ακούστε τα σχόλιά σας απευθείας από την ομάδα.</string>
+  <string name="vip_feature_description_support">Αποκτήστε προτεραιότητα πρόσβασης στην υποστήριξη και κάντε τα σχόλιά σας να ακουστούν απευθείας από την ομάδα.</string>
   <string name="vip_feature_description_trivia">Αποκτήστε περισσότερες πληροφορίες και γνώσεις για τις ταινίες και τις σειρές που παρακολουθείτε.</string>
   <string name="vip_feature_description_vip_status">Αναδείξτε την κατάσταση VIP σας σε όλες τις εφαρμογές και τον ιστότοπο.</string>
   <string name="vip_feature_title_api_apps">Περισσότερες συνδεδεμένες εφαρμογές API</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Περισσότερα Στατιστικά: Μηνιαία &amp; Ετήσια Ανακεφαλαίωση</string>
   <string name="vip_feature_title_sentiment_trivia">Περισσότερες πληροφορίες: Συναισθηματική ανάλυση, Έλεγχος πραγματικότητας &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Συγχρονισμός περισσότερων υπηρεσιών streaming</string>
-  <string name="vip_feature_title_support">Καλύτερη υποστήριξη: Φόρουμ &amp; Σχόλια</string>
+  <string name="vip_feature_title_support">Καλύτερη υποστήριξη: Βοήθεια &amp; Σχόλια</string>
   <string name="vip_feature_title_unlock">Ξεκλειδώστε πλήρως τις δυνατότητες με</string>
   <string name="vip_feature_title_vip_status">Κατάσταση VIP</string>
   <string name="vip_text_vip_go_beyond_limits">Ξεπεράστε τα όριά σας</string>

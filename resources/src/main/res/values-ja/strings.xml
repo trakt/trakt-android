@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">視聴履歴と評価を自動的に同期します。</string>
   <string name="description_streaming_vip_services">これらのストリーミングサービスを接続・同期するにはアップグレードしてください。</string>
   <string name="description_sync_detail">この同期に関するいくつかの詳細。</string>
-  <string name="description_sync_webhooks_jellyfin">Jellyfin Webhookプラグインを介したライブ進行状況は近日中に提供されます。</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Traktには現在視聴中の作品が表示され、見終わった数分後にライブラリが同期されます。Jellyfin Webhookプラグインで一度設定するだけで完了します。対象: %s。</string>
   <string name="description_sync_webhooks_live_progress">メディアサーバーは、現在視聴しているものや一時停止した場所をTraktに通知します。視聴記録は引き続き同期から取得されます。</string>
   <string name="description_sync_webhooks_plex">このアドレスをPlexの「設定」›「Webhooks」に一度貼り付けてください。%sをカバーします。Plex Passが必要です。</string>
   <string name="description_sync_webhooks_unreachable_servers">Traktがアクセスできないサーバーでは、視聴履歴と評価も追加されます。</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">インサイト</string>
   <string name="header_jellyfin_synced_servers">Jellyfinサーバー</string>
   <string name="header_jellyfin_vip_upsell">Jellyfin同期はVIPベータ版です</string>
+  <string name="header_jellyfin_webhook_steps">Jellyfinで設定</string>
   <string name="header_landing_discover">発見</string>
   <string name="header_landing_hero">あなたの次のお気に入りは、もうそこに。</string>
   <string name="header_landing_share">共有</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">番組</string>
   <string name="label_streaming_country">国</string>
   <string name="label_sync_webhooks_server_count">%sのサーバー</string>
-  <string name="label_sync_webhooks_soon">近日公開</string>
   <string name="label_today_day">日付を選択</string>
   <string name="label_today_grouping">今日のアクティビティをグループ化</string>
   <string name="label_usage_limit_loading">利用状況を読み込み中</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_large_screen_cards">大画面では、すべてのリストでアプリの他の部分と同じカードを使用します。いずれかを選択すると、リストを離れることなくクイック概要が開きます。</string>
-  <string name="preview_feature_description_progress_manager">番組のトラックボタンは視聴するにつれて満たされ、シーズンやエピソードごとの進捗を管理できるドロワーが開きます。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_show_ending">作品の詳細に完結情報行を表示します。ストーリーが完結した場合は「完結済み」、しなかった場合は「未完」と表示されます。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">視聴者ペルソナに基づいたスクロールリール形式の2026年、そしてそれに合わせたスタイルの統計ページです。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_large_screen_cards">大画面カード</string>
-  <string name="preview_feature_title_progress_manager">進捗マネージャー</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_show_ending">完結情報</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">ストリーミングサービスがリンクされました。</string>
   <string name="text_info_younify_service_unlinked">ストリーミングサービスのリンクが解除されました。</string>
   <string name="text_jellyfin_quick_connect_waiting">承認をお待ちしています</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Dashboard &gt; Plugins &gt; Webhook を開き、「Add Generic Destination」を選択します。</string>
+  <string name="text_jellyfin_webhook_step_install">Jellyfinで、Dashboard &gt; Plugins &gt; Catalog を開き、「Webhook」をインストールしてサーバーを再起動します。</string>
+  <string name="text_jellyfin_webhook_step_item_types">item typesで、「Movies」と「Episodes」にチェックを入れます。</string>
+  <string name="text_jellyfin_webhook_step_notification_types">notification typesで、「Playback Start」と「Playback Stop」のみにチェックを入れます。</string>
+  <string name="text_jellyfin_webhook_step_paste_url">上記のアドレスを「Webhook Url」に貼り付けます。</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">「Send All Properties (ignores template)」にチェックを入れます。</string>
+  <string name="text_jellyfin_webhook_step_user_filter">user filterでご自身のJellyfinユーザーを選択し、保存します。</string>
   <string name="text_landing_discover">気に入った映画や番組、そして今すぐどこでストリーミングされているかを発見できます。</string>
   <string name="text_landing_discover_eyebrow">見つける</string>
   <string name="text_landing_hero">視聴した作品を記録し、次に見るべき作品を見つけ、今夜どこで配信されているか確認しましょう。</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">視聴する映画や番組に関する詳細な感情分析、実話で実際に何が起こったのか、そして魅力的なトリビアをアンロックします。</string>
   <string name="vip_feature_description_soundtrack">映画や番組にクレジットされているすべてのトラックを表示し、マッチするものを再生できます。</string>
   <string name="vip_feature_description_streaming_services">追加のストリーミングプラットフォームと接続・同期して、すべてのサービスでの視聴を追跡できます。</string>
-  <string name="vip_feature_description_support">サポートフォーラムへの優先アクセス権を取得し、あなたのフィードバックをチームに直接届けましょう。</string>
+  <string name="vip_feature_description_support">サポートへの優先アクセス権を取得し、あなたのフィードバックをチームに直接届けましょう。</string>
   <string name="vip_feature_description_trivia">視聴する映画や番組について、より多くのトリビアや洞察を得られます。</string>
   <string name="vip_feature_description_vip_status">アプリやウェブサイト全体でVIPステータスを誇示しましょう。</string>
   <string name="vip_feature_title_api_apps">より多くのアプリを接続</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">詳細な統計: 月間＆年間まとめ</string>
   <string name="vip_feature_title_sentiment_trivia">詳細情報: 感情分析、リアリティチェック、トリビア</string>
   <string name="vip_feature_title_streaming_services">より多くのストリーミングサービスと同期</string>
-  <string name="vip_feature_title_support">より良いサポート: フォーラム＆フィードバック</string>
+  <string name="vip_feature_title_support">より良いサポート: ヘルプ＆フィードバック</string>
   <string name="vip_feature_title_unlock">で最大限の可能性をアンロック</string>
   <string name="vip_feature_title_vip_status">VIPステータス</string>
   <string name="vip_text_vip_go_beyond_limits">限界のその先へ</string>
