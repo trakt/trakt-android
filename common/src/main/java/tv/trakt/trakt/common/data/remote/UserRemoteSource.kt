@@ -7,6 +7,7 @@ import org.openapitools.client.models.PutUsersSaveSettingsRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsing
 import org.openapitools.client.models.PutUsersSaveSettingsRequestUser
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.networking.UserStatsDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3UserMatchResponse
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class UserRemoteSource(
@@ -67,6 +69,16 @@ class UserRemoteSource(
 
     suspend fun getSyncConnections(): List<V3SyncConnectionResponse> {
         return v3Api.getSyncConnections()
+    }
+
+    /**
+     * @param type `movie` or `show` limits the score to one media type. Null counts both.
+     */
+    suspend fun getUserMatch(
+        userSlug: SlugId,
+        type: String?,
+    ): V3UserMatchResponse {
+        return v3Api.getUserMatch(userSlug.value, type)
     }
 
     suspend fun updateProfileLocation(location: String?) {

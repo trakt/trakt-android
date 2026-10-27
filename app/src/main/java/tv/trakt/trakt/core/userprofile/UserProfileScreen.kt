@@ -89,6 +89,11 @@ import tv.trakt.trakt.core.user.model.UserFollowRequest
 import tv.trakt.trakt.core.userprofile.sections.favorites.UserProfileFavoritesView
 import tv.trakt.trakt.core.userprofile.sections.history.UserProfileHistoryView
 import tv.trakt.trakt.core.userprofile.sections.lists.UserProfileListsView
+import tv.trakt.trakt.core.userprofile.sections.match.UserMatchState
+import tv.trakt.trakt.core.userprofile.sections.match.UserMatchViewModel
+import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPill
+import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPreviewData
+import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchSheet
 import tv.trakt.trakt.core.userprofile.sections.social.UserProfileSocialView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -122,6 +127,12 @@ internal fun UserProfileScreen(
 
     var confirmBlockSheet by remember { mutableStateOf(false) }
     var confirmUnfollowSheet by remember { mutableStateOf(false) }
+    var matchSheet by remember { mutableStateOf(false) }
+
+    val matchViewModel: UserMatchViewModel = koinViewModel(
+        parameters = { parametersOf(state.user) },
+    )
+    val matchState by matchViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.info) {
         state.info?.let { info ->
@@ -153,6 +164,11 @@ internal fun UserProfileScreen(
 
     UserProfileContent(
         state = state,
+        matchState = matchState,
+        onMatchClick = {
+            matchViewModel.openDetails()
+            matchSheet = true
+        },
         onFollowClick = {
             when {
                 state.userFollowing.following -> confirmUnfollowSheet = true
@@ -184,6 +200,21 @@ internal fun UserProfileScreen(
         onNavigateBack = onNavigateBack,
     )
 
+    UserMatchSheet(
+        matchState = matchState,
+        user = state.user,
+        visible = matchSheet && !state.userBlocked.blocked,
+        onMovieClick = {
+            matchSheet = false
+            viewModel.navigateToMovie(it)
+        },
+        onShowClick = {
+            matchSheet = false
+            viewModel.navigateToShow(it)
+        },
+        onDismiss = { matchSheet = false },
+    )
+
     RemoveConfirmationSheet(
         active = confirmUnfollowSheet,
         onYes = {
@@ -210,6 +241,8 @@ internal fun UserProfileScreen(
 @Composable
 private fun UserProfileContent(
     state: UserProfileState,
+    matchState: UserMatchState = UserMatchState(),
+    onMatchClick: () -> Unit = {},
     onNavigateToShow: (Show) -> Unit = {},
     onNavigateToMovie: (Movie) -> Unit = {},
     onNavigateToEpisode: (Show, Episode) -> Unit = { _, _ -> },
@@ -280,6 +313,21 @@ private fun UserProfileContent(
                     modifier = Modifier
                         .padding(bottom = 8.dp),
                 )
+            }
+
+            val matchVisible = !state.userBlocked.blocked &&
+                (matchState.match != null || matchState.loading.isLoading)
+            if (matchVisible) {
+                item {
+                    UserMatchPill(
+                        match = matchState.match,
+                        loading = matchState.loading.isLoading,
+                        onClick = onMatchClick,
+                        modifier = Modifier
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace / 1.5F),
+                    )
+                }
             }
 
             val isPrivate = state.user.isPrivate && !state.userFollowing.following
@@ -891,6 +939,7 @@ private fun Preview2() {
                     ),
                 ),
             ),
+            matchState = UserMatchState(match = UserMatchPreviewData.match),
         )
     }
 }

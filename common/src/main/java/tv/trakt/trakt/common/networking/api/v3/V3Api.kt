@@ -11,6 +11,7 @@ import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.encodeURLPathPart
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -35,6 +36,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationRespons
 import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3UserMatchResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsernameSettingsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3YouTubeSpecialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReaction
@@ -72,6 +74,16 @@ class V3Api(
         val movies = responseBody.movies.orEmpty().map { it.toTraktId() }.toSet()
 
         return shows to movies
+    }
+
+    suspend fun getUserMatch(
+        userSlug: String,
+        type: String?,
+    ): V3UserMatchResponse {
+        val response = client.get("${baseV3Url}users/${userSlug.encodeURLPathPart()}/match") {
+            type?.let { parameter("type", it) }
+        }
+        return response.body()
     }
 
     // Lists Management

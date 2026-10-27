@@ -17,6 +17,8 @@ import tv.trakt.trakt.core.userprofile.sections.history.usecases.GetUserProfileH
 import tv.trakt.trakt.core.userprofile.sections.lists.UserProfileListsViewModel
 import tv.trakt.trakt.core.userprofile.sections.lists.all.AllUserProfileListsViewModel
 import tv.trakt.trakt.core.userprofile.sections.lists.usecases.GetUserProfileListsUseCase
+import tv.trakt.trakt.core.userprofile.sections.match.UserMatchViewModel
+import tv.trakt.trakt.core.userprofile.sections.match.usecases.GetUserMatchUseCase
 import tv.trakt.trakt.core.userprofile.sections.social.UserProfileSocialViewModel
 import tv.trakt.trakt.core.userprofile.sections.social.usecases.GetUserProfileSocialUseCase
 import tv.trakt.trakt.core.userprofile.sections.thismonth.GetUserProfileMonthUseCase
@@ -29,6 +31,7 @@ internal val userProfileModule = module {
     factoryOf(::GetUserProfileListsUseCase)
     factoryOf(::GetUserProfileDetailsUseCase)
     factoryOf(::GetUserProfileMonthUseCase)
+    factoryOf(::GetUserMatchUseCase)
 
     factoryOf(::GetBlockedUsersUseCase)
     factoryOf(::BlockUserUseCase)
@@ -46,4 +49,5 @@ internal val userProfileModule = module {
     viewModelOf(::UserProfileFavoritesViewModel)
     viewModelOf(::UserProfileSocialViewModel)
     viewModelOf(::UserProfileListsViewModel)
+    viewModelOf(::UserMatchViewModel)
 }
