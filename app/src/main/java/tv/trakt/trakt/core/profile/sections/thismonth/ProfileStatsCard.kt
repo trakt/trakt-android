@@ -9,6 +9,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -43,7 +45,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -131,7 +132,7 @@ internal fun ProfileStatsCard(
         }
 
         Column(
-            verticalArrangement = spacedBy(20.dp),
+            verticalArrangement = spacedBy(12.dp),
             modifier = Modifier.padding(vertical = 16.dp),
         ) {
             HeaderRow(
@@ -158,26 +159,19 @@ internal fun ProfileStatsCard(
                 modifier = Modifier.fillMaxWidth(),
             ) { page ->
                 val showAll = showAllStats && page == 1
-                val allTime = stats?.allTime
+                val allTime = stats?.allTime?.takeIf { showAll }
 
-                if (showAll && allTime != null) {
-                    StatsChipsRow(
-                        plays = allTime.totalPlays,
-                        episodes = allTime.episodesWatched,
-                        shows = allTime.showsWatched,
-                        movies = allTime.moviesWatched,
-                        ratings = allTime.ratings,
-                        comments = allTime.comments,
-                        loading = loading,
-                    )
-                } else {
-                    StatsChipsRow(
-                        episodes = (if (showAll) stats?.allEpisodesCount else stats?.episodesCount) ?: 0,
-                        shows = (if (showAll) stats?.allShowsCount else stats?.showsCount) ?: 0,
-                        movies = (if (showAll) stats?.allMoviesCount else stats?.moviesCount) ?: 0,
-                        loading = loading,
-                    )
-                }
+                StatsChipsRow(
+                    episodes = allTime?.episodesWatched
+                        ?: (if (showAll) stats?.allEpisodesCount else stats?.episodesCount) ?: 0,
+                    shows = allTime?.showsWatched
+                        ?: (if (showAll) stats?.allShowsCount else stats?.showsCount) ?: 0,
+                    movies = allTime?.moviesWatched
+                        ?: (if (showAll) stats?.allMoviesCount else stats?.moviesCount) ?: 0,
+                    plays = allTime?.totalPlays
+                        ?: (if (showAll) stats?.allPlaysCount else stats?.playsCount) ?: 0,
+                    loading = loading,
+                )
             }
 
             Box {
@@ -374,77 +368,57 @@ private fun StatsChipsRow(
     episodes: Int,
     shows: Int,
     movies: Int,
+    plays: Int,
     loading: Boolean,
-    plays: Int? = null,
-    ratings: Int? = null,
-    comments: Int? = null,
 ) {
-    Row(
-        horizontalArrangement = spacedBy(6.dp),
-        modifier = Modifier
-            .horizontalScroll(
-                state = rememberScrollState(),
-                overscrollEffect = null,
-            )
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 2.dp),
-    ) {
-        if (plays != null) {
-            StatsChip(
-                text = stringResource(
-                    R.string.text_plays_watched,
-                    rememberNumberFormat(plays),
-                ),
-                icon = painterResource(R.drawable.ic_play),
-                loading = loading,
-            )
-        }
-        StatsChip(
-            text = stringResource(
-                R.string.text_episodes_watched,
-                rememberNumberFormat(episodes),
-            ),
-            icon = painterResource(R.drawable.ic_shows_off),
-            loading = loading,
-        )
-        StatsChip(
-            text = stringResource(
-                R.string.text_shows_watched,
-                rememberNumberFormat(shows),
-            ),
-            icon = painterResource(R.drawable.ic_shows_off),
-            loading = loading,
-        )
-        StatsChip(
-            text = stringResource(
-                R.string.text_movies_watched,
-                rememberNumberFormat(movies),
-            ),
-            icon = painterResource(R.drawable.ic_movies_off),
-            loading = loading,
-        )
-        if (ratings != null) {
-            StatsChip(
-                text = pluralStringResource(
-                    R.plurals.text_ratings_count,
-                    ratings,
-                    rememberNumberFormat(ratings),
-                ),
-                icon = painterResource(R.drawable.ic_star),
-                loading = loading,
-            )
-        }
-        if (comments != null) {
-            StatsChip(
-                text = pluralStringResource(
-                    R.plurals.text_comments_count,
-                    comments,
-                    rememberNumberFormat(comments),
-                ),
-                icon = painterResource(R.drawable.ic_comment),
-                loading = loading,
-            )
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            verticalArrangement = spacedBy(6.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .horizontalScroll(
+                    state = rememberScrollState(),
+                    overscrollEffect = null,
+                )
+                .widthIn(min = maxWidth)
+                .padding(horizontal = 16.dp),
+        ) {
+            Row(horizontalArrangement = spacedBy(6.dp)) {
+                StatsChip(
+                    text = stringResource(
+                        R.string.text_episodes_watched,
+                        rememberNumberFormat(episodes),
+                    ),
+                    icon = painterResource(R.drawable.ic_shows_off),
+                    loading = loading,
+                )
+                StatsChip(
+                    text = stringResource(
+                        R.string.text_shows_watched,
+                        rememberNumberFormat(shows),
+                    ),
+                    icon = painterResource(R.drawable.ic_shows_off),
+                    loading = loading,
+                )
+            }
+            Row(horizontalArrangement = spacedBy(6.dp)) {
+                StatsChip(
+                    text = stringResource(
+                        R.string.text_movies_watched,
+                        rememberNumberFormat(movies),
+                    ),
+                    icon = painterResource(R.drawable.ic_movies_off),
+                    loading = loading,
+                )
+                StatsChip(
+                    text = stringResource(
+                        R.string.text_plays_watched,
+                        rememberNumberFormat(plays),
+                    ),
+                    icon = painterResource(R.drawable.ic_play),
+                    loading = loading,
+                )
+            }
         }
     }
 }
@@ -482,7 +456,7 @@ private fun StatsChip(
     icon: Painter,
     loading: Boolean,
 ) {
-    val shape = RoundedCornerShape(6.dp)
+    val shape = RoundedCornerShape(10.dp)
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
@@ -494,8 +468,8 @@ private fun StatsChip(
                 shape = shape,
             )
             .padding(
-                horizontal = 8.dp,
-                vertical = 6.dp,
+                horizontal = 10.dp,
+                vertical = 8.dp,
             ),
     ) {
         Icon(
@@ -547,9 +521,11 @@ private fun Preview() {
                 showsCount = 12,
                 moviesCount = 0,
                 episodesCount = 22324,
+                playsCount = 22410,
                 allShowsCount = 87,
                 allMoviesCount = 145,
                 allEpisodesCount = 2310,
+                allPlaysCount = 2601,
             ),
         )
     }

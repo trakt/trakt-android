@@ -58,6 +58,7 @@ internal class GetUserProfileMonthUseCase(
                 showsCount = episodes.distinctBy { it.show.ids.trakt }.size,
                 episodesCount = episodes.size,
                 moviesCount = movies.size,
+                playsCount = episodes.size + movies.size,
             )
         }
     }

@@ -30,9 +30,11 @@ internal class GetProfileStatsUseCase(
                 showsCount = shows.showsThisMonth,
                 episodesCount = shows.episodesThisMonth,
                 moviesCount = movies.moviesThisMonth,
+                playsCount = shows.playsThisMonth + movies.playsThisMonth,
                 allShowsCount = shows.allShows,
                 allEpisodesCount = shows.allEpisodes,
                 allMoviesCount = movies.allMovies,
+                allPlaysCount = shows.allPlays + movies.allPlays,
             )
         }
     }
@@ -60,6 +62,10 @@ internal class GetProfileStatsUseCase(
                 movie.plays.any { it.isInSameMonthAs(currentDate) }
             },
             allMovies = watchedMovies.size,
+            playsThisMonth = watchedMovies.sumOf { movie ->
+                movie.plays.count { it.isInSameMonthAs(currentDate) }
+            },
+            allPlays = watchedMovies.sumOf { it.plays.size },
         )
     }
 
@@ -89,6 +95,10 @@ internal class GetProfileStatsUseCase(
             episodesThisMonth = watchedEpisodes.count { it.wasWatchedIn(currentDate) },
             allShows = watchedShows.size,
             allEpisodes = watchedEpisodes.size,
+            playsThisMonth = watchedEpisodes.sumOf { episode ->
+                episode.plays.count { it.isInSameMonthAs(currentDate) }
+            },
+            allPlays = watchedEpisodes.sumOf { it.plays.size },
         )
     }
 
@@ -104,6 +114,8 @@ internal class GetProfileStatsUseCase(
     private data class MoviesCounts(
         val moviesThisMonth: Int,
         val allMovies: Int,
+        val playsThisMonth: Int,
+        val allPlays: Int,
     )
 
     private data class ShowsCounts(
@@ -111,5 +123,7 @@ internal class GetProfileStatsUseCase(
         val episodesThisMonth: Int,
         val allShows: Int,
         val allEpisodes: Int,
+        val playsThisMonth: Int,
+        val allPlays: Int,
     )
 }
