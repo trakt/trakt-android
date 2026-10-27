@@ -75,6 +75,8 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.summary.people.all.AllPersonCreditsDestination
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsSection
 import tv.trakt.trakt.core.summary.people.ui.HistoryCreditsList
 import tv.trakt.trakt.core.summary.people.ui.MoviesCreditsList
 import tv.trakt.trakt.core.summary.people.ui.ShowsCreditsList
@@ -92,6 +94,7 @@ internal fun PersonDetailsScreen(
     viewModel: PersonDetailsViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToAllCredits: (AllPersonCreditsDestination) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -144,6 +147,16 @@ internal fun PersonDetailsScreen(
         onMovieLinkClick = viewModel::navigateToMovie,
         onBackClick = onNavigateBack,
         onShareClick = viewModel::logShare,
+        onMoreClick = { section, position ->
+            val person = state.personDetails ?: return@PersonDetailsContent
+            onNavigateToAllCredits(
+                AllPersonCreditsDestination(
+                    personId = person.ids.trakt.value,
+                    section = section,
+                    position = position,
+                ),
+            )
+        },
     )
 
     ShowContextSheet(
@@ -173,6 +186,7 @@ internal fun PersonDetailsContent(
     onMovieLinkClick: ((SlugId) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onMoreClick: ((PersonCreditsSection, String?) -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
@@ -283,6 +297,7 @@ internal fun PersonDetailsContent(
                                 onMovieClick = onMovieClick,
                                 onShowLongClick = onShowLongClick,
                                 onMovieLongClick = onMovieLongClick,
+                                onMoreClick = { onMoreClick?.invoke(PersonCreditsSection.History, null) },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 24.dp),
@@ -307,6 +322,7 @@ internal fun PersonDetailsContent(
                             contentPadding = sectionPadding,
                             onClick = onShowClick,
                             onLongClick = onShowLongClick,
+                            onMoreClick = { onMoreClick?.invoke(PersonCreditsSection.Shows, it) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 32.dp),
@@ -330,6 +346,7 @@ internal fun PersonDetailsContent(
                             contentPadding = sectionPadding,
                             onClick = onMovieClick,
                             onLongClick = onMovieLongClick,
+                            onMoreClick = { onMoreClick?.invoke(PersonCreditsSection.Movies, it) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 32.dp),

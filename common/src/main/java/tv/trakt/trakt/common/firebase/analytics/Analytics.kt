@@ -190,9 +190,9 @@ interface Analytics {
     )
 
     /**
-     * Logs opening a stats surface.
-     * @param source The surface (stats, leaderboard).
-     * @param type The stats kind, when the surface has several.
+     * Logs opening a drilldown surface.
+     * @param source The surface (stats, leaderboard, credits, credits-history).
+     * @param type The surface kind, when the surface has several.
      */
     fun logDrilldown(
         source: String,
