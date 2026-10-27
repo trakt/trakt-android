@@ -87,6 +87,8 @@ private fun MovieSummaryContent(
   introduced by the change. A new enum case, chip variant or conditional branch gets preview
   coverage. Skip only for stateful screens and composables that cannot render without runtime
   collaborators.
+- **Preview annotations and theme wrappers**: see `theming.md` "Previews (phone)". Default to
+  `@PreviewTraktLightDark` + `TraktThemePreview { }`.
 - **`when` over sealed `UiState` is exhaustive.** Add case to sealed type instead of `else ->` branch.
 
 ## ViewModels

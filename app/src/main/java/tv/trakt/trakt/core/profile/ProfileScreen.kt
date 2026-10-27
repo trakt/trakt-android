@@ -53,6 +53,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
@@ -64,6 +65,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import timber.log.Timber
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
+import tv.trakt.trakt.common.Config.webYearReviewUrl
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
@@ -81,6 +83,7 @@ import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressView
 import tv.trakt.trakt.core.profile.sections.screentime.ProfileScreenTimeView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
+import tv.trakt.trakt.core.profile.sections.thismonth.all.AllTimeStatsSheet
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -109,10 +112,12 @@ internal fun ProfileScreen(
     onNavigateToVip: () -> Unit,
 ) {
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmLogout by remember { mutableStateOf(false) }
+    var allTimeStatsSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.user, state.logoutLoading) {
         if (state.logoutLoading == Done && state.user == null) {
@@ -136,6 +141,10 @@ internal fun ProfileScreen(
         onNavigateToSocial = onNavigateToSocial,
         onLeaderboardClick = onNavigateToLeaderboard,
         onVipClick = onNavigateToVip,
+        onAllTimeStatsClick = {
+            viewModel.logAllTimeStatsOpen()
+            allTimeStatsSheet = true
+        },
         onShareClick = {
             viewModel.logShare()
             shareProfile(
@@ -146,6 +155,23 @@ internal fun ProfileScreen(
         onLogoutClick = {
             confirmLogout = true
         },
+    )
+
+    AllTimeStatsSheet(
+        stats = state.monthStats,
+        isVip = state.user?.isAnyVip == true,
+        visible = allTimeStatsSheet,
+        onYearClick = { year ->
+            viewModel.logAllTimeStatsLink(target = "/users/me/year/$year")
+            state.user?.let {
+                uriHandler.openUri(webYearReviewUrl(user = it.ids.slug.value, year = year))
+            }
+        },
+        onVipClick = {
+            allTimeStatsSheet = false
+            onNavigateToVip()
+        },
+        onDismiss = { allTimeStatsSheet = false },
     )
 
     ConfirmationSheet(
@@ -180,6 +206,7 @@ private fun ProfileScreen(
     onNavigateToSocial: () -> Unit = {},
     onLeaderboardClick: () -> Unit = {},
     onVipClick: () -> Unit = {},
+    onAllTimeStatsClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
@@ -282,6 +309,7 @@ private fun ProfileScreen(
                         user = state.user,
                         stats = state.monthStats,
                         containerImage = state.monthBackgroundUrl,
+                        onAllTimeStatsClick = onAllTimeStatsClick,
                         modifier = Modifier
                             .fillMaxWidth(
                                 when {

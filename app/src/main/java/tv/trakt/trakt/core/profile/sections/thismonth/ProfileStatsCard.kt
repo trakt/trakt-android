@@ -1,17 +1,15 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package tv.trakt.trakt.core.profile.sections.thismonth
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -79,6 +78,7 @@ internal fun ProfileStatsCard(
     loading: Boolean = false,
     showAllStats: Boolean = true,
     stats: ProfileStats?,
+    onAllTimeStatsClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
     val currentDate = remember { nowLocal() }
@@ -132,7 +132,7 @@ internal fun ProfileStatsCard(
         }
 
         Column(
-            verticalArrangement = spacedBy(20.dp),
+            verticalArrangement = spacedBy(12.dp),
             modifier = Modifier.padding(vertical = 16.dp),
         ) {
             HeaderRow(
@@ -159,28 +159,43 @@ internal fun ProfileStatsCard(
                 modifier = Modifier.fillMaxWidth(),
             ) { page ->
                 val showAll = showAllStats && page == 1
+                val allTime = stats?.allTime?.takeIf { showAll }
 
                 StatsChipsRow(
-                    episodes = (if (showAll) stats?.allEpisodesCount else stats?.episodesCount) ?: 0,
-                    shows = (if (showAll) stats?.allShowsCount else stats?.showsCount) ?: 0,
-                    movies = (if (showAll) stats?.allMoviesCount else stats?.moviesCount) ?: 0,
+                    episodes = allTime?.episodesWatched
+                        ?: (if (showAll) stats?.allEpisodesCount else stats?.episodesCount) ?: 0,
+                    shows = allTime?.showsWatched
+                        ?: (if (showAll) stats?.allShowsCount else stats?.showsCount) ?: 0,
+                    movies = allTime?.moviesWatched
+                        ?: (if (showAll) stats?.allMoviesCount else stats?.moviesCount) ?: 0,
+                    plays = allTime?.totalPlays
+                        ?: (if (showAll) stats?.allPlaysCount else stats?.playsCount) ?: 0,
                     loading = loading,
                 )
             }
 
-            PreviousMonthRow(
-                visible = pagerState.currentPage == 0,
-                previousMonth = previousMonth,
-                onClick = {
-                    uriHandler.openUri(
-                        webMonthReviewUrl(
-                            user = user.ids.slug.value,
-                            month = previousMonth.monthValue,
-                            year = previousMonth.year,
-                        ),
+            Box {
+                PreviousMonthRow(
+                    visible = pagerState.currentPage == 0,
+                    previousMonth = previousMonth,
+                    onClick = {
+                        uriHandler.openUri(
+                            webMonthReviewUrl(
+                                user = user.ids.slug.value,
+                                month = previousMonth.monthValue,
+                                year = previousMonth.year,
+                            ),
+                        )
+                    },
+                )
+
+                if (showAllStats) {
+                    AllTimeStatsRow(
+                        visible = pagerState.currentPage == 1 && stats != null,
+                        onClick = onAllTimeStatsClick,
                     )
-                },
-            )
+                }
+            }
         }
 
         if (showAllStats) {
@@ -315,47 +330,96 @@ private fun PreviousMonthRow(
 }
 
 @Composable
+private fun AllTimeStatsRow(
+    visible: Boolean,
+    onClick: () -> Unit,
+) {
+    val animatedAlpha by animateFloatAsState(
+        targetValue = if (visible) 1f else 0F,
+        label = "alpha",
+    )
+
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = spacedBy(6.dp),
+        modifier = Modifier
+            .alpha(animatedAlpha)
+            .padding(horizontal = 16.dp)
+            .onClick(enabled = visible) {
+                onClick()
+            },
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_vip_stats),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimaryOnAccent,
+            modifier = Modifier.size(20.dp),
+        )
+        Text(
+            text = stringResource(R.string.button_text_all_time_stats).uppercase(),
+            color = TraktTheme.colors.textPrimaryOnAccent,
+            style = TraktTheme.typography.heading6,
+        )
+    }
+}
+
+@Composable
 private fun StatsChipsRow(
     episodes: Int,
     shows: Int,
     movies: Int,
+    plays: Int,
     loading: Boolean,
 ) {
-    Row(
-        horizontalArrangement = spacedBy(6.dp),
-        modifier = Modifier
-            .horizontalScroll(
-                state = rememberScrollState(),
-                overscrollEffect = null,
-            )
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 2.dp),
-    ) {
-        StatsChip(
-            text = stringResource(
-                R.string.text_episodes_watched,
-                rememberNumberFormat(episodes),
-            ),
-            icon = painterResource(R.drawable.ic_shows_off),
-            loading = loading,
-        )
-        StatsChip(
-            text = stringResource(
-                R.string.text_shows_watched,
-                rememberNumberFormat(shows),
-            ),
-            icon = painterResource(R.drawable.ic_shows_off),
-            loading = loading,
-        )
-        StatsChip(
-            text = stringResource(
-                R.string.text_movies_watched,
-                rememberNumberFormat(movies),
-            ),
-            icon = painterResource(R.drawable.ic_movies_off),
-            loading = loading,
-        )
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            verticalArrangement = spacedBy(6.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .horizontalScroll(
+                    state = rememberScrollState(),
+                    overscrollEffect = null,
+                )
+                .widthIn(min = maxWidth)
+                .padding(horizontal = 16.dp),
+        ) {
+            Row(horizontalArrangement = spacedBy(6.dp)) {
+                StatsChip(
+                    text = stringResource(
+                        R.string.text_episodes_watched,
+                        rememberNumberFormat(episodes),
+                    ),
+                    icon = painterResource(R.drawable.ic_shows_off),
+                    loading = loading,
+                )
+                StatsChip(
+                    text = stringResource(
+                        R.string.text_shows_watched,
+                        rememberNumberFormat(shows),
+                    ),
+                    icon = painterResource(R.drawable.ic_shows_off),
+                    loading = loading,
+                )
+            }
+            Row(horizontalArrangement = spacedBy(6.dp)) {
+                StatsChip(
+                    text = stringResource(
+                        R.string.text_movies_watched,
+                        rememberNumberFormat(movies),
+                    ),
+                    icon = painterResource(R.drawable.ic_movies_off),
+                    loading = loading,
+                )
+                StatsChip(
+                    text = stringResource(
+                        R.string.text_plays_watched,
+                        rememberNumberFormat(plays),
+                    ),
+                    icon = painterResource(R.drawable.ic_play),
+                    loading = loading,
+                )
+            }
+        }
     }
 }
 
@@ -392,7 +456,7 @@ private fun StatsChip(
     icon: Painter,
     loading: Boolean,
 ) {
-    val shape = RoundedCornerShape(6.dp)
+    val shape = RoundedCornerShape(10.dp)
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
@@ -404,8 +468,8 @@ private fun StatsChip(
                 shape = shape,
             )
             .padding(
-                horizontal = 8.dp,
-                vertical = 6.dp,
+                horizontal = 10.dp,
+                vertical = 8.dp,
             ),
     ) {
         Icon(
@@ -457,9 +521,11 @@ private fun Preview() {
                 showsCount = 12,
                 moviesCount = 0,
                 episodesCount = 22324,
+                playsCount = 22410,
                 allShowsCount = 87,
                 allMoviesCount = 145,
                 allEpisodesCount = 2310,
+                allPlaysCount = 2601,
             ),
         )
     }

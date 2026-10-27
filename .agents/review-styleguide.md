@@ -139,6 +139,9 @@ plain hyphens.
 - Every new `<Feature>Content` composable has at least one `@Preview`
   covering `.Loaded`. Add `.Loading` / `.Error` previews when
   applicable.
+- New previews use `@PreviewTraktLightDark` with `TraktThemePreview { }`.
+  Flag `@PreviewTraktLightDark` wrapped in plain `TraktTheme { }`: the
+  Light preview renders dark content.
 
 ## Networking
 

@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
@@ -58,6 +59,8 @@ internal class ProfileViewModel(
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
     private val checkInState = MutableStateFlow(initialState.checkIn)
     private val hasLeaderboardState = MutableStateFlow(initialState.hasLeaderboard)
+
+    private var latestAllTime: UserStats? = null
 
     init {
         loadMonthBackground()
@@ -122,13 +125,15 @@ internal class ProfileViewModel(
     }
 
     private fun loadData(showLoading: Boolean = true) {
+        loadAllTimeStats()
         viewModelScope.launch {
             try {
                 if (showLoading) {
                     loadingMonthStatsState.update { Loading }
                 }
+                val stats = getProfileStatsUseCase.getProfileStats()
                 monthStatsState.update {
-                    getProfileStatsUseCase.getProfileStats()
+                    stats.copy(allTime = it?.allTime ?: latestAllTime)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -136,6 +141,22 @@ internal class ProfileViewModel(
                 }
             } finally {
                 loadingMonthStatsState.update { LoadingState.Done }
+            }
+        }
+    }
+
+    private fun loadAllTimeStats() {
+        viewModelScope.launch {
+            try {
+                val allTime = getProfileStatsUseCase.getAllTimeStats()
+                latestAllTime = allTime
+                monthStatsState.update {
+                    it?.copy(allTime = allTime)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }
@@ -180,6 +201,14 @@ internal class ProfileViewModel(
                 }
             }
         }
+    }
+
+    fun logAllTimeStatsOpen() {
+        analytics.logDrilldown(source = "stats", type = "all-time")
+    }
+
+    fun logAllTimeStatsLink(target: String) {
+        analytics.logLink(source = "all-time-stats", target = target)
     }
 
     fun logShare() {
