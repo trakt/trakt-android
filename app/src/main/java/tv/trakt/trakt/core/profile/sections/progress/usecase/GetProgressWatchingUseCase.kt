@@ -7,7 +7,10 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
+import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalSource
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSortType.Default
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
 
 internal class GetProgressWatchingUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteSource,
@@ -24,17 +27,21 @@ internal class GetProgressWatchingUseCase(
     suspend fun getWatching(
         page: Int,
         limit: Int,
+        sorting: ProgressSorting,
     ): ImmutableList<ProfileProgressItem> {
         val remoteItems = remoteShowsSyncSource.getUpNext(
             limit = limit,
             page = page,
             intent = "continue",
-            sortBy = "remaining",
-            sortHow = "asc",
+            sortBy = when (sorting.type) {
+                Default -> "remaining"
+                else -> sorting.type.apiValue
+            },
+            sortHow = sorting.order.value,
             filters = null,
         )
 
-        return remoteItems
+        val items = remoteItems
             .asyncMap {
                 ProfileProgressItem.ShowItem(
                     show = Show.fromDto(it.show),
@@ -42,7 +49,19 @@ internal class GetProgressWatchingUseCase(
                         .coerceAtLeast(0),
                 )
             }
-            .sortedWith(compareBy({ it.remainingEpisodes }, { it.show.title }))
+
+        if (!sorting.isDefault) {
+            return items.toImmutableList()
+        }
+
+        return items
+            .sortedWith(
+                when (sorting.order) {
+                    SortOrder.Asc -> compareBy({ it.remainingEpisodes }, { it.show.title })
+                    SortOrder.Desc -> compareByDescending<ProfileProgressItem.ShowItem> { it.remainingEpisodes }
+                        .thenBy { it.show.title }
+                },
+            )
             .also {
                 when (page) {
                     1 -> localDataSource.setItems(it)

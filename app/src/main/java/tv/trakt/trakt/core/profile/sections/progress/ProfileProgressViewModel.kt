@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
+import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.core.lists.ListsConfig.PROGRESS_SECTION_LIMIT
 import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
@@ -37,6 +38,7 @@ import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Droppe
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Ended
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.InProgress
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.UpToDate
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
 import tv.trakt.trakt.core.profile.sections.progress.model.pageOfEnded
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
@@ -118,21 +120,36 @@ internal class ProfileProgressViewModel(
                     when (filter) {
                         UpToDate -> {
                             getCompletedUseCase
-                                .getCompleted(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                                .getCompleted(
+                                    page = 1,
+                                    limit = PROGRESS_SECTION_LIMIT,
+                                    sorting = ProgressSorting.Default,
+                                )
                                 .pageOfEnded(ended = false)
                                 .items
                         }
 
                         Ended -> {
                             getCompletedUseCase
-                                .getCompleted(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                                .getCompleted(
+                                    page = 1,
+                                    limit = PROGRESS_SECTION_LIMIT,
+                                    sorting = ProgressSorting.Default,
+                                )
                                 .pageOfEnded(ended = true)
                                 .items
                         }
 
                         InProgress -> {
-                            getWatchingUseCase.getWatching(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                            getWatchingUseCase.getWatching(
+                                page = 1,
+                                limit = PROGRESS_SECTION_LIMIT,
+                                sorting = ProgressSorting.Default.copy(
+                                    order = SortOrder.Asc,
+                                ),
+                            )
                         }
+
                         Dropped -> {
                             getDroppedUseCase.getDropped(page = 1, limit = PROGRESS_SECTION_LIMIT)
                         }

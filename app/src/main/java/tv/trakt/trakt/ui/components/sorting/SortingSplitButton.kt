@@ -34,6 +34,7 @@ internal fun SortingSplitButton(
     modifier: Modifier = Modifier,
     height: Dp = 32.dp,
     enabled: Boolean = true,
+    orderEnabled: Boolean = true,
     onLeadingClick: () -> Unit = {},
     onTrailingClick: () -> Unit = {},
 ) {
@@ -67,7 +68,7 @@ internal fun SortingSplitButton(
         },
         trailingButton = {
             SplitButtonDefaults.TrailingButton(
-                enabled = enabled,
+                enabled = enabled && orderEnabled,
                 contentPadding = PaddingValues(
                     end = 3.dp,
                 ),
