@@ -30,6 +30,18 @@ annotation class DevicePreviewRtl
 )
 annotation class DeviceSheetPreview
 
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF151418,
+)
+annotation class PreviewTraktDark
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFFF1EFF4,
+)
+annotation class PreviewTraktLight
+
 fun MutableStateFlow<*>.isNotNull(): Boolean {
     return this.value != null
 }

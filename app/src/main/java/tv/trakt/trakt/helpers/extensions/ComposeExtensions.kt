@@ -39,6 +39,14 @@ internal fun TraktThemeLightDark(content: @Composable () -> Unit) {
 }
 
 @Composable
+internal fun TraktThemeLight(content: @Composable () -> Unit) {
+    TraktTheme(
+        colors = LightColors,
+        content = content,
+    )
+}
+
+@Composable
 internal fun rememberAnimationsDisabled(): Boolean {
     val context = LocalContext.current
     return remember {

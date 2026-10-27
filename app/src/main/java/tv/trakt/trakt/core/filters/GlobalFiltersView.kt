@@ -10,24 +10,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktDark
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLight
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode.Advanced
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode.Simple
-import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.filters.views.GlobalFiltersAdvancedView
 import tv.trakt.trakt.core.filters.views.GlobalFiltersSimpleView
+import tv.trakt.trakt.helpers.extensions.TraktThemeLight
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-internal val RowsSpacing = 14.dp
-internal val ColumnsSpacing = 16.dp
+internal val RowsSpacing = 8.dp
+internal val ColumnsSpacing = 8.dp
 
 @Composable
 internal fun GlobalFiltersView(
@@ -108,7 +109,7 @@ internal fun GlobalFiltersView(
     )
 }
 
-@Preview
+@PreviewTraktDark
 @Composable
 private fun PreviewSimple() {
     TraktTheme {
@@ -116,20 +117,15 @@ private fun PreviewSimple() {
     }
 }
 
-@Preview(
-    backgroundColor = 0xFFF1EFF4,
-    showBackground = true,
-)
+@PreviewTraktLight
 @Composable
 private fun PreviewSimpleLight() {
-    TraktTheme(
-        colors = LightColors,
-    ) {
+    TraktThemeLight {
         GlobalFiltersSimpleView(state = GlobalFiltersState())
     }
 }
 
-@Preview
+@PreviewTraktDark
 @Composable
 private fun PreviewAdvanced() {
     TraktTheme {
@@ -137,12 +133,10 @@ private fun PreviewAdvanced() {
     }
 }
 
-@Preview
+@PreviewTraktLight
 @Composable
 private fun PreviewAdvancedLight() {
-    TraktTheme(
-        colors = LightColors,
-    ) {
+    TraktThemeLight {
         GlobalFiltersAdvancedView(state = GlobalFiltersState())
     }
 }
