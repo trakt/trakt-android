@@ -86,6 +86,31 @@ named `val` (or a token) for clarity.
 - Feature code doesn't branch on theme - reads `TraktTheme.colors.*`, active palette swaps
   automatically.
 
+## Previews (phone)
+
+Preview annotations live in `common/.../helpers/extensions/ComposeExtensions.kt`. Theme wrappers
+live in `app/.../helpers/extensions/ComposeExtensions.kt`.
+
+| Annotation | Renders | Wrap content in |
+| --- | --- | --- |
+| `@PreviewTraktLightDark` | Two previews, "Dark" and "Light" | `TraktThemePreview { }` |
+| `@PreviewTraktDark` | Dark only | `TraktTheme { }` |
+| `@PreviewTraktLight` | Light only | `TraktThemeLight { }` |
+| `@DevicePreview` / `@DevicePreviewRtl` | Full Pixel 7 screen, `us` / `ar` locale | `TraktTheme { }` |
+| `@DeviceSheetPreview` | Full-screen bottom sheet | `TraktTheme { }` |
+
+- **Default to `@PreviewTraktLightDark` + `TraktThemePreview`** for new component and view
+  previews. One preview function covers both palettes.
+- `TraktThemePreview` picks `DarkColors` / `LightColors` from the preview `uiMode`. Plain
+  `TraktTheme { }` is always dark, so under `@PreviewTraktLightDark` the Light preview shows dark
+  content on a light background.
+- `TraktThemeLightDark { }` stacks both palettes in one frame. Use it only when a side-by-side
+  comparison in a single image is the point. Do not combine it with `@PreviewTraktLightDark`.
+- Keep the dedicated `@PreviewTraktDark` / `@PreviewTraktLight` pair only when the two previews
+  need different content or parameters.
+- TV previews use plain `@Preview(...)` with the TV theme wrapper. These annotations are for the
+  phone app.
+
 ## Typography
 
 `TraktTheme.typography.*` exposes semantic styles:
@@ -175,5 +200,6 @@ spacing — use tokens, don't hard-code `64.dp`.
 - [ ] Typography via `TraktTheme.typography.*` — no inline `TextStyle`
 - [ ] Images via Coil 3 + `R.drawable.*`, never Glide/Fresco/Picasso
 - [ ] Light / dark variants exist for every new token
+- [ ] New previews use `@PreviewTraktLightDark` + `TraktThemePreview { }`
 - [ ] Animations honour reduced-motion
 - [ ] No content descriptions or semantics added unless explicitly requested
