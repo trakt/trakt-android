@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaStatus
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.resources.R
 
 @Immutable
@@ -31,6 +32,11 @@ data class GlobalFilter(
     @Serializable(with = ImmutableListSerializer::class)
     val statuses: ImmutableList<MediaStatus>? = null,
     val rating: Pair<Int, Int>? = null,
+    val parentalNudity: Pair<Int, Int>? = null,
+    val parentalViolence: Pair<Int, Int>? = null,
+    val parentalProfanity: Pair<Int, Int>? = null,
+    val parentalAlcohol: Pair<Int, Int>? = null,
+    val parentalFrightening: Pair<Int, Int>? = null,
     val hideWatched: Boolean = false,
     val hideWatchlist: Boolean = false,
 ) {
@@ -167,6 +173,36 @@ data class GlobalFilter(
         }
     }
 
+    fun parentalRange(category: ParentalGuideCategory): Pair<Int, Int>? {
+        return when (category) {
+            ParentalGuideCategory.Nudity -> parentalNudity
+            ParentalGuideCategory.Violence -> parentalViolence
+            ParentalGuideCategory.Profanity -> parentalProfanity
+            ParentalGuideCategory.Alcohol -> parentalAlcohol
+            ParentalGuideCategory.Frightening -> parentalFrightening
+        }
+    }
+
+    fun parentalParam(category: ParentalGuideCategory): String? {
+        return parentalRange(category)?.let { "${it.first}-${it.second}" }
+    }
+
+    fun withParentalRange(
+        category: ParentalGuideCategory,
+        range: Pair<Int, Int>?,
+    ): GlobalFilter {
+        return when (category) {
+            ParentalGuideCategory.Nudity -> copy(parentalNudity = range)
+            ParentalGuideCategory.Violence -> copy(parentalViolence = range)
+            ParentalGuideCategory.Profanity -> copy(parentalProfanity = range)
+            ParentalGuideCategory.Alcohol -> copy(parentalAlcohol = range)
+            ParentalGuideCategory.Frightening -> copy(parentalFrightening = range)
+        }
+    }
+
+    private val isParentalActive: Boolean
+        get() = ParentalGuideCategory.entries.any { parentalRange(it) != null }
+
     val isActive: Boolean
         get() = genre != null ||
             subgenre != null ||
@@ -178,6 +214,7 @@ data class GlobalFilter(
             countries != null ||
             statuses != null ||
             (rating != null && rating != 0 to 100) ||
+            isParentalActive ||
             hideWatched ||
             hideWatchlist
 
@@ -191,5 +228,6 @@ data class GlobalFilter(
             region != null ||
             countries != null ||
             statuses != null ||
-            (rating != null && rating != 0 to 100)
+            (rating != null && rating != 0 to 100) ||
+            isParentalActive
 }

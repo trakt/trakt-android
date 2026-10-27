@@ -19,6 +19,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
@@ -103,8 +105,24 @@ internal class CreateSmartListViewModel(
         if (newFilters == filtersState.value) {
             return
         }
+        logParentalChanges(previous = filtersState.value, current = newFilters)
         filtersState.update { newFilters }
         loadData()
+    }
+
+    private fun logParentalChanges(
+        previous: SmartListFilters,
+        current: SmartListFilters,
+    ) {
+        ParentalGuideCategory.entries
+            .filter { previous.parentalRange(it) != current.parentalRange(it) }
+            .forEach { category ->
+                analytics.logFilter(
+                    id = category.apiKey,
+                    set = current.parentalRange(category) != null,
+                    mode = GlobalFilterMode.Advanced.name,
+                )
+            }
     }
 
     fun clearError() {

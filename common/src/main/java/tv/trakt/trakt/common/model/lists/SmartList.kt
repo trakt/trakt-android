@@ -134,6 +134,16 @@ data class SmartListFilters(
     val rtMeters: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val rtUserMeters: ImmutableList<Int>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val parentalNudity: ImmutableList<Int>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val parentalViolence: ImmutableList<Int>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val parentalProfanity: ImmutableList<Int>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val parentalAlcohol: ImmutableList<Int>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val parentalFrightening: ImmutableList<Int>? = null,
     val ignoreWatched: Boolean = false,
     val ignoreWatchlisted: Boolean = false,
 ) {
@@ -157,7 +167,9 @@ data class SmartListFilters(
             formatFloatRange(imdbRatings.orEmpty(), resources)?.let { "IMDb $it" },
             formatPercentRange(rtMeters.orEmpty(), "RT", resources, locale),
             formatPercentRange(rtUserMeters.orEmpty(), "RT Audience", resources, locale),
-        )
+        ) + ParentalGuideCategory.entries.mapNotNull { category ->
+            formatParentalRange(category, parentalRange(category).orEmpty(), resources)
+        }
 
         val flags = listOfNotNull(
             resources.getString(R.string.header_hide_watched).takeIf { ignoreWatched },
@@ -165,6 +177,29 @@ data class SmartListFilters(
         )
 
         return values + ranges + flags
+    }
+
+    fun parentalRange(category: ParentalGuideCategory): ImmutableList<Int>? {
+        return when (category) {
+            ParentalGuideCategory.Nudity -> parentalNudity
+            ParentalGuideCategory.Violence -> parentalViolence
+            ParentalGuideCategory.Profanity -> parentalProfanity
+            ParentalGuideCategory.Alcohol -> parentalAlcohol
+            ParentalGuideCategory.Frightening -> parentalFrightening
+        }
+    }
+
+    fun withParentalRange(
+        category: ParentalGuideCategory,
+        range: ImmutableList<Int>?,
+    ): SmartListFilters {
+        return when (category) {
+            ParentalGuideCategory.Nudity -> copy(parentalNudity = range)
+            ParentalGuideCategory.Violence -> copy(parentalViolence = range)
+            ParentalGuideCategory.Profanity -> copy(parentalProfanity = range)
+            ParentalGuideCategory.Alcohol -> copy(parentalAlcohol = range)
+            ParentalGuideCategory.Frightening -> copy(parentalFrightening = range)
+        }
     }
 
     fun cleared(): SmartListFilters =
@@ -206,11 +241,32 @@ data class SmartListFilters(
                 imdbRatings = filters.imdbRatings.orEmpty().toImmutableList(),
                 rtMeters = filters.rtMeters.orEmpty().toImmutableList(),
                 rtUserMeters = filters.rtUserMeters.orEmpty().toImmutableList(),
+                parentalNudity = filters.parentalNudity?.toImmutableList(),
+                parentalViolence = filters.parentalViolence?.toImmutableList(),
+                parentalProfanity = filters.parentalProfanity?.toImmutableList(),
+                parentalAlcohol = filters.parentalAlcohol?.toImmutableList(),
+                parentalFrightening = filters.parentalFrightening?.toImmutableList(),
                 ignoreWatched = filters.ignoreWatched ?: false,
                 ignoreWatchlisted = filters.ignoreWatchlisted ?: false,
             )
         }
     }
+}
+
+private fun formatParentalRange(
+    category: ParentalGuideCategory,
+    range: List<Int>,
+    resources: Resources,
+): String? {
+    val min = range.getOrNull(0) ?: return null
+    val max = range.getOrNull(1) ?: ParentalGuideSeverity.Max
+
+    return resources.getString(
+        R.string.advanced_filter_label_parental_guide,
+        resources.getString(category.displayRes),
+        resources.getString(ParentalGuideSeverity.fromValue(min).displayRes),
+        resources.getString(ParentalGuideSeverity.fromValue(max).displayRes),
+    )
 }
 
 private fun formatNumberRange(

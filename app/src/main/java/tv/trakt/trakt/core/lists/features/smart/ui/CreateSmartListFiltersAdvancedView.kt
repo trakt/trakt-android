@@ -31,9 +31,11 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Availability
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
+import tv.trakt.trakt.common.model.lists.ParentalGuideSeverity
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.filters.ColumnsSpacing
 import tv.trakt.trakt.core.filters.RowsSpacing
+import tv.trakt.trakt.core.filters.views.ParentalGuideFilters
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownMultiView
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownOption
 import tv.trakt.trakt.core.lists.features.smart.CreateSmartListState
@@ -118,6 +120,22 @@ internal fun CreateSmartListFiltersAdvancedView(
             RatingFilter(
                 state = state,
                 onUpdateFilter = onFiltersChange,
+                enabled = enabled,
+            )
+
+            ParentalGuideFilters(
+                rangeOf = { category ->
+                    state.filters.parentalRange(category)?.toSeverityRange()
+                },
+                onRangeChange = { category, range ->
+                    onFiltersChange(
+                        state.filters.withParentalRange(
+                            category = category,
+                            range = range?.let { persistentListOf(it.first, it.second) },
+                        ),
+                        true,
+                    )
+                },
                 enabled = enabled,
             )
 
@@ -831,4 +849,9 @@ private fun PreviewDisabled() {
             ),
         )
     }
+}
+
+private fun List<Int>.toSeverityRange(): Pair<Int, Int>? {
+    val min = getOrNull(0) ?: return null
+    return min to (getOrNull(1) ?: ParentalGuideSeverity.Max)
 }

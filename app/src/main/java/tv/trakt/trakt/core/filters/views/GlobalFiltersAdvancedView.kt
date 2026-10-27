@@ -189,6 +189,17 @@ internal fun GlobalFiltersAdvancedView(
                 onUpdateFilter = onUpdateFilter,
             )
 
+            ParentalGuideFilters(
+                rangeOf = state.filter::parentalRange,
+                onRangeChange = { category, range ->
+                    onUpdateFilter(state.filter.withParentalRange(category, range), true)
+                },
+                modifier = Modifier.padding(
+                    top = 14.dp,
+                    bottom = 10.dp,
+                ),
+            )
+
             SwitchesFilter(
                 state = state,
                 onUpdateFilter = onUpdateFilter,
@@ -873,6 +884,7 @@ private fun Preview2() {
                         Availability.AllDigitalReleases,
                     ),
                     years = CurrentYear.years,
+                    parentalViolence = 0 to 1,
                     statuses = persistentListOf(
                         MediaStatus.ReturningSeries,
                         MediaStatus.Continuing,

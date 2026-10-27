@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.filters
 
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 
 internal data class GlobalFilterChange(
     val key: String,
@@ -19,7 +20,9 @@ private val filterKeys: List<Pair<String, (GlobalFilter) -> Any?>> = listOf(
     "ratings" to GlobalFilter::rating,
     "ignore_watched" to GlobalFilter::hideWatched,
     "ignore_watchlisted" to GlobalFilter::hideWatchlist,
-)
+) + ParentalGuideCategory.entries.map { category ->
+    category.apiKey to { filter: GlobalFilter -> filter.parentalRange(category) }
+}
 
 internal fun GlobalFilter.changesFrom(previous: GlobalFilter): List<GlobalFilterChange> {
     return filterKeys

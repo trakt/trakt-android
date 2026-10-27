@@ -5,6 +5,7 @@ import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostUsersListsReorderRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.WatchlistItemDto
@@ -51,6 +52,11 @@ class UserWatchlistRemoteSource(
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters?.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters?.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters?.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters?.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters?.parentalParam(ParentalGuideCategory.Frightening),
             ignoreWatched = filters?.hideWatched,
         )
 
@@ -94,6 +100,11 @@ class UserWatchlistRemoteSource(
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters?.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters?.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters?.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters?.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters?.parentalParam(ParentalGuideCategory.Frightening),
             ignoreWatched = filters?.hideWatched,
         )
 
@@ -128,6 +139,11 @@ class UserWatchlistRemoteSource(
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters?.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters?.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters?.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters?.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters?.parentalParam(ParentalGuideCategory.Frightening),
             ignoreWatched = filters?.hideWatched,
         )
 
