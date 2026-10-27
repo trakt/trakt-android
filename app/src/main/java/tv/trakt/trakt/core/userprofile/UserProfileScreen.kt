@@ -315,7 +315,8 @@ private fun UserProfileContent(
                 )
             }
 
-            val matchVisible = !state.userBlocked.blocked &&
+            val matchVisible = !state.userBlocked.loading &&
+                !state.userBlocked.blocked &&
                 (matchState.match != null || matchState.loading.isLoading)
             if (matchVisible) {
                 item {
