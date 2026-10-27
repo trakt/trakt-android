@@ -110,7 +110,7 @@ private fun ShowCreditCard(
 
                     val tbaLabel = stringResource(R.string.tag_text_tba)
 
-                    val footerText = remember {
+                    val footerText = remember(item, episodesCount, tbaLabel) {
                         buildString {
                             item.show.releasedAt?.let {
                                 append(it.toLocal().year.toString())
@@ -188,7 +188,7 @@ private fun MovieCreditCard(
                     val footerRuntime = rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                     val tbaLabel = stringResource(R.string.tag_text_tba)
                     Text(
-                        text = remember {
+                        text = remember(item, footerRuntime, tbaLabel) {
                             val year = (item.movie.released?.year ?: item.movie.year)
                                 ?.toString()
                                 ?: tbaLabel
