@@ -186,13 +186,17 @@ private fun MovieCreditCard(
                     )
 
                     val footerRuntime = rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
+                    val tbaLabel = stringResource(R.string.tag_text_tba)
                     Text(
                         text = remember {
+                            val year = (item.movie.released?.year ?: item.movie.year)
+                                ?.toString()
+                                ?: tbaLabel
                             val runtime = item.movie.runtime?.inWholeMinutes
                             if (runtime != null) {
-                                "${item.movie.year} • $footerRuntime"
+                                "$year • $footerRuntime"
                             } else {
-                                item.movie.year.toString()
+                                year
                             }
                         },
                         style = TraktTheme.typography.cardTitle,

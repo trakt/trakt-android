@@ -66,7 +66,8 @@ internal class AllPersonCreditsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
-    private val errorState = MutableStateFlow(initialState.error)
+    private val showErrorState = MutableStateFlow<Exception?>(null)
+    private val movieErrorState = MutableStateFlow<Exception?>(null)
 
     private var navigationJob: Job? = null
 
@@ -86,27 +87,36 @@ internal class AllPersonCreditsViewModel(
     private fun loadData() {
         viewModelScope.launch {
             loadingState.update { LoadingState.Loading }
+            showErrorState.update { null }
+            movieErrorState.update { null }
 
             supervisorScope {
                 val personAsync = async { getPersonUseCase.getPerson(personId) }
                 val showCreditsAsync = async { getPersonCreditsUseCase.getShowCredits(personId) }
                 val movieCreditsAsync = async { getPersonCreditsUseCase.getMovieCredits(personId) }
 
-                runLoad { personState.update { personAsync.await() } }
-                runLoad { showCreditsState.update { showCreditsAsync.await() } }
-                runLoad { movieCreditsState.update { movieCreditsAsync.await() } }
+                runLoad(onError = {}) { personState.update { personAsync.await() } }
+                runLoad(onError = { error -> showErrorState.update { error } }) {
+                    showCreditsState.update { showCreditsAsync.await() }
+                }
+                runLoad(onError = { error -> movieErrorState.update { error } }) {
+                    movieCreditsState.update { movieCreditsAsync.await() }
+                }
             }
 
             loadingState.update { LoadingState.Done }
         }
     }
 
-    private suspend fun runLoad(block: suspend () -> Unit) {
+    private suspend fun runLoad(
+        onError: (Exception) -> Unit,
+        block: suspend () -> Unit,
+    ) {
         try {
             block()
         } catch (error: Exception) {
             error.rethrowCancellation {
-                errorState.update { error }
+                onError(error)
                 Timber.recordError(error)
             }
         }
@@ -152,13 +162,17 @@ internal class AllPersonCreditsViewModel(
         showCredits: ShowCredits?,
         movieCredits: MovieCredits?,
         collection: UserCollectionState,
+        errors: CreditsErrors,
     ): AllPersonCreditsState {
+        val error = errors.forMode(mode)
+
         if (destination.section.isHistory) {
             return initialState.copy(
                 mode = mode,
                 person = person,
                 items = historyPersonCredits(showCredits, movieCredits, collection, mode),
                 collection = collection,
+                error = error,
             )
         }
 
@@ -176,6 +190,7 @@ internal class AllPersonCreditsViewModel(
             selectedPosition = selectedPosition,
             items = selectedPosition?.let { credits[it] } ?: initialState.items,
             collection = collection,
+            error = error,
         )
     }
 
@@ -189,7 +204,8 @@ internal class AllPersonCreditsViewModel(
         loadingState,
         navigateShow,
         navigateMovie,
-        errorState,
+        showErrorState,
+        movieErrorState,
     ) { state ->
         buildState(
             mode = state[0] as MediaMode,
@@ -198,15 +214,31 @@ internal class AllPersonCreditsViewModel(
             showCredits = state[3] as ShowCredits?,
             movieCredits = state[4] as MovieCredits?,
             collection = state[5] as UserCollectionState,
+            errors = CreditsErrors(
+                shows = state[9] as Exception?,
+                movies = state[10] as Exception?,
+            ),
         ).copy(
             loading = state[6] as LoadingState,
             navigateShow = state[7] as TraktId?,
             navigateMovie = state[8] as TraktId?,
-            error = state[9] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialState,
     )
+}
+
+private data class CreditsErrors(
+    val shows: Exception?,
+    val movies: Exception?,
+) {
+    fun forMode(mode: MediaMode): Exception? {
+        return when (mode) {
+            MediaMode.Shows -> shows
+            MediaMode.Movies -> movies
+            MediaMode.Media -> shows ?: movies
+        }
+    }
 }
