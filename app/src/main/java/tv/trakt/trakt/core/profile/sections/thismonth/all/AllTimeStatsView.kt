@@ -25,19 +25,22 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
 import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Month
+import kotlin.math.roundToInt
 
-private val TileShape = RoundedCornerShape(12.dp)
+private val TileShape = RoundedCornerShape(16.dp)
 
 private data class StatTile(
     @param:StringRes val labelRes: Int,
@@ -71,7 +74,7 @@ internal fun AllTimeStatsView(
         )
 
         sections.forEach { section ->
-            Column(verticalArrangement = spacedBy(10.dp)) {
+            Column(verticalArrangement = spacedBy(8.dp)) {
                 Text(
                     text = stringResource(section.titleRes),
                     color = TraktTheme.colors.textSecondary,
@@ -80,7 +83,7 @@ internal fun AllTimeStatsView(
 
                 section.tiles.chunked(3).forEach { row ->
                     Row(
-                        horizontalArrangement = spacedBy(10.dp),
+                        horizontalArrangement = spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         row.forEach { tile ->
@@ -106,7 +109,15 @@ internal fun AllTimeStatsView(
             )
         }
 
-        Column(verticalArrangement = spacedBy(12.dp)) {
+        Column(
+            verticalArrangement = spacedBy(8.dp),
+            modifier = Modifier.padding(top = 0.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.tab_text_more),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.heading6,
+            )
             ReviewLink(
                 text = stringResource(R.string.button_text_year_in_review, (currentYear - 1).toString()),
                 iconRes = R.drawable.ic_history,
@@ -130,14 +141,14 @@ private fun StatTileView(
     Column(
         verticalArrangement = spacedBy(4.dp),
         modifier = modifier
-            .shadow(TraktTheme.colors.shadowDynamicDefault, TileShape)
+            .shadow(TraktTheme.colors.shadowDynamicSmall, TileShape)
             .background(TraktTheme.colors.dialogOnContainer, TileShape)
             .padding(horizontal = 12.dp, vertical = 10.dp),
     ) {
         Text(
             text = stringResource(tile.labelRes),
             color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.meta,
+            style = TraktTheme.typography.cardSubtitle,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -155,7 +166,10 @@ private fun StatTileView(
             Text(
                 text = tile.value?.let { rememberNumberFormat(it) } ?: "-",
                 color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
+                style = TraktTheme.typography.heading3.copy(
+                    fontSize = 22.sp,
+                    letterSpacing = 0.02.sp,
+                ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.height(24.dp),
@@ -172,26 +186,33 @@ private fun ReviewLink(
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(8.dp),
+        horizontalArrangement = spacedBy(10.dp),
         modifier = Modifier
-            .heightIn(min = 48.dp)
-            .onClick(onClick = onClick),
+            .fillMaxWidth()
+            .heightIn(min = 52.dp)
+            .shadow(TraktTheme.colors.shadowDynamicSmall, TileShape)
+            .background(TraktTheme.colors.dialogOnContainer, TileShape)
+            .onClick(onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 10.dp),
     ) {
         Icon(
             painter = painterResource(iconRes),
             contentDescription = null,
             tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier.size(20.dp),
         )
         Text(
             text = text,
             color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.buttonSecondary,
+            style = TraktTheme.typography.heading6,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1F),
         )
         Icon(
-            painter = painterResource(R.drawable.ic_external),
+            painter = painterResource(R.drawable.ic_chevron_right),
             contentDescription = null,
-            tint = TraktTheme.colors.textSecondary,
+            tint = TraktTheme.colors.textPrimary,
             modifier = Modifier.size(14.dp),
         )
     }
@@ -205,7 +226,7 @@ private fun ProfileStats.toSections(): List<StatSection> {
             titleRes = R.string.header_stats_watched,
             tiles = listOf(
                 StatTile(R.string.label_stats_plays, vip?.totalPlays),
-                StatTile(R.string.label_stats_hours, vip?.let { Math.round(it.totalMinutes / 60.0).toInt() }),
+                StatTile(R.string.label_stats_hours, vip?.let { (it.totalMinutes / 60.0).roundToInt() }),
                 StatTile(R.string.label_stats_movies, vip?.moviesWatched ?: allMoviesCount),
                 StatTile(R.string.label_stats_shows, vip?.showsWatched ?: allShowsCount),
                 StatTile(R.string.label_stats_episodes, vip?.episodesWatched ?: allEpisodesCount),
@@ -230,10 +251,10 @@ private fun ProfileStats.toSections(): List<StatSection> {
     )
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF131517)
+@PreviewTraktLightDark
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemePreview {
         AllTimeStatsView(
             isVip = true,
             stats = ProfileStats(
