@@ -69,7 +69,6 @@ internal fun CreateSmartListFiltersAdvancedView(
         ) {
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 GenreFilter(
@@ -89,7 +88,6 @@ internal fun CreateSmartListFiltersAdvancedView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 CertificationFilter(

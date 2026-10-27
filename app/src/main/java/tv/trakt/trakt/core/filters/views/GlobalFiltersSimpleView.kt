@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.SliderDefaults
@@ -58,6 +56,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun GlobalFiltersSimpleView(
+    modifier: Modifier = Modifier,
     state: GlobalFiltersState,
     onUpdateFilter: (GlobalFilter, Boolean) -> Unit = { _, _ -> },
     onResetFilter: () -> Unit = { },
@@ -65,11 +64,7 @@ internal fun GlobalFiltersSimpleView(
 ) {
     Column(
         verticalArrangement = spacedBy(16.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 24.dp),
+        modifier = modifier,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -120,8 +115,7 @@ internal fun GlobalFiltersSimpleView(
             },
             height = 32.dp,
             modifier = Modifier.padding(
-                top = 4.dp,
-                bottom = 5.dp,
+                bottom = 8.dp,
             ),
         )
 
@@ -131,7 +125,6 @@ internal fun GlobalFiltersSimpleView(
         ) {
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 GenreFilter(
@@ -149,7 +142,6 @@ internal fun GlobalFiltersSimpleView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 DecadeFilter(
@@ -167,7 +159,6 @@ internal fun GlobalFiltersSimpleView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 CertificationFilter(
@@ -185,7 +176,6 @@ internal fun GlobalFiltersSimpleView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 StatusFilter(
@@ -200,6 +190,8 @@ internal fun GlobalFiltersSimpleView(
             RatingFilter(
                 state = state,
                 onUpdateFilter = onUpdateFilter,
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 6.dp),
             )
 
             SwitchesFilter(
@@ -574,12 +566,11 @@ private fun StatusFilter(
 private fun RatingFilter(
     state: GlobalFiltersState,
     onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         verticalArrangement = spacedBy(8.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp),
+        modifier = modifier.fillMaxWidth(),
     ) {
         val rangeRatingValue = remember(state.filter.rating) {
             mutableStateOf(
@@ -668,10 +659,11 @@ private fun RatingFilter(
 private fun SwitchesFilter(
     state: GlobalFiltersState,
     onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = spacedBy(RowsSpacing),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
             horizontalArrangement = spacedBy(8.dp),

@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.ui.theme.colors.DarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -42,6 +43,14 @@ internal fun TraktThemeLightDark(content: @Composable () -> Unit) {
 internal fun TraktThemeLight(content: @Composable () -> Unit) {
     TraktTheme(
         colors = LightColors,
+        content = content,
+    )
+}
+
+@Composable
+internal fun TraktThemeDark(content: @Composable () -> Unit) {
+    TraktTheme(
+        colors = DarkColors,
         content = content,
     )
 }

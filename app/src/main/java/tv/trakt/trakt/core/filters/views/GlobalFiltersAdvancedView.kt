@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.SliderDefaults
@@ -56,6 +54,7 @@ import java.util.Locale
 
 @Composable
 internal fun GlobalFiltersAdvancedView(
+    modifier: Modifier = Modifier,
     state: GlobalFiltersState,
     onUpdateFilter: (GlobalFilter, Boolean) -> Unit = { _, _ -> },
     onResetFilter: () -> Unit = { },
@@ -63,11 +62,7 @@ internal fun GlobalFiltersAdvancedView(
 ) {
     Column(
         verticalArrangement = spacedBy(16.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 24.dp),
+        modifier = modifier,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -117,10 +112,7 @@ internal fun GlobalFiltersAdvancedView(
                 onUpdateFilter(state.filter.copy(mode = it), false)
             },
             height = 32.dp,
-            modifier = Modifier.padding(
-                top = 4.dp,
-                bottom = 5.dp,
-            ),
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         Column(
@@ -129,7 +121,6 @@ internal fun GlobalFiltersAdvancedView(
         ) {
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 GenreFilter(
@@ -147,7 +138,6 @@ internal fun GlobalFiltersAdvancedView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 CertificationFilter(
@@ -165,7 +155,6 @@ internal fun GlobalFiltersAdvancedView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
-                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 StatusFilter(

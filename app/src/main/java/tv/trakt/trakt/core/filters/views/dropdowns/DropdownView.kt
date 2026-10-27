@@ -1,10 +1,5 @@
 package tv.trakt.trakt.core.filters.views.dropdowns
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -55,96 +50,89 @@ internal fun <T> DropdownView(
 
     val selected = value.raw != null
 
-    Column(
+    Box(
         modifier = modifier,
     ) {
-        DropdownHeader(
-            text = header,
-            visible = selected,
-        )
-
-        Box {
-            Column(
-                verticalArrangement = spacedBy(4.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = when (active) {
-                            true -> TraktTheme.colors.dropdownContainerActive
-                            false -> TraktTheme.colors.dropdownContainer
-                        },
-                        shape = RoundedCornerShape(16.dp),
-                    )
-                    .padding(
-                        horizontal = 14.dp,
-                        vertical = 14.dp,
-                    )
-                    .onClick(enabled = enabled) {
-                        showMenu = true
-                    },
-            ) {
-                Text(
-                    text = when {
-                        selected -> value.displayString
-                        else -> header
-                    },
-                    style = TraktTheme.typography.meta.copy(
-                        fontSize = 12.sp,
-                        letterSpacing = 0.02.em,
-                    ),
+        Column(
+            verticalArrangement = spacedBy(4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
                     color = when (active) {
-                        true -> TraktTheme.colors.dropdownContentActive
-                        false -> TraktTheme.colors.dropdownContent
+                        true -> TraktTheme.colors.dropdownContainerActive
+                        false -> TraktTheme.colors.dropdownContainer
                     },
-                    maxLines = 1,
-                    overflow = Ellipsis,
+                    shape = RoundedCornerShape(16.dp),
                 )
-            }
-
-            DropdownMenu(
-                expanded = showMenu,
-                containerColor = TraktTheme.colors.dropdownMenuContainer,
-                shape = RoundedCornerShape(16.dp),
-                onDismissRequest = {
-                    showMenu = false
+                .padding(
+                    horizontal = 14.dp,
+                    vertical = 14.dp,
+                )
+                .onClick(enabled = enabled) {
+                    showMenu = true
                 },
-                offset = DpOffset(0.dp, (-4).dp),
-                modifier = Modifier
-                    .align(Alignment.BottomEnd),
-            ) {
-                for (option in options) {
-                    DropdownMenuItem(
-                        text = {
-                            Row(
-                                horizontalArrangement = spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                if (option == value) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.ic_check),
-                                        contentDescription = null,
-                                        tint = TraktTheme.colors.textPrimary,
-                                        modifier = Modifier.size(12.dp),
-                                    )
-                                }
-                                Text(
-                                    text = option.displayString,
-                                    style = TraktTheme.typography.buttonTertiary,
-                                    color = when (option == value) {
-                                        true -> TraktTheme.colors.textPrimary
-                                        false -> TraktTheme.colors.textSecondary
-                                    },
+        ) {
+            Text(
+                text = when {
+                    selected -> value.displayString
+                    else -> header
+                },
+                style = TraktTheme.typography.meta.copy(
+                    fontSize = 12.sp,
+                    letterSpacing = 0.02.em,
+                ),
+                color = when (active) {
+                    true -> TraktTheme.colors.dropdownContentActive
+                    false -> TraktTheme.colors.dropdownContent
+                },
+                maxLines = 1,
+                overflow = Ellipsis,
+            )
+        }
+
+        DropdownMenu(
+            expanded = showMenu,
+            containerColor = TraktTheme.colors.dropdownMenuContainer,
+            shape = RoundedCornerShape(16.dp),
+            onDismissRequest = {
+                showMenu = false
+            },
+            offset = DpOffset(0.dp, (-4).dp),
+            modifier = Modifier
+                .align(Alignment.BottomEnd),
+        ) {
+            for (option in options) {
+                DropdownMenuItem(
+                    text = {
+                        Row(
+                            horizontalArrangement = spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            if (option == value) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_check),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(12.dp),
                                 )
                             }
-                        },
-                        onClick = {
-                            showMenu = false
-                            if (option != value) {
-                                onOptionSelected.invoke(option)
-                            }
-                        },
-                    )
-                }
+                            Text(
+                                text = option.displayString,
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = when (option == value) {
+                                    true -> TraktTheme.colors.textPrimary
+                                    false -> TraktTheme.colors.textSecondary
+                                },
+                            )
+                        }
+                    },
+                    onClick = {
+                        showMenu = false
+                        if (option != value) {
+                            onOptionSelected.invoke(option)
+                        }
+                    },
+                )
             }
         }
     }
@@ -155,27 +143,6 @@ internal data class DropdownOption<T>(
     val raw: T,
     val displayString: String,
 )
-
-@Composable
-internal fun DropdownHeader(
-    text: String,
-    visible: Boolean,
-) {
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn() + expandVertically(),
-        exit = fadeOut() + shrinkVertically(),
-    ) {
-        Text(
-            text = text,
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.buttonTertiary,
-            maxLines = 1,
-            overflow = Ellipsis,
-            modifier = Modifier.padding(bottom = 6.dp),
-        )
-    }
-}
 
 @DeviceSheetPreview
 @Composable
