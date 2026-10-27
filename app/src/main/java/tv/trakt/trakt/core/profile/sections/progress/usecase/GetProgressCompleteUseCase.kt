@@ -28,13 +28,13 @@ internal class GetProgressCompleteUseCase(
     suspend fun getCompleted(
         page: Int,
         limit: Int,
-        sorting: ProgressSorting = ProgressSorting.Default,
+        sorting: ProgressSorting,
     ): ImmutableList<ProfileProgressItem> {
         val remoteItems = remoteShowsSyncSource.getUpNext(
             limit = limit,
             page = page,
             intent = "completed",
-            sortHow = if (sorting.isDefault) null else sorting.order.value,
+            sortHow = sorting.order.value,
             sortBy = sorting.type.apiValue,
             filters = null,
         )
@@ -45,10 +45,6 @@ internal class GetProgressCompleteUseCase(
                     show = Show.fromDto(it.show),
                 )
             }
-
-        if (!sorting.isDefault) {
-            return items.toImmutableList()
-        }
 
         return items
             .also {

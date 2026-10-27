@@ -103,19 +103,7 @@ internal class AllProgressViewModel(
                     }
                 }
 
-                itemsState.update {
-                    when {
-                        sortingState.value.isDefault -> fetchLocalData(filter = filterState.value ?: UpToDate)
-                        else -> null
-                    }
-                }
-
-                loadingState.update {
-                    when {
-                        itemsState.value.isNullOrEmpty() -> Loading
-                        else -> Done
-                    }
-                }
+                loadingState.update { Loading }
 
                 val (lastPage, result) = fetchFilledPage(
                     filter = filterState.value ?: UpToDate,
@@ -172,15 +160,6 @@ internal class AllProgressViewModel(
         }
     }
 
-    private suspend fun fetchLocalData(filter: ProgressFilter): ImmutableList<ProfileProgressItem> {
-        return when (filter) {
-            UpToDate -> getCompletedUseCase.getLocalCompleted(limit = PROGRESS_PAGE_LIMIT, ended = false)
-            Ended -> getCompletedUseCase.getLocalCompleted(limit = PROGRESS_PAGE_LIMIT, ended = true)
-            InProgress -> getWatchingUseCase.getLocalWatching(limit = PROGRESS_PAGE_LIMIT)
-            Dropped -> getDroppedUseCase.getLocalDropped(limit = PROGRESS_PAGE_LIMIT)
-        }
-    }
-
     private tailrec suspend fun fetchFilledPage(
         filter: ProgressFilter,
         page: Int,
@@ -199,25 +178,40 @@ internal class AllProgressViewModel(
         return when (filter) {
             UpToDate -> {
                 getCompletedUseCase
-                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT, sorting = sortingState.value)
+                    .getCompleted(
+                        page = page,
+                        limit = PROGRESS_PAGE_LIMIT,
+                        sorting = sortingState.value,
+                    )
                     .pageOfEnded(ended = false)
             }
 
             Ended -> {
                 getCompletedUseCase
-                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT, sorting = sortingState.value)
+                    .getCompleted(
+                        page = page,
+                        limit = PROGRESS_PAGE_LIMIT,
+                        sorting = sortingState.value,
+                    )
                     .pageOfEnded(ended = true)
             }
 
             InProgress -> {
                 getWatchingUseCase
-                    .getWatching(page = page, limit = PROGRESS_PAGE_LIMIT, sorting = sortingState.value)
+                    .getWatching(
+                        page = page,
+                        limit = PROGRESS_PAGE_LIMIT,
+                        sorting = sortingState.value,
+                    )
                     .asPage()
             }
 
             Dropped -> {
                 getDroppedUseCase
-                    .getDropped(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .getDropped(
+                        page = page,
+                        limit = PROGRESS_PAGE_LIMIT,
+                    )
                     .asPage()
             }
         }

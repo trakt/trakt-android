@@ -7,7 +7,9 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
+import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalSource
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSortType.Default
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
 
 internal class GetProgressWatchingUseCase(
@@ -25,14 +27,17 @@ internal class GetProgressWatchingUseCase(
     suspend fun getWatching(
         page: Int,
         limit: Int,
-        sorting: ProgressSorting = ProgressSorting.Default,
+        sorting: ProgressSorting,
     ): ImmutableList<ProfileProgressItem> {
         val remoteItems = remoteShowsSyncSource.getUpNext(
             limit = limit,
             page = page,
             intent = "continue",
-            sortBy = sorting.type.apiValue ?: "remaining",
-            sortHow = if (sorting.isDefault) "asc" else sorting.order.value,
+            sortBy = when (sorting.type) {
+                Default -> "remaining"
+                else -> sorting.type.apiValue
+            },
+            sortHow = sorting.order.value,
             filters = null,
         )
 
@@ -50,7 +55,13 @@ internal class GetProgressWatchingUseCase(
         }
 
         return items
-            .sortedWith(compareBy({ it.remainingEpisodes }, { it.show.title }))
+            .sortedWith(
+                when (sorting.order) {
+                    SortOrder.Asc -> compareBy({ it.remainingEpisodes }, { it.show.title })
+                    SortOrder.Desc -> compareByDescending<ProfileProgressItem.ShowItem> { it.remainingEpisodes }
+                        .thenBy { it.show.title }
+                },
+            )
             .also {
                 when (page) {
                     1 -> localDataSource.setItems(it)
