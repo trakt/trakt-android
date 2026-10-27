@@ -1443,7 +1443,7 @@
   <string name="match_label_soulmates">Zielsverwanten</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Overeenkomst:</string>
-  <string name="match_pill_aria_label">%1$d% match, %2$s. Open matchdetails.</string>
+  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open matchdetails.</string>
   <string name="match_pill_loading_aria_label">Matchscore berekenen</string>
   <string name="mir_banner_body">Je maandelijkse overzicht is klaar. Dit is wat je hebt gekeken in %s.</string>
   <string name="mir_banner_body_short">Je %s overzicht is klaar.</string>
@@ -1674,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Alleen webhook</string>
   <string name="tag_mixtape_different_mood">Andere sfeer</string>
   <string name="tag_mixtape_kept">Bewaard</string>
-  <string name="tag_mixtape_match">%s% overeenkomst</string>
+  <string name="tag_mixtape_match">%s%% overeenkomst</string>
   <string name="tag_mixtape_tap_details">Tik voor details</string>
   <string name="tag_text_blocked_user">Geblokkeerd</string>
   <string name="tag_text_deal_price">Eerste 2 jaar</string>
@@ -2877,7 +2877,7 @@
   <string name="yir_2026_preview_runner_none">Geen (geen hybride)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona voorbeeld</string>
-  <string name="yir_2026_rarity">Slechts %1$d% is %2$s</string>
+  <string name="yir_2026_rarity">Slechts %1$d%% is %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Een beetje %s</string>
   <string name="yir_2026_reel_and_you_are">En jij bent</string>
   <string name="yir_2026_reel_but_mostly">Maar meestal</string>
