@@ -4,6 +4,7 @@ package tv.trakt.trakt.helpers.extensions
 
 import android.provider.Settings
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,14 @@ internal fun TraktThemeLight(content: @Composable () -> Unit) {
 internal fun TraktThemeDark(content: @Composable () -> Unit) {
     TraktTheme(
         colors = DarkColors,
+        content = content,
+    )
+}
+
+@Composable
+internal fun TraktThemePreview(content: @Composable () -> Unit) {
+    TraktTheme(
+        colors = if (isSystemInDarkTheme()) DarkColors else LightColors,
         content = content,
     )
 }
