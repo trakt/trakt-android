@@ -139,11 +139,11 @@ private fun StatTileView(
     locked: Boolean = true,
 ) {
     Column(
-        verticalArrangement = spacedBy(4.dp),
+        verticalArrangement = spacedBy(2.dp),
         modifier = modifier
             .shadow(TraktTheme.colors.shadowDynamicSmall, TileShape)
             .background(TraktTheme.colors.dialogOnContainer, TileShape)
-            .padding(horizontal = 12.dp, vertical = 10.dp),
+            .padding(horizontal = 12.dp, vertical = 11.dp),
     ) {
         Text(
             text = stringResource(tile.labelRes),
@@ -167,7 +167,7 @@ private fun StatTileView(
                 text = tile.value?.let { rememberNumberFormat(it) } ?: "-",
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading3.copy(
-                    fontSize = 22.sp,
+                    fontSize = 20.sp,
                     letterSpacing = 0.02.sp,
                 ),
                 maxLines = 1,
@@ -262,7 +262,7 @@ private fun Preview() {
                 allShowsCount = 87,
                 allEpisodesCount = 2310,
                 allTime = UserStats(
-                    totalMinutes = 123_456,
+                    totalMinutes = 123_456_789,
                     totalPlays = 4_217,
                     moviesWatched = 145,
                     showsWatched = 87,
