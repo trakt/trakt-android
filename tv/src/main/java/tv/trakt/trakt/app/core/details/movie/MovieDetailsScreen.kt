@@ -106,7 +106,7 @@ internal fun MovieDetailsScreen(
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToVideo: (String) -> Unit,
-    onNavigateToStreamings: (showId: TraktId) -> Unit,
+    onNavigateToStreamings: (Movie) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -184,7 +184,7 @@ private fun MovieDetailsScreenContent(
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToVideo: (String) -> Unit,
-    onNavigateToStreamings: (showId: TraktId) -> Unit,
+    onNavigateToStreamings: (Movie) -> Unit,
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
@@ -316,7 +316,7 @@ private fun MovieDetailsScreenContent(
                         onWatchlistClick = onWatchlistClick,
                         onDropMovieClick = onDropMovieClick,
                         onStreamingsClick = {
-                            onNavigateToStreamings(state.movieDetails.ids.trakt)
+                            onNavigateToStreamings(state.movieDetails)
                         },
                     )
                 }

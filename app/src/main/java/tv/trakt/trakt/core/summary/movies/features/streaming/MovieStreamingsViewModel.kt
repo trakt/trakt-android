@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.common.core.streamings.usecase.GetStreamingsUseCase
+import tv.trakt.trakt.common.core.streamings.usecase.GetYouTubeSpecialUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -22,19 +23,23 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.streamings.StreamingService
+import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
+@Suppress("UNCHECKED_CAST")
 internal class MovieStreamingsViewModel(
     private val movie: Movie,
     private val sessionManager: SessionManager,
     private val getStreamingsUseCase: GetStreamingsUseCase,
+    private val getYouTubeSpecialUseCase: GetYouTubeSpecialUseCase,
     private val collapsingManager: CollapsingManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MovieStreamingsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
+    private val youTubeSpecialState = MutableStateFlow(initialState.youTubeSpecial)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_WHERE_TO_WATCH))
     private val errorState = MutableStateFlow(initialState.error)
@@ -57,6 +62,8 @@ internal class MovieStreamingsViewModel(
                     return@launch
                 }
 
+                loadYouTubeSpecial()
+
                 val items = getStreamingsUseCase.getStreamings(
                     user = user,
                     request = StreamingsRequest(
@@ -77,6 +84,23 @@ internal class MovieStreamingsViewModel(
         }
     }
 
+    private fun loadYouTubeSpecial() {
+        if (!YouTubeSpecial.isSupported(movie.genres)) {
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val special = getYouTubeSpecialUseCase.getYouTubeSpecial(movie.ids.trakt)
+                youTubeSpecialState.update { special }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     fun setCollapsed(collapsed: Boolean) {
         collapseState.update { collapsed }
 
@@ -93,18 +117,23 @@ internal class MovieStreamingsViewModel(
         analytics.playback.logStreamOn(service.source)
     }
 
-    @Suppress("UNCHECKED_CAST")
+    fun logYouTubeSpecialStreamOn() {
+        analytics.playback.logStreamOn(YouTubeSpecial.SOURCE)
+    }
+
     val state = combine(
         itemsState,
         loadingState,
         collapseState,
         errorState,
+        youTubeSpecialState,
     ) { state ->
         MovieStreamingsState(
             items = state[0] as StreamingsResult?,
             loading = state[1] as LoadingState,
             collapsed = state[2] as Boolean,
             error = state[3] as Exception?,
+            youTubeSpecial = state[4] as YouTubeSpecial?,
         )
     }.stateIn(
         scope = viewModelScope,

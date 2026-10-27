@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.discover.DiscoverSection
+import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.navigation.billingScreen
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
@@ -493,6 +494,7 @@ internal fun NavGraphBuilder.moviesScreens(
                 navigateToMovieStreamings(
                     movieId = movie.ids.trakt,
                     movieTitle = movie.title,
+                    checkYouTubeSpecial = YouTubeSpecial.isSupported(movie.genres),
                     backgroundUrl = movie.images?.getFanartUrl(),
                 )
             },

@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -58,9 +59,11 @@ import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
+import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.core.streamings.ui.JustWatchRanksStrip
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingSkeleton
+import tv.trakt.trakt.core.summary.ui.views.DetailsYouTubeSpecialItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -75,6 +78,7 @@ internal fun MovieStreamingsView(
     onAllStreamingsClick: () -> Unit = {},
 ) {
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     MovieStreamingsContent(
@@ -93,6 +97,10 @@ internal fun MovieStreamingsView(
                 context = context,
             )
         },
+        onYouTubeSpecialClick = { special ->
+            viewModel.logYouTubeSpecialStreamOn()
+            uriHandler.openUri(special.link)
+        },
     )
 }
 
@@ -105,6 +113,7 @@ private fun MovieStreamingsContent(
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onAllStreamingsClick: () -> Unit = {},
     onClick: ((StreamingService) -> Unit)? = null,
+    onYouTubeSpecialClick: (YouTubeSpecial) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -157,7 +166,7 @@ private fun MovieStreamingsContent(
                     }
 
                     Done -> {
-                        if (state.items?.streamings?.isEmpty() == true) {
+                        if (state.items?.streamings?.isEmpty() == true && state.youTubeSpecial == null) {
                             ContentEmpty(
                                 contentPadding = headerPadding,
                                 modifier = Modifier
@@ -166,8 +175,10 @@ private fun MovieStreamingsContent(
                         } else {
                             ContentList(
                                 listItems = (state.items?.streamings ?: emptyList()).toImmutableList(),
+                                youTubeSpecial = state.youTubeSpecial,
                                 contentPadding = contentPadding,
                                 onClick = onClick,
+                                onYouTubeSpecialClick = onYouTubeSpecialClick,
                                 modifier = Modifier
                                     .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                             )
@@ -183,9 +194,11 @@ private fun MovieStreamingsContent(
 private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<Pair<StreamingService, StreamingType>>,
+    youTubeSpecial: YouTubeSpecial?,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onClick: ((StreamingService) -> Unit)? = null,
+    onYouTubeSpecialClick: (YouTubeSpecial) -> Unit,
 ) {
     LazyRow(
         state = listState,
@@ -194,6 +207,15 @@ private fun ContentList(
         contentPadding = contentPadding,
         modifier = modifier.fillMaxWidth(),
     ) {
+        if (youTubeSpecial != null) {
+            item(key = "youtube_special") {
+                DetailsYouTubeSpecialItem(
+                    special = youTubeSpecial,
+                    onClick = onYouTubeSpecialClick,
+                )
+            }
+        }
+
         items(
             items = listItems,
             key = { "${it.second.type}_${it.first.source}_${it.first.channel}" },

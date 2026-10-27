@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsScreen
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 
@@ -20,7 +21,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToVideo: (String) -> Unit,
-    onNavigateToStreamings: (showId: TraktId) -> Unit,
+    onNavigateToStreamings: (Movie) -> Unit,
 ) {
     composable<MovieDestination> {
         MovieDetailsScreen(

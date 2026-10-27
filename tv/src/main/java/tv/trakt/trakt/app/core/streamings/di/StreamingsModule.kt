@@ -28,6 +28,7 @@ internal val allStreamingsModule = module {
             savedStateHandle = stateHandle,
             sessionManager = get(),
             getAllStreamingsUseCase = get(),
+            getYouTubeSpecialUseCase = get(),
         )
     }
 }

@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.core.streamings.helpers.PriorityStreamingServicePro
 import tv.trakt.trakt.common.core.streamings.usecase.GetAllStreamingsUseCase
 import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
 import tv.trakt.trakt.common.core.streamings.usecase.GetStreamingsUseCase
+import tv.trakt.trakt.common.core.streamings.usecase.GetYouTubeSpecialUseCase
 
 val streamingsDataModule = module {
     singleOf(::PriorityStreamingServiceProvider)
@@ -16,4 +17,5 @@ val streamingsModule = module {
     factoryOf(::GetStreamingsUseCase)
     factoryOf(::GetAllStreamingsUseCase)
     factoryOf(::GetPriorityStreamingUseCase)
+    factoryOf(::GetYouTubeSpecialUseCase)
 }
