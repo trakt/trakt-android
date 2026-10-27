@@ -63,7 +63,7 @@ internal class UserMatchViewModel(
     init {
         loadData()
         observeMode()
-        observeFavorites()
+        observeTasteChanges()
     }
 
     private fun observeMode() {
@@ -73,13 +73,17 @@ internal class UserMatchViewModel(
             .filter { it != mode }
             .onEach {
                 mode = it
+                sharedMediaJob?.cancel()
+                matchState.update { null }
+                sharedMoviesState.update { null }
+                sharedShowsState.update { null }
                 loadData()
             }
             .launchIn(viewModelScope)
     }
 
-    private fun observeFavorites() {
-        dataChanges.observe(Kind.Favorites)
+    private fun observeTasteChanges() {
+        dataChanges.observe(Kind.Favorites, Kind.History)
             .debounce(200.milliseconds)
             .onEach { loadData() }
             .launchIn(viewModelScope)
