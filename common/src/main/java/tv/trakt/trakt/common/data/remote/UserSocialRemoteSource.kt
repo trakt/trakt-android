@@ -5,6 +5,7 @@ import org.openapitools.client.models.PostUsersFollow201Response
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.UserBlockedDto
@@ -43,6 +44,11 @@ class UserSocialRemoteSource(
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters?.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters?.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters?.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters?.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters?.parentalParam(ParentalGuideCategory.Frightening),
             startDate = null,
             endDate = null,
             ignoreWatched = filters?.hideWatched,

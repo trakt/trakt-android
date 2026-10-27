@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
@@ -50,6 +51,11 @@ class MoviesRemoteSource(
             ratings = filters.rating?.let { "${it.first}-${it.second}" },
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
             ignoreWatched = filters.hideWatched,
             ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
@@ -86,6 +92,11 @@ class MoviesRemoteSource(
             ratings = filters.rating?.let { "${it.first}-${it.second}" },
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
             ignoreWatched = filters.hideWatched,
             ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
@@ -114,6 +125,11 @@ class MoviesRemoteSource(
                 ratings = filters.rating?.let { "${it.first}-${it.second}" },
                 runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
                 certifications = filters.certification?.joinToString(",") { it.slug },
+                parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+                parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+                parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+                parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+                parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
                 countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
                 statuses = filters.statuses?.joinToString(",") { it.slug },
                 ignoreWatched = true,
@@ -165,6 +181,11 @@ class MoviesRemoteSource(
             ratings = filters.rating?.let { "${it.first}-${it.second}" },
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
             ignoreWatched = filters.hideWatched,
             ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
@@ -200,6 +221,11 @@ class MoviesRemoteSource(
             ratings = filters.rating?.let { "${it.first}-${it.second}" },
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
             statuses = filters.statuses?.joinToString(",") { it.slug },
             startDate2 = null,

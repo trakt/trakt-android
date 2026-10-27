@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.MediaApi
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.networking.AnticipatedMediaDto
 import tv.trakt.trakt.common.networking.PopularMediaDto
 import tv.trakt.trakt.common.networking.TrendingMediaDto
@@ -31,6 +32,11 @@ class MediaRemoteSource(
             ratings = filters.rating?.let { "${it.first}-${it.second}" },
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
             statuses = filters.statuses?.joinToString(",") { it.slug },
             ignoreWatched = filters.hideWatched,
@@ -61,6 +67,11 @@ class MediaRemoteSource(
             ratings = filters.rating?.let { "${it.first}-${it.second}" },
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
             statuses = filters.statuses?.joinToString(",") { it.slug },
             ignoreWatched = filters.hideWatched,
@@ -91,6 +102,11 @@ class MediaRemoteSource(
             ratings = filters.rating?.let { "${it.first}-${it.second}" },
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
             statuses = filters.statuses?.joinToString(",") { it.slug },
             ignoreWatched = filters.hideWatched,
@@ -119,6 +135,11 @@ class MediaRemoteSource(
                 ratings = filters.rating?.let { "${it.first}-${it.second}" },
                 runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
                 certifications = filters.certification?.joinToString(",") { it.slug },
+                parentalNudity = filters.parentalParam(ParentalGuideCategory.Nudity),
+                parentalViolence = filters.parentalParam(ParentalGuideCategory.Violence),
+                parentalProfanity = filters.parentalParam(ParentalGuideCategory.Profanity),
+                parentalAlcohol = filters.parentalParam(ParentalGuideCategory.Alcohol),
+                parentalFrightening = filters.parentalParam(ParentalGuideCategory.Frightening),
                 countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
                 statuses = filters.statuses?.joinToString(",") { it.slug },
                 ignoreWatched = true,

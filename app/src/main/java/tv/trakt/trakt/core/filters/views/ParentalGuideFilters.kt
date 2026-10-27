@@ -56,8 +56,7 @@ internal fun ParentalGuideFilters(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp),
+            .fillMaxWidth(),
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -68,16 +67,16 @@ internal fun ParentalGuideFilters(
         ) {
             Text(
                 text = stringResource(R.string.option_text_certification_parental_guidance),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading6,
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.buttonTertiary,
             )
 
             Icon(
-                painter = painterResource(R.drawable.ic_chevron_down_small),
+                painter = painterResource(R.drawable.ic_arrow_dropdown),
                 contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
+                tint = TraktTheme.colors.textSecondary,
                 modifier = Modifier
-                    .size(14.dp)
+                    .size(15.dp)
                     .graphicsLayer {
                         rotationZ = chevronRotation
                     },
@@ -86,14 +85,14 @@ internal fun ParentalGuideFilters(
 
         AnimatedVisibility(
             visible = expanded,
-            enter = expandVertically(animationSpec = tween(150)),
-            exit = shrinkVertically(animationSpec = tween(150)),
+            enter = expandVertically(animationSpec = tween(100)),
+            exit = shrinkVertically(animationSpec = tween(100)),
         ) {
             Column(
                 verticalArrangement = spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = 32.dp),
             ) {
                 ParentalGuideCategory.entries.forEach { category ->
                     ParentalGuideFilter(
@@ -129,12 +128,7 @@ private fun ParentalGuideFilter(
         modifier = Modifier.fillMaxWidth(),
     ) {
         Text(
-            text = stringResource(
-                R.string.advanced_filter_label_parental_guide,
-                stringResource(category.displayRes),
-                stringResource(ParentalGuideSeverity.fromValue(rangeValue.value.start.toInt()).displayRes),
-                stringResource(ParentalGuideSeverity.fromValue(rangeValue.value.endInclusive.toInt()).displayRes),
-            ),
+            text = stringResource(category.displayRes),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.buttonTertiary,
             maxLines = 1,

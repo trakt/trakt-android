@@ -189,6 +189,11 @@ class V3Api(
         request.ratings?.let { parameter("ratings", it) }
         request.runtimes?.let { parameter("runtimes", it) }
         request.certifications?.let { parameter("certifications", it) }
+        request.parentalNudity?.let { parameter("parental_nudity", it) }
+        request.parentalViolence?.let { parameter("parental_violence", it) }
+        request.parentalProfanity?.let { parameter("parental_profanity", it) }
+        request.parentalAlcohol?.let { parameter("parental_alcohol", it) }
+        request.parentalFrightening?.let { parameter("parental_frightening", it) }
         request.countries?.let { parameter("countries", it) }
         request.statuses?.let { parameter("statuses", it) }
         request.ignoreWatched?.let { parameter("ignore_watched", it) }

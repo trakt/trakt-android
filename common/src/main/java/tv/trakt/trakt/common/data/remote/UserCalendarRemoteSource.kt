@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.data.remote
 import org.openapitools.client.apis.CalendarsApi
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CalendarMovieDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
@@ -33,6 +34,11 @@ class UserCalendarRemoteSource(
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters?.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters?.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters?.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters?.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters?.parentalParam(ParentalGuideCategory.Frightening),
             type = when (filters?.mode) {
                 MediaMode.Shows -> "show"
                 MediaMode.Movies -> "movie"
@@ -65,6 +71,11 @@ class UserCalendarRemoteSource(
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters?.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters?.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters?.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters?.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters?.parentalParam(ParentalGuideCategory.Frightening),
             ignoreWatched = filters?.hideWatched,
             ignoreWatchlisted = filters?.hideWatchlist,
             ignoreCollected = null,
@@ -95,6 +106,11 @@ class UserCalendarRemoteSource(
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             statuses = filters?.statuses?.joinToString(",") { it.slug },
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            parentalNudity = filters?.parentalParam(ParentalGuideCategory.Nudity),
+            parentalViolence = filters?.parentalParam(ParentalGuideCategory.Violence),
+            parentalProfanity = filters?.parentalParam(ParentalGuideCategory.Profanity),
+            parentalAlcohol = filters?.parentalParam(ParentalGuideCategory.Alcohol),
+            parentalFrightening = filters?.parentalParam(ParentalGuideCategory.Frightening),
             ignoreWatched = filters?.hideWatched,
             ignoreWatchlisted = filters?.hideWatchlist,
             ignoreCollected = null,
