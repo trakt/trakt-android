@@ -256,9 +256,7 @@ internal class MainActivity : AppCompatActivity() {
 
     private fun openAuthorization(allowHttpsRedirect: Boolean = true) {
         lifecycleScope.launch {
-            val redirectUri = authRedirectUri(
-                httpsSupported = allowHttpsRedirect && authBrowser.supportsAuthTab(),
-            )
+            val redirectUri = authRedirectUri(allowHttpsRedirect)
             val forceLogin = authPreferences.data.first()[forceLoginKey] == true
             val codeVerifier = Pkce.generateCodeVerifier()
             authPreferences.edit { it[codeVerifierKey] = codeVerifier }
@@ -273,13 +271,9 @@ internal class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * The https redirect is only used through an Auth Tab. A regular browser often fails to hand
-     * the final redirect off to the app, leaving the user on the web handoff page.
-     */
-    private fun authRedirectUri(httpsSupported: Boolean): String {
+    private fun authRedirectUri(allowHttpsRedirect: Boolean): String {
         return when {
-            httpsSupported && Firebase.remoteConfig.getBoolean(MOBILE_HTTPS_AUTH_CALLBACK_ENABLED) -> {
+            allowHttpsRedirect && Firebase.remoteConfig.getBoolean(MOBILE_HTTPS_AUTH_CALLBACK_ENABLED) -> {
                 OAUTH_HTTPS_REDIRECT_URI
             }
             else -> {
@@ -322,10 +316,12 @@ internal class MainActivity : AppCompatActivity() {
             else -> return false
         }
 
-        Timber.d("Handling Trakt authorization with data: %s", authData)
+        Timber.d("Handling Trakt authorization redirect: %s", redirectUri)
         if (!authData.toString().startsWith(redirectUri)) {
             Timber.recordError(
-                IllegalArgumentException("Invalid Trakt authorization data: $authData"),
+                IllegalArgumentException(
+                    "Invalid Trakt authorization redirect: ${authData.scheme}://${authData.host}${authData.path}",
+                ),
             )
             return false
         }
@@ -333,7 +329,7 @@ internal class MainActivity : AppCompatActivity() {
         val code = authData.getQueryParameter("code")
         if (code.isNullOrBlank()) {
             Timber.recordError(
-                IllegalArgumentException("Trakt authorization redirect is missing code: $authData"),
+                IllegalArgumentException("Trakt authorization redirect is missing code: $redirectUri"),
             )
             return false
         }
