@@ -63,6 +63,7 @@ internal fun CreateSmartListFiltersSimpleView(
         ) {
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
+                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 GenreFilter(
@@ -82,6 +83,7 @@ internal fun CreateSmartListFiltersSimpleView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
+                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 DecadeFilter(
@@ -101,6 +103,7 @@ internal fun CreateSmartListFiltersSimpleView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
+                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 CertificationFilter(

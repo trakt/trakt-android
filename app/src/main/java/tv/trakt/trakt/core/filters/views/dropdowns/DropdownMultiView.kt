@@ -45,16 +45,14 @@ internal fun <T> DropdownMultiView(
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
+    val selected = values.any { it.raw != null }
+
     Column(
-        verticalArrangement = spacedBy(6.dp),
         modifier = modifier,
     ) {
-        Text(
+        DropdownHeader(
             text = header,
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.buttonTertiary,
-            maxLines = 1,
-            overflow = Ellipsis,
+            visible = selected,
         )
 
         Box {
@@ -78,7 +76,10 @@ internal fun <T> DropdownMultiView(
                     },
             ) {
                 Text(
-                    text = values.joinToString(", ") { it.displayString },
+                    text = when {
+                        selected -> values.joinToString(", ") { it.displayString }
+                        else -> header
+                    },
                     style = TraktTheme.typography.meta.copy(
                         fontSize = 12.sp,
                         letterSpacing = 0.02.em,
@@ -162,12 +163,12 @@ private fun PreviewDropdownView() {
         DropdownMultiView(
             header = "Genre",
             active = true,
-            values = persistentListOf(
+            values = persistentListOf<DropdownOption<String?>>(
                 DropdownOption(raw = "Action", displayString = "Action"),
                 DropdownOption(raw = "Comedy", displayString = "Comedy"),
             ),
             options = persistentListOf(
-                DropdownOption(raw = "All", displayString = "All"),
+                DropdownOption(raw = null, displayString = "All"),
                 DropdownOption(raw = "Action", displayString = "Action"),
                 DropdownOption(raw = "Comedy", displayString = "Comedy"),
             ),
@@ -187,11 +188,11 @@ private fun PreviewDropdownViewInactive() {
         DropdownMultiView(
             header = "Genre",
             active = false,
-            values = persistentListOf(
-                DropdownOption(raw = "All", displayString = "All"),
+            values = persistentListOf<DropdownOption<String?>>(
+                DropdownOption(raw = null, displayString = "All"),
             ),
             options = persistentListOf(
-                DropdownOption(raw = "All", displayString = "All"),
+                DropdownOption(raw = null, displayString = "All"),
                 DropdownOption(raw = "Action", displayString = "Action"),
                 DropdownOption(raw = "Comedy", displayString = "Comedy"),
             ),

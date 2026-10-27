@@ -131,6 +131,7 @@ internal fun GlobalFiltersSimpleView(
         ) {
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
+                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 GenreFilter(
@@ -148,6 +149,7 @@ internal fun GlobalFiltersSimpleView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
+                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 DecadeFilter(
@@ -165,6 +167,7 @@ internal fun GlobalFiltersSimpleView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
+                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 CertificationFilter(
@@ -182,6 +185,7 @@ internal fun GlobalFiltersSimpleView(
 
             Row(
                 horizontalArrangement = spacedBy(RowsSpacing),
+                verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 StatusFilter(

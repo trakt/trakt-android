@@ -1,5 +1,10 @@
 package tv.trakt.trakt.core.filters.views.dropdowns
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -48,16 +53,14 @@ internal fun <T> DropdownView(
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
+    val selected = value.raw != null
+
     Column(
-        verticalArrangement = spacedBy(6.dp),
         modifier = modifier,
     ) {
-        Text(
+        DropdownHeader(
             text = header,
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.buttonTertiary,
-            maxLines = 1,
-            overflow = Ellipsis,
+            visible = selected,
         )
 
         Box {
@@ -81,7 +84,10 @@ internal fun <T> DropdownView(
                     },
             ) {
                 Text(
-                    text = value.displayString,
+                    text = when {
+                        selected -> value.displayString
+                        else -> header
+                    },
                     style = TraktTheme.typography.meta.copy(
                         fontSize = 12.sp,
                         letterSpacing = 0.02.em,
@@ -150,6 +156,27 @@ internal data class DropdownOption<T>(
     val displayString: String,
 )
 
+@Composable
+internal fun DropdownHeader(
+    text: String,
+    visible: Boolean,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically(),
+    ) {
+        Text(
+            text = text,
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.buttonTertiary,
+            maxLines = 1,
+            overflow = Ellipsis,
+            modifier = Modifier.padding(bottom = 6.dp),
+        )
+    }
+}
+
 @DeviceSheetPreview
 @Composable
 private fun PreviewDropdownView() {
@@ -157,9 +184,9 @@ private fun PreviewDropdownView() {
         DropdownView(
             header = "Genre",
             active = true,
-            value = DropdownOption(raw = "Action", displayString = "Action"),
+            value = DropdownOption<String?>(raw = "Action", displayString = "Action"),
             options = persistentListOf(
-                DropdownOption(raw = "All", displayString = "All"),
+                DropdownOption(raw = null, displayString = "All"),
                 DropdownOption(raw = "Action", displayString = "Action"),
                 DropdownOption(raw = "Comedy", displayString = "Comedy"),
             ),
@@ -179,9 +206,9 @@ private fun PreviewDropdownViewInactive() {
         DropdownView(
             header = "Genre",
             active = false,
-            value = DropdownOption(raw = "All", displayString = "All"),
+            value = DropdownOption<String?>(raw = null, displayString = "All"),
             options = persistentListOf(
-                DropdownOption(raw = "All", displayString = "All"),
+                DropdownOption(raw = null, displayString = "All"),
                 DropdownOption(raw = "Action", displayString = "Action"),
                 DropdownOption(raw = "Comedy", displayString = "Comedy"),
             ),
