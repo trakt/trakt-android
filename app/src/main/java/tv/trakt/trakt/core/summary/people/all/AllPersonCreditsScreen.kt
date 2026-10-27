@@ -187,6 +187,12 @@ internal fun AllPersonCreditsContent(
                     }
                 }
 
+                state.loading.isDone && state.items.isEmpty() && state.error != null -> {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        ContentErrorView(error = state.error)
+                    }
+                }
+
                 state.loading.isDone && state.items.isEmpty() -> {
                     item(span = { GridItemSpan(maxLineSpan) }) {
                         ContentEmptyView(state = state)
@@ -291,6 +297,16 @@ private fun ContentEmptyView(state: AllPersonCreditsState) {
         },
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.heading6,
+    )
+}
+
+@Composable
+private fun ContentErrorView(error: Exception) {
+    Text(
+        text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n$error",
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.meta,
+        maxLines = 10,
     )
 }
 

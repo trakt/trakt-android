@@ -108,11 +108,13 @@ private fun ShowCreditCard(
                         item.episodesCount,
                     )
 
+                    val tbaLabel = stringResource(R.string.tag_text_tba)
+
                     val footerText = remember {
                         buildString {
                             item.show.releasedAt?.let {
                                 append(it.toLocal().year.toString())
-                            } ?: append("TBA")
+                            } ?: append(tbaLabel)
 
                             if (item.episodesCount > 0) {
                                 append(" • ")
@@ -133,7 +135,7 @@ private fun ShowCreditCard(
 
                 Text(
                     text = (item.credit ?: "")
-                        .ifBlank { "N/A" }
+                        .ifBlank { stringResource(R.string.text_unknown) }
                         .uppercaseWords(),
                     style = TraktTheme.typography.cardSubtitle,
                     color = TraktTheme.colors.textSecondary,
@@ -203,7 +205,7 @@ private fun MovieCreditCard(
 
                 Text(
                     text = (item.credit ?: "")
-                        .ifBlank { "N/A" }
+                        .ifBlank { stringResource(R.string.text_unknown) }
                         .uppercaseWords(),
                     style = TraktTheme.typography.cardSubtitle,
                     color = TraktTheme.colors.textSecondary,

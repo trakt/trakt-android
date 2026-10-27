@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -67,6 +68,8 @@ internal class AllPersonCreditsViewModel(
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var navigationJob: Job? = null
+
     init {
         loadData()
         collectionStateProvider.launchIn(viewModelScope)
@@ -118,20 +121,20 @@ internal class AllPersonCreditsViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null) {
+        if (navigateShow.value != null || navigateMovie.value != null || navigationJob?.isActive == true) {
             return
         }
-        viewModelScope.launch {
+        navigationJob = viewModelScope.launch {
             showLocalSource.upsertShows(listOf(show))
             navigateShow.update { show.ids.trakt }
         }
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null) {
+        if (navigateShow.value != null || navigateMovie.value != null || navigationJob?.isActive == true) {
             return
         }
-        viewModelScope.launch {
+        navigationJob = viewModelScope.launch {
             movieLocalSource.upsertMovies(listOf(movie))
             navigateMovie.update { movie.ids.trakt }
         }
