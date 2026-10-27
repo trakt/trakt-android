@@ -630,6 +630,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -1417,6 +1462,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -2187,6 +2277,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -2969,6 +3104,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -3745,6 +3925,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -4183,6 +4408,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -4633,6 +4903,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -5071,6 +5386,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -6074,6 +6434,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "type",
             "in": "query",
             "description": "Narrow the feed to a single media type. Omit to return both.",
@@ -7069,6 +7474,51 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -7805,6 +8255,51 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -8537,6 +9032,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -16201,6 +16741,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -18731,6 +19316,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -27979,6 +28609,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "start_at",
             "in": "query",
             "description": "Start date for the range. Must be formatted as \"YYYY-MM-DD\".",
@@ -28885,6 +29560,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "start_at",
             "in": "query",
             "description": "Start date for the range. Must be formatted as \"YYYY-MM-DD\".",
@@ -29332,6 +30052,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -29966,6 +30731,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -32930,6 +33740,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "hide",
             "in": "query",
             "schema": {
@@ -33437,6 +34292,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -33985,6 +34885,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -34822,6 +35767,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -47257,6 +48247,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -47743,6 +48778,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -48270,6 +49350,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -49067,6 +50192,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -50712,6 +51882,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -69409,6 +70624,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "sort_by",
             "in": "query",
             "description": "The field to sort by",
@@ -87197,6 +88457,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "theme",
             "in": "query",
             "description": "Apply a seasonal theme such as `halloween` or `christmas`. The server expands it into the filters for the feed and the media type, and any filter you send yourself takes priority. Unknown themes are ignored.",
@@ -87925,6 +89230,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "theme",
             "in": "query",
             "description": "Apply a seasonal theme such as `halloween` or `christmas`. The server expands it into the filters for the feed and the media type, and any filter you send yourself takes priority. Unknown themes are ignored.",
@@ -88642,6 +89992,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "theme",
             "in": "query",
             "description": "Apply a seasonal theme such as `halloween` or `christmas`. The server expands it into the filters for the feed and the media type, and any filter you send yourself takes priority. Unknown themes are ignored.",
@@ -89353,6 +90748,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "theme",
             "in": "query",
             "description": "Apply a seasonal theme such as `halloween` or `christmas`. The server expands it into the filters for the feed and the media type, and any filter you send yourself takes priority. Unknown themes are ignored.",
@@ -90058,6 +91498,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -94354,6 +95839,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "theme",
             "in": "query",
             "description": "Apply a seasonal theme such as `halloween` or `christmas`. The server expands it into the filters for the feed and the media type, and any filter you send yourself takes priority. Unknown themes are ignored.",
@@ -96875,6 +98405,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "theme",
             "in": "query",
             "description": "Apply a seasonal theme such as `halloween` or `christmas`. The server expands it into the filters for the feed and the media type, and any filter you send yourself takes priority. Unknown themes are ignored.",
@@ -97315,6 +98890,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -97740,6 +99360,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -98181,6 +99846,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -109802,6 +111512,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "theme",
             "in": "query",
             "description": "Apply a seasonal theme such as `halloween` or `christmas`. The server expands it into the filters for the feed and the media type, and any filter you send yourself takes priority. Unknown themes are ignored.",
@@ -110286,6 +112041,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -110785,6 +112585,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -111260,6 +113105,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -111753,6 +113643,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -112650,6 +114585,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "theme",
             "in": "query",
             "description": "Apply a seasonal theme such as `halloween` or `christmas`. The server expands it into the filters for the feed and the media type, and any filter you send yourself takes priority. Unknown themes are ignored.",
@@ -113125,6 +115105,51 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -113585,6 +115610,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -114061,6 +116131,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -121835,6 +123950,51 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -122280,6 +124440,51 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -122712,6 +124917,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -123161,6 +125411,51 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -123584,6 +125879,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -124042,6 +126382,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -124524,6 +126909,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -125041,6 +127471,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -125828,6 +128303,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -127463,6 +129983,51 @@
           {
             "name": "certifications",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string",
               "nullable": true
@@ -130095,6 +132660,46 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -130219,46 +132824,6 @@
             "name": "watchnow_country",
             "in": "query",
             "description": "Two-letter region for `watchnow`. Defaults to the list region, then the owner region, then `us`.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_nudity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_violence",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_profanity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_alcohol",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_frightening",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string"
             }
@@ -131809,6 +134374,46 @@
             }
           },
           {
+            "name": "parental_nudity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_violence",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_profanity",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_alcohol",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parental_frightening",
+            "in": "query",
+            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
@@ -131933,46 +134538,6 @@
             "name": "watchnow_country",
             "in": "query",
             "description": "Two-letter region for `watchnow`. Defaults to the list region, then the owner region, then `us`.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_nudity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_violence",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_profanity",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_alcohol",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "parental_frightening",
-            "in": "query",
-            "description": "Parental guide severity range `min-max`, from 0 (none) to 3 (severe).",
             "schema": {
               "type": "string"
             }
