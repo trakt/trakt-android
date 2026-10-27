@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Synkronisera automatiskt din visningshistorik och dina betyg.</string>
   <string name="description_streaming_vip_services">Uppgradera för att ansluta och synkronisera dessa streamingtjänster.</string>
   <string name="description_sync_detail">Några detaljer om denna synkronisering.</string>
-  <string name="description_sync_webhooks_jellyfin">Live-framsteg via Jellyfin Webhook-pluginet är på gång.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt visar vad du tittar på just nu, och ditt bibliotek synkroniseras några minuter efter att du har sett klart något. Konfigurera det en gång i Jellyfins Webhook-plugin. Det täcker %s.</string>
   <string name="description_sync_webhooks_live_progress">Din medieserver berättar för Trakt vad du tittar på just nu och var du pausade. Tittande kommer fortfarande från synkronisering.</string>
   <string name="description_sync_webhooks_plex">Klistra in denna adress en gång i Plex › Inställningar › Webhooks. Den täcker %s. Kräver Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">På servrar som Trakt inte kan nå, lägger den även till dina tittanden och betyg.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Insikter</string>
   <string name="header_jellyfin_synced_servers">Jellyfin-servrar</string>
   <string name="header_jellyfin_vip_upsell">Jellyfin-synkronisering är en VIP-beta</string>
+  <string name="header_jellyfin_webhook_steps">Konfigurera i Jellyfin</string>
   <string name="header_landing_discover">Upptäck</string>
   <string name="header_landing_hero">Din nästa favorit finns redan därute.</string>
   <string name="header_landing_share">Dela</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Serier</string>
   <string name="label_streaming_country">Land</string>
   <string name="label_sync_webhooks_server_count">%s servrar</string>
-  <string name="label_sync_webhooks_soon">Snart</string>
   <string name="label_today_day">Välj en dag</string>
   <string name="label_today_grouping">Gruppera dagens aktivitet</string>
   <string name="label_usage_limit_loading">Laddar din användning</string>
@@ -1443,7 +1443,7 @@
   <string name="match_label_soulmates">Själsfränder</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Matchning:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Öppna matchningsdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Öppna matchningsdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beräknar kompatibilitetspoäng</string>
   <string name="mir_banner_body">Din månatliga sammanfattning är klar. Här är vad du tittade på i %s.</string>
   <string name="mir_banner_body_short">Din sammanfattning för %s är klar.</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">År hittills</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
   <string name="preview_feature_description_large_screen_cards">På större skärmar används samma kort för alla listor som i resten av appen. Att välja ett kort öppnar en snabböverblick istället för att lämna listan.</string>
-  <string name="preview_feature_description_progress_manager">Spårningsknappen på en serie fylls på allt eftersom du tittar och öppnar en panel med dina framsteg per säsong och avsnitt.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_show_ending">Visar en avslutningsrad i en series detaljer: \"Avslutad\" när handlingen är klar, \"Oavslutad\" när den inte är det.</string>
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en scrollbar rulle med en tittarpersona, följt av en statistik sida med matchande stil.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_large_screen_cards">Kort för stor skärm</string>
-  <string name="preview_feature_title_progress_manager">Framstegshanterare</string>
   <string name="preview_feature_title_rewatch">Omtittning</string>
   <string name="preview_feature_title_show_ending">Serieavslutning</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1676,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Endast Webhook</string>
   <string name="tag_mixtape_different_mood">Annan känsla</string>
   <string name="tag_mixtape_kept">Behållen</string>
-  <string name="tag_mixtape_match">%s%% matchning</string>
+  <string name="tag_mixtape_match">%s% matchning</string>
   <string name="tag_mixtape_tap_details">Tryck för detaljer</string>
   <string name="tag_text_blocked_user">Blockerad</string>
   <string name="tag_text_deal_price">Första 2 åren</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Streamingtjänsten har länkats.</string>
   <string name="text_info_younify_service_unlinked">Streamingtjänsten har avlänkats.</string>
   <string name="text_jellyfin_quick_connect_waiting">Väntar på att du ska godkänna den</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Öppna Dashboard &gt; Plugins &gt; Webhook och välj \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">I Jellyfin, öppna Dashboard &gt; Plugins &gt; Catalog, installera \"Webhook\" och starta om servern.</string>
+  <string name="text_jellyfin_webhook_step_item_types">Under objekttyper, kryssa i \"Movies\" och \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">Under aviseringstyper, kryssa endast i \"Playback Start\" och \"Playback Stop\".</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Klistra in adressen ovan i \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Kryssa i \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">Under användarfilter, välj din egen Jellyfin-användare och spara sedan.</string>
   <string name="text_landing_discover">filmer och serier du kommer att älska och var de streamas just nu.</string>
   <string name="text_landing_discover_eyebrow">Hitta den</string>
   <string name="text_landing_hero">Håll koll på vad du har sett, hitta nästa att titta på och se var det streamas ikväll.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Lås upp detaljerad sentimentanalys, vad som verkligen hände i sanna berättelser och fascinerande trivia om filmerna och serierna du tittar på.</string>
   <string name="vip_feature_description_soundtrack">Se alla spår som krediterats i en film eller serie, och spela de vi kan matcha.</string>
   <string name="vip_feature_description_streaming_services">Anslut och synka med ytterligare streamingplattformar för att spåra ditt tittande över alla tjänster.</string>
-  <string name="vip_feature_description_support">Få prioriterad tillgång till våra supportforum och få din feedback hörd direkt av teamet.</string>
+  <string name="vip_feature_description_support">Få prioriterad tillgång till support och få din feedback hörd direkt av teamet.</string>
   <string name="vip_feature_description_trivia">Få mer trivia och insikter om filmerna och serierna du tittar på.</string>
   <string name="vip_feature_description_vip_status">Visa upp din VIP-status i apparna och på webbplatsen.</string>
   <string name="vip_feature_title_api_apps">Fler appar anslutna</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Mer statistik: Månatlig &amp; Årlig sammanfattning</string>
   <string name="vip_feature_title_sentiment_trivia">Mer info: Sentiment, Reality Check &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Synka fler streamingtjänster</string>
-  <string name="vip_feature_title_support">Bättre support: Forum &amp; Feedback</string>
+  <string name="vip_feature_title_support">Bättre support: Hjälp &amp; feedback</string>
   <string name="vip_feature_title_unlock">Lås upp full potential med</string>
   <string name="vip_feature_title_vip_status">VIP-status</string>
   <string name="vip_text_vip_go_beyond_limits">Överskrid dina gränser</string>
@@ -2872,7 +2877,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ingen hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andraplats</string>
   <string name="yir_2026_preview_title">Personaförhandsvisning</string>
-  <string name="yir_2026_rarity">Endast %1$d%% är %2$s</string>
+  <string name="yir_2026_rarity">Endast %1$d% är %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Litegrann %s</string>
   <string name="yir_2026_reel_and_you_are">Och du är</string>
   <string name="yir_2026_reel_but_mostly">Men mestadels</string>

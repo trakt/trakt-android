@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Automatically sync your watched history and ratings.</string>
   <string name="description_streaming_vip_services">Upgrade to connect and sync these streaming services.</string>
   <string name="description_sync_detail">Some details about this sync.</string>
-  <string name="description_sync_webhooks_jellyfin">Live progress through the Jellyfin Webhook plugin is on the way.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt shows what you\'re watching right now, and your library syncs a few minutes after you finish something. Set it up once in the Jellyfin Webhook plugin. It covers %s.</string>
   <string name="description_sync_webhooks_live_progress">Your media server tells Trakt what you\'re watching right now and where you paused. Watches still come from sync.</string>
   <string name="description_sync_webhooks_plex">Paste this address once in Plex › Settings › Webhooks. It covers %s. Needs Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">On servers Trakt can\'t reach, it also adds your watches and ratings.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Insights</string>
   <string name="header_jellyfin_synced_servers">Jellyfin Servers</string>
   <string name="header_jellyfin_vip_upsell">Jellyfin sync is a VIP beta</string>
+  <string name="header_jellyfin_webhook_steps">Set up in Jellyfin</string>
   <string name="header_landing_discover">Discover</string>
   <string name="header_landing_hero">Your next favourite is already out there.</string>
   <string name="header_landing_share">Share</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Shows</string>
   <string name="label_streaming_country">Country</string>
   <string name="label_sync_webhooks_server_count">%s servers</string>
-  <string name="label_sync_webhooks_soon">Soon</string>
   <string name="label_today_day">Choose a day</string>
   <string name="label_today_grouping">Group today\'s activity</string>
   <string name="label_usage_limit_loading">Loading your usage</string>
@@ -1443,7 +1443,7 @@
   <string name="match_label_soulmates">Soulmates</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open match details.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open match details.</string>
   <string name="match_pill_loading_aria_label">Computing match score</string>
   <string name="mir_banner_body">Your monthly recap is ready. Here\'s what you watched in %s.</string>
   <string name="mir_banner_body_short">Your %s recap is ready.</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_large_screen_cards">On bigger screens, all lists use the same cards as the rest of the app. Selecting one opens a quick glance instead of leaving the list.</string>
-  <string name="preview_feature_description_progress_manager">The track button on a show fills up as you watch, and opens a drawer with your progress per season and episode.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_show_ending">Shows an Ending row in a show\'s details: Complete when the story wrapped up, Unresolved when it did not.</string>
   <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Your 2026 as a scroll-driven reel with a viewer persona, then a stats page styled to match it.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_large_screen_cards">Large Screen Cards</string>
-  <string name="preview_feature_title_progress_manager">Progress manager</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_show_ending">Show ending</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1676,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Webhook only</string>
   <string name="tag_mixtape_different_mood">Different mood</string>
   <string name="tag_mixtape_kept">Kept</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tap for details</string>
   <string name="tag_text_blocked_user">Blocked</string>
   <string name="tag_text_deal_price">First 2 Years</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Streaming service has been linked.</string>
   <string name="text_info_younify_service_unlinked">Streaming service has been unlinked.</string>
   <string name="text_jellyfin_quick_connect_waiting">Waiting for you to approve it</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Open Dashboard &gt; Plugins &gt; Webhook and choose \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">In Jellyfin, open Dashboard &gt; Plugins &gt; Catalog, install \"Webhook\" and restart the server.</string>
+  <string name="text_jellyfin_webhook_step_item_types">Under item types, tick \"Movies\" and \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">Under notification types, tick \"Playback Start\" and \"Playback Stop\" only.</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Paste the address above into \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Tick \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">Under user filter, pick your own Jellyfin user, then save.</string>
   <string name="text_landing_discover">movies and shows you\'ll love, and where they\'re streaming right now.</string>
   <string name="text_landing_discover_eyebrow">Find it</string>
   <string name="text_landing_hero">Track what you\'ve seen, find what to watch next, and see where it\'s streaming tonight.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Unlock detailed sentiment analysis, what really happened in true stories, and fascinating trivia about the movies and shows you watch.</string>
   <string name="vip_feature_description_soundtrack">See every track credited in a movie or show, and play the ones we can match.</string>
   <string name="vip_feature_description_streaming_services">Connect and sync with additional streaming platforms to track your viewing across all services.</string>
-  <string name="vip_feature_description_support">Get priority access to our support forums and have your feedback heard directly by the team.</string>
+  <string name="vip_feature_description_support">Get priority access to support and have your feedback heard directly by the team.</string>
   <string name="vip_feature_description_trivia">Get more trivia and insights about the movies and shows you watch.</string>
   <string name="vip_feature_description_vip_status">Show off your VIP status throughout the apps and website.</string>
   <string name="vip_feature_title_api_apps">More Apps Connected</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">More Stats: Monthly &amp; Yearly Recap</string>
   <string name="vip_feature_title_sentiment_trivia">More Info: Sentiment, Reality Check &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Sync more Streaming Services</string>
-  <string name="vip_feature_title_support">Better Support: Forum &amp; Feedback</string>
+  <string name="vip_feature_title_support">Better Support: Help &amp; Feedback</string>
   <string name="vip_feature_title_unlock">Unlock full potential with</string>
   <string name="vip_feature_title_vip_status">VIP Status</string>
   <string name="vip_text_vip_go_beyond_limits">Go beyond your limits</string>
@@ -2872,7 +2877,7 @@
   <string name="yir_2026_preview_runner_none">None (no hybrid)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona preview</string>
-  <string name="yir_2026_rarity">Only %1$d%% are %2$s</string>
+  <string name="yir_2026_rarity">Only %1$d% are %2$s</string>
   <string name="yir_2026_reel_a_little_bit">A little bit %s</string>
   <string name="yir_2026_reel_and_you_are">And you are</string>
   <string name="yir_2026_reel_but_mostly">But mostly</string>

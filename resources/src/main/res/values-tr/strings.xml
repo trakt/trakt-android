@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">İzleme geçmişinizi ve puanlarınızı otomatik olarak senkronize edin.</string>
   <string name="description_streaming_vip_services">Bu yayın platformlarını bağlamak ve senkronize etmek için yükseltin.</string>
   <string name="description_sync_detail">Bu senkronizasyon hakkında bazı ayrıntılar.</string>
-  <string name="description_sync_webhooks_jellyfin">Jellyfin Webhook eklentisi aracılığıyla canlı ilerleme yolda.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt şu anda ne izlediğinizi gösterir ve bir şeyi bitirdikten birkaç dakika sonra kitaplığınız senkronize olur. Bunu Jellyfin Webhook eklentisinde bir kez kurun. %s sunucularını kapsar.</string>
   <string name="description_sync_webhooks_live_progress">Medya sunucunuz Trakt\'a şu anda ne izlediğinizi ve nerede duraklattığınızı bildirir. İzlemeler hala senkronizasyondan gelir.</string>
   <string name="description_sync_webhooks_plex">Bu adresi Plex › Ayarlar › Webhooks bölümüne bir kez yapıştırın. %s kapsamındadır. Plex Pass gerektirir.</string>
   <string name="description_sync_webhooks_unreachable_servers">Trakt\'in ulaşamadığı sunucularda, izlemelerinizi ve puanlarınızı da ekler.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">İçgörüler</string>
   <string name="header_jellyfin_synced_servers">Jellyfin Sunucuları</string>
   <string name="header_jellyfin_vip_upsell">Jellyfin senkronizasyonu bir VIP beta sürümüdür</string>
+  <string name="header_jellyfin_webhook_steps">Jellyfin\'de kurun</string>
   <string name="header_landing_discover">Keşfet</string>
   <string name="header_landing_hero">Bir sonraki favoriniz sizi bekliyor.</string>
   <string name="header_landing_share">Paylaş</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Diziler</string>
   <string name="label_streaming_country">Ülke</string>
   <string name="label_sync_webhooks_server_count">%s sunucu</string>
-  <string name="label_sync_webhooks_soon">Yakında</string>
   <string name="label_today_day">Bir gün seçin</string>
   <string name="label_today_grouping">Bugünün etkinliğini grupla</string>
   <string name="label_usage_limit_loading">Kullanımınız yükleniyor</string>
@@ -1443,7 +1443,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
   <string name="mir_banner_body_short">%s özetiniz hazır.</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_large_screen_cards">Daha büyük ekranlarda, tüm listeler uygulamanın geri kalanıyla aynı kartları kullanır. Birini seçmek, listeden ayrılmak yerine hızlı bir bakış açar.</string>
-  <string name="preview_feature_description_progress_manager">Bir dizideki takip butonu siz izledikçe dolar ve sezon ile bölüm bazındaki ilerlemenizi içeren bir çekmece açar.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_show_ending">Bir dizinin ayrıntılarında Bitiş satırını gösterir: Hikaye tamamlandığında \'Tamamlandı\', tamamlanmadığında \'Çözümlenmemiş\'.</string>
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_large_screen_cards">Geniş Ekran Kartları</string>
-  <string name="preview_feature_title_progress_manager">İlerleme yöneticisi</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_show_ending">Dizi Bitişi</string>
   <string name="preview_feature_title_soundtrack">Film Müziği</string>
@@ -1676,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s%% eşleşme</string>
+  <string name="tag_mixtape_match">%s% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Yayın hizmeti bağlandı.</string>
   <string name="text_info_younify_service_unlinked">Yayın hizmeti bağlantısı kesildi.</string>
   <string name="text_jellyfin_quick_connect_waiting">Onaylamanızı bekliyor</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Dashboard &gt; Plugins &gt; Webhook bölümünü açın ve \"Add Generic Destination\" seçeneğini seçin.</string>
+  <string name="text_jellyfin_webhook_step_install">Jellyfin\'de Dashboard &gt; Plugins &gt; Catalog bölümünü açın, \"Webhook\" eklentisini kurun ve sunucuyu yeniden başlatın.</string>
+  <string name="text_jellyfin_webhook_step_item_types">Öğe türleri altında \"Movies\" ve \"Episodes\" seçeneklerini işaretleyin.</string>
+  <string name="text_jellyfin_webhook_step_notification_types">Bildirim türleri altında yalnızca \"Playback Start\" ve \"Playback Stop\" seçeneklerini işaretleyin.</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Yukarıdaki adresi \"Webhook Url\" alanına yapıştırın.</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">\"Send All Properties (ignores template)\" seçeneğini işaretleyin.</string>
+  <string name="text_jellyfin_webhook_step_user_filter">Kullanıcı filtresi altında kendi Jellyfin kullanıcınızı seçin ve ardından kaydedin.</string>
   <string name="text_landing_discover">Seveceğiniz filmleri ve dizileri, şu anda nerede yayınlandıklarını keşfedin.</string>
   <string name="text_landing_discover_eyebrow">Keşfedin</string>
   <string name="text_landing_hero">İzlediklerinizi takip edin, sonra ne izleyeceğinizi bulun ve bu gece nerede yayınlandığını görün.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">İzlediğiniz filmler ve diziler hakkında ayrıntılı duygu analizini, gerçek hikâyelerde aslında nelerin yaşandığını ve büyüleyici bilgileri açın.</string>
   <string name="vip_feature_description_soundtrack">Bir film veya dizide geçen tüm parçaları görün ve eşleşenleri oynatın.</string>
   <string name="vip_feature_description_streaming_services">Tüm hizmetlerde izlemenizi takip etmek için ek yayın platformlarıyla bağlantı kurun ve senkronize edin.</string>
-  <string name="vip_feature_description_support">Destek forumlarımıza öncelikli erişim sağlayın ve geri bildirimlerinizin doğrudan ekip tarafından duyulmasını sağlayın.</string>
+  <string name="vip_feature_description_support">Desteğe öncelikli erişim sağlayın ve geri bildirimlerinizin doğrudan ekip tarafından duyulmasını sağlayın.</string>
   <string name="vip_feature_description_trivia">İzlediğiniz filmler ve diziler hakkında daha fazla bilgi ve içgörü edinin.</string>
   <string name="vip_feature_description_vip_status">Uygulamalar ve web sitesi genelinde VIP durumunuzu gösterin.</string>
   <string name="vip_feature_title_api_apps">Daha Fazla Uygulama Bağlandı</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Daha Fazla İstatistik: Aylık &amp; Yıllık Özet</string>
   <string name="vip_feature_title_sentiment_trivia">Daha Fazla Bilgi: Duygu, Gerçeklik Kontrolü &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Daha Fazla Yayın Hizmeti Senkronize Et</string>
-  <string name="vip_feature_title_support">Daha İyi Destek: Forum &amp; Geri Bildirim</string>
+  <string name="vip_feature_title_support">Daha İyi Destek: Yardım &amp; Geri Bildirim</string>
   <string name="vip_feature_title_unlock">Tüm potansiyelinizi şunlarla açın:</string>
   <string name="vip_feature_title_vip_status">VIP Durumu</string>
   <string name="vip_text_vip_go_beyond_limits">Sınırlarınızın ötesine geçin</string>
@@ -2872,7 +2877,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

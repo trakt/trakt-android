@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Synchroniseer automatisch je kijkgeschiedenis en beoordelingen.</string>
   <string name="description_streaming_vip_services">Upgrade om deze streamingdiensten te koppelen en te synchroniseren.</string>
   <string name="description_sync_detail">Enkele details over deze synchronisatie.</string>
-  <string name="description_sync_webhooks_jellyfin">Live voortgang via de Jellyfin Webhook plugin is onderweg.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt laat zien wat je op dit moment kijkt en je bibliotheek synchroniseert een paar minuten nadat je klaar bent met kijken. Stel het eenmalig in via de Jellyfin Webhook-plugin. Dit geldt voor %s.</string>
   <string name="description_sync_webhooks_live_progress">Je mediaserver vertelt Trakt wat je nu kijkt en waar je gepauzeerd hebt. Je kijkgedrag wordt nog steeds gesynchroniseerd.</string>
   <string name="description_sync_webhooks_plex">Plak dit adres één keer in Plex › Instellingen › Webhooks. Het omvat %s. Vereist Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">Op servers die Trakt niet kan bereiken, voegt het ook je bekeken items en beoordelingen toe.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Inzichten</string>
   <string name="header_jellyfin_synced_servers">Jellyfin-servers</string>
   <string name="header_jellyfin_vip_upsell">Jellyfin-synchronisatie is een VIP-bèta</string>
+  <string name="header_jellyfin_webhook_steps">Instellen in Jellyfin</string>
   <string name="header_landing_discover">Ontdekken</string>
   <string name="header_landing_hero">Je volgende favoriet is er al.</string>
   <string name="header_landing_share">Delen</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Series</string>
   <string name="label_streaming_country">Land</string>
   <string name="label_sync_webhooks_server_count">%s servers</string>
-  <string name="label_sync_webhooks_soon">Binnenkort</string>
   <string name="label_today_day">Kies een dag</string>
   <string name="label_today_grouping">Groepeer de activiteit van vandaag</string>
   <string name="label_usage_limit_loading">Je gebruik wordt geladen</string>
@@ -1443,7 +1443,7 @@
   <string name="match_label_soulmates">Zielsverwanten</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Overeenkomst:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open matchdetails.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open matchdetails.</string>
   <string name="match_pill_loading_aria_label">Matchscore berekenen</string>
   <string name="mir_banner_body">Je maandelijkse overzicht is klaar. Dit is wat je hebt gekeken in %s.</string>
   <string name="mir_banner_body_short">Je %s overzicht is klaar.</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_large_screen_cards">Op grotere schermen gebruiken alle lijsten dezelfde kaarten als de rest van de app. Het selecteren van een item opent een snel overzicht in plaats van de lijst te verlaten.</string>
-  <string name="preview_feature_description_progress_manager">De volgknop bij een serie vult zich naarmate je kijkt en opent een lade met je voortgang per seizoen en aflevering.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_show_ending">Toont een \'Einde\'-rij in de details van een serie: \'Voltooid\' als het verhaal is afgesloten, \'Onopgelost\' als dat niet het geval is.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Jouw 2026 als een scroll-gedreven reel met een kijkerspersoonlijkheid, gevolgd door een statistiekenpagina die daarbij past.</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_large_screen_cards">Grote Scherm Kaarten</string>
-  <string name="preview_feature_title_progress_manager">Voortgangsbeheer</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_show_ending">Serieeinde</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1676,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Alleen webhook</string>
   <string name="tag_mixtape_different_mood">Andere sfeer</string>
   <string name="tag_mixtape_kept">Bewaard</string>
-  <string name="tag_mixtape_match">%s%% overeenkomst</string>
+  <string name="tag_mixtape_match">%s% overeenkomst</string>
   <string name="tag_mixtape_tap_details">Tik voor details</string>
   <string name="tag_text_blocked_user">Geblokkeerd</string>
   <string name="tag_text_deal_price">Eerste 2 jaar</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Streamingdienst is gekoppeld.</string>
   <string name="text_info_younify_service_unlinked">Streamingdienst is ontkoppeld.</string>
   <string name="text_jellyfin_quick_connect_waiting">Wachten op jouw goedkeuring</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Open Dashboard &gt; Plugins &gt; Webhook en kies \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">Open in Jellyfin Dashboard &gt; Plugins &gt; Catalog, installeer \"Webhook\" en herstart de server.</string>
+  <string name="text_jellyfin_webhook_step_item_types">Vink onder itemtypen \"Movies\" en \"Episodes\" aan.</string>
+  <string name="text_jellyfin_webhook_step_notification_types">Vink onder meldingstypen alleen \"Playback Start\" en \"Playback Stop\" aan.</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Plak het bovenstaande adres in \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Vink \"Send All Properties (ignores template)\" aan.</string>
+  <string name="text_jellyfin_webhook_step_user_filter">Kies onder gebruikersfilter je eigen Jellyfin-gebruiker en sla op.</string>
   <string name="text_landing_discover">films en series waar je van zult houden en waar je ze nu kan streamen.</string>
   <string name="text_landing_discover_eyebrow">Vind het</string>
   <string name="text_landing_hero">Houd bij wat je hebt gezien, vind wat je hierna kunt kijken en zie waar het vanavond wordt gestreamd.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Ontgrendel gedetailleerde sentimentanalyse, wat er werkelijk gebeurde in waargebeurde verhalen en fascinerende weetjes over de films en series die u kijkt.</string>
   <string name="vip_feature_description_soundtrack">Bekijk elk nummer dat in een film of serie wordt genoemd en speel de nummers af die we kunnen matchen.</string>
   <string name="vip_feature_description_streaming_services">Verbind en synchroniseer met extra streamingplatforms om uw kijkgedrag overal bij te houden.</string>
-  <string name="vip_feature_description_support">Krijg prioriteitstoegang tot onze ondersteuningsforums en laat uw feedback direct horen aan het team.</string>
+  <string name="vip_feature_description_support">Krijg prioriteitstoegang tot ondersteuning en laat uw feedback direct horen aan het team.</string>
   <string name="vip_feature_description_trivia">Krijg meer weetjes en inzichten over de films en series die u kijkt.</string>
   <string name="vip_feature_description_vip_status">Pronk met uw VIP-status in de apps en op de website.</string>
   <string name="vip_feature_title_api_apps">Meer verbonden apps</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Meer Statistieken: Maandelijks &amp; Jaarlijks Overzicht</string>
   <string name="vip_feature_title_sentiment_trivia">Meer info: Sentiment, Reality Check &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Meer streamingdiensten synchroniseren</string>
-  <string name="vip_feature_title_support">Betere ondersteuning: Forum &amp; Feedback</string>
+  <string name="vip_feature_title_support">Betere ondersteuning: Hulp &amp; feedback</string>
   <string name="vip_feature_title_unlock">Ontgrendel het volledige potentieel met</string>
   <string name="vip_feature_title_vip_status">VIP-status</string>
   <string name="vip_text_vip_go_beyond_limits">Ga verder dan je grenzen</string>
@@ -2872,7 +2877,7 @@
   <string name="yir_2026_preview_runner_none">Geen (geen hybride)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona voorbeeld</string>
-  <string name="yir_2026_rarity">Slechts %1$d%% is %2$s</string>
+  <string name="yir_2026_rarity">Slechts %1$d% is %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Een beetje %s</string>
   <string name="yir_2026_reel_and_you_are">En jij bent</string>
   <string name="yir_2026_reel_but_mostly">Maar meestal</string>

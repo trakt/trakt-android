@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Sincronizează automat istoricul vizionărilor și evaluările tale.</string>
   <string name="description_streaming_vip_services">Faceți upgrade pentru a conecta și sincroniza aceste servicii de streaming.</string>
   <string name="description_sync_detail">Câteva detalii despre această sincronizare.</string>
-  <string name="description_sync_webhooks_jellyfin">Progresul live prin pluginul Webhook Jellyfin este pe drum.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt arată ce vizionezi chiar acum, iar biblioteca ta se sincronizează la câteva minute după ce termini de vizionat ceva. Configurează-l o singură dată în pluginul Jellyfin Webhook. Acoperă %s.</string>
   <string name="description_sync_webhooks_live_progress">Serverul tău media îi spune lui Trakt ce urmărești chiar acum și unde ai pus pauză. Înregistrările vizualizărilor provin în continuare din sincronizare.</string>
   <string name="description_sync_webhooks_plex">Lipește această adresă o singură dată în Plex › Setări › Webhooks. Acesta acoperă %s. Necesită Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">Pe serverele pe care Trakt nu le poate accesa, adaugă și vizionările și evaluările tale.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Perspective</string>
   <string name="header_jellyfin_synced_servers">Servere Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">Sincronizarea Jellyfin este o versiune beta VIP</string>
+  <string name="header_jellyfin_webhook_steps">Configurare în Jellyfin</string>
   <string name="header_landing_discover">Descoperă</string>
   <string name="header_landing_hero">Următorul tău preferat este deja disponibil.</string>
   <string name="header_landing_share">Partajează</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Seriale</string>
   <string name="label_streaming_country">Țară</string>
   <string name="label_sync_webhooks_server_count">%s servere</string>
-  <string name="label_sync_webhooks_soon">În curând</string>
   <string name="label_today_day">Alege o zi</string>
   <string name="label_today_grouping">Grupează activitatea de astăzi</string>
   <string name="label_usage_limit_loading">Se încarcă utilizarea ta</string>
@@ -1443,7 +1443,7 @@
   <string name="match_label_soulmates">Suflete pereche</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Potrivire:</string>
-  <string name="match_pill_aria_label">%1$d%% potrivire, %2$s. Deschide detaliile potrivirii.</string>
+  <string name="match_pill_aria_label">%1$d% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
   <string name="mir_banner_body">Recapitularea ta lunară este gata. Iată ce ai vizionat în %s.</string>
   <string name="mir_banner_body_short">Recapitularea ta din %s este gata.</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Anul curent</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_large_screen_cards">Pe ecrane mai mari, toate listele folosesc aceleași carduri ca și restul aplicației. Selectarea unui card deschide o vizualizare rapidă, în loc să părăsească lista.</string>
-  <string name="preview_feature_description_progress_manager">Butonul de urmărire al unui serial se umple pe măsură ce vizionezi și deschide un panou cu progresul tău pe sezoane și episoade.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_show_ending">Afișează un rând despre Final în detaliile unui serial: Finalizat când povestea s-a încheiat, Nerezolvat când nu s-a încheiat.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Anul tău 2026 sub forma unui rezumat derulabil cu o persona de spectator, apoi o pagină de statistici stilizată pentru a o egala.</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_large_screen_cards">Carduri pe Ecrane Mari</string>
-  <string name="preview_feature_title_progress_manager">Manager de progres</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_show_ending">Finalul serialului</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
@@ -1676,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Doar webhook</string>
   <string name="tag_mixtape_different_mood">Atmosferă diferită</string>
   <string name="tag_mixtape_kept">Păstrat</string>
-  <string name="tag_mixtape_match">%s%% potrivire</string>
+  <string name="tag_mixtape_match">%s% potrivire</string>
   <string name="tag_mixtape_tap_details">Atinge pentru detalii</string>
   <string name="tag_text_blocked_user">Blocat</string>
   <string name="tag_text_deal_price">Primii 2 ani</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Serviciul de streaming a fost conectat.</string>
   <string name="text_info_younify_service_unlinked">Serviciul de streaming a fost deconectat.</string>
   <string name="text_jellyfin_quick_connect_waiting">Așteptăm aprobarea dumneavoastră</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Deschide Dashboard &gt; Plugins &gt; Webhook și alege \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">În Jellyfin, deschide Dashboard &gt; Plugins &gt; Catalog, instalează \"Webhook\" și repornește serverul.</string>
+  <string name="text_jellyfin_webhook_step_item_types">La tipuri de elemente, bifează \"Movies\" și \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">La tipuri de notificări, bifează doar \"Playback Start\" și \"Playback Stop\".</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Lipește adresa de mai sus în \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Bifează \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">La filtrul de utilizator, alege propriul utilizator Jellyfin, apoi salvează.</string>
   <string name="text_landing_discover">filme și seriale pe care le vei iubi și unde sunt disponibile acum.</string>
   <string name="text_landing_discover_eyebrow">Găsește-l</string>
   <string name="text_landing_hero">Urmărește ce ai văzut, găsește ce să urmărești în continuare și vezi unde este difuzat în această seară.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Deblochează analiza detaliată a sentimentului, ce s-a întâmplat cu adevărat în poveștile reale și curiozități fascinante despre filmele și serialele pe care le vizionezi.</string>
   <string name="vip_feature_description_soundtrack">Vezi fiecare melodie creditată într-un film sau serial și redă-le pe cele pe care le putem potrivi.</string>
   <string name="vip_feature_description_streaming_services">Conectează-te și sincronizează-te cu platforme de streaming suplimentare pentru a-ți urmări vizionările pe toate serviciile.</string>
-  <string name="vip_feature_description_support">Obține acces prioritar la forumurile noastre de suport și asigură-te că feedback-ul tău este auzit direct de echipă.</string>
+  <string name="vip_feature_description_support">Obține acces prioritar la suport și asigură-te că feedback-ul tău este auzit direct de echipă.</string>
   <string name="vip_feature_description_trivia">Obține mai multe curiozități și informații despre filmele și serialele pe care le vizionezi.</string>
   <string name="vip_feature_description_vip_status">Afișează-ți statutul VIP în toate aplicațiile și pe site.</string>
   <string name="vip_feature_title_api_apps">Mai multe aplicații conectate</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Mai multe Statistici: Recapitulări Lunare și Anuale</string>
   <string name="vip_feature_title_sentiment_trivia">Mai multe informații: Sentiment, Verificarea realității și Curiozități</string>
   <string name="vip_feature_title_streaming_services">Sincronizează mai multe Servicii de Streaming</string>
-  <string name="vip_feature_title_support">Suport îmbunătățit: Forum &amp; Feedback</string>
+  <string name="vip_feature_title_support">Suport îmbunătățit: Ajutor &amp; Feedback</string>
   <string name="vip_feature_title_unlock">Deblochează potențialul maxim cu</string>
   <string name="vip_feature_title_vip_status">Statut VIP</string>
   <string name="vip_text_vip_go_beyond_limits">Depășește-ți limitele</string>
@@ -2872,7 +2877,7 @@
   <string name="yir_2026_preview_runner_none">Niciunul (fără hibrid)</string>
   <string name="yir_2026_preview_runner_up">Locul doi</string>
   <string name="yir_2026_preview_title">Previzualizare persona</string>
-  <string name="yir_2026_rarity">Doar %1$d%% sunt %2$s</string>
+  <string name="yir_2026_rarity">Doar %1$d% sunt %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Puțin %s</string>
   <string name="yir_2026_reel_and_you_are">Și tu ești</string>
   <string name="yir_2026_reel_but_mostly">Dar în mare parte</string>

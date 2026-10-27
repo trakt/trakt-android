@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Synchronisez automatiquement votre historique de visionnage et vos évaluations.</string>
   <string name="description_streaming_vip_services">Passez à la version supérieure pour connecter et synchroniser ces services de diffusion en continu.</string>
   <string name="description_sync_detail">Quelques détails sur cette synchronisation.</string>
-  <string name="description_sync_webhooks_jellyfin">La progression en direct via le plugin Webhook de Jellyfin est en cours de développement.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt affiche ce que vous regardez en ce moment, et votre bibliothèque se synchronise quelques minutes après avoir terminé un visionnement. Configurez-le une seule fois dans l\'extension Webhook de Jellyfin. Cela couvre %s.</string>
   <string name="description_sync_webhooks_live_progress">Votre serveur multimédia indique à Trakt ce que vous regardez actuellement et où vous avez mis en pause. Les visionnements proviennent toujours de la synchronisation.</string>
   <string name="description_sync_webhooks_plex">Collez cette adresse une seule fois dans Plex › Réglages › Webhooks. Elle couvre %s. Nécessite Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">Sur les serveurs que Trakt ne peut pas atteindre, il ajoute également vos visionnements et vos notes.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Aperçus</string>
   <string name="header_jellyfin_synced_servers">Serveurs Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">La synchronisation Jellyfin est une bêta VIP</string>
+  <string name="header_jellyfin_webhook_steps">Configurer dans Jellyfin</string>
   <string name="header_landing_discover">Découvrir</string>
   <string name="header_landing_hero">Votre prochain coup de cœur est déjà là.</string>
   <string name="header_landing_share">Partager</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Séries</string>
   <string name="label_streaming_country">Pays</string>
   <string name="label_sync_webhooks_server_count">%s serveurs</string>
-  <string name="label_sync_webhooks_soon">Bientôt</string>
   <string name="label_today_day">Choisir un jour</string>
   <string name="label_today_grouping">Grouper l\'activité d\'aujourd\'hui</string>
   <string name="label_usage_limit_loading">Chargement de votre utilisation</string>
@@ -1443,7 +1443,7 @@
   <string name="match_label_soulmates">Âmes sœurs</string>
   <string name="match_label_spin_off">Dérivé</string>
   <string name="match_pill_anchor">Correspondance:</string>
-  <string name="match_pill_aria_label">%1$d%% de correspondance, %2$s. Ouvrir les détails de la correspondance.</string>
+  <string name="match_pill_aria_label">%1$d% de correspondance, %2$s. Ouvrir les détails de la correspondance.</string>
   <string name="match_pill_loading_aria_label">Calcul du score de compatibilité</string>
   <string name="mir_banner_body">Votre récapitulatif mensuel est prêt. Voici ce que vous avez regardé en %s.</string>
   <string name="mir_banner_body_short">Votre récapitulatif de %s est prêt.</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Année à ce jour</string>
   <string name="preview_feature_description_edit_mode">Activez les commandes pour masquer ou afficher les sections configurables dans toute l\'application.</string>
   <string name="preview_feature_description_large_screen_cards">Sur les grands écrans, toutes les listes utilisent les mêmes cartes que le reste de l\'application. En sélectionner une ouvre un aperçu rapide au lieu de quitter la liste.</string>
-  <string name="preview_feature_description_progress_manager">Le bouton de suivi d\'une série se remplit au fur et à mesure que vous regardez et ouvre un volet avec votre progression par saison et par épisode.</string>
   <string name="preview_feature_description_rewatch">Démarrez des sessions de revisionnage pour les émissions que vous avez déjà vues, enregistrez-vous ou marquez les épisodes comme vus directement depuis le panneau de session.</string>
   <string name="preview_feature_description_show_ending">Affiche une ligne «Fin» dans les détails d\'une série : «Terminé» quand l\'histoire est bouclée, «Non résolu» quand ce n\'est pas le cas.</string>
   <string name="preview_feature_description_soundtrack">Ajoute une section bande originale aux pages de films et d\'émissions, avec lecture des pistes correspondantes.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Votre année 2026 sous forme de bobine défilante avec un profil de spectateur, puis une page de statistiques stylisée pour correspondre.</string>
   <string name="preview_feature_title_edit_mode">Mode édition</string>
   <string name="preview_feature_title_large_screen_cards">Cartes grand écran</string>
-  <string name="preview_feature_title_progress_manager">Gestionnaire de progression</string>
   <string name="preview_feature_title_rewatch">Revisionnage</string>
   <string name="preview_feature_title_show_ending">Fin de la série</string>
   <string name="preview_feature_title_soundtrack">Bande originale</string>
@@ -1676,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Webhook seulement</string>
   <string name="tag_mixtape_different_mood">Ambiance différente</string>
   <string name="tag_mixtape_kept">Conservé</string>
-  <string name="tag_mixtape_match">%s%% de correspondance</string>
+  <string name="tag_mixtape_match">%s% de correspondance</string>
   <string name="tag_mixtape_tap_details">Touchez pour les détails</string>
   <string name="tag_text_blocked_user">Bloqué</string>
   <string name="tag_text_deal_price">Les 2 premières années</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Le service de streaming a été lié.</string>
   <string name="text_info_younify_service_unlinked">Le service de streaming a été dissocié.</string>
   <string name="text_jellyfin_quick_connect_waiting">En attente de votre approbation</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Ouvrez Tableau de bord &gt; Extensions &gt; Webhook et choisissez \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">Dans Jellyfin, ouvrez Tableau de bord &gt; Extensions &gt; Catalogue, installez \"Webhook\" et redémarrez le serveur.</string>
+  <string name="text_jellyfin_webhook_step_item_types">Sous les types d\'éléments, cochez \"Movies\" et \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">Sous les types de notifications, cochez uniquement \"Playback Start\" et \"Playback Stop\".</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Collez l\'adresse ci-dessus dans \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Cochez \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">Sous le filtre d\'utilisateur, sélectionnez votre propre utilisateur Jellyfin, puis enregistrez.</string>
   <string name="text_landing_discover">des films et séries que vous aimerez et où les regarder dès maintenant.</string>
   <string name="text_landing_discover_eyebrow">Trouvez-le</string>
   <string name="text_landing_hero">Suivez ce que vous avez vu, trouvez quoi regarder ensuite, et découvrez où c\'est diffusé ce soir.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Débloquez une analyse de sentiment détaillée, ce qui s\'est réellement passé dans les histoires vraies et des anecdotes fascinantes sur les films et séries que vous regardez.</string>
   <string name="vip_feature_description_soundtrack">Voyez chaque piste créditée dans un film ou une émission, et écoutez celles que nous pouvons associer.</string>
   <string name="vip_feature_description_streaming_services">Connectez-vous et synchronisez avec des plateformes de streaming supplémentaires pour suivre votre visionnement sur tous les services.</string>
-  <string name="vip_feature_description_support">Obtenez un accès prioritaire à nos forums de soutien et faites entendre vos commentaires directement par l\'équipe.</string>
+  <string name="vip_feature_description_support">Obtenez un accès prioritaire au soutien et faites entendre vos commentaires directement par l\'équipe.</string>
   <string name="vip_feature_description_trivia">Obtenez plus d\'anecdotes et d\'aperçus sur les films et séries que vous regardez.</string>
   <string name="vip_feature_description_vip_status">Affichez votre statut VIP dans toutes les applications et sur le site web.</string>
   <string name="vip_feature_title_api_apps">Plus d\'applications connectées</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Plus de statistiques : Récapitulatif mensuel et annuel</string>
   <string name="vip_feature_title_sentiment_trivia">Plus d\'infos : sentiment, vérification des faits et anecdotes</string>
   <string name="vip_feature_title_streaming_services">Synchroniser plus de services de streaming</string>
-  <string name="vip_feature_title_support">Meilleur soutien : Forum et commentaires</string>
+  <string name="vip_feature_title_support">Meilleur soutien : Aide et commentaires</string>
   <string name="vip_feature_title_unlock">Libérez tout le potentiel avec</string>
   <string name="vip_feature_title_vip_status">Statut VIP</string>
   <string name="vip_text_vip_go_beyond_limits">Dépassez vos limites</string>
@@ -2872,7 +2877,7 @@
   <string name="yir_2026_preview_runner_none">Aucun (pas hybride)</string>
   <string name="yir_2026_preview_runner_up">Deuxième</string>
   <string name="yir_2026_preview_title">Aperçu de la personnalité</string>
-  <string name="yir_2026_rarity">Seulement %1$d %% sont %2$s</string>
+  <string name="yir_2026_rarity">Seulement %1$d % sont %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un peu %s</string>
   <string name="yir_2026_reel_and_you_are">Et vous êtes</string>
   <string name="yir_2026_reel_but_mostly">Mais surtout</string>

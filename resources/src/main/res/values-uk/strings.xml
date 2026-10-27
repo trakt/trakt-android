@@ -775,7 +775,7 @@
   <string name="description_streaming_sync">Автоматично синхронізувати вашу історію переглядів та оцінки.</string>
   <string name="description_streaming_vip_services">Оновіть підписку, щоб підключити та синхронізувати ці потокові сервіси.</string>
   <string name="description_sync_detail">Деякі деталі цієї синхронізації.</string>
-  <string name="description_sync_webhooks_jellyfin">Прогрес у реальному часі через плагін Jellyfin Webhook незабаром буде доступний.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt показує, що ви зараз дивитеся, а ваша медіатека синхронізується за кілька хвилин після завершення перегляду. Налаштуйте це один раз у плагіні Webhook для Jellyfin. Це охоплює %s.</string>
   <string name="description_sync_webhooks_live_progress">Ваш медіасервер повідомляє Trakt, що ви дивитеся прямо зараз і де ви поставили на паузу. Перегляди все ще надходять із синхронізації.</string>
   <string name="description_sync_webhooks_plex">Вставте цю адресу один раз у Plex › Налаштування › Вебхуки. Вона охоплює %s. Потрібен Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">На сервери, до яких Trakt не може дістатися, він також додає ваші перегляди та оцінки.</string>
@@ -925,6 +925,7 @@
   <string name="header_insights">Інсайти</string>
   <string name="header_jellyfin_synced_servers">Сервери Jellyfin</string>
   <string name="header_jellyfin_vip_upsell">Синхронізація Jellyfin – VIP-бета</string>
+  <string name="header_jellyfin_webhook_steps">Налаштування в Jellyfin</string>
   <string name="header_landing_discover">Відкривайте</string>
   <string name="header_landing_hero">Ваше наступне улюблене вже чекає.</string>
   <string name="header_landing_share">Діліться</string>
@@ -1280,7 +1281,6 @@
   <string name="label_stats_shows">Серіали</string>
   <string name="label_streaming_country">Країна</string>
   <string name="label_sync_webhooks_server_count">%s серверів</string>
-  <string name="label_sync_webhooks_soon">Незабаром</string>
   <string name="label_today_day">Виберіть день</string>
   <string name="label_today_grouping">Групувати активність за сьогодні</string>
   <string name="label_usage_limit_loading">Завантаження даних про використання</string>
@@ -1443,7 +1443,7 @@
   <string name="match_label_soulmates">Споріднені душі</string>
   <string name="match_label_spin_off">Спін-офф</string>
   <string name="match_pill_anchor">Збіг:</string>
-  <string name="match_pill_aria_label">%1$d%% відповідності, %2$s. Відкрити деталі відповідності.</string>
+  <string name="match_pill_aria_label">%1$d% відповідності, %2$s. Відкрити деталі відповідності.</string>
   <string name="match_pill_loading_aria_label">Обчислення оцінки сумісності</string>
   <string name="mir_banner_body">Ваш щомісячний огляд готовий. Ось що ви переглянули у %s.</string>
   <string name="mir_banner_body_short">Ваш огляд за %s готовий.</string>
@@ -1560,7 +1560,6 @@
   <string name="page_title_year_to_date">Рік до сьогодні</string>
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
   <string name="preview_feature_description_large_screen_cards">На великих екранах усі списки використовують ті ж картки, що й решта додатка. Вибір одного відкриває швидкий перегляд, замість того щоб залишати список.</string>
-  <string name="preview_feature_description_progress_manager">Кнопка відстеження шоу заповнюється під час перегляду та відкриває панель із вашим прогресом за сезонами й епізодами.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_show_ending">Відображає рядок «Завершення» в деталях серіалу: «Завершено», коли історія закінчилася, «Незавершено», коли цього не сталося.</string>
   <string name="preview_feature_description_soundtrack">Додає розділ саундтреків до сторінок фільмів та серіалів, з відтворенням там, де трек може бути зіставлений.</string>
@@ -1568,7 +1567,6 @@
   <string name="preview_feature_description_year_in_review_2026">Ваш 2026 рік як прокручуваний ролик з персоною глядача, а потім сторінка статистики, оформлена відповідно до неї.</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
   <string name="preview_feature_title_large_screen_cards">Картки для великих екранів</string>
-  <string name="preview_feature_title_progress_manager">Менеджер прогресу</string>
   <string name="preview_feature_title_rewatch">Повторний перегляд</string>
   <string name="preview_feature_title_show_ending">Завершення серіалу</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
@@ -1676,7 +1674,7 @@
   <string name="tag_media_sync_webhook_only">Вебхук лише</string>
   <string name="tag_mixtape_different_mood">Інший настрій</string>
   <string name="tag_mixtape_kept">Збережено</string>
-  <string name="tag_mixtape_match">%s%% збіг</string>
+  <string name="tag_mixtape_match">%s% збіг</string>
   <string name="tag_mixtape_tap_details">Торкніться, щоб дізнатися деталі</string>
   <string name="tag_text_blocked_user">Заблоковано</string>
   <string name="tag_text_deal_price">Перші 2 роки</string>
@@ -1933,6 +1931,13 @@
   <string name="text_info_younify_service_linked">Потоковий сервіс пов\'язано.</string>
   <string name="text_info_younify_service_unlinked">Потоковий сервіс роз\'єднано.</string>
   <string name="text_jellyfin_quick_connect_waiting">Очікування підтвердження</string>
+  <string name="text_jellyfin_webhook_step_add_destination">Відкрийте Панель керування &gt; Плагіни &gt; Webhook і виберіть \"Add Generic Destination\".</string>
+  <string name="text_jellyfin_webhook_step_install">У Jellyfin відкрийте Панель керування &gt; Плагіни &gt; Каталог, встановіть \"Webhook\" і перезапустіть сервер.</string>
+  <string name="text_jellyfin_webhook_step_item_types">У розділі типів елементів позначте \"Movies\" та \"Episodes\".</string>
+  <string name="text_jellyfin_webhook_step_notification_types">У розділі типів сповіщень позначте лише \"Playback Start\" та \"Playback Stop\".</string>
+  <string name="text_jellyfin_webhook_step_paste_url">Вставте вказану вище адресу в \"Webhook Url\".</string>
+  <string name="text_jellyfin_webhook_step_send_all_properties">Позначте \"Send All Properties (ignores template)\".</string>
+  <string name="text_jellyfin_webhook_step_user_filter">У фільтрі користувачів виберіть свого користувача Jellyfin, а потім збережіть.</string>
   <string name="text_landing_discover">фільми та серіали, які вам сподобаються, і де їх можна дивитися прямо зараз.</string>
   <string name="text_landing_discover_eyebrow">Знайдіть це</string>
   <string name="text_landing_hero">Відстежуйте переглянуте, знаходьте, що подивитися далі, і дізнавайтеся, де це транслюється сьогодні ввечері.</string>
@@ -2658,7 +2663,7 @@
   <string name="vip_feature_description_sentiment_trivia">Отримайте детальний аналіз настроїв, дізнайтеся, що сталося в реальності, та відкрийте захопливі цікавинки про фільми й серіали, які ви дивитеся.</string>
   <string name="vip_feature_description_soundtrack">Переглядайте кожен трек, зазначений у фільмі чи серіалі, та відтворюйте ті, що ми можемо зіставити.</string>
   <string name="vip_feature_description_streaming_services">Підключайте та синхронізуйте з додатковими стримінговими платформами, щоб відстежувати свої перегляди на всіх сервісах.</string>
-  <string name="vip_feature_description_support">Отримайте пріоритетний доступ до наших форумів підтримки, а ваші відгуки будуть почуті безпосередньо командою.</string>
+  <string name="vip_feature_description_support">Отримайте пріоритетний доступ до підтримки, а ваші відгуки будуть почуті безпосередньо командою.</string>
   <string name="vip_feature_description_trivia">Отримуйте більше цікавих фактів та відомостей про фільми та серіали, які ви дивитесь.</string>
   <string name="vip_feature_description_vip_status">Демонструйте свій VIP-статус у всіх застосунках та на сайті.</string>
   <string name="vip_feature_title_api_apps">Більше підключених застосунків</string>
@@ -2671,7 +2676,7 @@
   <string name="vip_feature_title_recaps">Більше статистики: щомісячні та щорічні підсумки</string>
   <string name="vip_feature_title_sentiment_trivia">Більше інформації: аналіз настроїв, перевірка фактів і цікавинки</string>
   <string name="vip_feature_title_streaming_services">Синхронізувати більше стримінгових сервісів</string>
-  <string name="vip_feature_title_support">Краща підтримка: Форум та Відгуки</string>
+  <string name="vip_feature_title_support">Краща підтримка: Допомога та відгуки</string>
   <string name="vip_feature_title_unlock">Розкрийте повний потенціал з</string>
   <string name="vip_feature_title_vip_status">VIP Статус</string>
   <string name="vip_text_vip_go_beyond_limits">Перевершіть свої можливості</string>
@@ -2872,7 +2877,7 @@
   <string name="yir_2026_preview_runner_none">Немає (без гібрида)</string>
   <string name="yir_2026_preview_runner_up">Друге місце</string>
   <string name="yir_2026_preview_title">Попередній перегляд персони</string>
-  <string name="yir_2026_rarity">Лише %1$d%% є %2$s</string>
+  <string name="yir_2026_rarity">Лише %1$d% є %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Трохи %s</string>
   <string name="yir_2026_reel_and_you_are">І ви є</string>
   <string name="yir_2026_reel_but_mostly">Але переважно</string>
