@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -51,15 +52,19 @@ import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType.Favorite
+import tv.trakt.trakt.common.model.streamings.StreamingType.Free
 import tv.trakt.trakt.common.model.streamings.StreamingType.Subscription
+import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.streamings.ui.AllStreamingsServiceGroup
 import tv.trakt.trakt.core.streamings.ui.AllStreamingsSkeletonRow
+import tv.trakt.trakt.core.streamings.ui.AllStreamingsYouTubeSpecialItem
 import tv.trakt.trakt.core.streamings.ui.countryName
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -75,6 +80,7 @@ internal fun AllStreamingsScreen(
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     AllStreamingsContent(
@@ -90,6 +96,10 @@ internal fun AllStreamingsScreen(
                 context = context,
             )
         },
+        onYouTubeSpecialClick = { special ->
+            viewModel.logYouTubeSpecialStreamOn()
+            uriHandler.openUri(special.link)
+        },
     )
 }
 
@@ -99,6 +109,7 @@ private fun AllStreamingsContent(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onServiceClick: (StreamingService) -> Unit = {},
+    onYouTubeSpecialClick: (YouTubeSpecial) -> Unit = {},
 ) {
     val listState = rememberLazyListState()
     val searchState = rememberTextFieldState()
@@ -133,6 +144,7 @@ private fun AllStreamingsContent(
             ),
             onBackClick = onBackClick,
             onServiceClick = onServiceClick,
+            onYouTubeSpecialClick = onYouTubeSpecialClick,
         )
     }
 }
@@ -146,11 +158,20 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onBackClick: () -> Unit,
     onServiceClick: (StreamingService) -> Unit,
+    onYouTubeSpecialClick: (YouTubeSpecial) -> Unit,
 ) {
     var expandedGroups by rememberSaveable { mutableStateOf(setOf<String>()) }
 
     val query = searchState.text.toString().trim()
-    val sections = remember(state.sections, query) { state.sections.filterByQuery(query) }
+    val youTubeName = stringResource(R.string.link_label_youtube)
+    val youTubeSpecial = state.youTubeSpecial?.takeIf {
+        query.isBlank() || youTubeName.contains(query, ignoreCase = true)
+    }
+    val sections = remember(state.sections, query, youTubeSpecial) {
+        state.sections
+            .filterByQuery(query)
+            .withFreeSection(youTubeSpecial != null)
+    }
 
     LazyColumn(
         state = listState,
@@ -168,7 +189,7 @@ private fun ContentList(
             )
         }
 
-        if (state.sections.isNotEmpty()) {
+        if (state.sections.isNotEmpty() || state.youTubeSpecial != null) {
             item(key = "search") {
                 InputField(
                     state = searchState,
@@ -211,6 +232,21 @@ private fun ContentList(
                         end = horizontalPadding,
                     ),
                 )
+            }
+
+            if (section.type == Free && youTubeSpecial != null) {
+                item(key = "youtube-special") {
+                    AllStreamingsYouTubeSpecialItem(
+                        special = youTubeSpecial,
+                        onClick = onYouTubeSpecialClick,
+                        modifier = Modifier
+                            .padding(horizontal = horizontalPadding)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
             }
 
             items(
@@ -373,6 +409,14 @@ private fun ImmutableList<AllStreamingsSection>.filterByQuery(query: String): Im
     }.toImmutableList()
 }
 
+private fun ImmutableList<AllStreamingsSection>.withFreeSection(needed: Boolean): ImmutableList<AllStreamingsSection> {
+    if (!needed || any { it.type == Free }) return this
+
+    return (this + AllStreamingsSection(type = Free, rows = EmptyImmutableList))
+        .sortedBy { it.type.order }
+        .toImmutableList()
+}
+
 @DevicePreview
 @Composable
 private fun Preview() {
@@ -394,6 +438,7 @@ private fun Preview2() {
             state = AllStreamingsState(
                 loading = Done,
                 media = AllStreamingsState.Media(title = "Severance"),
+                youTubeSpecial = YouTubeSpecial(videoId = "abc", isOfficial = true),
                 sections = listOf(
                     AllStreamingsSection(
                         type = Favorite,

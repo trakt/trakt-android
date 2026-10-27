@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.model.streamings
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.networking.api.v3.model.V3YouTubeSpecialResponse
 
 /**
@@ -16,6 +17,12 @@ data class YouTubeSpecial(
         get() = "https://www.youtube.com/watch?v=$videoId"
 
     companion object {
+        const val SOURCE = "youtube"
+
+        fun isSupported(genres: List<MediaGenre>): Boolean {
+            return MediaGenre.Comedy in genres
+        }
+
         fun fromDto(dto: V3YouTubeSpecialResponse): YouTubeSpecial {
             return YouTubeSpecial(
                 videoId = dto.videoId,

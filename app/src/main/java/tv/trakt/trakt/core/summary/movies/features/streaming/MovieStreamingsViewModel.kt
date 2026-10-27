@@ -21,7 +21,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.streamings.StreamingService
@@ -88,7 +87,7 @@ internal class MovieStreamingsViewModel(
     }
 
     private fun loadYouTubeSpecial() {
-        if (MediaGenre.Comedy !in movie.genres) {
+        if (!YouTubeSpecial.isSupported(movie.genres)) {
             return
         }
 
@@ -126,7 +125,7 @@ internal class MovieStreamingsViewModel(
     }
 
     fun logYouTubeSpecialStreamOn() {
-        analytics.playback.logStreamOn(YOUTUBE_SOURCE)
+        analytics.playback.logStreamOn(YouTubeSpecial.SOURCE)
     }
 
     val state = combine(
@@ -149,5 +148,3 @@ internal class MovieStreamingsViewModel(
         initialValue = initialState,
     )
 }
-
-private const val YOUTUBE_SOURCE = "youtube"

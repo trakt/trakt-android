@@ -18,6 +18,7 @@ internal data class AllStreamingsDestination(
     val backgroundUrl: String? = null,
     val season: Int? = null,
     val episode: Int? = null,
+    val checkYouTubeSpecial: Boolean = false,
 ) {
     init {
         require(mediaType != MediaType.Season) {
@@ -53,6 +54,7 @@ internal fun NavController.navigateToShowStreamings(
 internal fun NavController.navigateToMovieStreamings(
     movieId: TraktId,
     movieTitle: String,
+    checkYouTubeSpecial: Boolean,
     backgroundUrl: String? = null,
 ) {
     navigate(
@@ -61,6 +63,7 @@ internal fun NavController.navigateToMovieStreamings(
             mediaType = MediaType.Movie,
             mediaTitle = movieTitle,
             backgroundUrl = backgroundUrl,
+            checkYouTubeSpecial = checkYouTubeSpecial,
         ),
     )
 }

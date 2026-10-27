@@ -68,9 +68,9 @@ private const val MAX_FLAGS = 6
 
 internal val GroupShape = RoundedCornerShape(16.dp)
 
-private val ChipShape = RoundedCornerShape(12.dp)
-private val LogoTileSize = 60.dp
-private val InnerSpace = 6.dp
+internal val ChipShape = RoundedCornerShape(12.dp)
+internal val LogoTileSize = 60.dp
+internal val InnerSpace = 6.dp
 
 @Composable
 internal fun AllStreamingsServiceGroup(

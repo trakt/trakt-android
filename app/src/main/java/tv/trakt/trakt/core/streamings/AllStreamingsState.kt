@@ -6,10 +6,12 @@ import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 
 @Immutable
 internal data class AllStreamingsState(
     val sections: ImmutableList<AllStreamingsSection> = EmptyImmutableList,
+    val youTubeSpecial: YouTubeSpecial? = null,
     val media: Media = Media(),
     val loading: LoadingState = Idle,
     val error: Exception? = null,
