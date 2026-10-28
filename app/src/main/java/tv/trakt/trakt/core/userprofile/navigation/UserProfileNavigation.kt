@@ -32,6 +32,7 @@ internal fun NavGraphBuilder.userProfileScreen(
     composable<UserProfileDestination> {
         UserProfileScreen(
             viewModel = koinViewModel(),
+            matchViewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,

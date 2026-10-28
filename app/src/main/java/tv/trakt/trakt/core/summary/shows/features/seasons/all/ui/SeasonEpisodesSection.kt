@@ -1,9 +1,7 @@
-@file:OptIn(ExperimentalFoundationApi::class)
 @file:Suppress("FunctionName")
 
 package tv.trakt.trakt.core.summary.shows.features.seasons.all.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize

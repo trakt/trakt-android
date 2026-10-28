@@ -2,8 +2,11 @@
 
 package tv.trakt.trakt.core.userprofile
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -53,6 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,6 +65,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -79,6 +84,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.UserMatch
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red500
@@ -89,6 +95,11 @@ import tv.trakt.trakt.core.user.model.UserFollowRequest
 import tv.trakt.trakt.core.userprofile.sections.favorites.UserProfileFavoritesView
 import tv.trakt.trakt.core.userprofile.sections.history.UserProfileHistoryView
 import tv.trakt.trakt.core.userprofile.sections.lists.UserProfileListsView
+import tv.trakt.trakt.core.userprofile.sections.match.UserMatchState
+import tv.trakt.trakt.core.userprofile.sections.match.UserMatchViewModel
+import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPill
+import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPreviewData
+import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchSheet
 import tv.trakt.trakt.core.userprofile.sections.social.UserProfileSocialView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -104,6 +115,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun UserProfileScreen(
     viewModel: UserProfileViewModel,
+    matchViewModel: UserMatchViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
@@ -122,6 +134,9 @@ internal fun UserProfileScreen(
 
     var confirmBlockSheet by remember { mutableStateOf(false) }
     var confirmUnfollowSheet by remember { mutableStateOf(false) }
+    var matchSheet by remember { mutableStateOf(false) }
+
+    val matchState by matchViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.info) {
         state.info?.let { info ->
@@ -153,6 +168,11 @@ internal fun UserProfileScreen(
 
     UserProfileContent(
         state = state,
+        matchState = matchState,
+        onMatchClick = {
+            matchViewModel.openDetails()
+            matchSheet = true
+        },
         onFollowClick = {
             when {
                 state.userFollowing.following -> confirmUnfollowSheet = true
@@ -184,6 +204,21 @@ internal fun UserProfileScreen(
         onNavigateBack = onNavigateBack,
     )
 
+    UserMatchSheet(
+        matchState = matchState,
+        user = state.user,
+        visible = matchSheet && !state.userBlocked.blocked,
+        onMovieClick = {
+            matchSheet = false
+            viewModel.navigateToMovie(it)
+        },
+        onShowClick = {
+            matchSheet = false
+            viewModel.navigateToShow(it)
+        },
+        onDismiss = { matchSheet = false },
+    )
+
     RemoveConfirmationSheet(
         active = confirmUnfollowSheet,
         onYes = {
@@ -210,6 +245,8 @@ internal fun UserProfileScreen(
 @Composable
 private fun UserProfileContent(
     state: UserProfileState,
+    matchState: UserMatchState = UserMatchState(),
+    onMatchClick: () -> Unit = {},
     onNavigateToShow: (Show) -> Unit = {},
     onNavigateToMovie: (Movie) -> Unit = {},
     onNavigateToEpisode: (Show, Episode) -> Unit = { _, _ -> },
@@ -274,7 +311,11 @@ private fun UserProfileContent(
                     user = state.user,
                     userBlocked = state.userBlocked,
                     userFollowing = state.userFollowing,
+                    match = matchState.match.takeIf {
+                        !state.userBlocked.loading && !state.userBlocked.blocked
+                    },
                     onBack = onNavigateBack,
+                    onMatchClick = onMatchClick,
                     onFollowClick = onFollowClick,
                     onBlockClick = onBlockClick,
                     modifier = Modifier
@@ -544,13 +585,13 @@ private fun TitleBar(
     userBlocked: UserProfileState.BlockedState?,
     userFollowing: UserProfileState.FollowingState?,
     modifier: Modifier = Modifier,
+    match: UserMatch? = null,
     onBack: () -> Unit = {},
+    onMatchClick: () -> Unit = {},
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
 ) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+    TitleBarLayout(
         modifier = modifier
             .fillMaxWidth()
             .height(TraktTheme.size.titleBarHeight)
@@ -558,189 +599,202 @@ private fun TitleBar(
                 bottom = 14.dp,
                 end = TraktTheme.spacing.mainPageHorizontalSpace,
             ),
-    ) {
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(10.dp),
-            modifier = Modifier
-                .weight(1F, false)
-                .padding(
-                    start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
-                    end = 16.dp,
-                )
-                .onClick(onClick = onBack),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
+        leading = {
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(10.dp),
                 modifier = Modifier
-                    .graphicsLayer { translationX = -2.dp.toPx() },
-            )
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
+                        end = 16.dp,
+                    )
+                    .onClick(onClick = onBack),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_back_arrow),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .graphicsLayer { translationX = -2.dp.toPx() },
+                )
 
-            if (user != null) {
-                val vipAccent = TraktTheme.colors.vipAccent
-                val borderColor = remember(user) {
-                    when (user.isAnyVip) {
-                        true -> vipAccent
-                        else -> Color.White
+                if (user != null) {
+                    val vipAccent = TraktTheme.colors.vipAccent
+                    val borderColor = remember(user) {
+                        when (user.isAnyVip) {
+                            true -> vipAccent
+                            else -> Color.White
+                        }
                     }
-                }
 
-                Box(
-                    contentAlignment = Alignment.BottomCenter,
-                ) {
                     Box(
-                        modifier = Modifier
-                            .size(34.dp)
-                            .graphicsLayer {
-                                translationY = 1.dp.toPx()
-                            },
+                        contentAlignment = Alignment.BottomCenter,
                     ) {
-                        if (user.hasAvatar) {
-                            AsyncImage(
-                                model = user.images?.avatar?.full,
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                error = painterResource(R.drawable.ic_person_placeholder),
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .graphicsLayer {
+                                    translationY = 1.dp.toPx()
+                                },
+                        ) {
+                            if (user.hasAvatar) {
+                                AsyncImage(
+                                    model = user.images?.avatar?.full,
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    error = painterResource(R.drawable.ic_person_placeholder),
+                                    modifier = Modifier
+                                        .border(2.dp, borderColor, CircleShape)
+                                        .clip(CircleShape),
+                                )
+                            } else {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_person_placeholder),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .border(2.dp, borderColor, CircleShape)
+                                        .clip(CircleShape),
+                                )
+                            }
+                        }
+
+                        if (userBlocked?.blocked == true && !userBlocked.loading) {
+                            Text(
+                                text = stringResource(R.string.tag_text_blocked_user).uppercase(),
+                                color = Red500,
+                                style = TraktTheme.typography.meta.copy(
+                                    fontSize = 9.sp,
+                                    letterSpacing = 0.03.sp,
+                                ),
                                 modifier = Modifier
-                                    .border(2.dp, borderColor, CircleShape)
-                                    .clip(CircleShape),
-                            )
-                        } else {
-                            Image(
-                                painter = painterResource(R.drawable.ic_person_placeholder),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .border(2.dp, borderColor, CircleShape)
-                                    .clip(CircleShape),
+                                    .graphicsLayer {
+                                        translationY = 8.dp.toPx()
+                                    }
+                                    .shadow(
+                                        elevation = TraktTheme.colors.shadowDynamicSmall,
+                                        shape = RoundedCornerShape(100),
+                                    )
+                                    .background(
+                                        Red80,
+                                        RoundedCornerShape(100),
+                                    )
+                                    .padding(horizontal = 6.dp, vertical = 2.dp),
                             )
                         }
                     }
 
-                    if (userBlocked?.blocked == true && !userBlocked.loading) {
-                        Text(
-                            text = stringResource(R.string.tag_text_blocked_user).uppercase(),
-                            color = Red500,
-                            style = TraktTheme.typography.meta.copy(
-                                fontSize = 9.sp,
-                                letterSpacing = 0.03.sp,
-                            ),
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    translationY = 8.dp.toPx()
-                                }
-                                .shadow(
-                                    elevation = TraktTheme.colors.shadowDynamicSmall,
-                                    shape = RoundedCornerShape(100),
+                    val subtitle = remember(user) {
+                        listOfNotNull(
+                            user.location?.takeIf { it.isNotBlank() },
+                        ).joinToString(separator = " • ")
+                    }
+
+                    TraktHeader(
+                        title = user.displayName,
+                        subtitle = subtitle,
+                    )
+                }
+            }
+        },
+        middle = {
+            AnimatedVisibility(
+                visible = match != null,
+                enter = fadeIn(tween(200)),
+                exit = ExitTransition.None,
+            ) {
+                if (match != null) {
+                    UserMatchPill(
+                        match = match,
+                        onClick = onMatchClick,
+                    )
+                }
+            }
+        },
+        trailing = {
+            if (user != null) {
+                Box {
+                    var showMenu by remember { mutableStateOf(false) }
+
+                    Icon(
+                        painter = painterResource(R.drawable.ic_more_vertical),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick { showMenu = true },
+                    )
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        containerColor = TraktTheme.colors.dialogContainer,
+                        shape = RoundedCornerShape(16.dp),
+                        onDismissRequest = { showMenu = false },
+                    ) {
+                        DropdownMenuItem(
+                            enabled = userFollowing?.loading != true,
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        when (userFollowing?.following) {
+                                            true -> R.string.button_text_unfollow
+                                            else -> R.string.button_text_follow
+                                        },
+                                    ),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
                                 )
-                                .background(
-                                    Red80,
-                                    RoundedCornerShape(100),
+                            },
+                            onClick = {
+                                onFollowClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(
+                                        when (userFollowing?.following) {
+                                            true -> R.drawable.ic_person_remove
+                                            else -> R.drawable.ic_person_add
+                                        },
+                                    ),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(22.dp),
                                 )
-                                .padding(horizontal = 6.dp, vertical = 2.dp),
+                            },
+                        )
+
+                        DropdownMenuItem(
+                            enabled = userBlocked?.loading != true,
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        when {
+                                            userBlocked?.blocked == true -> R.string.button_text_unblock
+                                            else -> R.string.button_text_block
+                                        },
+                                    ),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onBlockClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_block),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(21.dp),
+                                )
+                            },
                         )
                     }
                 }
-
-                val subtitle = remember(user) {
-                    listOfNotNull(
-                        "@${user.username}",
-                        user.location?.takeIf { it.isNotBlank() },
-                        "VIP".takeIf { user.isAnyVip },
-                    ).joinToString(separator = " • ")
-                }
-
-                TraktHeader(
-                    title = user.displayName,
-                    subtitle = subtitle,
-                )
             }
-        }
-
-        if (user != null) {
-            Box {
-                var showMenu by remember { mutableStateOf(false) }
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_more_vertical),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .onClick { showMenu = true },
-                )
-
-                DropdownMenu(
-                    expanded = showMenu,
-                    containerColor = TraktTheme.colors.dialogContainer,
-                    shape = RoundedCornerShape(16.dp),
-                    onDismissRequest = { showMenu = false },
-                ) {
-                    DropdownMenuItem(
-                        enabled = userFollowing?.loading != true,
-                        text = {
-                            Text(
-                                text = stringResource(
-                                    when (userFollowing?.following) {
-                                        true -> R.string.button_text_unfollow
-                                        else -> R.string.button_text_follow
-                                    },
-                                ),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onFollowClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(
-                                    when (userFollowing?.following) {
-                                        true -> R.drawable.ic_person_remove
-                                        else -> R.drawable.ic_person_add
-                                    },
-                                ),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(22.dp),
-                            )
-                        },
-                    )
-
-                    DropdownMenuItem(
-                        enabled = userBlocked?.loading != true,
-                        text = {
-                            Text(
-                                text = stringResource(
-                                    when {
-                                        userBlocked?.blocked == true -> R.string.button_text_unblock
-                                        else -> R.string.button_text_block
-                                    },
-                                ),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onBlockClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_block),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(21.dp),
-                            )
-                        },
-                    )
-                }
-            }
-        }
-    }
+        },
+    )
 }
 
 @Composable
@@ -830,6 +884,55 @@ private fun FollowRequestView(
 
 // Previews
 
+private val TitleBarMiddleGap = 12.dp
+
+@Composable
+private fun TitleBarLayout(
+    leading: @Composable () -> Unit,
+    middle: @Composable () -> Unit,
+    trailing: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Layout(
+        contents = listOf(leading, middle, trailing),
+        modifier = modifier,
+    ) { (leadingMeasurables, middleMeasurables, trailingMeasurables), constraints ->
+        val looseConstraints = constraints.copy(minWidth = 0, minHeight = 0)
+        val trailingPlaceables = trailingMeasurables.map { it.measure(looseConstraints) }
+        val middlePlaceables = middleMeasurables.map { it.measure(looseConstraints) }
+
+        val trailingWidth = trailingPlaceables.maxOfOrNull { it.width } ?: 0
+        val middleWidth = middlePlaceables.maxOfOrNull { it.width } ?: 0
+        val middleGap = if (middleWidth > 0) TitleBarMiddleGap.roundToPx() else 0
+        val leadingMaxWidth = (constraints.maxWidth - trailingWidth - middleWidth - middleGap)
+            .coerceAtLeast(0)
+
+        val leadingPlaceables = leadingMeasurables.map {
+            it.measure(looseConstraints.copy(maxWidth = leadingMaxWidth))
+        }
+        val leadingWidth = leadingPlaceables.maxOfOrNull { it.width } ?: 0
+
+        val width = constraints.maxWidth
+        val height = constraints.constrainHeight(
+            (leadingPlaceables + middlePlaceables + trailingPlaceables).maxOfOrNull { it.height } ?: 0,
+        )
+
+        layout(width, height) {
+            leadingPlaceables.forEach {
+                it.placeRelative(0, (height - it.height) / 2)
+            }
+            middlePlaceables.forEach {
+                val gapStart = leadingWidth
+                val gapEnd = width - trailingWidth
+                it.placeRelative(gapStart + (gapEnd - gapStart - it.width) / 2, (height - it.height) / 2)
+            }
+            trailingPlaceables.forEach {
+                it.placeRelative(width - it.width, (height - it.height) / 2)
+            }
+        }
+    }
+}
+
 @Preview(
     showBackground = true,
     backgroundColor = 0xFF131517,
@@ -858,6 +961,30 @@ private fun Preview1() {
     backgroundColor = 0xFF131517,
 )
 @Composable
+private fun PreviewMatch() {
+    TraktThemeLightDark {
+        TitleBar(
+            user = PreviewData.user1.copy(
+                location = "Some Location",
+            ),
+            userBlocked = UserProfileState.BlockedState(
+                blocked = false,
+                loading = false,
+            ),
+            userFollowing = UserProfileState.FollowingState(
+                following = true,
+                loading = false,
+            ),
+            match = UserMatchPreviewData.match,
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
 private fun Preview3() {
     TraktThemeLightDark {
         FollowRequestView(
@@ -868,29 +995,6 @@ private fun Preview3() {
             ),
             loading = false,
             visible = true,
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_6",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        UserProfileContent(
-            state = UserProfileState(
-                user = PreviewData.user1,
-                userRequest = UserProfileState.UserFollowRequestState(
-                    UserFollowRequest(
-                        id = 1,
-                        requestedAt = nowUtcInstant(),
-                        user = PreviewData.user1,
-                    ),
-                ),
-            ),
         )
     }
 }

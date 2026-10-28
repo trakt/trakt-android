@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package tv.trakt.trakt.core.userprofile.sections.favorites
 
 import androidx.compose.animation.Crossfade
@@ -16,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -37,6 +35,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
@@ -46,6 +45,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 
 @Composable
 internal fun UserProfileFavoritesView(
@@ -85,7 +85,7 @@ internal fun UserProfileFavoritesContent(
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        verticalArrangement = spacedBy(3.dp),
         modifier = modifier
             .animateContentSize(
                 animationSpec = if (animateCollapse) spring() else snap(),
@@ -207,6 +207,7 @@ private fun ContentList(
             key = { it.key },
         ) { item ->
             Column(
+                verticalArrangement = spacedBy(6.dp),
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,
@@ -267,6 +268,44 @@ private fun Preview2() {
         UserProfileFavoritesContent(
             state = UserProfileFavoritesState(
                 loading = Loading,
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview4() {
+    TraktTheme {
+        UserProfileFavoritesContent(
+            state = UserProfileFavoritesState(
+                loading = Done,
+                items = listOf(
+                    FavoriteItem.ShowItem(
+                        show = PreviewData.show1,
+                        rank = 1,
+                        listedAt = Instant.parse("2026-03-02T10:00:00Z"),
+                    ),
+                    FavoriteItem.MovieItem(
+                        movie = PreviewData.movie1,
+                        rank = 2,
+                        listedAt = Instant.parse("2025-11-20T10:00:00Z"),
+                    ),
+                    FavoriteItem.ShowItem(
+                        show = PreviewData.show2,
+                        rank = 3,
+                        listedAt = Instant.parse("2025-06-14T10:00:00Z"),
+                    ),
+                    FavoriteItem.MovieItem(
+                        movie = PreviewData.movie2,
+                        rank = 4,
+                        listedAt = Instant.parse("2024-01-05T10:00:00Z"),
+                    ),
+                ).toImmutableList(),
             ),
         )
     }

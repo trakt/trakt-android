@@ -24,6 +24,7 @@ data class TraktColors(
     val chipContainer: Color = Color.Unspecified,
     val chipContainerOnContent: Color = Color.Unspecified,
     val chipContent: Color = Color.Unspecified,
+    val chipProgress: Color = Color.Unspecified,
     val placeholderContainer: Color = Color.Unspecified,
     val placeholderContent: Color = Color.Unspecified,
     val inputContainer: Color = Color.Unspecified,
