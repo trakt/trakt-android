@@ -279,33 +279,6 @@ internal fun PersonDetailsContent(
                     }
                 }
 
-                if (state.user != null) {
-                    item {
-                        AnimatedVisibility(
-                            visible = state.loadingCredits != Idle,
-                            enter = fadeIn(),
-                            exit = fadeOut(),
-                        ) {
-                            HistoryCreditsList(
-                                loading = state.loadingCredits,
-                                personShowCredits = state.personShowCredits,
-                                personMovieCredits = state.personMovieCredits,
-                                userCollection = state.collection,
-                                sectionPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                onShowClick = onShowClick,
-                                onMovieClick = onMovieClick,
-                                onShowLongClick = onShowLongClick,
-                                onMovieLongClick = onMovieLongClick,
-                                onMoreClick = { onMoreClick?.invoke(PersonCreditsSection.History, null) },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 24.dp),
-                            )
-                        }
-                    }
-                }
-
                 item {
                     AnimatedVisibility(
                         visible = state.loadingCredits != Idle,
@@ -325,7 +298,7 @@ internal fun PersonDetailsContent(
                             onMoreClick = { onMoreClick?.invoke(PersonCreditsSection.Shows, it) },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 32.dp),
+                                .padding(top = 24.dp),
                         )
                     }
                 }
@@ -351,6 +324,33 @@ internal fun PersonDetailsContent(
                                 .fillMaxWidth()
                                 .padding(top = 32.dp),
                         )
+                    }
+                }
+
+                if (state.user != null) {
+                    item {
+                        AnimatedVisibility(
+                            visible = state.loadingCredits != Idle,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
+                            HistoryCreditsList(
+                                loading = state.loadingCredits,
+                                personShowCredits = state.personShowCredits,
+                                personMovieCredits = state.personMovieCredits,
+                                userCollection = state.collection,
+                                sectionPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onShowClick = onShowClick,
+                                onMovieClick = onMovieClick,
+                                onShowLongClick = onShowLongClick,
+                                onMovieLongClick = onMovieLongClick,
+                                onMoreClick = { onMoreClick?.invoke(PersonCreditsSection.History, null) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
                 }
             }

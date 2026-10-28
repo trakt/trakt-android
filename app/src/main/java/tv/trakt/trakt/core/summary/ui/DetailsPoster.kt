@@ -108,7 +108,7 @@ internal fun DetailsPoster(
                     colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(64.dp)
+                        .padding(80.dp)
                         .align(Alignment.Center),
                 )
             }
