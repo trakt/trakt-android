@@ -187,8 +187,19 @@ Track per PR: cycle count (starts at 1) and `SINCE`, the UTC time the PR was ope
    No unresolved Codex threads: the PR is clean. Stop monitoring it.
    Comments found: open the Codex effort window for this PR's issue before reading them:
    `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/codexN-start.txt"`.
-3. **Assess each comment.** Check the claim against the code. Do not accept it blindly. Decide:
-   fix, or decline with a concrete reason (wrong, out of scope, or intended behaviour).
+3. **Assess each comment critically.** Codex is a reviewer, not the spec. Treat each comment as a
+   claim to verify, not an instruction:
+   - Reproduce the failure path in the code. If it cannot happen (guarded elsewhere, framework
+     already handles it, wrong assumption about the flow), decline.
+   - Hold the implementation plan. The issue scope, the linked web behaviour and the deviations
+     recorded in the PR body win over a reviewer's preference. Decline comments that ask to
+     expand scope, change agreed behaviour, or undo a deliberate deviation, and cite which one.
+   - Fix only real defects: bugs, crashes, broken edge cases, and violations of `.agents/rules/`.
+     Keep each fix as small as the defect, no drive-by refactors.
+   - Weigh severity labels (P1, P2) as hints only.
+
+   Decide per comment: fix, or decline with a concrete reason (wrong, out of scope, intended
+   behaviour, or conflicts with the plan).
 4. **Fix.** On the PR branch: apply the fixes, verify as in "Issue steps" 9, commit per `commits.md`
    (`Refs: #N`), push with the same `push` command as "Issue steps" 11. Never force-push for review fixes.
 5. **Reply and resolve every handled thread.** Reply with what changed and the commit SHA, or why it
