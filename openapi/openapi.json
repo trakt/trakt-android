@@ -16714,7 +16714,7 @@
     },
     "/users/{id}/{type}/activities": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info\nReturns recent activity for a user social graph. Use `type` to choose `friends`, `followers`, or `following`, and use pagination to move through the activity feed.",
+        "description": "#### 🫣 Limited Access 🔓 OAuth Optional 📄 Pagination ✨ Extended Info\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `403` response.\n\nReturns the last 7 days of watch activity from a user's social graph, newest first. Use `type` to choose `friends`, `followers`, or `following`, and use pagination to move through the activity feed.\n\nActivity from a private user is only included when you follow them. Set `?extended=rating` to include each person's `user_rating` for the item they watched.",
         "summary": "Get social activity",
         "tags": [
           "users"
@@ -102838,7 +102838,7 @@
     },
     "/shows/{id}/progress/watched/reset": {
       "post": {
-        "description": "Reset a show progress. This starts re-watching a show and allows watched progress calculations to ignore previous watches.",
+        "description": "#### 🔥 VIP Only 🔒 OAuth Required\nReset a show progress. This starts re-watching a show and allows watched progress calculations to ignore previous watches. Send an optional `reset_at` to start the reset from an earlier time; it defaults to now.",
         "summary": "Reset show progress",
         "tags": [
           "shows",
@@ -102859,16 +102859,35 @@
           "description": "Body",
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reset_at": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "UTC datetime the reset starts from; defaults to now. Cannot be in the future."
+                  }
+                }
+              }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "200",
+          "201": {
+            "description": "201",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reset_at": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "reset_at"
+                  ]
+                }
               }
             }
           }
@@ -102885,7 +102904,7 @@
         "operationId": "postShowsProgressReset"
       },
       "delete": {
-        "description": "Undo a show progress reset and restore normal watched progress calculations.",
+        "description": "#### 🔥 VIP Only 🔒 OAuth Required\nUndo a show progress reset and restore normal watched progress calculations.",
         "summary": "Undo reset show progress",
         "tags": [
           "shows",
