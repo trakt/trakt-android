@@ -109,6 +109,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun UserProfileScreen(
     viewModel: UserProfileViewModel,
+    matchViewModel: UserMatchViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
@@ -129,10 +130,6 @@ internal fun UserProfileScreen(
     var confirmUnfollowSheet by remember { mutableStateOf(false) }
     var matchSheet by remember { mutableStateOf(false) }
 
-    val matchViewModel: UserMatchViewModel = koinViewModel(
-        key = "user_match_${state.user.ids.slug.value}",
-        parameters = { parametersOf(state.user) },
-    )
     val matchState by matchViewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.info) {

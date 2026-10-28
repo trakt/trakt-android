@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.userprofile.sections.match
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
@@ -29,10 +32,13 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserMatch
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
+import tv.trakt.trakt.core.userprofile.navigation.UserProfileDestination
 import tv.trakt.trakt.core.userprofile.sections.match.usecases.GetUserMatchUseCase
+import tv.trakt.trakt.core.userprofile.usecases.GetUserProfileDetailsUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val SHARED_MEDIA_LIMIT = 6
@@ -40,13 +46,17 @@ private const val SHARED_MEDIA_LIMIT = 6
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
 internal class UserMatchViewModel(
-    private val user: User,
+    savedStateHandle: SavedStateHandle,
     private val getUserMatchUseCase: GetUserMatchUseCase,
+    private val getUserProfileUseCase: GetUserProfileDetailsUseCase,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
+    private val destination = savedStateHandle.toRoute<UserProfileDestination>()
+    private val user = Json.decodeFromString<User>(destination.userJson)
+
     private val initialState = UserMatchState()
 
     private val viewerState = MutableStateFlow(initialState.viewer)
@@ -56,6 +66,7 @@ internal class UserMatchViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
 
     private var mode = filterManager.getFilter().mode
+    private var userSlug = user.ids.slug.takeIf { it.value.isNotBlank() }
 
     private var dataJob: Job? = null
     private var sharedMediaJob: Job? = null
@@ -93,7 +104,6 @@ internal class UserMatchViewModel(
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
-                if (user.ids.slug.value.isBlank()) return@launch
                 if (!sessionManager.isAuthenticated()) return@launch
 
                 val viewer = sessionManager.getProfile() ?: return@launch
@@ -105,7 +115,7 @@ internal class UserMatchViewModel(
                 }
 
                 val match = getUserMatchUseCase.getMatch(
-                    userSlug = user.ids.slug,
+                    userSlug = loadUserSlug(),
                     mode = mode,
                 )
                 val sharedMediaRequested = sharedMoviesState.value != null || sharedMediaJob?.isActive == true
@@ -125,6 +135,11 @@ internal class UserMatchViewModel(
                 loadingState.update { Done }
             }
         }
+    }
+
+    private suspend fun loadUserSlug(): SlugId {
+        return userSlug ?: getUserProfileUseCase.getUserProfileDetails(user.ids.trakt).ids.slug
+            .also { userSlug = it }
     }
 
     fun openDetails() {

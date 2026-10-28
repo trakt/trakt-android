@@ -8,7 +8,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue.Expanded
 import androidx.compose.material3.SheetValue.Hidden
-import androidx.compose.material3.SheetValue.PartiallyExpanded
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,13 +19,13 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.userprofile.sections.match.UserMatchState
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 
-private const val SHEET_MAX_HEIGHT_FRACTION = 0.8F
+private const val SHEET_MAX_HEIGHT_FRACTION = 0.75F
 
 @Composable
 internal fun UserMatchSheet(
     state: SheetState = rememberBottomSheetState(
         initialValue = Hidden,
-        enabledValues = setOf(Hidden, PartiallyExpanded, Expanded),
+        enabledValues = setOf(Hidden, Expanded),
     ),
     matchState: UserMatchState,
     user: User,

@@ -90,7 +90,7 @@ internal fun UserMatchView(
                 state = rememberScrollState(),
                 overscrollEffect = null,
             )
-            .padding(top = 16.dp),
+            .padding(top = 12.dp, bottom = 32.dp),
     ) {
         MatchHero(
             score = match.score,
