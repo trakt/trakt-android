@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.userprofile.sections.match.ui
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,6 +40,7 @@ internal fun UserMatchSheet(
     if (visible && match != null) {
         TraktBottomSheet(
             sheetState = state,
+            contentWindowInsets = { WindowInsets() },
             onDismiss = onDismiss,
         ) {
             UserMatchView(
