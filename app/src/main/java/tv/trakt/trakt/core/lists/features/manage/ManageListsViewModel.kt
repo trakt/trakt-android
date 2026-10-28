@@ -66,6 +66,10 @@ internal class ManageListsViewModel(
             try {
                 loadingState.update { LoadingState.Loading }
 
+                if (!loadListsUseCase.isLoaded()) {
+                    loadListsUseCase.loadLists()
+                }
+
                 val (ownLists, collaborationLists) = loadListsUseCase.loadLocalLists()
                     .values
                     .partition { it.ownerId == user.ids.trakt }

@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -39,6 +40,8 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val MinTouchTarget = 48.dp
 
 @Composable
 internal fun SeasonsTitleBar(
@@ -143,14 +146,19 @@ internal fun SeasonsTitleBar(
         }
 
         if (onListsClick != null) {
-            Icon(
-                painter = painterResource(R.drawable.ic_lists_off),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
+            Box(
+                contentAlignment = CenterEnd,
                 modifier = Modifier
-                    .size(22.dp)
+                    .size(MinTouchTarget)
                     .onClick { onListsClick() },
-            )
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_lists_off),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
+                    modifier = Modifier.size(22.dp),
+                )
+            }
         }
     }
 }
