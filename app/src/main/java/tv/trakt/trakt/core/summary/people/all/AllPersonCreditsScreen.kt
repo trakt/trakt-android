@@ -57,6 +57,7 @@ import tv.trakt.trakt.core.summary.people.ui.CreditsPositionFilters
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
@@ -95,6 +96,7 @@ internal fun AllPersonCreditsScreen(
         state = state,
         modifier = modifier,
         onBackClick = onNavigateBack,
+        onModeClick = viewModel::setMode,
         onPositionClick = viewModel::setPosition,
         onShowClick = viewModel::navigateToShow,
         onMovieClick = viewModel::navigateToMovie,
@@ -118,6 +120,7 @@ internal fun AllPersonCreditsContent(
     state: AllPersonCreditsState,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
     onPositionClick: (String) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
@@ -130,9 +133,9 @@ internal fun AllPersonCreditsContent(
         SimpleScrollConnection()
     }
 
+    val itemPadding = Modifier.padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+
     val contentPadding = PaddingValues(
-        start = TraktTheme.spacing.mainPageHorizontalSpace,
-        end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
             .plus(3.dp),
@@ -164,25 +167,32 @@ internal fun AllPersonCreditsContent(
             headerContent(
                 state = state,
                 onBackClick = onBackClick,
+                onModeClick = onModeClick,
                 onPositionClick = onPositionClick,
             )
 
             when {
                 state.loading.isLoading && state.items.isEmpty() -> {
                     items(count = SKELETON_ITEMS) {
-                        PanelMediaSkeletonCard()
+                        PanelMediaSkeletonCard(modifier = itemPadding)
                     }
                 }
 
                 state.loading.isDone && state.items.isEmpty() && state.error != null -> {
                     item {
-                        ContentErrorView(error = state.error)
+                        ContentErrorView(
+                            error = state.error,
+                            modifier = itemPadding,
+                        )
                     }
                 }
 
                 state.loading.isDone && state.items.isEmpty() -> {
                     item {
-                        ContentEmptyView(state = state)
+                        ContentEmptyView(
+                            state = state,
+                            modifier = itemPadding,
+                        )
                     }
                 }
 
@@ -194,12 +204,12 @@ internal fun AllPersonCreditsContent(
                         AllPersonCreditView(
                             item = item,
                             userCollection = state.collection,
-                            mediaIcon = state.section.isHistory,
+                            mediaIcon = state.mode == MediaMode.Media,
                             onShowClick = onShowClick,
                             onShowLongClick = onShowLongClick,
                             onMovieClick = onMovieClick,
                             onMovieLongClick = onMovieLongClick,
-                            modifier = Modifier.animateItem(
+                            modifier = itemPadding.animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
                             ),
@@ -214,6 +224,7 @@ internal fun AllPersonCreditsContent(
 private fun LazyListScope.headerContent(
     state: AllPersonCreditsState,
     onBackClick: () -> Unit,
+    onModeClick: (MediaMode) -> Unit,
     onPositionClick: (String) -> Unit,
 ) {
     item {
@@ -226,18 +237,40 @@ private fun LazyListScope.headerContent(
             TitleBar(
                 title = state.person?.name ?: "",
                 subtitle = subtitleRes(state)?.let { stringResource(it) },
-                modifier = Modifier.onClick { onBackClick() },
+                modifier = Modifier
+                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                    .onClick { onBackClick() },
             )
 
-            if (state.positions.size > 1) {
-                CreditsPositionFilters(
-                    filters = state.positions,
-                    selected = state.selectedPosition,
-                    paddingHorizontal = PaddingValues(),
-                    paddingVertical = PaddingValues(top = 5.dp),
-                    height = 32.dp,
-                    onSelected = onPositionClick,
-                )
+            val modeFiltersVisible = state.section.isHistory
+            val positionFiltersVisible = state.positions.size > 1
+
+            if (modeFiltersVisible || positionFiltersVisible) {
+                Column(
+                    verticalArrangement = spacedBy(10.dp),
+                    modifier = Modifier.padding(top = 5.dp),
+                ) {
+                    if (modeFiltersVisible) {
+                        MediaModeFilters(
+                            selected = state.mode,
+                            height = 32.dp,
+                            paddingHorizontal = PaddingValues(
+                                horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+                            ),
+                            onClick = onModeClick,
+                        )
+                    }
+
+                    if (positionFiltersVisible) {
+                        CreditsPositionFilters(
+                            filters = state.positions,
+                            selected = state.selectedPosition,
+                            paddingVertical = PaddingValues(),
+                            height = 32.dp,
+                            onSelected = onPositionClick,
+                        )
+                    }
+                }
             }
         }
     }
@@ -271,7 +304,10 @@ private fun TitleBar(
 }
 
 @Composable
-private fun ContentEmptyView(state: AllPersonCreditsState) {
+private fun ContentEmptyView(
+    state: AllPersonCreditsState,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = when {
             state.section.isHistory -> stringResource(
@@ -282,16 +318,21 @@ private fun ContentEmptyView(state: AllPersonCreditsState) {
         },
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.heading6,
+        modifier = modifier,
     )
 }
 
 @Composable
-private fun ContentErrorView(error: Exception) {
+private fun ContentErrorView(
+    error: Exception,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = "${stringResource(R.string.error_text_unexpected_error_short)}\n\n$error",
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.meta,
         maxLines = 10,
+        modifier = modifier,
     )
 }
 

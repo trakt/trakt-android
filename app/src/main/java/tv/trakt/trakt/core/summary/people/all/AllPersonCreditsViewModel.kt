@@ -122,6 +122,10 @@ internal class AllPersonCreditsViewModel(
         }
     }
 
+    fun setMode(mode: MediaMode) {
+        modeState.update { mode }
+    }
+
     fun setPosition(position: String) {
         positionState.update { position }
     }
