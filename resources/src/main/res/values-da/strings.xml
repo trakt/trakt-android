@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Åbn Indstillinger</string>
   <string name="action_toast_action_change_list">Skift liste</string>
   <string name="action_toast_action_failed">Det virkede ikke. Prøv venligst igen.</string>
+  <string name="action_toast_action_view_lists">Vis</string>
   <string name="action_toast_action_view_smart_list">Se liste</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> blev føjet til din huskeliste</string>
   <string name="action_toast_added_to_watchlist_generic">Føjet til din huskeliste</string>
   <string name="action_toast_collaborator_limit_reached">Denne liste har nået sin grænse for samarbejdspartnere.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> blev oprettet</string>
   <string name="action_toast_label_change_list">Skift de lister, som %s tilhører</string>
+  <string name="action_toast_label_view_personal_lists">Åbn dine personlige lister</string>
+  <string name="action_toast_label_view_shared_lists">Åbn dine delte lister</string>
   <string name="action_toast_label_view_smart_list">Åbn den smart liste, du lige har oprettet</string>
+  <string name="action_toast_list_moved_to_personal">%s flyttet til Personlig</string>
+  <string name="action_toast_list_moved_to_shared">%s flyttet til Delt</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s til %3$s</string>
   <string name="advanced_filter_label_ratings">Bedømmelse fra %1$s til %2$s</string>
   <string name="advanced_filter_label_release_year">Udgivet i %1$d til %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Abonner på denne kalender i din kalenderapp</string>
   <string name="button_label_open_comment">Åbn kommentaren</string>
   <string name="button_label_open_leaderboard">Åbn følger-rangliste</string>
+  <string name="button_label_open_season_recap">Åbn resumeet for %s</string>
   <string name="button_label_open_today_stories">Åbn dagens historier</string>
   <string name="button_label_open_vip_streak">Vis VIP-serie</string>
   <string name="button_label_pause_track">Pause %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Afsluttet</string>
   <string name="button_text_progress_in_progress">I gang</string>
   <string name="button_text_raw_export">Eksporter nu</string>
+  <string name="button_text_recap_show_anyway">Vis alligevel</string>
   <string name="button_text_recent_comments">Seneste</string>
   <string name="button_text_recommendation_mode_classic">Klassisk</string>
   <string name="button_text_recommendation_mode_smart">Smart</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Anmeldelse</string>
   <string name="button_text_revoke_access">Tilbagekald adgang</string>
   <string name="button_text_save_filters">Indstil som standard</string>
+  <string name="button_text_season_recap">Resumé</string>
   <string name="button_text_select_all">Vælg alle</string>
   <string name="button_text_set_cover_image">Indstil som coverbillede</string>
   <string name="button_text_settings">Indstillinger</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Opgrader til VIP for at synkronisere set-historik og samlinger fra din Jellyfin-server, mens den er i beta.</string>
   <string name="description_library_collection_limit">Nogle elementer fra %s er endnu ikke i din Trakt-samling. Gratiskonti stopper ved samlingsgrænsen; VIP samler alt.</string>
   <string name="description_manage_collaborators">Samarbejdspartnere kan tilføje og fjerne elementer fra denne liste. Vælg mellem personer, der følger dig.</string>
+  <string name="description_manage_collaborators_shared">Samarbejdspartnere kan tilføje og fjerne elementer fra denne liste. Vælg mellem personer, der følger dig. Lister med samarbejdspartnere vises under Delt.</string>
   <string name="description_media_sync_add_jellyfin_server">Tilslut en anden Jellyfin-server for også at synkronisere den.</string>
   <string name="description_media_sync_add_server_free">Gratis konti synkroniserer 1 Plex-server. Bliv VIP for at tilføje flere.</string>
   <string name="description_media_sync_add_server_vip">Tilslut en anden Plex-server for også at synkronisere den.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Personer</string>
   <string name="header_reality_real_story">Den virkelige historie</string>
   <string name="header_reality_timeline">Tidslinje</string>
+  <string name="header_recap_in_depth">I dybden</string>
+  <string name="header_recap_key_moments">Vigtige øjeblikke</string>
+  <string name="header_recap_open_thread">Uafsluttet handling</string>
+  <string name="header_recap_where_things_stand">Her står personerne</string>
   <string name="header_region">Region</string>
   <string name="header_renewal_date">Fornyelsesdato</string>
   <string name="header_runtime">Spilletid</string>
   <string name="header_screen_time">Skærmtid</string>
+  <string name="header_season_recap">Tidligere i %s</string>
   <string name="header_seasonal_greeting_christmas">Glædelig jul</string>
   <string name="header_seasonal_greeting_halloween">Glædelig Halloween</string>
   <string name="header_seasonal_greeting_new_year">Godt nytår</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Privatlivspolitik</string>
   <string name="link_text_preview_settings">Forhåndsvisning</string>
   <string name="link_text_privacy">Privatliv</string>
+  <string name="link_text_report_bug">Rapporter en fejl</string>
   <string name="link_text_service_status">Trakt-tjenestestatus</string>
   <string name="link_text_streaming_sync_settings">Streaming</string>
   <string name="link_text_support">Support</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Svar</string>
   <string name="list_title_seasons">Sæsoner</string>
   <string name="list_title_shared_by">Delt af</string>
+  <string name="list_title_shared_lists">Delt</string>
   <string name="list_title_show_credits">Serier</string>
   <string name="list_title_smart_list_templates">Start fra en skabelon</string>
   <string name="list_title_smart_lists">Smarte lister</string>
@@ -1443,7 +1459,7 @@
   <string name="match_label_soulmates">Sjælevenner</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Åbn matchdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Åbn matchdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beregner matchscore</string>
   <string name="mir_banner_body">Dit månedlige resumé er klar. Her er hvad du så i %s.</string>
   <string name="mir_banner_body_short">Dit %s resumé er klar.</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Aktiver kontroller til at skjule eller vise konfigurerbare sektioner i hele appen.</string>
   <string name="preview_feature_description_large_screen_cards">På større skærme bruger alle lister de samme kort som resten af appen. Ved at vælge et, åbnes en hurtig oversigt i stedet for at forlade listen.</string>
   <string name="preview_feature_description_rewatch">Start gensynssessioner for serier, du allerede har set, tjek ind eller marker sete episoder direkte fra sessionsskuffen.</string>
+  <string name="preview_feature_description_season_recap">Tilføjer en Resume-knap ved siden af sæsonvælgeren på seriesiden. Den åbner et overblik over sæsonen: de vigtigste øjeblikke, og hvor personerne står.</string>
   <string name="preview_feature_description_show_ending">Viser en \"Afslutning\"-række i en series detaljer: \"Afsluttet\", når historien er fuldendt, \"Uafsluttet\", når den ikke er.</string>
   <string name="preview_feature_description_soundtrack">Tilføjer en soundtrack-sektion til film- og seriesider, med afspilning hvor et nummer kan matches.</string>
   <string name="preview_feature_description_vip_veteran">Viser, hvor længe medlemmer har opretholdt VIP uden afbrydelse, med et Veteran- eller Legende-badge, en farvet avatarring og et par fejringer på din egen profil.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
   <string name="preview_feature_title_large_screen_cards">Kort til stor skærm</string>
   <string name="preview_feature_title_rewatch">Gensyn</string>
+  <string name="preview_feature_title_season_recap">Sæsonresume</string>
   <string name="preview_feature_title_show_ending">Serieafslutning</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP veteranstatus</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Alle tidligere visninger</string>
   <string name="tab_text_media_sync_history_today">Fra i dag</string>
   <string name="tab_text_more">Mere</string>
+  <string name="tab_text_recap_story">Historien indtil nu</string>
+  <string name="tab_text_season_recap">Resumé</string>
   <string name="tab_text_seasons_episodes">Afsnit</string>
   <string name="tab_text_seasons_info">Info</string>
   <string name="tab_text_seasons_reviews">Anmeldelser</string>
@@ -1674,7 +1694,7 @@
   <string name="tag_media_sync_webhook_only">Kun Webhook</string>
   <string name="tag_mixtape_different_mood">Anden stemning</string>
   <string name="tag_mixtape_kept">Beholdt</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tryk for detaljer</string>
   <string name="tag_text_blocked_user">Blokeret</string>
   <string name="tag_text_deal_price">De første 2 år</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Ny Premiere</string>
   <string name="tag_text_new_preview_feature">Ny</string>
   <string name="tag_text_number_of_episodes">%d afsnit</string>
+  <string name="tag_text_owned_list">Din</string>
   <string name="tag_text_play">%d visning</string>
   <string name="tag_text_plays">%d visninger</string>
   <string name="tag_text_premiere">Premiere</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Løst baseret</string>
   <string name="text_reality_tier_mostly_true">Stort set sandt</string>
   <string name="text_reality_tier_unclear">Uklar</string>
+  <string name="text_recap_at_the_finale">Ved finalen</string>
+  <string name="text_recap_before_season">Før sæson %d</string>
+  <string name="text_recap_in_depth_locked">Gennemgang kapitel for kapitel</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Resume baseret på Wikipedia</string>
+  <string name="text_recap_spoiler_partial">Du har set %1$d af %2$d episoder. Dette afslører resten af sæson %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">Du er ikke startet på sæson %d. Dette afslører det hele.</string>
+  <string name="text_recap_story_description">Hele historien frem til den sæson, du blev færdig med</string>
+  <string name="text_recap_story_not_covered">Intet fra og med sæson %d.</string>
+  <string name="text_recap_story_progress">%1$d af %2$d sæsoner</string>
+  <string name="text_recap_story_stats">%1$d episoder · ca. %2$s</string>
+  <string name="text_recap_story_up_next">Sæson %d · næste</string>
+  <string name="text_recap_upsell_in_depth">Få hele sæsongennemgangen med VIP</string>
+  <string name="text_recap_upsell_story">Én samlet historie frem til din senest sete sæson med VIP</string>
   <string name="text_recommendation_person_more_titles">+%d mere</string>
   <string name="text_recommendation_person_watched_acting_one">Spillede med i %d titel du så</string>
   <string name="text_recommendation_person_watched_acting_other">Spillede med i %d titler du så</string>
@@ -2877,7 +2913,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ikke hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andenplads</string>
   <string name="yir_2026_preview_title">Persona-forhåndsvisning</string>
-  <string name="yir_2026_rarity">Kun %1$d%% er %2$s</string>
+  <string name="yir_2026_rarity">Kun %1$d% er %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Lidt %s</string>
   <string name="yir_2026_reel_and_you_are">Og du er</string>
   <string name="yir_2026_reel_but_mostly">Men mest</string>

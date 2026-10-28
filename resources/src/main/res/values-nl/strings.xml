@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Open instellingen</string>
   <string name="action_toast_action_change_list">Lijst wijzigen</string>
   <string name="action_toast_action_failed">Dat is mislukt. Probeer het opnieuw.</string>
+  <string name="action_toast_action_view_lists">Bekijken</string>
   <string name="action_toast_action_view_smart_list">Bekijk lijst</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> is toegevoegd aan je kijklijst</string>
   <string name="action_toast_added_to_watchlist_generic">Toegevoegd aan je kijklijst</string>
   <string name="action_toast_collaborator_limit_reached">Deze lijst heeft de limiet voor medewerkers bereikt.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> is aangemaakt</string>
   <string name="action_toast_label_change_list">Wijzig de lijsten waartoe %s behoort</string>
+  <string name="action_toast_label_view_personal_lists">Open je persoonlijke lijsten</string>
+  <string name="action_toast_label_view_shared_lists">Open je gedeelde lijsten</string>
   <string name="action_toast_label_view_smart_list">Open de slimme lijst die je zojuist hebt gemaakt</string>
+  <string name="action_toast_list_moved_to_personal">%s verplaatst naar Persoonlijk</string>
+  <string name="action_toast_list_moved_to_shared">%s verplaatst naar Gedeeld</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s tot %3$s</string>
   <string name="advanced_filter_label_ratings">Beoordeling van %1$s tot %2$s</string>
   <string name="advanced_filter_label_release_year">Uitgebracht in %1$d tot %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Abonneren op deze kalender in je kalenderapp</string>
   <string name="button_label_open_comment">Open de reactie</string>
   <string name="button_label_open_leaderboard">Open volgersklassement</string>
+  <string name="button_label_open_season_recap">Open de samenvatting voor %s</string>
   <string name="button_label_open_today_stories">Open de verhalen van vandaag</string>
   <string name="button_label_open_vip_streak">VIP-reeks tonen</string>
   <string name="button_label_pause_track">Pauzeer %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Beëindigd</string>
   <string name="button_text_progress_in_progress">Bezig</string>
   <string name="button_text_raw_export">Nu exporteren</string>
+  <string name="button_text_recap_show_anyway">Toch weergeven</string>
   <string name="button_text_recent_comments">Recent</string>
   <string name="button_text_recommendation_mode_classic">Klassiek</string>
   <string name="button_text_recommendation_mode_smart">Slim</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Recensie</string>
   <string name="button_text_revoke_access">Toegang intrekken</string>
   <string name="button_text_save_filters">Instellen als standaard</string>
+  <string name="button_text_season_recap">Recap</string>
   <string name="button_text_select_all">Alles selecteren</string>
   <string name="button_text_set_cover_image">Instellen als omslagafbeelding</string>
   <string name="button_text_settings">Instellingen</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Upgrade naar VIP om kijkgeschiedenis en collecties van je Jellyfin-server te synchroniseren terwijl het in bèta is.</string>
   <string name="description_library_collection_limit">Sommige items van %s staan nog niet in je Trakt-verzameling. Gratis accounts stoppen bij de verzamelinglimiet; VIP verzamelt alles.</string>
   <string name="description_manage_collaborators">Medewerkers kunnen items toevoegen en verwijderen van deze lijst. Kies uit mensen die je volgen.</string>
+  <string name="description_manage_collaborators_shared">Medewerkers kunnen items toevoegen en verwijderen van deze lijst. Kies uit mensen die je volgen. Lijsten met medewerkers worden weergegeven onder Gedeeld.</string>
   <string name="description_media_sync_add_jellyfin_server">Verbind een andere Jellyfin-server om deze ook te synchroniseren.</string>
   <string name="description_media_sync_add_server_free">Gratis accounts synchroniseren 1 Plex-server. Ga VIP om meer toe te voegen.</string>
   <string name="description_media_sync_add_server_vip">Verbind een andere Plex-server om deze ook te synchroniseren.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Personen</string>
   <string name="header_reality_real_story">Het echte verhaal</string>
   <string name="header_reality_timeline">Tijdlijn</string>
+  <string name="header_recap_in_depth">Diepgaand</string>
+  <string name="header_recap_key_moments">Belangrijkste momenten</string>
+  <string name="header_recap_open_thread">Open verhaallijn</string>
+  <string name="header_recap_where_things_stand">De stand van zaken</string>
   <string name="header_region">Regio</string>
   <string name="header_renewal_date">Verlengingsdatum</string>
   <string name="header_runtime">Speelduur</string>
   <string name="header_screen_time">Schermtijd</string>
+  <string name="header_season_recap">Eerder in %s</string>
   <string name="header_seasonal_greeting_christmas">Vrolijk kerstfeest</string>
   <string name="header_seasonal_greeting_halloween">Fijne Halloween</string>
   <string name="header_seasonal_greeting_new_year">Gelukkig nieuwjaar</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Privacybeleid</string>
   <string name="link_text_preview_settings">Voorbeeld</string>
   <string name="link_text_privacy">Privacy</string>
+  <string name="link_text_report_bug">Een bug melden</string>
   <string name="link_text_service_status">Trakt-servicestatus</string>
   <string name="link_text_streaming_sync_settings">Streamen</string>
   <string name="link_text_support">Ondersteuning</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Antwoorden</string>
   <string name="list_title_seasons">Seizoenen</string>
   <string name="list_title_shared_by">Gedeeld door</string>
+  <string name="list_title_shared_lists">Gedeeld</string>
   <string name="list_title_show_credits">Series</string>
   <string name="list_title_smart_list_templates">Start met een sjabloon</string>
   <string name="list_title_smart_lists">Slimme lijsten</string>
@@ -1443,7 +1459,7 @@
   <string name="match_label_soulmates">Zielsverwanten</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Overeenkomst:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open matchdetails.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open matchdetails.</string>
   <string name="match_pill_loading_aria_label">Matchscore berekenen</string>
   <string name="mir_banner_body">Je maandelijkse overzicht is klaar. Dit is wat je hebt gekeken in %s.</string>
   <string name="mir_banner_body_short">Je %s overzicht is klaar.</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_large_screen_cards">Op grotere schermen gebruiken alle lijsten dezelfde kaarten als de rest van de app. Het selecteren van een item opent een snel overzicht in plaats van de lijst te verlaten.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
+  <string name="preview_feature_description_season_recap">Voegt een samenvattingsknop toe naast de seizoenskiezer op een seriepagina. Het opent een overzicht voor dat seizoen: de belangrijkste momenten en hoe de personages ervoor staan.</string>
   <string name="preview_feature_description_show_ending">Toont een \'Einde\'-rij in de details van een serie: \'Voltooid\' als het verhaal is afgesloten, \'Onopgelost\' als dat niet het geval is.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_vip_veteran">Toont hoe lang leden ononderbroken VIP zijn, met een Veteraan- of Legende-badge, een gekleurde avatarring en enkele vieringen op je eigen profiel.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_large_screen_cards">Grote Scherm Kaarten</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
+  <string name="preview_feature_title_season_recap">Seizoensamenvatting</string>
   <string name="preview_feature_title_show_ending">Serieeinde</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteraanstatus</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Alle eerdere kijkbeurten</string>
   <string name="tab_text_media_sync_history_today">Vanaf vandaag</string>
   <string name="tab_text_more">Meer</string>
+  <string name="tab_text_recap_story">Het verhaal tot nu toe</string>
+  <string name="tab_text_season_recap">Recap</string>
   <string name="tab_text_seasons_episodes">Afleveringen</string>
   <string name="tab_text_seasons_info">Info</string>
   <string name="tab_text_seasons_reviews">Recensies</string>
@@ -1674,7 +1694,7 @@
   <string name="tag_media_sync_webhook_only">Alleen webhook</string>
   <string name="tag_mixtape_different_mood">Andere sfeer</string>
   <string name="tag_mixtape_kept">Bewaard</string>
-  <string name="tag_mixtape_match">%s%% overeenkomst</string>
+  <string name="tag_mixtape_match">%s% overeenkomst</string>
   <string name="tag_mixtape_tap_details">Tik voor details</string>
   <string name="tag_text_blocked_user">Geblokkeerd</string>
   <string name="tag_text_deal_price">Eerste 2 jaar</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Nieuwe première</string>
   <string name="tag_text_new_preview_feature">Nieuw</string>
   <string name="tag_text_number_of_episodes">%d afl.</string>
+  <string name="tag_text_owned_list">Van jou</string>
   <string name="tag_text_play">%d weergave</string>
   <string name="tag_text_plays">%d weergaven</string>
   <string name="tag_text_premiere">Première</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Losjes gebaseerd</string>
   <string name="text_reality_tier_mostly_true">Grotendeels waar</string>
   <string name="text_reality_tier_unclear">Onduidelijk</string>
+  <string name="text_recap_at_the_finale">Bij de finale</string>
+  <string name="text_recap_before_season">Voor seizoen %d</string>
+  <string name="text_recap_in_depth_locked">Overzicht per hoofdstuk</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Samenvatting gebaseerd op Wikipedia</string>
+  <string name="text_recap_spoiler_partial">Je hebt %1$d van de %2$d afleveringen bekeken. Dit verklapt de rest van seizoen %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">Je bent nog niet begonnen aan seizoen %d. Dit verklapt alles.</string>
+  <string name="text_recap_story_description">Het hele verhaal, tot het seizoen dat je hebt afgerond</string>
+  <string name="text_recap_story_not_covered">Niets vanaf seizoen %d.</string>
+  <string name="text_recap_story_progress">%1$d van %2$d seizoenen</string>
+  <string name="text_recap_story_stats">%1$d afleveringen · ongeveer %2$s</string>
+  <string name="text_recap_story_up_next">Seizoen %d · hierna</string>
+  <string name="text_recap_upsell_in_depth">Krijg het volledige seizoensoverzicht met VIP</string>
+  <string name="text_recap_upsell_story">Eén verhaal tot het laatste seizoen dat je hebt afgerond, met VIP</string>
   <string name="text_recommendation_person_more_titles">+%d meer</string>
   <string name="text_recommendation_person_watched_acting_one">Speelde in %d titel die je hebt gekeken</string>
   <string name="text_recommendation_person_watched_acting_other">Speelde in %d titels die je hebt gekeken</string>
@@ -2877,7 +2913,7 @@
   <string name="yir_2026_preview_runner_none">Geen (geen hybride)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona voorbeeld</string>
-  <string name="yir_2026_rarity">Slechts %1$d%% is %2$s</string>
+  <string name="yir_2026_rarity">Slechts %1$d% is %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Een beetje %s</string>
   <string name="yir_2026_reel_and_you_are">En jij bent</string>
   <string name="yir_2026_reel_but_mostly">Maar meestal</string>

@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Buka Pengaturan</string>
   <string name="action_toast_action_change_list">Ubah daftar</string>
   <string name="action_toast_action_failed">Itu tidak berhasil. Silakan coba lagi.</string>
+  <string name="action_toast_action_view_lists">Lihat</string>
   <string name="action_toast_action_view_smart_list">Lihat daftar</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> telah ditambahkan ke daftar tontonan Anda</string>
   <string name="action_toast_added_to_watchlist_generic">Ditambahkan ke daftar tontonan Anda</string>
   <string name="action_toast_collaborator_limit_reached">Daftar ini telah mencapai batas kolaboratornya.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> telah dibuat</string>
   <string name="action_toast_label_change_list">Ubah daftar tempat %s berada</string>
+  <string name="action_toast_label_view_personal_lists">Buka daftar pribadi Anda</string>
+  <string name="action_toast_label_view_shared_lists">Buka daftar dibagikan Anda</string>
   <string name="action_toast_label_view_smart_list">Buka daftar cerdas yang baru saja Anda buat</string>
+  <string name="action_toast_list_moved_to_personal">%s dipindahkan ke Pribadi</string>
+  <string name="action_toast_list_moved_to_shared">%s dipindahkan ke Dibagikan</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s hingga %3$s</string>
   <string name="advanced_filter_label_ratings">Rating %1$s hingga %2$s</string>
   <string name="advanced_filter_label_release_year">Dirilis pada tahun %1$d hingga %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Berlangganan kalender ini di aplikasi kalender Anda</string>
   <string name="button_label_open_comment">Buka komentar</string>
   <string name="button_label_open_leaderboard">Buka papan peringkat ikutan</string>
+  <string name="button_label_open_season_recap">Buka rekap untuk %s</string>
   <string name="button_label_open_today_stories">Buka cerita hari ini</string>
   <string name="button_label_open_vip_streak">Tampilkan streak VIP</string>
   <string name="button_label_pause_track">Jeda %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Berakhir</string>
   <string name="button_text_progress_in_progress">Sedang Berlangsung</string>
   <string name="button_text_raw_export">Ekspor sekarang</string>
+  <string name="button_text_recap_show_anyway">Tetap tampilkan</string>
   <string name="button_text_recent_comments">Terbaru</string>
   <string name="button_text_recommendation_mode_classic">Klasik</string>
   <string name="button_text_recommendation_mode_smart">Cerdas</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Ulasan</string>
   <string name="button_text_revoke_access">Cabut akses</string>
   <string name="button_text_save_filters">Atur sebagai default</string>
+  <string name="button_text_season_recap">Rekap</string>
   <string name="button_text_select_all">Pilih semua</string>
   <string name="button_text_set_cover_image">Atur sebagai gambar sampul</string>
   <string name="button_text_settings">Pengaturan</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Tingkatkan ke VIP untuk menyinkronkan riwayat tontonan dan koleksi dari server Jellyfin Anda selama dalam tahap beta.</string>
   <string name="description_library_collection_limit">Beberapa item dari %s belum ada di koleksi Trakt Anda. Akun gratis berhenti di batas koleksi; VIP mengumpulkan semuanya.</string>
   <string name="description_manage_collaborators">Kolaborator dapat menambah dan menghapus item di daftar ini. Pilih dari orang-orang yang mengikuti Anda.</string>
+  <string name="description_manage_collaborators_shared">Kolaborator dapat menambah dan menghapus item di daftar ini. Pilih dari orang-orang yang mengikuti Anda. Daftar dengan kolaborator akan muncul di bagian Dibagikan.</string>
   <string name="description_media_sync_add_jellyfin_server">Hubungkan server Jellyfin lain untuk menyinkronkannya juga.</string>
   <string name="description_media_sync_add_server_free">Akun gratis menyinkronkan 1 server Plex. Tingkatkan ke VIP untuk menambahkan lebih banyak.</string>
   <string name="description_media_sync_add_server_vip">Hubungkan server Plex lain untuk menyinkronkannya juga.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Orang</string>
   <string name="header_reality_real_story">Kisah sebenarnya</string>
   <string name="header_reality_timeline">Linimasa</string>
+  <string name="header_recap_in_depth">Mendalam</string>
+  <string name="header_recap_key_moments">Momen penting</string>
+  <string name="header_recap_open_thread">Alur belum tuntas</string>
+  <string name="header_recap_where_things_stand">Situasi terkini</string>
   <string name="header_region">Wilayah</string>
   <string name="header_renewal_date">Tanggal Perpanjangan</string>
   <string name="header_runtime">Durasi</string>
   <string name="header_screen_time">Waktu Layar</string>
+  <string name="header_season_recap">Sebelumnya di %s</string>
   <string name="header_seasonal_greeting_christmas">Selamat Natal</string>
   <string name="header_seasonal_greeting_halloween">Selamat Halloween</string>
   <string name="header_seasonal_greeting_new_year">Selamat Tahun Baru</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Kebijakan Privasi</string>
   <string name="link_text_preview_settings">Pratinjau</string>
   <string name="link_text_privacy">Privasi</string>
+  <string name="link_text_report_bug">Laporkan Bug</string>
   <string name="link_text_service_status">Status layanan Trakt</string>
   <string name="link_text_streaming_sync_settings">Streaming</string>
   <string name="link_text_support">Dukungan</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Balasan</string>
   <string name="list_title_seasons">Musim</string>
   <string name="list_title_shared_by">Dibagikan oleh</string>
+  <string name="list_title_shared_lists">Dibagikan</string>
   <string name="list_title_show_credits">Acara</string>
   <string name="list_title_smart_list_templates">Mulai dari templat</string>
   <string name="list_title_smart_lists">Daftar Cerdas</string>
@@ -1443,7 +1459,7 @@
   <string name="match_label_soulmates">Satu Frekuensi</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Cocok:</string>
-  <string name="match_pill_aria_label">Kecocokan %1$d%%, %2$s. Buka detail kecocokan.</string>
+  <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
   <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
   <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_large_screen_cards">Di layar yang lebih besar, semua daftar menggunakan kartu yang sama dengan bagian aplikasi lainnya. Memilih salah satu akan membuka tampilan sekilas alih-alih meninggalkan daftar.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
+  <string name="preview_feature_description_season_recap">Menambahkan tombol Rekap di sebelah pemilih musim pada halaman acara. Tombol ini membuka rangkuman untuk musim tersebut: momen-momen penting dan situasi terkini para karakter.</string>
   <string name="preview_feature_description_show_ending">Menampilkan baris Akhir di detail tayangan: Selesai saat cerita berakhir, Tidak Terselesaikan saat tidak berakhir.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
   <string name="preview_feature_description_vip_veteran">Menunjukkan berapa lama anggota telah mempertahankan VIP tanpa henti, dengan lencana Veteran atau Legend, cincin avatar berwarna, dan beberapa perayaan di profil Anda.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_large_screen_cards">Kartu Layar Besar</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
+  <string name="preview_feature_title_season_recap">Rekap musim</string>
   <string name="preview_feature_title_show_ending">Akhir Tayangan</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">Status veteran VIP</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Semua tontonan sebelumnya</string>
   <string name="tab_text_media_sync_history_today">Mulai hari ini</string>
   <string name="tab_text_more">Lainnya</string>
+  <string name="tab_text_recap_story">Cerita sejauh ini</string>
+  <string name="tab_text_season_recap">Rekap</string>
   <string name="tab_text_seasons_episodes">Episode</string>
   <string name="tab_text_seasons_info">Info</string>
   <string name="tab_text_seasons_reviews">Ulasan</string>
@@ -1674,7 +1694,7 @@
   <string name="tag_media_sync_webhook_only">Webhook saja</string>
   <string name="tag_mixtape_different_mood">Nuansa berbeda</string>
   <string name="tag_mixtape_kept">Disimpan</string>
-  <string name="tag_mixtape_match">%s%% cocok</string>
+  <string name="tag_mixtape_match">%s% cocok</string>
   <string name="tag_mixtape_tap_details">Ketuk untuk detail</string>
   <string name="tag_text_blocked_user">Diblokir</string>
   <string name="tag_text_deal_price">2 Tahun Pertama</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Premiere Baru</string>
   <string name="tag_text_new_preview_feature">Baru</string>
   <string name="tag_text_number_of_episodes">%d episode.</string>
+  <string name="tag_text_owned_list">Milik Anda</string>
   <string name="tag_text_play">%d putar</string>
   <string name="tag_text_plays">%d putar</string>
   <string name="tag_text_premiere">Premiere</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Adaptasi bebas</string>
   <string name="text_reality_tier_mostly_true">Sebagian besar benar</string>
   <string name="text_reality_tier_unclear">Tidak jelas</string>
+  <string name="text_recap_at_the_finale">Di akhir musim</string>
+  <string name="text_recap_before_season">Sebelum musim %d</string>
+  <string name="text_recap_in_depth_locked">Rincian bab demi bab</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Rekap berdasarkan Wikipedia</string>
+  <string name="text_recap_spoiler_partial">Kamu telah menonton %1$d dari %2$d episode. Ini membocorkan sisa musim %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">Kamu belum memulai musim %d. Ini membocorkan semuanya.</string>
+  <string name="text_recap_story_description">Seluruh cerita, hingga musim yang kamu selesaikan</string>
+  <string name="text_recap_story_not_covered">Tidak ada dari musim %d dan seterusnya.</string>
+  <string name="text_recap_story_progress">%1$d dari %2$d musim</string>
+  <string name="text_recap_story_stats">%1$d episode · sekitar %2$s</string>
+  <string name="text_recap_story_up_next">Musim %d · berikutnya</string>
+  <string name="text_recap_upsell_in_depth">Dapatkan rincian lengkap musim dengan VIP</string>
+  <string name="text_recap_upsell_story">Satu cerita hingga musim terakhir yang kamu selesaikan, dengan VIP</string>
   <string name="text_recommendation_person_more_titles">+%d lainnya</string>
   <string name="text_recommendation_person_watched_acting_one">Berperan dalam %d judul yang Anda tonton</string>
   <string name="text_recommendation_person_watched_acting_other">Berperan dalam %d judul yang Anda tonton</string>
@@ -2877,7 +2913,7 @@
   <string name="yir_2026_preview_runner_none">Tidak ada (tanpa hibrida)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Pratinjau Persona</string>
-  <string name="yir_2026_rarity">Hanya %1$d%% adalah %2$s</string>
+  <string name="yir_2026_rarity">Hanya %1$d% adalah %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Sedikit %s</string>
   <string name="yir_2026_reel_and_you_are">Dan Anda adalah</string>
   <string name="yir_2026_reel_but_mostly">Tapi sebagian besar</string>

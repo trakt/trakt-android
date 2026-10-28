@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">فتح الإعدادات</string>
   <string name="action_toast_action_change_list">تغيير القائمة</string>
   <string name="action_toast_action_failed">لم ينجح ذلك. الرجاء المحاولة مرة أخرى.</string>
+  <string name="action_toast_action_view_lists">عرض</string>
   <string name="action_toast_action_view_smart_list">عرض القائمة</string>
   <string name="action_toast_added_to_watchlist">تمت إضافة \n<b>%s</b> إلى قائمة المشاهدة الخاصة بك</string>
   <string name="action_toast_added_to_watchlist_generic">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="action_toast_collaborator_limit_reached">وصلت هذه القائمة إلى حد المتعاونين.</string>
   <string name="action_toast_created_smart_list">تم إنشاء <b>%s</b></string>
   <string name="action_toast_label_change_list">تغيير القوائم التي ينتمي إليها \n<b>%s</b></string>
+  <string name="action_toast_label_view_personal_lists">فتح قوائمك الشخصية</string>
+  <string name="action_toast_label_view_shared_lists">فتح قوائمك المشتركة</string>
   <string name="action_toast_label_view_smart_list">افتح القائمة الذكية التي أنشأتها للتو</string>
+  <string name="action_toast_list_moved_to_personal">تم نقل %s إلى الشخصية</string>
+  <string name="action_toast_list_moved_to_shared">تم نقل %s إلى المشتركة</string>
   <string name="advanced_filter_label_parental_guide">%1$s من %2$s إلى %3$s</string>
   <string name="advanced_filter_label_ratings">تقييم من %1$s إلى %2$s</string>
   <string name="advanced_filter_label_release_year">صدر في %1$d إلى %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">اشترك في هذا التقويم في تطبيق التقويم الخاص بك</string>
   <string name="button_label_open_comment">افتح التعليق</string>
   <string name="button_label_open_leaderboard">فتح لوحة صدارة المتابَعين</string>
+  <string name="button_label_open_season_recap">افتح ملخص %s</string>
   <string name="button_label_open_today_stories">افتح قصص اليوم</string>
   <string name="button_label_open_vip_streak">إظهار سجل VIP المتواصل</string>
   <string name="button_label_pause_track">إيقاف %s مؤقتًا</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">منتهٍ</string>
   <string name="button_text_progress_in_progress">قيد التنفيذ</string>
   <string name="button_text_raw_export">تصدير الآن</string>
+  <string name="button_text_recap_show_anyway">عرض على أي حال</string>
   <string name="button_text_recent_comments">الأخيرة</string>
   <string name="button_text_recommendation_mode_classic">كلاسيكي</string>
   <string name="button_text_recommendation_mode_smart">ذكي</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">مراجعة</string>
   <string name="button_text_revoke_access">إبطال الوصول</string>
   <string name="button_text_save_filters">تعيين كافتراضي</string>
+  <string name="button_text_season_recap">ملخص</string>
   <string name="button_text_select_all">تحديد الكل</string>
   <string name="button_text_set_cover_image">تعيين كصورة غلاف</string>
   <string name="button_text_settings">الإعدادات</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">قم بالترقية إلى VIP لمزامنة سجل المشاهدة والمجموعات من خادم Jellyfin الخاص بك بينما يكون في المرحلة التجريبية.</string>
   <string name="description_library_collection_limit">بعض العناصر من %s ليست في مجموعتك على Trakt بعد. تتوقف الحسابات المجانية عند حد المجموعة؛ يجمع VIP كل شيء.</string>
   <string name="description_manage_collaborators">يمكن للمتعاونين إضافة عناصر إلى هذه القائمة وإزالتها. اختر من بين الأشخاص الذين يتابعونك.</string>
+  <string name="description_manage_collaborators_shared">يمكن للمتعاونين إضافة عناصر إلى هذه القائمة وإزالتها. اختر من بين الأشخاص الذين يتابعونك. تظهر القوائم التي تضم متعاونين ضمن المشتركة.</string>
   <string name="description_media_sync_add_jellyfin_server">ربط خادم Jellyfin آخر لمزامنته أيضًا.</string>
   <string name="description_media_sync_add_server_free">يمكن للحسابات المجانية مزامنة خادم Plex واحد. كن VIP لإضافة المزيد.</string>
   <string name="description_media_sync_add_server_vip">ربط خادم Plex آخر لمزامنته أيضًا.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">الناس</string>
   <string name="header_reality_real_story">القصة الحقيقية</string>
   <string name="header_reality_timeline">التسلسل الزمني</string>
+  <string name="header_recap_in_depth">نظرة معمقة</string>
+  <string name="header_recap_key_moments">أبرز اللحظات</string>
+  <string name="header_recap_open_thread">خيط معلق</string>
+  <string name="header_recap_where_things_stand">مآل الأحداث</string>
   <string name="header_region">المنطقة</string>
   <string name="header_renewal_date">تاريخ التجديد</string>
   <string name="header_runtime">وقت التشغيل</string>
   <string name="header_screen_time">وقت الشاشة</string>
+  <string name="header_season_recap">سابقًا في %s</string>
   <string name="header_seasonal_greeting_christmas">عيد ميلاد مجيد</string>
   <string name="header_seasonal_greeting_halloween">عيد هالوين سعيد</string>
   <string name="header_seasonal_greeting_new_year">سنة جديدة سعيدة</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">سياسة الخصوصية</string>
   <string name="link_text_preview_settings">معاينة</string>
   <string name="link_text_privacy">الخصوصية</string>
+  <string name="link_text_report_bug">الإبلاغ عن خطأ</string>
   <string name="link_text_service_status">حالة خدمة Trakt</string>
   <string name="link_text_streaming_sync_settings">البث</string>
   <string name="link_text_support">الدعم</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">الردود</string>
   <string name="list_title_seasons">مواسم</string>
   <string name="list_title_shared_by">تمت المشاركة بواسطة</string>
+  <string name="list_title_shared_lists">المشتركة</string>
   <string name="list_title_show_credits">عروض</string>
   <string name="list_title_smart_list_templates">ابدأ من قالب</string>
   <string name="list_title_smart_lists">القوائم الذكية</string>
@@ -1443,7 +1459,7 @@
   <string name="match_label_soulmates">رفقاء الروح</string>
   <string name="match_label_spin_off">عرضية</string>
   <string name="match_pill_anchor">تطابق:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. فتح تفاصيل التطابق.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. فتح تفاصيل التطابق.</string>
   <string name="match_pill_loading_aria_label">جارٍ حساب نتيجة التطابق</string>
   <string name="mir_banner_body">ملخصك الشهري جاهز. إليك ما شاهدته في %s.</string>
   <string name="mir_banner_body_short">ملخص %s جاهز.</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
+  <string name="preview_feature_description_season_recap">يضيف زر ملخص بجوار أداة اختيار الموسم في صفحة المسلسل. حيث يعرض ملخصًا لأحداث ذلك الموسم: أهم اللحظات ومآل الشخصيات.</string>
   <string name="preview_feature_description_show_ending">يعرض صفًا لـ \"النهاية\" في تفاصيل العرض: \"مكتمل\" عندما تنتهي القصة، و\"غير محسوم\" عندما لا تنتهي.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
   <string name="preview_feature_description_vip_veteran">تُظهر المدة التي احتفظ فيها الأعضاء بخدمة VIP دون انقطاع، مع شارة مخضرم أو أسطورة، وحلقة ملونة للصورة الرمزية، وبعض الاحتفالات على ملفك الشخصي.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
+  <string name="preview_feature_title_season_recap">ملخص الموسم</string>
   <string name="preview_feature_title_show_ending">نهاية العرض</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
   <string name="preview_feature_title_vip_veteran">حالة VIP المخضرم</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">جميع المشاهدات السابقة</string>
   <string name="tab_text_media_sync_history_today">من اليوم</string>
   <string name="tab_text_more">المزيد</string>
+  <string name="tab_text_recap_story">القصة حتى الآن</string>
+  <string name="tab_text_season_recap">ملخص</string>
   <string name="tab_text_seasons_episodes">الحلقات</string>
   <string name="tab_text_seasons_info">معلومات</string>
   <string name="tab_text_seasons_reviews">التعليقات</string>
@@ -1674,7 +1694,7 @@
   <string name="tag_media_sync_webhook_only">ويب هوك فقط</string>
   <string name="tag_mixtape_different_mood">مزاج مختلف</string>
   <string name="tag_mixtape_kept">محفوظ</string>
-  <string name="tag_mixtape_match">مطابقة بنسبة %s%%</string>
+  <string name="tag_mixtape_match">مطابقة بنسبة %s%</string>
   <string name="tag_mixtape_tap_details">انقر للتفاصيل</string>
   <string name="tag_text_blocked_user">محظور</string>
   <string name="tag_text_deal_price">أول سنتين</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">عرض أول جديد</string>
   <string name="tag_text_new_preview_feature">جديد</string>
   <string name="tag_text_number_of_episodes">%d حلقة</string>
+  <string name="tag_text_owned_list">خاصتك</string>
   <string name="tag_text_play">%d مشاهدة</string>
   <string name="tag_text_plays">%d مشاهدة</string>
   <string name="tag_text_premiere">العرض الأول</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">مقتبس بتصرف</string>
   <string name="text_reality_tier_mostly_true">صحيح في معظمه</string>
   <string name="text_reality_tier_unclear">غير واضح</string>
+  <string name="text_recap_at_the_finale">في الحلقة الختامية</string>
+  <string name="text_recap_before_season">قبل الموسم %d</string>
+  <string name="text_recap_in_depth_locked">تفصيل فصلًا بفصل</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">ملخص مستند إلى ويكيبيديا</string>
+  <string name="text_recap_spoiler_partial">لقد شاهدت %1$d من أصل %2$d حلقة. يحتوي هذا على حرق لبقية الموسم %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">لم تبدأ الموسم %d بعد. يحتوي هذا على حرق لأحداثه بالكامل.</string>
+  <string name="text_recap_story_description">القصة كاملة حتى الموسم الذي أنهيته</string>
+  <string name="text_recap_story_not_covered">لا يتضمن أي شيء من الموسم %d فصاعدًا.</string>
+  <string name="text_recap_story_progress">%1$d من %2$d مواسم</string>
+  <string name="text_recap_story_stats">%1$d حلقة · حوالي %2$s</string>
+  <string name="text_recap_story_up_next">الموسم %d · التالي</string>
+  <string name="text_recap_upsell_in_depth">احصل على التفصيل الكامل للموسم مع VIP</string>
+  <string name="text_recap_upsell_story">قصة واحدة حتى آخر موسم أنهيته، مع VIP</string>
   <string name="text_recommendation_person_more_titles">+%d المزيد</string>
   <string name="text_recommendation_person_watched_acting_one">مثل في %d عنوان شاهدته</string>
   <string name="text_recommendation_person_watched_acting_other">مثل في %d عناوين شاهدتها</string>
@@ -2877,7 +2913,7 @@
   <string name="yir_2026_preview_runner_none">لا شيء (لا يوجد هجين)</string>
   <string name="yir_2026_preview_runner_up">الوصيف</string>
   <string name="yir_2026_preview_title">معاينة الشخصية</string>
-  <string name="yir_2026_rarity">فقط %1$d%% هم %2$s</string>
+  <string name="yir_2026_rarity">فقط %1$d% هم %2$s</string>
   <string name="yir_2026_reel_a_little_bit">قليلاً %s</string>
   <string name="yir_2026_reel_and_you_are">وأنت كذلك</string>
   <string name="yir_2026_reel_but_mostly">ولكن غالبًا</string>

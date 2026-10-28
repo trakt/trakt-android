@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Beállítások megnyitása</string>
   <string name="action_toast_action_change_list">Lista módosítása</string>
   <string name="action_toast_action_failed">Ez nem sikerült. Kérjük, próbálja újra.</string>
+  <string name="action_toast_action_view_lists">Megtekintés</string>
   <string name="action_toast_action_view_smart_list">Lista megtekintése</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> hozzá lett adva a Megnézendőkhöz</string>
   <string name="action_toast_added_to_watchlist_generic">Hozzáadva a Megnézendőkhöz</string>
   <string name="action_toast_collaborator_limit_reached">Ez a lista elérte a közreműködői limitet.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> létrehozva</string>
   <string name="action_toast_label_change_list">Módosítja a listákat, amelyekhez a(z) %s tartozik</string>
+  <string name="action_toast_label_view_personal_lists">Személyes listák megnyitása</string>
+  <string name="action_toast_label_view_shared_lists">Megosztott listák megnyitása</string>
   <string name="action_toast_label_view_smart_list">Nyisd meg az épp most létrehozott okos listát</string>
+  <string name="action_toast_list_moved_to_personal">%s átkerült a Személyes alá</string>
+  <string name="action_toast_list_moved_to_shared">%s átkerült a Megosztott alá</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s és %3$s között</string>
   <string name="advanced_filter_label_ratings">Értékelés: %1$s és %2$s között</string>
   <string name="advanced_filter_label_release_year">Megjelent %1$d és %2$d között</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Feliratkozás erre a naptárra a naptáralkalmazásban</string>
   <string name="button_label_open_comment">Hozzászólás megnyitása</string>
   <string name="button_label_open_leaderboard">Követések ranglistájának megnyitása</string>
+  <string name="button_label_open_season_recap">%s összefoglalójának megnyitása</string>
   <string name="button_label_open_today_stories">Mai történetek megnyitása</string>
   <string name="button_label_open_vip_streak">VIP sorozat megjelenítése</string>
   <string name="button_label_pause_track">%s szüneteltetése</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Befejezett</string>
   <string name="button_text_progress_in_progress">Folyamatban</string>
   <string name="button_text_raw_export">Exportálás most</string>
+  <string name="button_text_recap_show_anyway">Mutasd mégis</string>
   <string name="button_text_recent_comments">Legújabb</string>
   <string name="button_text_recommendation_mode_classic">Klasszikus</string>
   <string name="button_text_recommendation_mode_smart">Okos</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Értékelés</string>
   <string name="button_text_revoke_access">Hozzáférési jog visszavonása</string>
   <string name="button_text_save_filters">Beállítás alapértelmezettként</string>
+  <string name="button_text_season_recap">Összefoglaló</string>
   <string name="button_text_select_all">Összes kijelölése</string>
   <string name="button_text_set_cover_image">Beállítás borítóképként</string>
   <string name="button_text_settings">Beállítások</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Frissíts VIP-re, hogy szinkronizálhasd a megtekintési előzményeket és gyűjteményeket a Jellyfin szerverről, amíg az béta fázisban van.</string>
   <string name="description_library_collection_limit">A(z) %s szerverekről származó egyes elemek még nincsenek a Trakt gyűjteményedben. Az ingyenes fiókoknál gyűjteménykorlát van; a VIP mindent begyűjt.</string>
   <string name="description_manage_collaborators">A közreműködők elemeket adhatnak hozzá és távolíthatnak el erről a listáról. Válaszd ki azok közül, akik követnek téged.</string>
+  <string name="description_manage_collaborators_shared">A közreműködők elemeket adhatnak hozzá ehhez a listához, és távolíthatnak el róla. Válassz azok közül, akik követnek téged. A közreműködőkkel rendelkező listák a Megosztott alatt jelennek meg.</string>
   <string name="description_media_sync_add_jellyfin_server">Csatlakoztass egy másik Jellyfin szervert is a szinkronizáláshoz.</string>
   <string name="description_media_sync_add_server_free">Az ingyenes fiókok 1 Plex szervert szinkronizálnak. Legyél VIP a továbbiak hozzáadásához.</string>
   <string name="description_media_sync_add_server_vip">Csatlakoztass egy másik Plex szervert a szinkronizáláshoz.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Személyek</string>
   <string name="header_reality_real_story">A valódi történet</string>
   <string name="header_reality_timeline">Idővonal</string>
+  <string name="header_recap_in_depth">Részletesen</string>
+  <string name="header_recap_key_moments">Kulcspillanatok</string>
+  <string name="header_recap_open_thread">Nyitott szál</string>
+  <string name="header_recap_where_things_stand">A dolgok állása</string>
   <string name="header_region">Régió</string>
   <string name="header_renewal_date">Megújítás dátuma</string>
   <string name="header_runtime">Játékidő</string>
   <string name="header_screen_time">Képernyőidő</string>
+  <string name="header_season_recap">Korábban a(z) %s sorozatban</string>
   <string name="header_seasonal_greeting_christmas">Boldog karácsonyt</string>
   <string name="header_seasonal_greeting_halloween">Boldog Halloweent</string>
   <string name="header_seasonal_greeting_new_year">Boldog új évet</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Adatvédelmi irányelvek</string>
   <string name="link_text_preview_settings">Előnézet</string>
   <string name="link_text_privacy">Adatvédelem</string>
+  <string name="link_text_report_bug">Hiba bejelentése</string>
   <string name="link_text_service_status">Trakt szolgáltatás állapota</string>
   <string name="link_text_streaming_sync_settings">Streamelés</string>
   <string name="link_text_support">Támogatás</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Válaszok</string>
   <string name="list_title_seasons">Évadok</string>
   <string name="list_title_shared_by">Megosztotta:</string>
+  <string name="list_title_shared_lists">Megosztott</string>
   <string name="list_title_show_credits">Sorozatok</string>
   <string name="list_title_smart_list_templates">Indítás sablonból</string>
   <string name="list_title_smart_lists">Okos listák</string>
@@ -1443,7 +1459,7 @@
   <string name="match_label_soulmates">Lelkitársak</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Egyezés:</string>
-  <string name="match_pill_aria_label">%1$d%% egyezés, %2$s. Egyezési részletek megnyitása.</string>
+  <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
   <string name="mir_banner_body">Havi összefoglalód kész. Íme, amit %s hónapban néztél.</string>
   <string name="mir_banner_body_short">%s havi összefoglalód kész.</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_large_screen_cards">Nagyobb képernyőkön minden lista ugyanazokat a kártyákat használja, mint az alkalmazás többi része. Egy elem kiválasztása gyors áttekintést nyit meg ahelyett, hogy elhagyná a listát.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
+  <string name="preview_feature_description_season_recap">Egy Összefoglaló gombot ad az évadválasztó mellé a sorozat oldalán. Megnyitja az adott évad felzárkóztatóját: a legfontosabb pillanatokat és a szereplők helyzetét.</string>
   <string name="preview_feature_description_show_ending">Megjelenít egy „Befejezés” sort a sorozat részleteiben: „Befejezett”, ha a történet lezárult, „Lezáratlan”, ha nem.</string>
   <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
   <string name="preview_feature_description_vip_veteran">Megmutatja, mennyi ideig tartották a tagok szünet nélkül a VIP státuszt, Veterán vagy Legenda jelvénnyel, színes avatargyűrűvel és néhány ünnepséggel a saját profilodon.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_large_screen_cards">Nagyképernyős kártyák</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
+  <string name="preview_feature_title_season_recap">Évadösszefoglaló</string>
   <string name="preview_feature_title_show_ending">Sorozat befejezése</string>
   <string name="preview_feature_title_soundtrack">Filmzene</string>
   <string name="preview_feature_title_vip_veteran">VIP veterán státusz</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Összes korábbi megtekintés</string>
   <string name="tab_text_media_sync_history_today">Mától</string>
   <string name="tab_text_more">Több</string>
+  <string name="tab_text_recap_story">Eddigi történet</string>
+  <string name="tab_text_season_recap">Összefoglaló</string>
   <string name="tab_text_seasons_episodes">Epizódok</string>
   <string name="tab_text_seasons_info">Infó</string>
   <string name="tab_text_seasons_reviews">Értékelések</string>
@@ -1674,7 +1694,7 @@
   <string name="tag_media_sync_webhook_only">Csak Webhook</string>
   <string name="tag_mixtape_different_mood">Más hangulat</string>
   <string name="tag_mixtape_kept">Megtartva</string>
-  <string name="tag_mixtape_match">%s%% egyezés</string>
+  <string name="tag_mixtape_match">%s% egyezés</string>
   <string name="tag_mixtape_tap_details">Koppints a részletekért</string>
   <string name="tag_text_blocked_user">Blokkolva</string>
   <string name="tag_text_deal_price">Első 2 év</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Új premier</string>
   <string name="tag_text_new_preview_feature">Új</string>
   <string name="tag_text_number_of_episodes">%d epizód</string>
+  <string name="tag_text_owned_list">Saját</string>
   <string name="tag_text_play">%d lejátszás</string>
   <string name="tag_text_plays">%d lejátszás</string>
   <string name="tag_text_premiere">Premier</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Szabadon adaptált</string>
   <string name="text_reality_tier_mostly_true">Többnyire igaz</string>
   <string name="text_reality_tier_unclear">Nem egyértelmű</string>
+  <string name="text_recap_at_the_finale">Az évadzárónál</string>
+  <string name="text_recap_before_season">A(z) %d. évad előtt</string>
+  <string name="text_recap_in_depth_locked">Fejezetenkénti bontás</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Összefoglaló a Wikipédia alapján</string>
+  <string name="text_recap_spoiler_partial">%1$d részt néztél meg a(z) %2$d epizódból. Ez elspoilerezi a(z) %3$d. évad hátralévő részét.</string>
+  <string name="text_recap_spoiler_unwatched">Még nem kezdted el a(z) %d. évadot. Ez az egészet elspoilerezi.</string>
+  <string name="text_recap_story_description">A teljes történet az általad befejezett évadig</string>
+  <string name="text_recap_story_not_covered">Semmi a(z) %d. évadtól kezdve.</string>
+  <string name="text_recap_story_progress">%1$d / %2$d évad</string>
+  <string name="text_recap_story_stats">%1$d epizód · kb. %2$s</string>
+  <string name="text_recap_story_up_next">%d. évad · következő</string>
+  <string name="text_recap_upsell_in_depth">Érd el a teljes évadbontást VIP-tagsággal</string>
+  <string name="text_recap_upsell_story">Egyetlen történet az általad befejezett évadig, VIP-tagsággal</string>
   <string name="text_recommendation_person_more_titles">+%d további</string>
   <string name="text_recommendation_person_watched_acting_one">Szerepelt %d általad nézett címben</string>
   <string name="text_recommendation_person_watched_acting_other">Szerepelt %d általad nézett címben</string>
@@ -2877,7 +2913,7 @@
   <string name="yir_2026_preview_runner_none">Nincs (nem hibrid)</string>
   <string name="yir_2026_preview_runner_up">Második helyezett</string>
   <string name="yir_2026_preview_title">Személyiség előnézet</string>
-  <string name="yir_2026_rarity">Csak %1$d%% %2$s</string>
+  <string name="yir_2026_rarity">Csak %1$d% %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Kicsit %s</string>
   <string name="yir_2026_reel_and_you_are">És te vagy</string>
   <string name="yir_2026_reel_but_mostly">De leginkább</string>

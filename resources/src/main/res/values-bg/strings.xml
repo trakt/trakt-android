@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Отвори Настройки</string>
   <string name="action_toast_action_change_list">Промени списъка</string>
   <string name="action_toast_action_failed">Това не проработи. Моля, опитайте отново.</string>
+  <string name="action_toast_action_view_lists">Преглед</string>
   <string name="action_toast_action_view_smart_list">Преглед на списъка</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> беше добавен към списъка ви за гледане</string>
   <string name="action_toast_added_to_watchlist_generic">Добавено към списъка ви за гледане</string>
   <string name="action_toast_collaborator_limit_reached">Този списък е достигнал лимита си за сътрудници.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> беше създаден</string>
   <string name="action_toast_label_change_list">Промени списъците, към които принадлежи %s</string>
+  <string name="action_toast_label_view_personal_lists">Отворете личните си списъци</string>
+  <string name="action_toast_label_view_shared_lists">Отворете споделените си списъци</string>
   <string name="action_toast_label_view_smart_list">Отворете интелигентния списък, който току-що създадохте</string>
+  <string name="action_toast_list_moved_to_personal">%s е преместен в „Лични“</string>
+  <string name="action_toast_list_moved_to_shared">%s е преместен в „Споделени“</string>
   <string name="advanced_filter_label_parental_guide">%1$s: от %2$s до %3$s</string>
   <string name="advanced_filter_label_ratings">Оценка от %1$s до %2$s</string>
   <string name="advanced_filter_label_release_year">Издадени от %1$d до %2$d г.</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Абонирайте се за този календар в приложението си за календар</string>
   <string name="button_label_open_comment">Отвори коментара</string>
   <string name="button_label_open_leaderboard">Отворете класацията на следените</string>
+  <string name="button_label_open_season_recap">Отвори обобщението за %s</string>
   <string name="button_label_open_today_stories">Отвори днешните истории</string>
   <string name="button_label_open_vip_streak">Покажи VIP поредица</string>
   <string name="button_label_pause_track">Паузирай %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Приключил</string>
   <string name="button_text_progress_in_progress">В процес</string>
   <string name="button_text_raw_export">Експортирай сега</string>
+  <string name="button_text_recap_show_anyway">Покажи въпреки това</string>
   <string name="button_text_recent_comments">Скорошни</string>
   <string name="button_text_recommendation_mode_classic">Класически</string>
   <string name="button_text_recommendation_mode_smart">Интелигентно</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Рецензия</string>
   <string name="button_text_revoke_access">Отнемане на достъп</string>
   <string name="button_text_save_filters">Задай като по подразбиране</string>
+  <string name="button_text_season_recap">Резюме</string>
   <string name="button_text_select_all">Избери всички</string>
   <string name="button_text_set_cover_image">Задай като корица</string>
   <string name="button_text_settings">Настройки</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Надстройте до VIP, за да синхронизирате историята на гледанията и колекциите от вашия Jellyfin сървър, докато е в бета версия.</string>
   <string name="description_library_collection_limit">Някои елементи от %s все още не са във вашата Trakt колекция. Безплатните акаунти спират до лимита на колекцията; VIP събира всичко.</string>
   <string name="description_manage_collaborators">Сътрудниците могат да добавят и премахват елементи от този списък. Изберете от хора, които ви следват.</string>
+  <string name="description_manage_collaborators_shared">Сътрудниците могат да добавят и премахват елементи от този списък. Изберете от хора, които ви следват. Списъците със сътрудници се показват в „Споделени“.</string>
   <string name="description_media_sync_add_jellyfin_server">Свържете друг Jellyfin сървър, за да го синхронизирате също.</string>
   <string name="description_media_sync_add_server_free">Безплатните акаунти синхронизират 1 Plex сървър. Станете VIP, за да добавите повече.</string>
   <string name="description_media_sync_add_server_vip">Свържете друг Plex сървър, за да го синхронизирате също.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Хора</string>
   <string name="header_reality_real_story">Истинската история</string>
   <string name="header_reality_timeline">Хронология</string>
+  <string name="header_recap_in_depth">В детайли</string>
+  <string name="header_recap_key_moments">Ключови моменти</string>
+  <string name="header_recap_open_thread">Отворена сюжетна линия</string>
+  <string name="header_recap_where_things_stand">Как стоят нещата</string>
   <string name="header_region">Регион</string>
   <string name="header_renewal_date">Дата на подновяване</string>
   <string name="header_runtime">Времетраене</string>
   <string name="header_screen_time">Екранно време</string>
+  <string name="header_season_recap">В предишните епизоди на %s</string>
   <string name="header_seasonal_greeting_christmas">Весела Коледа</string>
   <string name="header_seasonal_greeting_halloween">Честит Хелоуин</string>
   <string name="header_seasonal_greeting_new_year">Честита Нова година</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Политика за поверителност</string>
   <string name="link_text_preview_settings">Преглед</string>
   <string name="link_text_privacy">Поверителност</string>
+  <string name="link_text_report_bug">Докладване на грешка</string>
   <string name="link_text_service_status">Състояние на услугата Trakt</string>
   <string name="link_text_streaming_sync_settings">Стрийминг</string>
   <string name="link_text_support">Поддръжка</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Отговори</string>
   <string name="list_title_seasons">Сезони</string>
   <string name="list_title_shared_by">Споделено от</string>
+  <string name="list_title_shared_lists">Споделени</string>
   <string name="list_title_show_credits">Сериали</string>
   <string name="list_title_smart_list_templates">Започнете от шаблон</string>
   <string name="list_title_smart_lists">Интелигентни списъци</string>
@@ -1443,7 +1459,7 @@
   <string name="match_label_soulmates">Сродни души</string>
   <string name="match_label_spin_off">Спин-оф</string>
   <string name="match_pill_anchor">Съвпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
+  <string name="match_pill_aria_label">%1$d% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
   <string name="match_pill_loading_aria_label">Изчисляване на резултат за съвпадение</string>
   <string name="mir_banner_body">Вашият месечен преглед е готов. Ето какво сте гледали през %s.</string>
   <string name="mir_banner_body_short">Вашият преглед за %s е готов.</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Активирайте контроли за скриване или показване на конфигурируеми секции в цялото приложение.</string>
   <string name="preview_feature_description_large_screen_cards">На по-големи екрани, всички списъци използват същите карти като останалата част от приложението. Избирането на елемент отваря бърз преглед, вместо да напускате списъка.</string>
   <string name="preview_feature_description_rewatch">Започнете сесии за повторно гледане на предавания, които вече сте гледали, отбележете гледани епизоди директно от прозореца на сесията.</string>
+  <string name="preview_feature_description_season_recap">Добавя бутон „Обобщение“ до избора на сезон на страницата на сериала. Той отваря преглед на съответния сезон: ключовите моменти и развитието на героите.</string>
   <string name="preview_feature_description_show_ending">Показва ред за край в детайлите на сериала: Завършен, когато историята е приключила, Неразрешен, когато не е.</string>
   <string name="preview_feature_description_soundtrack">Добавя секция за саундтрак към страниците на филми и предавания, с възпроизвеждане, където може да бъде намерена песен.</string>
   <string name="preview_feature_description_vip_veteran">Показва колко дълго членовете са запазили VIP без прекъсване, с значка Ветеран или Легенда, цветен пръстен на аватара и няколко празненства в профила ви.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Режим на редактиране</string>
   <string name="preview_feature_title_large_screen_cards">Карти за голям екран</string>
   <string name="preview_feature_title_rewatch">Преглед</string>
+  <string name="preview_feature_title_season_recap">Обобщение на сезона</string>
   <string name="preview_feature_title_show_ending">Край на сериала</string>
   <string name="preview_feature_title_soundtrack">Саундтрак</string>
   <string name="preview_feature_title_vip_veteran">VIP ветерански статус</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Всички минали гледания</string>
   <string name="tab_text_media_sync_history_today">От днес</string>
   <string name="tab_text_more">Още</string>
+  <string name="tab_text_recap_story">Историята досега</string>
+  <string name="tab_text_season_recap">Резюме</string>
   <string name="tab_text_seasons_episodes">Епизоди</string>
   <string name="tab_text_seasons_info">Информация</string>
   <string name="tab_text_seasons_reviews">Рецензии</string>
@@ -1674,7 +1694,7 @@
   <string name="tag_media_sync_webhook_only">Само Webhook</string>
   <string name="tag_mixtape_different_mood">Различно усещане</string>
   <string name="tag_mixtape_kept">Запазено</string>
-  <string name="tag_mixtape_match">%s%% съвпадение</string>
+  <string name="tag_mixtape_match">%s% съвпадение</string>
   <string name="tag_mixtape_tap_details">Докоснете за подробности</string>
   <string name="tag_text_blocked_user">Блокиран</string>
   <string name="tag_text_deal_price">Първите 2 години</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Нова премиера</string>
   <string name="tag_text_new_preview_feature">Ново</string>
   <string name="tag_text_number_of_episodes">%d еп.</string>
+  <string name="tag_text_owned_list">Ваш</string>
   <string name="tag_text_play">%d гледане</string>
   <string name="tag_text_plays">%d гледания</string>
   <string name="tag_text_premiere">Премиера</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Свободно базирано</string>
   <string name="text_reality_tier_mostly_true">Предимно вярно</string>
   <string name="text_reality_tier_unclear">Неясно</string>
+  <string name="text_recap_at_the_finale">На финала</string>
+  <string name="text_recap_before_season">Преди сезон %d</string>
+  <string name="text_recap_in_depth_locked">Разбор по глави</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Обобщение въз основа на Wikipedia</string>
+  <string name="text_recap_spoiler_partial">Изгледахте %1$d от %2$d епизода. Това съдържа спойлери за останалата част от сезон %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">Не сте започнали сезон %d. Това съдържа спойлери за целия сезон.</string>
+  <string name="text_recap_story_description">Цялата история до сезона, който сте изгледали</string>
+  <string name="text_recap_story_not_covered">Нищо от сезон %d нататък.</string>
+  <string name="text_recap_story_progress">%1$d от %2$d сезона</string>
+  <string name="text_recap_story_stats">%1$d епизода · около %2$s</string>
+  <string name="text_recap_story_up_next">Сезон %d · следва</string>
+  <string name="text_recap_upsell_in_depth">Вземете пълен разбор на сезона с VIP</string>
+  <string name="text_recap_upsell_story">Цялостна история до последния изгледан сезон с VIP</string>
   <string name="text_recommendation_person_more_titles">+още %d</string>
   <string name="text_recommendation_person_watched_acting_one">Участвал в %d заглавие, което си гледал</string>
   <string name="text_recommendation_person_watched_acting_other">Участвал в %d заглавия, които си гледал</string>
@@ -2877,7 +2913,7 @@
   <string name="yir_2026_preview_runner_none">Няма (без хибрид)</string>
   <string name="yir_2026_preview_runner_up">Подгласник</string>
   <string name="yir_2026_preview_title">Предварителен преглед на персона</string>
-  <string name="yir_2026_rarity">Само %1$d%% са %2$s</string>
+  <string name="yir_2026_rarity">Само %1$d% са %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Малко %s</string>
   <string name="yir_2026_reel_and_you_are">И вие сте</string>
   <string name="yir_2026_reel_but_mostly">Но предимно</string>

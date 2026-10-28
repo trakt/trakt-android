@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Abrir Ajustes</string>
   <string name="action_toast_action_change_list">Cambiar lista</string>
   <string name="action_toast_action_failed">Eso no funcionó. Inténtalo de nuevo.</string>
+  <string name="action_toast_action_view_lists">Ver</string>
   <string name="action_toast_action_view_smart_list">Ver lista</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> se añadió a tu lista de seguimiento</string>
   <string name="action_toast_added_to_watchlist_generic">Añadido a tu lista de seguimiento</string>
   <string name="action_toast_collaborator_limit_reached">Esta lista ha alcanzado su límite de colaboradores.</string>
   <string name="action_toast_created_smart_list">Se creó <b>%s</b></string>
   <string name="action_toast_label_change_list">Cambiar las listas a las que pertenece %s</string>
+  <string name="action_toast_label_view_personal_lists">Abrir tus listas personales</string>
+  <string name="action_toast_label_view_shared_lists">Abrir tus listas compartidas</string>
   <string name="action_toast_label_view_smart_list">Abrir la lista inteligente que acabas de crear</string>
+  <string name="action_toast_list_moved_to_personal">%s se movió a Personales</string>
+  <string name="action_toast_list_moved_to_shared">%s se movió a Compartidas</string>
   <string name="advanced_filter_label_parental_guide">%1$s: de %2$s a %3$s</string>
   <string name="advanced_filter_label_ratings">Calificación de %1$s a %2$s</string>
   <string name="advanced_filter_label_release_year">Estrenada entre %1$d y %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Suscribirse a este calendario en tu aplicación de calendario</string>
   <string name="button_label_open_comment">Abrir el comentario</string>
   <string name="button_label_open_leaderboard">Abrir tabla de clasificación de seguidos</string>
+  <string name="button_label_open_season_recap">Abrir el resumen de %s</string>
   <string name="button_label_open_today_stories">Abrir historias de hoy</string>
   <string name="button_label_open_vip_streak">Mostrar racha VIP</string>
   <string name="button_label_pause_track">Pausar %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Finalizado</string>
   <string name="button_text_progress_in_progress">En progreso</string>
   <string name="button_text_raw_export">Exportar ahora</string>
+  <string name="button_text_recap_show_anyway">Mostrar de todos modos</string>
   <string name="button_text_recent_comments">Recientes</string>
   <string name="button_text_recommendation_mode_classic">Clásico</string>
   <string name="button_text_recommendation_mode_smart">Inteligentes</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Reseña</string>
   <string name="button_text_revoke_access">Revocar acceso</string>
   <string name="button_text_save_filters">Establecer como predeterminado</string>
+  <string name="button_text_season_recap">Resumen</string>
   <string name="button_text_select_all">Seleccionar todo</string>
   <string name="button_text_set_cover_image">Establecer como imagen de portada</string>
   <string name="button_text_settings">Configuración</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Actualiza a VIP para sincronizar el historial de reproducciones y las colecciones de tu servidor de Jellyfin mientras está en beta.</string>
   <string name="description_library_collection_limit">Algunos elementos de %s aún no están en tu colección de Trakt. Las cuentas gratuitas tienen un límite de colección; los VIP coleccionan todo.</string>
   <string name="description_manage_collaborators">Los colaboradores pueden añadir y eliminar elementos de esta lista. Elige entre las personas que te siguen.</string>
+  <string name="description_manage_collaborators_shared">Los colaboradores pueden añadir y eliminar elementos de esta lista. Elige entre las personas que te siguen. Las listas con colaboradores se muestran en Compartidas.</string>
   <string name="description_media_sync_add_jellyfin_server">Conecta otro servidor de Jellyfin para sincronizarlo también.</string>
   <string name="description_media_sync_add_server_free">Las cuentas gratuitas sincronizan 1 servidor de Plex. Hazte VIP para añadir más.</string>
   <string name="description_media_sync_add_server_vip">Conecta otro servidor de Plex para sincronizarlo también.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Personas</string>
   <string name="header_reality_real_story">La historia real</string>
   <string name="header_reality_timeline">Cronología</string>
+  <string name="header_recap_in_depth">En profundidad</string>
+  <string name="header_recap_key_moments">Momentos clave</string>
+  <string name="header_recap_open_thread">Trama abierta</string>
+  <string name="header_recap_where_things_stand">Cómo quedaron las cosas</string>
   <string name="header_region">Región</string>
   <string name="header_renewal_date">Fecha de renovación</string>
   <string name="header_runtime">Duración</string>
   <string name="header_screen_time">Tiempo en pantalla</string>
+  <string name="header_season_recap">Anteriormente en %s</string>
   <string name="header_seasonal_greeting_christmas">Feliz Navidad</string>
   <string name="header_seasonal_greeting_halloween">Feliz Halloween</string>
   <string name="header_seasonal_greeting_new_year">Feliz Año Nuevo</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Política de privacidad</string>
   <string name="link_text_preview_settings">Vista previa</string>
   <string name="link_text_privacy">Privacidad</string>
+  <string name="link_text_report_bug">Reportar un error</string>
   <string name="link_text_service_status">Estado del servicio de Trakt</string>
   <string name="link_text_streaming_sync_settings">Streaming</string>
   <string name="link_text_support">Soporte</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Respuestas</string>
   <string name="list_title_seasons">Temporadas</string>
   <string name="list_title_shared_by">Compartido por</string>
+  <string name="list_title_shared_lists">Compartidas</string>
   <string name="list_title_show_credits">Series</string>
   <string name="list_title_smart_list_templates">Empezar desde una plantilla</string>
   <string name="list_title_smart_lists">Listas inteligentes</string>
@@ -1443,7 +1459,7 @@
   <string name="match_label_soulmates">Almas gemelas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidencia:</string>
-  <string name="match_pill_aria_label">%1$d%% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
+  <string name="match_pill_aria_label">%1$d% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
   <string name="match_pill_loading_aria_label">Calculando puntuación de compatibilidad</string>
   <string name="mir_banner_body">Tu resumen mensual está listo. Esto es lo que viste en %s.</string>
   <string name="mir_banner_body_short">Tu resumen de %s está listo.</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Habilita los controles para ocultar o mostrar secciones configurables en toda la aplicación.</string>
   <string name="preview_feature_description_large_screen_cards">En pantallas más grandes, todas las listas usan las mismas tarjetas que el resto de la aplicación. Al seleccionar una, se abre un vistazo rápido en lugar de salir de la lista.</string>
   <string name="preview_feature_description_rewatch">Inicia sesiones de re-visualización para programas que ya has visto, registra o marca los episodios como vistos directamente desde el cajón de la sesión.</string>
+  <string name="preview_feature_description_season_recap">Añade un botón de Resumen junto al selector de temporada en la página de una serie. Abre un resumen de esa temporada: los momentos clave y la situación de los personajes.</string>
   <string name="preview_feature_description_show_ending">Muestra una fila de Finalización en los detalles de una serie: Completa cuando la historia concluyó, Inconclusa cuando no lo hizo.</string>
   <string name="preview_feature_description_soundtrack">Añade una sección de banda sonora a las páginas de películas y series, con reproducción donde se pueda emparejar una pista.</string>
   <string name="preview_feature_description_vip_veteran">Muestra cuánto tiempo los miembros han mantenido el VIP sin interrupción, con una insignia de Veterano o Leyenda, un anillo de avatar de color y algunas celebraciones en tu propio perfil.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Modo de edición</string>
   <string name="preview_feature_title_large_screen_cards">Tarjetas de pantalla grande</string>
   <string name="preview_feature_title_rewatch">Re-visualización</string>
+  <string name="preview_feature_title_season_recap">Resumen de la temporada</string>
   <string name="preview_feature_title_show_ending">Finalización de la serie</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_vip_veteran">Estado VIP veterano</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Todas las reproducciones anteriores</string>
   <string name="tab_text_media_sync_history_today">Desde hoy</string>
   <string name="tab_text_more">Más</string>
+  <string name="tab_text_recap_story">Historia hasta ahora</string>
+  <string name="tab_text_season_recap">Resumen</string>
   <string name="tab_text_seasons_episodes">Episodios</string>
   <string name="tab_text_seasons_info">Información</string>
   <string name="tab_text_seasons_reviews">Reseñas</string>
@@ -1674,7 +1694,7 @@
   <string name="tag_media_sync_webhook_only">Solo Webhook</string>
   <string name="tag_mixtape_different_mood">Otro ambiente</string>
   <string name="tag_mixtape_kept">Guardado</string>
-  <string name="tag_mixtape_match">%s%% de coincidencia</string>
+  <string name="tag_mixtape_match">%s% de coincidencia</string>
   <string name="tag_mixtape_tap_details">Toca para ver detalles</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
   <string name="tag_text_deal_price">Primeros 2 años</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Nuevo Estreno</string>
   <string name="tag_text_new_preview_feature">Nuevo</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
+  <string name="tag_text_owned_list">Tuya</string>
   <string name="tag_text_play">%d reproducción</string>
   <string name="tag_text_plays">%d reproducciones</string>
   <string name="tag_text_premiere">Estreno</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Libremente basada</string>
   <string name="text_reality_tier_mostly_true">Mayormente real</string>
   <string name="text_reality_tier_unclear">Poco claro</string>
+  <string name="text_recap_at_the_finale">En el final de temporada</string>
+  <string name="text_recap_before_season">Antes de la temporada %d</string>
+  <string name="text_recap_in_depth_locked">Desglose capítulo por capítulo</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Resumen basado en Wikipedia</string>
+  <string name="text_recap_spoiler_partial">Has visto %1$d de %2$d episodios. Esto contiene spoilers del resto de la temporada %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">No has empezado la temporada %d. Esto contiene spoilers de toda la temporada.</string>
+  <string name="text_recap_story_description">Toda la historia, hasta la temporada que terminaste</string>
+  <string name="text_recap_story_not_covered">Nada de la temporada %d en adelante.</string>
+  <string name="text_recap_story_progress">%1$d de %2$d temporadas</string>
+  <string name="text_recap_story_stats">%1$d episodios · unos %2$s</string>
+  <string name="text_recap_story_up_next">Temporada %d · a continuación</string>
+  <string name="text_recap_upsell_in_depth">Obtén el desglose completo de la temporada con VIP</string>
+  <string name="text_recap_upsell_story">Una sola historia hasta la última temporada que terminaste, con VIP</string>
   <string name="text_recommendation_person_more_titles">+%d más</string>
   <string name="text_recommendation_person_watched_acting_one">Actuó en %d título que viste</string>
   <string name="text_recommendation_person_watched_acting_other">Actuó en %d títulos que viste</string>
@@ -2877,7 +2913,7 @@
   <string name="yir_2026_preview_runner_none">Ninguno (sin híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo puesto</string>
   <string name="yir_2026_preview_title">Vista previa de personalidad</string>
-  <string name="yir_2026_rarity">Solo el %1$d%% son %2$s</string>
+  <string name="yir_2026_rarity">Solo el %1$d% son %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un poco %s</string>
   <string name="yir_2026_reel_and_you_are">Y eres</string>
   <string name="yir_2026_reel_but_mostly">Pero sobre todo</string>
