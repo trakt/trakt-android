@@ -695,101 +695,108 @@ private fun TitleBar(
                     subtitle = subtitle,
                     modifier = Modifier.weight(1F, fill = false),
                 )
-
-                AnimatedVisibility(
-                    visible = match != null,
-                    enter = fadeIn(tween(200)),
-                    exit = ExitTransition.None,
-                ) {
-                    if (match != null) {
-                        UserMatchPill(
-                            match = match,
-                            onClick = onMatchClick,
-                        )
-                    }
-                }
             }
         }
 
-        if (user != null) {
-            Box {
-                var showMenu by remember { mutableStateOf(false) }
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(14.dp),
+            modifier = Modifier
+                .weight(1F, false),
+        ) {
+            AnimatedVisibility(
+                visible = match != null,
+                enter = fadeIn(tween(200)),
+                exit = ExitTransition.None,
+            ) {
+                if (match != null) {
+                    UserMatchPill(
+                        match = match,
+                        onClick = onMatchClick,
+                    )
+                }
+            }
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_more_vertical),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .onClick { showMenu = true },
-                )
+            if (user != null) {
+                Box {
+                    var showMenu by remember { mutableStateOf(false) }
 
-                DropdownMenu(
-                    expanded = showMenu,
-                    containerColor = TraktTheme.colors.dialogContainer,
-                    shape = RoundedCornerShape(16.dp),
-                    onDismissRequest = { showMenu = false },
-                ) {
-                    DropdownMenuItem(
-                        enabled = userFollowing?.loading != true,
-                        text = {
-                            Text(
-                                text = stringResource(
-                                    when (userFollowing?.following) {
-                                        true -> R.string.button_text_unfollow
-                                        else -> R.string.button_text_follow
-                                    },
-                                ),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onFollowClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(
-                                    when (userFollowing?.following) {
-                                        true -> R.drawable.ic_person_remove
-                                        else -> R.drawable.ic_person_add
-                                    },
-                                ),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(22.dp),
-                            )
-                        },
+                    Icon(
+                        painter = painterResource(R.drawable.ic_more_vertical),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick { showMenu = true },
                     )
 
-                    DropdownMenuItem(
-                        enabled = userBlocked?.loading != true,
-                        text = {
-                            Text(
-                                text = stringResource(
-                                    when {
-                                        userBlocked?.blocked == true -> R.string.button_text_unblock
-                                        else -> R.string.button_text_block
-                                    },
-                                ),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onBlockClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_block),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(21.dp),
-                            )
-                        },
-                    )
+                    DropdownMenu(
+                        expanded = showMenu,
+                        containerColor = TraktTheme.colors.dialogContainer,
+                        shape = RoundedCornerShape(16.dp),
+                        onDismissRequest = { showMenu = false },
+                    ) {
+                        DropdownMenuItem(
+                            enabled = userFollowing?.loading != true,
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        when (userFollowing?.following) {
+                                            true -> R.string.button_text_unfollow
+                                            else -> R.string.button_text_follow
+                                        },
+                                    ),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onFollowClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(
+                                        when (userFollowing?.following) {
+                                            true -> R.drawable.ic_person_remove
+                                            else -> R.drawable.ic_person_add
+                                        },
+                                    ),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(22.dp),
+                                )
+                            },
+                        )
+
+                        DropdownMenuItem(
+                            enabled = userBlocked?.loading != true,
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        when {
+                                            userBlocked?.blocked == true -> R.string.button_text_unblock
+                                            else -> R.string.button_text_block
+                                        },
+                                    ),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onBlockClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_block),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(21.dp),
+                                )
+                            },
+                        )
+                    }
                 }
             }
         }

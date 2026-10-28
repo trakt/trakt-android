@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +17,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -36,9 +36,8 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val PillShape = RoundedCornerShape(100)
-private val PillHeight = 28.dp
+private val PillHeight = 32.dp
 private val FillInset = 2.5.dp
-private val PillTouchHeight = 48.dp
 
 @Composable
 internal fun UserMatchPill(
@@ -49,7 +48,6 @@ internal fun UserMatchPill(
     Box(
         contentAlignment = CenterStart,
         modifier = modifier
-            .heightIn(min = PillTouchHeight)
             .onClick(onClick = onClick),
     ) {
         MatchPillContent(score = match.score)
@@ -61,7 +59,7 @@ private fun MatchPillContent(
     score: Int,
     modifier: Modifier = Modifier,
 ) {
-    val alpha = 0.75F
+    val alpha = 0.8F
     val containerColor = TraktTheme.colors.chipContainer
         .copy(alpha = alpha)
     val fillColor = TraktTheme.colors.chipProgress
@@ -91,7 +89,7 @@ private fun MatchPillContent(
             }
             .padding(
                 start = 10.dp,
-                end = 4.dp,
+                end = 6.dp,
             ),
     ) {
         Text(
@@ -116,7 +114,7 @@ private fun MatchPillContent(
             contentDescription = null,
             tint = contentColor,
             modifier = Modifier
-                .padding(start = 2.dp)
+                .rotate(90F)
                 .size(12.dp),
         )
     }
