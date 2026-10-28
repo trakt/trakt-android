@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Открыть настройки</string>
   <string name="action_toast_action_change_list">Изменить список</string>
   <string name="action_toast_action_failed">Не удалось выполнить. Пожалуйста, попробуйте еще раз.</string>
+  <string name="action_toast_action_view_lists">Посмотреть</string>
   <string name="action_toast_action_view_smart_list">Посмотреть список</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> был добавлен в ваш список просмотра</string>
   <string name="action_toast_added_to_watchlist_generic">Добавлено в список просмотра</string>
   <string name="action_toast_collaborator_limit_reached">Этот список достиг лимита соавторов.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> был создан</string>
   <string name="action_toast_label_change_list">Изменить списки, к которым принадлежит <b>%s</b></string>
+  <string name="action_toast_label_view_personal_lists">Открыть личные списки</string>
+  <string name="action_toast_label_view_shared_lists">Открыть общие списки</string>
   <string name="action_toast_label_view_smart_list">Открыть умный список, который вы только что создали</string>
+  <string name="action_toast_list_moved_to_personal">%s перемещён в «Личные»</string>
+  <string name="action_toast_list_moved_to_shared">%s перемещён в «Общие»</string>
   <string name="advanced_filter_label_parental_guide">%1$s: от %2$s до %3$s</string>
   <string name="advanced_filter_label_ratings">Рейтинг от %1$s до %2$s</string>
   <string name="advanced_filter_label_release_year">Выпущен в %1$d — %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Подписаться на этот календарь в приложении календаря</string>
   <string name="button_label_open_comment">Открыть комментарий</string>
   <string name="button_label_open_leaderboard">Открыть таблицу лидеров подписчиков</string>
+  <string name="button_label_open_season_recap">Открыть рекап для %s</string>
   <string name="button_label_open_today_stories">Открыть сегодняшние истории</string>
   <string name="button_label_open_vip_streak">Показать VIP-серию</string>
   <string name="button_label_pause_track">Приостановить %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Завершено</string>
   <string name="button_text_progress_in_progress">В процессе</string>
   <string name="button_text_raw_export">Экспортировать сейчас</string>
+  <string name="button_text_recap_show_anyway">Всё равно показать</string>
   <string name="button_text_recent_comments">Недавние</string>
   <string name="button_text_recommendation_mode_classic">Классические</string>
   <string name="button_text_recommendation_mode_smart">Умные</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Отзыв</string>
   <string name="button_text_revoke_access">Отозвать доступ</string>
   <string name="button_text_save_filters">Установить по умолчанию</string>
+  <string name="button_text_season_recap">Краткое содержание</string>
   <string name="button_text_select_all">Выбрать все</string>
   <string name="button_text_set_cover_image">Установить как обложку</string>
   <string name="button_text_settings">Настройки</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Перейдите на VIP, чтобы синхронизировать историю просмотров и коллекции с вашего сервера Jellyfin, пока он находится в бета-версии.</string>
   <string name="description_library_collection_limit">Некоторые элементы из %s пока не добавлены в вашу коллекцию Trakt. На бесплатных аккаунтах действует ограничение коллекции; VIP собирает все.</string>
   <string name="description_manage_collaborators">Соавторы могут добавлять и удалять элементы из этого списка. Выберите из людей, которые на вас подписаны.</string>
+  <string name="description_manage_collaborators_shared">Соавторы могут добавлять и удалять элементы из этого списка. Выберите из тех, кто на вас подписан. Списки с соавторами отображаются в разделе «Общие».</string>
   <string name="description_media_sync_add_jellyfin_server">Подключите другой сервер Jellyfin, чтобы синхронизировать и его.</string>
   <string name="description_media_sync_add_server_free">Бесплатные аккаунты синхронизируют 1 сервер Plex. Получите VIP для добавления большего количества.</string>
   <string name="description_media_sync_add_server_vip">Подключите другой сервер Plex для синхронизации.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Люди</string>
   <string name="header_reality_real_story">Реальная история</string>
   <string name="header_reality_timeline">Хронология</string>
+  <string name="header_recap_in_depth">В деталях</string>
+  <string name="header_recap_key_moments">Ключевые моменты</string>
+  <string name="header_recap_open_thread">Открытая сюжетная линия</string>
+  <string name="header_recap_where_things_stand">Положение дел</string>
   <string name="header_region">Регион</string>
   <string name="header_renewal_date">Дата продления</string>
   <string name="header_runtime">Продолжительность</string>
   <string name="header_screen_time">Экранное время</string>
+  <string name="header_season_recap">Ранее в %s</string>
   <string name="header_seasonal_greeting_christmas">Счастливого Рождества!</string>
   <string name="header_seasonal_greeting_halloween">Счастливого Хэллоуина</string>
   <string name="header_seasonal_greeting_new_year">С Новым годом!</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Политика конфиденциальности</string>
   <string name="link_text_preview_settings">Предпросмотр</string>
   <string name="link_text_privacy">Конфиденциальность</string>
+  <string name="link_text_report_bug">Сообщить об ошибке</string>
   <string name="link_text_service_status">Статус сервиса Trakt</string>
   <string name="link_text_streaming_sync_settings">Стриминг</string>
   <string name="link_text_support">Поддержка</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Ответы</string>
   <string name="list_title_seasons">Сезоны</string>
   <string name="list_title_shared_by">Поделились</string>
+  <string name="list_title_shared_lists">Общие</string>
   <string name="list_title_show_credits">Сериалы</string>
   <string name="list_title_smart_list_templates">Начать с шаблона</string>
   <string name="list_title_smart_lists">Умные списки</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Включите элементы управления для скрытия или отображения настраиваемых разделов во всем приложении.</string>
   <string name="preview_feature_description_large_screen_cards">На больших экранах все списки используют те же карточки, что и остальное приложение. Выбор одной открывает быстрый просмотр вместо выхода из списка.</string>
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
+  <string name="preview_feature_description_season_recap">Добавляет кнопку «Рекап» рядом с выбором сезона на странице сериала. Она открывает краткий обзор сезона: ключевые моменты и текущее положение персонажей.</string>
   <string name="preview_feature_description_show_ending">Отображает строку \"Окончание\" в деталях сериала: \"Завершено\", если история завершена, \"Незавершено\", если нет.</string>
   <string name="preview_feature_description_soundtrack">Добавляет раздел саундтреков на страницы фильмов и сериалов с возможностью воспроизведения, если трек может быть сопоставлен.</string>
   <string name="preview_feature_description_vip_veteran">Показывает, как долго пользователи сохраняют VIP-статус без перерыва, с помощью значка \"Ветеран\" или \"Легенда\", цветного кольца аватара и нескольких празднований в вашем профиле.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_large_screen_cards">Крупноэкранные карточки</string>
   <string name="preview_feature_title_rewatch">Пересмотр</string>
+  <string name="preview_feature_title_season_recap">Рекап сезона</string>
   <string name="preview_feature_title_show_ending">Окончание сериала</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Все прошлые просмотры</string>
   <string name="tab_text_media_sync_history_today">С сегодняшнего дня</string>
   <string name="tab_text_more">Больше</string>
+  <string name="tab_text_recap_story">Вся история</string>
+  <string name="tab_text_season_recap">Краткое содержание</string>
   <string name="tab_text_seasons_episodes">Эпизоды</string>
   <string name="tab_text_seasons_info">Информация</string>
   <string name="tab_text_seasons_reviews">Отзывы</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Новая премьера</string>
   <string name="tag_text_new_preview_feature">Новое</string>
   <string name="tag_text_number_of_episodes">%d эп.</string>
+  <string name="tag_text_owned_list">Ваш</string>
   <string name="tag_text_play">%d просмотр</string>
   <string name="tag_text_plays">%d просмотров</string>
   <string name="tag_text_premiere">Премьера</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">По мотивам</string>
   <string name="text_reality_tier_mostly_true">В основном правда</string>
   <string name="text_reality_tier_unclear">Неясно</string>
+  <string name="text_recap_at_the_finale">В финале</string>
+  <string name="text_recap_before_season">Перед сезоном %d</string>
+  <string name="text_recap_in_depth_locked">Разбор по главам</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Рекап на основе Википедии</string>
+  <string name="text_recap_spoiler_partial">Вы посмотрели %1$d из %2$d эпизодов. Здесь содержатся спойлеры к оставшейся части сезона %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">Вы ещё не начали сезон %d. Здесь содержатся спойлеры ко всему сезону.</string>
+  <string name="text_recap_story_description">Вся история до завершённого вами сезона</string>
+  <string name="text_recap_story_not_covered">Ничего из сезона %d и далее.</string>
+  <string name="text_recap_story_progress">%1$d из %2$d сезонов</string>
+  <string name="text_recap_story_stats">%1$d эп. · около %2$s</string>
+  <string name="text_recap_story_up_next">Сезон %d · следующий</string>
+  <string name="text_recap_upsell_in_depth">Получите полный разбор сезона с VIP</string>
+  <string name="text_recap_upsell_story">Единая история до последнего просмотренного сезона с VIP</string>
   <string name="text_recommendation_person_more_titles">+Еще %d</string>
   <string name="text_recommendation_person_watched_acting_one">Снялся в %d просмотренном вами проекте</string>
   <string name="text_recommendation_person_watched_acting_other">Снялся в %d просмотренных вами проектах</string>

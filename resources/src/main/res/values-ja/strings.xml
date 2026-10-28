@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">設定を開く</string>
   <string name="action_toast_action_change_list">リストを変更</string>
   <string name="action_toast_action_failed">失敗しました。もう一度お試しください。</string>
+  <string name="action_toast_action_view_lists">表示</string>
   <string name="action_toast_action_view_smart_list">リストを表示</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> がウォッチリストに追加されました</string>
   <string name="action_toast_added_to_watchlist_generic">ウォッチリストに追加されました</string>
   <string name="action_toast_collaborator_limit_reached">このリストはコラボレーター数の上限に達しました。</string>
   <string name="action_toast_created_smart_list"><b>%s</b>が作成されました</string>
   <string name="action_toast_label_change_list">%s が属するリストを変更</string>
+  <string name="action_toast_label_view_personal_lists">個人リストを開く</string>
+  <string name="action_toast_label_view_shared_lists">共有リストを開く</string>
   <string name="action_toast_label_view_smart_list">作成したスマートリストを開く</string>
+  <string name="action_toast_list_moved_to_personal">%sを「個人」に移動しました</string>
+  <string name="action_toast_list_moved_to_shared">%sを「共有」に移動しました</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s～%3$s</string>
   <string name="advanced_filter_label_ratings">評価 %1$s～%2$s</string>
   <string name="advanced_filter_label_release_year">発売年 %1$d～%2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">カレンダーアプリでこのカレンダーを購読</string>
   <string name="button_label_open_comment">コメントを開く</string>
   <string name="button_label_open_leaderboard">フォロー中のランキングを開く</string>
+  <string name="button_label_open_season_recap">%sのおさらいを開く</string>
   <string name="button_label_open_today_stories">今日のストーリーを開く</string>
   <string name="button_label_open_vip_streak">VIP連続記録を表示</string>
   <string name="button_label_pause_track">%sを一時停止</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">終了</string>
   <string name="button_text_progress_in_progress">進行中</string>
   <string name="button_text_raw_export">今すぐエクスポート</string>
+  <string name="button_text_recap_show_anyway">それでも表示する</string>
   <string name="button_text_recent_comments">最新</string>
   <string name="button_text_recommendation_mode_classic">クラシック</string>
   <string name="button_text_recommendation_mode_smart">スマート</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">レビュー</string>
   <string name="button_text_revoke_access">アクセスを取り消す</string>
   <string name="button_text_save_filters">デフォルトとして設定</string>
+  <string name="button_text_season_recap">あらすじ</string>
   <string name="button_text_select_all">すべて選択</string>
   <string name="button_text_set_cover_image">カバー画像に設定</string>
   <string name="button_text_settings">設定</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Jellyfin同期はベータ期間中のため、VIPにアップグレードしてJellyfinサーバーから視聴履歴とコレクションを同期してください。</string>
   <string name="description_library_collection_limit">%s の一部のアイテムは、まだあなたのTraktコレクションにありません。無料アカウントはコレクション制限で停止します。VIP会員はすべてを収集します。</string>
   <string name="description_manage_collaborators">コラボレーターはこのリストに項目を追加・削除できます。あなたをフォローしている人から選択してください。</string>
+  <string name="description_manage_collaborators_shared">コラボレーターはこのリストのアイテムを追加・削除できます。あなたをフォローしている人から選択してください。コラボレーターがいるリストは「共有」に表示されます。</string>
   <string name="description_media_sync_add_jellyfin_server">別のJellyfinサーバーを接続して同期します。</string>
   <string name="description_media_sync_add_server_free">無料アカウントはPlexサーバーを1つ同期できます。追加するにはVIPに登録してください。</string>
   <string name="description_media_sync_add_server_vip">別のPlexサーバーを接続して同期します。</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">人物</string>
   <string name="header_reality_real_story">実際のストーリー</string>
   <string name="header_reality_timeline">タイムライン</string>
+  <string name="header_recap_in_depth">詳細解説</string>
+  <string name="header_recap_key_moments">重要シーン</string>
+  <string name="header_recap_open_thread">未解決の伏線</string>
+  <string name="header_recap_where_things_stand">現在の状況</string>
   <string name="header_region">地域</string>
   <string name="header_renewal_date">更新日</string>
   <string name="header_runtime">上映時間</string>
   <string name="header_screen_time">視聴時間</string>
+  <string name="header_season_recap">これまでの%s</string>
   <string name="header_seasonal_greeting_christmas">メリークリスマス</string>
   <string name="header_seasonal_greeting_halloween">ハッピーハロウィン</string>
   <string name="header_seasonal_greeting_new_year">あけましておめでとうございます</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">プライバシーポリシー</string>
   <string name="link_text_preview_settings">プレビュー</string>
   <string name="link_text_privacy">プライバシー</string>
+  <string name="link_text_report_bug">バグを報告</string>
   <string name="link_text_service_status">Traktサービス状況</string>
   <string name="link_text_streaming_sync_settings">ストリーミング</string>
   <string name="link_text_support">サポート</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">返信</string>
   <string name="list_title_seasons">シーズン</string>
   <string name="list_title_shared_by">共有者</string>
+  <string name="list_title_shared_lists">共有</string>
   <string name="list_title_show_credits">番組</string>
   <string name="list_title_smart_list_templates">テンプレートから作成</string>
   <string name="list_title_smart_lists">スマートリスト</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_large_screen_cards">大画面では、すべてのリストでアプリの他の部分と同じカードを使用します。いずれかを選択すると、リストを離れることなくクイック概要が開きます。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
+  <string name="preview_feature_description_season_recap">作品ページのシーズン選択の横に「おさらい」ボタンを追加します。重要シーンや各キャラクターの状況など、そのシーズンの振り返りを確認できます。</string>
   <string name="preview_feature_description_show_ending">作品の詳細に完結情報行を表示します。ストーリーが完結した場合は「完結済み」、しなかった場合は「未完」と表示されます。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_vip_veteran">VIPを途切れることなく継続した期間を表示します。ベテランまたはレジェンドバッジ、色付きのアバターリング、そしてプロフィールでのささやかなお祝いが贈られます。</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_large_screen_cards">大画面カード</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
+  <string name="preview_feature_title_season_recap">シーズンのおさらい</string>
   <string name="preview_feature_title_show_ending">完結情報</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
   <string name="preview_feature_title_vip_veteran">VIPベテランステータス</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">すべての過去の視聴</string>
   <string name="tab_text_media_sync_history_today">今日から</string>
   <string name="tab_text_more">もっと見る</string>
+  <string name="tab_text_recap_story">これまでのストーリー</string>
+  <string name="tab_text_season_recap">あらすじ</string>
   <string name="tab_text_seasons_episodes">エピソード</string>
   <string name="tab_text_seasons_info">情報</string>
   <string name="tab_text_seasons_reviews">レビュー</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">新プレミア</string>
   <string name="tag_text_new_preview_feature">新着</string>
   <string name="tag_text_number_of_episodes">%d話</string>
+  <string name="tag_text_owned_list">自分</string>
   <string name="tag_text_play">%d回視聴</string>
   <string name="tag_text_plays">%d回視聴</string>
   <string name="tag_text_premiere">プレミア</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">一部が事実に基づく</string>
   <string name="text_reality_tier_mostly_true">ほぼ事実</string>
   <string name="text_reality_tier_unclear">不明</string>
+  <string name="text_recap_at_the_finale">最終話時点</string>
+  <string name="text_recap_before_season">シーズン%d直前</string>
+  <string name="text_recap_in_depth_locked">チャプター別解説</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Wikipediaに基づくおさらい</string>
+  <string name="text_recap_spoiler_partial">%1$dエピソード中%2$dエピソードを視聴済みです。これ以降はシーズン%3$dのネタバレを含みます。</string>
+  <string name="text_recap_spoiler_unwatched">シーズン%dをまだ視聴していません。すべてのネタバレが含まれます。</string>
+  <string name="text_recap_story_description">視聴完了したシーズンまでのストーリー全容</string>
+  <string name="text_recap_story_not_covered">シーズン%d以降の内容は含まれません。</string>
+  <string name="text_recap_story_progress">%1$dシーズン中%2$dシーズン</string>
+  <string name="text_recap_story_stats">%1$dエピソード · 約%2$s</string>
+  <string name="text_recap_story_up_next">シーズン%d · 次に見る</string>
+  <string name="text_recap_upsell_in_depth">VIPでシーズン全体の詳細解説を見る</string>
+  <string name="text_recap_upsell_story">VIPで見終わったシーズンまでのストーリーをまとめて確認</string>
   <string name="text_recommendation_person_more_titles">+あと%d件</string>
   <string name="text_recommendation_person_watched_acting_one">出演した · 視聴済みのタイトル%d件</string>
   <string name="text_recommendation_person_watched_acting_other">出演した · 視聴済みのタイトル%d件</string>

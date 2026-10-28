@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">打开设置</string>
   <string name="action_toast_action_change_list">更改列表</string>
   <string name="action_toast_action_failed">操作失败。请再试一次。</string>
+  <string name="action_toast_action_view_lists">查看</string>
   <string name="action_toast_action_view_smart_list">查看列表</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> 已添加到你的待看列表</string>
   <string name="action_toast_added_to_watchlist_generic">已添加到你的待看列表</string>
   <string name="action_toast_collaborator_limit_reached">此列表已达到协作者上限。</string>
   <string name="action_toast_created_smart_list"><b>%s</b> 已创建</string>
   <string name="action_toast_label_change_list">更改 %s 所属的列表</string>
+  <string name="action_toast_label_view_personal_lists">打开您的个人列表</string>
+  <string name="action_toast_label_view_shared_lists">打开您的共享列表</string>
   <string name="action_toast_label_view_smart_list">打开您刚创建的智能列表</string>
+  <string name="action_toast_list_moved_to_personal">%s 已移至“个人”</string>
+  <string name="action_toast_list_moved_to_shared">%s 已移至“共享”</string>
   <string name="advanced_filter_label_parental_guide">%1$s：%2$s 至 %3$s</string>
   <string name="advanced_filter_label_ratings">评分为 %1$s 至 %2$s</string>
   <string name="advanced_filter_label_release_year">发布于 %1$d 至 %2$d 年</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">在您的日历应用中订阅此日历</string>
   <string name="button_label_open_comment">打开评论</string>
   <string name="button_label_open_leaderboard">打开关注排行榜</string>
+  <string name="button_label_open_season_recap">打开 %s 的回顾</string>
   <string name="button_label_open_today_stories">打开今日故事</string>
   <string name="button_label_open_vip_streak">显示 VIP 连贯记录</string>
   <string name="button_label_pause_track">暂停 %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">已完结</string>
   <string name="button_text_progress_in_progress">进行中</string>
   <string name="button_text_raw_export">立即导出</string>
+  <string name="button_text_recap_show_anyway">仍然显示</string>
   <string name="button_text_recent_comments">最新</string>
   <string name="button_text_recommendation_mode_classic">经典</string>
   <string name="button_text_recommendation_mode_smart">智能</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">评论</string>
   <string name="button_text_revoke_access">撤销访问</string>
   <string name="button_text_save_filters">设为默认</string>
+  <string name="button_text_season_recap">回顾</string>
   <string name="button_text_select_all">全选</string>
   <string name="button_text_set_cover_image">设为封面图片</string>
   <string name="button_text_settings">设置</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">升级到 VIP，即可在 Jellyfin 同步测试期间，同步您的 Jellyfin 服务器中的观看历史和收藏。</string>
   <string name="description_library_collection_limit">来自%s的某些项目尚未添加到您的Trakt收藏中。免费账户达到收藏上限后会停止；VIP账户可以收藏所有内容。</string>
   <string name="description_manage_collaborators">协作者可以添加和删除此列表中的项目。从关注您的人中选择。</string>
+  <string name="description_manage_collaborators_shared">协作者可以添加和删除此列表中的项目。从关注您的人中选择。包含协作者的列表将显示在“共享”下。</string>
   <string name="description_media_sync_add_jellyfin_server">连接另一个 Jellyfin 服务器以同步。</string>
   <string name="description_media_sync_add_server_free">免费账户可同步1个Plex服务器。升级VIP以添加更多。</string>
   <string name="description_media_sync_add_server_vip">连接另一个Plex服务器以同步。</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">人物</string>
   <string name="header_reality_real_story">真实故事</string>
   <string name="header_reality_timeline">时间线</string>
+  <string name="header_recap_in_depth">深度解析</string>
+  <string name="header_recap_key_moments">关键时刻</string>
+  <string name="header_recap_open_thread">未解悬念</string>
+  <string name="header_recap_where_things_stand">各方现状</string>
   <string name="header_region">地区</string>
   <string name="header_renewal_date">续订日期</string>
   <string name="header_runtime">时长</string>
   <string name="header_screen_time">屏幕时间</string>
+  <string name="header_season_recap">前情提要：%s</string>
   <string name="header_seasonal_greeting_christmas">圣诞快乐</string>
   <string name="header_seasonal_greeting_halloween">万圣节快乐</string>
   <string name="header_seasonal_greeting_new_year">新年快乐</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">隐私政策</string>
   <string name="link_text_preview_settings">预览</string>
   <string name="link_text_privacy">隐私</string>
+  <string name="link_text_report_bug">报告错误</string>
   <string name="link_text_service_status">Trakt 服务状态</string>
   <string name="link_text_streaming_sync_settings">流媒体</string>
   <string name="link_text_support">支持</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">回复</string>
   <string name="list_title_seasons">季</string>
   <string name="list_title_shared_by">分享者</string>
+  <string name="list_title_shared_lists">共享</string>
   <string name="list_title_show_credits">剧集</string>
   <string name="list_title_smart_list_templates">从模板开始</string>
   <string name="list_title_smart_lists">智能列表</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
+  <string name="preview_feature_description_season_recap">在剧集页面的季度选择器旁添加“回顾”按钮。点击可快速了解该季内容：关键时刻以及各角色的最新现状。</string>
   <string name="preview_feature_description_show_ending">在剧集详情中显示结局行：故事完结时为“已完成”，未完结时为“未完结”。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
   <string name="preview_feature_title_rewatch">重温</string>
+  <string name="preview_feature_title_season_recap">季回顾</string>
   <string name="preview_feature_title_show_ending">剧集结局</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
   <string name="preview_feature_title_vip_veteran">VIP 资深会员身份</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">所有过去的观看记录</string>
   <string name="tab_text_media_sync_history_today">从今天开始</string>
   <string name="tab_text_more">更多</string>
+  <string name="tab_text_recap_story">迄今剧情</string>
+  <string name="tab_text_season_recap">回顾</string>
   <string name="tab_text_seasons_episodes">剧集</string>
   <string name="tab_text_seasons_info">信息</string>
   <string name="tab_text_seasons_reviews">评论</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">新首播</string>
   <string name="tag_text_new_preview_feature">新</string>
   <string name="tag_text_number_of_episodes">%d 集</string>
+  <string name="tag_text_owned_list">您的</string>
   <string name="tag_text_play">%d 次播放</string>
   <string name="tag_text_plays">%d 次播放</string>
   <string name="tag_text_premiere">首映</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">大致取材</string>
   <string name="text_reality_tier_mostly_true">基本属实</string>
   <string name="text_reality_tier_unclear">尚不明确</string>
+  <string name="text_recap_at_the_finale">季终现状</string>
+  <string name="text_recap_before_season">第 %d 季前</string>
+  <string name="text_recap_in_depth_locked">分章节深度解析</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">回顾内容参考自维基百科</string>
+  <string name="text_recap_spoiler_partial">你已观看 %1$d 集中的 %2$d 集。此内容包含第 %3$d 季剩余部分的剧透。</string>
+  <string name="text_recap_spoiler_unwatched">你尚未开始观看第 %d 季。此内容包含整季剧透。</string>
+  <string name="text_recap_story_description">完整剧情，截至你已看完的季度</string>
+  <string name="text_recap_story_not_covered">不包含第 %d 季及之后的内容。</string>
+  <string name="text_recap_story_progress">%1$d 季中的 %2$d 季</string>
+  <string name="text_recap_story_stats">%1$d 集 · 约 %2$s</string>
+  <string name="text_recap_story_up_next">第 %d 季 · 接续观看</string>
+  <string name="text_recap_upsell_in_depth">升级 VIP 获取整季深度解析</string>
+  <string name="text_recap_upsell_story">升级 VIP，一览截至你看毕季度的完整剧情</string>
   <string name="text_recommendation_person_more_titles">+%d 更多</string>
   <string name="text_recommendation_person_watched_acting_one">在您观看的 %d 部作品中出演</string>
   <string name="text_recommendation_person_watched_acting_other">在您观看的 %d 部作品中出演</string>

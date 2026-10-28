@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Deschide Setări</string>
   <string name="action_toast_action_change_list">Schimbă lista</string>
   <string name="action_toast_action_failed">Nu a funcționat. Te rog să încerci din nou.</string>
+  <string name="action_toast_action_view_lists">Vezi</string>
   <string name="action_toast_action_view_smart_list">Vezi lista</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> a fost adăugat(ă) la lista ta de vizionare</string>
   <string name="action_toast_added_to_watchlist_generic">Adăugat(ă) la lista ta de vizionare</string>
   <string name="action_toast_collaborator_limit_reached">Această listă a atins limita de colaboratori.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> a fost creată</string>
   <string name="action_toast_label_change_list">Schimbă listele din care face parte %s</string>
+  <string name="action_toast_label_view_personal_lists">Deschide listele tale personale</string>
+  <string name="action_toast_label_view_shared_lists">Deschide listele tale partajate</string>
   <string name="action_toast_label_view_smart_list">Deschide lista inteligentă pe care tocmai ai creat-o</string>
+  <string name="action_toast_list_moved_to_personal">%s a fost mutată la Personale</string>
+  <string name="action_toast_list_moved_to_shared">%s a fost mutată la Partajate</string>
   <string name="advanced_filter_label_parental_guide">%1$s: de la %2$s la %3$s</string>
   <string name="advanced_filter_label_ratings">Evaluare de la %1$s la %2$s</string>
   <string name="advanced_filter_label_release_year">Lansat între %1$d și %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Abonează-te la acest calendar în aplicația ta de calendar</string>
   <string name="button_label_open_comment">Deschide comentariul</string>
   <string name="button_label_open_leaderboard">Deschide clasamentul de urmăritori</string>
+  <string name="button_label_open_season_recap">Deschide recapitularea pentru %s</string>
   <string name="button_label_open_today_stories">Deschide poveștile de astăzi</string>
   <string name="button_label_open_vip_streak">Afișează seria VIP</string>
   <string name="button_label_pause_track">Pauză %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Încheiat</string>
   <string name="button_text_progress_in_progress">În desfășurare</string>
   <string name="button_text_raw_export">Exportă acum</string>
+  <string name="button_text_recap_show_anyway">Afișează oricum</string>
   <string name="button_text_recent_comments">Recente</string>
   <string name="button_text_recommendation_mode_classic">Clasic</string>
   <string name="button_text_recommendation_mode_smart">Inteligent</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Recenzie</string>
   <string name="button_text_revoke_access">Revocă accesul</string>
   <string name="button_text_save_filters">Setează ca implicit</string>
+  <string name="button_text_season_recap">Rezumat</string>
   <string name="button_text_select_all">Selectează tot</string>
   <string name="button_text_set_cover_image">Setează ca imagine de copertă</string>
   <string name="button_text_settings">Setări</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Actualizați la VIP pentru a sincroniza istoricul vizionărilor și colecțiile de pe serverul dvs. Jellyfin cât timp este în versiune beta.</string>
   <string name="description_library_collection_limit">Unele elemente de pe %s nu sunt încă în colecția dvs. Trakt. Conturile gratuite se opresc la limita colecției; VIP colectează totul.</string>
   <string name="description_manage_collaborators">Colaboratorii pot adăuga și elimina elemente din această listă. Alegeți dintre persoanele care vă urmăresc.</string>
+  <string name="description_manage_collaborators_shared">Colaboratorii pot adăuga și elimina elemente din această listă. Alege dintre persoanele care te urmăresc. Listele cu colaboratori apar la Partajate.</string>
   <string name="description_media_sync_add_jellyfin_server">Conectați un alt server Jellyfin pentru a-l sincroniza și pe acesta.</string>
   <string name="description_media_sync_add_server_free">Conturile gratuite sincronizează 1 server Plex. Treceți la VIP pentru a adăuga mai multe.</string>
   <string name="description_media_sync_add_server_vip">Conectați un alt server Plex pentru a-l sincroniza și pe acesta.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Persoane</string>
   <string name="header_reality_real_story">Povestea reală</string>
   <string name="header_reality_timeline">Cronologie</string>
+  <string name="header_recap_in_depth">În detaliu</string>
+  <string name="header_recap_key_moments">Momente-cheie</string>
+  <string name="header_recap_open_thread">Fir deschis</string>
+  <string name="header_recap_where_things_stand">Cum stau lucrurile</string>
   <string name="header_region">Regiune</string>
   <string name="header_renewal_date">Data reînnoirii</string>
   <string name="header_runtime">Durată</string>
   <string name="header_screen_time">Timp petrecut în fața ecranului</string>
+  <string name="header_season_recap">Anterior în %s</string>
   <string name="header_seasonal_greeting_christmas">Crăciun fericit</string>
   <string name="header_seasonal_greeting_halloween">La mulți ani de Halloween!</string>
   <string name="header_seasonal_greeting_new_year">Un An Nou fericit</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Politica de confidențialitate</string>
   <string name="link_text_preview_settings">Previzualizare</string>
   <string name="link_text_privacy">Confidențialitate</string>
+  <string name="link_text_report_bug">Raportează o eroare</string>
   <string name="link_text_service_status">Status serviciu Trakt</string>
   <string name="link_text_streaming_sync_settings">Streaming</string>
   <string name="link_text_support">Asistență</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Răspunsuri</string>
   <string name="list_title_seasons">Sezoane</string>
   <string name="list_title_shared_by">Partajat de</string>
+  <string name="list_title_shared_lists">Partajate</string>
   <string name="list_title_show_credits">Seriale</string>
   <string name="list_title_smart_list_templates">Pornire de la un șablon</string>
   <string name="list_title_smart_lists">Liste inteligente</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_large_screen_cards">Pe ecrane mai mari, toate listele folosesc aceleași carduri ca și restul aplicației. Selectarea unui card deschide o vizualizare rapidă, în loc să părăsească lista.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
+  <string name="preview_feature_description_season_recap">Adaugă un buton Recapitulare lângă selectorul de sezoane pe pagina unui serial. Deschide un rezumat pentru acel sezon: momentele-cheie și situația personajelor.</string>
   <string name="preview_feature_description_show_ending">Afișează un rând despre Final în detaliile unui serial: Finalizat când povestea s-a încheiat, Nerezolvat când nu s-a încheiat.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_vip_veteran">Arată cât timp au păstrat membrii statutul VIP fără întrerupere, cu o insignă Veteran sau Legendă, un inel colorat de avatar și câteva celebrații pe propriul profil.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_large_screen_cards">Carduri pe Ecrane Mari</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
+  <string name="preview_feature_title_season_recap">Recapitulare sezon</string>
   <string name="preview_feature_title_show_ending">Finalul serialului</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
   <string name="preview_feature_title_vip_veteran">Statut VIP veteran</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Toate vizionările anterioare</string>
   <string name="tab_text_media_sync_history_today">Începând de astăzi</string>
   <string name="tab_text_more">Mai multe</string>
+  <string name="tab_text_recap_story">Povestea de până acum</string>
+  <string name="tab_text_season_recap">Rezumat</string>
   <string name="tab_text_seasons_episodes">Episoade</string>
   <string name="tab_text_seasons_info">Informații</string>
   <string name="tab_text_seasons_reviews">Recenzii</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Nouă Premieră</string>
   <string name="tag_text_new_preview_feature">Nou</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
+  <string name="tag_text_owned_list">A ta</string>
   <string name="tag_text_play">%d vizionări</string>
   <string name="tag_text_plays">%d vizionări</string>
   <string name="tag_text_premiere">Premiera</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Vag inspirat</string>
   <string name="text_reality_tier_mostly_true">În mare parte adevărat</string>
   <string name="text_reality_tier_unclear">Neclar</string>
+  <string name="text_recap_at_the_finale">La final</string>
+  <string name="text_recap_before_season">Înainte de sezonul %d</string>
+  <string name="text_recap_in_depth_locked">Analiză capitol cu capitol</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Recapitulare bazată pe Wikipedia</string>
+  <string name="text_recap_spoiler_partial">Ai vizionat %1$d din %2$d episoade. Aceasta conține spoilere pentru restul sezonului %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">Nu ai început sezonul %d. Aceasta conține spoilere pentru tot sezonul.</string>
+  <string name="text_recap_story_description">Întreaga poveste, până la sezonul pe care l-ai terminat</string>
+  <string name="text_recap_story_not_covered">Nimic începând cu sezonul %d.</string>
+  <string name="text_recap_story_progress">%1$d din %2$d sezoane</string>
+  <string name="text_recap_story_stats">%1$d episoade · aproximativ %2$s</string>
+  <string name="text_recap_story_up_next">Sezonul %d · urmează</string>
+  <string name="text_recap_upsell_in_depth">Obține analiza completă a sezonului cu VIP</string>
+  <string name="text_recap_upsell_story">O singură poveste până la ultimul sezon terminat, cu VIP</string>
   <string name="text_recommendation_person_more_titles">+%d mai multe</string>
   <string name="text_recommendation_person_watched_acting_one">A jucat în %d titlu vizionat de tine</string>
   <string name="text_recommendation_person_watched_acting_other">A jucat în %d titluri vizionate de tine</string>

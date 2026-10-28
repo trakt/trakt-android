@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Άνοιγμα Ρυθμίσεων</string>
   <string name="action_toast_action_change_list">Αλλαγή λίστας</string>
   <string name="action_toast_action_failed">Αυτό δεν λειτούργησε. Παρακαλώ δοκιμάστε ξανά.</string>
+  <string name="action_toast_action_view_lists">Προβολή</string>
   <string name="action_toast_action_view_smart_list">Προβολή λίστας</string>
   <string name="action_toast_added_to_watchlist">Το <b>%s</b> προστέθηκε στη λίστα παρακολούθησής σας</string>
   <string name="action_toast_added_to_watchlist_generic">Προστέθηκε στη λίστα παρακολούθησής σας</string>
   <string name="action_toast_collaborator_limit_reached">Αυτή η λίστα έχει φτάσει το όριο συνεργατών της.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> δημιουργήθηκε</string>
   <string name="action_toast_label_change_list">Αλλαγή των λιστών στις οποίες ανήκει το %s</string>
+  <string name="action_toast_label_view_personal_lists">Άνοιγμα των προσωπικών λιστών σας</string>
+  <string name="action_toast_label_view_shared_lists">Άνοιγμα των κοινόχρηστων λιστών σας</string>
   <string name="action_toast_label_view_smart_list">Άνοιγμα της έξυπνης λίστας που μόλις δημιουργήσατε</string>
+  <string name="action_toast_list_moved_to_personal">%s μεταφέρθηκε στις Προσωπικές</string>
+  <string name="action_toast_list_moved_to_shared">%s μεταφέρθηκε στις Κοινόχρηστες</string>
   <string name="advanced_filter_label_parental_guide">%1$s: από %2$s έως %3$s</string>
   <string name="advanced_filter_label_ratings">Βαθμολογία από %1$s έως %2$s</string>
   <string name="advanced_filter_label_release_year">Κυκλοφόρησε από %1$d έως %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Εγγραφή σε αυτό το ημερολόγιο στην εφαρμογή ημερολογίου σας</string>
   <string name="button_label_open_comment">Άνοιγμα σχολίου</string>
   <string name="button_label_open_leaderboard">Άνοιγμα πίνακα κατάταξης ακολούθων</string>
+  <string name="button_label_open_season_recap">Άνοιγμα της ανακεφαλαίωσης για τη %s</string>
   <string name="button_label_open_today_stories">Άνοιγμα σημερινών ιστοριών</string>
   <string name="button_label_open_vip_streak">Εμφάνιση σερί VIP</string>
   <string name="button_label_pause_track">Παύση %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Ολοκληρώθηκε</string>
   <string name="button_text_progress_in_progress">Σε εξέλιξη</string>
   <string name="button_text_raw_export">Εξαγωγή τώρα</string>
+  <string name="button_text_recap_show_anyway">Εμφάνιση παρ\' όλα αυτά</string>
   <string name="button_text_recent_comments">Πρόσφατα</string>
   <string name="button_text_recommendation_mode_classic">Κλασικές</string>
   <string name="button_text_recommendation_mode_smart">Έξυπνα</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Κριτική</string>
   <string name="button_text_revoke_access">Ανάκληση πρόσβασης</string>
   <string name="button_text_save_filters">Ορισμός ως προεπιλογή</string>
+  <string name="button_text_season_recap">Ανασκόπηση</string>
   <string name="button_text_select_all">Επιλογή όλων</string>
   <string name="button_text_set_cover_image">Ορισμός ως εικόνα εξωφύλλου</string>
   <string name="button_text_settings">Ρυθμίσεις</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Αναβαθμίστε σε VIP για να συγχρονίσετε το ιστορικό παρακολούθησης και τις συλλογές από τον διακομιστή σας Jellyfin όσο βρίσκεται σε beta.</string>
   <string name="description_library_collection_limit">Κάποια στοιχεία από %s δεν βρίσκονται ακόμη στη συλλογή σας Trakt. Οι δωρεάν λογαριασμοί σταματούν στο όριο συλλογής. Το VIP συλλέγει τα πάντα.</string>
   <string name="description_manage_collaborators">Οι συνεργάτες μπορούν να προσθέτουν και να αφαιρούν στοιχεία σε αυτή τη λίστα. Επιλέξτε από άτομα που σας ακολουθούν.</string>
+  <string name="description_manage_collaborators_shared">Οι συνεργάτες μπορούν να προσθέτουν και να αφαιρούν στοιχεία σε αυτή τη λίστα. Επιλέξτε από άτομα που σας ακολουθούν. Οι λίστες με συνεργάτες εμφανίζονται στις Κοινόχρηστες.</string>
   <string name="description_media_sync_add_jellyfin_server">Συνδέστε έναν άλλο διακομιστή Jellyfin για να τον συγχρονίσετε επίσης.</string>
   <string name="description_media_sync_add_server_free">Οι δωρεάν λογαριασμοί συγχρονίζουν 1 διακομιστή Plex. Γίνετε VIP για να προσθέσετε περισσότερους.</string>
   <string name="description_media_sync_add_server_vip">Συνδέστε έναν άλλο διακομιστή Plex για να τον συγχρονίσετε επίσης.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Άτομα</string>
   <string name="header_reality_real_story">Η πραγματική ιστορία</string>
   <string name="header_reality_timeline">Χρονολόγιο</string>
+  <string name="header_recap_in_depth">Σε βάθος</string>
+  <string name="header_recap_key_moments">Σημαντικές στιγμές</string>
+  <string name="header_recap_open_thread">Ανοιχτή υπόθεση</string>
+  <string name="header_recap_where_things_stand">Πώς έχουν τα πράγματα</string>
   <string name="header_region">Περιοχή</string>
   <string name="header_renewal_date">Ημερομηνία Ανανέωσης</string>
   <string name="header_runtime">Διάρκεια</string>
   <string name="header_screen_time">Χρόνος Οθόνης</string>
+  <string name="header_season_recap">Προηγουμένως στο %s</string>
   <string name="header_seasonal_greeting_christmas">Καλά Χριστούγεννα</string>
   <string name="header_seasonal_greeting_halloween">Ευτυχισμένο Χάλογουιν</string>
   <string name="header_seasonal_greeting_new_year">Καλή Χρονιά</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Πολιτική Απορρήτου</string>
   <string name="link_text_preview_settings">Προεπισκόπηση</string>
   <string name="link_text_privacy">Απόρρητο</string>
+  <string name="link_text_report_bug">Αναφορά σφάλματος</string>
   <string name="link_text_service_status">Κατάσταση υπηρεσίας Trakt</string>
   <string name="link_text_streaming_sync_settings">Ροή</string>
   <string name="link_text_support">Υποστήριξη</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Απαντήσεις</string>
   <string name="list_title_seasons">Σεζόν</string>
   <string name="list_title_shared_by">Κοινοποιήθηκε από</string>
+  <string name="list_title_shared_lists">Κοινόχρηστες</string>
   <string name="list_title_show_credits">Σειρές</string>
   <string name="list_title_smart_list_templates">Ξεκινήστε από ένα πρότυπο</string>
   <string name="list_title_smart_lists">Έξυπνες Λίστες</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
   <string name="preview_feature_description_large_screen_cards">Σε μεγαλύτερες οθόνες, όλες οι λίστες χρησιμοποιούν τις ίδιες κάρτες με την υπόλοιπη εφαρμογή. Η επιλογή μιας ανοίγει μια γρήγορη επισκόπηση αντί να αποχωρήσετε από τη λίστα.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
+  <string name="preview_feature_description_season_recap">Προσθέτει ένα κουμπί Ανακεφαλαίωσης δίπλα στον επιλογέα σεζόν στη σελίδα μιας σειράς. Ανοίγει μια σύνοψη για τη συγκεκριμένη σεζόν: τις σημαντικότερες στιγμές και την κατάσταση των χαρακτήρων.</string>
   <string name="preview_feature_description_show_ending">Εμφανίζει μια γραμμή Τέλος στις λεπτομέρειες μιας σειράς: «Ολοκληρώθηκε» όταν η ιστορία ολοκληρώθηκε, «Άλυτο» όταν δεν ολοκληρώθηκε.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
   <string name="preview_feature_description_vip_veteran">Δείχνει πόσο καιρό οι χρήστες έχουν διατηρήσει το VIP χωρίς διακοπή, με σήμα Βετεράνου ή Θρύλου, ένα έγχρωμο δαχτυλίδι στο avatar και μερικούς εορτασμούς στο προφίλ σας.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_large_screen_cards">Κάρτες Μεγάλης Οθόνης</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
+  <string name="preview_feature_title_season_recap">Ανακεφαλαίωση σεζόν</string>
   <string name="preview_feature_title_show_ending">Τέλος σειράς</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
   <string name="preview_feature_title_vip_veteran">Κατάσταση βετεράνου VIP</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Όλες οι παλιές παρακολουθήσεις</string>
   <string name="tab_text_media_sync_history_today">Από σήμερα</string>
   <string name="tab_text_more">Περισσότερα</string>
+  <string name="tab_text_recap_story">Η ιστορία μέχρι τώρα</string>
+  <string name="tab_text_season_recap">Ανασκόπηση</string>
   <string name="tab_text_seasons_episodes">Επεισόδια</string>
   <string name="tab_text_seasons_info">Πληροφορίες</string>
   <string name="tab_text_seasons_reviews">Κριτικές</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Νέα Πρεμιέρα</string>
   <string name="tag_text_new_preview_feature">Νέο</string>
   <string name="tag_text_number_of_episodes">%d επ.</string>
+  <string name="tag_text_owned_list">Δική σας</string>
   <string name="tag_text_play">%d προβολή</string>
   <string name="tag_text_plays">%d προβολές</string>
   <string name="tag_text_premiere">Πρεμιέρα</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Χαλαρά βασισμένο</string>
   <string name="text_reality_tier_mostly_true">Κυρίως αληθές</string>
   <string name="text_reality_tier_unclear">Ασαφές</string>
+  <string name="text_recap_at_the_finale">Στο φινάλε</string>
+  <string name="text_recap_before_season">Πριν από τη σεζόν %d</string>
+  <string name="text_recap_in_depth_locked">Ανάλυση ανά κεφάλαιο</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Ανακεφαλαίωση βασισμένη στη Wikipedia</string>
+  <string name="text_recap_spoiler_partial">Έχετε παρακολουθήσει %1$d από %2$d επεισόδια. Αυτό περιέχει spoiler για το υπόλοιπο της σεζόν %3$d.</string>
+  <string name="text_recap_spoiler_unwatched">Δεν έχετε ξεκινήσει τη σεζόν %d. Αυτό περιέχει spoiler για όλη τη σεζόν.</string>
+  <string name="text_recap_story_description">Ολόκληρη η ιστορία, μέχρι τη σεζόν που ολοκληρώσατε</string>
+  <string name="text_recap_story_not_covered">Τίποτα από τη σεζόν %d και μετά.</string>
+  <string name="text_recap_story_progress">%1$d από %2$d σεζόν</string>
+  <string name="text_recap_story_stats">%1$d επεισόδια · περίπου %2$s</string>
+  <string name="text_recap_story_up_next">Σεζόν %d · ακολουθεί</string>
+  <string name="text_recap_upsell_in_depth">Αποκτήστε την πλήρη ανάλυση της σεζόν με το VIP</string>
+  <string name="text_recap_upsell_story">Μία ιστορία μέχρι την τελευταία σεζόν που ολοκληρώσατε, με το VIP</string>
   <string name="text_recommendation_person_more_titles">+%d ακόμη</string>
   <string name="text_recommendation_person_watched_acting_one">Πρωταγωνίστησε σε %d τίτλο που παρακολουθήσατε</string>
   <string name="text_recommendation_person_watched_acting_other">Πρωταγωνίστησε σε %d τίτλους που παρακολουθήσατε</string>

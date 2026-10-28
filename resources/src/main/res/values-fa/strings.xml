@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">باز کردن تنظیمات</string>
   <string name="action_toast_action_change_list">تغییر لیست</string>
   <string name="action_toast_action_failed">این عمل انجام نشد. لطفاً دوباره تلاش کنید.</string>
+  <string name="action_toast_action_view_lists">مشاهده</string>
   <string name="action_toast_action_view_smart_list">مشاهده لیست</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> به لیست تماشای شما اضافه شد</string>
   <string name="action_toast_added_to_watchlist_generic">به لیست تماشای شما اضافه شد</string>
   <string name="action_toast_collaborator_limit_reached">این لیست به حداکثر تعداد همکاران خود رسیده است.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> ایجاد شد</string>
   <string name="action_toast_label_change_list">لیست‌هایی که %s به آنها تعلق دارد را تغییر دهید</string>
+  <string name="action_toast_label_view_personal_lists">باز کردن لیست‌های شخصی شما</string>
+  <string name="action_toast_label_view_shared_lists">باز کردن لیست‌های مشترک شما</string>
   <string name="action_toast_label_view_smart_list">لیست هوشمندی که به تازگی ایجاد کردید را باز کنید</string>
+  <string name="action_toast_list_moved_to_personal">%s به شخصی منتقل شد</string>
+  <string name="action_toast_list_moved_to_shared">%s به مشترک منتقل شد</string>
   <string name="advanced_filter_label_parental_guide">%1$s: از %2$s تا %3$s</string>
   <string name="advanced_filter_label_ratings">امتیاز از %1$s تا %2$s</string>
   <string name="advanced_filter_label_release_year">منتشر شده در %1$d تا %2$d</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">در برنامه تقویم خود، در این تقویم مشترک شوید</string>
   <string name="button_label_open_comment">باز کردن نظر</string>
   <string name="button_label_open_leaderboard">جدول رده‌بندی دنبال‌کنندگان را باز کنید</string>
+  <string name="button_label_open_season_recap">باز کردن خلاصه برای %s</string>
   <string name="button_label_open_today_stories">داستان‌های امروز را باز کنید</string>
   <string name="button_label_open_vip_streak">نمایش پیوستگی VIP</string>
   <string name="button_label_pause_track">مکث %s</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">پایان یافته</string>
   <string name="button_text_progress_in_progress">در حال انجام</string>
   <string name="button_text_raw_export">همین حالا خروجی بگیر</string>
+  <string name="button_text_recap_show_anyway">در هر صورت نشان بده</string>
   <string name="button_text_recent_comments">اخیر</string>
   <string name="button_text_recommendation_mode_classic">کلاسیک</string>
   <string name="button_text_recommendation_mode_smart">هوشمند</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">بازخورد</string>
   <string name="button_text_revoke_access">لغو دسترسی</string>
   <string name="button_text_save_filters">به عنوان پیش‌فرض تنظیم کن</string>
+  <string name="button_text_season_recap">خلاصه</string>
   <string name="button_text_select_all">انتخاب همه</string>
   <string name="button_text_set_cover_image">به عنوان تصویر کاور تنظیم کن</string>
   <string name="button_text_settings">تنظیمات</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">به VIP ارتقا دهید تا سابقه تماشا و مجموعه‌ها را از سرور Jellyfin خود در طول دوره بتا همگام‌سازی کنید.</string>
   <string name="description_library_collection_limit">برخی از آیتم‌ها از %s هنوز در مجموعه Trakt شما نیستند. حساب‌های رایگان تا سقف مجموعه محدود هستند؛ VIP همه چیز را جمع‌آوری می‌کند.</string>
   <string name="description_manage_collaborators">همکاران می‌توانند موارد را به این لیست اضافه یا از آن حذف کنند. از میان افرادی که شما را دنبال می‌کنند، انتخاب کنید.</string>
+  <string name="description_manage_collaborators_shared">همکاران می‌توانند مواردی را به این لیست اضافه یا از آن حذف کنند. از میان افرادی که شما را دنبال می‌کنند، انتخاب کنید. لیست‌های دارای همکار در بخش مشترک نمایش داده می‌شوند.</string>
   <string name="description_media_sync_add_jellyfin_server">یک سرور Jellyfin دیگر را متصل کنید تا آن را نیز همگام‌سازی کنید.</string>
   <string name="description_media_sync_add_server_free">حساب‌های رایگان ۱ سرور پلکس را همگام\n‌سازی می‌کنند. برای افزودن بیشتر، VIP شوید.</string>
   <string name="description_media_sync_add_server_vip">یک سرور پلکس دیگر را متصل کنید تا آن را نیز همگام\n‌سازی کنید.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">افراد</string>
   <string name="header_reality_real_story">داستان واقعی</string>
   <string name="header_reality_timeline">خط زمانی</string>
+  <string name="header_recap_in_depth">بررسی دقیق</string>
+  <string name="header_recap_key_moments">لحظات کلیدی</string>
+  <string name="header_recap_open_thread">خط داستانی باز</string>
+  <string name="header_recap_where_things_stand">وضعیت کنونی</string>
   <string name="header_region">منطقه</string>
   <string name="header_renewal_date">تاریخ تمدید</string>
   <string name="header_runtime">مدت زمان</string>
   <string name="header_screen_time">زمان نمایش</string>
+  <string name="header_season_recap">آنچه در %s گذشت</string>
   <string name="header_seasonal_greeting_christmas">کریسمس مبارک</string>
   <string name="header_seasonal_greeting_halloween">هالوین مبارک</string>
   <string name="header_seasonal_greeting_new_year">سال نو مبارک</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">سیاست حفظ حریم خصوصی</string>
   <string name="link_text_preview_settings">پیش‌نمایش</string>
   <string name="link_text_privacy">حریم خصوصی</string>
+  <string name="link_text_report_bug">گزارش خطا</string>
   <string name="link_text_service_status">وضعیت سرویس Trakt</string>
   <string name="link_text_streaming_sync_settings">پخش جریانی</string>
   <string name="link_text_support">پشتیبانی</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">پاسخ‌ها</string>
   <string name="list_title_seasons">فصل‌ها</string>
   <string name="list_title_shared_by">به اشتراک گذاشته شده توسط</string>
+  <string name="list_title_shared_lists">مشترک</string>
   <string name="list_title_show_credits">برنامه‌ها</string>
   <string name="list_title_smart_list_templates">شروع از یک الگو</string>
   <string name="list_title_smart_lists">لیست‌های هوشمند</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_large_screen_cards">در صفحه‌های نمایش بزرگ‌تر، همه لیست‌ها از همان طراحی کارت‌های مورد استفاده در بقیه برنامه بهره می‌برند. با انتخاب هر کدام، به جای ترک لیست، یک نمای کلی سریع نمایش داده می‌شود.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
+  <string name="preview_feature_description_season_recap">یک دکمه خلاصه در کنار انتخاب‌گر فصل در صفحه سریال اضافه می‌کند. این دکمه مروری بر آن فصل را باز می‌کند: لحظات کلیدی و وضعیت شخصیت‌ها.</string>
   <string name="preview_feature_description_show_ending">ردیف پایان را در جزئیات سریال نمایش می‌دهد: «تکمیل شده» وقتی داستان به سرانجام رسیده باشد، و «حل‌نشده» وقتی نرسیده باشد.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
   <string name="preview_feature_description_vip_veteran">نشان می‌دهد که اعضا چقدر بدون وقفه اشتراک VIP را حفظ کرده‌اند، با نشان کهنه‌کار یا افسانه، حلقه‌ی آواتار رنگی و چند جشن در پروفایل خودتان.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_large_screen_cards">کارت‌های صفحه نمایش بزرگ</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
+  <string name="preview_feature_title_season_recap">خلاصه فصل</string>
   <string name="preview_feature_title_show_ending">پایان سریال</string>
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>
   <string name="preview_feature_title_vip_veteran">وضعیت VIP کهنه‌کار</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">همه تماشا‌های گذشته</string>
   <string name="tab_text_media_sync_history_today">از امروز</string>
   <string name="tab_text_more">بیشتر</string>
+  <string name="tab_text_recap_story">داستان تا اینجا</string>
+  <string name="tab_text_season_recap">خلاصه</string>
   <string name="tab_text_seasons_episodes">اپیزودها</string>
   <string name="tab_text_seasons_info">اطلاعات</string>
   <string name="tab_text_seasons_reviews">بازخوردها</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">اولین قسمت جدید</string>
   <string name="tag_text_new_preview_feature">جدید</string>
   <string name="tag_text_number_of_episodes">%d اپیزود</string>
+  <string name="tag_text_owned_list">مال شما</string>
   <string name="tag_text_play">%d پخش</string>
   <string name="tag_text_plays">%d پخش</string>
   <string name="tag_text_premiere">اولین پخش</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">اقتباس آزاد</string>
   <string name="text_reality_tier_mostly_true">عمدتاً واقعی</string>
   <string name="text_reality_tier_unclear">نامشخص</string>
+  <string name="text_recap_at_the_finale">در قسمت پایانی</string>
+  <string name="text_recap_before_season">پیش از فصل %d</string>
+  <string name="text_recap_in_depth_locked">بررسی بخش‌به‌بخش</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">خلاصه بر اساس ویکی‌پدیا</string>
+  <string name="text_recap_spoiler_partial">شما %1$d قسمت از %2$d قسمت را تماشا کرده‌اید. این بخش داستان بقیه فصل %3$d را لو می‌دهد.</string>
+  <string name="text_recap_spoiler_unwatched">شما هنوز فصل %d را شروع نکرده‌اید. این بخش کل داستان آن را لو می‌دهد.</string>
+  <string name="text_recap_story_description">کل داستان، تا فصلی که به پایان رسانده‌اید</string>
+  <string name="text_recap_story_not_covered">بدون هیچ مطلبی از فصل %d به بعد.</string>
+  <string name="text_recap_story_progress">%1$d از %2$d فصل</string>
+  <string name="text_recap_story_stats">%1$d قسمت · حدود %2$s</string>
+  <string name="text_recap_story_up_next">فصل %d · بعدی</string>
+  <string name="text_recap_upsell_in_depth">مشاهده بررسی کامل فصل با VIP</string>
+  <string name="text_recap_upsell_story">داستان پیوسته تا آخرین فصلی که به پایان رسانده‌اید، با VIP</string>
   <string name="text_recommendation_person_more_titles">+%d مورد دیگر</string>
   <string name="text_recommendation_person_watched_acting_one">در %d عنوانی که تماشا کرده‌اید بازی کرده</string>
   <string name="text_recommendation_person_watched_acting_other">در %d عنوانی که تماشا کرده‌اید بازی کرده</string>

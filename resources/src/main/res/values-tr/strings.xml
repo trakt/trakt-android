@@ -15,13 +15,18 @@
   <string name="action_open_system_settings_tvos">Ayarları Aç</string>
   <string name="action_toast_action_change_list">Listeyi değiştir</string>
   <string name="action_toast_action_failed">Bu işe yaramadı. Lütfen tekrar deneyin.</string>
+  <string name="action_toast_action_view_lists">Görüntüle</string>
   <string name="action_toast_action_view_smart_list">Listeyi Görüntüle</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> izleme listenize eklendi</string>
   <string name="action_toast_added_to_watchlist_generic">İzleme listenize eklendi</string>
   <string name="action_toast_collaborator_limit_reached">Bu liste iş birlikçisi sınırına ulaştı.</string>
   <string name="action_toast_created_smart_list"><b>%s</b> oluşturuldu</string>
   <string name="action_toast_label_change_list">%s öğesinin ait olduğu listeleri değiştir</string>
+  <string name="action_toast_label_view_personal_lists">Kişisel listelerinizi açın</string>
+  <string name="action_toast_label_view_shared_lists">Paylaşılan listelerinizi açın</string>
   <string name="action_toast_label_view_smart_list">Yeni oluşturduğunuz akıllı listeyi açın</string>
+  <string name="action_toast_list_moved_to_personal">%s Kişisel\'e taşındı</string>
+  <string name="action_toast_list_moved_to_shared">%s Paylaşılan\'a taşındı</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s ila %3$s arası</string>
   <string name="advanced_filter_label_ratings">%1$s ila %2$s arası Derecelendirme</string>
   <string name="advanced_filter_label_release_year">%1$d ila %2$d yılları arasında yayınlandı</string>
@@ -199,6 +204,7 @@
   <string name="button_label_open_calendar_feed">Bu takvime takvim uygulamanızda abone olun</string>
   <string name="button_label_open_comment">Yorumu aç</string>
   <string name="button_label_open_leaderboard">Takip edilenler liderlik tablosunu aç</string>
+  <string name="button_label_open_season_recap">%s özetini aç</string>
   <string name="button_label_open_today_stories">Bugünün hikayelerini aç</string>
   <string name="button_label_open_vip_streak">VIP serisini göster</string>
   <string name="button_label_pause_track">%s duraklat</string>
@@ -531,6 +537,7 @@
   <string name="button_text_progress_ended">Bitti</string>
   <string name="button_text_progress_in_progress">Devam Ediyor</string>
   <string name="button_text_raw_export">Şimdi dışa aktar</string>
+  <string name="button_text_recap_show_anyway">Yine de göster</string>
   <string name="button_text_recent_comments">En Yeni</string>
   <string name="button_text_recommendation_mode_classic">Klasik</string>
   <string name="button_text_recommendation_mode_smart">Akıllı</string>
@@ -554,6 +561,7 @@
   <string name="button_text_review_lists">Yorum</string>
   <string name="button_text_revoke_access">Erişimi İptal Et</string>
   <string name="button_text_save_filters">Varsayılan olarak ayarla</string>
+  <string name="button_text_season_recap">Özet</string>
   <string name="button_text_select_all">Tümünü Seç</string>
   <string name="button_text_set_cover_image">Kapak resmi olarak ayarla</string>
   <string name="button_text_settings">Ayarlar</string>
@@ -731,6 +739,7 @@
   <string name="description_jellyfin_vip_upsell">Beta sürümündeyken Jellyfin sunucunuzdan izleme geçmişi ve koleksiyonlarınızı senkronize etmek için VIP\'ye yükseltin.</string>
   <string name="description_library_collection_limit">%s konumundaki bazı öğeler henüz Trakt koleksiyonunuzda değil. Ücretsiz hesaplar koleksiyon sınırında durur; VIP her şeyi toplar.</string>
   <string name="description_manage_collaborators">İş birlikçileri bu listeden öğe ekleyebilir ve çıkarabilir. Sizi takip eden kişiler arasından seçim yapın.</string>
+  <string name="description_manage_collaborators_shared">İş birlikçiler bu listeye öğe ekleyebilir ve çıkarabilir. Sizi takip eden kişiler arasından seçim yapın. İş birlikçisi olan listeler Paylaşılan altında görünür.</string>
   <string name="description_media_sync_add_jellyfin_server">Başka bir Jellyfin sunucusu bağlayın, onu da senkronize edin.</string>
   <string name="description_media_sync_add_server_free">Ücretsiz hesaplar 1 Plex sunucusu senkronize eder. Daha fazlasını eklemek için VIP olun.</string>
   <string name="description_media_sync_add_server_vip">Başka bir Plex sunucusu bağlayın, onu da senkronize edin.</string>
@@ -992,10 +1001,15 @@
   <string name="header_reality_people">Kişiler</string>
   <string name="header_reality_real_story">Gerçek hikâye</string>
   <string name="header_reality_timeline">Zaman çizelgesi</string>
+  <string name="header_recap_in_depth">Derinlemesine</string>
+  <string name="header_recap_key_moments">Önemli anlar</string>
+  <string name="header_recap_open_thread">Açık kalan konu</string>
+  <string name="header_recap_where_things_stand">Son durum</string>
   <string name="header_region">Bölge</string>
   <string name="header_renewal_date">Yenileme Tarihi</string>
   <string name="header_runtime">Süre</string>
   <string name="header_screen_time">Ekran Süresi</string>
+  <string name="header_season_recap">%s dizisinde daha önce</string>
   <string name="header_seasonal_greeting_christmas">Mutlu Noeller</string>
   <string name="header_seasonal_greeting_halloween">Mutlu Cadılar Bayramı</string>
   <string name="header_seasonal_greeting_new_year">Mutlu Yıllar</string>
@@ -1327,6 +1341,7 @@
   <string name="link_text_policy">Gizlilik Politikası</string>
   <string name="link_text_preview_settings">Önizleme</string>
   <string name="link_text_privacy">Gizlilik</string>
+  <string name="link_text_report_bug">Hata Bildir</string>
   <string name="link_text_service_status">Trakt hizmet durumu</string>
   <string name="link_text_streaming_sync_settings">Akış</string>
   <string name="link_text_support">Destek</string>
@@ -1405,6 +1420,7 @@
   <string name="list_title_replies">Yanıtlar</string>
   <string name="list_title_seasons">Sezonlar</string>
   <string name="list_title_shared_by">Paylaşan</string>
+  <string name="list_title_shared_lists">Paylaşılan</string>
   <string name="list_title_show_credits">Diziler</string>
   <string name="list_title_smart_list_templates">Bir şablondan başla</string>
   <string name="list_title_smart_lists">Akıllı Listeler</string>
@@ -1561,6 +1577,7 @@
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_large_screen_cards">Daha büyük ekranlarda, tüm listeler uygulamanın geri kalanıyla aynı kartları kullanır. Birini seçmek, listeden ayrılmak yerine hızlı bir bakış açar.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
+  <string name="preview_feature_description_season_recap">Dizi sayfasındaki sezon seçicinin yanına bir Özet butonu ekler. Bu buton ilgili sezonun özetini açar: önemli anlar ve karakterlerin son durumu.</string>
   <string name="preview_feature_description_show_ending">Bir dizinin ayrıntılarında Bitiş satırını gösterir: Hikaye tamamlandığında \'Tamamlandı\', tamamlanmadığında \'Çözümlenmemiş\'.</string>
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
   <string name="preview_feature_description_vip_veteran">Üyelerin VIP statüsünü ne kadar süre kesintisiz sürdürdüğünü, Kıdemli veya Efsane rozetiyle, renkli bir avatar halkasıyla ve kendi profilinizde birkaç kutlamayla gösterir.</string>
@@ -1568,6 +1585,7 @@
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_large_screen_cards">Geniş Ekran Kartları</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
+  <string name="preview_feature_title_season_recap">Sezon özeti</string>
   <string name="preview_feature_title_show_ending">Dizi Bitişi</string>
   <string name="preview_feature_title_soundtrack">Film Müziği</string>
   <string name="preview_feature_title_vip_veteran">VIP kıdemli durumu</string>
@@ -1655,6 +1673,8 @@
   <string name="tab_text_media_sync_history_all">Tüm geçmiş izlemeler</string>
   <string name="tab_text_media_sync_history_today">Bugünden itibaren</string>
   <string name="tab_text_more">Daha Fazla</string>
+  <string name="tab_text_recap_story">Şimdiye kadarki hikâye</string>
+  <string name="tab_text_season_recap">Özet</string>
   <string name="tab_text_seasons_episodes">Bölümler</string>
   <string name="tab_text_seasons_info">Bilgi</string>
   <string name="tab_text_seasons_reviews">Yorumlar</string>
@@ -1693,6 +1713,7 @@
   <string name="tag_text_new_premiere">Yeni Prömiyer</string>
   <string name="tag_text_new_preview_feature">Yeni</string>
   <string name="tag_text_number_of_episodes">%d böl.</string>
+  <string name="tag_text_owned_list">Sizin</string>
   <string name="tag_text_play">%d oynatma</string>
   <string name="tag_text_plays">%d oynatma</string>
   <string name="tag_text_premiere">Gala</string>
@@ -2115,6 +2136,21 @@
   <string name="text_reality_tier_loose">Serbest uyarlama</string>
   <string name="text_reality_tier_mostly_true">Çoğunlukla doğru</string>
   <string name="text_reality_tier_unclear">Belirsiz</string>
+  <string name="text_recap_at_the_finale">Finalde</string>
+  <string name="text_recap_before_season">%d. sezondan önce</string>
+  <string name="text_recap_in_depth_locked">Bölüm bölüm inceleme</string>
+  <string name="text_recap_key_moment_counter">%1$d / %2$d</string>
+  <string name="text_recap_meta_pair">%1$s · %2$s</string>
+  <string name="text_recap_source_wikipedia">Wikipedia kaynaklı özet</string>
+  <string name="text_recap_spoiler_partial">%1$d bölümden %2$d tanesini izlediniz. Bu, %3$d. sezonun geri kalanı hakkında spoiler içerir.</string>
+  <string name="text_recap_spoiler_unwatched">%d. sezona henüz başlamadınız. Bu, tüm sezon hakkında spoiler içerir.</string>
+  <string name="text_recap_story_description">Bitirdiğiniz sezona kadar tüm hikâye</string>
+  <string name="text_recap_story_not_covered">%d. sezon ve sonrasından hiçbir şey içermez.</string>
+  <string name="text_recap_story_progress">%1$d sezondan %2$d\'i</string>
+  <string name="text_recap_story_stats">%1$d bölüm · yaklaşık %2$s</string>
+  <string name="text_recap_story_up_next">Sezon %d · sırada</string>
+  <string name="text_recap_upsell_in_depth">VIP ile sezonun ayrıntılı dökümüne ulaşın</string>
+  <string name="text_recap_upsell_story">VIP ile son bitirdiğiniz sezona kadar tek bir hikâye</string>
   <string name="text_recommendation_person_more_titles">+%d daha</string>
   <string name="text_recommendation_person_watched_acting_one">İzlediğiniz %d yapımda rol aldı</string>
   <string name="text_recommendation_person_watched_acting_other">İzlediğiniz %d yapımda rol aldı</string>
