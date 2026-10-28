@@ -53,7 +53,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
-internal val StatCardSize = 128.dp
+internal val StatCardSize = 130.dp
 internal val StatWideCardWidth = 272.dp
 
 @OptIn(ExperimentalMaterial3Api::class)

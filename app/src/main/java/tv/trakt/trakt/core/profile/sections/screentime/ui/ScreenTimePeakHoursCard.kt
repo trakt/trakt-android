@@ -142,7 +142,9 @@ private fun PeakHourRow(
                 },
                 gapSize = 2.dp,
                 color = TraktTheme.colors.accent,
-                trackColor = TraktTheme.colors.chipContainer,
+                trackColor = TraktTheme.colors.chipContainer.copy(
+                    alpha = 0.5F,
+                ),
                 drawStopIndicator = { },
                 modifier = Modifier.weight(5F),
             )
