@@ -65,7 +65,7 @@ private fun MatchPillContent(
     val containerColor = TraktTheme.colors.chipContainer
         .copy(alpha = alpha)
     val fillColor = TraktTheme.colors.chipProgress
-        .copy(alpha = alpha)
+        .copy(alpha = alpha - 0.2F)
     val contentColor = TraktTheme.colors.chipContent
     val fill = score / 100F
 
