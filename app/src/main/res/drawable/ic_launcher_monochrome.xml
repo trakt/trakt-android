@@ -8,7 +8,7 @@
     android:scaleX="0.45833334"
     android:scaleY="0.45833334"
     android:translateX="109.1821"
-    android:translateY="109.1821"
+    android:translateY="109"
     >
     <group>
       <clip-path android:pathData="M0,0h400v400h-400z" />

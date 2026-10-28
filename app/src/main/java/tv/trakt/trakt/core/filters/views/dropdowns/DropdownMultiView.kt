@@ -25,8 +25,6 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -59,11 +57,11 @@ internal fun <T> DropdownMultiView(
                         true -> TraktTheme.colors.dropdownContainerActive
                         false -> TraktTheme.colors.dropdownContainer
                     },
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(15.dp),
                 )
                 .padding(
-                    horizontal = 14.dp,
-                    vertical = 14.dp,
+                    horizontal = 13.dp,
+                    vertical = 13.dp,
                 )
                 .onClick(enabled = enabled) {
                     showMenu = true
@@ -74,10 +72,7 @@ internal fun <T> DropdownMultiView(
                     selected -> values.joinToString(", ") { it.displayString }
                     else -> header
                 },
-                style = TraktTheme.typography.meta.copy(
-                    fontSize = 12.sp,
-                    letterSpacing = 0.02.em,
-                ),
+                style = TraktTheme.typography.buttonTertiary,
                 color = when (active) {
                     true -> TraktTheme.colors.dropdownContentActive
                     false -> TraktTheme.colors.dropdownContent

@@ -1,10 +1,6 @@
 package tv.trakt.trakt.core.filters.views
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -47,7 +43,7 @@ internal fun ParentalGuideFilters(
     enabled: Boolean = true,
 ) {
     var expanded by rememberSaveable {
-        mutableStateOf(ParentalGuideCategory.entries.any { rangeOf(it) != null })
+        mutableStateOf(true)
     }
     val chevronRotation by animateFloatAsState(
         targetValue = if (expanded) 180F else 0F,
@@ -76,23 +72,19 @@ internal fun ParentalGuideFilters(
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
                 modifier = Modifier
-                    .size(15.dp)
+                    .size(16.dp)
                     .graphicsLayer {
                         rotationZ = chevronRotation
                     },
             )
         }
 
-        AnimatedVisibility(
-            visible = expanded,
-            enter = expandVertically(animationSpec = tween(100)),
-            exit = shrinkVertically(animationSpec = tween(100)),
-        ) {
+        if (expanded) {
             Column(
                 verticalArrangement = spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 32.dp),
+                    .padding(top = 26.dp),
             ) {
                 ParentalGuideCategory.entries.forEach { category ->
                     ParentalGuideFilter(

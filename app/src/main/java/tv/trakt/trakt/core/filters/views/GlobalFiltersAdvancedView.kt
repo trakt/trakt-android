@@ -187,8 +187,8 @@ internal fun GlobalFiltersAdvancedView(
                     onUpdateFilter(state.filter.withParentalRange(category, range), true)
                 },
                 modifier = Modifier.padding(
-                    top = 14.dp,
-                    bottom = 10.dp,
+                    top = 16.dp,
+                    bottom = 12.dp,
                 ),
             )
 
