@@ -91,6 +91,7 @@ internal fun AllShowSeasonsContent(
     onMoreClick: ((EpisodeItem) -> Unit)? = null,
     onCheckSeasonClick: (() -> Unit)? = null,
     onRemoveSeasonClick: (() -> Unit)? = null,
+    onSeasonListsClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val peopleSearchState = rememberTextFieldState()
@@ -147,6 +148,9 @@ internal fun AllShowSeasonsContent(
                     },
                     onBackClick = {
                         onBackClick?.invoke()
+                    },
+                    onListsClick = onSeasonListsClick.takeIf {
+                        state.user != null && state.items.selectedSeason != null
                     },
                     modifier = Modifier
                         .padding(contentPadding)

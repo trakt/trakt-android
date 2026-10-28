@@ -5,7 +5,11 @@ import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
 import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostUsersListsCreateRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
+import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInner
+import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
+import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInner
+import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsReorderRequest
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
@@ -182,6 +186,85 @@ class ListsRemoteSource(
             ),
         )
         cacheMarker.invalidate()
+    }
+
+    suspend fun addSeasonToList(
+        userId: TraktId,
+        listId: TraktId,
+        seasonId: TraktId,
+    ) {
+        listsApi.postUsersListsListAdd(
+            id = userId.value.toString(),
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = seasonRequest(seasonId),
+        )
+        cacheMarker.invalidate()
+    }
+
+    suspend fun removeSeasonFromList(
+        userId: TraktId,
+        listId: TraktId,
+        seasonId: TraktId,
+    ) {
+        listsApi.postUsersListsListRemove(
+            id = userId.value.toString(),
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = seasonRequest(seasonId),
+        )
+        cacheMarker.invalidate()
+    }
+
+    suspend fun addEpisodeToList(
+        userId: TraktId,
+        listId: TraktId,
+        episodeId: TraktId,
+    ) {
+        listsApi.postUsersListsListAdd(
+            id = userId.value.toString(),
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = episodeRequest(episodeId),
+        )
+        cacheMarker.invalidate()
+    }
+
+    suspend fun removeEpisodeFromList(
+        userId: TraktId,
+        listId: TraktId,
+        episodeId: TraktId,
+    ) {
+        listsApi.postUsersListsListRemove(
+            id = userId.value.toString(),
+            listId = listId.value.toString(),
+            postUsersListsListAddRequest = episodeRequest(episodeId),
+        )
+        cacheMarker.invalidate()
+    }
+
+    private fun seasonRequest(seasonId: TraktId): PostUsersListsListAddRequest {
+        return PostUsersListsListAddRequest(
+            seasons = listOf(
+                PostUsersListsListAddRequestSeasonsInner(
+                    ids = PostUsersListsListAddRequestSeasonsInnerIds(
+                        trakt = seasonId.value,
+                        tmdb = null,
+                        tvdb = -1,
+                    ),
+                ),
+            ),
+        )
+    }
+
+    private fun episodeRequest(episodeId: TraktId): PostUsersListsListAddRequest {
+        return PostUsersListsListAddRequest(
+            episodes = listOf(
+                PostUsersListsListAddRequestEpisodesInner(
+                    ids = PostUsersListsListAddRequestEpisodesInnerIds(
+                        trakt = episodeId.value,
+                        tvdb = -1,
+                    ),
+                ),
+            ),
+        )
     }
 
     suspend fun getAllListItems(

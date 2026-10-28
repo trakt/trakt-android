@@ -74,6 +74,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
@@ -117,6 +119,7 @@ internal fun ShowSeasonsView(
     var episodeWatchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
     var confirmWatchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
     var episodeContextSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var listsSheet by remember { mutableStateOf<ManageListsTarget?>(null) }
     var seasonDateSheet by remember { mutableStateOf(false) }
 
     ShowSeasonsContent(
@@ -167,8 +170,20 @@ internal fun ShowSeasonsView(
         onRemoveClick = {
             confirmRemoveEpisodeSheet = it
         },
+        onListsClick = { item ->
+            state.show?.let { show ->
+                listsSheet = ManageListsTarget.EpisodeTarget(show, item.episode)
+            }
+        },
         onDismiss = {
             episodeContextSheet = null
+        },
+    )
+
+    ManageListsSheet(
+        target = listsSheet,
+        onDismiss = {
+            listsSheet = null
         },
     )
 

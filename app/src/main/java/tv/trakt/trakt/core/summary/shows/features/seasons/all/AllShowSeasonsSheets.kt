@@ -21,6 +21,8 @@ import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.comments.model.MentionSource
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilSheet
@@ -43,6 +45,7 @@ internal class AllShowSeasonsSheetState {
     var episodeWatchedUntil by mutableStateOf<Episode?>(null)
     var confirmWatchedUntil by mutableStateOf<Episode?>(null)
     var episodeContext by mutableStateOf<EpisodeItem?>(null)
+    var manageLists by mutableStateOf<ManageListsTarget?>(null)
     var seasonDate by mutableStateOf(false)
     var postComment by mutableStateOf(false)
     var postReply by mutableStateOf<Pair<Comment, User?>?>(null)
@@ -71,8 +74,20 @@ internal fun AllShowSeasonsSheets(
         onRemoveClick = {
             sheetState.confirmRemoveEpisode = it
         },
+        onListsClick = { item ->
+            state.show?.let { show ->
+                sheetState.manageLists = ManageListsTarget.EpisodeTarget(show, item.episode)
+            }
+        },
         onDismiss = {
             sheetState.episodeContext = null
+        },
+    )
+
+    ManageListsSheet(
+        target = sheetState.manageLists,
+        onDismiss = {
+            sheetState.manageLists = null
         },
     )
 

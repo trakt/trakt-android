@@ -174,4 +174,14 @@ class UserPersonalListsRemoteSource(
         val response = v3Api.getMovieMeLists(movieId)
         return response.map { it.toTraktId() }.toSet()
     }
+
+    suspend fun getSeasonLists(seasonId: TraktId): Set<TraktId> {
+        val response = v3Api.getSeasonMeLists(seasonId)
+        return response.map { it.toTraktId() }.toSet()
+    }
+
+    suspend fun getEpisodeLists(episodeId: TraktId): Set<TraktId> {
+        val response = v3Api.getEpisodeMeLists(episodeId)
+        return response.map { it.toTraktId() }.toSet()
+    }
 }

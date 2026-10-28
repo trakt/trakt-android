@@ -30,6 +30,7 @@ internal fun EpisodeDetailsContextSheet(
     watched: Boolean,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
@@ -61,6 +62,15 @@ internal fun EpisodeDetailsContextSheet(
                 },
                 onCheckClick = {
                     onCheckClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
+                onListsClick = {
+                    onListsClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

@@ -54,4 +54,48 @@ internal class RemovePersonalListItemUseCase(
             updatedAt = nowUtc(),
         )
     }
+
+    suspend fun removeSeason(
+        listId: TraktId,
+        ownerId: TraktId,
+        seasonId: TraktId,
+    ) {
+        remoteSource.removeSeasonFromList(
+            userId = ownerId,
+            listId = listId,
+            seasonId = seasonId,
+        )
+
+        personalListsLocalSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+
+        collabListsLocalSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+    }
+
+    suspend fun removeEpisode(
+        listId: TraktId,
+        ownerId: TraktId,
+        episodeId: TraktId,
+    ) {
+        remoteSource.removeEpisodeFromList(
+            userId = ownerId,
+            listId = listId,
+            episodeId = episodeId,
+        )
+
+        personalListsLocalSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+
+        collabListsLocalSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+    }
 }
