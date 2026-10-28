@@ -154,25 +154,6 @@ internal fun HorizontalMediaCard(
                             )
                         }
 
-                        if (isErrorContent && title.isNotBlank()) {
-                            Box(
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .fillMaxWidth()
-                                    .fillMaxHeight(0.66F)
-                                    .drawWithCache {
-                                        onDrawBehind {
-                                            drawRect(
-                                                brush = verticalGradient(
-                                                    0f to Color.Transparent,
-                                                    1f to Color(0xFA212427),
-                                                ),
-                                            )
-                                        }
-                                    },
-                            )
-                        }
-
                         if (paletteColor != null && !isErrorContainer) {
                             Box(
                                 modifier = Modifier

@@ -49,6 +49,7 @@ internal fun CrewPersonListItem(
             null
         },
         onClick = { onClick?.invoke(person) },
+        onImageClick = { onClick?.invoke(person) },
         modifier = modifier,
     )
 }

@@ -91,6 +91,8 @@ import tv.trakt.trakt.core.summary.movies.features.history.navigation.movieHisto
 import tv.trakt.trakt.core.summary.movies.features.history.navigation.navigateToMovieHistory
 import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
+import tv.trakt.trakt.core.summary.people.all.allPersonCreditsScreen
+import tv.trakt.trakt.core.summary.people.all.navigateToAllPersonCredits
 import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.sentiment.navigation.navigateToSentiment
@@ -755,6 +757,12 @@ internal fun NavGraphBuilder.profileScreens(
 internal fun NavGraphBuilder.peopleScreens(controller: NavHostController) {
     with(controller) {
         personDetailsScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToAllCredits = { navigateToAllPersonCredits(it) },
+            onNavigateBack = { popBackStack() },
+        )
+        allPersonCreditsScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateBack = { popBackStack() },

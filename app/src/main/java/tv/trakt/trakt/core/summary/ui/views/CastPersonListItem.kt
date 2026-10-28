@@ -47,6 +47,7 @@ internal fun CastPersonListItem(
             null
         },
         onClick = { onClick?.invoke(person) },
+        onImageClick = { onClick?.invoke(person) },
         modifier = modifier,
     )
 }

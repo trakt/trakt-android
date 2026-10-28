@@ -9,6 +9,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.summary.people.PersonDetailsScreen
+import tv.trakt.trakt.core.summary.people.all.AllPersonCreditsDestination
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 
 @Serializable
@@ -23,6 +24,7 @@ internal data class PersonDestination(
 internal fun NavGraphBuilder.personDetailsScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToAllCredits: (AllPersonCreditsDestination) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<PersonDestination> {
@@ -31,6 +33,7 @@ internal fun NavGraphBuilder.personDetailsScreen(
             onNavigateBack = onNavigateBack,
             onNavigateToShow = onNavigateToShow,
             onNavigateToMovie = onNavigateToMovie,
+            onNavigateToAllCredits = onNavigateToAllCredits,
         )
     }
 }

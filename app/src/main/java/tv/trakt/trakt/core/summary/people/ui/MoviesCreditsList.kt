@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,7 +30,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
-import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -40,6 +37,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
@@ -51,9 +49,7 @@ import tv.trakt.trakt.core.summary.people.ListLoadingView
 import tv.trakt.trakt.core.summary.people.helpers.resolveSelectedCreditsFilter
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.chips.FilterChip
-import tv.trakt.trakt.ui.components.chips.FilterChipGroup
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -69,6 +65,7 @@ internal fun MoviesCreditsList(
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((Movie) -> Unit)? = null,
     onLongClick: ((Movie) -> Unit)? = null,
+    onMoreClick: ((String?) -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState(
@@ -78,24 +75,30 @@ internal fun MoviesCreditsList(
         ),
     )
 
+    var selectedFilter by rememberSaveable(listItems.keys) {
+        mutableStateOf(
+            resolveSelectedCreditsFilter(listItems, person.knownForDepartment, preferredFilter),
+        )
+    }
+
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier,
     ) {
-        Row(
+        TraktSectionHeader(
+            title = stringResource(R.string.page_title_movies),
+            subtitle = listItems.keys.singleOrNull()
+                ?.takeIf { it.equals("acting", ignoreCase = true) }
+                ?.let { stringResource(R.string.translated_value_position_acting) },
+            chevron = loading != Done || listItems.isNotEmpty(),
+            collapsable = false,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(sectionPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = CenterVertically,
-        ) {
-            TraktHeader(
-                title = stringResource(R.string.page_title_movies),
-                subtitle = listItems.keys.singleOrNull()
-                    ?.takeIf { it.equals("acting", ignoreCase = true) }
-                    ?.let { stringResource(R.string.translated_value_position_acting) },
-            )
-        }
+                .padding(sectionPadding)
+                .onClick(enabled = loading == Done && listItems.isNotEmpty()) {
+                    onMoreClick?.invoke(selectedFilter)
+                },
+        )
 
         Crossfade(
             targetState = loading,
@@ -115,16 +118,9 @@ internal fun MoviesCreditsList(
                             contentPadding = sectionPadding,
                         )
                     } else {
-                        var selectedFilter by rememberSaveable {
-                            mutableStateOf(
-                                resolveSelectedCreditsFilter(listItems, person.knownForDepartment, preferredFilter)
-                                    ?: listItems.keys.first(),
-                            )
-                        }
-
                         Column {
                             if (listItems.keys.size > 1) {
-                                ListFilters(
+                                CreditsPositionFilters(
                                     filters = listItems.keys,
                                     selected = selectedFilter,
                                     onSelected = {
@@ -143,7 +139,7 @@ internal fun MoviesCreditsList(
                                 contentPadding = contentPadding,
                             ) {
                                 items(
-                                    items = listItems[selectedFilter] ?: EmptyImmutableList,
+                                    items = selectedFilter?.let { listItems[it] } ?: EmptyImmutableList,
                                     key = { it.key },
                                 ) { item ->
                                     VerticalMediaCard(
@@ -206,31 +202,6 @@ internal fun MoviesCreditsList(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun ListFilters(
-    filters: ImmutableSet<String>,
-    selected: String,
-    onSelected: (String) -> Unit,
-) {
-    FilterChipGroup(
-        paddingHorizontal = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
-        ),
-        paddingVertical = PaddingValues(bottom = 18.dp),
-    ) {
-        for (filter in filters) {
-            FilterChip(
-                text = filter.replaceFirstChar { it.uppercase() },
-                selected = selected == filter,
-                onClick = {
-                    onSelected(filter)
-                },
-            )
         }
     }
 }
