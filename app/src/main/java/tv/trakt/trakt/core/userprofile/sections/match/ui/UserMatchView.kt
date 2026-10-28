@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
@@ -45,6 +46,7 @@ import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.rememberPercentFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
@@ -67,6 +69,8 @@ private const val SHARED_MEDIA_LIMIT = 6
 private val ChipShape = RoundedCornerShape(100)
 private val BarShape = RoundedCornerShape(100)
 private val UnicornColor = Purple400
+private val AvatarSize = 80.dp
+private val AvatarLabelWidth = 112.dp
 
 @Composable
 internal fun UserMatchView(
@@ -82,8 +86,11 @@ internal fun UserMatchView(
     Column(
         verticalArrangement = spacedBy(24.dp),
         modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(top = 8.dp),
+            .verticalScroll(
+                state = rememberScrollState(),
+                overscrollEffect = null,
+            )
+            .padding(top = 16.dp),
     ) {
         MatchHero(
             score = match.score,
@@ -176,16 +183,26 @@ private fun MatchHero(
         modifier = modifier,
     ) {
         Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
+            horizontalArrangement = spacedBy(8.dp),
         ) {
-            MatchAvatar(user = viewer)
-            Text(
-                text = stringResource(R.string.text_game_versus),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
+            MatchAvatar(
+                user = viewer,
+                label = stringResource(R.string.text_leaderboard_you),
             )
-            MatchAvatar(user = user)
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.height(AvatarSize),
+            ) {
+                Text(
+                    text = stringResource(R.string.text_game_versus),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading5,
+                )
+            }
+            MatchAvatar(
+                user = user,
+                label = user.displayName,
+            )
         }
 
         Text(
@@ -210,11 +227,38 @@ private fun MatchHero(
 @Composable
 private fun MatchAvatar(
     user: User?,
-    size: Dp = 80.dp,
+    label: String,
 ) {
+    Column(
+        verticalArrangement = spacedBy(6.dp),
+        horizontalAlignment = CenterHorizontally,
+        modifier = Modifier.width(AvatarLabelWidth),
+    ) {
+        MatchAvatarImage(user = user)
+        Text(
+            text = label,
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.paragraphSmaller,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+private fun MatchAvatarImage(user: User?) {
     val modifier = Modifier
-        .size(size)
-        .border(2.dp, TraktTheme.colors.textPrimary.copy(alpha = 0.1F), CircleShape)
+        .size(AvatarSize)
+        .border(
+            2.dp,
+            when (user?.isAnyVip == true) {
+                true -> TraktTheme.colors.vipAccent
+                else -> Color.Transparent
+            },
+            CircleShape,
+        )
         .clip(CircleShape)
 
     if (user?.hasAvatar == true) {
@@ -395,12 +439,13 @@ private fun TopicChip(
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(3.dp),
-        modifier = chipModifier.padding(
-            start = if (tier.hasSparkle) 8.dp else 10.dp,
-            end = 11.dp,
-            top = 6.dp,
-            bottom = 6.dp,
-        ),
+        modifier = chipModifier
+            .padding(
+                start = if (tier.hasSparkle) 8.dp else 10.dp,
+                end = 11.dp,
+                top = 6.dp,
+                bottom = 6.dp,
+            ),
     ) {
         if (tier.hasSparkle) {
             Icon(
@@ -417,7 +462,7 @@ private fun TopicChip(
             fontSize = 12.sp,
         )
         Text(
-            text = name,
+            text = name.capitalize(),
             color = foreground,
             style = when {
                 tier.hasSparkle -> font
