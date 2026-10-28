@@ -138,6 +138,19 @@ State not needing process survival but shared across ViewModels (login session, 
 - Repositories and ViewModels go through `TokenProvider` / `SessionManager`; no direct DataStore access.
 - Token refresh in Ktor authorised client's `Auth` plugin (see `networking.md`).
 
+## Cached user profile
+
+`DefaultSessionManager` stores the signed-in `User` as JSON under a key suffixed with
+`KEY_VERSION`. A cached profile that fails to decode clears the whole session and signs the user out.
+
+- **Any change to `User` or its nested types** (added, removed, renamed or retyped field) **bumps
+  `KEY_VERSION`** in `common/.../auth/session/DefaultSessionManager.kt` in the same commit.
+- **Do not add `= null` or other defaults to `User` fields** to keep old cached JSON decoding. The
+  bump drops the old key, the user stays signed in (auth tokens live in a separate store) and the
+  profile is refetched with the new field filled from the API.
+- New fields are required constructor params. Update every `User(...)` / `User.Settings(...)` call
+  site, including previews and every `fromDto` overload.
+
 ## Migrations
 
 - Preferences DataStore: use `SharedPreferencesMigration` once during legacy-shedding pass; one-line comment when retiring old key.
@@ -158,4 +171,5 @@ State not needing process survival but shared across ViewModels (login session, 
 - [ ] Reads return `Flow<T>`, writes are `suspend`
 - [ ] Store wired as `single { }` in Koin
 - [ ] Auth tokens go through `TokenProvider`, never DataStore directly
+- [ ] `User` model changed → `KEY_VERSION` bumped in `DefaultSessionManager`, no `= null` defaults
 - [ ] No `runBlocking { … .first() }` in production code paths
