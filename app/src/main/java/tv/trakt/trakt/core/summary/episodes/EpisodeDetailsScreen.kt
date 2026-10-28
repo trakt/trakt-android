@@ -669,6 +669,7 @@ internal fun EpisodeDetailsContent(
                                     parametersOf(state.show, state.episode)
                                 },
                             ),
+                            user = state.user,
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onEpisodeClick = onEpisodeClick ?: {},

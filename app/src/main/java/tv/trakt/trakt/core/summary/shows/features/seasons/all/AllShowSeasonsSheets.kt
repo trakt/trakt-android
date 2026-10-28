@@ -74,9 +74,12 @@ internal fun AllShowSeasonsSheets(
         onRemoveClick = {
             sheetState.confirmRemoveEpisode = it
         },
-        onListsClick = { item ->
-            state.show?.let { show ->
-                sheetState.manageLists = ManageListsTarget.EpisodeTarget(show, item.episode)
+        onListsClick = when {
+            state.user == null -> null
+            else -> { item ->
+                state.show?.let { show ->
+                    sheetState.manageLists = ManageListsTarget.EpisodeTarget(show, item.episode)
+                }
             }
         },
         onDismiss = {

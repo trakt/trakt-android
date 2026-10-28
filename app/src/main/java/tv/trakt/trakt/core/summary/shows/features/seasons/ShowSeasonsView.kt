@@ -170,9 +170,12 @@ internal fun ShowSeasonsView(
         onRemoveClick = {
             confirmRemoveEpisodeSheet = it
         },
-        onListsClick = { item ->
-            state.show?.let { show ->
-                listsSheet = ManageListsTarget.EpisodeTarget(show, item.episode)
+        onListsClick = when {
+            user == null -> null
+            else -> { item ->
+                state.show?.let { show ->
+                    listsSheet = ManageListsTarget.EpisodeTarget(show, item.episode)
+                }
             }
         },
         onDismiss = {
