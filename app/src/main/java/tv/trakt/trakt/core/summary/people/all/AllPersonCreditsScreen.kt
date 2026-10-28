@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,12 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -51,17 +50,16 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
+import tv.trakt.trakt.core.summary.people.all.views.AllPersonCreditView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsSection
 import tv.trakt.trakt.core.summary.people.ui.CreditsPositionFilters
-import tv.trakt.trakt.core.summary.people.ui.PersonCreditCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val SKELETON_ITEMS = 12
@@ -97,7 +95,6 @@ internal fun AllPersonCreditsScreen(
         state = state,
         modifier = modifier,
         onBackClick = onNavigateBack,
-        onModeClick = viewModel::setMode,
         onPositionClick = viewModel::setPosition,
         onShowClick = viewModel::navigateToShow,
         onMovieClick = viewModel::navigateToMovie,
@@ -121,14 +118,13 @@ internal fun AllPersonCreditsContent(
     state: AllPersonCreditsState,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
-    onModeClick: (MediaMode) -> Unit = {},
     onPositionClick: (String) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
 ) {
-    val gridState = rememberLazyGridState()
+    val listState = rememberLazyListState()
 
     val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
@@ -146,7 +142,7 @@ internal fun AllPersonCreditsContent(
     )
 
     LaunchedEffect(state.mode, state.selectedPosition) {
-        gridState.scrollToItem(0)
+        listState.scrollToItem(0)
     }
 
     Box(
@@ -159,42 +155,33 @@ internal fun AllPersonCreditsContent(
             translation = scrollConnection.resultOffset,
         )
 
-        LazyVerticalGrid(
-            state = gridState,
-            columns = GridCells.Fixed(TraktTheme.size.mainGridColumns),
-            horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
-            verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
+        LazyColumn(
+            state = listState,
+            verticalArrangement = spacedBy(TraktTheme.spacing.mainListVerticalSpace),
             contentPadding = contentPadding,
             overscrollEffect = null,
         ) {
             headerContent(
                 state = state,
                 onBackClick = onBackClick,
-                onModeClick = onModeClick,
                 onPositionClick = onPositionClick,
             )
 
             when {
                 state.loading.isLoading && state.items.isEmpty() -> {
                     items(count = SKELETON_ITEMS) {
-                        VerticalMediaSkeletonCard(
-                            chip = true,
-                            secondaryChip = true,
-                            chipRatio = 0.66F,
-                            secondaryChipRatio = 0.5F,
-                            chipSpacing = 8.dp,
-                        )
+                        PanelMediaSkeletonCard()
                     }
                 }
 
                 state.loading.isDone && state.items.isEmpty() && state.error != null -> {
-                    item(span = { GridItemSpan(maxLineSpan) }) {
+                    item {
                         ContentErrorView(error = state.error)
                     }
                 }
 
                 state.loading.isDone && state.items.isEmpty() -> {
-                    item(span = { GridItemSpan(maxLineSpan) }) {
+                    item {
                         ContentEmptyView(state = state)
                     }
                 }
@@ -204,9 +191,10 @@ internal fun AllPersonCreditsContent(
                         items = state.items,
                         key = { it.key },
                     ) { item ->
-                        PersonCreditCard(
+                        AllPersonCreditView(
                             item = item,
                             userCollection = state.collection,
+                            mediaIcon = state.section.isHistory,
                             onShowClick = onShowClick,
                             onShowLongClick = onShowLongClick,
                             onMovieClick = onMovieClick,
@@ -223,37 +211,34 @@ internal fun AllPersonCreditsContent(
     }
 }
 
-private fun LazyGridScope.headerContent(
+private fun LazyListScope.headerContent(
     state: AllPersonCreditsState,
     onBackClick: () -> Unit,
-    onModeClick: (MediaMode) -> Unit,
     onPositionClick: (String) -> Unit,
 ) {
-    item(span = { GridItemSpan(maxLineSpan) }) {
-        TitleBar(
-            title = state.person?.name ?: "",
-            subtitle = subtitleRes(state)?.let { stringResource(it) },
-            modifier = Modifier.onClick { onBackClick() },
-        )
-    }
-
-    item(span = { GridItemSpan(maxLineSpan) }) {
-        MediaModeFilters(
-            selected = state.mode,
-            height = 32.dp,
-            onClick = onModeClick,
-        )
-    }
-
-    if (state.positions.size > 1) {
-        item(span = { GridItemSpan(maxLineSpan) }) {
-            CreditsPositionFilters(
-                filters = state.positions,
-                selected = state.selectedPosition,
-                paddingHorizontal = PaddingValues(),
-                paddingVertical = PaddingValues(),
-                onSelected = onPositionClick,
+    item {
+        Column(
+            modifier = Modifier
+                .padding(
+                    bottom = 4.dp,
+                ),
+        ) {
+            TitleBar(
+                title = state.person?.name ?: "",
+                subtitle = subtitleRes(state)?.let { stringResource(it) },
+                modifier = Modifier.onClick { onBackClick() },
             )
+
+            if (state.positions.size > 1) {
+                CreditsPositionFilters(
+                    filters = state.positions,
+                    selected = state.selectedPosition,
+                    paddingHorizontal = PaddingValues(),
+                    paddingVertical = PaddingValues(top = 5.dp),
+                    height = 32.dp,
+                    onSelected = onPositionClick,
+                )
+            }
         }
     }
 }

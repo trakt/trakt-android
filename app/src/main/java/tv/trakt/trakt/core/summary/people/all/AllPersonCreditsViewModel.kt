@@ -44,12 +44,12 @@ private typealias MovieCredits = ImmutableMap<String, ImmutableList<PersonCredit
 @Suppress("UNCHECKED_CAST")
 internal class AllPersonCreditsViewModel(
     savedStateHandle: SavedStateHandle,
-    private val analytics: Analytics,
+    collectionStateProvider: CollectionStateProvider,
+    analytics: Analytics,
     private val getPersonUseCase: GetPersonUseCase,
     private val getPersonCreditsUseCase: GetPersonCreditsUseCase,
     private val showLocalSource: ShowLocalSource,
     private val movieLocalSource: MovieLocalSource,
-    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllPersonCreditsDestination>()
     private val personId = destination.personId.toTraktId()
@@ -120,10 +120,6 @@ internal class AllPersonCreditsViewModel(
                 Timber.recordError(error)
             }
         }
-    }
-
-    fun setMode(mode: MediaMode) {
-        modeState.update { mode }
     }
 
     fun setPosition(position: String) {
