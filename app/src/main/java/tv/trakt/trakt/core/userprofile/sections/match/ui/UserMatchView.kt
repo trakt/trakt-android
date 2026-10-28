@@ -58,7 +58,7 @@ import tv.trakt.trakt.core.userprofile.sections.match.model.MatchChipTier
 import tv.trakt.trakt.core.userprofile.sections.match.model.matchLabelRes
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -83,12 +83,10 @@ internal fun UserMatchView(
 ) {
     Column(
         verticalArrangement = spacedBy(24.dp),
-        modifier = modifier.verticalScroll(rememberScrollState()),
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(top = 8.dp),
     ) {
-        TraktHeader(
-            title = stringResource(R.string.match_drawer_title),
-        )
-
         MatchHero(
             score = match.score,
             viewer = viewer,
@@ -96,57 +94,72 @@ internal fun UserMatchView(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        MatchSection(title = stringResource(R.string.match_drawer_breakdown_header)) {
-            BreakdownRow(
-                label = stringResource(R.string.match_drawer_breakdown_topics),
-                value = match.topicsScore,
-            )
-            BreakdownRow(
-                label = stringResource(R.string.match_drawer_breakdown_favorites),
-                value = match.favoritesScore,
-            )
-        }
+        Column(
+            verticalArrangement = spacedBy(32.dp),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            MatchSection(title = stringResource(R.string.match_drawer_breakdown_header)) {
+                BreakdownRow(
+                    label = stringResource(R.string.match_drawer_breakdown_topics),
+                    value = match.topicsScore,
+                )
+                BreakdownRow(
+                    label = stringResource(R.string.match_drawer_breakdown_favorites),
+                    value = match.favoritesScore,
+                )
+            }
 
-        if (match.sharedTopics.isNotEmpty()) {
-            MatchSection(
-                title = stringResource(R.string.match_drawer_shared_topics_header),
-                count = match.sharedTopics.size,
-            ) {
-                FlowRow(
-                    horizontalArrangement = spacedBy(4.dp),
-                    verticalArrangement = spacedBy(4.dp),
+            if (match.sharedTopics.isNotEmpty()) {
+                MatchSection(
+                    title = stringResource(R.string.match_drawer_shared_topics_header),
+                    count = match.sharedTopics.size,
                 ) {
-                    match.sharedTopics.forEachIndexed { index, topic ->
-                        TopicChip(
-                            name = topic.name,
-                            tier = MatchChipTier.of(index, topic.rarity),
-                        )
+                    FlowRow(
+                        horizontalArrangement = spacedBy(4.dp),
+                        verticalArrangement = spacedBy(4.dp),
+                    ) {
+                        match.sharedTopics.forEachIndexed { index, topic ->
+                            TopicChip(
+                                name = topic.name,
+                                tier = MatchChipTier.of(index, topic.rarity),
+                            )
+                        }
                     }
                 }
             }
-        }
 
-        if (match.sharedMovies.isNotEmpty()) {
-            MatchSection(
-                title = stringResource(R.string.tag_text_movies),
-                count = match.sharedMovies.size,
-            ) {
-                SharedMediaGrid(
-                    placeholders = match.sharedMovies.size.coerceAtMost(SHARED_MEDIA_LIMIT),
-                    items = sharedMovies?.map { SharedMedia(it.title, it.images?.getPosterUrl()) { onMovieClick(it) } },
-                )
+            if (match.sharedShows.isNotEmpty()) {
+                MatchSection(
+                    title = stringResource(R.string.tag_text_shows),
+                    count = match.sharedShows.size,
+                ) {
+                    SharedMediaGrid(
+                        placeholders = match.sharedShows.size.coerceAtMost(SHARED_MEDIA_LIMIT),
+                        items = sharedShows?.map {
+                            SharedMedia(
+                                it.title,
+                                it.images?.getPosterUrl(),
+                            ) { onShowClick(it) }
+                        },
+                    )
+                }
             }
-        }
 
-        if (match.sharedShows.isNotEmpty()) {
-            MatchSection(
-                title = stringResource(R.string.tag_text_shows),
-                count = match.sharedShows.size,
-            ) {
-                SharedMediaGrid(
-                    placeholders = match.sharedShows.size.coerceAtMost(SHARED_MEDIA_LIMIT),
-                    items = sharedShows?.map { SharedMedia(it.title, it.images?.getPosterUrl()) { onShowClick(it) } },
-                )
+            if (match.sharedMovies.isNotEmpty()) {
+                MatchSection(
+                    title = stringResource(R.string.tag_text_movies),
+                    count = match.sharedMovies.size,
+                ) {
+                    SharedMediaGrid(
+                        placeholders = match.sharedMovies.size.coerceAtMost(SHARED_MEDIA_LIMIT),
+                        items = sharedMovies?.map {
+                            SharedMedia(
+                                it.title,
+                                it.images?.getPosterUrl(),
+                            ) { onMovieClick(it) }
+                        },
+                    )
+                }
             }
         }
     }
@@ -160,7 +173,7 @@ private fun MatchHero(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = spacedBy(12.dp),
+        verticalArrangement = spacedBy(8.dp),
         horizontalAlignment = CenterHorizontally,
         modifier = modifier,
     ) {
@@ -171,8 +184,8 @@ private fun MatchHero(
             MatchAvatar(user = viewer)
             Text(
                 text = stringResource(R.string.text_game_versus),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.meta,
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading5,
             )
             MatchAvatar(user = user)
         }
@@ -182,6 +195,7 @@ private fun MatchHero(
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.paragraphSmaller,
             textAlign = TextAlign.Center,
+            modifier = Modifier.padding(vertical = 12.dp),
         )
 
         MatchGauge(score = score)
@@ -189,7 +203,7 @@ private fun MatchHero(
         Text(
             text = stringResource(matchLabelRes(score)),
             color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading5,
+            style = TraktTheme.typography.heading3,
             textAlign = TextAlign.Center,
         )
     }
@@ -198,7 +212,7 @@ private fun MatchHero(
 @Composable
 private fun MatchAvatar(
     user: User?,
-    size: Dp = 66.dp,
+    size: Dp = 80.dp,
 ) {
     val modifier = Modifier
         .size(size)
@@ -225,7 +239,7 @@ private fun MatchAvatar(
 @Composable
 private fun MatchGauge(
     score: Int,
-    size: Dp = 160.dp,
+    size: Dp = 148.dp,
     strokeWidth: Dp = 12.dp,
 ) {
     val trackColor = TraktTheme.colors.textPrimary.copy(alpha = 0.1F)
@@ -269,7 +283,7 @@ private fun MatchGauge(
         Text(
             text = score.rememberPercentFormat(),
             color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading2.copy(fontSize = 40.sp),
+            style = TraktTheme.typography.heading2.copy(fontSize = 36.sp),
             maxLines = 1,
         )
     }
@@ -290,18 +304,13 @@ private fun MatchSection(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(10.dp),
         ) {
-            Text(
-                text = title,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading6,
+            TraktSectionHeader(
+                title = title,
+                chevron = false,
+                collapsable = false,
+                modifier = Modifier
+                    .weight(1F),
             )
-            if (count != null) {
-                Text(
-                    text = count.toString(),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmaller,
-                )
-            }
         }
         content()
     }

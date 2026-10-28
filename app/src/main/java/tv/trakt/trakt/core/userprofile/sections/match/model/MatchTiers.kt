@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.userprofile.sections.match.model
 import androidx.annotation.StringRes
 import tv.trakt.trakt.resources.R
 
-// Values from 0.5 up mean the topic is rare for both movies and shows, not just one side.
 private const val UNICORN_RARITY_THRESHOLD = 0.5F
 
 internal enum class MatchBand {
@@ -23,10 +22,6 @@ internal enum class MatchBand {
     }
 }
 
-/**
- * Visual weight of a shared topic chip. The server orders topics by distinctiveness, so the
- * position sets the tier unless the topic is globally rare.
- */
 internal enum class MatchChipTier {
     Unicorn,
     Rare,
