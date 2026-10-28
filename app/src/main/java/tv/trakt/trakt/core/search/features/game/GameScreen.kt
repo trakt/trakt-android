@@ -13,33 +13,24 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.common.Config.WEB_GAME_RATED_HIGHER_URL
-import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.buttons.FloatingBackButton
+import tv.trakt.trakt.ui.components.buttons.FloatingBackButtonInset
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val gameBackgroundColor = Color(0xFF050406)
-
-private val BackButtonSize = 36.dp
-private val BackButtonTouchSize = 48.dp
-private val BackButtonInset = (BackButtonTouchSize - BackButtonSize) / 2
 
 @Composable
 internal fun GameScreen(
@@ -89,43 +80,13 @@ private fun GameContent(
             )
         }
 
-        BackButton(
+        FloatingBackButton(
             onClick = onBackClick,
             modifier = Modifier.padding(
-                start = TraktTheme.spacing.mainPageHorizontalSpace - BackButtonInset,
+                start = TraktTheme.spacing.mainPageHorizontalSpace - FloatingBackButtonInset,
                 top = 13.dp,
             ),
         )
-    }
-}
-
-@Composable
-private fun BackButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .size(BackButtonTouchSize)
-            .onClick(onClick = onClick),
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(BackButtonSize)
-                .background(
-                    color = TraktTheme.colors.backgroundPrimary.copy(alpha = 0.75F),
-                    shape = CircleShape,
-                ),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp),
-            )
-        }
     }
 }
 

@@ -34,6 +34,7 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.homeUpNe
 import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.navigation.homeWatchlistScreen
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.navigation.navigateToAllHomeWatchlist
+import tv.trakt.trakt.core.inreview.navigation.inReviewScreen
 import tv.trakt.trakt.core.lists.features.all.navigation.allListsScreen
 import tv.trakt.trakt.core.lists.features.all.navigation.navigateToAllLists
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
@@ -975,6 +976,14 @@ internal fun NavGraphBuilder.userProfileScreens(
 internal fun NavGraphBuilder.streamingsScreens(controller: NavHostController) {
     with(controller) {
         allStreamingsScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.inReviewScreens(controller: NavHostController) {
+    with(controller) {
+        inReviewScreen(
             onNavigateBack = { popBackStack() },
         )
     }

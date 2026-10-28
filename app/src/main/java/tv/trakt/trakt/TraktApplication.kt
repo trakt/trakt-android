@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.discover.di.discoverModule
 import tv.trakt.trakt.core.filters.di.filtersModule
 import tv.trakt.trakt.core.home.di.homeDataModule
 import tv.trakt.trakt.core.home.di.homeModule
+import tv.trakt.trakt.core.inreview.di.inReviewModule
 import tv.trakt.trakt.core.klipy.di.gifPickerModule
 import tv.trakt.trakt.core.lists.di.listsDataModule
 import tv.trakt.trakt.core.lists.di.listsModule
@@ -198,6 +199,7 @@ internal class TraktApplication : Application() {
                 gifPickerModule,
                 userProfileModule,
                 youTubePlayerModule,
+                inReviewModule,
                 shareModule,
                 widgetsModule,
                 otherDatePickerModule,
