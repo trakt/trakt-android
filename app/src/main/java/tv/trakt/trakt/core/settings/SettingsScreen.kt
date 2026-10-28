@@ -101,6 +101,7 @@ import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.ThemeMode
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val SECTION_SPACING_DP = 12
 internal const val SECTION_ITEM_HEIGHT_DP = 32
@@ -251,6 +252,7 @@ private fun SettingsScreenContent(
                 .padding(contentPadding),
         ) {
             TitleBar(
+                onRedditClick = onRedditClick,
                 onGithubClick = onGithubClick,
                 onInstagramClick = onInstagramClick,
                 onTwitterClick = onTwitterClick,
@@ -318,6 +320,7 @@ private fun SettingsScreenContent(
 @Composable
 private fun TitleBar(
     modifier: Modifier = Modifier,
+    onRedditClick: () -> Unit = {},
     onGithubClick: () -> Unit = {},
     onInstagramClick: () -> Unit = {},
     onTwitterClick: () -> Unit = {},
@@ -351,6 +354,16 @@ private fun TitleBar(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(14.dp),
         ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_reddit),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(24.dp)
+                    .onClick(onClick = onRedditClick),
+            )
+
             Icon(
                 painter = painterResource(R.drawable.ic_github),
                 contentDescription = null,
@@ -778,7 +791,7 @@ private fun SettingsAppearance(
                             onClick = {
                                 menuVisible.value = false
                                 scope.launch(Dispatchers.Main) {
-                                    delay(350)
+                                    delay(350.milliseconds)
                                     AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
                                 }
                             },
