@@ -639,7 +639,7 @@ private fun TitleBar(
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(34.dp)
+                            .size(36.dp)
                             .graphicsLayer {
                                 translationY = 1.dp.toPx()
                             },

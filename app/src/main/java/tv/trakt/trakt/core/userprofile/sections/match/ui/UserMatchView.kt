@@ -1,5 +1,8 @@
 package tv.trakt.trakt.core.userprofile.sections.match.ui
 
+import android.graphics.PorterDuff
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.widget.ImageView
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,7 +29,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -37,6 +44,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,9 +54,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.isInvisible
 import coil3.compose.AsyncImage
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.rememberPercentFormat
@@ -60,20 +72,28 @@ import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.userprofile.sections.match.model.MatchChipTier
 import tv.trakt.trakt.core.userprofile.sections.match.model.matchLabelRes
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
+import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val SHARED_MEDIA_COLUMNS = 3
 private const val SHARED_MEDIA_LIMIT = 6
+
+// Canvas of avd_match_versus relative to its glyph, padded so the intro motion is not clipped.
+private const val VERSUS_CANVAS_WIDTH_RATIO = 1.32F
+private const val VERSUS_CANVAS_HEIGHT_RATIO = 1.5F
 
 private val ChipShape = RoundedCornerShape(100)
 private val BarShape = RoundedCornerShape(100)
 private val UnicornColor = Purple400
 private val AvatarSize = 80.dp
 private val AvatarLabelWidth = 112.dp
+private val VersusSize = 42.dp
+private val VersusAnimationDelay = 300.milliseconds
 
 @Composable
 internal fun UserMatchView(
@@ -189,7 +209,10 @@ private fun MatchHero(
         modifier = modifier,
     ) {
         Row(
-            horizontalArrangement = spacedBy(8.dp),
+            horizontalArrangement = spacedBy(2.dp),
+            modifier = Modifier.graphicsLayer {
+                clip = false
+            },
         ) {
             MatchAvatar(
                 user = viewer,
@@ -199,11 +222,7 @@ private fun MatchHero(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.height(AvatarSize),
             ) {
-                Text(
-                    text = stringResource(R.string.text_game_versus),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading5,
-                )
+                VersusMark()
             }
             MatchAvatar(
                 user = user,
@@ -228,6 +247,39 @@ private fun MatchHero(
             textAlign = TextAlign.Center,
         )
     }
+}
+
+@Composable
+private fun VersusMark() {
+    val color = TraktTheme.colors.textPrimary
+    val animationsDisabled = rememberAnimationsDisabled()
+    var play by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        delay(VersusAnimationDelay)
+        play = true
+    }
+
+    AndroidView(
+        factory = { context ->
+            ImageView(context).apply {
+                setImageDrawable(context.getDrawable(R.drawable.avd_match_versus))
+                isInvisible = !animationsDisabled
+            }
+        },
+        update = { view ->
+            view.setColorFilter(color.toArgb(), PorterDuff.Mode.SRC_IN)
+            if (play && view.isInvisible) {
+                view.isInvisible = false
+                (view.drawable as? AnimatedVectorDrawable)?.start()
+            }
+        },
+        onRelease = { (it.drawable as? AnimatedVectorDrawable)?.stop() },
+        modifier = Modifier.size(
+            width = VersusSize * VERSUS_CANVAS_WIDTH_RATIO,
+            height = VersusSize * VERSUS_CANVAS_HEIGHT_RATIO,
+        ),
+    )
 }
 
 @Composable
