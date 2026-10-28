@@ -68,13 +68,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config
@@ -103,6 +101,7 @@ import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.ThemeMode
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val SECTION_SPACING_DP = 12
 internal const val SECTION_ITEM_HEIGHT_DP = 32
@@ -170,6 +169,10 @@ internal fun SettingsScreen(
         onSubscriptionsClick = {
             uriHandler.openUri(Config.WEB_GOOGLE_SUBSCRIPTIONS)
         },
+        onRedditClick = {
+            viewModel.logRedditLink()
+            uriHandler.openUri(Config.WEB_SOCIAL_REDDIT_URL)
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -211,6 +214,7 @@ private fun SettingsScreenContent(
     onInstagramClick: () -> Unit = { },
     onTwitterClick: () -> Unit = { },
     onSubscriptionsClick: () -> Unit = { },
+    onRedditClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val contentPadding = PaddingValues(
@@ -248,6 +252,7 @@ private fun SettingsScreenContent(
                 .padding(contentPadding),
         ) {
             TitleBar(
+                onRedditClick = onRedditClick,
                 onGithubClick = onGithubClick,
                 onInstagramClick = onInstagramClick,
                 onTwitterClick = onTwitterClick,
@@ -297,6 +302,11 @@ private fun SettingsScreenContent(
                     onSetThemeMode = onSetThemeMode,
                 )
 
+                SettingsCommunity(
+                    state = state,
+                    onRedditClick = onRedditClick,
+                )
+
                 SettingsMisc(
                     state = state,
                     onSubscriptionsClick = onSubscriptionsClick,
@@ -310,6 +320,7 @@ private fun SettingsScreenContent(
 @Composable
 private fun TitleBar(
     modifier: Modifier = Modifier,
+    onRedditClick: () -> Unit = {},
     onGithubClick: () -> Unit = {},
     onInstagramClick: () -> Unit = {},
     onTwitterClick: () -> Unit = {},
@@ -343,6 +354,16 @@ private fun TitleBar(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(14.dp),
         ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_reddit),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(24.dp)
+                    .onClick(onClick = onRedditClick),
+            )
+
             Icon(
                 painter = painterResource(R.drawable.ic_github),
                 contentDescription = null,
@@ -770,7 +791,7 @@ private fun SettingsAppearance(
                             onClick = {
                                 menuVisible.value = false
                                 scope.launch(Dispatchers.Main) {
-                                    delay(350)
+                                    delay(350.milliseconds)
                                     AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
                                 }
                             },
@@ -888,13 +909,58 @@ private fun SettingsNotifications(
 }
 
 @Composable
+private fun SettingsCommunity(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+    onRedditClick: () -> Unit = { },
+) {
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.text_footer_category_community).uppercase(),
+            titleColor = getHeaderColor(),
+            titleStyle = TraktTheme.typography.heading6,
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.link_label_reddit),
+            enabled = !state.logoutLoading.isLoading,
+            onClick = onRedditClick,
+        )
+
+        if (state.user?.isAnyVip == true) {
+            SettingsTextField(
+                text = stringResource(R.string.link_text_support),
+                enabled = !state.logoutLoading.isLoading,
+                onClick = {
+                    uriHandler.openUri(Config.WEB_SUPPORT_URL)
+                },
+            )
+
+            SettingsTextField(
+                text = stringResource(R.string.link_text_feedback),
+                enabled = !state.logoutLoading.isLoading,
+                icon = R.drawable.ic_feedback,
+                iconSize = 17.dp,
+                onClick = {
+                    uriHandler.openUri(Config.WEB_ROADMAP_URL)
+                },
+            )
+        }
+    }
+}
+
+@Composable
 private fun SettingsMisc(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onSubscriptionsClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
 ) {
-    val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
 
     Column(
@@ -915,52 +981,11 @@ private fun SettingsMisc(
             },
         )
 
-        if (state.user?.isAnyVip == true) {
-            SettingsTextField(
-                text = stringResource(R.string.link_text_support),
-                enabled = !state.logoutLoading.isLoading,
-                onClick = {
-                    val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = "mailto:".toUri()
-                        putExtra(Intent.EXTRA_EMAIL, arrayOf(Config.WEB_SUPPORT_MAIL))
-                        putExtra(Intent.EXTRA_SUBJECT, "Trakt Support (Android ${Build.VERSION.RELEASE})")
-                    }
-
-                    try {
-                        context.startActivity(intent)
-                    } catch (error: Exception) {
-                        // No email client installed
-                        Timber.w(error, "Unable to start email client")
-                    }
-                },
-            )
-        }
-
-        SettingsTextField(
-            text = stringResource(R.string.link_text_forums),
-            enabled = !state.logoutLoading.isLoading,
-            onClick = {
-                uriHandler.openUri(Config.WEB_FORUMS_URL)
-            },
-        )
-
         SettingsTextField(
             text = stringResource(R.string.text_settings_play_subscriptions),
             enabled = !state.logoutLoading.isLoading,
             onClick = onSubscriptionsClick,
         )
-
-        if (state.user?.isAnyVip == true) {
-            SettingsTextField(
-                text = stringResource(R.string.link_text_feedback),
-                enabled = !state.logoutLoading.isLoading,
-                icon = R.drawable.ic_feedback,
-                iconSize = 17.dp,
-                onClick = {
-                    uriHandler.openUri(Config.WEB_ROADMAP_URL)
-                },
-            )
-        }
 
         SettingsTextField(
             text = stringResource(R.string.button_text_logout),

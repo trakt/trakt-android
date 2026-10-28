@@ -13,7 +13,7 @@ object Config {
     const val WEB_ABOUT_US_URL: String = "https://app.trakt.tv/about?native_app_mode=true"
     const val WEB_TERMS_URL: String = "https://app.trakt.tv/terms?native_app_mode=true"
     const val WEB_PRIVACY_URL: String = "https://app.trakt.tv/privacy?native_app_mode=true"
-    const val WEB_FORUMS_URL: String = "https://forums.trakt.tv/"
+    const val WEB_SUPPORT_URL: String = "https://support.trakt.tv"
     const val WEB_ROADMAP_URL: String = "https://roadmap.trakt.tv/"
     const val WEB_SETTINGS_URL: String = "https://app.trakt.tv/settings?native_app_mode=true"
     const val WEB_SETTINGS_SCROBBLING_URL: String = "https://trakt.tv/settings/scrobblers?native_app_mode=true"
@@ -25,6 +25,7 @@ object Config {
     const val WEB_SOCIAL_GITHUB_URL: String = "https://github.com/trakt/trakt-android"
     const val WEB_SOCIAL_INSTAGRAM_URL: String = "https://www.instagram.com/trakt_app/"
     const val WEB_SOCIAL_X_URL: String = "https://x.com/trakt"
+    const val WEB_SOCIAL_REDDIT_URL: String = "https://www.reddit.com/r/trakt"
 
     const val WEB_SUPPORT_MAIL: String = "support@trakt.tv"
     const val WEB_GOOGLE_SUBSCRIPTIONS: String = "https://play.google.com/store/account/subscriptions"
