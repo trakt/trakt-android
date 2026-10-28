@@ -31,14 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -54,6 +51,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserMatch
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.userprofile.sections.match.model.MatchChipTier
 import tv.trakt.trakt.core.userprofile.sections.match.model.matchLabelRes
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
@@ -68,7 +66,7 @@ private const val SHARED_MEDIA_LIMIT = 6
 
 private val ChipShape = RoundedCornerShape(100)
 private val BarShape = RoundedCornerShape(100)
-private val UnicornColor = Color(0xFFA78BFA)
+private val UnicornColor = Purple400
 
 @Composable
 internal fun UserMatchView(
@@ -115,8 +113,8 @@ internal fun UserMatchView(
                     count = match.sharedTopics.size,
                 ) {
                     FlowRow(
-                        horizontalArrangement = spacedBy(4.dp),
-                        verticalArrangement = spacedBy(4.dp),
+                        horizontalArrangement = spacedBy(5.dp),
+                        verticalArrangement = spacedBy(6.dp),
                     ) {
                         match.sharedTopics.forEachIndexed { index, topic ->
                             TopicChip(
@@ -372,27 +370,20 @@ private fun TopicChip(
         MatchChipTier.Unicorn -> {
             Modifier
                 .background(
-                    Brush.linearGradient(
-                        listOf(UnicornColor.copy(alpha = 0.32F), UnicornColor.copy(alpha = 0.14F)),
-                    ),
+                    UnicornColor.copy(alpha = 0.33F),
                     ChipShape,
                 )
-                .border(1.dp, UnicornColor.copy(alpha = 0.6F), ChipShape)
         }
         MatchChipTier.Rare -> {
             Modifier
                 .background(
-                    Brush.linearGradient(
-                        listOf(foreground.copy(alpha = 0.22F), foreground.copy(alpha = 0.1F)),
-                    ),
+                    foreground.copy(alpha = 0.2F),
                     ChipShape,
                 )
-                .border(1.dp, foreground.copy(alpha = 0.4F), ChipShape)
         }
         MatchChipTier.Notable -> {
             Modifier
                 .background(foreground.copy(alpha = 0.12F), ChipShape)
-                .border(1.dp, foreground.copy(alpha = 0.18F), ChipShape)
         }
         MatchChipTier.Common -> {
             Modifier
@@ -403,8 +394,13 @@ private fun TopicChip(
 
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(4.dp),
-        modifier = chipModifier.padding(horizontal = 10.dp, vertical = 5.dp),
+        horizontalArrangement = spacedBy(3.dp),
+        modifier = chipModifier.padding(
+            start = if (tier.hasSparkle) 8.dp else 10.dp,
+            end = 11.dp,
+            top = 6.dp,
+            bottom = 6.dp,
+        ),
     ) {
         if (tier.hasSparkle) {
             Icon(
@@ -414,15 +410,18 @@ private fun TopicChip(
                     MatchChipTier.Unicorn -> UnicornColor
                     else -> foreground.copy(alpha = 0.85F)
                 },
-                modifier = Modifier.size(10.dp),
+                modifier = Modifier.size(16.dp),
             )
         }
+        val font = TraktTheme.typography.meta.copy(
+            fontSize = 12.sp,
+        )
         Text(
             text = name,
             color = foreground,
             style = when {
-                tier.hasSparkle -> TraktTheme.typography.paragraphSmaller.copy(fontWeight = W600)
-                else -> TraktTheme.typography.paragraphSmaller
+                tier.hasSparkle -> font
+                else -> font
             },
             maxLines = 1,
         )
