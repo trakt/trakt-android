@@ -2,8 +2,11 @@
 
 package tv.trakt.trakt.core.userprofile
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -79,6 +82,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.UserMatch
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red500
@@ -305,28 +309,16 @@ private fun UserProfileContent(
                     user = state.user,
                     userBlocked = state.userBlocked,
                     userFollowing = state.userFollowing,
+                    match = matchState.match.takeIf {
+                        !state.userBlocked.loading && !state.userBlocked.blocked
+                    },
                     onBack = onNavigateBack,
+                    onMatchClick = onMatchClick,
                     onFollowClick = onFollowClick,
                     onBlockClick = onBlockClick,
                     modifier = Modifier
                         .padding(bottom = 8.dp),
                 )
-            }
-
-            val matchVisible = !state.userBlocked.loading &&
-                !state.userBlocked.blocked &&
-                (matchState.match != null || matchState.loading.isLoading)
-            if (matchVisible) {
-                item {
-                    UserMatchPill(
-                        match = matchState.match,
-                        loading = matchState.loading.isLoading,
-                        onClick = onMatchClick,
-                        modifier = Modifier
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                            .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace / 1.5F),
-                    )
-                }
             }
 
             val isPrivate = state.user.isPrivate && !state.userFollowing.following
@@ -591,7 +583,9 @@ private fun TitleBar(
     userBlocked: UserProfileState.BlockedState?,
     userFollowing: UserProfileState.FollowingState?,
     modifier: Modifier = Modifier,
+    match: UserMatch? = null,
     onBack: () -> Unit = {},
+    onMatchClick: () -> Unit = {},
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
 ) {
@@ -692,16 +686,28 @@ private fun TitleBar(
 
                 val subtitle = remember(user) {
                     listOfNotNull(
-                        "@${user.username}",
                         user.location?.takeIf { it.isNotBlank() },
-                        "VIP".takeIf { user.isAnyVip },
                     ).joinToString(separator = " • ")
                 }
 
                 TraktHeader(
                     title = user.displayName,
                     subtitle = subtitle,
+                    modifier = Modifier.weight(1F, fill = false),
                 )
+
+                AnimatedVisibility(
+                    visible = match != null,
+                    enter = fadeIn(tween(150)),
+                    exit = ExitTransition.None,
+                ) {
+                    if (match != null) {
+                        UserMatchPill(
+                            match = match,
+                            onClick = onMatchClick,
+                        )
+                    }
+                }
             }
         }
 
@@ -905,6 +911,30 @@ private fun Preview1() {
     backgroundColor = 0xFF131517,
 )
 @Composable
+private fun PreviewMatch() {
+    TraktThemeLightDark {
+        TitleBar(
+            user = PreviewData.user1.copy(
+                location = "Some Location",
+            ),
+            userBlocked = UserProfileState.BlockedState(
+                blocked = false,
+                loading = false,
+            ),
+            userFollowing = UserProfileState.FollowingState(
+                following = true,
+                loading = false,
+            ),
+            match = UserMatchPreviewData.match,
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
 private fun Preview3() {
     TraktThemeLightDark {
         FollowRequestView(
@@ -915,30 +945,6 @@ private fun Preview3() {
             ),
             loading = false,
             visible = true,
-        )
-    }
-}
-
-@Preview(
-    device = "id:pixel_6",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        UserProfileContent(
-            state = UserProfileState(
-                user = PreviewData.user1,
-                userRequest = UserProfileState.UserFollowRequestState(
-                    UserFollowRequest(
-                        id = 1,
-                        requestedAt = nowUtcInstant(),
-                        user = PreviewData.user1,
-                    ),
-                ),
-            ),
-            matchState = UserMatchState(match = UserMatchPreviewData.match),
         )
     }
 }
