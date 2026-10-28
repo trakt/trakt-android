@@ -32,6 +32,7 @@ data class User(
         val ratingPrompts: Boolean,
         val coverImage: String?,
         val shareCode: String?,
+        val slurm: String?,
     )
 
     val isAnyVip: Boolean
@@ -99,6 +100,7 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
             ratingPrompts = dto.browsing?.showRatingPrompt ?: false,
             coverImage = dto.user.vipCoverImage,
             shareCode = dto.account.shareCode,
+            slurm = dto.account.token,
         ),
     )
 }
@@ -130,6 +132,7 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
             ratingPrompts = false,
             coverImage = dto.vipCoverImage,
             shareCode = null,
+            slurm = null,
         ),
     )
 }

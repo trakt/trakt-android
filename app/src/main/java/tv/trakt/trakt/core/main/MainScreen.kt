@@ -28,6 +28,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -49,6 +50,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -89,6 +91,8 @@ import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.translation.download.CommentTranslationDownloadSheet
 import tv.trakt.trakt.core.discover.navigation.DiscoverDestination
 import tv.trakt.trakt.core.home.navigation.HomeDestination
+import tv.trakt.trakt.core.inreview.navigation.navigateToInReview
+import tv.trakt.trakt.core.inreview.rememberInReviewUriHandler
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
 import tv.trakt.trakt.core.main.navigation.MainNavHost
@@ -146,6 +150,9 @@ internal fun MainScreen(
         .collectAsStateWithLifecycle(initialValue = null)
 
     val searchState = rememberSearchState(currentDestination.value?.destination)
+    val inReviewUriHandler = rememberInReviewUriHandler(
+        onInReviewClick = navController::navigateToInReview,
+    )
 
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
@@ -206,15 +213,17 @@ internal fun MainScreen(
         onDismiss = { appLinkComment = null },
     )
 
-    LaunchedIntentHandler(
-        intent = intent,
-        newIntent = newIntent?.value,
-        navController = navController,
-        currentDestination = currentDestination.value,
-        searchState = searchState,
-        onAppLink = appLinkViewModel::openAppLink,
-        onMonthReviewOpen = viewModel::openMonthReviewNotification,
-    )
+    CompositionLocalProvider(LocalUriHandler provides inReviewUriHandler) {
+        LaunchedIntentHandler(
+            intent = intent,
+            newIntent = newIntent?.value,
+            navController = navController,
+            currentDestination = currentDestination.value,
+            searchState = searchState,
+            onAppLink = appLinkViewModel::openAppLink,
+            onMonthReviewOpen = viewModel::openMonthReviewNotification,
+        )
+    }
 
     LaunchedEffect(state.error) {
         val error = state.error ?: return@LaunchedEffect
@@ -255,16 +264,18 @@ internal fun MainScreen(
         state.user != null &&
         !state.welcome.isActive
 
-    MainScreenContent(
-        modifier = modifier,
-        state = state,
-        searchState = searchState,
-        navController = navController,
-        currentDestination = currentDestination,
-        appLinkLoading = appLinkState.loading.isLoading,
-        onDismissWelcome = viewModel::dismissWelcome,
-        onDismissCheckIn = viewModel::dismissCheckIn,
-    )
+    CompositionLocalProvider(LocalUriHandler provides inReviewUriHandler) {
+        MainScreenContent(
+            modifier = modifier,
+            state = state,
+            searchState = searchState,
+            navController = navController,
+            currentDestination = currentDestination,
+            appLinkLoading = appLinkState.loading.isLoading,
+            onDismissWelcome = viewModel::dismissWelcome,
+            onDismissCheckIn = viewModel::dismissCheckIn,
+        )
+    }
 
     SeasonalSplashView(
         enabled = state.user != null && !state.welcome.isActive && !yearInReviewVisible,
@@ -273,11 +284,13 @@ internal fun MainScreen(
         },
     )
 
-    MainYearInReviewView(
-        visible = yearInReviewVisible,
-        url = state.yearInReviewUrl,
-        onDismiss = viewModel::dismissYearInReview,
-    )
+    CompositionLocalProvider(LocalUriHandler provides inReviewUriHandler) {
+        MainYearInReviewView(
+            visible = yearInReviewVisible,
+            url = state.yearInReviewUrl,
+            onDismiss = viewModel::dismissYearInReview,
+        )
+    }
 
     BackHandler(
         enabled = !state.welcome.isActive && !yearInReviewVisible,
