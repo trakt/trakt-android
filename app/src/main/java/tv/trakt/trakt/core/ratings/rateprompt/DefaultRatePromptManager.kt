@@ -345,7 +345,7 @@ internal class DefaultRatePromptManager(
     }
 
     private fun Preferences.dismissedMedia(now: Instant): Set<String> {
-        val cutoff = now.minus(RECENTLY_WATCHED_DURATION).toEpochMilli()
+        val cutoff = now.minus(SHOW_BINGE_DURATION).toEpochMilli()
 
         return this[KEY_DISMISSED_MEDIA]
             .orEmpty()
