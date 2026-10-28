@@ -56,6 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -64,6 +65,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -589,9 +591,7 @@ private fun TitleBar(
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
 ) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+    TitleBarLayout(
         modifier = modifier
             .fillMaxWidth()
             .height(TraktTheme.size.titleBarHeight)
@@ -599,201 +599,202 @@ private fun TitleBar(
                 bottom = 14.dp,
                 end = TraktTheme.spacing.mainPageHorizontalSpace,
             ),
-    ) {
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(10.dp),
-            modifier = Modifier
-                .weight(1F, false)
-                .padding(
-                    start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
-                    end = 16.dp,
-                )
-                .onClick(onClick = onBack),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
+        leading = {
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(10.dp),
                 modifier = Modifier
-                    .graphicsLayer { translationX = -2.dp.toPx() },
-            )
+                    .padding(
+                        start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
+                        end = 16.dp,
+                    )
+                    .onClick(onClick = onBack),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_back_arrow),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .graphicsLayer { translationX = -2.dp.toPx() },
+                )
 
-            if (user != null) {
-                val vipAccent = TraktTheme.colors.vipAccent
-                val borderColor = remember(user) {
-                    when (user.isAnyVip) {
-                        true -> vipAccent
-                        else -> Color.White
+                if (user != null) {
+                    val vipAccent = TraktTheme.colors.vipAccent
+                    val borderColor = remember(user) {
+                        when (user.isAnyVip) {
+                            true -> vipAccent
+                            else -> Color.White
+                        }
                     }
-                }
 
-                Box(
-                    contentAlignment = Alignment.BottomCenter,
-                ) {
                     Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .graphicsLayer {
-                                translationY = 1.dp.toPx()
-                            },
+                        contentAlignment = Alignment.BottomCenter,
                     ) {
-                        if (user.hasAvatar) {
-                            AsyncImage(
-                                model = user.images?.avatar?.full,
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                error = painterResource(R.drawable.ic_person_placeholder),
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .graphicsLayer {
+                                    translationY = 1.dp.toPx()
+                                },
+                        ) {
+                            if (user.hasAvatar) {
+                                AsyncImage(
+                                    model = user.images?.avatar?.full,
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    error = painterResource(R.drawable.ic_person_placeholder),
+                                    modifier = Modifier
+                                        .border(2.dp, borderColor, CircleShape)
+                                        .clip(CircleShape),
+                                )
+                            } else {
+                                Image(
+                                    painter = painterResource(R.drawable.ic_person_placeholder),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .border(2.dp, borderColor, CircleShape)
+                                        .clip(CircleShape),
+                                )
+                            }
+                        }
+
+                        if (userBlocked?.blocked == true && !userBlocked.loading) {
+                            Text(
+                                text = stringResource(R.string.tag_text_blocked_user).uppercase(),
+                                color = Red500,
+                                style = TraktTheme.typography.meta.copy(
+                                    fontSize = 9.sp,
+                                    letterSpacing = 0.03.sp,
+                                ),
                                 modifier = Modifier
-                                    .border(2.dp, borderColor, CircleShape)
-                                    .clip(CircleShape),
-                            )
-                        } else {
-                            Image(
-                                painter = painterResource(R.drawable.ic_person_placeholder),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .border(2.dp, borderColor, CircleShape)
-                                    .clip(CircleShape),
+                                    .graphicsLayer {
+                                        translationY = 8.dp.toPx()
+                                    }
+                                    .shadow(
+                                        elevation = TraktTheme.colors.shadowDynamicSmall,
+                                        shape = RoundedCornerShape(100),
+                                    )
+                                    .background(
+                                        Red80,
+                                        RoundedCornerShape(100),
+                                    )
+                                    .padding(horizontal = 6.dp, vertical = 2.dp),
                             )
                         }
                     }
 
-                    if (userBlocked?.blocked == true && !userBlocked.loading) {
-                        Text(
-                            text = stringResource(R.string.tag_text_blocked_user).uppercase(),
-                            color = Red500,
-                            style = TraktTheme.typography.meta.copy(
-                                fontSize = 9.sp,
-                                letterSpacing = 0.03.sp,
-                            ),
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    translationY = 8.dp.toPx()
-                                }
-                                .shadow(
-                                    elevation = TraktTheme.colors.shadowDynamicSmall,
-                                    shape = RoundedCornerShape(100),
-                                )
-                                .background(
-                                    Red80,
-                                    RoundedCornerShape(100),
-                                )
-                                .padding(horizontal = 6.dp, vertical = 2.dp),
-                        )
+                    val subtitle = remember(user) {
+                        listOfNotNull(
+                            user.location?.takeIf { it.isNotBlank() },
+                        ).joinToString(separator = " • ")
                     }
+
+                    TraktHeader(
+                        title = user.displayName,
+                        subtitle = subtitle,
+                    )
                 }
-
-                val subtitle = remember(user) {
-                    listOfNotNull(
-                        user.location?.takeIf { it.isNotBlank() },
-                    ).joinToString(separator = " • ")
+            }
+        },
+        middle = {
+            AnimatedVisibility(
+                visible = match != null,
+                enter = fadeIn(tween(200)),
+                exit = ExitTransition.None,
+            ) {
+                if (match != null) {
+                    UserMatchPill(
+                        match = match,
+                        onClick = onMatchClick,
+                    )
                 }
+            }
+        },
+        trailing = {
+            if (user != null) {
+                Box {
+                    var showMenu by remember { mutableStateOf(false) }
 
-                TraktHeader(
-                    title = user.displayName,
-                    subtitle = subtitle,
-                    modifier = Modifier.weight(1F, fill = false),
-                )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_more_vertical),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick { showMenu = true },
+                    )
 
-                AnimatedVisibility(
-                    visible = match != null,
-                    enter = fadeIn(tween(150)),
-                    exit = ExitTransition.None,
-                ) {
-                    if (match != null) {
-                        UserMatchPill(
-                            match = match,
-                            onClick = onMatchClick,
+                    DropdownMenu(
+                        expanded = showMenu,
+                        containerColor = TraktTheme.colors.dialogContainer,
+                        shape = RoundedCornerShape(16.dp),
+                        onDismissRequest = { showMenu = false },
+                    ) {
+                        DropdownMenuItem(
+                            enabled = userFollowing?.loading != true,
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        when (userFollowing?.following) {
+                                            true -> R.string.button_text_unfollow
+                                            else -> R.string.button_text_follow
+                                        },
+                                    ),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onFollowClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(
+                                        when (userFollowing?.following) {
+                                            true -> R.drawable.ic_person_remove
+                                            else -> R.drawable.ic_person_add
+                                        },
+                                    ),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(22.dp),
+                                )
+                            },
+                        )
+
+                        DropdownMenuItem(
+                            enabled = userBlocked?.loading != true,
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        when {
+                                            userBlocked?.blocked == true -> R.string.button_text_unblock
+                                            else -> R.string.button_text_block
+                                        },
+                                    ),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onBlockClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_block),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(21.dp),
+                                )
+                            },
                         )
                     }
                 }
             }
-        }
-
-        if (user != null) {
-            Box {
-                var showMenu by remember { mutableStateOf(false) }
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_more_vertical),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .onClick { showMenu = true },
-                )
-
-                DropdownMenu(
-                    expanded = showMenu,
-                    containerColor = TraktTheme.colors.dialogContainer,
-                    shape = RoundedCornerShape(16.dp),
-                    onDismissRequest = { showMenu = false },
-                ) {
-                    DropdownMenuItem(
-                        enabled = userFollowing?.loading != true,
-                        text = {
-                            Text(
-                                text = stringResource(
-                                    when (userFollowing?.following) {
-                                        true -> R.string.button_text_unfollow
-                                        else -> R.string.button_text_follow
-                                    },
-                                ),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onFollowClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(
-                                    when (userFollowing?.following) {
-                                        true -> R.drawable.ic_person_remove
-                                        else -> R.drawable.ic_person_add
-                                    },
-                                ),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(22.dp),
-                            )
-                        },
-                    )
-
-                    DropdownMenuItem(
-                        enabled = userBlocked?.loading != true,
-                        text = {
-                            Text(
-                                text = stringResource(
-                                    when {
-                                        userBlocked?.blocked == true -> R.string.button_text_unblock
-                                        else -> R.string.button_text_block
-                                    },
-                                ),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onBlockClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_block),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(21.dp),
-                            )
-                        },
-                    )
-                }
-            }
-        }
-    }
+        },
+    )
 }
 
 @Composable
@@ -882,6 +883,55 @@ private fun FollowRequestView(
 }
 
 // Previews
+
+private val TitleBarMiddleGap = 12.dp
+
+@Composable
+private fun TitleBarLayout(
+    leading: @Composable () -> Unit,
+    middle: @Composable () -> Unit,
+    trailing: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Layout(
+        contents = listOf(leading, middle, trailing),
+        modifier = modifier,
+    ) { (leadingMeasurables, middleMeasurables, trailingMeasurables), constraints ->
+        val looseConstraints = constraints.copy(minWidth = 0, minHeight = 0)
+        val trailingPlaceables = trailingMeasurables.map { it.measure(looseConstraints) }
+        val middlePlaceables = middleMeasurables.map { it.measure(looseConstraints) }
+
+        val trailingWidth = trailingPlaceables.maxOfOrNull { it.width } ?: 0
+        val middleWidth = middlePlaceables.maxOfOrNull { it.width } ?: 0
+        val middleGap = if (middleWidth > 0) TitleBarMiddleGap.roundToPx() else 0
+        val leadingMaxWidth = (constraints.maxWidth - trailingWidth - middleWidth - middleGap)
+            .coerceAtLeast(0)
+
+        val leadingPlaceables = leadingMeasurables.map {
+            it.measure(looseConstraints.copy(maxWidth = leadingMaxWidth))
+        }
+        val leadingWidth = leadingPlaceables.maxOfOrNull { it.width } ?: 0
+
+        val width = constraints.maxWidth
+        val height = constraints.constrainHeight(
+            (leadingPlaceables + middlePlaceables + trailingPlaceables).maxOfOrNull { it.height } ?: 0,
+        )
+
+        layout(width, height) {
+            leadingPlaceables.forEach {
+                it.placeRelative(0, (height - it.height) / 2)
+            }
+            middlePlaceables.forEach {
+                val gapStart = leadingWidth
+                val gapEnd = width - trailingWidth
+                it.placeRelative(gapStart + (gapEnd - gapStart - it.width) / 2, (height - it.height) / 2)
+            }
+            trailingPlaceables.forEach {
+                it.placeRelative(width - it.width, (height - it.height) / 2)
+            }
+        }
+    }
+}
 
 @Preview(
     showBackground = true,
