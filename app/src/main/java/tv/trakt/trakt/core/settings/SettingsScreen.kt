@@ -300,10 +300,14 @@ private fun SettingsScreenContent(
                     onSetThemeMode = onSetThemeMode,
                 )
 
+                SettingsCommunity(
+                    state = state,
+                    onRedditClick = onRedditClick,
+                )
+
                 SettingsMisc(
                     state = state,
                     onSubscriptionsClick = onSubscriptionsClick,
-                    onRedditClick = onRedditClick,
                     onLogoutClick = onLogoutClick,
                 )
             }
@@ -892,11 +896,56 @@ private fun SettingsNotifications(
 }
 
 @Composable
+private fun SettingsCommunity(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+    onRedditClick: () -> Unit = { },
+) {
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.text_footer_category_community).uppercase(),
+            titleColor = getHeaderColor(),
+            titleStyle = TraktTheme.typography.heading6,
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.link_label_reddit),
+            enabled = !state.logoutLoading.isLoading,
+            onClick = onRedditClick,
+        )
+
+        if (state.user?.isAnyVip == true) {
+            SettingsTextField(
+                text = stringResource(R.string.link_text_support),
+                enabled = !state.logoutLoading.isLoading,
+                onClick = {
+                    uriHandler.openUri(Config.WEB_SUPPORT_URL)
+                },
+            )
+
+            SettingsTextField(
+                text = stringResource(R.string.link_text_feedback),
+                enabled = !state.logoutLoading.isLoading,
+                icon = R.drawable.ic_feedback,
+                iconSize = 17.dp,
+                onClick = {
+                    uriHandler.openUri(Config.WEB_ROADMAP_URL)
+                },
+            )
+        }
+    }
+}
+
+@Composable
 private fun SettingsMisc(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onSubscriptionsClick: () -> Unit = { },
-    onRedditClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
 ) {
     val uriHandler = LocalUriHandler.current
@@ -919,39 +968,11 @@ private fun SettingsMisc(
             },
         )
 
-        if (state.user?.isAnyVip == true) {
-            SettingsTextField(
-                text = stringResource(R.string.link_text_support),
-                enabled = !state.logoutLoading.isLoading,
-                onClick = {
-                    uriHandler.openUri(Config.WEB_SUPPORT_URL)
-                },
-            )
-        }
-
-        SettingsTextField(
-            text = stringResource(R.string.link_label_reddit),
-            enabled = !state.logoutLoading.isLoading,
-            onClick = onRedditClick,
-        )
-
         SettingsTextField(
             text = stringResource(R.string.text_settings_play_subscriptions),
             enabled = !state.logoutLoading.isLoading,
             onClick = onSubscriptionsClick,
         )
-
-        if (state.user?.isAnyVip == true) {
-            SettingsTextField(
-                text = stringResource(R.string.link_text_feedback),
-                enabled = !state.logoutLoading.isLoading,
-                icon = R.drawable.ic_feedback,
-                iconSize = 17.dp,
-                onClick = {
-                    uriHandler.openUri(Config.WEB_ROADMAP_URL)
-                },
-            )
-        }
 
         SettingsTextField(
             text = stringResource(R.string.button_text_logout),
