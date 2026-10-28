@@ -101,6 +101,10 @@ internal class SettingsViewModel(
             .launchIn(viewModelScope)
     }
 
+    fun logRedditLink() {
+        analytics.logLink(source = "settings", target = "reddit")
+    }
+
     fun setThemeMode(mode: ThemeMode) {
         viewModelScope.launch {
             themeModeUseCase.setThemeMode(mode)

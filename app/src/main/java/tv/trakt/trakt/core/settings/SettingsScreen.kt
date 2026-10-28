@@ -68,13 +68,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config
@@ -170,6 +168,10 @@ internal fun SettingsScreen(
         onSubscriptionsClick = {
             uriHandler.openUri(Config.WEB_GOOGLE_SUBSCRIPTIONS)
         },
+        onRedditClick = {
+            viewModel.logRedditLink()
+            uriHandler.openUri(Config.WEB_SOCIAL_REDDIT_URL)
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -211,6 +213,7 @@ private fun SettingsScreenContent(
     onInstagramClick: () -> Unit = { },
     onTwitterClick: () -> Unit = { },
     onSubscriptionsClick: () -> Unit = { },
+    onRedditClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     val contentPadding = PaddingValues(
@@ -300,6 +303,7 @@ private fun SettingsScreenContent(
                 SettingsMisc(
                     state = state,
                     onSubscriptionsClick = onSubscriptionsClick,
+                    onRedditClick = onRedditClick,
                     onLogoutClick = onLogoutClick,
                 )
             }
@@ -892,9 +896,9 @@ private fun SettingsMisc(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onSubscriptionsClick: () -> Unit = { },
+    onRedditClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
 ) {
-    val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
 
     Column(
@@ -920,28 +924,15 @@ private fun SettingsMisc(
                 text = stringResource(R.string.link_text_support),
                 enabled = !state.logoutLoading.isLoading,
                 onClick = {
-                    val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = "mailto:".toUri()
-                        putExtra(Intent.EXTRA_EMAIL, arrayOf(Config.WEB_SUPPORT_MAIL))
-                        putExtra(Intent.EXTRA_SUBJECT, "Trakt Support (Android ${Build.VERSION.RELEASE})")
-                    }
-
-                    try {
-                        context.startActivity(intent)
-                    } catch (error: Exception) {
-                        // No email client installed
-                        Timber.w(error, "Unable to start email client")
-                    }
+                    uriHandler.openUri(Config.WEB_SUPPORT_URL)
                 },
             )
         }
 
         SettingsTextField(
-            text = stringResource(R.string.link_text_forums),
+            text = stringResource(R.string.link_label_reddit),
             enabled = !state.logoutLoading.isLoading,
-            onClick = {
-                uriHandler.openUri(Config.WEB_FORUMS_URL)
-            },
+            onClick = onRedditClick,
         )
 
         SettingsTextField(
