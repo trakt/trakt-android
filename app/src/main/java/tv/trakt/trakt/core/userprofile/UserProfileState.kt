@@ -16,6 +16,7 @@ internal data class UserProfileState(
     val userFollowing: FollowingState = FollowingState(),
     val userRequest: UserFollowRequestState = UserFollowRequestState(),
     val monthStats: MonthlyStats? = null,
+    val shareCode: String? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.blocking.BlockUserUseCase
@@ -30,6 +31,7 @@ import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
@@ -63,6 +65,8 @@ internal class UserProfileViewModel(
     private val episodeLocalSource: EpisodeLocalSource,
     private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
+    private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<UserProfileDestination>()
     private val user = Json.decodeFromString<User>(destination.userJson)
@@ -74,6 +78,7 @@ internal class UserProfileViewModel(
     private val userFollowedState = MutableStateFlow(initialState.userFollowing)
     private val userRequestState = MutableStateFlow(initialState.userRequest)
     private val userMonthState = MutableStateFlow(initialState.monthStats)
+    private val shareCodeState = MutableStateFlow(initialState.shareCode)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
 
@@ -85,6 +90,15 @@ internal class UserProfileViewModel(
 
     init {
         loadData()
+        loadShareCode()
+    }
+
+    private fun loadShareCode() {
+        viewModelScope.launch {
+            shareCodeState.update {
+                sessionManager.getProfile()?.settings?.shareCode
+            }
+        }
     }
 
     private fun loadData() {
@@ -425,6 +439,10 @@ internal class UserProfileViewModel(
         infoState.update { null }
     }
 
+    fun logShare() {
+        analytics.logShare(source = "profile", type = "other")
+    }
+
     val state = combine(
         userState,
         userBlockedState,
@@ -436,6 +454,7 @@ internal class UserProfileViewModel(
         navigateMovieState,
         navigateEpisodeState,
         infoState,
+        shareCodeState,
     ) { states ->
         UserProfileState(
             user = states[0] as User,
@@ -448,6 +467,7 @@ internal class UserProfileViewModel(
             navigateMovie = states[7] as? TraktId,
             navigateEpisode = states[8] as? Pair<TraktId, Episode>,
             info = states[9] as? StringResource,
+            shareCode = states[10] as? String,
         )
     }.stateIn(
         scope = viewModelScope,

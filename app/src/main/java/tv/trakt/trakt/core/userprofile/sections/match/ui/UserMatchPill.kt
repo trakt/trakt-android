@@ -114,7 +114,6 @@ private fun MatchPillContent(
             contentDescription = null,
             tint = contentColor,
             modifier = Modifier
-                .rotate(90F)
                 .size(12.dp),
         )
     }

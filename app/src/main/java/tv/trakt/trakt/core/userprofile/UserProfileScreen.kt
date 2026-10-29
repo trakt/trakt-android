@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.userprofile
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateContentSize
@@ -74,10 +76,12 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
+import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -113,6 +117,8 @@ import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val AvatarSize = 60.dp
 
 @Composable
 internal fun UserProfileScreen(
@@ -174,6 +180,14 @@ internal fun UserProfileScreen(
         onMatchClick = {
             matchViewModel.openDetails()
             matchSheet = true
+        },
+        onShareClick = {
+            viewModel.logShare()
+            shareUser(
+                user = state.user,
+                shareCode = state.shareCode,
+                context = context,
+            )
         },
         onFollowClick = {
             when {
@@ -259,6 +273,7 @@ private fun UserProfileContent(
     onNavigateToAllLists: (User, PersonalListType) -> Unit = { _, _ -> },
     onNavigateBack: () -> Unit = {},
     onToggleFollowRequest: (approved: Boolean) -> Unit = { _ -> },
+    onShareClick: () -> Unit = {},
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
 ) {
@@ -310,17 +325,25 @@ private fun UserProfileContent(
             overscrollEffect = null,
         ) {
             item {
-                TitleBar(
+                TopBar(
                     user = state.user,
                     userBlocked = state.userBlocked,
                     userFollowing = state.userFollowing,
+                    onBack = onNavigateBack,
+                    onShareClick = onShareClick,
+                    onFollowClick = onFollowClick,
+                    onBlockClick = onBlockClick,
+                )
+            }
+
+            item {
+                UserHeader(
+                    user = state.user,
+                    userBlocked = state.userBlocked,
                     match = matchState.match.takeIf {
                         !state.userBlocked.loading && !state.userBlocked.blocked
                     },
-                    onBack = onNavigateBack,
                     onMatchClick = onMatchClick,
-                    onFollowClick = onFollowClick,
-                    onBlockClick = onBlockClick,
                     modifier = Modifier
                         .padding(bottom = 8.dp),
                 )
@@ -587,14 +610,13 @@ private fun LazyListScope.userProfilePrivateContent(
 }
 
 @Composable
-private fun TitleBar(
+private fun TopBar(
     user: User?,
     userBlocked: UserProfileState.BlockedState?,
     userFollowing: UserProfileState.FollowingState?,
     modifier: Modifier = Modifier,
-    match: UserMatch? = null,
     onBack: () -> Unit = {},
-    onMatchClick: () -> Unit = {},
+    onShareClick: () -> Unit = {},
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
 ) {
@@ -605,125 +627,33 @@ private fun TitleBar(
             .fillMaxWidth()
             .height(TraktTheme.size.titleBarHeight)
             .padding(
-                bottom = 14.dp,
+                start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
                 end = TraktTheme.spacing.mainPageHorizontalSpace,
             ),
     ) {
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(10.dp),
+        Icon(
+            painter = painterResource(R.drawable.ic_back_arrow),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
-                .weight(1F, false)
-                .padding(
-                    start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
-                    end = 16.dp,
-                )
+                .graphicsLayer { translationX = -2.dp.toPx() }
                 .onClick(onClick = onBack),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .graphicsLayer { translationX = -2.dp.toPx() },
-            )
+        )
 
-            if (user != null) {
-                val vipAccent = TraktTheme.colors.vipAccent
-                val borderColor = remember(user) {
-                    when (user.isAnyVip) {
-                        true -> vipAccent
-                        else -> Color.White
-                    }
-                }
-
-                Box(
-                    contentAlignment = Alignment.BottomCenter,
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(38.dp)
-                            .graphicsLayer {
-                                translationY = 1.dp.toPx()
-                            },
-                    ) {
-                        if (user.hasAvatar) {
-                            AsyncImage(
-                                model = user.images?.avatar?.full,
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                error = painterResource(R.drawable.ic_person_placeholder),
-                                modifier = Modifier
-                                    .border(2.dp, borderColor, CircleShape)
-                                    .clip(CircleShape),
-                            )
-                        } else {
-                            Image(
-                                painter = painterResource(R.drawable.ic_person_placeholder),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .border(2.dp, borderColor, CircleShape)
-                                    .clip(CircleShape),
-                            )
-                        }
-                    }
-
-                    if (userBlocked?.blocked == true && !userBlocked.loading) {
-                        Text(
-                            text = stringResource(R.string.tag_text_blocked_user).uppercase(),
-                            color = Red500,
-                            style = TraktTheme.typography.meta.copy(
-                                fontSize = 9.sp,
-                                letterSpacing = 0.03.sp,
-                            ),
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    translationY = 8.dp.toPx()
-                                }
-                                .shadow(
-                                    elevation = TraktTheme.colors.shadowDynamicSmall,
-                                    shape = RoundedCornerShape(100),
-                                )
-                                .background(
-                                    Red80,
-                                    RoundedCornerShape(100),
-                                )
-                                .padding(horizontal = 6.dp, vertical = 2.dp),
-                        )
-                    }
-                }
-
-                val subtitle = remember(user) {
-                    listOfNotNull(
-                        user.location?.takeIf { it.isNotBlank() },
-                    ).joinToString(separator = " • ")
-                }
-
-                TraktHeader(
-                    title = user.displayName,
-                    subtitle = subtitle,
-                )
-            }
-        }
-
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(14.dp),
-        ) {
-            AnimatedVisibility(
-                visible = match != null,
-                enter = fadeIn(tween(200)),
-                exit = ExitTransition.None,
+        if (user != null) {
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(22.dp),
             ) {
-                if (match != null) {
-                    UserMatchPill(
-                        match = match,
-                        onClick = onMatchClick,
-                    )
-                }
-            }
+                Icon(
+                    painter = painterResource(R.drawable.ic_share),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .onClick(onClick = onShareClick),
+                )
 
-            if (user != null) {
                 Box {
                     var showMenu by remember { mutableStateOf(false) }
 
@@ -807,6 +737,132 @@ private fun TitleBar(
             }
         }
     }
+}
+
+@Composable
+private fun UserHeader(
+    user: User,
+    userBlocked: UserProfileState.BlockedState?,
+    modifier: Modifier = Modifier,
+    match: UserMatch? = null,
+    onMatchClick: () -> Unit = {},
+) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
+                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                bottom = 13.dp,
+            ),
+    ) {
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+            modifier = Modifier
+                .weight(1F, false)
+                .padding(end = 16.dp),
+        ) {
+            val vipAccent = TraktTheme.colors.vipAccent
+            val borderColor = remember(user) {
+                when (user.isAnyVip) {
+                    true -> vipAccent
+                    else -> Color.White
+                }
+            }
+
+            Box(
+                contentAlignment = Alignment.BottomCenter,
+            ) {
+                if (user.hasAvatar) {
+                    AsyncImage(
+                        model = user.images?.avatar?.full,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        error = painterResource(R.drawable.ic_person_placeholder),
+                        modifier = Modifier
+                            .size(AvatarSize)
+                            .border(2.dp, borderColor, CircleShape)
+                            .clip(CircleShape),
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.ic_person_placeholder),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(AvatarSize)
+                            .border(2.dp, borderColor, CircleShape)
+                            .clip(CircleShape),
+                    )
+                }
+
+                if (userBlocked?.blocked == true && !userBlocked.loading) {
+                    Text(
+                        text = stringResource(R.string.tag_text_blocked_user).uppercase(),
+                        color = Red500,
+                        style = TraktTheme.typography.meta.copy(
+                            fontSize = 9.sp,
+                            letterSpacing = 0.03.sp,
+                        ),
+                        modifier = Modifier
+                            .graphicsLayer {
+                                translationY = size.height / 2
+                            }
+                            .shadow(
+                                elevation = TraktTheme.colors.shadowDynamicSmall,
+                                shape = RoundedCornerShape(100),
+                            )
+                            .background(
+                                Red80,
+                                RoundedCornerShape(100),
+                            )
+                            .padding(horizontal = 6.dp, vertical = 2.dp),
+                    )
+                }
+            }
+
+            val subtitle = remember(user) {
+                listOfNotNull(
+                    user.location?.takeIf { it.isNotBlank() },
+                ).joinToString(separator = " • ")
+            }
+
+            TraktHeader(
+                title = user.displayName,
+                subtitle = subtitle,
+            )
+        }
+
+        AnimatedVisibility(
+            visible = match != null,
+            enter = fadeIn(tween(200)),
+            exit = ExitTransition.None,
+        ) {
+            if (match != null) {
+                UserMatchPill(
+                    match = match,
+                    onClick = onMatchClick,
+                )
+            }
+        }
+    }
+}
+
+private fun shareUser(
+    user: User,
+    shareCode: String?,
+    context: Context,
+) {
+    val shareText = "${WEB_V3_BASE_URL}profile/${user.ids.slug.value}".toShareUrl(shareCode)
+    val intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, shareText)
+        type = "text/plain"
+    }
+
+    context.startActivity(Intent.createChooser(intent, user.displayName))
 }
 
 @Composable
@@ -903,19 +959,28 @@ private fun FollowRequestView(
 @Composable
 private fun Preview1() {
     TraktThemeLightDark {
-        TitleBar(
-            user = PreviewData.user1.copy(
-                location = "Some Location",
-            ),
-            userBlocked = UserProfileState.BlockedState(
-                blocked = true,
-                loading = false,
-            ),
-            userFollowing = UserProfileState.FollowingState(
-                following = true,
-                loading = false,
-            ),
-        )
+        Column {
+            TopBar(
+                user = PreviewData.user1,
+                userBlocked = UserProfileState.BlockedState(
+                    blocked = true,
+                    loading = false,
+                ),
+                userFollowing = UserProfileState.FollowingState(
+                    following = true,
+                    loading = false,
+                ),
+            )
+            UserHeader(
+                user = PreviewData.user1.copy(
+                    location = "Some Location",
+                ),
+                userBlocked = UserProfileState.BlockedState(
+                    blocked = true,
+                    loading = false,
+                ),
+            )
+        }
     }
 }
 
@@ -926,20 +991,29 @@ private fun Preview1() {
 @Composable
 private fun PreviewMatch() {
     TraktThemeLightDark {
-        TitleBar(
-            user = PreviewData.user1.copy(
-                location = "Some Location",
-            ),
-            userBlocked = UserProfileState.BlockedState(
-                blocked = false,
-                loading = false,
-            ),
-            userFollowing = UserProfileState.FollowingState(
-                following = true,
-                loading = false,
-            ),
-            match = UserMatchPreviewData.match,
-        )
+        Column {
+            TopBar(
+                user = PreviewData.user1,
+                userBlocked = UserProfileState.BlockedState(
+                    blocked = false,
+                    loading = false,
+                ),
+                userFollowing = UserProfileState.FollowingState(
+                    following = true,
+                    loading = false,
+                ),
+            )
+            UserHeader(
+                user = PreviewData.user1.copy(
+                    location = "Some Location",
+                ),
+                userBlocked = UserProfileState.BlockedState(
+                    blocked = false,
+                    loading = false,
+                ),
+                match = UserMatchPreviewData.match,
+            )
+        }
     }
 }
 
