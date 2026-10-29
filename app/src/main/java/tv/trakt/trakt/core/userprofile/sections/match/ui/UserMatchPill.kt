@@ -36,7 +36,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val PillShape = RoundedCornerShape(100)
-private val PillHeight = 32.dp
+private val PillHeight = 30.dp
 private val FillInset = 2.5.dp
 
 @Composable

@@ -83,7 +83,6 @@ import kotlin.time.Duration.Companion.milliseconds
 private const val SHARED_MEDIA_COLUMNS = 3
 private const val SHARED_MEDIA_LIMIT = 6
 
-// Canvas of avd_match_versus relative to its glyph, padded so the intro motion is not clipped.
 private const val VERSUS_CANVAS_WIDTH_RATIO = 1.32F
 private const val VERSUS_CANVAS_HEIGHT_RATIO = 1.5F
 
@@ -92,8 +91,8 @@ private val BarShape = RoundedCornerShape(100)
 private val UnicornColor = Purple400
 private val AvatarSize = 80.dp
 private val AvatarLabelWidth = 112.dp
-private val VersusSize = 42.dp
-private val VersusAnimationDelay = 300.milliseconds
+private val VersusSize = 36.dp
+private val VersusAnimationDelay = 250.milliseconds
 
 @Composable
 internal fun UserMatchView(
@@ -209,7 +208,6 @@ private fun MatchHero(
         modifier = modifier,
     ) {
         Row(
-            horizontalArrangement = spacedBy(2.dp),
             modifier = Modifier.graphicsLayer {
                 clip = false
             },
