@@ -30,25 +30,19 @@ internal fun FloatingBackButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .size(FloatingBackButtonTouchSize)
+            .size(ButtonSize)
+            .background(
+                color = TraktTheme.colors.backgroundPrimary.copy(alpha = 0.75F),
+                shape = CircleShape,
+            )
             .onClick(onClick = onClick),
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(ButtonSize)
-                .background(
-                    color = TraktTheme.colors.backgroundPrimary.copy(alpha = 0.75F),
-                    shape = CircleShape,
-                ),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
-                modifier = Modifier.size(IconSize),
-            )
-        }
+        Icon(
+            painter = painterResource(R.drawable.ic_back_arrow),
+            tint = TraktTheme.colors.textPrimary,
+            contentDescription = null,
+            modifier = Modifier.size(IconSize),
+        )
     }
 }
 

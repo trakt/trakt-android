@@ -95,6 +95,8 @@ import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+private val AvatarSize = 60.dp
+
 @Composable
 internal fun ProfileScreen(
     viewModel: ProfileViewModel,
@@ -459,7 +461,6 @@ private fun TitleBar(
     leaderboardVisible: Boolean = false,
     onLeaderboardClick: () -> Unit = {},
 ) {
-    val avatarSize = 64.dp
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -473,7 +474,7 @@ private fun TitleBar(
         if (user != null) {
             Row(
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(10.dp),
+                horizontalArrangement = spacedBy(12.dp),
                 modifier = Modifier
                     .padding(
                         start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
@@ -497,7 +498,7 @@ private fun TitleBar(
                             contentScale = ContentScale.Crop,
                             error = painterResource(R.drawable.ic_person_placeholder),
                             modifier = Modifier
-                                .size(avatarSize)
+                                .size(AvatarSize)
                                 .border(2.dp, borderColor, CircleShape)
                                 .clip(CircleShape),
                         )
@@ -506,7 +507,7 @@ private fun TitleBar(
                             painter = painterResource(R.drawable.ic_person_placeholder),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(avatarSize)
+                                .size(AvatarSize)
                                 .border(2.dp, borderColor, CircleShape)
                                 .clip(CircleShape),
                         )
@@ -548,7 +549,7 @@ private fun ProfileHeaderActions(
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(22.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_share),

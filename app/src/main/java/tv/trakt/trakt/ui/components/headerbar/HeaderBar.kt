@@ -222,6 +222,7 @@ private fun HeaderBar(
                         season = season,
                         enabled = seasonEnabled,
                         onClick = onSeasonClick,
+                        modifier = Modifier.padding(start = 4.dp),
                     )
                 }
 

@@ -35,7 +35,7 @@ import tv.trakt.trakt.ui.components.buttons.FloatingBackButton
 import tv.trakt.trakt.ui.components.buttons.FloatingBackButtonInset
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val BackButtonTopPadding = 13.dp
+private val BackButtonTopPadding = 46.dp
 
 @Composable
 internal fun InReviewScreen(
