@@ -1,21 +1,20 @@
 package tv.trakt.trakt.common.data.local
 
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.common.model.leaderboard.LeaderboardEntry
+import tv.trakt.trakt.common.model.leaderboard.Leaderboard
 
 class LeaderboardLocalSource {
     private val mutex = Mutex()
-    private var storage: ImmutableList<LeaderboardEntry>? = null
+    private var storage: Leaderboard? = null
 
-    suspend fun setData(data: ImmutableList<LeaderboardEntry>) {
+    suspend fun setData(data: Leaderboard) {
         mutex.withLock {
             storage = data
         }
     }
 
-    suspend fun getData(): ImmutableList<LeaderboardEntry>? {
+    suspend fun getData(): Leaderboard? {
         return mutex.withLock {
             storage
         }

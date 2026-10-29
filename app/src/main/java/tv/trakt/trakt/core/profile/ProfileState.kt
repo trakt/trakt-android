@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.profile
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
@@ -16,4 +18,6 @@ internal data class ProfileState(
     val loadingMonthStats: LoadingState = LoadingState.Idle,
     val checkIn: Boolean = false,
     val hasLeaderboard: Boolean = false,
+    val leaderboardUsers: ImmutableList<User> = persistentListOf(),
+    val followingCount: Int? = null,
 )

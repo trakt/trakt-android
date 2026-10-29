@@ -62,7 +62,7 @@ internal class LeaderboardViewModel(
                     val entriesAsync = async {
                         getLeaderboardUseCase.getLeaderboard(
                             Pagination(page = 1, limit = LEADERBOARD_LIMIT),
-                        )
+                        ).entries
                     }
 
                     entries = entriesAsync.await()
@@ -109,7 +109,7 @@ internal class LeaderboardViewModel(
 
                 val nextEntries = getLeaderboardUseCase.getLeaderboard(
                     Pagination(page = pages + 1, limit = LEADERBOARD_LIMIT),
-                )
+                ).entries
 
                 entries = (entries + nextEntries).distinctBy { it.user.ids.trakt }
                 pages += 1

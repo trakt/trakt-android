@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.SmartListItemDto
 import tv.trakt.trakt.common.networking.api.v3.model.V3FollowingActivityResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardEntryResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
@@ -39,7 +40,6 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UserMatchResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsernameSettingsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3YouTubeSpecialResponse
-import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReaction
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReactionsSummaryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3UserMediaReaction
 import java.time.Instant
@@ -279,9 +279,6 @@ class V3Api(
         return response.body()
     }
 
-    /**
-     * @param window Activity window. Without it the API applies its own rolling window.
-     */
     suspend fun getFollowingActivities(
         pagination: Pagination,
         window: ClosedRange<Instant>? = null,
@@ -303,14 +300,16 @@ class V3Api(
 
     // Leaderboard
 
-    /** Only available for the authenticated user. Other users return 404. */
-    suspend fun getLeaderboard(pagination: Pagination): List<V3LeaderboardEntryResponse> {
+    suspend fun getLeaderboard(pagination: Pagination): V3LeaderboardResponse {
         val response = client.get(
             "${baseUrl}users/me/leaderboard" +
                 "?page=${pagination.page}" +
                 "&limit=${pagination.limit}",
         )
-        return response.body()
+        return V3LeaderboardResponse(
+            entries = response.body<List<V3LeaderboardEntryResponse>>(),
+            totalCount = response.headers["x-pagination-item-count"]?.toIntOrNull(),
+        )
     }
 
     // Shares
@@ -322,9 +321,6 @@ class V3Api(
         return response.body()
     }
 
-    /**
-     * @param url Relative web path of the item, e.g. `/movies/<slug>`.
-     */
     suspend fun getRecommendedBy(url: String): V3RecommendedByResponse? {
         val response = client.get("${baseV3Url}shares/recommended") {
             parameter("url", url)
@@ -354,11 +350,6 @@ class V3Api(
     }
 
     // Reactions
-
-    suspend fun getMediaReactions(): List<V3MediaReaction> {
-        val response = client.get("${baseV3Url}reactions/media")
-        return response.body()
-    }
 
     suspend fun getMediaReactionsSummary(
         type: MediaType,

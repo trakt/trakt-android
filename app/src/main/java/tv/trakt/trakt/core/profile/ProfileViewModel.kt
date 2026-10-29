@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,6 +33,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserStats
+import tv.trakt.trakt.common.model.leaderboard.Leaderboard
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
@@ -38,6 +41,8 @@ import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardU
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
 import kotlin.time.Duration.Companion.milliseconds
+
+private const val LEADERBOARD_PREVIEW_LIMIT = 3
 
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
@@ -61,6 +66,8 @@ internal class ProfileViewModel(
     private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
     private val checkInState = MutableStateFlow(initialState.checkIn)
     private val hasLeaderboardState = MutableStateFlow(initialState.hasLeaderboard)
+    private val leaderboardUsersState = MutableStateFlow(initialState.leaderboardUsers)
+    private val followingCountState = MutableStateFlow(initialState.followingCount)
 
     private var latestAllTime: UserStats? = null
 
@@ -177,24 +184,34 @@ internal class ProfileViewModel(
     private fun loadLeaderboard() {
         viewModelScope.launch {
             try {
-                getLeaderboardUseCase.getLocalLeaderboard()?.let { entries ->
-                    hasLeaderboardState.update { entries.isNotEmpty() }
-                }
+                getLeaderboardUseCase.getLocalLeaderboard()?.let(::updateLeaderboard)
 
                 if (!sessionManager.isAuthenticated()) {
                     return@launch
                 }
 
-                val entries = getLeaderboardUseCase.getLeaderboard(
-                    pagination = Pagination(page = 1, limit = 1),
+                val leaderboard = getLeaderboardUseCase.getLeaderboard(
+                    pagination = Pagination(page = 1, limit = LEADERBOARD_PREVIEW_LIMIT),
                     saveLocal = true,
                 )
-                hasLeaderboardState.update { entries.isNotEmpty() }
+                updateLeaderboard(leaderboard)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
             }
+        }
+    }
+
+    private fun updateLeaderboard(leaderboard: Leaderboard) {
+        hasLeaderboardState.update { leaderboard.entries.isNotEmpty() }
+        followingCountState.update { leaderboard.totalCount }
+        leaderboardUsersState.update {
+            leaderboard.entries
+                .filterNot { it.isLocked }
+                .take(LEADERBOARD_PREVIEW_LIMIT)
+                .map { it.user }
+                .toImmutableList()
         }
     }
 
@@ -223,6 +240,8 @@ internal class ProfileViewModel(
         checkInState,
         hasLeaderboardState,
         modeState,
+        leaderboardUsersState,
+        followingCountState,
     ) { state ->
         ProfileState(
             monthStats = state[0] as ProfileStats?,
@@ -233,6 +252,8 @@ internal class ProfileViewModel(
             checkIn = state[5] as Boolean,
             hasLeaderboard = state[6] as Boolean,
             mode = state[7] as MediaMode,
+            leaderboardUsers = state[8] as ImmutableList<User>,
+            followingCount = state[9] as Int?,
         )
     }.stateIn(
         scope = viewModelScope,

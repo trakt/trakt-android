@@ -63,6 +63,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import timber.log.Timber
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.Config.webYearReviewUrl
@@ -257,6 +259,8 @@ private fun ProfileScreen(
                 TitleBar(
                     user = state.user,
                     leaderboardVisible = state.hasLeaderboard,
+                    leaderboardUsers = state.leaderboardUsers,
+                    followingCount = state.followingCount,
                     onLeaderboardClick = onLeaderboardClick,
                     modifier = Modifier
                         .padding(bottom = 8.dp),
@@ -459,6 +463,8 @@ private fun TitleBar(
     user: User?,
     modifier: Modifier = Modifier,
     leaderboardVisible: Boolean = false,
+    leaderboardUsers: ImmutableList<User> = persistentListOf(),
+    followingCount: Int? = null,
     onLeaderboardClick: () -> Unit = {},
 ) {
     Row(
@@ -517,13 +523,9 @@ private fun TitleBar(
                 TraktHeader(
                     title = user.displayName,
                     subtitle = remember(user) {
-                        val vip = when (user.isAnyVip) {
-                            true -> "VIP • "
-                            else -> ""
-                        }
                         when {
-                            user.location.isNullOrBlank() && vip.isBlank() -> null
-                            else -> "$vip${user.location.orEmpty()}"
+                            user.location.isNullOrBlank() -> null
+                            else -> user.location.orEmpty()
                         }
                     },
                 )
@@ -535,6 +537,8 @@ private fun TitleBar(
                 exit = fadeOut(),
             ) {
                 LeaderboardPill(
+                    users = leaderboardUsers,
+                    followingCount = followingCount,
                     onClick = onLeaderboardClick,
                 )
             }
