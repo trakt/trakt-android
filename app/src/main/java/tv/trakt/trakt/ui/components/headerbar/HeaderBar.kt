@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,11 +62,29 @@ internal fun HeaderBar(
     showWhatsNew: Boolean = false,
     userLoading: Boolean = false,
     todayContent: (@Composable () -> Unit)? = null,
+    actions: (@Composable () -> Unit)? = null,
     onVipSeen: (() -> Unit)? = null,
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
     onWhatsNewClick: () -> Unit = {},
 ) {
+    if (LocalInspectionMode.current) {
+        HeaderBar(
+            modifier = modifier,
+            containerColor = containerColor,
+            containerAlpha = containerAlpha,
+            filter = GlobalFilter.Default,
+            showLogin = showLogin,
+            showVip = showVip,
+            showFilters = showFilters,
+            showWhatsNew = showWhatsNew,
+            userLoading = userLoading,
+            todayContent = todayContent,
+            actions = actions,
+        )
+        return
+    }
+
     val scope = rememberCoroutineScope()
 
     val filterManager: GlobalFilterManager = koinInject()
@@ -90,6 +109,7 @@ internal fun HeaderBar(
         seasonEnabled = seasonEnabled,
         userLoading = userLoading,
         todayContent = todayContent,
+        actions = actions,
         onVipSeen = onVipSeen,
         onVipClick = onVipClick,
         onFilterClick = onFilterClick,
@@ -123,6 +143,7 @@ private fun HeaderBar(
     seasonEnabled: Boolean = false,
     userLoading: Boolean = false,
     todayContent: (@Composable () -> Unit)? = null,
+    actions: (@Composable () -> Unit)? = null,
     onMediaModeSelect: (MediaMode) -> Unit = {},
     onVipSeen: (() -> Unit)? = null,
     onVipClick: () -> Unit = {},
@@ -216,6 +237,8 @@ private fun HeaderBar(
                         onClick = onFilterClick,
                     )
                 }
+
+                actions?.invoke()
             }
         }
     }

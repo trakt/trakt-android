@@ -77,7 +77,7 @@ internal class AllActivityPersonalViewModel(
     private val filterState = MutableStateFlow(
         when {
             destination.filtersEnabled -> filterManager.getFilter()
-            else -> GlobalFilter.Default
+            else -> GlobalFilter.Default.copy(mode = filterManager.getFilter().mode)
         },
     )
 

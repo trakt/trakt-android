@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -38,13 +40,13 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
@@ -63,11 +65,13 @@ internal class ProfileHistoryViewModel(
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
+    private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileHistoryState()
 
+    private val modeState = MutableStateFlow(filterManager.getFilter().mode)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -88,7 +92,19 @@ internal class ProfileHistoryViewModel(
 
         observeData()
         observeRatings()
+        observeMode()
         observeForeground()
+    }
+
+    private fun observeMode() {
+        filterManager.observeFilter()
+            .map { it.mode }
+            .filter { it != modeState.value }
+            .onEach { mode ->
+                modeState.update { mode }
+                loadData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeForeground() {
@@ -126,7 +142,7 @@ internal class ProfileHistoryViewModel(
 
                 val localItems = getPersonalActivityUseCase.getLocalPersonalActivity(
                     limit = HOME_SECTION_LIMIT,
-                    filter = MediaMode.Media,
+                    filter = modeState.value,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -140,7 +156,7 @@ internal class ProfileHistoryViewModel(
                     getPersonalActivityUseCase.getPersonalActivity(
                         page = 1,
                         limit = HOME_SECTION_LIMIT,
-                        filter = GlobalFilter.Default,
+                        filter = GlobalFilter.Default.copy(mode = modeState.value),
                     )
                 }
             } catch (error: Exception) {

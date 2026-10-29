@@ -695,7 +695,6 @@ internal fun NavGraphBuilder.profileScreens(
             onNavigateToLibrary = { navigateToLibrary() },
             onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToSettings = { navigateToSettings() },
-            onNavigateToHome = { navigateToHome() },
             onNavigateToUser = {
                 navigateToUserProfile(
                     user = it,

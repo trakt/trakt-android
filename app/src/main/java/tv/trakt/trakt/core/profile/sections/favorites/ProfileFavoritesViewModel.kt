@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -39,7 +41,9 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting.Companion.RecentlyAdded
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.FAVORITES_SECTION_LIMIT
+import tv.trakt.trakt.core.profile.helpers.matches
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -50,11 +54,13 @@ internal class ProfileFavoritesViewModel(
     private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
+    private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileFavoritesState()
 
+    private val modeState = MutableStateFlow(filterManager.getFilter().mode)
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -70,7 +76,19 @@ internal class ProfileFavoritesViewModel(
     init {
         loadData()
         observeData()
+        observeMode()
         observeForeground()
+    }
+
+    private fun observeMode() {
+        filterManager.observeFilter()
+            .map { it.mode }
+            .filter { it != modeState.value }
+            .onEach { mode ->
+                modeState.update { mode }
+                loadData(localOnly = true)
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeForeground() {
@@ -109,6 +127,7 @@ internal class ProfileFavoritesViewModel(
                     if (showsLoadedAsync.await() && moviesLoadedAsync.await()) {
                         loadFavoritesUseCase
                             .loadLocalAll()
+                            .filter { it.matches(modeState.value) }
                             .sortedWith(getFavoriteSorting(RecentlyAdded))
                             .take(FAVORITES_SECTION_LIMIT)
                     } else {
@@ -130,6 +149,7 @@ internal class ProfileFavoritesViewModel(
 
                 itemsState.update {
                     loadFavoritesUseCase.loadAll()
+                        .filter { it.matches(modeState.value) }
                         .take(FAVORITES_SECTION_LIMIT)
                         .toImmutableList()
                 }

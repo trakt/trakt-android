@@ -21,8 +21,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -30,20 +30,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,15 +57,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import timber.log.Timber
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.Config.webYearReviewUrl
-import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.extensions.toShareUrl
@@ -74,21 +74,24 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.profile.sections.activity.ProfileActivityView
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
+import tv.trakt.trakt.core.profile.sections.leaderboard.ui.LeaderboardPill
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryView
 import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressView
 import tv.trakt.trakt.core.profile.sections.screentime.ProfileScreenTimeView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
 import tv.trakt.trakt.core.profile.sections.thismonth.all.AllTimeStatsSheet
+import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
+import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -105,7 +108,6 @@ internal fun ProfileScreen(
     onNavigateToLibrary: () -> Unit,
     onNavigateToDiscover: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    onNavigateToHome: () -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToSocial: () -> Unit,
     onNavigateToLeaderboard: () -> Unit,
@@ -116,14 +118,7 @@ internal fun ProfileScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var confirmLogout by remember { mutableStateOf(false) }
     var allTimeStatsSheet by remember { mutableStateOf(false) }
-
-    LaunchedEffect(state.user, state.logoutLoading) {
-        if (state.logoutLoading == Done && state.user == null) {
-            onNavigateToHome()
-        }
-    }
 
     ProfileScreen(
         state = state,
@@ -141,6 +136,7 @@ internal fun ProfileScreen(
         onNavigateToSocial = onNavigateToSocial,
         onLeaderboardClick = onNavigateToLeaderboard,
         onVipClick = onNavigateToVip,
+        onVipSeen = viewModel::onVipUpsellSeen,
         onAllTimeStatsClick = {
             viewModel.logAllTimeStatsOpen()
             allTimeStatsSheet = true
@@ -151,9 +147,6 @@ internal fun ProfileScreen(
                 user = state.user,
                 context = context,
             )
-        },
-        onLogoutClick = {
-            confirmLogout = true
         },
     )
 
@@ -172,20 +165,6 @@ internal fun ProfileScreen(
             onNavigateToVip()
         },
         onDismiss = { allTimeStatsSheet = false },
-    )
-
-    ConfirmationSheet(
-        active = confirmLogout,
-        onYes = {
-            confirmLogout = false
-            viewModel.logout()
-        },
-        onNo = {
-            confirmLogout = false
-        },
-        title = stringResource(R.string.button_text_logout),
-        message = stringResource(R.string.warning_prompt_log_out),
-        yesColor = Red500,
     )
 }
 
@@ -206,18 +185,20 @@ private fun ProfileScreen(
     onNavigateToSocial: () -> Unit = {},
     onLeaderboardClick: () -> Unit = {},
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onAllTimeStatsClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
-    onLogoutClick: () -> Unit = {},
 ) {
     val preview = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
+    val headerState = rememberHeaderState()
+
     val listPadding = PaddingValues(
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
-            .plus(10.dp),
+            .plus(TraktTheme.spacing.mainPageTopSpace),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
             .plus(TraktTheme.size.navigationBarHeight)
@@ -236,18 +217,32 @@ private fun ProfileScreen(
         ),
     )
 
-    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+    val backdropScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
+    }
+
+    val isScrolledToTop by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex == 0 &&
+                listState.firstVisibleItemScrollOffset == 0
+        }
+    }
+
+    LaunchedEffect(isScrolledToTop) {
+        if (isScrolledToTop) {
+            headerState.resetScrolled()
+        }
     }
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(listScrollConnection),
+            .nestedScroll(headerState.connection)
+            .nestedScroll(backdropScrollConnection),
     ) {
         ScrollableBackdropImage(
-            translation = listScrollConnection.resultOffset,
+            translation = backdropScrollConnection.resultOffset,
         )
 
         LazyColumn(
@@ -261,11 +256,8 @@ private fun ProfileScreen(
                     user = state.user,
                     leaderboardVisible = state.hasLeaderboard,
                     onLeaderboardClick = onLeaderboardClick,
-                    onShareClick = onShareClick,
-                    onLogoutClick = onLogoutClick,
-                    onSettingsClick = onSettingsClick,
                     modifier = Modifier
-                        .padding(bottom = 6.dp),
+                        .padding(bottom = 8.dp),
                 )
             }
 
@@ -379,15 +371,17 @@ private fun ProfileScreen(
                         )
                     }
 
-                    item {
-                        ProfileProgressView(
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onShowClick = onNavigateToShow,
-                            onMoreClick = onNavigateToProgress,
-                            modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                        )
+                    if (state.mode.isMediaOrShows) {
+                        item {
+                            ProfileProgressView(
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onShowClick = onNavigateToShow,
+                                onMoreClick = onNavigateToProgress,
+                                modifier = Modifier
+                                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                            )
+                        }
                     }
 
                     item {
@@ -416,7 +410,46 @@ private fun ProfileScreen(
                 }
             }
         }
+
+        ProfileScreenHeader(
+            state = state,
+            headerState = headerState,
+            isScrolledToTop = isScrolledToTop,
+            onVipClick = onVipClick,
+            onVipSeen = onVipSeen,
+            onShareClick = onShareClick,
+            onSettingsClick = onSettingsClick,
+        )
     }
+}
+
+@Composable
+private fun ProfileScreenHeader(
+    state: ProfileState,
+    headerState: ScreenHeaderState,
+    isScrolledToTop: Boolean,
+    onVipClick: () -> Unit,
+    onVipSeen: () -> Unit,
+    onShareClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+) {
+    HeaderBar(
+        containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
+        showVip = state.user?.isVip == false,
+        onVipSeen = onVipSeen,
+        onVipClick = onVipClick,
+        actions = {
+            if (state.user != null) {
+                ProfileHeaderActions(
+                    onShareClick = onShareClick,
+                    onSettingsClick = onSettingsClick,
+                )
+            }
+        },
+        modifier = Modifier.offset {
+            IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
+        },
+    )
 }
 
 @Composable
@@ -425,18 +458,15 @@ private fun TitleBar(
     modifier: Modifier = Modifier,
     leaderboardVisible: Boolean = false,
     onLeaderboardClick: () -> Unit = {},
-    onShareClick: () -> Unit = {},
-    onLogoutClick: () -> Unit = {},
-    onSettingsClick: () -> Unit = {},
 ) {
+    val avatarSize = 64.dp
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
-            .height(TraktTheme.size.titleBarHeight)
             .padding(
-                bottom = 14.dp,
+                bottom = 13.dp,
                 end = TraktTheme.spacing.mainPageHorizontalSpace,
             ),
     ) {
@@ -450,11 +480,7 @@ private fun TitleBar(
                     ),
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(34.dp)
-                        .graphicsLayer {
-                            translationY = 1.dp.toPx()
-                        },
+                    contentAlignment = Alignment.CenterStart,
                 ) {
                     val vipAccent = TraktTheme.colors.vipAccent
                     val borderColor = remember(user) {
@@ -471,6 +497,7 @@ private fun TitleBar(
                             contentScale = ContentScale.Crop,
                             error = painterResource(R.drawable.ic_person_placeholder),
                             modifier = Modifier
+                                .size(avatarSize)
                                 .border(2.dp, borderColor, CircleShape)
                                 .clip(CircleShape),
                         )
@@ -479,6 +506,7 @@ private fun TitleBar(
                             painter = painterResource(R.drawable.ic_person_placeholder),
                             contentDescription = null,
                             modifier = Modifier
+                                .size(avatarSize)
                                 .border(2.dp, borderColor, CircleShape)
                                 .clip(CircleShape),
                         )
@@ -500,106 +528,49 @@ private fun TitleBar(
                 )
             }
 
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(22.dp),
+            AnimatedVisibility(
+                visible = leaderboardVisible,
+                enter = fadeIn(),
+                exit = fadeOut(),
             ) {
-                AnimatedVisibility(
-                    visible = leaderboardVisible,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_leaderboard),
-                        contentDescription = stringResource(R.string.button_label_open_leaderboard),
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(23.dp)
-                            .onClick(onClick = onLeaderboardClick),
-                    )
-                }
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_settings),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .padding(start = 1.5.dp)
-                        .size(22.dp)
-                        .graphicsLayer {
-                            translationY = 0.25.dp.toPx()
-                        }
-                        .onClick(onClick = onSettingsClick),
+                LeaderboardPill(
+                    onClick = onLeaderboardClick,
                 )
-
-                Box {
-                    var showMenu by remember { mutableStateOf(false) }
-
-                    Icon(
-                        painter = painterResource(R.drawable.ic_more_vertical),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(18.dp)
-                            .onClick {
-                                showMenu = true
-                            },
-                    )
-
-                    DropdownMenu(
-                        expanded = showMenu,
-                        containerColor = TraktTheme.colors.dialogContainer,
-                        shape = RoundedCornerShape(16.dp),
-                        onDismissRequest = {
-                            showMenu = false
-                        },
-                    ) {
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(R.string.button_text_share),
-                                    style = TraktTheme.typography.buttonTertiary,
-                                    color = TraktTheme.colors.textPrimary,
-                                )
-                            },
-                            onClick = {
-                                onShareClick()
-                                showMenu = false
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_share),
-                                    contentDescription = null,
-                                    tint = TraktTheme.colors.textPrimary,
-                                    modifier = Modifier.size(22.dp),
-                                )
-                            },
-                        )
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(R.string.button_text_logout),
-                                    style = TraktTheme.typography.buttonTertiary,
-                                    color = TraktTheme.colors.textPrimary,
-                                )
-                            },
-                            onClick = {
-                                onLogoutClick()
-                                showMenu = false
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_logout),
-                                    contentDescription = null,
-                                    tint = TraktTheme.colors.textPrimary,
-                                    modifier = Modifier.size(22.dp),
-                                )
-                            },
-                        )
-                    }
-                }
             }
         }
+    }
+}
+
+@Composable
+private fun ProfileHeaderActions(
+    onShareClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+) {
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(22.dp),
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_share),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .size(22.dp)
+                .onClick(onClick = onShareClick),
+        )
+
+        Icon(
+            painter = painterResource(R.drawable.ic_settings),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .padding(start = 1.5.dp)
+                .size(22.dp)
+                .graphicsLayer {
+                    translationY = 0.25.dp.toPx()
+                }
+                .onClick(onClick = onSettingsClick),
+        )
     }
 }
 
@@ -625,14 +596,10 @@ private fun shareProfile(
 
 // Previews
 
-@Preview(
-    device = "id:pixel_6",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
+@PreviewTraktLightDark
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemePreview {
         ProfileScreen(
             state = ProfileState(
                 user = PreviewData.user1,

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -36,8 +37,10 @@ import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_SECTION_LIMIT
+import tv.trakt.trakt.core.profile.helpers.matches
 import tv.trakt.trakt.core.profile.sections.library.model.LibraryFilter
 import tv.trakt.trakt.core.profile.sections.library.usecases.GetCollectionLimitServersUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -49,12 +52,14 @@ internal class ProfileLibraryViewModel(
     private val showLocalSource: ShowLocalSource,
     private val movieLocalSource: MovieLocalSource,
     private val sessionManager: SessionManager,
+    private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProfileLibraryState()
 
+    private val modeState = MutableStateFlow(filterManager.getFilter().mode)
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
 
@@ -72,7 +77,19 @@ internal class ProfileLibraryViewModel(
     init {
         loadData()
         observeVipStatus()
+        observeMode()
         observeForeground()
+    }
+
+    private fun observeMode() {
+        filterManager.observeFilter()
+            .map { it.mode }
+            .filter { it != modeState.value }
+            .onEach { mode ->
+                modeState.update { mode }
+                loadData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeVipStatus() {
@@ -122,11 +139,14 @@ internal class ProfileLibraryViewModel(
                 }
 
                 val filter = filterState.value
+                val mode = modeState.value
                 val isLoaded = loadLibraryUseCase.isLoaded()
 
                 val localItems = when {
                     isLoaded -> loadLibraryUseCase.loadLocalMedia(LIBRARY_PAGE_LIMIT).items
                     else -> EmptyImmutableList
+                }.filter {
+                    it.matches(mode)
                 }.filter {
                     when (filter) {
                         null -> true
@@ -153,6 +173,7 @@ internal class ProfileLibraryViewModel(
                         availableOn = filter?.requestValue,
                     )
                         .items
+                        .filter { it.matches(mode) }
                         .filter {
                             when (filter) {
                                 null -> true

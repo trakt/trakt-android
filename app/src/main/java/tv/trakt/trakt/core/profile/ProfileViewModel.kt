@@ -28,35 +28,37 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
-import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
+@Suppress("UNCHECKED_CAST")
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,
     private val getProfileStatsUseCase: GetProfileStatsUseCase,
     private val getLeaderboardUseCase: GetLeaderboardUseCase,
-    private val logoutUseCase: LogoutUserUseCase,
     private val checkInManager: CheckInManager,
+    private val filterManager: GlobalFilterManager,
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileState()
 
+    private val modeState = MutableStateFlow(filterManager.getFilter().mode)
     private val userState = MutableStateFlow(initialState.user)
     private val monthBackgroundState = MutableStateFlow(initialState.monthBackgroundUrl)
     private val monthStatsState = MutableStateFlow(initialState.monthStats)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
-    private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
     private val checkInState = MutableStateFlow(initialState.checkIn)
     private val hasLeaderboardState = MutableStateFlow(initialState.hasLeaderboard)
 
@@ -68,6 +70,7 @@ internal class ProfileViewModel(
         loadLeaderboard()
 
         observeUser()
+        observeMode()
         observeCheckIn()
         observeSocial()
         observeForeground()
@@ -97,6 +100,16 @@ internal class ProfileViewModel(
             .debounce(200)
             .onEach { user ->
                 userState.update { user }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeMode() {
+        filterManager.observeFilter()
+            .map { it.mode }
+            .distinctUntilChanged()
+            .onEach { mode ->
+                modeState.update { mode }
             }
             .launchIn(viewModelScope)
     }
@@ -185,30 +198,16 @@ internal class ProfileViewModel(
         }
     }
 
-    fun logout() {
-        viewModelScope.launch {
-            try {
-                logoutLoadingState.update { Loading }
-
-                analytics.logUserLogout()
-                logoutUseCase.logoutUser()
-
-                logoutLoadingState.update { LoadingState.Done }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    logoutLoadingState.update { LoadingState.Idle }
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
     fun logAllTimeStatsOpen() {
         analytics.logDrilldown(source = "stats", type = "all-time")
     }
 
     fun logAllTimeStatsLink(target: String) {
         analytics.logLink(source = "all-time-stats", target = target)
+    }
+
+    fun onVipUpsellSeen() {
+        analytics.vip.logUpsellImpression("profile")
     }
 
     fun logShare() {
@@ -220,20 +219,20 @@ internal class ProfileViewModel(
         monthBackgroundState,
         loadingState,
         loadingMonthStatsState,
-        logoutLoadingState,
         userState,
         checkInState,
         hasLeaderboardState,
+        modeState,
     ) { state ->
         ProfileState(
             monthStats = state[0] as ProfileStats?,
             monthBackgroundUrl = state[1] as String?,
             loading = state[2] as LoadingState,
             loadingMonthStats = state[3] as LoadingState,
-            logoutLoading = state[4] as LoadingState,
-            user = state[5] as User?,
-            checkIn = state[6] as Boolean,
-            hasLeaderboard = state[7] as Boolean,
+            user = state[4] as User?,
+            checkIn = state[5] as Boolean,
+            hasLeaderboard = state[6] as Boolean,
+            mode = state[7] as MediaMode,
         )
     }.stateIn(
         scope = viewModelScope,

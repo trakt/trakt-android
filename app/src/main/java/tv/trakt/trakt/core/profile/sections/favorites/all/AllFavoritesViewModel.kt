@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -53,13 +54,14 @@ internal class AllFavoritesViewModel(
     private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
+    private val filterManager: GlobalFilterManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllFavoritesState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val filterState = MutableStateFlow(initialState.filter)
+    private val filterState = MutableStateFlow<MediaMode?>(filterManager.getFilter().mode)
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)

@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -37,6 +39,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -44,7 +47,9 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.profile.ProfileCommentItem
 import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.ACTIVITY_SECTION_LIMIT
+import tv.trakt.trakt.core.profile.helpers.matches
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Comments
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Ratings
@@ -54,6 +59,9 @@ import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivit
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
+
+// Ratings and comments mix shows and movies, so a filtered mode fetches more to fill the section.
+private const val ACTIVITY_FILTERED_FETCH_LIMIT = 100
 
 internal class ProfileActivityViewModel(
     private val getFilterUseCase: GetActivityFilterUseCase,
@@ -65,11 +73,13 @@ internal class ProfileActivityViewModel(
     private val episodeLocalSource: EpisodeLocalSource,
     private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
+    private val filterManager: GlobalFilterManager,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileActivityState()
     private val origin = ChangeOrigin.unique()
 
+    private val modeState = MutableStateFlow(filterManager.getFilter().mode)
     private val ratingItemsState = MutableStateFlow(initialState.ratingItems)
     private val commentItemsState = MutableStateFlow(initialState.commentItems)
     private val reactionsState = MutableStateFlow(initialState.reactions)
@@ -90,7 +100,19 @@ internal class ProfileActivityViewModel(
         loadData()
         observeRatings()
         observeComments()
+        observeMode()
         observeForeground()
+    }
+
+    private fun observeMode() {
+        filterManager.observeFilter()
+            .map { it.mode }
+            .filter { it != modeState.value }
+            .onEach { mode ->
+                modeState.update { mode }
+                loadData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeForeground() {
@@ -144,8 +166,14 @@ internal class ProfileActivityViewModel(
     }
 
     private suspend fun loadRatingsData() {
+        val mode = modeState.value
+        val fetchLimit = mode.fetchLimit()
+
         ratingItemsState.update {
-            getRatingsUseCase.getLocalRatings(ACTIVITY_SECTION_LIMIT)
+            getRatingsUseCase.getLocalRatings(fetchLimit)
+                .filter { it.matches(mode) }
+                .take(ACTIVITY_SECTION_LIMIT)
+                .toImmutableList()
         }
 
         loadingState.update {
@@ -156,13 +184,22 @@ internal class ProfileActivityViewModel(
         }
 
         ratingItemsState.update {
-            getRatingsUseCase.getRemoteRatings(Pagination(1, ACTIVITY_SECTION_LIMIT))
+            getRatingsUseCase.getRemoteRatings(Pagination(1, fetchLimit))
+                .filter { it.matches(mode) }
+                .take(ACTIVITY_SECTION_LIMIT)
+                .toImmutableList()
         }
     }
 
     private suspend fun loadCommentsData() {
+        val mode = modeState.value
+        val fetchLimit = mode.fetchLimit()
+
         commentItemsState.update {
-            getCommentsUseCase.getLocalComments(ACTIVITY_SECTION_LIMIT)
+            getCommentsUseCase.getLocalComments(fetchLimit)
+                .filter { it.matches(mode) }
+                .take(ACTIVITY_SECTION_LIMIT)
+                .toImmutableList()
         }
 
         loadingState.update {
@@ -173,7 +210,17 @@ internal class ProfileActivityViewModel(
         }
 
         commentItemsState.update {
-            getCommentsUseCase.getRemoteComments(Pagination(1, ACTIVITY_SECTION_LIMIT))
+            getCommentsUseCase.getRemoteComments(Pagination(1, fetchLimit))
+                .filter { it.matches(mode) }
+                .take(ACTIVITY_SECTION_LIMIT)
+                .toImmutableList()
+        }
+    }
+
+    private fun MediaMode.fetchLimit(): Int {
+        return when (this) {
+            MediaMode.Media -> ACTIVITY_SECTION_LIMIT
+            MediaMode.Shows, MediaMode.Movies -> ACTIVITY_FILTERED_FETCH_LIMIT
         }
     }
 
