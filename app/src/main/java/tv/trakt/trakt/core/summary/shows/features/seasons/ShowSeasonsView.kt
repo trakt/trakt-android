@@ -77,6 +77,7 @@ import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
+import tv.trakt.trakt.core.summary.shows.features.context.seasons.SeasonContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
@@ -119,6 +120,7 @@ internal fun ShowSeasonsView(
     var episodeWatchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
     var confirmWatchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
     var episodeContextSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var seasonContextSheet by remember { mutableStateOf<Season?>(null) }
     var listsSheet by remember { mutableStateOf<ManageListsTarget?>(null) }
     var seasonDateSheet by remember { mutableStateOf(false) }
 
@@ -147,11 +149,8 @@ internal fun ShowSeasonsView(
         onMoreClick = {
             episodeContextSheet = it
         },
-        onCheckSeasonClick = {
-            confirmMarkSeasonSheet = true
-        },
-        onRemoveSeasonClick = {
-            confirmRemoveSeasonSheet = true
+        onSeasonMoreClick = {
+            seasonContextSheet = state.items.selectedSeason
         },
         onAllSeasonsClick = {
             onAllSeasonsClick(state.items.selectedSeason?.number)
@@ -180,6 +179,28 @@ internal fun ShowSeasonsView(
         },
         onDismiss = {
             episodeContextSheet = null
+        },
+    )
+
+    SeasonContextSheet(
+        show = state.show,
+        season = seasonContextSheet,
+        watched = state.items.isSelectedSeasonWatched,
+        onTrackClick = {
+            confirmMarkSeasonSheet = true
+        },
+        onRemoveClick = {
+            confirmRemoveSeasonSheet = true
+        },
+        onListsClick = {
+            val show = state.show
+            val season = seasonContextSheet
+            if (show != null && season != null) {
+                listsSheet = ManageListsTarget.SeasonTarget(show, season)
+            }
+        }.takeIf { user != null },
+        onDismiss = {
+            seasonContextSheet = null
         },
     )
 
@@ -331,8 +352,7 @@ private fun ShowSeasonsContent(
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
     onMoreClick: ((EpisodeItem) -> Unit)? = null,
-    onCheckSeasonClick: (() -> Unit)? = null,
-    onRemoveSeasonClick: (() -> Unit)? = null,
+    onSeasonMoreClick: (() -> Unit)? = null,
     onAllSeasonsClick: (() -> Unit)? = null,
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
@@ -464,10 +484,7 @@ private fun ShowSeasonsContent(
                                     if (state.loadingSeason.isLoading) {
                                         return@ContentList
                                     }
-                                    when (state.items.isSelectedSeasonWatched) {
-                                        true -> onRemoveSeasonClick?.invoke()
-                                        else -> onCheckSeasonClick?.invoke()
-                                    }
+                                    onSeasonMoreClick?.invoke()
                                 },
                                 onCheckEpisodeClick = onCheckEpisodeClick,
                                 onCheckEpisodeLongClick = onCheckEpisodeLongClick,

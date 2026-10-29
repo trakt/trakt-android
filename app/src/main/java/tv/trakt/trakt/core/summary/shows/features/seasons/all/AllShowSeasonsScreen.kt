@@ -18,7 +18,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.ui.rememberExternalTranslation
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 
 @Composable
@@ -92,15 +91,7 @@ internal fun AllShowSeasonsScreen(
         onCheckEpisodeClick = { viewModel.addToWatched(it.episode) },
         onCheckEpisodeLongClick = { sheetState.episodeDate = it },
         onMoreClick = { sheetState.episodeContext = it },
-        onCheckSeasonClick = { sheetState.confirmMarkSeason = true },
-        onRemoveSeasonClick = { sheetState.confirmRemoveSeason = true },
-        onSeasonListsClick = {
-            val show = state.show
-            val season = state.items.selectedSeason
-            if (show != null && season != null) {
-                sheetState.manageLists = ManageListsTarget.SeasonTarget(show, season)
-            }
-        },
+        onSeasonMoreClick = { sheetState.seasonContext = state.items.selectedSeason },
         onBackClick = onNavigateBack,
     )
 

@@ -51,7 +51,7 @@ internal fun SeasonsTitleBar(
     onSeasonClick: (SeasonItem) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onListsClick: (() -> Unit)? = null,
+    onMoreClick: (() -> Unit)? = null,
 ) {
     val seasonsMenuVisible = remember { mutableStateOf(false) }
     val dropdownScrollState = rememberScrollState()
@@ -145,18 +145,18 @@ internal fun SeasonsTitleBar(
             }
         }
 
-        if (onListsClick != null) {
+        if (onMoreClick != null) {
             Box(
                 contentAlignment = CenterEnd,
                 modifier = Modifier
                     .size(MinTouchTarget)
-                    .onClick { onListsClick() },
+                    .onClick { onMoreClick() },
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_lists_off),
+                    painter = painterResource(R.drawable.ic_more_vertical),
                     tint = TraktTheme.colors.textPrimary,
                     contentDescription = null,
-                    modifier = Modifier.size(22.dp),
+                    modifier = Modifier.size(19.dp),
                 )
             }
         }
@@ -193,7 +193,7 @@ private fun PreviewSeasonsTitleBar() {
             subtitle = PreviewData.show1.title,
             onSeasonClick = {},
             onBackClick = {},
-            onListsClick = {},
+            onMoreClick = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .background(TraktTheme.colors.backgroundPrimary),
