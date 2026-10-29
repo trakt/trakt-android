@@ -37,8 +37,8 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
 private val StatCardHeight = 96.dp
-private val DailyCardHeight = 132.dp
-private val PeakCardHeight = 132.dp
+private val DailyCardHeight = 140.dp
+private val PeakCardHeight = 140.dp
 
 @Composable
 internal fun ScreenTimeAllView(

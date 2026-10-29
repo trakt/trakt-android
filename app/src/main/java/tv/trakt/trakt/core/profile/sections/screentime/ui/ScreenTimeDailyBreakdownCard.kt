@@ -179,7 +179,7 @@ private fun ValueTrack(
 
         Text(
             text = text,
-            style = TraktTheme.typography.cardTitle.copy(fontSize = 9.sp),
+            style = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp),
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
             softWrap = false,
@@ -207,7 +207,7 @@ private fun DayColumn(
     }
     val ringColor by animateColorAsState(
         targetValue = when {
-            active -> TraktTheme.colors.screenTimeHigh
+            active -> TraktTheme.colors.textPrimary
             else -> Color.Transparent
         },
         label = "ringColor",
@@ -260,7 +260,7 @@ private fun DayColumn(
 
         Text(
             text = label,
-            style = TraktTheme.typography.cardTitle.copy(fontSize = 9.sp),
+            style = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp),
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
             textAlign = TextAlign.Center,
