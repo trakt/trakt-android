@@ -96,7 +96,7 @@ internal fun SeasonContextView(
                 GhostButton(
                     text = stringResource(R.string.button_text_track),
                     icon = painterResource(R.drawable.ic_check_2),
-                    iconSize = 20.dp,
+                    iconSize = 21.dp,
                     iconSpace = 16.dp,
                     onClick = onTrackClick,
                     modifier = Modifier
@@ -110,12 +110,12 @@ internal fun SeasonContextView(
                 GhostButton(
                     text = stringResource(R.string.button_text_manage_lists),
                     icon = painterResource(R.drawable.ic_lists_off),
-                    iconSize = 21.dp,
-                    iconSpace = 15.dp,
+                    iconSize = 20.dp,
+                    iconSpace = 17.dp,
                     onClick = onListsClick,
                     modifier = Modifier
                         .graphicsLayer {
-                            translationX = -4.dp.toPx()
+                            translationX = -6.dp.toPx()
                         },
                 )
             }
