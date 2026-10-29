@@ -631,14 +631,23 @@ private fun TopBar(
                 end = TraktTheme.spacing.mainPageHorizontalSpace,
             ),
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_back_arrow),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier
                 .graphicsLayer { translationX = -2.dp.toPx() }
                 .onClick(onClick = onBack),
-        )
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+            )
+
+            TraktHeader(
+                title = stringResource(R.string.page_title_profile),
+            )
+        }
 
         if (user != null) {
             Row(
