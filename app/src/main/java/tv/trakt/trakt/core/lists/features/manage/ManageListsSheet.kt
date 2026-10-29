@@ -10,8 +10,10 @@ import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.ui.components.TraktBottomSheet
@@ -24,8 +26,11 @@ internal fun ManageListsSheet(
         enabledValues = setOf(Hidden, Expanded),
     ),
     target: ManageListsTarget?,
+    inWatchlist: Boolean = false,
+    onWatchlistClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
+    val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(target) { nextInt().toString() }
 
     if (target != null) {
@@ -39,6 +44,16 @@ internal fun ManageListsSheet(
                     key = viewModelKey,
                     parameters = { parametersOf(target) },
                 ),
+                inWatchlist = inWatchlist,
+                onWatchlistClick = onWatchlistClick?.let { onClick ->
+                    {
+                        onClick()
+                        sheetScope.launch {
+                            state.hide()
+                            onDismiss()
+                        }
+                    }
+                },
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .padding(horizontal = 24.dp),

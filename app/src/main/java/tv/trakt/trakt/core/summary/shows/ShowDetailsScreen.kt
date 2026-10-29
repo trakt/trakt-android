@@ -83,6 +83,8 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
@@ -91,7 +93,6 @@ import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
-import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsListsSheet
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
 import tv.trakt.trakt.core.summary.shows.features.info.ShowInfoSheet
@@ -304,8 +305,8 @@ internal fun ShowDetailsScreen(
         },
     )
 
-    ShowDetailsListsSheet(
-        show = listsSheet,
+    ManageListsSheet(
+        target = listsSheet?.let(ManageListsTarget::ShowTarget),
         inWatchlist = state.showProgress?.inWatchlist == true,
         onWatchlistClick = {
             viewModel.toggleWatchlist()

@@ -28,7 +28,9 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.EpisodeTarget
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.MovieTarget
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.SeasonTarget
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.ShowTarget
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 
@@ -94,6 +96,8 @@ internal class ManageListsViewModel(
 
     private suspend fun loadListedIds(): ImmutableSet<TraktId> {
         return when (target) {
+            is MovieTarget -> loadListsUseCase.loadMovieLists(target.id)
+            is ShowTarget -> loadListsUseCase.loadShowLists(target.id)
             is SeasonTarget -> loadListsUseCase.loadSeasonLists(target.id)
             is EpisodeTarget -> loadListsUseCase.loadEpisodeLists(target.id)
         }
@@ -139,6 +143,16 @@ internal class ManageListsViewModel(
 
     private suspend fun addItem(list: CustomListMinimal) {
         when (target) {
+            is MovieTarget -> addListItemUseCase.addMovie(
+                listId = list.id,
+                ownerId = list.ownerId,
+                movie = target.movie,
+            )
+            is ShowTarget -> addListItemUseCase.addShow(
+                listId = list.id,
+                ownerId = list.ownerId,
+                show = target.show,
+            )
             is SeasonTarget -> addListItemUseCase.addSeason(
                 listId = list.id,
                 ownerId = list.ownerId,
@@ -154,6 +168,16 @@ internal class ManageListsViewModel(
 
     private suspend fun removeItem(list: CustomListMinimal) {
         when (target) {
+            is MovieTarget -> removeListItemUseCase.removeMovie(
+                listId = list.id,
+                ownerId = list.ownerId,
+                movieId = target.id,
+            )
+            is ShowTarget -> removeListItemUseCase.removeShow(
+                listId = list.id,
+                ownerId = list.ownerId,
+                showId = target.id,
+            )
             is SeasonTarget -> removeListItemUseCase.removeSeason(
                 listId = list.id,
                 ownerId = list.ownerId,
