@@ -151,6 +151,7 @@ internal fun MainScreen(
 
     val searchState = rememberSearchState(currentDestination.value?.destination)
     val inReviewUriHandler = rememberInReviewUriHandler(
+        slurm = state.user?.settings?.slurm,
         onInReviewClick = navController::navigateToInReview,
     )
 
