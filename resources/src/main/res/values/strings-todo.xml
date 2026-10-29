@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <plurals name="text_ratings_count">
-    <item quantity="one">%s rating</item>
-    <item quantity="other">%s ratings</item>
-  </plurals>
-  <plurals name="text_comments_count">
-    <item quantity="one">%s comment</item>
-    <item quantity="other">%s comments</item>
-  </plurals>
+  <string name="match_sublabel_soulmates">You and %1$s think alike!</string>
+  <string name="match_sublabel_co_stars">You and %1$s are a great team!</string>
+  <string name="match_sublabel_crossover">You and %1$s would have fun watching together.</string>
+  <string name="match_sublabel_spin_off">You and %1$s could find something to watch together.</string>
+  <string name="match_sublabel_cameo">You and %1$s might need to take turns choosing next movie to watch.</string>
+  <string name="match_sublabel_different_universe">You and %1$s can show each other something new to discover.</string>
 </resources>

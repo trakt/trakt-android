@@ -45,14 +45,28 @@ internal enum class MatchChipTier {
     }
 }
 
-@StringRes
-internal fun matchLabelRes(score: Int): Int {
-    return when {
-        score >= 90 -> R.string.match_label_soulmates
-        score >= 75 -> R.string.match_label_co_stars
-        score >= 60 -> R.string.match_label_crossover
-        score >= 45 -> R.string.match_label_spin_off
-        score >= 25 -> R.string.match_label_cameo
-        else -> R.string.match_label_different_universe
+internal enum class MatchLevel(
+    @StringRes val labelRes: Int,
+    @StringRes val sublabelRes: Int,
+) {
+    Soulmates(R.string.match_label_soulmates, R.string.match_sublabel_soulmates),
+    CoStars(R.string.match_label_co_stars, R.string.match_sublabel_co_stars),
+    Crossover(R.string.match_label_crossover, R.string.match_sublabel_crossover),
+    SpinOff(R.string.match_label_spin_off, R.string.match_sublabel_spin_off),
+    Cameo(R.string.match_label_cameo, R.string.match_sublabel_cameo),
+    DifferentUniverse(R.string.match_label_different_universe, R.string.match_sublabel_different_universe),
+    ;
+
+    companion object {
+        fun of(score: Int): MatchLevel {
+            return when {
+                score >= 90 -> Soulmates
+                score >= 75 -> CoStars
+                score >= 60 -> Crossover
+                score >= 45 -> SpinOff
+                score >= 25 -> Cameo
+                else -> DifferentUniverse
+            }
+        }
     }
 }

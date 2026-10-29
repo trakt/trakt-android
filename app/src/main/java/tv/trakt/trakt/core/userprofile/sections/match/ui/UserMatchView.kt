@@ -70,7 +70,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserMatch
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.userprofile.sections.match.model.MatchChipTier
-import tv.trakt.trakt.core.userprofile.sections.match.model.matchLabelRes
+import tv.trakt.trakt.core.userprofile.sections.match.model.MatchLevel
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
 import tv.trakt.trakt.resources.R
@@ -106,7 +106,7 @@ internal fun UserMatchView(
     onShowClick: (Show) -> Unit = {},
 ) {
     Column(
-        verticalArrangement = spacedBy(24.dp),
+        verticalArrangement = spacedBy(28.dp),
         modifier = modifier
             .verticalScroll(
                 state = rememberScrollState(),
@@ -142,7 +142,6 @@ internal fun UserMatchView(
             if (match.sharedTopics.isNotEmpty()) {
                 MatchSection(
                     title = stringResource(R.string.match_drawer_shared_topics_header),
-                    count = match.sharedTopics.size,
                 ) {
                     FlowRow(
                         horizontalArrangement = spacedBy(5.dp),
@@ -161,7 +160,6 @@ internal fun UserMatchView(
             if (match.sharedShows.isNotEmpty()) {
                 MatchSection(
                     title = stringResource(R.string.tag_text_shows),
-                    count = match.sharedShows.size,
                 ) {
                     SharedMediaGrid(
                         placeholders = match.sharedShows.size.coerceAtMost(SHARED_MEDIA_LIMIT),
@@ -178,7 +176,6 @@ internal fun UserMatchView(
             if (match.sharedMovies.isNotEmpty()) {
                 MatchSection(
                     title = stringResource(R.string.tag_text_movies),
-                    count = match.sharedMovies.size,
                 ) {
                     SharedMediaGrid(
                         placeholders = match.sharedMovies.size.coerceAtMost(SHARED_MEDIA_LIMIT),
@@ -238,12 +235,26 @@ private fun MatchHero(
 
         MatchGauge(score = score)
 
-        Text(
-            text = stringResource(matchLabelRes(score)),
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading3,
-            textAlign = TextAlign.Center,
-        )
+        val level = MatchLevel.of(score)
+        Column(
+            verticalArrangement = spacedBy(2.dp),
+            horizontalAlignment = CenterHorizontally,
+            modifier = Modifier.padding(top = 4.dp),
+        ) {
+            Text(
+                text = stringResource(level.labelRes),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading3,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(level.sublabelRes, user.displayName),
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.paragraphSmaller,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
     }
 }
 
@@ -391,7 +402,6 @@ private fun MatchGauge(
 private fun MatchSection(
     title: String,
     modifier: Modifier = Modifier,
-    count: Int? = null,
     content: @Composable () -> Unit,
 ) {
     Column(
