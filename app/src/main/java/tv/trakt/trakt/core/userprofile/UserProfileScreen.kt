@@ -57,6 +57,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -73,6 +74,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
@@ -89,6 +91,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Red80
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
+import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.core.user.model.UserFollowRequest
 import tv.trakt.trakt.core.userprofile.sections.favorites.UserProfileFavoritesView
 import tv.trakt.trakt.core.userprofile.sections.history.UserProfileHistoryView
@@ -100,6 +103,7 @@ import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPreviewData
 import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchSheet
 import tv.trakt.trakt.core.userprofile.sections.social.UserProfileSocialView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.extensions.TraktThemeLight
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -258,6 +262,7 @@ private fun UserProfileContent(
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
 ) {
+    val preview = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfoV2().windowSizeClass
 
     val sectionPadding = PaddingValues(
@@ -346,6 +351,7 @@ private fun UserProfileContent(
                 userProfilePublicContent(
                     state = state,
                     windowClass = windowClass,
+                    sectionsEnabled = !preview,
                     sectionPadding = sectionPadding,
                     onToggleFollowRequest = onToggleFollowRequest,
                     onNavigateToShow = onNavigateToShow,
@@ -365,6 +371,7 @@ private fun UserProfileContent(
 private fun LazyListScope.userProfilePublicContent(
     state: UserProfileState,
     windowClass: WindowSizeClass,
+    sectionsEnabled: Boolean,
     sectionPadding: PaddingValues,
     onToggleFollowRequest: (approved: Boolean) -> Unit,
     onNavigateToShow: (Show) -> Unit,
@@ -394,32 +401,6 @@ private fun LazyListScope.userProfilePublicContent(
         )
     }
 
-    if (state.user.isAnyVip) {
-        item {
-            ProfileStatsCard(
-                loading = state.monthStats?.loading ?: true,
-                user = state.user,
-                stats = state.monthStats?.stats,
-                showAllStats = false,
-                containerImage = state.monthStats?.backgroundUrl,
-                modifier = Modifier
-                    .fillMaxWidth(
-                        when {
-                            windowClass.isAtLeastLarge() -> 0.5F
-                            else -> 1F
-                        },
-                    )
-                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                    .padding(
-                        bottom = when {
-                            state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
-                            else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
-                        },
-                    ),
-            )
-        }
-    }
-
     if (!state.user.about.isNullOrBlank()) {
         item {
             var expanded by rememberSaveable { mutableStateOf(false) }
@@ -428,7 +409,12 @@ private fun LazyListScope.userProfilePublicContent(
                 verticalArrangement = spacedBy(4.dp),
                 modifier = Modifier
                     .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace)
+                    .padding(
+                        bottom = when {
+                            state.user.isAnyVip -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
+                            else -> TraktTheme.spacing.mainSectionVerticalSpace
+                        },
+                    )
                     .onClick(throttle = false) { expanded = !expanded },
             ) {
                 Text(
@@ -456,6 +442,29 @@ private fun LazyListScope.userProfilePublicContent(
             }
         }
     }
+
+    if (state.user.isAnyVip) {
+        item {
+            ProfileStatsCard(
+                loading = state.monthStats?.loading ?: true,
+                user = state.user,
+                stats = state.monthStats?.stats,
+                showAllStats = false,
+                containerImage = state.monthStats?.backgroundUrl,
+                modifier = Modifier
+                    .fillMaxWidth(
+                        when {
+                            windowClass.isAtLeastLarge() -> 0.5F
+                            else -> 1F
+                        },
+                    )
+                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+            )
+        }
+    }
+
+    if (!sectionsEnabled) return
 
     item {
         UserProfileFavoritesView(
@@ -633,7 +642,7 @@ private fun TitleBar(
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(36.dp)
+                            .size(38.dp)
                             .graphicsLayer {
                                 translationY = 1.dp.toPx()
                             },
@@ -693,7 +702,6 @@ private fun TitleBar(
                 TraktHeader(
                     title = user.displayName,
                     subtitle = subtitle,
-                    modifier = Modifier.weight(1F, fill = false),
                 )
             }
         }
@@ -701,8 +709,6 @@ private fun TitleBar(
         Row(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(14.dp),
-            modifier = Modifier
-                .weight(1F, false),
         ) {
             AnimatedVisibility(
                 visible = match != null,
@@ -955,3 +961,56 @@ private fun Preview3() {
         )
     }
 }
+
+@DevicePreview
+@Composable
+private fun PreviewScreen() {
+    TraktTheme {
+        UserProfileContent(
+            state = PreviewScreenState,
+            matchState = UserMatchState(match = UserMatchPreviewData.match),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_7",
+    showBackground = true,
+    backgroundColor = 0xFFF1EFF4,
+    locale = "us",
+)
+@Composable
+private fun PreviewScreenLight() {
+    TraktThemeLight {
+        UserProfileContent(
+            state = PreviewScreenState,
+            matchState = UserMatchState(match = UserMatchPreviewData.match),
+        )
+    }
+}
+
+private val PreviewScreenState = UserProfileState(
+    user = PreviewData.user1.copy(
+        isVip = true,
+        location = "Some Location",
+        about = "Hello friend.",
+    ),
+    userBlocked = UserProfileState.BlockedState(
+        blocked = false,
+        loading = false,
+    ),
+    userFollowing = UserProfileState.FollowingState(
+        following = true,
+        loading = false,
+    ),
+    monthStats = UserProfileState.MonthlyStats(
+        stats = ProfileStats(
+            showsCount = 4,
+            moviesCount = 3,
+            episodesCount = 21,
+            playsCount = 24,
+        ),
+        backgroundUrl = null,
+        loading = false,
+    ),
+)
