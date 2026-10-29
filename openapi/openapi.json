@@ -143426,6 +143426,56 @@
         "operationId": "postYounifyConnect"
       }
     },
+    "/younify/users/refresh": {
+      "post": {
+        "description": "#### 🔒 OAuth Required\nQueue a re-sync of the connected streaming service named by `service_id` in the body. Free accounts only sync the service within their limit.",
+        "summary": "Refresh a streaming service (service in the body)",
+        "tags": [
+          "younify"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "skip_sync": {
+                    "type": "boolean",
+                    "description": "Only mark the service as synced now, so history from before this moment is ignored."
+                  },
+                  "service_id": {
+                    "type": "string",
+                    "description": "The streaming service to re-sync (e.g. `netflix`)."
+                  }
+                },
+                "required": [
+                  "service_id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          }
+        ],
+        "operationId": "postYounifyRefreshService"
+      }
+    },
     "/younify/users/refresh/{service_id}": {
       "post": {
         "description": "#### 🔒 OAuth Required\nQueue / force a re-sync of a connected streaming service for the authenticated user.",
@@ -143448,13 +143498,21 @@
           "description": "Body",
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "skip_sync": {
+                    "type": "boolean",
+                    "description": "Only mark the service as synced now, so history from before this moment is ignored."
+                  }
+                }
+              }
             }
           }
         },
         "responses": {
-          "204": {
-            "description": "204",
+          "201": {
+            "description": "201",
             "content": {
               "application/json": {
                 "schema": {}
@@ -143473,7 +143531,7 @@
     },
     "/younify/users/refresh/{service_id}/{all_data}": {
       "post": {
-        "description": "#### 🔒 OAuth Required\nQueue / force a re-sync of a connected streaming service for the authenticated user. The trailing `all_data` segment forces a full re-sync of all data rather than an incremental one.",
+        "description": "#### 🔒 OAuth Required\nQueue / force a re-sync of a connected streaming service for the authenticated user. An `all_data` segment of `true` forces a full re-sync of all data rather than an incremental one.",
         "summary": "Refresh a streaming service (full re-sync)",
         "tags": [
           "younify"
@@ -143493,22 +143551,34 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
             },
-            "description": "Optional trailing segment that forces a full re-sync of all data rather than an incremental one."
+            "description": "`true` forces a full re-sync of all data, `false` an incremental one."
           }
         ],
         "requestBody": {
           "description": "Body",
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "skip_sync": {
+                    "type": "boolean",
+                    "description": "Only mark the service as synced now, so history from before this moment is ignored."
+                  }
+                }
+              }
             }
           }
         },
         "responses": {
-          "204": {
-            "description": "204",
+          "201": {
+            "description": "201",
             "content": {
               "application/json": {
                 "schema": {}
