@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.shows.features.context.lists
+package tv.trakt.trakt.core.lists.features.manage
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -11,10 +11,10 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
 
 @Immutable
-internal data class ShowDetailsListsState(
+internal data class ManageListsState(
     val lists: ImmutableList<CustomListMinimal> = EmptyImmutableList,
     val collaborations: ImmutableList<CustomListMinimal> = EmptyImmutableList,
-    val showLists: ImmutableSet<TraktId> = EmptyImmutableSet,
+    val listedIds: ImmutableSet<TraktId> = EmptyImmutableSet,
     val toggling: ImmutableSet<TraktId> = EmptyImmutableSet,
     val user: User? = null,
     val loading: LoadingState = LoadingState.Idle,

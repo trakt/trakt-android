@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -40,6 +41,8 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+private val MinTouchTarget = 48.dp
+
 @Composable
 internal fun SeasonsTitleBar(
     state: AllShowSeasonsState,
@@ -48,6 +51,7 @@ internal fun SeasonsTitleBar(
     onSeasonClick: (SeasonItem) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onMoreClick: (() -> Unit)? = null,
 ) {
     val seasonsMenuVisible = remember { mutableStateOf(false) }
     val dropdownScrollState = rememberScrollState()
@@ -80,60 +84,80 @@ internal fun SeasonsTitleBar(
             modifier = Modifier.onClick { onBackClick() },
         )
 
-        Row(
-            horizontalArrangement = spacedBy(8.dp),
-            verticalAlignment = CenterVertically,
-            modifier = Modifier.onClick {
-                seasonsMenuVisible.value = true
-            },
+        Box(
+            modifier = Modifier.weight(1F),
         ) {
-            TraktHeader(
-                title = title ?: stringResource(R.string.list_title_seasons),
-                subtitle = subtitle ?: "",
-            )
-
-            Box {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_all),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
+            Row(
+                horizontalArrangement = spacedBy(8.dp),
+                verticalAlignment = CenterVertically,
+                modifier = Modifier.onClick {
+                    seasonsMenuVisible.value = true
+                },
+            ) {
+                TraktHeader(
+                    title = title ?: stringResource(R.string.list_title_seasons),
+                    subtitle = subtitle ?: "",
                 )
 
-                DropdownMenu(
-                    containerColor = TraktTheme.colors.dialogContainer,
-                    shape = RoundedCornerShape(20.dp),
-                    expanded = seasonsMenuVisible.value,
-                    scrollState = dropdownScrollState,
-                    onDismissRequest = {
-                        seasonsMenuVisible.value = false
-                    },
-                ) {
-                    for (season in state.items.seasons) {
-                        val seasonTitle = when (season.season.number) {
-                            0 -> stringResource(R.string.text_season_specials)
-                            else -> stringResource(R.string.text_season_number, season.season.number)
+                Box {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_chevron_all),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                    )
+
+                    DropdownMenu(
+                        containerColor = TraktTheme.colors.dialogContainer,
+                        shape = RoundedCornerShape(20.dp),
+                        expanded = seasonsMenuVisible.value,
+                        scrollState = dropdownScrollState,
+                        onDismissRequest = {
+                            seasonsMenuVisible.value = false
+                        },
+                    ) {
+                        for (season in state.items.seasons) {
+                            val seasonTitle = when (season.season.number) {
+                                0 -> stringResource(R.string.text_season_specials)
+                                else -> stringResource(R.string.text_season_number, season.season.number)
+                            }
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = seasonTitle,
+                                        style = TraktTheme.typography.buttonTertiary,
+                                        color = when (season.season.number) {
+                                            state.items.selectedSeason?.number -> TraktTheme.colors.textPrimary
+                                            else -> TraktTheme.colors.textSecondary
+                                        },
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                },
+                                onClick = {
+                                    seasonsMenuVisible.value = false
+                                    onSeasonClick(season)
+                                },
+                            )
                         }
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = seasonTitle,
-                                    style = TraktTheme.typography.buttonTertiary,
-                                    color = when (season.season.number) {
-                                        state.items.selectedSeason?.number -> TraktTheme.colors.textPrimary
-                                        else -> TraktTheme.colors.textSecondary
-                                    },
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
-                            },
-                            onClick = {
-                                seasonsMenuVisible.value = false
-                                onSeasonClick(season)
-                            },
-                        )
                     }
                 }
+            }
+        }
+
+        if (onMoreClick != null) {
+            Box(
+                contentAlignment = CenterEnd,
+                modifier = Modifier
+                    .size(MinTouchTarget)
+                    .onClick { onMoreClick() },
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_more_vertical),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
+                    modifier = Modifier.size(19.dp),
+                )
             }
         }
     }
@@ -169,6 +193,7 @@ private fun PreviewSeasonsTitleBar() {
             subtitle = PreviewData.show1.title,
             onSeasonClick = {},
             onBackClick = {},
+            onMoreClick = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .background(TraktTheme.colors.backgroundPrimary),

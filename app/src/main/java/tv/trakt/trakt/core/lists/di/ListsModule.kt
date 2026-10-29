@@ -23,6 +23,7 @@ import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
+import tv.trakt.trakt.core.lists.features.manage.ManageListsViewModel
 import tv.trakt.trakt.core.lists.features.reorder.ListReorderViewModel
 import tv.trakt.trakt.core.lists.features.reorder.lists.ListsReorderViewModel
 import tv.trakt.trakt.core.lists.features.reorder.lists.usecase.ReorderPersonalListsUseCase
@@ -115,6 +116,7 @@ internal val listsModule = module {
     viewModelOf(::CreateSmartListViewModel)
     viewModelOf(::WatchlistShowContextViewModel)
     viewModelOf(::ListShowContextViewModel)
+    viewModelOf(::ManageListsViewModel)
 
     viewModel {
         WatchlistMovieContextViewModel(

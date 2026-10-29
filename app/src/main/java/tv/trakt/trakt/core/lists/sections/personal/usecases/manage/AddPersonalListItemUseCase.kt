@@ -56,4 +56,48 @@ internal class AddPersonalListItemUseCase(
             updatedAt = nowUtc(),
         )
     }
+
+    suspend fun addSeason(
+        listId: TraktId,
+        ownerId: TraktId,
+        seasonId: TraktId,
+    ) {
+        remoteSource.addSeasonToList(
+            userId = ownerId,
+            listId = listId,
+            seasonId = seasonId,
+        )
+
+        listsLocalSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+
+        collabListsLocalSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+    }
+
+    suspend fun addEpisode(
+        listId: TraktId,
+        ownerId: TraktId,
+        episodeId: TraktId,
+    ) {
+        remoteSource.addEpisodeToList(
+            userId = ownerId,
+            listId = listId,
+            episodeId = episodeId,
+        )
+
+        listsLocalSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+
+        collabListsLocalSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+    }
 }

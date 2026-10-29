@@ -23,6 +23,7 @@ internal fun EpisodeContextSheet(
     onTrackClick: (EpisodeItem) -> Unit,
     onWatchedUntilClick: (EpisodeItem) -> Unit,
     onRemoveClick: (EpisodeItem) -> Unit,
+    onListsClick: ((EpisodeItem) -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -53,6 +54,15 @@ internal fun EpisodeContextSheet(
                     scope.launch {
                         state.hide()
                         onDismiss()
+                    }
+                },
+                onListsClick = onListsClick?.let { onClick ->
+                    {
+                        onClick(episodeItem)
+                        scope.launch {
+                            state.hide()
+                            onDismiss()
+                        }
                     }
                 },
                 modifier = Modifier

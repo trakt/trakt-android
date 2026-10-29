@@ -12,7 +12,6 @@ import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsU
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowCreatorUseCase
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsViewModel
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
-import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsListsViewModel
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
@@ -96,7 +95,6 @@ internal val showDetailsModule = module {
     viewModelOf(::ShowListsViewModel)
     viewModelOf(::ShowSentimentViewModel)
     viewModelOf(::ShowDetailsContextViewModel)
-    viewModelOf(::ShowDetailsListsViewModel)
     viewModelOf(::ShowHistoryViewModel)
     viewModelOf(::ShowTriviaViewModel)
     viewModelOf(::WatchedUntilViewModel)

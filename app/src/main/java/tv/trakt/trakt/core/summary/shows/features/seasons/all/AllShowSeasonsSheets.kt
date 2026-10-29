@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.helpers.extensions.toGifQuery
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
@@ -21,7 +22,10 @@ import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.comments.model.MentionSource
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
+import tv.trakt.trakt.core.summary.shows.features.context.seasons.SeasonContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilSheet
 import tv.trakt.trakt.resources.R
@@ -43,6 +47,8 @@ internal class AllShowSeasonsSheetState {
     var episodeWatchedUntil by mutableStateOf<Episode?>(null)
     var confirmWatchedUntil by mutableStateOf<Episode?>(null)
     var episodeContext by mutableStateOf<EpisodeItem?>(null)
+    var seasonContext by mutableStateOf<Season?>(null)
+    var manageLists by mutableStateOf<ManageListsTarget?>(null)
     var seasonDate by mutableStateOf(false)
     var postComment by mutableStateOf(false)
     var postReply by mutableStateOf<Pair<Comment, User?>?>(null)
@@ -71,8 +77,45 @@ internal fun AllShowSeasonsSheets(
         onRemoveClick = {
             sheetState.confirmRemoveEpisode = it
         },
+        onListsClick = when {
+            state.user == null -> null
+            else -> { item ->
+                state.show?.let { show ->
+                    sheetState.manageLists = ManageListsTarget.EpisodeTarget(show, item.episode)
+                }
+            }
+        },
         onDismiss = {
             sheetState.episodeContext = null
+        },
+    )
+
+    SeasonContextSheet(
+        show = state.show,
+        season = sheetState.seasonContext,
+        watched = state.items.isSelectedSeasonWatched,
+        onTrackClick = {
+            sheetState.confirmMarkSeason = true
+        },
+        onRemoveClick = {
+            sheetState.confirmRemoveSeason = true
+        },
+        onListsClick = {
+            val show = state.show
+            val season = sheetState.seasonContext
+            if (show != null && season != null) {
+                sheetState.manageLists = ManageListsTarget.SeasonTarget(show, season)
+            }
+        }.takeIf { state.user != null },
+        onDismiss = {
+            sheetState.seasonContext = null
+        },
+    )
+
+    ManageListsSheet(
+        target = sheetState.manageLists,
+        onDismiss = {
+            sheetState.manageLists = null
         },
     )
 

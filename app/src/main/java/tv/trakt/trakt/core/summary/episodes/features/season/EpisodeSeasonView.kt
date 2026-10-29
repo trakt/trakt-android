@@ -38,6 +38,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.summary.episodes.features.season.ui.EpisodeSeasonList
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
@@ -54,6 +57,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun EpisodeSeasonView(
     viewModel: EpisodeSeasonViewModel,
+    user: User?,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onEpisodeClick: (episode: Episode) -> Unit,
@@ -70,6 +74,7 @@ internal fun EpisodeSeasonView(
     var confirmRemoveSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var dateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var contextSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var listsSheet by remember { mutableStateOf<ManageListsTarget?>(null) }
     var watchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
     var confirmWatchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
 
@@ -103,8 +108,23 @@ internal fun EpisodeSeasonView(
         onRemoveClick = {
             confirmRemoveSheet = it
         },
+        onListsClick = when {
+            user == null -> null
+            else -> { item ->
+                state.show?.let { show ->
+                    listsSheet = ManageListsTarget.EpisodeTarget(show, item.episode)
+                }
+            }
+        },
         onDismiss = {
             contextSheet = null
+        },
+    )
+
+    ManageListsSheet(
+        target = listsSheet,
+        onDismiss = {
+            listsSheet = null
         },
     )
 

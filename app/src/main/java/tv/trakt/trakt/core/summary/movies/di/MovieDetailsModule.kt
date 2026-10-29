@@ -12,7 +12,6 @@ import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieActor
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
 import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsViewModel
 import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
-import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsViewModel
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtrasUseCase
@@ -178,19 +177,6 @@ internal val movieDetailsModule = module {
             movie = movie,
             sessionManager = get(),
             getStreamingsUseCase = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel { (movie: Movie) ->
-        MovieDetailsListsViewModel(
-            movie = movie,
-            sessionManager = get(),
-            loadListsUseCase = get(),
-            addListItemUseCase = get(),
-            removeListItemUseCase = get(),
-            dataChanges = get(),
-            errorsManager = get(),
             analytics = get(),
         )
     }

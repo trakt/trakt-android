@@ -36,6 +36,14 @@ class LoadUserListsUseCase(
         return remoteSource.getShowLists(showId).toImmutableSet()
     }
 
+    suspend fun loadSeasonLists(seasonId: TraktId): ImmutableSet<TraktId> {
+        return remoteSource.getSeasonLists(seasonId).toImmutableSet()
+    }
+
+    suspend fun loadEpisodeLists(episodeId: TraktId): ImmutableSet<TraktId> {
+        return remoteSource.getEpisodeLists(episodeId).toImmutableSet()
+    }
+
     suspend fun loadLists(): ImmutableMap<TraktId, CustomListMinimal> =
         coroutineScope {
             val lists = remoteSource.getPersonalListsMinimal()

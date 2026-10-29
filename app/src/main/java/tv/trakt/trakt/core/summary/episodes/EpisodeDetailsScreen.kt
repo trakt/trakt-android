@@ -75,6 +75,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
@@ -132,6 +134,7 @@ internal fun EpisodeDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var detailsSheet by remember { mutableStateOf<Pair<Show, Episode>?>(null) }
     var coverImageSheet by remember { mutableStateOf(false) }
+    var listsSheet by remember { mutableStateOf<ManageListsTarget?>(null) }
     var reportSheet by remember { mutableStateOf<ReportTarget?>(null) }
     var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
 
@@ -248,6 +251,13 @@ internal fun EpisodeDetailsScreen(
         onCheckClick = {
             dateSheet = true
         },
+        onListsClick = {
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                listsSheet = ManageListsTarget.EpisodeTarget(show, episode)
+            }
+        },
         onHistoryClick = {
             val show = state.show
             val episode = state.episode
@@ -284,6 +294,13 @@ internal fun EpisodeDetailsScreen(
         },
         onDismiss = {
             contextSheet = false
+        },
+    )
+
+    ManageListsSheet(
+        target = listsSheet,
+        onDismiss = {
+            listsSheet = null
         },
     )
 
@@ -652,6 +669,7 @@ internal fun EpisodeDetailsContent(
                                     parametersOf(state.show, state.episode)
                                 },
                             ),
+                            user = state.user,
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onEpisodeClick = onEpisodeClick ?: {},

@@ -103,6 +103,16 @@ class V3Api(
         return response.body<List<Int>>()
     }
 
+    suspend fun getSeasonMeLists(seasonId: TraktId): List<Int> {
+        val response = client.get("${baseV3Url}seasons/${seasonId.value}/me/lists")
+        return response.body<List<Int>>()
+    }
+
+    suspend fun getEpisodeMeLists(episodeId: TraktId): List<Int> {
+        val response = client.get("${baseV3Url}episodes/${episodeId.value}/me/lists")
+        return response.body<List<Int>>()
+    }
+
     suspend fun getSmartListPreviewItems(
         params: Map<String, String>,
         pagination: Pagination,

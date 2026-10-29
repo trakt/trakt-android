@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.shows.features.context.lists
+package tv.trakt.trakt.core.lists.features.manage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,15 +24,19 @@ import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.EpisodeTarget
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.MovieTarget
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.SeasonTarget
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.ShowTarget
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 
-internal class ShowDetailsListsViewModel(
-    private val show: Show,
+@Suppress("UNCHECKED_CAST")
+internal class ManageListsViewModel(
+    private val target: ManageListsTarget,
     private val sessionManager: SessionManager,
     private val loadListsUseCase: LoadUserListsUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
@@ -41,11 +45,11 @@ internal class ShowDetailsListsViewModel(
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
 ) : ViewModel() {
-    private val initialState = ShowDetailsListsState()
+    private val initialState = ManageListsState()
 
     private val listsState = MutableStateFlow(initialState.lists)
     private val collaborationsState = MutableStateFlow(initialState.collaborations)
-    private val showListsState = MutableStateFlow(initialState.showLists)
+    private val listedIdsState = MutableStateFlow(initialState.listedIds)
     private val togglingState = MutableStateFlow(initialState.toggling)
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -58,12 +62,15 @@ internal class ShowDetailsListsViewModel(
     private fun loadData() {
         viewModelScope.launch {
             val user = sessionManager.getProfile()
-                .also { user ->
-                    userState.update { user }
-                } ?: return@launch
+                .also { user -> userState.update { user } }
+                ?: return@launch
 
             try {
                 loadingState.update { LoadingState.Loading }
+
+                if (!loadListsUseCase.isLoaded()) {
+                    loadListsUseCase.loadLists()
+                }
 
                 val (ownLists, collaborationLists) = loadListsUseCase.loadLocalLists()
                     .values
@@ -71,10 +78,7 @@ internal class ShowDetailsListsViewModel(
 
                 listsState.update { ownLists.toImmutableList() }
                 collaborationsState.update { collaborationLists.toImmutableList() }
-
-                showListsState.update {
-                    loadListsUseCase.loadShowLists(show.ids.trakt)
-                }
+                listedIdsState.update { loadListedIds() }
 
                 listsState.update(::sortedByListed)
                 collaborationsState.update(::sortedByListed)
@@ -87,6 +91,15 @@ internal class ShowDetailsListsViewModel(
                     loadingState.update { LoadingState.Idle }
                 }
             }
+        }
+    }
+
+    private suspend fun loadListedIds(): ImmutableSet<TraktId> {
+        return when (target) {
+            is MovieTarget -> loadListsUseCase.loadMovieLists(target.id)
+            is ShowTarget -> loadListsUseCase.loadShowLists(target.id)
+            is SeasonTarget -> loadListsUseCase.loadSeasonLists(target.id)
+            is EpisodeTarget -> loadListsUseCase.loadEpisodeLists(target.id)
         }
     }
 
@@ -104,16 +117,8 @@ internal class ShowDetailsListsViewModel(
         viewModelScope.launch {
             try {
                 when {
-                    listed -> removeListItemUseCase.removeShow(
-                        listId = list.id,
-                        ownerId = list.ownerId,
-                        showId = show.ids.trakt,
-                    )
-                    else -> addListItemUseCase.addShow(
-                        listId = list.id,
-                        ownerId = list.ownerId,
-                        show = show,
-                    )
+                    listed -> removeItem(list)
+                    else -> addItem(list)
                 }
                 setListed(list.id, listed = !listed)
                 dataChanges.notify(Kind.Lists)
@@ -136,24 +141,71 @@ internal class ShowDetailsListsViewModel(
         }
     }
 
+    private suspend fun addItem(list: CustomListMinimal) {
+        when (target) {
+            is MovieTarget -> addListItemUseCase.addMovie(
+                listId = list.id,
+                ownerId = list.ownerId,
+                movie = target.movie,
+            )
+            is ShowTarget -> addListItemUseCase.addShow(
+                listId = list.id,
+                ownerId = list.ownerId,
+                show = target.show,
+            )
+            is SeasonTarget -> addListItemUseCase.addSeason(
+                listId = list.id,
+                ownerId = list.ownerId,
+                seasonId = target.id,
+            )
+            is EpisodeTarget -> addListItemUseCase.addEpisode(
+                listId = list.id,
+                ownerId = list.ownerId,
+                episodeId = target.id,
+            )
+        }
+    }
+
+    private suspend fun removeItem(list: CustomListMinimal) {
+        when (target) {
+            is MovieTarget -> removeListItemUseCase.removeMovie(
+                listId = list.id,
+                ownerId = list.ownerId,
+                movieId = target.id,
+            )
+            is ShowTarget -> removeListItemUseCase.removeShow(
+                listId = list.id,
+                ownerId = list.ownerId,
+                showId = target.id,
+            )
+            is SeasonTarget -> removeListItemUseCase.removeSeason(
+                listId = list.id,
+                ownerId = list.ownerId,
+                seasonId = target.id,
+            )
+            is EpisodeTarget -> removeListItemUseCase.removeEpisode(
+                listId = list.id,
+                ownerId = list.ownerId,
+                episodeId = target.id,
+            )
+        }
+    }
+
     private fun sortedByListed(lists: ImmutableList<CustomListMinimal>): ImmutableList<CustomListMinimal> {
-        return lists.sortedBy {
-            when {
-                isListed(it.id) -> 0
-                else -> 1
-            }
-        }.toImmutableList()
+        return lists
+            .sortedBy { if (isListed(it.id)) 0 else 1 }
+            .toImmutableList()
     }
 
     private fun isListed(listId: TraktId): Boolean {
-        return showListsState.value.contains(listId)
+        return listedIdsState.value.contains(listId)
     }
 
     private fun setListed(
         listId: TraktId,
         listed: Boolean,
     ) {
-        showListsState.update {
+        listedIdsState.update {
             when {
                 listed -> (it + listId).toImmutableSet()
                 else -> (it - listId).toImmutableSet()
@@ -161,21 +213,20 @@ internal class ShowDetailsListsViewModel(
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     val state = combine(
         userState,
         listsState,
         collaborationsState,
-        showListsState,
+        listedIdsState,
         togglingState,
         loadingState,
         errorState,
     ) { state ->
-        ShowDetailsListsState(
+        ManageListsState(
             user = state[0] as User?,
             lists = state[1] as ImmutableList<CustomListMinimal>,
             collaborations = state[2] as ImmutableList<CustomListMinimal>,
-            showLists = state[3] as ImmutableSet<TraktId>,
+            listedIds = state[3] as ImmutableSet<TraktId>,
             toggling = state[4] as ImmutableSet<TraktId>,
             loading = state[5] as LoadingState,
             error = state[6] as Exception?,

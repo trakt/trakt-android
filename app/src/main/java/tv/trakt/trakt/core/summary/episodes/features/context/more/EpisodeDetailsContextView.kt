@@ -54,6 +54,7 @@ internal fun EpisodeDetailsContextView(
     viewModel: EpisodeDetailsContextViewModel,
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
     onHistoryClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
@@ -66,6 +67,7 @@ internal fun EpisodeDetailsContextView(
         watched = watched,
         state = state,
         onCheckClick = onCheckClick,
+        onListsClick = onListsClick,
         onHistoryClick = onHistoryClick,
         onShareClick = onShareClick,
         onCoverClick = onCoverClick,
@@ -82,6 +84,7 @@ private fun EpisodeDetailsContextViewContent(
     state: EpisodeDetailsContextState,
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
+    onListsClick: (() -> Unit)? = null,
     onHistoryClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
@@ -161,7 +164,9 @@ private fun EpisodeDetailsContextViewContent(
             watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
             coverEnabled = !episode.images?.getScreenshotUrl().isNullOrBlank(),
             vip = state.user?.isAnyVip == true,
+            lists = state.user != null,
             onCheckClick = onCheckClick ?: {},
+            onListsClick = onListsClick ?: {},
             onHistoryClick = onHistoryClick ?: {},
             onShareClick = onShareClick ?: {},
             onCoverClick = onCoverClick ?: {},
@@ -218,8 +223,10 @@ private fun ActionButtons(
     watchOnlyOnce: Boolean?,
     coverEnabled: Boolean,
     vip: Boolean,
+    lists: Boolean,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
+    onListsClick: () -> Unit,
     onHistoryClick: () -> Unit,
     onShareClick: () -> Unit,
     onCoverClick: () -> Unit,
@@ -249,6 +256,20 @@ private fun ActionButtons(
                 modifier = Modifier.graphicsLayer {
                     translationX = -4.dp.toPx()
                 },
+            )
+        }
+
+        if (lists) {
+            GhostButton(
+                text = stringResource(R.string.button_text_manage_lists),
+                icon = painterResource(R.drawable.ic_lists_off),
+                iconSize = 21.dp,
+                iconSpace = 15.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -4.dp.toPx()
+                    },
+                onClick = onListsClick,
             )
         }
 
