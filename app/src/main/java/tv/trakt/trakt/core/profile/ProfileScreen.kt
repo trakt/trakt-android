@@ -505,7 +505,7 @@ private fun TitleBar(
                             error = painterResource(R.drawable.ic_person_placeholder),
                             modifier = Modifier
                                 .size(AvatarSize)
-                                .border(2.dp, borderColor, CircleShape)
+                                .border(2.5.dp, borderColor, CircleShape)
                                 .clip(CircleShape),
                         )
                     } else {
@@ -514,7 +514,7 @@ private fun TitleBar(
                             contentDescription = null,
                             modifier = Modifier
                                 .size(AvatarSize)
-                                .border(2.dp, borderColor, CircleShape)
+                                .border(2.5.dp, borderColor, CircleShape)
                                 .clip(CircleShape),
                         )
                     }
