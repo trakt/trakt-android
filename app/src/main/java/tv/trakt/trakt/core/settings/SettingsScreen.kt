@@ -83,6 +83,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.settings.features.notifications.AdjustNotificationTimeSheet
@@ -991,6 +992,10 @@ private fun SettingsMisc(
             text = stringResource(R.string.button_text_logout),
             icon = R.drawable.ic_logout,
             iconSize = 17.dp,
+            color = when (TraktTheme.colors.isLight) {
+                true -> Red500
+                false -> Red400
+            },
             enabled = !state.logoutLoading.isLoading,
             onClick = onLogoutClick,
         )

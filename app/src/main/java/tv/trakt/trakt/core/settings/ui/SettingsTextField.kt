@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.Dp
@@ -30,6 +31,7 @@ internal fun SettingsTextField(
     description: String? = null,
     icon: Int? = R.drawable.ic_chevron_right,
     iconSize: Dp = 20.dp,
+    color: Color = TraktTheme.colors.textPrimary,
     enabled: Boolean = true,
     vipLocked: Boolean = false,
     onClick: () -> Unit = { },
@@ -52,7 +54,7 @@ internal fun SettingsTextField(
         ) {
             Text(
                 text = text,
-                color = TraktTheme.colors.textPrimary,
+                color = color,
                 style = TraktTheme.typography.paragraph.copy(
                     fontSize = 14.sp,
                 ),
@@ -75,7 +77,7 @@ internal fun SettingsTextField(
             Icon(
                 painter = painterResource(icon),
                 contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
+                tint = color,
                 modifier = Modifier
                     .size(iconSize),
             )
