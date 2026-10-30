@@ -35,6 +35,7 @@ import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.Profile
 import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalSource
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileCommentsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.RateProfileRatingUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.all.AllFavoritesViewModel
@@ -96,6 +97,7 @@ internal val profileModule = module {
     factoryOf(::GetProgressWatchingUseCase)
     factoryOf(::GetProgressCompleteUseCase)
     factoryOf(::GetProfileRatingsUseCase)
+    factoryOf(::RateProfileRatingUseCase)
     factoryOf(::GetProfileCommentsUseCase)
     factoryOf(::GetProfileStatsUseCase)
     factoryOf(::LoadUserWatchlistUseCase)

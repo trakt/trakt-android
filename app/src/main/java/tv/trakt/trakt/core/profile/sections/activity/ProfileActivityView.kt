@@ -124,6 +124,7 @@ internal fun ProfileActivityView(
         onMovieClick = viewModel::navigateToMovie,
         onShowClick = viewModel::navigateToShow,
         onEpisodeClick = viewModel::navigateToEpisode,
+        onRateClick = viewModel::rateItem,
         onCommentClick = {
             commentSheet = it
         },
@@ -179,6 +180,7 @@ internal fun ProfileActivityContent(
     onMovieClick: (Movie) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
+    onRateClick: (ProfileRatingItem, Int?) -> Unit = { _, _ -> },
     onCommentClick: (Comment) -> Unit = {},
     onEditCommentClick: (ProfileCommentItem) -> Unit = {},
     onDeleteCommentClick: (Comment) -> Unit = {},
@@ -277,6 +279,7 @@ internal fun ProfileActivityContent(
                                             onMovieClick = onMovieClick,
                                             onShowClick = onShowClick,
                                             onEpisodeClick = onEpisodeClick,
+                                            onRateClick = onRateClick,
                                         )
                                     }
                                     Comments -> {
@@ -368,11 +371,14 @@ private fun RatingsContentList(
     onMovieClick: (Movie) -> Unit,
     onShowClick: (Show) -> Unit,
     onEpisodeClick: (Show, Episode) -> Unit,
+    onRateClick: (ProfileRatingItem, Int?) -> Unit,
 ) {
-    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
+    val listKeys = remember(listItems) { listItems.map { it.key } }
+    val currentList = remember { mutableIntStateOf(listKeys.hashCode()) }
 
-    LaunchedEffect(listItems) {
-        val hashCode = listItems.hashCode()
+    // Keyed on item keys so a rating change does not scroll the row back to the start.
+    LaunchedEffect(listKeys) {
+        val hashCode = listKeys.hashCode()
         if (currentList.intValue != hashCode) {
             currentList.intValue = hashCode
             listState.animateScrollToItem(0)
@@ -393,6 +399,7 @@ private fun RatingsContentList(
                 is ProfileRatingItem.MovieItem -> {
                     ProfileRatingMovieItemView(
                         item = item,
+                        onRateClick = { onRateClick(item, it) },
                         onClick = { onMovieClick(item.movie) },
                         modifier = Modifier
                             .animateItem(
@@ -405,6 +412,7 @@ private fun RatingsContentList(
                 is ProfileRatingItem.ShowItem -> {
                     ProfileRatingShowItemView(
                         item = item,
+                        onRateClick = { onRateClick(item, it) },
                         onClick = { onShowClick(item.show) },
                         modifier = Modifier
                             .animateItem(
@@ -417,6 +425,7 @@ private fun RatingsContentList(
                 is ProfileRatingItem.EpisodeItem -> {
                     ProfileRatingEpisodeItemView(
                         item = item,
+                        onRateClick = { onRateClick(item, it) },
                         onClick = { onEpisodeClick(item.show, item.episode) },
                         onShowClick = { onShowClick(item.show) },
                         modifier = Modifier
@@ -430,6 +439,7 @@ private fun RatingsContentList(
                 is ProfileRatingItem.SeasonItem -> {
                     ProfileRatingSeasonItemView(
                         item = item,
+                        onRateClick = { onRateClick(item, it) },
                         onShowClick = { onShowClick(item.show) },
                         modifier = Modifier
                             .animateItem(

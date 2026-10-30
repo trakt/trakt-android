@@ -55,7 +55,9 @@ import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Ratings
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileCommentsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.RateProfileRatingUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.withItemRating
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -66,6 +68,7 @@ private const val ACTIVITY_FILTERED_FETCH_LIMIT = 100
 internal class ProfileActivityViewModel(
     private val getFilterUseCase: GetActivityFilterUseCase,
     private val getRatingsUseCase: GetProfileRatingsUseCase,
+    private val rateRatingUseCase: RateProfileRatingUseCase,
     private val getCommentsUseCase: GetProfileCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val collapsingManager: CollapsingManager,
@@ -122,7 +125,7 @@ internal class ProfileActivityViewModel(
     }
 
     private fun observeRatings() {
-        dataChanges.observe(Kind.Ratings)
+        dataChanges.observe(Kind.Ratings, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -266,6 +269,20 @@ internal class ProfileActivityViewModel(
             items?.filterNot { it.comment.id == commentId.value }?.toImmutableList()
         }
         dataChanges.notify(Kind.Comments, origin = origin)
+    }
+
+    fun rateItem(
+        item: ProfileRatingItem,
+        rating: Int?,
+    ) {
+        viewModelScope.launch {
+            if (!rateRatingUseCase.rateItem(item, rating, origin)) {
+                return@launch
+            }
+            ratingItemsState.update { items ->
+                items?.withItemRating(item.key, rating)
+            }
+        }
     }
 
     fun setFilter(newFilter: ProfileActivityFilter) {

@@ -120,6 +120,7 @@ internal fun ProfileAllActivityScreen(
             }
         },
         onRatingShowClick = viewModel::navigateToShow,
+        onRateClick = viewModel::rateItem,
         onCommentClick = { commentSheet = it.comment },
         onEditCommentClick = { editCommentSheet = it },
         onDeleteCommentClick = { deleteCommentSheet = it.comment },
@@ -166,6 +167,7 @@ internal fun ProfileAllActivityContent(
     onLoadMore: () -> Unit = {},
     onRatingClick: (ProfileRatingItem) -> Unit = {},
     onRatingShowClick: (Show) -> Unit = {},
+    onRateClick: (ProfileRatingItem, Int?) -> Unit = { _, _ -> },
     onCommentClick: (ProfileCommentItem) -> Unit = {},
     onEditCommentClick: (ProfileCommentItem) -> Unit = {},
     onDeleteCommentClick: (ProfileCommentItem) -> Unit = {},
@@ -220,6 +222,7 @@ internal fun ProfileAllActivityContent(
             onEndOfList = onLoadMore,
             onRatingClick = onRatingClick,
             onRatingShowClick = onRatingShowClick,
+            onRateClick = onRateClick,
             onCommentClick = onCommentClick,
             onEditCommentClick = onEditCommentClick,
             onDeleteCommentClick = onDeleteCommentClick,
@@ -285,6 +288,7 @@ private fun ContentList(
     onEndOfList: () -> Unit,
     onRatingClick: (ProfileRatingItem) -> Unit,
     onRatingShowClick: (Show) -> Unit,
+    onRateClick: (ProfileRatingItem, Int?) -> Unit,
     onCommentClick: (ProfileCommentItem) -> Unit,
     onEditCommentClick: (ProfileCommentItem) -> Unit,
     onDeleteCommentClick: (ProfileCommentItem) -> Unit,
@@ -357,23 +361,27 @@ private fun ContentList(
                         is ShowItem -> ProfileAllActivityShowItem(
                             item = item,
                             onClick = { onRatingClick(item) },
+                            onRateClick = { onRateClick(item, it) },
                             modifier = itemModifier,
                         )
                         is MovieItem -> ProfileAllActivityMovieItem(
                             item = item,
                             onClick = { onRatingClick(item) },
+                            onRateClick = { onRateClick(item, it) },
                             modifier = itemModifier,
                         )
                         is EpisodeItem -> ProfileAllActivityEpisodeItem(
                             item = item,
                             onClick = { onRatingClick(item) },
                             onShowClick = { onRatingShowClick(item.show) },
+                            onRateClick = { onRateClick(item, it) },
                             modifier = itemModifier,
                         )
                         is SeasonItem -> ProfileAllActivitySeasonItem(
                             item = item,
                             onClick = { onRatingClick(item) },
                             onShowClick = { onRatingShowClick(item.show) },
+                            onRateClick = { onRateClick(item, it) },
                             modifier = itemModifier,
                         )
                     }

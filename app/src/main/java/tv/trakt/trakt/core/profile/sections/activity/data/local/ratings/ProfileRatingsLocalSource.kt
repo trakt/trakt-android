@@ -25,6 +25,12 @@ internal class ProfileRatingsLocalSource {
         }
     }
 
+    suspend fun removeItem(key: String) {
+        mutex.withLock {
+            storage.remove(key)
+        }
+    }
+
     suspend fun getItems(): List<ProfileRatingItem> {
         return mutex.withLock {
             storage.values.toList()
