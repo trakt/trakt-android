@@ -48,13 +48,13 @@ internal fun LeaderboardPill(
     followingCount: Int? = null,
     onClick: () -> Unit = {},
 ) {
-    val containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F)
+    val containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.33F)
     val contentColor = TraktTheme.colors.chipContent
     val height = if (followingCount != null) PillHeightWithSublabel else PillHeight
 
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(5.dp),
+        horizontalArrangement = spacedBy(6.dp),
         modifier = modifier
             .height(height)
             .clip(PillShape)
@@ -75,7 +75,7 @@ internal fun LeaderboardPill(
         } else {
             StackedAvatars(
                 users = users,
-                modifier = Modifier.padding(end = 2.dp),
+                modifier = Modifier.padding(end = 1.dp),
             )
         }
 
