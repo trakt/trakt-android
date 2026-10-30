@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,6 +33,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -114,7 +114,7 @@ internal fun ScreenTimeDailyBreakdownCard(
         )
 
         Column(
-            verticalArrangement = spacedBy(6.dp),
+            verticalArrangement = spacedBy(5.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1F),
@@ -122,7 +122,7 @@ internal fun ScreenTimeDailyBreakdownCard(
             ValueTrack(
                 text = rememberDurationFormat(
                     duration = shownIndex?.let { days[it].value.inWholeMinutes } ?: 0L,
-                    spaces = false,
+                    spaces = true,
                 ),
                 visible = shownIndex != null,
                 columnIndex = shownIndex ?: 0,
@@ -168,9 +168,9 @@ private fun ValueTrack(
         modifier = Modifier.fillMaxWidth(),
     ) {
         val columnWidth = (maxWidth - columnSpacing * (columnCount - 1)) / columnCount
-        val offset by animateDpAsState(
-            targetValue = (columnWidth + columnSpacing) * columnIndex,
-            label = "valueOffset",
+        val center by animateDpAsState(
+            targetValue = (columnWidth + columnSpacing) * columnIndex + columnWidth / 2,
+            label = "valueCenter",
         )
         val alpha by animateFloatAsState(
             targetValue = if (visible) 1F else 0F,
@@ -183,10 +183,15 @@ private fun ValueTrack(
             color = TraktTheme.colors.textPrimary,
             maxLines = 1,
             softWrap = false,
-            textAlign = TextAlign.Center,
             modifier = Modifier
-                .width(columnWidth)
-                .offset(x = offset)
+                .layout { measurable, constraints ->
+                    val placeable = measurable.measure(constraints.copy(minWidth = 0))
+                    val maxX = (constraints.maxWidth - placeable.width).coerceAtLeast(0)
+                    val x = (center.roundToPx() - placeable.width / 2).coerceIn(0, maxX)
+                    layout(constraints.maxWidth, placeable.height) {
+                        placeable.place(x, 0)
+                    }
+                }
                 .alpha(alpha),
         )
     }
