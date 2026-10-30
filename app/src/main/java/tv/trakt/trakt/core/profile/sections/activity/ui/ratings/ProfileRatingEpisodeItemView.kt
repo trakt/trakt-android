@@ -1,32 +1,26 @@
 package tv.trakt.trakt.core.profile.sections.activity.ui.ratings
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.profile.ProfileRatingItem
-import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.core.home.sections.activity.views.ActivityRateButton
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.util.Locale
 
 @Composable
 internal fun ProfileRatingEpisodeItemView(
@@ -34,6 +28,7 @@ internal fun ProfileRatingEpisodeItemView(
     modifier: Modifier = Modifier,
     onClick: (TraktId) -> Unit = { },
     onShowClick: (TraktId) -> Unit = { },
+    onRateClick: (Int?) -> Unit = {},
 ) {
     HorizontalMediaCard(
         modifier = modifier,
@@ -78,30 +73,13 @@ internal fun ProfileRatingEpisodeItemView(
                     )
                 }
 
-                val ratingText = remember(item.rating) {
-                    "%.1f"
-                        .format(Locale.US, item.rating / 2f)
-                        .removeSuffix(".0")
-                        .removeSuffix(",0")
-                }
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = spacedBy(2.dp),
-                    modifier = Modifier.padding(start = 12.dp, end = 1.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_star_trakt_on),
-                        contentDescription = null,
-                        modifier = Modifier.size(14.dp),
-                        tint = TraktTheme.colors.textPrimary,
-                    )
-                    Text(
-                        text = ratingText,
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.meta.copy(fontSize = 13.sp),
-                    )
-                }
+                val rating = remember(item) { item.userRating }
+                ActivityRateButton(
+                    rating = rating,
+                    title = item.show.title,
+                    onRateClick = onRateClick,
+                    modifier = Modifier.padding(start = 8.dp),
+                )
             }
         },
     )

@@ -49,12 +49,16 @@ import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Ratings
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileCommentsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.RateProfileRatingUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.reconciledWith
+import tv.trakt.trakt.core.profile.sections.activity.usecases.withItemRating
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileAllActivityViewModel(
     private val getFilterUseCase: GetActivityFilterUseCase,
     private val getRatingsUseCase: GetProfileRatingsUseCase,
+    private val rateRatingUseCase: RateProfileRatingUseCase,
     private val getCommentsUseCase: GetProfileCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val showLocalSource: ShowLocalSource,
@@ -95,7 +99,7 @@ internal class ProfileAllActivityViewModel(
         dataChanges.observe(Kind.Ratings)
             .debounce(200.milliseconds)
             .onEach {
-                loadData(ignoreErrors = true)
+                refreshRatings()
             }
             .launchIn(viewModelScope)
     }
@@ -163,6 +167,36 @@ internal class ProfileAllActivityViewModel(
             } finally {
                 loadingState.update { Done }
                 loadDataJob = null
+            }
+        }
+    }
+
+    private fun refreshRatings() {
+        if (filterState.value != Ratings || ratingItemsState.value.isNullOrEmpty()) {
+            loadData(ignoreErrors = true)
+            return
+        }
+
+        loadDataJob?.cancel()
+        loadDataJob = viewModelScope.launch {
+            val (serverItems, isComplete) = try {
+                val remoteItems = getRatingsUseCase.getRemoteRatings(
+                    Pagination(1, ACTIVITY_PAGE_LIMIT),
+                )
+                remoteItems to (remoteItems.size < ACTIVITY_PAGE_LIMIT)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+                // The cache holds the last server state, so a failed post still reverts offline.
+                getRatingsUseCase.getLocalRatings(Int.MAX_VALUE) to false
+            }
+
+            ratingItemsState.update { items ->
+                items?.reconciledWith(
+                    remoteItems = serverItems,
+                    isRemoteComplete = isComplete,
+                )
             }
         }
     }
@@ -270,6 +304,20 @@ internal class ProfileAllActivityViewModel(
             items?.filterNot { it.comment.id == commentId.value }?.toImmutableList()
         }
         dataChanges.notify(Kind.Comments, origin = origin)
+    }
+
+    fun rateItem(
+        item: ProfileRatingItem,
+        rating: Int?,
+    ) {
+        viewModelScope.launch {
+            if (!rateRatingUseCase.rateItem(item, rating, origin)) {
+                return@launch
+            }
+            ratingItemsState.update { items ->
+                items?.withItemRating(item.key, rating)
+            }
+        }
     }
 
     fun setFilter(newFilter: ProfileActivityFilter) {

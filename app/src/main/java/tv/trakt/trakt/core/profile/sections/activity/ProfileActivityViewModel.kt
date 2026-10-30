@@ -55,7 +55,10 @@ import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Ratings
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileCommentsUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.RateProfileRatingUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.reconciledWith
+import tv.trakt.trakt.core.profile.sections.activity.usecases.withItemRating
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -66,6 +69,7 @@ private const val ACTIVITY_FILTERED_FETCH_LIMIT = 100
 internal class ProfileActivityViewModel(
     private val getFilterUseCase: GetActivityFilterUseCase,
     private val getRatingsUseCase: GetProfileRatingsUseCase,
+    private val rateRatingUseCase: RateProfileRatingUseCase,
     private val getCommentsUseCase: GetProfileCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val collapsingManager: CollapsingManager,
@@ -125,7 +129,7 @@ internal class ProfileActivityViewModel(
         dataChanges.observe(Kind.Ratings)
             .debounce(200.milliseconds)
             .onEach {
-                loadData(ignoreErrors = true)
+                refreshRatings()
             }
             .launchIn(viewModelScope)
     }
@@ -217,6 +221,40 @@ internal class ProfileActivityViewModel(
         }
     }
 
+    private fun refreshRatings() {
+        if (filterState.value != Ratings || ratingItemsState.value.isNullOrEmpty()) {
+            loadData(ignoreErrors = true)
+            return
+        }
+
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
+            val mode = modeState.value
+            val fetchLimit = mode.fetchLimit()
+
+            val (serverItems, isComplete) = try {
+                val remoteItems = getRatingsUseCase.getRemoteRatings(Pagination(1, fetchLimit))
+                remoteItems to (remoteItems.size < fetchLimit)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+                // The cache holds the last server state, so a failed post still reverts offline.
+                getRatingsUseCase.getLocalRatings(fetchLimit) to false
+            }
+
+            ratingItemsState.update { items ->
+                items
+                    ?.reconciledWith(
+                        remoteItems = serverItems.filter { it.matches(mode) },
+                        isRemoteComplete = isComplete,
+                    )
+                    ?.take(ACTIVITY_SECTION_LIMIT)
+                    ?.toImmutableList()
+            }
+        }
+    }
+
     private fun MediaMode.fetchLimit(): Int {
         return when (this) {
             MediaMode.Media -> ACTIVITY_SECTION_LIMIT
@@ -266,6 +304,20 @@ internal class ProfileActivityViewModel(
             items?.filterNot { it.comment.id == commentId.value }?.toImmutableList()
         }
         dataChanges.notify(Kind.Comments, origin = origin)
+    }
+
+    fun rateItem(
+        item: ProfileRatingItem,
+        rating: Int?,
+    ) {
+        viewModelScope.launch {
+            if (!rateRatingUseCase.rateItem(item, rating, origin)) {
+                return@launch
+            }
+            ratingItemsState.update { items ->
+                items?.withItemRating(item.key, rating)
+            }
+        }
     }
 
     fun setFilter(newFilter: ProfileActivityFilter) {

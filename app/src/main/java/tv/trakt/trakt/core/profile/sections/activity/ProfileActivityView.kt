@@ -124,6 +124,7 @@ internal fun ProfileActivityView(
         onMovieClick = viewModel::navigateToMovie,
         onShowClick = viewModel::navigateToShow,
         onEpisodeClick = viewModel::navigateToEpisode,
+        onRateClick = viewModel::rateItem,
         onCommentClick = {
             commentSheet = it
         },
@@ -179,6 +180,7 @@ internal fun ProfileActivityContent(
     onMovieClick: (Movie) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
+    onRateClick: (ProfileRatingItem, Int?) -> Unit = { _, _ -> },
     onCommentClick: (Comment) -> Unit = {},
     onEditCommentClick: (ProfileCommentItem) -> Unit = {},
     onDeleteCommentClick: (Comment) -> Unit = {},
@@ -277,6 +279,7 @@ internal fun ProfileActivityContent(
                                             onMovieClick = onMovieClick,
                                             onShowClick = onShowClick,
                                             onEpisodeClick = onEpisodeClick,
+                                            onRateClick = onRateClick,
                                         )
                                     }
                                     Comments -> {
@@ -368,13 +371,16 @@ private fun RatingsContentList(
     onMovieClick: (Movie) -> Unit,
     onShowClick: (Show) -> Unit,
     onEpisodeClick: (Show, Episode) -> Unit,
+    onRateClick: (ProfileRatingItem, Int?) -> Unit,
 ) {
-    val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
+    val listKeys = remember(listItems) { listItems.map { it.key } }
+    val previousKeys = remember { mutableStateOf(listKeys) }
 
-    LaunchedEffect(listItems) {
-        val hashCode = listItems.hashCode()
-        if (currentList.intValue != hashCode) {
-            currentList.intValue = hashCode
+    // Only a new item at the front scrolls back, so removing or refilling a rating keeps the position.
+    LaunchedEffect(listKeys) {
+        val isNewFirstItem = listKeys.firstOrNull() !in previousKeys.value
+        previousKeys.value = listKeys
+        if (isNewFirstItem) {
             listState.animateScrollToItem(0)
         }
     }
@@ -393,6 +399,7 @@ private fun RatingsContentList(
                 is ProfileRatingItem.MovieItem -> {
                     ProfileRatingMovieItemView(
                         item = item,
+                        onRateClick = { onRateClick(item, it) },
                         onClick = { onMovieClick(item.movie) },
                         modifier = Modifier
                             .animateItem(
@@ -405,6 +412,7 @@ private fun RatingsContentList(
                 is ProfileRatingItem.ShowItem -> {
                     ProfileRatingShowItemView(
                         item = item,
+                        onRateClick = { onRateClick(item, it) },
                         onClick = { onShowClick(item.show) },
                         modifier = Modifier
                             .animateItem(
@@ -417,6 +425,7 @@ private fun RatingsContentList(
                 is ProfileRatingItem.EpisodeItem -> {
                     ProfileRatingEpisodeItemView(
                         item = item,
+                        onRateClick = { onRateClick(item, it) },
                         onClick = { onEpisodeClick(item.show, item.episode) },
                         onShowClick = { onShowClick(item.show) },
                         modifier = Modifier
@@ -430,6 +439,7 @@ private fun RatingsContentList(
                 is ProfileRatingItem.SeasonItem -> {
                     ProfileRatingSeasonItemView(
                         item = item,
+                        onRateClick = { onRateClick(item, it) },
                         onShowClick = { onShowClick(item.show) },
                         modifier = Modifier
                             .animateItem(
