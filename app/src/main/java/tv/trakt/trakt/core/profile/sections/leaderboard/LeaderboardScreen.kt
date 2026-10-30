@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -47,6 +48,10 @@ import tv.trakt.trakt.common.model.leaderboard.LeaderboardEntry
 import tv.trakt.trakt.core.home.views.HomeEmptySocialView
 import tv.trakt.trakt.core.profile.sections.leaderboard.ui.LeaderboardItemView
 import tv.trakt.trakt.core.profile.sections.leaderboard.ui.LeaderboardItemViewSkeleton
+import tv.trakt.trakt.core.profile.sections.leaderboard.ui.LeaderboardPodiumSkeleton
+import tv.trakt.trakt.core.profile.sections.leaderboard.ui.LeaderboardPodiumView
+import tv.trakt.trakt.core.profile.sections.leaderboard.ui.PODIUM_SIZE
+import tv.trakt.trakt.core.profile.sections.leaderboard.ui.isPodiumEntry
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -58,6 +63,7 @@ private val TITLE_BAR_BOTTOM_TRIM = 8.dp
 @Composable
 internal fun LeaderboardScreen(
     modifier: Modifier = Modifier,
+    followingCount: Int? = null,
     viewModel: LeaderboardViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
     onUserClick: (User) -> Unit,
@@ -67,6 +73,7 @@ internal fun LeaderboardScreen(
     LeaderboardContent(
         state = state,
         modifier = modifier,
+        podiumExpected = (followingCount ?: 0) >= PODIUM_SIZE,
         onUserClick = onUserClick,
         onEndOfList = viewModel::loadMoreData,
         onBackClick = onNavigateBack,
@@ -77,6 +84,7 @@ internal fun LeaderboardScreen(
 private fun LeaderboardContent(
     state: LeaderboardState,
     modifier: Modifier = Modifier,
+    podiumExpected: Boolean = false,
     onUserClick: (User) -> Unit = {},
     onEndOfList: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -102,8 +110,22 @@ private fun LeaderboardContent(
         }
     }
 
-    val firstFreeIndex = remember(items) {
-        items.indexOfFirst { it.isLocked && !it.isViewer }
+    val podiumItems = remember(items) {
+        items
+            .take(PODIUM_SIZE)
+            .takeWhile { it.isPodiumEntry() }
+            .takeIf { it.size == PODIUM_SIZE }
+            .orEmpty()
+            .toImmutableList()
+    }
+    val listItems = remember(items, podiumItems) {
+        items
+            .drop(podiumItems.size)
+            .toImmutableList()
+    }
+
+    val firstFreeIndex = remember(listItems) {
+        listItems.indexOfFirst { it.isLocked && !it.isViewer }
     }
 
     val contentPadding = PaddingValues(
@@ -140,14 +162,36 @@ private fun LeaderboardContent(
             }
 
             if (state.loading.isLoading && items.isEmpty()) {
+                if (podiumExpected) {
+                    item(key = "podium_skeleton") {
+                        LeaderboardPodiumSkeleton(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp, bottom = 16.dp),
+                        )
+                    }
+                }
+
                 items(count = 12) {
                     LeaderboardItemViewSkeleton(
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
             } else {
+                if (podiumItems.isNotEmpty()) {
+                    item(key = "podium") {
+                        LeaderboardPodiumView(
+                            entries = podiumItems,
+                            onEntryClick = { onUserClick(it.user) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp, bottom = 16.dp),
+                        )
+                    }
+                }
+
                 itemsIndexed(
-                    items = items,
+                    items = listItems,
                     key = { _, entry -> entry.user.ids.trakt.value },
                 ) { index, entry ->
                     if (index == firstFreeIndex) {
@@ -255,6 +299,36 @@ private fun Preview() {
                     ),
                     LeaderboardEntry(
                         user = PreviewData.user1.copy(
+                            ids = PreviewData.user1.ids.copy(trakt = TraktId(3)),
+                            name = "John Dutton",
+                        ),
+                        rank = 2,
+                        totalMinutes = 401_000,
+                        totalPlays = 9_800,
+                        isLocked = false,
+                    ),
+                    LeaderboardEntry(
+                        user = PreviewData.user1.copy(
+                            ids = PreviewData.user1.ids.copy(trakt = TraktId(4)),
+                            name = "Beth Dutton",
+                        ),
+                        rank = 3,
+                        totalMinutes = 254_000,
+                        totalPlays = 6_100,
+                        isLocked = false,
+                    ),
+                    LeaderboardEntry(
+                        user = PreviewData.user1.copy(
+                            ids = PreviewData.user1.ids.copy(trakt = TraktId(5)),
+                            name = "Kayce Dutton",
+                        ),
+                        rank = 4,
+                        totalMinutes = 120_000,
+                        totalPlays = 3_200,
+                        isLocked = false,
+                    ),
+                    LeaderboardEntry(
+                        user = PreviewData.user1.copy(
                             ids = PreviewData.user1.ids.copy(trakt = TraktId(2)),
                             name = "Rip Wheeler",
                         ),
@@ -281,6 +355,7 @@ private fun PreviewLoading() {
             state = LeaderboardState(
                 loading = Loading,
             ),
+            podiumExpected = true,
         )
     }
 }

@@ -26,7 +26,7 @@ internal fun NavGraphBuilder.profileScreen(
     onNavigateToSettings: () -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToSocial: () -> Unit,
-    onNavigateToLeaderboard: () -> Unit,
+    onNavigateToLeaderboard: (followingCount: Int?) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     composable<ProfileDestination> {

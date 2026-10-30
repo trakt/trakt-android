@@ -102,7 +102,7 @@ internal fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToSocial: () -> Unit,
-    onNavigateToLeaderboard: () -> Unit,
+    onNavigateToLeaderboard: (followingCount: Int?) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -126,7 +126,7 @@ internal fun ProfileScreen(
         onSettingsClick = onNavigateToSettings,
         onNavigateToUser = onNavigateToUser,
         onNavigateToSocial = onNavigateToSocial,
-        onLeaderboardClick = onNavigateToLeaderboard,
+        onLeaderboardClick = { onNavigateToLeaderboard(state.followingCount) },
         onVipClick = onNavigateToVip,
         onVipSeen = viewModel::onVipUpsellSeen,
         onAllTimeStatsClick = {

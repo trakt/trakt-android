@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -52,7 +53,7 @@ private const val MEDAL_BACKGROUND_ALPHA_LIGHT = 0.16F
 
 private const val LOCKED_CONTAINER_ALPHA = 0.4F
 
-private fun medalColorOf(
+internal fun medalColorOf(
     rank: Int?,
     isLight: Boolean,
 ): Color? {
@@ -105,9 +106,9 @@ internal fun LeaderboardItemView(
             .padding(horizontal = 12.dp, vertical = 10.dp)
             .alpha(if (isLockedFollow) 0.55F else 1F),
     ) {
-        RankLabel(rank = rank)
+        LeaderboardRankLabel(rank = rank)
 
-        Avatar(entry = entry)
+        LeaderboardAvatar(entry = entry)
 
         Column(
             verticalArrangement = spacedBy(2.dp),
@@ -140,7 +141,7 @@ internal fun LeaderboardItemView(
 }
 
 @Composable
-private fun RankLabel(rank: Int?) {
+internal fun LeaderboardRankLabel(rank: Int?) {
     val isLight = TraktTheme.colors.isLight
     val medalColor = medalColorOf(rank, isLight)
     val medalBackgroundAlpha = if (isLight) MEDAL_BACKGROUND_ALPHA_LIGHT else MEDAL_BACKGROUND_ALPHA
@@ -160,21 +161,25 @@ private fun RankLabel(rank: Int?) {
                     color = medalColor?.copy(alpha = medalBackgroundAlpha) ?: Color.Transparent,
                     shape = RoundedCornerShape(100),
                 )
-                .padding(horizontal = 8.dp, vertical = 4.dp),
+                .padding(horizontal = 10.dp, vertical = 4.dp),
         )
     }
 }
 
 @Composable
-private fun Avatar(entry: LeaderboardEntry) {
-    val size = 44.dp
+internal fun LeaderboardAvatar(
+    entry: LeaderboardEntry,
+    modifier: Modifier = Modifier,
+    size: Dp = 44.dp,
+    border: Dp = 2.dp,
+) {
     val borderColor = when {
         entry.user.isAnyVip -> TraktTheme.colors.vipAccent
         else -> Color.Transparent
     }
-    val avatarModifier = Modifier
+    val avatarModifier = modifier
         .size(size)
-        .border(2.dp, borderColor, CircleShape)
+        .border(border, borderColor, CircleShape)
         .clip(CircleShape)
 
     val avatar = entry.user.images?.avatar?.full
@@ -185,8 +190,8 @@ private fun Avatar(entry: LeaderboardEntry) {
                     avatar.startsWith("http") -> avatar
                     else -> "https://$avatar"
                 }
-                    .replace("/medium/", "/thumb/")
-                    .replace("/original/", "/thumb/")
+                    .replace("/medium/", "/medium/")
+                    .replace("/original/", "/medium/")
             },
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -214,7 +219,7 @@ private fun StatsLabel(entry: LeaderboardEntry) {
         "${rememberThousandsFormat(it / 60)} $hoursLabel"
     }
 
-    val text = listOfNotNull(plays, hours).joinToString("  •  ")
+    val text = listOfNotNull(hours, plays).joinToString("  •  ")
     if (text.isEmpty()) return
 
     Text(
