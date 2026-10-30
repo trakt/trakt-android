@@ -38,7 +38,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 private val PillShape = RoundedCornerShape(100)
 private val PillHeight = 32.dp
 private val PillHeightWithSublabel = 34.dp
-private val AvatarSize = 24.dp
+private val AvatarSize = 25.dp
 private val AvatarOverlap = 14.dp
 
 @Composable
@@ -48,7 +48,7 @@ internal fun LeaderboardPill(
     followingCount: Int? = null,
     onClick: () -> Unit = {},
 ) {
-    val containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.33F)
+    val containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.4F)
     val contentColor = TraktTheme.colors.chipContent
     val height = if (followingCount != null) PillHeightWithSublabel else PillHeight
 

@@ -59,7 +59,7 @@ private fun MatchPillContent(
     modifier: Modifier = Modifier,
 ) {
     val containerColor = TraktTheme.colors.chipContainer
-        .copy(alpha = 0.33F)
+        .copy(alpha = 0.4F)
     val fillColor = TraktTheme.colors.chipProgress
         .copy(alpha = 0.5F)
     val contentColor = TraktTheme.colors.chipContent
