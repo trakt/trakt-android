@@ -45,6 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
@@ -245,9 +246,14 @@ private fun Lightsaber(modifier: Modifier = Modifier) {
     )
     val ignition = remember { Animatable(0F) }
     var ignited by rememberSaveable { mutableStateOf(true) }
+    var initialIgnition by remember { mutableStateOf(true) }
     val haptic = LocalHapticFeedback.current
 
     LaunchedEffect(ignited) {
+        if (initialIgnition) {
+            initialIgnition = false
+            delay(500)
+        }
         ignition.animateTo(
             targetValue = if (ignited) 1F else 0F,
             animationSpec = tween(
