@@ -28,6 +28,7 @@ internal data class MovieDetailsState(
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,
+    val lightsaber: Boolean = false,
 ) {
     data class ProgressState(
         val plays: Int,

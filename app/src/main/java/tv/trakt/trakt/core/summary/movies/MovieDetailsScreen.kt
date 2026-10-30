@@ -557,6 +557,7 @@ internal fun MovieDetailsContent(
                         watched = isWatched,
                         watchlist = state.movieProgress?.inWatchlist,
                         trailer = !movie.trailer.isNullOrBlank(),
+                        lightsaber = state.lightsaber,
                         onTrailerClick = onTrailerClick,
                         onPrimaryClick = onTrackClick,
                         onSecondaryClick = onWatchlistClick,

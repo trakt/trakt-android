@@ -635,6 +635,7 @@ internal fun ShowDetailsContent(
                         watched = isWatched,
                         watchlist = state.showProgress?.inWatchlist,
                         trailer = !show.trailer.isNullOrBlank(),
+                        lightsaber = state.lightsaber,
                         onPrimaryClick = onTrackClick,
                         onSecondaryClick = onWatchlistClick,
                         onSecondaryLongClick = onListsClick,

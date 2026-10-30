@@ -65,6 +65,7 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
+import tv.trakt.trakt.core.summary.helpers.hasLightsaber
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
 import tv.trakt.trakt.core.summary.movies.features.socials.GetMovieSocialsUseCase
@@ -126,6 +127,7 @@ internal class MovieDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val lightsaberState = MutableStateFlow(initialState.lightsaber)
 
     private var ratingJob: Job? = null
 
@@ -207,6 +209,7 @@ internal class MovieDetailsViewModel(
                     )
                 }
                 movieState.update { movie }
+                lightsaberState.update { hasLightsaber(movie.title) }
 
                 loadTranslations()
                 loadRatings(movie)
@@ -964,6 +967,7 @@ internal class MovieDetailsViewModel(
         infoState,
         errorState,
         userState,
+        lightsaberState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
@@ -980,6 +984,7 @@ internal class MovieDetailsViewModel(
             info = state[11] as StringResource?,
             error = state[12] as Exception?,
             user = state[13] as User?,
+            lightsaber = state[14] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

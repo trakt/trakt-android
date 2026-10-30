@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 @Immutable
 data class AccentPalette(
     val shade50: Color,
+    val shade100: Color,
     val shade200: Color,
     val shade300: Color,
     val shade400: Color,
@@ -16,6 +17,7 @@ data class AccentPalette(
 
 val PurplePalette = AccentPalette(
     shade50 = Purple50,
+    shade100 = Purple100,
     shade200 = Purple200,
     shade300 = Purple300,
     shade400 = Purple400,
@@ -26,6 +28,7 @@ val PurplePalette = AccentPalette(
 
 val OrangePalette = AccentPalette(
     shade50 = Orange50,
+    shade100 = Orange100,
     shade200 = Orange200,
     shade300 = Orange300,
     shade400 = Orange400,
