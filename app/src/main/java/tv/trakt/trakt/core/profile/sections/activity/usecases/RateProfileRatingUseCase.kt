@@ -6,13 +6,11 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.model.profile.ProfileRatingItem
-import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalSource
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 
 internal class RateProfileRatingUseCase(
     private val appContext: Context,
     private val sessionManager: SessionManager,
-    private val localSource: ProfileRatingsLocalSource,
 ) {
     suspend fun rateItem(
         item: ProfileRatingItem,
@@ -34,11 +32,6 @@ internal class RateProfileRatingUseCase(
             rating = rating ?: 0, // A rating of 0 indicates removal of rating
             origin = origin,
         )
-
-        when (rating) {
-            null -> localSource.removeItem(item.key)
-            else -> localSource.addItems(listOf(item.withRating(rating)))
-        }
 
         return true
     }

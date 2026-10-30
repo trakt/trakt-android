@@ -95,7 +95,7 @@ internal class ProfileAllActivityViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeRatings() {
-        dataChanges.observe(Kind.Ratings, exclude = origin)
+        dataChanges.observe(Kind.Ratings)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
