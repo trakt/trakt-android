@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -59,11 +58,10 @@ private fun MatchPillContent(
     score: Int,
     modifier: Modifier = Modifier,
 ) {
-    val alpha = 0.8F
     val containerColor = TraktTheme.colors.chipContainer
-        .copy(alpha = alpha)
+        .copy(alpha = 0.33F)
     val fillColor = TraktTheme.colors.chipProgress
-        .copy(alpha = alpha - 0.2F)
+        .copy(alpha = 0.5F)
     val contentColor = TraktTheme.colors.chipContent
     val fill = score / 100F
 

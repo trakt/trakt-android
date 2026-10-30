@@ -10,9 +10,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -28,11 +26,11 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -52,12 +50,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -71,7 +66,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
-import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -110,15 +104,15 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.extensions.TraktThemeLight
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.AvatarSize
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.UserHeaderRow
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private val AvatarSize = 60.dp
 
 @Composable
 internal fun UserProfileScreen(
@@ -756,107 +750,62 @@ private fun UserHeader(
     match: UserMatch? = null,
     onMatchClick: () -> Unit = {},
 ) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+    val isBlocked = userBlocked?.blocked == true && !userBlocked.loading
+
+    UserHeaderRow(
+        user = user,
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
+                start = TraktTheme.spacing.mainPageHorizontalSpace,
                 end = TraktTheme.spacing.mainPageHorizontalSpace,
-                bottom = 13.dp,
+                bottom = 12.dp,
             ),
-    ) {
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
-            modifier = Modifier
-                .weight(1F, false)
-                .padding(end = 16.dp),
-        ) {
-            val vipAccent = TraktTheme.colors.vipAccent
-            val borderColor = remember(user) {
-                when (user.isAnyVip) {
-                    true -> vipAccent
-                    else -> Color.White
-                }
-            }
-
-            Box(
-                contentAlignment = Alignment.BottomCenter,
+        avatarBadge = if (isBlocked) {
+            { BlockedAvatarBadge() }
+        } else {
+            null
+        },
+        trailing = {
+            AnimatedVisibility(
+                visible = match != null,
+                enter = fadeIn(tween(200)),
+                exit = ExitTransition.None,
             ) {
-                if (user.hasAvatar) {
-                    AsyncImage(
-                        model = user.images?.avatar?.full,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        error = painterResource(R.drawable.ic_person_placeholder),
-                        modifier = Modifier
-                            .size(AvatarSize)
-                            .border(2.5.dp, borderColor, CircleShape)
-                            .clip(CircleShape),
-                    )
-                } else {
-                    Image(
-                        painter = painterResource(R.drawable.ic_person_placeholder),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(AvatarSize)
-                            .border(2.5.dp, borderColor, CircleShape)
-                            .clip(CircleShape),
-                    )
-                }
-
-                if (userBlocked?.blocked == true && !userBlocked.loading) {
-                    Text(
-                        text = stringResource(R.string.tag_text_blocked_user).uppercase(),
-                        color = Red500,
-                        style = TraktTheme.typography.meta.copy(
-                            fontSize = 9.sp,
-                            letterSpacing = 0.03.sp,
-                        ),
-                        modifier = Modifier
-                            .graphicsLayer {
-                                translationY = size.height / 2
-                            }
-                            .shadow(
-                                elevation = TraktTheme.colors.shadowDynamicSmall,
-                                shape = RoundedCornerShape(100),
-                            )
-                            .background(
-                                Red80,
-                                RoundedCornerShape(100),
-                            )
-                            .padding(horizontal = 6.dp, vertical = 2.dp),
+                if (match != null) {
+                    UserMatchPill(
+                        match = match,
+                        onClick = onMatchClick,
                     )
                 }
             }
+        },
+    )
+}
 
-            val subtitle = remember(user) {
-                listOfNotNull(
-                    user.location?.takeIf { it.isNotBlank() },
-                ).joinToString(separator = " • ")
-            }
-
-            TraktHeader(
-                title = user.displayName,
-                subtitle = subtitle,
+@Composable
+private fun BlockedAvatarBadge() {
+    Text(
+        text = stringResource(R.string.tag_text_blocked_user).uppercase(),
+        color = Red500,
+        style = TraktTheme.typography.meta.copy(
+            fontSize = 9.sp,
+            letterSpacing = 0.03.sp,
+        ),
+        maxLines = 1,
+        overflow = Ellipsis,
+        modifier = Modifier
+            .widthIn(max = AvatarSize)
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicSmall,
+                shape = RoundedCornerShape(100),
             )
-        }
-
-        AnimatedVisibility(
-            visible = match != null,
-            enter = fadeIn(tween(200)),
-            exit = ExitTransition.None,
-        ) {
-            if (match != null) {
-                UserMatchPill(
-                    match = match,
-                    onClick = onMatchClick,
-                )
-            }
-        }
-    }
+            .background(
+                Red80,
+                RoundedCornerShape(100),
+            )
+            .padding(horizontal = 6.dp, vertical = 2.dp),
+    )
 }
 
 private fun shareUser(

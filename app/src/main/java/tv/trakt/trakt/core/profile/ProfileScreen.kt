@@ -8,9 +8,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -29,7 +27,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -42,14 +39,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalUriHandler
@@ -62,9 +55,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import timber.log.Timber
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.Config.webYearReviewUrl
@@ -92,12 +82,10 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
-import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.UserHeaderRow
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private val AvatarSize = 60.dp
 
 @Composable
 internal fun ProfileScreen(
@@ -255,19 +243,32 @@ private fun ProfileScreen(
             contentPadding = listPadding,
             overscrollEffect = null,
         ) {
-            item {
-                TitleBar(
-                    user = state.user,
-                    leaderboardVisible = state.hasLeaderboard,
-                    leaderboardUsers = state.leaderboardUsers,
-                    followingCount = state.followingCount,
-                    onLeaderboardClick = onLeaderboardClick,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp),
-                )
-            }
-
             if (state.user != null) {
+                item {
+                    UserHeaderRow(
+                        user = state.user,
+                        modifier = Modifier
+                            .padding(
+                                start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
+                                end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                bottom = 22.dp,
+                            ),
+                        trailing = {
+                            AnimatedVisibility(
+                                visible = state.hasLeaderboard,
+                                enter = fadeIn(),
+                                exit = fadeOut(),
+                            ) {
+                                LeaderboardPill(
+                                    users = state.leaderboardUsers,
+                                    followingCount = state.followingCount,
+                                    onClick = onLeaderboardClick,
+                                )
+                            }
+                        },
+                    )
+                }
+
                 if (!state.user.about.isNullOrBlank()) {
                     item {
                         Column(
@@ -456,94 +457,6 @@ private fun ProfileScreenHeader(
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },
     )
-}
-
-@Composable
-private fun TitleBar(
-    user: User?,
-    modifier: Modifier = Modifier,
-    leaderboardVisible: Boolean = false,
-    leaderboardUsers: ImmutableList<User> = persistentListOf(),
-    followingCount: Int? = null,
-    onLeaderboardClick: () -> Unit = {},
-) {
-    Row(
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                bottom = 13.dp,
-                end = TraktTheme.spacing.mainPageHorizontalSpace,
-            ),
-    ) {
-        if (user != null) {
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(12.dp),
-                modifier = Modifier
-                    .padding(
-                        start = TraktTheme.spacing.mainPageHorizontalSpace - 2.dp,
-                    ),
-            ) {
-                Box(
-                    contentAlignment = Alignment.CenterStart,
-                ) {
-                    val vipAccent = TraktTheme.colors.vipAccent
-                    val borderColor = remember(user) {
-                        when (user.isAnyVip) {
-                            true -> vipAccent
-                            else -> Color.White
-                        }
-                    }
-
-                    if (user.hasAvatar) {
-                        AsyncImage(
-                            model = user.images?.avatar?.full,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            error = painterResource(R.drawable.ic_person_placeholder),
-                            modifier = Modifier
-                                .size(AvatarSize)
-                                .border(2.5.dp, borderColor, CircleShape)
-                                .clip(CircleShape),
-                        )
-                    } else {
-                        Image(
-                            painter = painterResource(R.drawable.ic_person_placeholder),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(AvatarSize)
-                                .border(2.5.dp, borderColor, CircleShape)
-                                .clip(CircleShape),
-                        )
-                    }
-                }
-
-                TraktHeader(
-                    title = user.displayName,
-                    subtitle = remember(user) {
-                        when {
-                            user.location.isNullOrBlank() -> null
-                            else -> user.location.orEmpty()
-                        }
-                    },
-                )
-            }
-
-            AnimatedVisibility(
-                visible = leaderboardVisible,
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                LeaderboardPill(
-                    users = leaderboardUsers,
-                    followingCount = followingCount,
-                    onClick = onLeaderboardClick,
-                )
-            }
-        }
-    }
 }
 
 @Composable

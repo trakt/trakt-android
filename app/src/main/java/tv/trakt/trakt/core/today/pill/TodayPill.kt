@@ -48,7 +48,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
 private val PillSize = 34.dp
-private val RingWidth = 1.1.dp
+private val RingWidth = 1.dp
 
 private val PosterWidth = 13.dp
 private val PosterHeight = 18.dp
