@@ -1488,7 +1488,7 @@
   <string name="match_label_soulmates">ソウルメイト</string>
   <string name="match_label_spin_off">スピンオフ</string>
   <string name="match_pill_anchor">マッチ:</string>
-  <string name="match_pill_aria_label">%1$d%一致、%2$s。一致の詳細を開く。</string>
+  <string name="match_pill_aria_label">%1$d%%一致、%2$s。一致の詳細を開く。</string>
   <string name="match_pill_loading_aria_label">マッチスコアを計算中</string>
   <string name="mir_banner_body">あなたの月間まとめができました。%sに視聴したコンテンツはこちらです。</string>
   <string name="mir_banner_body_short">あなたの%sのまとめができました。</string>
@@ -1723,7 +1723,7 @@
   <string name="tag_media_sync_webhook_only">ウェブフックのみ</string>
   <string name="tag_mixtape_different_mood">別の雰囲気</string>
   <string name="tag_mixtape_kept">キープ済み</string>
-  <string name="tag_mixtape_match">%s%一致</string>
+  <string name="tag_mixtape_match">%s%%一致</string>
   <string name="tag_mixtape_tap_details">タップで詳細</string>
   <string name="tag_text_blocked_user">ブロック済み</string>
   <string name="tag_text_deal_price">最初の2年間</string>
@@ -2949,7 +2949,7 @@
   <string name="yir_2026_preview_runner_none">なし（ハイブリッドなし）</string>
   <string name="yir_2026_preview_runner_up">次点</string>
   <string name="yir_2026_preview_title">ペルソナプレビュー</string>
-  <string name="yir_2026_rarity">%1$d%だけが%2$sです</string>
+  <string name="yir_2026_rarity">%1$d%%だけが%2$sです</string>
   <string name="yir_2026_reel_a_little_bit">少し%s</string>
   <string name="yir_2026_reel_and_you_are">そしてあなたは</string>
   <string name="yir_2026_reel_but_mostly">しかし、ほとんどは</string>
