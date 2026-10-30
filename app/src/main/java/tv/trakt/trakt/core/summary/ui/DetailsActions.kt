@@ -56,6 +56,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun DetailsActions(
@@ -84,9 +85,15 @@ internal fun DetailsActions(
     }
 
     Column(
-        verticalArrangement = spacedBy(14.dp),
+        verticalArrangement = spacedBy(20.dp),
         modifier = modifier,
     ) {
+        if (lightsaber) {
+            Lightsaber(
+                modifier = Modifier.padding(horizontal = 18.dp),
+            )
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -226,12 +233,6 @@ internal fun DetailsActions(
                 )
             }
         }
-
-        if (lightsaber) {
-            Lightsaber(
-                modifier = Modifier.padding(horizontal = 20.dp),
-            )
-        }
     }
 }
 
@@ -252,7 +253,7 @@ private fun Lightsaber(modifier: Modifier = Modifier) {
     LaunchedEffect(ignited) {
         if (initialIgnition) {
             initialIgnition = false
-            delay(500)
+            delay(500.milliseconds)
         }
         ignition.animateTo(
             targetValue = if (ignited) 1F else 0F,
@@ -267,13 +268,15 @@ private fun Lightsaber(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .onClick {
+            .onClick(throttle = false) {
                 ignited = !ignited
                 haptic.performHapticFeedback(if (ignited) ToggleOn else ToggleOff)
             },
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_lightsaber),
+            painter = painterResource(
+                if (ignited) R.drawable.ic_lightsaber_on else R.drawable.ic_lightsaber_off,
+            ),
             contentDescription = null,
             modifier = Modifier
                 .height(14.dp)
