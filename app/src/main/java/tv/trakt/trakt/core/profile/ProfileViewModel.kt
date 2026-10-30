@@ -66,6 +66,7 @@ internal class ProfileViewModel(
     private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
     private val checkInState = MutableStateFlow(initialState.checkIn)
     private val hasLeaderboardState = MutableStateFlow(initialState.hasLeaderboard)
+    private val loadingLeaderboardState = MutableStateFlow(initialState.loadingLeaderboard)
     private val leaderboardUsersState = MutableStateFlow(initialState.leaderboardUsers)
     private val followingCountState = MutableStateFlow(initialState.followingCount)
 
@@ -91,7 +92,7 @@ internal class ProfileViewModel(
         appLifecycleProvider.observeForegroundRefresh()
             .onEach {
                 loadData(showLoading = false)
-                loadLeaderboard()
+                loadLeaderboard(showLoading = false)
             }
             .launchIn(viewModelScope)
     }
@@ -135,7 +136,7 @@ internal class ProfileViewModel(
     private fun observeSocial() {
         dataChanges.observe(Kind.Social)
             .debounce(200.milliseconds)
-            .onEach { loadLeaderboard() }
+            .onEach { loadLeaderboard(showLoading = false) }
             .launchIn(viewModelScope)
     }
 
@@ -181,9 +182,12 @@ internal class ProfileViewModel(
         }
     }
 
-    private fun loadLeaderboard() {
+    private fun loadLeaderboard(showLoading: Boolean = true) {
         viewModelScope.launch {
             try {
+                if (showLoading) {
+                    loadingLeaderboardState.update { Loading }
+                }
                 getLeaderboardUseCase.getLocalLeaderboard()?.let(::updateLeaderboard)
 
                 if (!sessionManager.isAuthenticated()) {
@@ -198,6 +202,10 @@ internal class ProfileViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
+                }
+            } finally {
+                if (showLoading) {
+                    loadingLeaderboardState.update { LoadingState.Done }
                 }
             }
         }
@@ -242,6 +250,7 @@ internal class ProfileViewModel(
         modeState,
         leaderboardUsersState,
         followingCountState,
+        loadingLeaderboardState,
     ) { state ->
         ProfileState(
             monthStats = state[0] as ProfileStats?,
@@ -254,6 +263,7 @@ internal class ProfileViewModel(
             mode = state[7] as MediaMode,
             leaderboardUsers = state[8] as ImmutableList<User>,
             followingCount = state[9] as Int?,
+            loadingLeaderboard = state[10] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

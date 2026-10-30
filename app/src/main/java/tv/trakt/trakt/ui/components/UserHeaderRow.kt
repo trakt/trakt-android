@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,13 +37,14 @@ import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.profile.sections.leaderboard.ui.LeaderboardPill
 import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPill
 import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPreviewData
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-internal val AvatarSize = 64.dp
+internal val AvatarSize = 72.dp
 
 private val VipBadgeShine = Brush.linearGradient(
     0F to Color.White.copy(alpha = 0.3F),
@@ -55,6 +57,7 @@ internal fun UserHeaderRow(
     user: User,
     modifier: Modifier = Modifier,
     avatarBadge: (@Composable BoxScope.() -> Unit)? = null,
+    belowHeader: (@Composable () -> Unit)? = null,
     trailing: @Composable () -> Unit = {},
 ) {
     Row(
@@ -80,12 +83,17 @@ internal fun UserHeaderRow(
                 }
             }
 
-            TraktHeader(
-                title = user.displayName,
-                subtitle = remember(user) {
-                    user.location?.takeIf { it.isNotBlank() }
-                },
-            )
+            Column(
+                verticalArrangement = spacedBy(7.dp),
+            ) {
+                TraktHeader(
+                    title = user.displayName,
+                    subtitle = remember(user) {
+                        user.location?.takeIf { it.isNotBlank() }
+                    },
+                )
+                belowHeader?.invoke()
+            }
         }
 
         trailing()
@@ -203,6 +211,24 @@ private fun PreviewPill() {
             trailing = {
                 UserMatchPill(
                     match = UserMatchPreviewData.match,
+                )
+            },
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewBelowHeader() {
+    TraktThemePreview {
+        UserHeaderRow(
+            user = PreviewData.user1.copy(
+                location = "Some Location",
+                isVip = true,
+            ),
+            belowHeader = {
+                LeaderboardPill(
+                    followingCount = 8,
                 )
             },
         )

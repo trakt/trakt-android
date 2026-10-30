@@ -18,6 +18,7 @@ internal data class ProfileState(
     val loadingMonthStats: LoadingState = LoadingState.Idle,
     val checkIn: Boolean = false,
     val hasLeaderboard: Boolean = false,
+    val loadingLeaderboard: LoadingState = LoadingState.Idle,
     val leaderboardUsers: ImmutableList<User> = persistentListOf(),
     val followingCount: Int? = null,
 )

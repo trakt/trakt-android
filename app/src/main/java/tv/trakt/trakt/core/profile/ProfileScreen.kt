@@ -5,8 +5,11 @@ package tv.trakt.trakt.core.profile
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -70,6 +73,7 @@ import tv.trakt.trakt.core.profile.sections.activity.ProfileActivityView
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.profile.sections.leaderboard.ui.LeaderboardPill
+import tv.trakt.trakt.core.profile.sections.leaderboard.ui.LeaderboardPillSkeleton
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryView
 import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressView
 import tv.trakt.trakt.core.profile.sections.screentime.ProfileScreenTimeView
@@ -253,17 +257,26 @@ private fun ProfileScreen(
                                 end = TraktTheme.spacing.mainPageHorizontalSpace,
                                 bottom = 22.dp,
                             ),
-                        trailing = {
+                        belowHeader = {
                             AnimatedVisibility(
-                                visible = state.hasLeaderboard,
-                                enter = fadeIn(),
-                                exit = fadeOut(),
+                                visible = state.hasLeaderboard || !state.loadingLeaderboard.isDone,
+                                enter = fadeIn() + expandVertically(),
+                                exit = fadeOut() + shrinkVertically(),
                             ) {
-                                LeaderboardPill(
-                                    users = state.leaderboardUsers,
-                                    followingCount = state.followingCount,
-                                    onClick = onLeaderboardClick,
-                                )
+                                Crossfade(
+                                    targetState = state.hasLeaderboard,
+                                    label = "leaderboardPill",
+                                ) { hasLeaderboard ->
+                                    if (hasLeaderboard) {
+                                        LeaderboardPill(
+                                            users = state.leaderboardUsers,
+                                            followingCount = state.followingCount,
+                                            onClick = onLeaderboardClick,
+                                        )
+                                    } else {
+                                        LeaderboardPillSkeleton()
+                                    }
+                                }
                             }
                         },
                     )

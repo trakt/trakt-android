@@ -1,9 +1,15 @@
 package tv.trakt.trakt.core.profile.sections.leaderboard.ui
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -14,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -37,9 +44,10 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val PillShape = RoundedCornerShape(100)
 private val PillHeight = 32.dp
-private val PillHeightWithSublabel = 34.dp
-private val AvatarSize = 25.dp
+private val PillHeightWithSublabel = 32.dp
+private val AvatarSize = 23.dp
 private val AvatarOverlap = 14.dp
+private val SkeletonWidth = 145.dp
 
 @Composable
 internal fun LeaderboardPill(
@@ -108,6 +116,26 @@ internal fun LeaderboardPill(
             modifier = Modifier.size(12.dp),
         )
     }
+}
+
+@Composable
+internal fun LeaderboardPillSkeleton(modifier: Modifier = Modifier) {
+    val shimmerColor by rememberInfiniteTransition(label = "infiniteTransition")
+        .animateColor(
+            initialValue = TraktTheme.colors.skeletonContainer,
+            targetValue = TraktTheme.colors.skeletonShimmer,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 1000),
+                repeatMode = RepeatMode.Reverse,
+            ),
+            label = "shimmerTransition",
+        )
+
+    Box(
+        modifier = modifier
+            .size(width = SkeletonWidth, height = PillHeightWithSublabel)
+            .background(shimmerColor, PillShape),
+    )
 }
 
 @Composable
@@ -196,6 +224,7 @@ private fun Preview() {
             LeaderboardPill(
                 followingCount = 8,
             )
+            LeaderboardPillSkeleton()
         }
     }
 }
