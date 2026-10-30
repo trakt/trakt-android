@@ -49,3 +49,29 @@ internal fun ImmutableList<ProfileRatingItem>.withItemRating(
         }
     }.toImmutableList()
 }
+
+internal fun ImmutableList<ProfileRatingItem>.reconciledWith(
+    remoteItems: List<ProfileRatingItem>,
+    isRemoteComplete: Boolean,
+): ImmutableList<ProfileRatingItem> {
+    val remoteByKey = remoteItems.associateBy { it.key }
+    val oldestRemoteRatedAt = remoteItems.minOfOrNull { it.ratedAt }
+    val currentKeys = map { it.key }.toSet()
+
+    // Items older than the fetched page may still exist on the server, so only covered items drop.
+    val keptItems = mapNotNull { item ->
+        val isCovered = isRemoteComplete ||
+            (oldestRemoteRatedAt != null && item.ratedAt >= oldestRemoteRatedAt)
+        remoteByKey[item.key] ?: item.takeUnless { isCovered }
+    }
+
+    return remoteItems
+        .filter { it.key !in currentKeys }
+        .fold(keptItems) { items, item ->
+            val index = items
+                .indexOfFirst { it.ratedAt < item.ratedAt }
+                .takeIf { it >= 0 } ?: items.size
+            items.take(index) + item + items.drop(index)
+        }
+        .toImmutableList()
+}

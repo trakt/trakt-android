@@ -374,13 +374,13 @@ private fun RatingsContentList(
     onRateClick: (ProfileRatingItem, Int?) -> Unit,
 ) {
     val listKeys = remember(listItems) { listItems.map { it.key } }
-    val currentList = remember { mutableIntStateOf(listKeys.hashCode()) }
+    val previousKeys = remember { mutableStateOf(listKeys) }
 
-    // Keyed on item keys so a rating change does not scroll the row back to the start.
+    // Only a new item at the front scrolls back, so removing or refilling a rating keeps the position.
     LaunchedEffect(listKeys) {
-        val hashCode = listKeys.hashCode()
-        if (currentList.intValue != hashCode) {
-            currentList.intValue = hashCode
+        val isNewFirstItem = listKeys.firstOrNull() !in previousKeys.value
+        previousKeys.value = listKeys
+        if (isNewFirstItem) {
             listState.animateScrollToItem(0)
         }
     }
