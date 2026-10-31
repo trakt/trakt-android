@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Następny okres</string>
   <string name="button_label_next_episode">Następny odcinek</string>
   <string name="button_label_next_story">Następna historia</string>
+  <string name="button_label_official_website">Oficjalna strona</string>
   <string name="button_label_open_calendar_feed">Zasubskrybuj ten kalendarz w swojej aplikacji kalendarza</string>
   <string name="button_label_open_comment">Otwórz komentarz</string>
   <string name="button_label_open_leaderboard">Otwórz ranking obserwowanych</string>
@@ -1488,7 +1489,7 @@
   <string name="match_label_soulmates">Bratnie dusze</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Dopasowanie:</string>
-  <string name="match_pill_aria_label">%1$d%% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
+  <string name="match_pill_aria_label">%1$d% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
   <string name="match_pill_loading_aria_label">Obliczanie wyniku dopasowania</string>
   <string name="mir_banner_body">Twoje miesięczne podsumowanie jest gotowe. Oto, co obejrzałeś(-aś) w %s.</string>
   <string name="mir_banner_body_short">Twoje podsumowanie z %s jest gotowe.</string>
@@ -1723,7 +1724,7 @@
   <string name="tag_media_sync_webhook_only">Tylko Webhook</string>
   <string name="tag_mixtape_different_mood">Inny nastrój</string>
   <string name="tag_mixtape_kept">Zachowane</string>
-  <string name="tag_mixtape_match">%s%% dopasowania</string>
+  <string name="tag_mixtape_match">%s% dopasowania</string>
   <string name="tag_mixtape_tap_details">Stuknij, aby zobaczyć szczegóły</string>
   <string name="tag_text_blocked_user">Zablokowany</string>
   <string name="tag_text_deal_price">Pierwsze 2 lata</string>
@@ -2949,7 +2950,7 @@
   <string name="yir_2026_preview_runner_none">Brak (bez hybrydy)</string>
   <string name="yir_2026_preview_runner_up">Drugie miejsce</string>
   <string name="yir_2026_preview_title">Podgląd persony</string>
-  <string name="yir_2026_rarity">Tylko %1$d%% to %2$s</string>
+  <string name="yir_2026_rarity">Tylko %1$d% to %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Trochę %s</string>
   <string name="yir_2026_reel_and_you_are">A Ty jesteś</string>
   <string name="yir_2026_reel_but_mostly">Ale głównie</string>
