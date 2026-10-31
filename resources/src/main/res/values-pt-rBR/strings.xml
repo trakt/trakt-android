@@ -1489,7 +1489,7 @@
   <string name="match_label_soulmates">Almas Gêmeas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Compatibilidade:</string>
-  <string name="match_pill_aria_label">%1$d% de compatibilidade, %2$s. Abrir detalhes da compatibilidade.</string>
+  <string name="match_pill_aria_label">%1$d%% de compatibilidade, %2$s. Abrir detalhes da compatibilidade.</string>
   <string name="match_pill_loading_aria_label">Calculando pontuação de compatibilidade</string>
   <string name="mir_banner_body">Seu resumo mensal está pronto. Veja o que você assistiu em %s.</string>
   <string name="mir_banner_body_short">Seu resumo de %s está pronto.</string>
@@ -1724,7 +1724,7 @@
   <string name="tag_media_sync_webhook_only">Somente Webhook</string>
   <string name="tag_mixtape_different_mood">Vibe diferente</string>
   <string name="tag_mixtape_kept">Mantido</string>
-  <string name="tag_mixtape_match">%s% de correspondência</string>
+  <string name="tag_mixtape_match">%s%% de correspondência</string>
   <string name="tag_mixtape_tap_details">Toque para detalhes</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
   <string name="tag_text_deal_price">Primeiros 2 Anos</string>
@@ -2950,7 +2950,7 @@
   <string name="yir_2026_preview_runner_none">Nenhum (sem híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo lugar</string>
   <string name="yir_2026_preview_title">Prévia da persona</string>
-  <string name="yir_2026_rarity">Apenas %1$d% são %2$s</string>
+  <string name="yir_2026_rarity">Apenas %1$d%% são %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Um pouco %s</string>
   <string name="yir_2026_reel_and_you_are">E você é</string>
   <string name="yir_2026_reel_but_mostly">Mas principalmente</string>
