@@ -1,5 +1,27 @@
 [
   {
+    "id": 31,
+    "version": "3.27.0",
+    "notes": [
+      {
+        "title": "Taste Match",
+        "text": "See how your taste compares with other members. Tap the match score on their profile to see your shared favorites and topics."
+      },
+      {
+        "title": "Sorting",
+        "text": "Sort Progress and Continue Watching by title, release date, rating and more with the new sort button."
+      },
+      {
+        "title": "Episode Lists",
+        "text": "Add episodes and seasons to your lists. Tap Manage lists in the episode menu, or the lists icon on the seasons screen."
+      },
+      {
+        "title": "Person Credits Details",
+        "text": "Tap Shows, Movies or From My History on a person page to browse all their credits, filtered by department."
+      }
+    ]
+  },
+  {
     "id": 30,
     "version": "3.26.0",
     "notes": [
