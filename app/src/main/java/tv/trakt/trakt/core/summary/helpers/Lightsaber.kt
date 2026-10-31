@@ -50,8 +50,11 @@ import kotlin.time.Duration.Companion.milliseconds
 
 private val StarWarsMatches = setOf(
     "star wars",
+    "empire strikes back",
+    "return of the jedi",
     "andor",
     "ahsoka",
+    "jedi",
     "the mandalorian",
     "the mandalorian & grogu",
     "the mandalorian and grogu",
