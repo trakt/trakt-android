@@ -76,7 +76,7 @@ internal fun UserHeaderRow(
                 UserAvatar(user = user)
                 when {
                     avatarBadge != null -> avatarBadge()
-                    user.isAnyVip -> VipAvatarBadge()
+                    user.isAnyVip || user.isDirector -> VipAvatarBadge(user)
                 }
             }
 
@@ -125,7 +125,7 @@ private fun UserAvatar(user: User) {
 }
 
 @Composable
-private fun VipAvatarBadge() {
+private fun VipAvatarBadge(user: User) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(2.dp, Alignment.CenterHorizontally),
@@ -149,7 +149,11 @@ private fun VipAvatarBadge() {
             .padding(horizontal = 6.dp, vertical = 3.dp),
     ) {
         Text(
-            text = stringResource(R.string.tag_text_vip).uppercase(),
+            text = when {
+                user.isDirector -> stringResource(R.string.translated_value_job_director)
+                user.isVip -> stringResource(R.string.tag_text_vip)
+                else -> ""
+            }.uppercase(),
             color = TraktTheme.colors.textPrimaryOnAccent,
             style = TraktTheme.typography.meta.copy(
                 fontSize = 12.sp,
@@ -187,6 +191,7 @@ private fun PreviewVip() {
             user = PreviewData.user1.copy(
                 location = "Some Location",
                 isVip = true,
+                isDirector = true,
             ),
         )
     }
