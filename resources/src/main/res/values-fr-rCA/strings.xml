@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Période suivante</string>
   <string name="button_label_next_episode">Épisode suivant</string>
   <string name="button_label_next_story">Histoire suivante</string>
+  <string name="button_label_official_website">Site officiel</string>
   <string name="button_label_open_calendar_feed">S\'abonner à ce calendrier dans votre application de calendrier</string>
   <string name="button_label_open_comment">Ouvrir le commentaire</string>
   <string name="button_label_open_leaderboard">Ouvrir le classement des abonnements</string>

@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Επόμενη περίοδος</string>
   <string name="button_label_next_episode">Επόμενο επεισόδιο</string>
   <string name="button_label_next_story">Επόμενη ιστορία</string>
+  <string name="button_label_official_website">Επίσημος ιστότοπος</string>
   <string name="button_label_open_calendar_feed">Εγγραφή σε αυτό το ημερολόγιο στην εφαρμογή ημερολογίου σας</string>
   <string name="button_label_open_comment">Άνοιγμα σχολίου</string>
   <string name="button_label_open_leaderboard">Άνοιγμα πίνακα κατάταξης ακολούθων</string>

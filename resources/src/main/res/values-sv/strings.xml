@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Nästa period</string>
   <string name="button_label_next_episode">Nästa avsnitt</string>
   <string name="button_label_next_story">Nästa berättelse</string>
+  <string name="button_label_official_website">Officiell webbplats</string>
   <string name="button_label_open_calendar_feed">Prenumerera på den här kalendern i din kalenderapp</string>
   <string name="button_label_open_comment">Öppna kommentaren</string>
   <string name="button_label_open_leaderboard">Öppna följarlistan</string>

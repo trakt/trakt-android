@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Következő időszak</string>
   <string name="button_label_next_episode">Következő epizód</string>
   <string name="button_label_next_story">Következő történet</string>
+  <string name="button_label_official_website">Hivatalos weboldal</string>
   <string name="button_label_open_calendar_feed">Feliratkozás erre a naptárra a naptáralkalmazásban</string>
   <string name="button_label_open_comment">Hozzászólás megnyitása</string>
   <string name="button_label_open_leaderboard">Követések ranglistájának megnyitása</string>

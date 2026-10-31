@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Pròxim període</string>
   <string name="button_label_next_episode">Següent episodi</string>
   <string name="button_label_next_story">Següent història</string>
+  <string name="button_label_official_website">Lloc web oficial</string>
   <string name="button_label_open_calendar_feed">Subscriu-te a aquest calendari a la teva aplicació de calendari</string>
   <string name="button_label_open_comment">Obre el comentari</string>
   <string name="button_label_open_leaderboard">Obrir la classificació de seguidors</string>

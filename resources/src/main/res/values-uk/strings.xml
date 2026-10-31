@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Наступний період</string>
   <string name="button_label_next_episode">Наступний епізод</string>
   <string name="button_label_next_story">Наступна історія</string>
+  <string name="button_label_official_website">Офіційний вебсайт</string>
   <string name="button_label_open_calendar_feed">Підписатися на цей календар у вашому застосунку календаря</string>
   <string name="button_label_open_comment">Відкрити коментар</string>
   <string name="button_label_open_leaderboard">Відкрити таблицю лідерів підписок</string>

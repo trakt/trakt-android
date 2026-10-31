@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Volgende periode</string>
   <string name="button_label_next_episode">Volgende aflevering</string>
   <string name="button_label_next_story">Volgend verhaal</string>
+  <string name="button_label_official_website">Officiële website</string>
   <string name="button_label_open_calendar_feed">Abonneren op deze kalender in je kalenderapp</string>
   <string name="button_label_open_comment">Open de reactie</string>
   <string name="button_label_open_leaderboard">Open volgersklassement</string>

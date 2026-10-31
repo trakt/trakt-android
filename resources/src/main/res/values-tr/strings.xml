@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Sonraki dönem</string>
   <string name="button_label_next_episode">Sonraki bölüm</string>
   <string name="button_label_next_story">Sonraki hikaye</string>
+  <string name="button_label_official_website">Resmi web sitesi</string>
   <string name="button_label_open_calendar_feed">Bu takvime takvim uygulamanızda abone olun</string>
   <string name="button_label_open_comment">Yorumu aç</string>
   <string name="button_label_open_leaderboard">Takip edilenler liderlik tablosunu aç</string>

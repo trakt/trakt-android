@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Nächster Zeitraum</string>
   <string name="button_label_next_episode">Nächste Episode</string>
   <string name="button_label_next_story">Nächste Story</string>
+  <string name="button_label_official_website">Offizielle Website</string>
   <string name="button_label_open_calendar_feed">Diesen Kalender in deiner Kalender-App abonnieren</string>
   <string name="button_label_open_comment">Kommentar öffnen</string>
   <string name="button_label_open_leaderboard">Bestenliste der Follower öffnen</string>
