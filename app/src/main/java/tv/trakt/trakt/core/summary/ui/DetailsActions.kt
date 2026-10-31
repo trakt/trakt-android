@@ -1,10 +1,6 @@
 package tv.trakt.trakt.core.summary.ui
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -12,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,29 +18,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
-import androidx.compose.ui.graphics.shadow.Shadow
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.ToggleOff
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.ToggleOn
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
-import kotlinx.coroutines.delay
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
@@ -53,10 +34,10 @@ import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Shade10
 import tv.trakt.trakt.common.ui.theme.colors.Shade400
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
+import tv.trakt.trakt.core.summary.helpers.Lightsaber
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun DetailsActions(
@@ -232,81 +213,6 @@ internal fun DetailsActions(
                         .size(21.dp),
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun Lightsaber(modifier: Modifier = Modifier) {
-    val accent = TraktTheme.colors.accentPalette.shade600
-    val beamShape = RoundedCornerShape(
-        topStart = 0.dp,
-        bottomStart = 0.dp,
-        topEnd = 100.dp,
-        bottomEnd = 100.dp,
-    )
-    val ignition = remember { Animatable(0F) }
-    var ignited by rememberSaveable { mutableStateOf(true) }
-    var initialIgnition by remember { mutableStateOf(true) }
-    val haptic = LocalHapticFeedback.current
-
-    LaunchedEffect(ignited) {
-        if (initialIgnition) {
-            initialIgnition = false
-            delay(500.milliseconds)
-        }
-        ignition.animateTo(
-            targetValue = if (ignited) 1F else 0F,
-            animationSpec = tween(
-                durationMillis = if (ignited) 300 else 150,
-                easing = FastOutSlowInEasing,
-            ),
-        )
-    }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .onClick(throttle = false) {
-                ignited = !ignited
-                haptic.performHapticFeedback(if (ignited) ToggleOn else ToggleOff)
-            },
-    ) {
-        Image(
-            painter = painterResource(
-                if (ignited) R.drawable.ic_lightsaber_on else R.drawable.ic_lightsaber_off,
-            ),
-            contentDescription = null,
-            modifier = Modifier
-                .height(14.dp)
-                .aspectRatio(429.93F / 94.35F)
-                .zIndex(99F),
-        )
-
-        Box(
-            modifier = Modifier.weight(1F),
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(ignition.value)
-                    .height(6.dp)
-                    .dropShadow(
-                        shape = beamShape,
-                        shadow = Shadow(
-                            radius = 2.dp,
-                            color = accent,
-                            spread = 1.2.dp,
-                        ),
-                    )
-                    .padding(end = 1.dp)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            listOf(accent, TraktTheme.colors.accentPalette.shade100, accent),
-                        ),
-                        shape = beamShape,
-                    ),
-            )
         }
     }
 }
