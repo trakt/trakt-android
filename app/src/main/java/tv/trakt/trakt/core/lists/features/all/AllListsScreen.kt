@@ -33,12 +33,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -70,9 +68,7 @@ import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.CreateListTypeSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
-import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
@@ -207,10 +203,6 @@ private fun AllListsScreen(
         ),
     )
 
-    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
-        SimpleScrollConnection()
-    }
-
     val isScrolledToBottom by remember(state.items) {
         derivedStateOf {
             !state.items.isNullOrEmpty() &&
@@ -227,8 +219,7 @@ private fun AllListsScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(listScrollConnection),
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
         val contentVerticalPadding = PaddingValues(
             top = WindowInsets.statusBars.asPaddingValues()
@@ -240,10 +231,6 @@ private fun AllListsScreen(
 
         val contentHorizontalPadding = PaddingValues(
             horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
-        )
-
-        ScrollableBackdropImage(
-            translation = listScrollConnection.resultOffset,
         )
 
         val listVisible = remember(state.items?.size, state.loading) {

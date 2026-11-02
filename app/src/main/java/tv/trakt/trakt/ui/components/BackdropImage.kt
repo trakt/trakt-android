@@ -42,12 +42,9 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -151,7 +148,7 @@ private fun BackdropImage(
             !imageUrl.isNullOrBlank() -> imageUrl
             userImageUrl == null -> null // Show nothing while loading the user image.
             !userImageUrl.isNullOrBlank() -> userImageUrl
-            else -> Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
+            else -> null
         }
     }
 

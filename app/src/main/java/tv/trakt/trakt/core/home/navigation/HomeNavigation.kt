@@ -46,7 +46,6 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToAllRecommended = onNavigateToAllRecommended,
             onNavigateToVip = onNavigateToVip,
             onNavigateToCalendar = onNavigateToCalendar,
-            onNavigateToUser = onNavigateToUser,
             onNavigateToToday = onNavigateToToday,
         )
     }

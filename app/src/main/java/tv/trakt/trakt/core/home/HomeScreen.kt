@@ -43,7 +43,6 @@ import tv.trakt.trakt.common.Config.webMonthReviewUrl
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
@@ -60,7 +59,6 @@ import tv.trakt.trakt.core.home.sections.welcome.banner.HomeWelcomeView
 import tv.trakt.trakt.core.today.pill.TodayPill
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
-import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -80,7 +78,6 @@ internal fun HomeScreen(
     onNavigateToAllRecommended: () -> Unit,
     onNavigateToVip: () -> Unit,
     onNavigateToCalendar: (CalendarView) -> Unit,
-    onNavigateToUser: (User) -> Unit,
     onNavigateToToday: (groupKey: String) -> Unit,
 ) {
     val startAuthorization = LocalStartAuthorization.current
@@ -124,7 +121,6 @@ internal fun HomeScreen(
         onCalendarClick = { onNavigateToCalendar(state.calendarView) },
         onVipClick = onNavigateToVip,
         onVipSeen = viewModel::onVipUpsellSeen,
-        onUserClick = onNavigateToUser,
         onTodayClick = onNavigateToToday,
         onStreakClick = {
             streaksSheet = true
@@ -188,7 +184,6 @@ private fun HomeScreenContent(
     onFiltersClick: () -> Unit = {},
     onWhatsNewClick: () -> Unit = {},
     onTodayClick: (groupKey: String) -> Unit = {},
-    onUserClick: (user: User) -> Unit = {},
     onDismissWelcomeClick: () -> Unit = {},
     onMonthReviewClick: (target: String) -> Unit = {},
     onDismissMonthReviewClick: () -> Unit = {},
@@ -240,10 +235,6 @@ private fun HomeScreenContent(
         LaunchedEffect(state.welcomeBanner) {
             bannerVisible = state.welcomeBanner
         }
-
-        ScrollableBackdropImage(
-            scrollState = lazyListState,
-        )
 
         LazyColumn(
             state = lazyListState,

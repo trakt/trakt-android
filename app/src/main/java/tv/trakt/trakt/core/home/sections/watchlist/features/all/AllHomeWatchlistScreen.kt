@@ -31,13 +31,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
@@ -64,11 +62,9 @@ import tv.trakt.trakt.core.home.sections.watchlist.features.all.ui.AllHomeWatchl
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
-import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
-import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
@@ -245,15 +241,10 @@ internal fun AllHomeWatchlistContent(
         ),
     )
 
-    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
-        SimpleScrollConnection()
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(listScrollConnection),
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
         val contentPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -263,10 +254,6 @@ internal fun AllHomeWatchlistContent(
             bottom = WindowInsets.navigationBars.asPaddingValues()
                 .calculateBottomPadding()
                 .plus(TraktTheme.size.navigationBarHeight * 2),
-        )
-
-        ScrollableBackdropImage(
-            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(

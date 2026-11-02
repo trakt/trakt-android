@@ -88,7 +88,6 @@ import tv.trakt.trakt.core.lists.sheets.EditListSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
@@ -292,10 +291,6 @@ private fun ListsScreenContent(
         val sectionPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
             end = TraktTheme.spacing.mainPageHorizontalSpace,
-        )
-
-        ScrollableBackdropImage(
-            scrollState = lazyListState,
         )
 
         LazyColumn(

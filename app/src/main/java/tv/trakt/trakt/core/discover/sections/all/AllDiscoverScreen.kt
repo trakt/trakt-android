@@ -24,12 +24,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -55,11 +53,9 @@ import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.recommended.whythis.WhyThisSheet
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
-import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
-import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -180,20 +176,11 @@ private fun AllDiscoverScreenContent(
         ),
     )
 
-    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
-        SimpleScrollConnection()
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(listScrollConnection),
+            .background(TraktTheme.colors.backgroundPrimary),
     ) {
-        ScrollableBackdropImage(
-            translation = listScrollConnection.resultOffset,
-        )
-
         AllDiscoverListView(
             state = listState,
             collectionState = state.collection,

@@ -58,7 +58,6 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
-import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -154,10 +153,6 @@ internal fun AllPersonCreditsContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(scrollConnection),
     ) {
-        ScrollableBackdropImage(
-            translation = scrollConnection.resultOffset,
-        )
-
         LazyColumn(
             state = listState,
             verticalArrangement = spacedBy(TraktTheme.spacing.mainListVerticalSpace),
