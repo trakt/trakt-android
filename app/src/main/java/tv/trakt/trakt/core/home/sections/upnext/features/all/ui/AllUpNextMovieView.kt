@@ -61,7 +61,7 @@ internal fun AllUpNextMovieView(
                                 item.remainingTimeText() ?: "?",
                             ),
                             progress = remainingPercent,
-                            containerColor = TraktTheme.colors.chipContainer,
+                            containerColor = TraktTheme.colors.upNextPanelChipContainer,
                             modifier = Modifier.weight(1F, fill = false),
                         )
                     }

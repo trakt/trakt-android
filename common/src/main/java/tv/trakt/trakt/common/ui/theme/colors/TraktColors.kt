@@ -21,6 +21,8 @@ data class TraktColors(
     val tagChipContainerLight: Color = Color.Unspecified,
     val tagChipContent: Color = Color.Unspecified,
     val tagChipContentOnAccent: Color = Color.Unspecified,
+    val upNextChipContainer: Color = Color.Unspecified,
+    val upNextPanelChipContainer: Color = Color.Unspecified,
     val chipContainer: Color = Color.Unspecified,
     val chipContainerOnContent: Color = Color.Unspecified,
     val chipContent: Color = Color.Unspecified,

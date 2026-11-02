@@ -19,6 +19,8 @@ val LightColors: TraktColors = TraktColors(
     tagChipContentOnAccent = White,
     tagChipContainer = Shade800,
     tagChipContainerLight = Shade500,
+    upNextChipContainer = Shade600,
+    upNextPanelChipContainer = Shade300,
     chipContainer = Shade200,
     chipContainerOnContent = Shade940.copy(alpha = 0.72F),
     chipContent = Shade900,

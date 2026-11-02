@@ -19,11 +19,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.core.home.model.Progress
 import tv.trakt.trakt.common.core.home.model.UpNextShow
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.chips.EpisodeStatusChip
@@ -79,6 +80,7 @@ internal fun HomeUpNextShowView(
                                 contentTextStyle = TraktTheme.typography.meta.copy(
                                     fontSize = 10.sp,
                                 ),
+                                containerColor = TraktTheme.colors.upNextChipContainer.copy(alpha = 0.66F),
                                 modifier = Modifier
                                     .shadow(2.dp, RoundedCornerShape(100))
                                     .height(20.dp),
@@ -92,7 +94,7 @@ internal fun HomeUpNextShowView(
                             remainingEpisodes,
                         ),
                         progress = remainingPercent,
-                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.6F),
+                        containerColor = TraktTheme.colors.upNextChipContainer.copy(alpha = 0.66F),
                         modifier = Modifier
                             .shadow(
                                 2.dp,
@@ -160,10 +162,10 @@ internal fun HomeUpNextShowView(
     )
 }
 
-@Preview
+@PreviewTraktLightDark
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemePreview {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {

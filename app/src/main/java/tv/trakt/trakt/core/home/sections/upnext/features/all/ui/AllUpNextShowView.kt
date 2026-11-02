@@ -119,7 +119,7 @@ internal fun AllUpNextShowView(
                             contentTextStyle = TraktTheme.typography.meta.copy(
                                 fontSize = 10.sp,
                             ),
-                            containerColor = TraktTheme.colors.chipContainer,
+                            containerColor = TraktTheme.colors.upNextPanelChipContainer,
                             modifier = Modifier
                                 .height(20.dp),
                         )
@@ -133,7 +133,7 @@ internal fun AllUpNextShowView(
                             startText = startString,
                             endText = endString,
                             progress = remainingPercent,
-                            containerColor = TraktTheme.colors.chipContainer,
+                            containerColor = TraktTheme.colors.upNextPanelChipContainer,
                             modifier = Modifier.weight(1F, fill = false),
                         )
 

@@ -15,8 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.core.home.model.UpNextMovie
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
@@ -43,7 +47,7 @@ internal fun HomeUpNextMovieView(
 
                 EpisodeProgressBar(
                     startText = stringResource(R.string.tag_text_remaining_duration, item.remainingTimeText() ?: "?"),
-                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.6F),
+                    containerColor = TraktTheme.colors.upNextChipContainer.copy(alpha = 0.66F),
                     progress = (1F - remainingPercent).coerceIn(0F, 0.99F),
                     modifier = Modifier
                         .shadow(2.dp, RoundedCornerShape(100)),
@@ -82,4 +86,30 @@ internal fun HomeUpNextMovieView(
         },
         modifier = modifier,
     )
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun Preview() {
+    TraktThemePreview {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            listOf(15F, 50F, 90F).forEach { progress ->
+                HomeUpNextMovieView(
+                    item = UpNextMovie(
+                        movie = PreviewData.movie1,
+                        progress = UpNextMovie.Progress(
+                            id = 1,
+                            progress = progress,
+                            pausedAt = nowUtcInstant(),
+                        ),
+                    ),
+                    onClick = {},
+                    onLongClick = {},
+                    onMovieClick = {},
+                )
+            }
+        }
+    }
 }
