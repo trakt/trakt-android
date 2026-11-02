@@ -453,7 +453,6 @@ private fun ContentFilters(
             order = sorting.order,
             height = 32.dp,
             enabled = enabled,
-            orderEnabled = !sorting.isDefault,
             onLeadingClick = onSortTypeClick,
             onTrailingClick = onSortOrderClick,
         )

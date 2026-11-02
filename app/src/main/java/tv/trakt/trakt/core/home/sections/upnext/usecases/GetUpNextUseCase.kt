@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextSorting
 import tv.trakt.trakt.core.home.sections.upnext.model.interleaveUpNext
 
@@ -49,7 +50,10 @@ internal class GetUpNextUseCase(
         val movies = getRemoteMovies(page, limit, filters)
 
         val items = when {
-            sorting.isDefault -> (shows + movies).sortedByDescending { it.sortKey }
+            sorting.isDefault -> when (sorting.order) {
+                SortOrder.Asc -> (shows + movies).sortedBy { it.sortKey }
+                SortOrder.Desc -> (shows + movies).sortedByDescending { it.sortKey }
+            }
             else -> interleaveUpNext(shows, movies, sorting)
         }
 
@@ -57,7 +61,7 @@ internal class GetUpNextUseCase(
             .distinctBy { it.key }
             .toImmutableList()
             .also {
-                if (!skipLocal && sorting.isDefault) {
+                if (!skipLocal && sorting == UpNextSorting.Default) {
                     when (page) {
                         1 -> localDataSource.setItems(items = it)
                         else -> localDataSource.addItems(items = it)
@@ -84,7 +88,7 @@ internal class GetUpNextUseCase(
             limit = limit,
             page = page,
             intent = "continue",
-            sortHow = if (sorting.isDefault) null else sorting.order.value,
+            sortHow = if (sorting == UpNextSorting.Default) null else sorting.order.value,
             sortBy = sorting.type.apiValue,
             filters = filters,
         )
