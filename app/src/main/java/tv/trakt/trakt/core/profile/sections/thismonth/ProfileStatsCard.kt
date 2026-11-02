@@ -55,6 +55,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.Config.webMonthReviewUrl
 import tv.trakt.trakt.common.Config.webYearReviewUrl
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
@@ -175,24 +176,34 @@ internal fun ProfileStatsCard(
             }
 
             Box {
+                val isFirstCard = pagerState.currentPage == 0
+                val isSecondCard = pagerState.currentPage == 1
                 PreviousMonthRow(
-                    visible = pagerState.currentPage == 0,
+                    visible = isFirstCard,
                     previousMonth = previousMonth,
-                    onClick = {
-                        uriHandler.openUri(
-                            webMonthReviewUrl(
-                                user = user.ids.slug.value,
-                                month = previousMonth.monthValue,
-                                year = previousMonth.year,
-                            ),
-                        )
-                    },
+                    modifier = Modifier.ifOrElse(
+                        condition = isFirstCard,
+                        isTrue = Modifier.onClick {
+                            uriHandler.openUri(
+                                webMonthReviewUrl(
+                                    user = user.ids.slug.value,
+                                    month = previousMonth.monthValue,
+                                    year = previousMonth.year,
+                                ),
+                            )
+                        },
+                    ),
                 )
 
                 if (showAllStats) {
                     AllTimeStatsRow(
-                        visible = pagerState.currentPage == 1 && stats != null,
-                        onClick = onAllTimeStatsClick,
+                        visible = isSecondCard,
+                        modifier = Modifier.ifOrElse(
+                            condition = isSecondCard,
+                            isTrue = Modifier.onClick {
+                                onAllTimeStatsClick.invoke()
+                            },
+                        ),
                     )
                 }
             }
@@ -290,7 +301,7 @@ private fun HeaderRow(
 private fun PreviousMonthRow(
     visible: Boolean,
     previousMonth: ZonedDateTime,
-    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val configuration = LocalConfiguration.current
     val appLocale = remember(configuration) {
@@ -305,12 +316,9 @@ private fun PreviousMonthRow(
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
-        modifier = Modifier
+        modifier = modifier
             .alpha(animatedAlpha)
-            .padding(horizontal = 16.dp)
-            .onClick(enabled = visible) {
-                onClick()
-            },
+            .padding(horizontal = 16.dp),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_history),
@@ -332,7 +340,7 @@ private fun PreviousMonthRow(
 @Composable
 private fun AllTimeStatsRow(
     visible: Boolean,
-    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val animatedAlpha by animateFloatAsState(
         targetValue = if (visible) 1f else 0F,
@@ -342,12 +350,9 @@ private fun AllTimeStatsRow(
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
-        modifier = Modifier
+        modifier = modifier
             .alpha(animatedAlpha)
-            .padding(horizontal = 16.dp)
-            .onClick(enabled = visible) {
-                onClick()
-            },
+            .padding(horizontal = 16.dp),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_vip_stats),
