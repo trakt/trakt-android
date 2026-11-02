@@ -224,7 +224,6 @@ private fun GifPickerContent(
             state = inputState,
             icon = painterResource(R.drawable.ic_search_off),
             placeholder = stringResource(R.string.input_placeholder_search_gifs),
-            loading = state.loading.isLoading,
             height = inputHeight,
             containerColor = TraktTheme.colors.dialogContainer,
             imeAction = ImeAction.Done,

@@ -154,7 +154,6 @@ private fun TraktMenuBarContent(
             queryState = stateHolder.queryState,
             filter = stateHolder.searchInput.filter,
             visible = stateHolder.searchVisible,
-            loading = stateHolder.searchLoading,
             searchFocusRequester = searchFocusRequester,
             onFilterClick = stateHolder.onSearchFilter,
         )
@@ -286,7 +285,6 @@ fun ProfileItem(
 private fun SearchContent(
     visible: Boolean,
     enabled: Boolean,
-    loading: Boolean,
     searchFocusRequester: FocusRequester,
     queryState: TextFieldState,
     filter: SearchFilter,
@@ -320,7 +318,6 @@ private fun SearchContent(
                 placeholder = stringResource(filter.placeholderRes),
                 icon = painterResource(R.drawable.ic_search_off),
                 enabled = enabled && visible,
-                loading = loading,
                 endSlot = {
                     if (queryState.text.isNotBlank()) {
                         Icon(
