@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Shade10
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -43,7 +42,6 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 private val BannerBase = Shade900
-private val BannerPill = Purple600
 private val BannerForeground = Shade10
 private val BannerRadius = 24.dp
 private val BannerShape = DefaultCardShape
@@ -91,7 +89,7 @@ internal fun HomeMonthReviewView(
                     .fillMaxHeight()
                     .padding(PillInset)
                     .widthIn(min = PillMinWidth)
-                    .background(BannerPill, PillShape)
+                    .background(TraktTheme.colors.accentPalette.shade600, PillShape)
                     .padding(horizontal = 12.dp, vertical = 4.dp),
             ) {
                 Text(
