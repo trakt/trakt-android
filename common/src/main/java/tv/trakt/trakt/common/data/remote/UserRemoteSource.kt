@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UserMatchResponse
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
+import java.time.YearMonth
 
 class UserRemoteSource(
     private val usersApi: UsersApi,
@@ -54,6 +55,19 @@ class UserRemoteSource(
             response.status == 204 -> null
             else -> response.body()
         }
+    }
+
+    suspend fun getMonthReviewPlays(
+        userSlug: String,
+        month: YearMonth,
+    ): Int {
+        val response = usersApi.getUsersMonthInReview(
+            id = userSlug,
+            year = month.year,
+            month = month.monthValue,
+        ).body()
+
+        return response.stats.all.playCounts.total.toInt()
     }
 
     suspend fun getWatchingNow(): UserWatchingDto? {

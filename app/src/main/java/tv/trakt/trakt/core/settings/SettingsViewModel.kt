@@ -228,6 +228,7 @@ internal class SettingsViewModel(
 
                 if (enable) {
                     ScheduleNotificationsWorker.schedule(appContext)
+                    ScheduleMonthReviewNotificationWorker.schedule(appContext)
                 } else {
                     ScheduleNotificationsWorker.clear(appContext)
                     ScheduleMonthReviewNotificationWorker.clear(appContext)

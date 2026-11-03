@@ -13,16 +13,21 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
+import tv.trakt.trakt.common.helpers.extensions.recordError
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.data.work.MAIN_ACTIVITY_PATH
@@ -38,7 +43,9 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 private const val WORK_ID = "post_month_review_notif_work"
-private const val NOTIFICATION_HOUR = 10
+private const val NOTIFICATION_HOUR = 12
+private const val MIN_MONTH_PLAYS = 5
+private const val MAX_RETRY_ATTEMPTS = 3
 
 private const val KEY_YEAR = "year"
 private const val KEY_MONTH = "month"
@@ -51,6 +58,7 @@ internal class PostMonthReviewNotificationWorker(
     workerParams: WorkerParameters,
     private val sessionManager: SessionManager,
     private val enableNotificationsUseCase: EnableNotificationsUseCase,
+    private val userRemoteSource: UserRemoteSource,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun schedule(
@@ -71,6 +79,11 @@ internal class PostMonthReviewNotificationWorker(
                         .build(),
                 )
                 .setInitialDelay(Duration.between(now, targetDate).toMillis(), MILLISECONDS)
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build(),
+                )
                 .build()
 
             WorkManager.getInstance(appContext).enqueueUniqueWork(
@@ -121,6 +134,23 @@ internal class PostMonthReviewNotificationWorker(
         }
 
         val reviewMonth = YearMonth.of(year, month)
+        val plays = try {
+            userRemoteSource.getMonthReviewPlays(
+                userSlug = userSlug,
+                month = reviewMonth,
+            )
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            return if (runAttemptCount + 1 < MAX_RETRY_ATTEMPTS) Result.retry() else Result.failure()
+        }
+
+        if (plays < MIN_MONTH_PLAYS) {
+            Timber.d("Only %d plays in %s, skipping month in review notification.", plays, reviewMonth)
+            return Result.failure()
+        }
+
         val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
         val monthName = reviewMonth.month
             .getDisplayName(TextStyle.FULL_STANDALONE, locale)
