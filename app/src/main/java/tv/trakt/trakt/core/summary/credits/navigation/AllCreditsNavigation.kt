@@ -25,6 +25,7 @@ internal data class AllCreditsDestination(
     val season: Int? = null,
     val episode: Int? = null,
     val backgroundUrl: String? = null,
+    val spoilerRevealed: Boolean = false,
 ) {
     fun toSource(): CreditsSource {
         return when (mediaType) {
@@ -63,6 +64,7 @@ internal fun NavController.navigateToAllCredits(
     backgroundUrl: String?,
     season: Int? = null,
     episode: Int? = null,
+    spoilerRevealed: Boolean = false,
 ) {
     navigate(
         route = AllCreditsDestination(
@@ -72,6 +74,7 @@ internal fun NavController.navigateToAllCredits(
             season = season,
             episode = episode,
             backgroundUrl = backgroundUrl,
+            spoilerRevealed = spoilerRevealed,
         ),
     )
 }

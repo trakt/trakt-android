@@ -187,6 +187,7 @@ private fun AllCreditsContent(
                         credits = credits,
                         mode = state.mode,
                         query = searchState.text.toString().trim(),
+                        spoilerRevealed = state.spoilerRevealed,
                         onPersonClick = onPersonClick,
                     )
                 }
@@ -199,22 +200,26 @@ private fun LazyListScope.creditsList(
     credits: MediaCredits,
     mode: CreditsMode,
     query: String,
+    spoilerRevealed: Boolean,
     onPersonClick: (Person, PersonCreditsRole?) -> Unit,
 ) {
     when (mode) {
         CreditsMode.Main -> castList(
             cast = credits.main.filter { it.matchesQuery(query) },
             mode = mode,
+            spoilerRevealed = spoilerRevealed,
             onPersonClick = onPersonClick,
         )
         CreditsMode.Supporting -> castList(
             cast = credits.supporting.filter { it.matchesQuery(query) },
             mode = mode,
+            spoilerRevealed = spoilerRevealed,
             onPersonClick = onPersonClick,
         )
         CreditsMode.Crew -> crewList(
             crew = credits.crew.filter { it.matchesQuery(query) },
             mode = mode,
+            spoilerRevealed = spoilerRevealed,
             onPersonClick = onPersonClick,
         )
     }
@@ -223,6 +228,7 @@ private fun LazyListScope.creditsList(
 private fun LazyListScope.castList(
     cast: List<CastPerson>,
     mode: CreditsMode,
+    spoilerRevealed: Boolean,
     onPersonClick: (Person, PersonCreditsRole?) -> Unit,
 ) {
     if (cast.isEmpty()) {
@@ -237,6 +243,7 @@ private fun LazyListScope.castList(
         CastPersonListItem(
             person = item,
             onClick = { onPersonClick(it.person, PersonCreditsRole.Acting) },
+            spoilerRevealed = spoilerRevealed,
             modifier = Modifier.animateItem(
                 fadeInSpec = null,
                 fadeOutSpec = null,
@@ -248,6 +255,7 @@ private fun LazyListScope.castList(
 private fun LazyListScope.crewList(
     crew: List<CrewPerson>,
     mode: CreditsMode,
+    spoilerRevealed: Boolean,
     onPersonClick: (Person, PersonCreditsRole?) -> Unit,
 ) {
     if (crew.isEmpty()) {
@@ -262,6 +270,7 @@ private fun LazyListScope.crewList(
         CrewPersonListItem(
             person = item,
             onClick = { onPersonClick(it.person, null) },
+            spoilerRevealed = spoilerRevealed,
             modifier = Modifier.animateItem(
                 fadeInSpec = null,
                 fadeOutSpec = null,

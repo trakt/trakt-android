@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -21,6 +22,7 @@ internal fun CastPersonListItem(
     person: CastPerson,
     onClick: ((CastPerson) -> Unit)?,
     modifier: Modifier = Modifier,
+    spoilerRevealed: Boolean = false,
 ) {
     PanelMediaCard(
         title = person.person.name,
@@ -35,13 +37,15 @@ internal fun CastPersonListItem(
         more = false,
         footerContent = if (person.episodesCount > 0) {
             {
-                Text(
-                    text = stringResource(R.string.text_stats_episodes_count, person.episodesCount),
-                    style = TraktTheme.typography.cardSubtitle.copy(
-                        fontWeight = W500,
-                    ),
-                    color = TraktTheme.colors.textPrimary,
-                )
+                SpoilerBlur(revealed = spoilerRevealed) {
+                    Text(
+                        text = stringResource(R.string.text_stats_episodes_count, person.episodesCount),
+                        style = TraktTheme.typography.cardSubtitle.copy(
+                            fontWeight = W500,
+                        ),
+                        color = TraktTheme.colors.textPrimary,
+                    )
+                }
             }
         } else {
             null

@@ -316,12 +316,13 @@ internal fun NavGraphBuilder.showsScreens(
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
-            onNavigateToAllCredits = { show ->
+            onNavigateToAllCredits = { show, spoilerRevealed ->
                 navigateToAllCredits(
                     mediaId = show.ids.trakt,
                     mediaType = Show,
                     mediaTitle = show.title,
                     backgroundUrl = show.images?.getFanartUrl(),
+                    spoilerRevealed = spoilerRevealed,
                 )
             },
             onNavigateToUser = {
@@ -396,7 +397,7 @@ internal fun NavGraphBuilder.episodesScreens(
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
-            onNavigateToAllCredits = { show, episode ->
+            onNavigateToAllCredits = { show, episode, spoilerRevealed ->
                 navigateToAllCredits(
                     mediaId = show.ids.trakt,
                     mediaType = Episode,
@@ -404,6 +405,7 @@ internal fun NavGraphBuilder.episodesScreens(
                     backgroundUrl = show.images?.getFanartUrl(),
                     season = episode.season,
                     episode = episode.number,
+                    spoilerRevealed = spoilerRevealed,
                 )
             },
             onNavigateToUser = {

@@ -135,7 +135,7 @@ internal fun ShowDetailsScreen(
     onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateToHistory: (Show, watched: Int) -> Unit,
     onNavigateToAllStreamings: (Show) -> Unit,
-    onNavigateToAllCredits: (Show) -> Unit,
+    onNavigateToAllCredits: (Show, spoilerRevealed: Boolean) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -283,7 +283,7 @@ internal fun ShowDetailsScreen(
         },
         onAllCreditsClick = {
             state.show?.let { show ->
-                onNavigateToAllCredits(show)
+                onNavigateToAllCredits(show, state.showProgress?.isWatched == true)
             }
         },
         onNavigateToUser = onNavigateToUser,
@@ -784,6 +784,7 @@ internal fun ShowDetailsContent(
                             contentPadding = sectionPadding,
                             onPersonClick = { onPersonClick?.invoke(it, PersonCreditsRole.Acting) },
                             onMoreClick = { onAllCreditsClick?.invoke() },
+                            spoilerRevealed = state.showProgress?.isWatched == true,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

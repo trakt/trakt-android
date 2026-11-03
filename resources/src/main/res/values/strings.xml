@@ -258,6 +258,7 @@
   <string name="button_label_report_user">Report %s</string>
   <string name="button_label_reset_all_filters">Reset all filters</string>
   <string name="button_label_reset_calendar_period">Today</string>
+  <string name="button_label_reveal_spoiler">Reveal spoiler</string>
   <string name="button_label_reset_cover_image">Reset your cover image to the default artwork.</string>
   <string name="button_label_reset_filter">Reset</string>
   <string name="button_label_reset_smart_list_more_filters">Reset more filters</string>

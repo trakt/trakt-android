@@ -33,7 +33,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
@@ -63,6 +65,7 @@ import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
+import tv.trakt.trakt.ui.components.LocalSpoilersHidden
 import tv.trakt.trakt.ui.theme.LocalSeasonalTheme
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.ThemeMode
@@ -88,6 +91,10 @@ internal class MainActivity : AppCompatActivity() {
 
     private val seasonalThemeUseCase: SeasonalThemeUseCase by lazy {
         inject<SeasonalThemeUseCase>().value
+    }
+
+    private val sessionManager: SessionManager by lazy {
+        inject<SessionManager>().value
     }
 
     private val analytics: Analytics by lazy {
@@ -133,6 +140,12 @@ internal class MainActivity : AppCompatActivity() {
 
             val seasonalTheme by seasonalThemeUseCase.observeActive()
                 .collectAsStateWithLifecycle(initialValue = null)
+
+            val spoilersHidden by remember {
+                sessionManager.observeProfile()
+                    .map { it?.settings?.hideSpoilers ?: false }
+                    .distinctUntilChanged()
+            }.collectAsStateWithLifecycle(initialValue = false)
 
             val darkTheme = when (themeMode) {
                 ThemeMode.System -> isSystemInDarkTheme()
@@ -188,6 +201,7 @@ internal class MainActivity : AppCompatActivity() {
                     LocalSnackbarState provides snackbarState,
                     LocalStartAuthorization provides startAuthorization,
                     LocalSeasonalTheme provides seasonalTheme,
+                    LocalSpoilersHidden provides spoilersHidden,
                 ) {
                     MainScreen(
                         viewModel = koinViewModel(),

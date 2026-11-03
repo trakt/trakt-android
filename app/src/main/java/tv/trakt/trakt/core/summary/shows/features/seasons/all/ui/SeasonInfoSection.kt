@@ -252,6 +252,7 @@ internal fun LazyListScope.SeasonInfoSection(
                         CastPersonListItem(
                             person = item,
                             onClick = { onPersonClick(it.person, PersonCreditsRole.Acting) },
+                            spoilerRevealed = state.items.isSelectedSeasonWatched,
                             modifier = Modifier
                                 .padding(contentPadding)
                                 .padding(bottom = 12.dp)
@@ -283,6 +284,7 @@ internal fun LazyListScope.SeasonInfoSection(
                         CrewPersonListItem(
                             person = item,
                             onClick = { onPersonClick(it.person, null) },
+                            spoilerRevealed = state.items.isSelectedSeasonWatched,
                             modifier = Modifier
                                 .padding(contentPadding)
                                 .padding(bottom = 12.dp)

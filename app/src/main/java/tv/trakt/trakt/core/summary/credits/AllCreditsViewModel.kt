@@ -31,6 +31,7 @@ internal class AllCreditsViewModel(
     private val initialState = AllCreditsState(
         mediaTitle = destination.mediaTitle,
         backgroundUrl = destination.backgroundUrl,
+        spoilerRevealed = destination.spoilerRevealed,
     )
 
     private val creditsState = MutableStateFlow(initialState.credits)
@@ -77,6 +78,7 @@ internal class AllCreditsViewModel(
         AllCreditsState(
             mediaTitle = initialState.mediaTitle,
             backgroundUrl = initialState.backgroundUrl,
+            spoilerRevealed = initialState.spoilerRevealed,
             credits = state[0] as MediaCredits?,
             mode = state[1] as CreditsMode,
             loading = state[2] as LoadingState,

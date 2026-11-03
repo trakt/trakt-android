@@ -114,7 +114,7 @@ internal fun EpisodeDetailsScreen(
     onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateToHistory: (Show, Episode, Int) -> Unit,
     onNavigateToAllStreamings: (Show, Episode) -> Unit,
-    onNavigateToAllCredits: (Show, Episode) -> Unit,
+    onNavigateToAllCredits: (Show, Episode, spoilerRevealed: Boolean) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -224,7 +224,7 @@ internal fun EpisodeDetailsScreen(
             val show = state.show
             val episode = state.episode
             if (show != null && episode != null) {
-                onNavigateToAllCredits(show, episode)
+                onNavigateToAllCredits(show, episode, state.episodeProgress?.watched == true)
             }
         },
         onNavigateToUser = onNavigateToUser,

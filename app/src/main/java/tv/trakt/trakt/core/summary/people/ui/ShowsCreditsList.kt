@@ -49,6 +49,7 @@ import tv.trakt.trakt.core.summary.people.ListLoadingView
 import tv.trakt.trakt.core.summary.people.helpers.resolveSelectedCreditsFilter
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
@@ -159,32 +160,43 @@ internal fun ShowsCreditsList(
                                                 item.episodesCount,
                                             )
 
-                                            val footerText = remember {
-                                                buildString {
-                                                    item.released?.let {
-                                                        append(it.toLocal().year.toString())
-                                                    } ?: append("TBA")
-
-                                                    if (item.episodesCount > 0) {
-                                                        append(" • ")
-                                                        append(episodesCount)
-                                                    }
-                                                }
+                                            val year = remember {
+                                                item.released?.toLocal()?.year?.toString() ?: "TBA"
                                             }
 
                                             Column(
                                                 verticalArrangement = Arrangement.spacedBy(0.dp),
                                                 modifier = modifier,
                                             ) {
-                                                Text(
-                                                    text = footerText,
-                                                    style = TraktTheme.typography.cardTitle,
-                                                    color = TraktTheme.colors.textPrimary,
-                                                    textAlign = TextAlign.Center,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
-                                                    modifier = modifier,
-                                                )
+                                                Row(
+                                                    horizontalArrangement = Arrangement.Center,
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                ) {
+                                                    Text(
+                                                        text = year,
+                                                        style = TraktTheme.typography.cardTitle,
+                                                        color = TraktTheme.colors.textPrimary,
+                                                        maxLines = 1,
+                                                    )
+
+                                                    if (item.episodesCount > 0) {
+                                                        SpoilerBlur(
+                                                            revealed = userCollection.isWatched(
+                                                                item.id,
+                                                                Show,
+                                                                item.airedEpisodes,
+                                                            ),
+                                                        ) {
+                                                            Text(
+                                                                text = " • $episodesCount",
+                                                                style = TraktTheme.typography.cardTitle,
+                                                                color = TraktTheme.colors.textPrimary,
+                                                                maxLines = 1,
+                                                                overflow = TextOverflow.Ellipsis,
+                                                            )
+                                                        }
+                                                    }
+                                                }
 
                                                 Text(
                                                     text = (item.credit ?: "")

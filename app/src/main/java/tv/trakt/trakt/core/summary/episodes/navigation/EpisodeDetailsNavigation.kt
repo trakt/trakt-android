@@ -30,7 +30,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
     onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateToHistory: (Show, Episode, Int) -> Unit,
     onNavigateToAllStreamings: (Show, Episode) -> Unit,
-    onNavigateToAllCredits: (Show, Episode) -> Unit,
+    onNavigateToAllCredits: (Show, Episode, spoilerRevealed: Boolean) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,

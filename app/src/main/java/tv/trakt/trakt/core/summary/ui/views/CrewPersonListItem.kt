@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -23,6 +24,7 @@ internal fun CrewPersonListItem(
     person: CrewPerson,
     onClick: ((CrewPerson) -> Unit)?,
     modifier: Modifier = Modifier,
+    spoilerRevealed: Boolean = false,
 ) {
     PanelMediaCard(
         title = person.person.name,
@@ -37,13 +39,15 @@ internal fun CrewPersonListItem(
         more = false,
         footerContent = if (person.episodesCount > 0) {
             {
-                Text(
-                    text = stringResource(R.string.text_stats_episodes_count, person.episodesCount),
-                    style = TraktTheme.typography.cardSubtitle.copy(
-                        fontWeight = W500,
-                    ),
-                    color = TraktTheme.colors.textPrimary,
-                )
+                SpoilerBlur(revealed = spoilerRevealed) {
+                    Text(
+                        text = stringResource(R.string.text_stats_episodes_count, person.episodesCount),
+                        style = TraktTheme.typography.cardSubtitle.copy(
+                            fontWeight = W500,
+                        ),
+                        color = TraktTheme.colors.textPrimary,
+                    )
+                }
             }
         } else {
             null

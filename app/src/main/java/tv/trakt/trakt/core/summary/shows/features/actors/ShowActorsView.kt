@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -63,6 +64,7 @@ internal fun ShowActorsView(
     onPersonClick: (Person) -> Unit,
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
+    spoilerRevealed: Boolean = false,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -74,6 +76,7 @@ internal fun ShowActorsView(
         onCollapse = viewModel::setCollapsed,
         onPersonClick = onPersonClick,
         onMoreClick = onMoreClick,
+        spoilerRevealed = spoilerRevealed,
     )
 }
 
@@ -86,6 +89,7 @@ private fun ShowActorsContent(
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onPersonClick: ((Person) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
+    spoilerRevealed: Boolean = false,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -174,10 +178,12 @@ private fun ContentList(
                 more = false,
                 cardContent = {
                     if (item.episodesCount > 0) {
-                        InfoChip(
-                            text = stringResource(R.string.tag_text_number_of_episodes, item.episodesCount),
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
+                        SpoilerBlur(revealed = spoilerRevealed) {
+                            InfoChip(
+                                text = stringResource(R.string.tag_text_number_of_episodes, item.episodesCount),
+                                containerColor = TraktTheme.colors.chipContainerOnContent,
+                            )
+                        }
                     }
                 },
                 chipContent = {

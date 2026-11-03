@@ -13,4 +13,5 @@ internal data class AllCreditsState(
     val mode: CreditsMode = CreditsMode.Main,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
+    val spoilerRevealed: Boolean = false,
 )

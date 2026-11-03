@@ -7,6 +7,8 @@ import tv.trakt.trakt.common.model.User.Companion
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import tv.trakt.trakt.common.networking.UserSettingsDto
 
+private const val SPOILERS_HIDE = "hide"
+
 @Immutable
 @Serializable
 data class User(
@@ -32,6 +34,7 @@ data class User(
         val ratingPrompts: Boolean,
         val coverImage: String?,
         val shareCode: String?,
+        val hideSpoilers: Boolean = false,
     )
 
     val isAnyVip: Boolean
@@ -99,6 +102,9 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
             ratingPrompts = dto.browsing?.showRatingPrompt ?: false,
             coverImage = dto.user.vipCoverImage,
             shareCode = dto.account.shareCode,
+            hideSpoilers = dto.browsing?.spoilers?.let {
+                it.episodes == SPOILERS_HIDE || it.movies == SPOILERS_HIDE || it.shows == SPOILERS_HIDE
+            } ?: false,
         ),
     )
 }

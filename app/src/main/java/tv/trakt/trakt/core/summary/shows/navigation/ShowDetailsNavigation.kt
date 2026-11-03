@@ -37,7 +37,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateToAllSeasons: (Show, Int?) -> Unit,
     onNavigateToHistory: (Show, Int) -> Unit,
     onNavigateToAllStreamings: (Show) -> Unit,
-    onNavigateToAllCredits: (Show) -> Unit,
+    onNavigateToAllCredits: (Show, spoilerRevealed: Boolean) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
