@@ -144,6 +144,7 @@ internal fun AllLibraryContent(
         )
 
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = listScrollConnection.resultOffset,
         )
 

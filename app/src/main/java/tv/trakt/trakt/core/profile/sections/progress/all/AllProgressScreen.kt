@@ -153,6 +153,7 @@ internal fun AllProgressContent(
         )
 
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = listScrollConnection.resultOffset,
         )
 

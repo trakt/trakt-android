@@ -234,6 +234,7 @@ private fun ProfileScreen(
             .nestedScroll(backdropScrollConnection),
     ) {
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = backdropScrollConnection.resultOffset,
         )
 

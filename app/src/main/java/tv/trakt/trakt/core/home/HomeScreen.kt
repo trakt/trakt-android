@@ -59,6 +59,7 @@ import tv.trakt.trakt.core.home.sections.welcome.banner.HomeWelcomeView
 import tv.trakt.trakt.core.today.pill.TodayPill
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -235,6 +236,10 @@ private fun HomeScreenContent(
         LaunchedEffect(state.welcomeBanner) {
             bannerVisible = state.welcomeBanner
         }
+
+        ScrollableBackdropImage(
+            scrollState = lazyListState,
+        )
 
         LazyColumn(
             state = lazyListState,

@@ -205,6 +205,7 @@ internal fun ProfileAllActivityContent(
         )
 
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = listScrollConnection.resultOffset,
         )
 

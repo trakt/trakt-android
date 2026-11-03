@@ -57,6 +57,7 @@ import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.views.SearchGridItem
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -181,6 +182,10 @@ private fun SearchScreenContent(
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary),
     ) {
+        ScrollableBackdropImage(
+            scrollState = contentGridState,
+        )
+
         ContentList(
             state = state,
             listState = contentGridState,

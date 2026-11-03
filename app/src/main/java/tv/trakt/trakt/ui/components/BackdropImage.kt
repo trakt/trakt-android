@@ -42,9 +42,12 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -56,6 +59,7 @@ internal fun ScrollableBackdropImage(
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
     imageAlpha: Float = TraktTheme.colors.backgroundImageAlpha,
+    showProfileImage: Boolean = false,
     translation: Float,
 ) {
     val localPreview = LocalInspectionMode.current
@@ -63,6 +67,7 @@ internal fun ScrollableBackdropImage(
         BackdropImage(
             imageUrl = imageUrl,
             imageAlpha = imageAlpha,
+            showProfileImage = showProfileImage,
             modifier = modifier.graphicsLayer {
                 translationY = translation * PARALLAX_RATIO
             },
@@ -76,6 +81,7 @@ internal fun ScrollableBackdropImage(
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
     imageAlpha: Float = TraktTheme.colors.backgroundImageAlpha,
+    showProfileImage: Boolean = false,
 ) {
     val localPreview = LocalInspectionMode.current
 
@@ -87,6 +93,7 @@ internal fun ScrollableBackdropImage(
         BackdropImage(
             imageUrl = imageUrl,
             imageAlpha = imageAlpha,
+            showProfileImage = showProfileImage,
             modifier = modifier.graphicsLayer {
                 if (firstItemVisible) {
                     translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
@@ -104,6 +111,7 @@ internal fun ScrollableBackdropImage(
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
     imageAlpha: Float = TraktTheme.colors.backgroundImageAlpha,
+    showProfileImage: Boolean = false,
 ) {
     val firstItemVisible by remember {
         derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
@@ -112,6 +120,7 @@ internal fun ScrollableBackdropImage(
     BackdropImage(
         imageUrl = imageUrl,
         imageAlpha = imageAlpha,
+        showProfileImage = showProfileImage,
         modifier = modifier.graphicsLayer {
             if (firstItemVisible) {
                 translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
@@ -128,6 +137,7 @@ private fun BackdropImage(
     imageUrl: String?,
     imageAlpha: Float,
     modifier: Modifier = Modifier,
+    showProfileImage: Boolean = false,
 ) {
     val configuration = LocalConfiguration.current
     val inspection = LocalInspectionMode.current
@@ -136,19 +146,21 @@ private fun BackdropImage(
     var userImageUrl by remember { mutableStateOf<String?>(null) }
 
     val scope = rememberCoroutineScope()
-    LaunchedEffect(imageUrl) {
+    LaunchedEffect(imageUrl, showProfileImage) {
+        if (!showProfileImage) return@LaunchedEffect
         scope.launch {
             userImageUrl = sessionManager.getProfileImage().orEmpty()
         }
     }
 
-    val imageUrl = remember(imageUrl, userImageUrl) {
+    val imageUrl = remember(imageUrl, userImageUrl, showProfileImage) {
         when {
             inspection -> imageUrl // For preview.
             !imageUrl.isNullOrBlank() -> imageUrl
+            !showProfileImage -> remoteBackgroundImageUrl()
             userImageUrl == null -> null // Show nothing while loading the user image.
             !userImageUrl.isNullOrBlank() -> userImageUrl
-            else -> null
+            else -> remoteBackgroundImageUrl()
         }
     }
 
@@ -211,6 +223,10 @@ private fun BackdropImage(
                 },
         )
     }
+}
+
+private fun remoteBackgroundImageUrl(): String? {
+    return Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
 }
 
 @OptIn(ExperimentalCoilApi::class)

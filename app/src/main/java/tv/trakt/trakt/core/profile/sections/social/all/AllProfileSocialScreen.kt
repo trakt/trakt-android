@@ -99,6 +99,7 @@ internal fun AllProfileSocialContent(
         )
 
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = listScrollConnection.resultOffset,
         )
 

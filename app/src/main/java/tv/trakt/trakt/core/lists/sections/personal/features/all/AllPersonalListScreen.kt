@@ -37,10 +37,12 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -83,9 +85,11 @@ import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
+import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.lists.ListItemCount
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
@@ -267,10 +271,15 @@ internal fun AllPersonalListContent(
         ),
     )
 
+    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary),
+            .background(TraktTheme.colors.backgroundPrimary)
+            .nestedScroll(listScrollConnection),
     ) {
         val contentPadding = PaddingValues(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -280,6 +289,10 @@ internal fun AllPersonalListContent(
             bottom = WindowInsets.navigationBars.asPaddingValues()
                 .calculateBottomPadding()
                 .plus(TraktTheme.size.navigationBarHeight * 2),
+        )
+
+        ScrollableBackdropImage(
+            translation = listScrollConnection.resultOffset,
         )
 
         ContentList(

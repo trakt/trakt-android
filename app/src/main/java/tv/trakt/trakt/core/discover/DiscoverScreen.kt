@@ -40,6 +40,7 @@ import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
+import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -120,6 +121,10 @@ private fun DiscoverScreen(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(headerState.connection),
     ) {
+        ScrollableBackdropImage(
+            scrollState = lazyListState,
+        )
+
         val listPadding = PaddingValues(
             top = WindowInsets.statusBars.asPaddingValues()
                 .calculateTopPadding()

@@ -194,6 +194,7 @@ internal fun AllFavoritesContent(
         )
 
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = listScrollConnection.resultOffset,
         )
 

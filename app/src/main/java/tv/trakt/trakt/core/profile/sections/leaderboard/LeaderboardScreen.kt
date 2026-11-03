@@ -144,6 +144,7 @@ private fun LeaderboardContent(
             .nestedScroll(listScrollConnection),
     ) {
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = listScrollConnection.resultOffset,
         )
 
