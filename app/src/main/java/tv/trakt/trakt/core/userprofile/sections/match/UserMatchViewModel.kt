@@ -114,10 +114,16 @@ internal class UserMatchViewModel(
                     loadingState.update { Loading }
                 }
 
-                val match = getUserMatchUseCase.getMatch(
-                    userSlug = loadUserSlug(),
-                    mode = mode,
-                )
+                val match = if (!user.isPrivate) {
+                    getUserMatchUseCase.getMatch(
+                        userSlug = loadUserSlug(),
+                        mode = mode,
+                    )
+                } else {
+                    Timber.d("User ${user.ids.trakt} is private, skipping match request")
+                    null
+                }
+
                 val sharedMediaRequested = sharedMoviesState.value != null || sharedMediaJob?.isActive == true
                 sharedMediaJob?.cancel()
                 sharedMoviesState.update { null }
