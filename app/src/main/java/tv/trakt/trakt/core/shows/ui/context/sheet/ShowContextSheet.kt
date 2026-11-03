@@ -34,7 +34,6 @@ internal fun ShowContextSheet(
     show: Show?,
     showWatched: Boolean = true,
     showRecommended: Boolean = false,
-    showWhyThis: Boolean = false,
     onHideRecommendation: (Show) -> Unit = {},
     onWhyThis: () -> Unit = {},
     onDismiss: () -> Unit,
@@ -54,7 +53,6 @@ internal fun ShowContextSheet(
                 show = show,
                 showWatched = showWatched,
                 showRecommended = showRecommended,
-                showWhyThis = showWhyThis,
                 viewModel = koinViewModel(
                     key = viewModelKey,
                     parameters = { parametersOf(show) },

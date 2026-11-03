@@ -1,6 +1,8 @@
 package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.MediaApi
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.networking.AnticipatedMediaDto
@@ -8,6 +10,7 @@ import tv.trakt.trakt.common.networking.PopularMediaDto
 import tv.trakt.trakt.common.networking.TrendingMediaDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaRecommendationResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationReasonsResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 
 class MediaRemoteSource(
@@ -147,5 +150,12 @@ class MediaRemoteSource(
                 ignoreCollected = true,
             ),
         )
+    }
+
+    suspend fun getRecommendationReasons(
+        type: MediaType,
+        mediaId: TraktId,
+    ): V3RecommendationReasonsResponse {
+        return v3Api.getRecommendationReasons(type = type, mediaId = mediaId)
     }
 }

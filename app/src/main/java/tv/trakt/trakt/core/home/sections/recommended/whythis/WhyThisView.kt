@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,25 +22,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedPerson
 import tv.trakt.trakt.common.model.recommended.RecommendedSource
 import tv.trakt.trakt.common.model.recommended.RecommendedSource.Companion.mergedSubgenres
 import tv.trakt.trakt.common.model.recommended.RecommendedSource.Type.Activity
 import tv.trakt.trakt.common.model.recommended.RecommendedSource.Type.Favorite
 import tv.trakt.trakt.common.model.recommended.RecommendedSource.Type.Subgenre
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.chips.InfoChip
-import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private const val GRID_COLUMNS = 4
 
 @Composable
 internal fun WhyThisView(
-    item: RecommendedItem,
+    title: String,
+    state: WhyThisState,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -52,16 +55,49 @@ internal fun WhyThisView(
             ),
     ) {
         TraktHeader(
-            title = item.title,
+            title = title,
             subtitle = stringResource(R.string.drawer_title_recommendation_sources),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
         )
 
-        val watched = item.sources.filter { it.type == Activity }
-        val loved = item.sources.filter { it.type == Favorite }
-        val liked = item.sources.filter { it.type == Subgenre }
+        if (state.loading.isLoading) {
+            FilmProgressIndicator(
+                size = 32.dp,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 24.dp),
+            )
+        } else if (state.sources.isEmpty() && state.people.isEmpty()) {
+            Text(
+                text = stringResource(R.string.list_placeholder_empty),
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textSecondary,
+                modifier = Modifier.padding(horizontal = 24.dp),
+            )
+        }
+
+        if (state.people.isNotEmpty()) {
+            Column(
+                verticalArrangement = spacedBy(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+            ) {
+                SectionHeader(
+                    icon = R.drawable.ic_person,
+                    title = stringResource(R.string.list_title_recommendation_sources_people),
+                )
+                state.people.forEach {
+                    WhyThisPersonView(reason = it)
+                }
+            }
+        }
+
+        val watched = state.sources.filter { it.type == Activity }
+        val loved = state.sources.filter { it.type == Favorite }
+        val liked = state.sources.filter { it.type == Subgenre }
 
         if (watched.isNotEmpty()) {
             Column(
@@ -175,36 +211,36 @@ private fun SourcePosters(
     sources: List<RecommendedSource>,
     modifier: Modifier = Modifier,
 ) {
-    val gridSpacing = TraktTheme.spacing.mainGridHorizontalSpace
-    Column(
-        verticalArrangement = spacedBy(gridSpacing),
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        sources.chunked(GRID_COLUMNS).forEach { row ->
-            Row(
-                horizontalArrangement = spacedBy(gridSpacing),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                row.forEach { source ->
-                    VerticalMediaCard(
-                        title = source.movie?.title ?: source.show?.title.orEmpty(),
-                        imageUrl = (source.movie?.images ?: source.show?.images)?.getPosterUrl(),
-                        more = false,
-                        corner = 13.dp,
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = TraktTheme.colors.shadowSmall,
-                            pressedElevation = TraktTheme.colors.shadowSmall,
-                            disabledElevation = TraktTheme.colors.shadowSmall,
-                        ),
-                        modifier = Modifier.weight(1F),
-                    )
-                }
+    WhyThisPosterGrid(
+        cells = sources.map {
+            WhyThisGridCell.Poster(
+                title = it.movie?.title ?: it.show?.title.orEmpty(),
+                imageUrl = (it.movie?.images ?: it.show?.images)?.getPosterUrl(),
+            )
+        },
+        modifier = modifier,
+    )
+}
 
-                repeat(GRID_COLUMNS - row.size) {
-                    Spacer(modifier = Modifier.weight(1F))
-                }
-            }
-        }
+@PreviewTraktLightDark
+@Composable
+private fun LoadingPreview() {
+    TraktThemePreview {
+        WhyThisView(
+            title = PreviewData.movie1.title,
+            state = WhyThisState(loading = Loading),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun EmptyPreview() {
+    TraktThemePreview {
+        WhyThisView(
+            title = PreviewData.movie1.title,
+            state = WhyThisState(loading = Done),
+        )
     }
 }
 
@@ -216,10 +252,21 @@ private fun SourcePosters(
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemePreview {
         WhyThisView(
-            item = RecommendedItem.MovieItem(
-                movie = PreviewData.movie1,
+            title = PreviewData.movie1.title,
+            state = WhyThisState(
+                people = persistentListOf(
+                    RecommendedPerson(
+                        person = PreviewData.person1,
+                        watchedRoles = persistentListOf(RecommendedPerson.Role.Directing),
+                        watchedCount = 6,
+                        titles = persistentListOf(
+                            RecommendedPerson.Title(movie = PreviewData.movie1),
+                            RecommendedPerson.Title(movie = PreviewData.movie2),
+                        ),
+                    ),
+                ),
                 sources = persistentListOf(
                     RecommendedSource(
                         type = Activity,

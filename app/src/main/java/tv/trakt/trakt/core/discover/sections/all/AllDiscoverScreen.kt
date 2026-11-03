@@ -123,7 +123,6 @@ internal fun AllDiscoverScreen(
     ShowContextSheet(
         show = contextShowSheet?.show,
         showRecommended = state.type == Recommended,
-        showWhyThis = contextShowSheet?.sources?.isNotEmpty() == true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
         onWhyThis = {
             whyThisItem = contextShowSheet
@@ -135,7 +134,6 @@ internal fun AllDiscoverScreen(
     MovieContextSheet(
         movie = contextMovieSheet?.movie,
         showRecommended = state.type == Recommended,
-        showWhyThis = contextMovieSheet?.sources?.isNotEmpty() == true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
         onWhyThis = {
             whyThisItem = contextMovieSheet

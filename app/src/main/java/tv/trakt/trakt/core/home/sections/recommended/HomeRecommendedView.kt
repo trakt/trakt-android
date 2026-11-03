@@ -140,7 +140,6 @@ internal fun HomeRecommendedView(
     ShowContextSheet(
         show = contextShowSheet?.show,
         showRecommended = true,
-        showWhyThis = contextShowSheet?.sources?.isNotEmpty() == true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
         onWhyThis = { whyThisItem = contextShowSheet },
         onDismiss = { contextShowSheet = null },
@@ -149,7 +148,6 @@ internal fun HomeRecommendedView(
     MovieContextSheet(
         movie = contextMovieSheet?.movie,
         showRecommended = true,
-        showWhyThis = contextMovieSheet?.sources?.isNotEmpty() == true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
         onWhyThis = { whyThisItem = contextMovieSheet },
         onDismiss = { contextMovieSheet = null },

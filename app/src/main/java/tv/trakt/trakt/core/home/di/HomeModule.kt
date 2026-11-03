@@ -33,6 +33,7 @@ import tv.trakt.trakt.core.home.sections.monthreview.usecases.MonthReviewBannerU
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedViewModel
 import tv.trakt.trakt.core.home.sections.recommended.data.media.RecommendedMediaLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
+import tv.trakt.trakt.core.home.sections.recommended.whythis.WhyThisViewModel
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.all.StreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.data.DefaultStreaksManager
@@ -98,6 +99,7 @@ internal val homeModule = module {
     viewModelOf(::UpNextItemContextViewModel)
     viewModelOf(::HomeStreaksViewModel)
     viewModelOf(::StreaksViewModel)
+    viewModelOf(::WhyThisViewModel)
 
     viewModel {
         HomeUpNextViewModel(

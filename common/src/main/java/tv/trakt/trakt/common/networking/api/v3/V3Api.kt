@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ParentalGuideResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationReasonsResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendedByResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
@@ -213,6 +214,14 @@ class V3Api(
         val response = client.get("${baseUrl}media/recommendations") {
             applyRecommendationsRequest(request)
         }
+        return response.body()
+    }
+
+    suspend fun getRecommendationReasons(
+        type: MediaType,
+        mediaId: TraktId,
+    ): V3RecommendationReasonsResponse {
+        val response = client.get("${baseV3Url}recommendations/${type.value}/${mediaId.value}/reasons")
         return response.body()
     }
 

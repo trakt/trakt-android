@@ -51,7 +51,6 @@ internal fun MovieContextView(
     modifier: Modifier = Modifier,
     showWatched: Boolean = true,
     showRecommended: Boolean = false,
-    showWhyThis: Boolean = false,
     onAddWatched: (Movie) -> Unit,
     onAddWatchlist: (Movie) -> Unit,
     onRemoveWatched: (Movie) -> Unit,
@@ -105,7 +104,6 @@ internal fun MovieContextView(
         state = state,
         showWatched = showWatched,
         showRecommended = showRecommended,
-        showWhyThis = showWhyThis,
         modifier = modifier,
         onWatchedClick = {
             when {
@@ -186,7 +184,6 @@ private fun MovieContextViewContent(
     state: MovieContextState,
     showWatched: Boolean,
     showRecommended: Boolean = false,
-    showWhyThis: Boolean = false,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
     onHideRecommendationClick: () -> Unit = {},
@@ -233,7 +230,6 @@ private fun MovieContextViewContent(
                 state = state,
                 showWatched = showWatched,
                 showRecommended = showRecommended,
-                showWhyThis = showWhyThis,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
                 onHideRecommendationClick = onHideRecommendationClick,
@@ -252,7 +248,6 @@ private fun MovieActionButtons(
     state: MovieContextState,
     showWatched: Boolean,
     showRecommended: Boolean,
-    showWhyThis: Boolean,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onHideRecommendationClick: () -> Unit,
@@ -271,7 +266,7 @@ private fun MovieActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier,
     ) {
-        if (showRecommended && showWhyThis) {
+        if (showRecommended) {
             GhostButton(
                 enabled = !isLoadingOrDone,
                 text = stringResource(R.string.button_text_view_recommendation_sources),
