@@ -78,6 +78,7 @@ internal val settingsModule = module {
         SeasonalThemeUseCase(
             dataStore = get(named(SETTINGS_PREFERENCES)),
             clearDiscoverCaches = get(),
+            analytics = get(),
         )
     }
 

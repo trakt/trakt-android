@@ -5,17 +5,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,6 +34,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Orange100
 import tv.trakt.trakt.common.ui.theme.colors.Orange300
 import tv.trakt.trakt.common.ui.theme.colors.Orange400
 import tv.trakt.trakt.common.ui.theme.colors.Orange700
+import tv.trakt.trakt.core.main.ui.seasonal.christmas.ChristmasSplash
 import tv.trakt.trakt.core.main.ui.seasonal.halloween.HalloweenEmbers
 import tv.trakt.trakt.core.main.ui.seasonal.halloween.HalloweenHero
 import tv.trakt.trakt.resources.R
@@ -94,6 +88,10 @@ private fun SeasonalSplashContent(
                 animate = animate,
                 onDismiss = onDismiss,
             )
+            SeasonalTheme.Christmas -> ChristmasSplash(
+                animate = animate,
+                onDismiss = onDismiss,
+            )
             null -> Unit
         }
     }
@@ -104,22 +102,11 @@ private fun HalloweenSplash(
     animate: Boolean,
     onDismiss: () -> Unit,
 ) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ScrimColor)
-            .background(
-                Brush.radialGradient(
-                    0F to Orange700.copy(alpha = 0.45F),
-                    0.6F to Color.Transparent,
-                ),
-            )
-            .clickable(
-                onClick = {},
-                indication = null,
-                interactionSource = null,
-            ),
+    SplashFrame(
+        scrimColor = ScrimColor,
+        glowColor = Orange700,
+        animate = animate,
+        onDismiss = onDismiss,
     ) {
         if (animate) {
             HalloweenEmbers(modifier = Modifier.fillMaxSize())
@@ -133,76 +120,36 @@ private fun HalloweenSplash(
                 .padding(top = 48.dp, bottom = 96.dp),
         ) {
             HalloweenHero(animate = animate)
-            GreetingCopy(animate = animate)
+            SplashGreeting(
+                animate = animate,
+                text = stringResource(R.string.text_seasonal_greeting_halloween),
+                signoffColor = Orange300,
+            ) { intro ->
+                HalloweenTitle(intro = intro)
+            }
         }
-
-        SplashCloseButton(
-            autoDismiss = animate,
-            onClick = onDismiss,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .padding(bottom = 48.dp),
-        )
     }
 }
 
 @Composable
-private fun GreetingCopy(animate: Boolean) {
-    val titleIntro = rememberSplashIntro(
-        animate = animate,
-        delayMillis = 900,
-        durationMillis = 800,
-        easing = SplashEaseOutQuint,
+private fun HalloweenTitle(intro: () -> Float) {
+    Text(
+        text = stringResource(R.string.header_seasonal_greeting_halloween),
+        style = TraktTheme.typography.heading1.copy(
+            fontSize = 40.sp,
+            lineHeight = 42.sp,
+            fontWeight = FontWeight.W900,
+            brush = Brush.linearGradient(listOf(Orange400, Orange100, Orange400)),
+        ),
+        textAlign = TextAlign.Center,
+        modifier = Modifier.graphicsLayer {
+            val progress = intro()
+            val scale = lerp(0.8F, 1F, progress)
+            alpha = progress
+            scaleX = scale
+            scaleY = scale
+        },
     )
-    val textIntro = rememberSplashIntro(animate = animate, delayMillis = 1_200, durationMillis = 600)
-    val signoffIntro = rememberSplashIntro(animate = animate, delayMillis = 1_400, durationMillis = 600)
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-        modifier = Modifier.widthIn(max = 320.dp),
-    ) {
-        Text(
-            text = stringResource(R.string.header_seasonal_greeting_halloween),
-            style = TraktTheme.typography.heading1.copy(
-                fontSize = 40.sp,
-                lineHeight = 42.sp,
-                fontWeight = FontWeight.W900,
-                brush = Brush.linearGradient(listOf(Orange400, Orange100, Orange400)),
-            ),
-            textAlign = TextAlign.Center,
-            modifier = Modifier.graphicsLayer {
-                val scale = lerp(0.8F, 1F, titleIntro.value)
-                alpha = titleIntro.value
-                scaleX = scale
-                scaleY = scale
-            },
-        )
-        Text(
-            text = stringResource(R.string.text_seasonal_greeting_halloween),
-            style = TraktTheme.typography.paragraphSmall,
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .riseIn(textIntro.value),
-        )
-        Text(
-            text = stringResource(R.string.text_seasonal_greeting_signoff).uppercase(),
-            style = TraktTheme.typography.meta.copy(letterSpacing = 2.sp),
-            color = Orange300,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.riseIn(signoffIntro.value),
-        )
-    }
-}
-
-private fun Modifier.riseIn(progress: Float): Modifier {
-    return graphicsLayer {
-        alpha = progress
-        translationY = (1F - progress) * 12.dp.toPx()
-    }
 }
 
 @Preview(device = "id:pixel_5")
@@ -222,6 +169,28 @@ private fun PreviewLight() {
     TraktTheme(colors = LightColors) {
         SeasonalSplashContent(
             season = SeasonalTheme.Halloween,
+            animate = false,
+        )
+    }
+}
+
+@Preview(device = "id:pixel_5")
+@Composable
+private fun ChristmasPreview() {
+    TraktTheme {
+        SeasonalSplashContent(
+            season = SeasonalTheme.Christmas,
+            animate = false,
+        )
+    }
+}
+
+@Preview(device = "id:pixel_5")
+@Composable
+private fun ChristmasPreviewLight() {
+    TraktTheme(colors = LightColors) {
+        SeasonalSplashContent(
+            season = SeasonalTheme.Christmas,
             animate = false,
         )
     }

@@ -10,15 +10,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.SEASONAL_THEME
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.ui.theme.model.SeasonalTheme
+import java.time.Year
 
 internal class SeasonalThemeUseCase(
     private val dataStore: DataStore<Preferences>,
     private val clearDiscoverCaches: ClearSeasonalDiscoverCachesUseCase,
+    private val analytics: Analytics,
 ) {
     private val remoteConfig = Firebase.remoteConfig
 
     fun currentSeason(): SeasonalTheme? {
+        return SeasonalTheme.Christmas
         return SeasonalTheme.fromRemoteValue(
             remoteConfig.getString(SEASONAL_THEME),
         )
@@ -27,7 +31,7 @@ internal class SeasonalThemeUseCase(
     fun observeActive(): Flow<SeasonalTheme?> {
         return dataStore.data.map { prefs ->
             val season = currentSeason() ?: return@map null
-            val enabled = prefs[enabledKey(season)] ?: false
+            val enabled = prefs[enabledKey(season)] ?: true
             season.takeIf { enabled }
         }
     }
@@ -35,13 +39,14 @@ internal class SeasonalThemeUseCase(
     fun observePendingSplash(): Flow<SeasonalTheme?> {
         return dataStore.data.map { prefs ->
             val season = currentSeason() ?: return@map null
-            val enabled = prefs[enabledKey(season)] ?: false
+            val enabled = prefs[enabledKey(season)] ?: true
             val shown = prefs[splashShownKey(season)] ?: false
             season.takeIf { enabled && !shown }
         }
     }
 
     suspend fun markSplashShown(season: SeasonalTheme) {
+        clearDiscoverCaches.clear()
         dataStore.edit { prefs ->
             prefs[splashShownKey(season)] = true
         }
@@ -61,13 +66,14 @@ internal class SeasonalThemeUseCase(
         dataStore.edit { prefs ->
             prefs[enabledKey(season)] = enabled
         }
+        analytics.logSeasonalFilter(id = season.remoteValue, enabled = enabled)
     }
 
     private fun splashShownKey(season: SeasonalTheme): Preferences.Key<Boolean> {
-        return booleanPreferencesKey("key_seasonal_splash_shown_${season.remoteValue}_2026")
+        return booleanPreferencesKey("key_seasonal_splash_shown_${season.remoteValue}_${Year.now().value}")
     }
 
     private fun enabledKey(season: SeasonalTheme): Preferences.Key<Boolean> {
-        return booleanPreferencesKey("key_seasonal_theme_enabled_${season.remoteValue}_2026")
+        return booleanPreferencesKey("key_seasonal_theme_enabled_${season.remoteValue}_${Year.now().value}")
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -37,7 +38,10 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.summary.helpers.Lightsaber
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.seasonal.SeasonalActionBarDecor
+import tv.trakt.trakt.ui.theme.LocalSeasonalTheme
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 
 @Composable
 internal fun DetailsActions(
@@ -77,143 +81,148 @@ internal fun DetailsActions(
             )
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(
-                    elevation = TraktTheme.colors.shadowLarge,
-                    shape = shape,
-                    ambientColor = shadowColor,
-                    spotColor = shadowColor,
-                )
-                .background(
-                    color = if (isLight) Shade10 else Shade900,
-                    shape = shape,
-                )
-                .padding(
-                    top = 8.dp,
-                    bottom = 8.dp,
-                    start = 8.5.dp,
-                    end = when {
-                        secondaryVisible -> 20.dp
-                        else -> 32.dp
-                    },
-                ),
+        SeasonalActionBarDecor(
+            shape = shape,
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(
+                        elevation = TraktTheme.colors.shadowLarge,
+                        shape = shape,
+                        ambientColor = shadowColor,
+                        spotColor = shadowColor,
+                    )
+                    .background(
+                        color = if (isLight) Shade10 else Shade900,
+                        shape = shape,
+                    )
+                    .padding(
+                        top = 8.dp,
+                        bottom = 8.dp,
+                        start = 8.5.dp,
+                        end = when {
+                            secondaryVisible -> 20.dp
+                            else -> 32.dp
+                        },
+                    ),
             ) {
-                Button(
-                    modifier = Modifier
-                        .weight(1F)
-                        .height(40.dp),
-                    contentPadding = PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                    ),
-                    shape = shape,
-                    colors = buttonColors(
-                        containerColor = when (watched) {
-                            true -> TraktTheme.colors.primaryButtonContainer
-                            else -> Color.Transparent
-                        },
-                        contentColor = when (watched) {
-                            true -> TraktTheme.colors.primaryButtonContainer
-                            else -> TraktTheme.colors.accent
-                        },
-                        disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
-                        disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
-                    ),
-                    border = when (watched) {
-                        true -> null
-                        else -> when (enabled && primaryEnabled) {
-                            true -> BorderStroke(
-                                width = 1.5.dp,
-                                color = TraktTheme.colors.primaryButtonContainer,
-                            )
-                            else -> null
-                        }
-                    },
-                    enabled = enabled && primaryEnabled,
-                    onClick = onPrimaryClick ?: {},
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (!loading) {
+                    Button(
+                        modifier = Modifier
+                            .weight(1F)
+                            .height(40.dp),
+                        contentPadding = PaddingValues(
+                            start = 16.dp,
+                            end = 16.dp,
+                        ),
+                        shape = shape,
+                        colors = buttonColors(
+                            containerColor = when (watched) {
+                                true -> TraktTheme.colors.primaryButtonContainer
+                                else -> Color.Transparent
+                            },
+                            contentColor = when (watched) {
+                                true -> TraktTheme.colors.primaryButtonContainer
+                                else -> TraktTheme.colors.accent
+                            },
+                            disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
+                            disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
+                        ),
+                        border = when (watched) {
+                            true -> null
+                            else -> when (enabled && primaryEnabled) {
+                                true -> BorderStroke(
+                                    width = 1.5.dp,
+                                    color = TraktTheme.colors.primaryButtonContainer,
+                                )
+                                else -> null
+                            }
+                        },
+                        enabled = enabled && primaryEnabled,
+                        onClick = onPrimaryClick ?: {},
+                    ) {
+                        if (!loading) {
+                            Icon(
+                                painter = painterResource(primaryIcon),
+                                tint = when {
+                                    enabled && primaryEnabled -> when (watched) {
+                                        true -> TraktTheme.colors.textPrimaryOnAccent
+                                        false -> TraktTheme.colors.textPrimary
+                                    }
+                                    else -> Shade400
+                                },
+                                contentDescription = null,
+                                modifier = Modifier.size(23.dp),
+                            )
+                        } else {
+                            FilmProgressIndicator(
+                                size = 20.dp,
+                                color = Shade400,
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.width(32.dp))
+
+                    if (secondaryVisible) {
                         Icon(
-                            painter = painterResource(primaryIcon),
+                            painter = when {
+                                watchlist == true -> painterResource(R.drawable.ic_bookmark_on)
+                                else -> painterResource(R.drawable.ic_bookmark_off)
+                            },
                             tint = when {
-                                enabled && primaryEnabled -> when (watched) {
-                                    true -> TraktTheme.colors.textPrimaryOnAccent
-                                    false -> TraktTheme.colors.textPrimary
-                                }
-                                else -> Shade400
+                                enabled -> TraktTheme.colors.textPrimary
+                                else -> TraktTheme.colors.primaryButtonContainerDisabled
                             },
                             contentDescription = null,
-                            modifier = Modifier.size(23.dp),
+                            modifier = Modifier
+                                .onClickCombined(
+                                    onClick = onSecondaryClick,
+                                    onLongClick = onSecondaryLongClick,
+                                )
+                                .size(24.dp),
                         )
-                    } else {
-                        FilmProgressIndicator(
-                            size = 20.dp,
-                            color = Shade400,
+
+                        Spacer(modifier = Modifier.width(32.dp))
+
+                        Icon(
+                            painter = painterResource(R.drawable.ic_trailer),
+                            tint = when {
+                                enabled && trailer -> TraktTheme.colors.textPrimary
+                                else -> TraktTheme.colors.primaryButtonContainerDisabled
+                            },
+                            contentDescription = null,
+                            modifier = Modifier
+                                .onClick(
+                                    enabled = enabled && trailer,
+                                    onClick = onTrailerClick ?: {},
+                                )
+                                .size(21.dp),
                         )
+
+                        Spacer(modifier = Modifier.width(32.dp))
                     }
-                }
 
-                Spacer(modifier = Modifier.width(32.dp))
-
-                if (secondaryVisible) {
                     Icon(
-                        painter = when {
-                            watchlist == true -> painterResource(R.drawable.ic_bookmark_on)
-                            else -> painterResource(R.drawable.ic_bookmark_off)
-                        },
+                        painter = painterResource(R.drawable.ic_more_vertical),
                         tint = when {
                             enabled -> TraktTheme.colors.textPrimary
                             else -> TraktTheme.colors.primaryButtonContainerDisabled
                         },
                         contentDescription = null,
                         modifier = Modifier
-                            .onClickCombined(
-                                onClick = onSecondaryClick,
-                                onLongClick = onSecondaryLongClick,
-                            )
-                            .size(24.dp),
-                    )
-
-                    Spacer(modifier = Modifier.width(32.dp))
-
-                    Icon(
-                        painter = painterResource(R.drawable.ic_trailer),
-                        tint = when {
-                            enabled && trailer -> TraktTheme.colors.textPrimary
-                            else -> TraktTheme.colors.primaryButtonContainerDisabled
-                        },
-                        contentDescription = null,
-                        modifier = Modifier
                             .onClick(
-                                enabled = enabled && trailer,
-                                onClick = onTrailerClick ?: {},
+                                enabled = enabled,
+                                onClick = onMoreClick ?: {},
                             )
+                            .rotate(90F)
                             .size(21.dp),
                     )
-
-                    Spacer(modifier = Modifier.width(32.dp))
                 }
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_more_vertical),
-                    tint = when {
-                        enabled -> TraktTheme.colors.textPrimary
-                        else -> TraktTheme.colors.primaryButtonContainerDisabled
-                    },
-                    contentDescription = null,
-                    modifier = Modifier
-                        .onClick(
-                            enabled = enabled,
-                            onClick = onMoreClick ?: {},
-                        )
-                        .rotate(90F)
-                        .size(21.dp),
-                )
             }
         }
     }
@@ -250,36 +259,43 @@ private fun Preview() {
     }
 }
 
-@Preview(
-    showBackground = true,
-    widthDp = 400,
-    locale = "ar",
-)
+@Preview(widthDp = 400)
 @Composable
-private fun PreviewRtl() {
-    TraktTheme {
-        Column(
-            verticalArrangement = spacedBy(16.dp),
-            modifier = Modifier.padding(16.dp),
-        ) {
-            DetailsActions(
-                watched = true,
-            )
+private fun SeasonalPreview() {
+    SeasonalPreviewContent()
+}
 
-            DetailsActions(
-                watched = false,
-                watchlist = true,
-            )
+@Preview(widthDp = 400, locale = "ar")
+@Composable
+private fun SeasonalPreviewRtl() {
+    SeasonalPreviewContent()
+}
 
-            DetailsActions(
-                enabled = false,
-                secondaryVisible = false,
-            )
+@Composable
+private fun SeasonalPreviewContent() {
+    Column(
+        verticalArrangement = spacedBy(16.dp),
+    ) {
+        SeasonalTheme.entries.forEach { season ->
+            TraktTheme(colors = season.darkColors) {
+                CompositionLocalProvider(LocalSeasonalTheme provides season) {
+                    Column(
+                        verticalArrangement = spacedBy(40.dp),
+                        modifier = Modifier
+                            .background(TraktTheme.colors.backgroundPrimary)
+                            .padding(horizontal = 16.dp, vertical = 32.dp),
+                    ) {
+                        DetailsActions(
+                            watched = true,
+                        )
 
-            DetailsActions(
-                enabled = false,
-                loading = true,
-            )
+                        DetailsActions(
+                            watched = false,
+                            watchlist = true,
+                        )
+                    }
+                }
+            }
         }
     }
 }

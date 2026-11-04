@@ -165,6 +165,13 @@ internal class DebugAnalytics(
     ) {
         Timber.d("logBannerDismiss: id=%s, value=%s", id, value)
     }
+
+    override fun logSeasonalFilter(
+        id: String,
+        enabled: Boolean,
+    ) {
+        Timber.d("logSeasonalFilter: id=%s, enabled=%s", id, enabled)
+    }
 }
 
 internal class DebugAnalyticsReactions : Analytics.Reactions {

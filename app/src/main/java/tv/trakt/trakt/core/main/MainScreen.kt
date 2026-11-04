@@ -116,6 +116,7 @@ import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.seasonal.SeasonalDecor
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.WithoutSeasonalTheme
@@ -277,6 +278,8 @@ internal fun MainScreen(
             onDismissCheckIn = viewModel::dismissCheckIn,
         )
     }
+
+    SeasonalDecor()
 
     SeasonalSplashView(
         enabled = state.user != null && !state.welcome.isActive && !yearInReviewVisible,

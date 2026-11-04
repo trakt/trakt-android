@@ -220,6 +220,16 @@ interface Analytics {
     )
 
     /**
+     * Logs toggling the seasonal theme and its discover filters.
+     * @param id The seasonal theme id (halloween, christmas).
+     * @param enabled Whether the seasonal theme is now on.
+     */
+    fun logSeasonalFilter(
+        id: String,
+        enabled: Boolean,
+    )
+
+    /**
      * Logs toggling the lightsaber easter egg on movie or show details.
      * @param ignited Whether the lightsaber is now on.
      * @param mediaType The details media type (movie, show).

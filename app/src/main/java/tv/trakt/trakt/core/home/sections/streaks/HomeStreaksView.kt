@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,7 +42,6 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -288,9 +288,18 @@ private fun Preview() {
 
 @DevicePreview
 @Composable
-private fun HalloweenPreview() {
-    TraktTheme(colors = HalloweenDarkColors) {
-        CompositionLocalProvider(LocalSeasonalTheme provides SeasonalTheme.Halloween) {
+private fun SeasonalPreview() {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        SeasonalTheme.entries.forEach { season ->
+            SeasonalStreaksPreview(season)
+        }
+    }
+}
+
+@Composable
+private fun SeasonalStreaksPreview(season: SeasonalTheme) {
+    TraktTheme(colors = season.darkColors) {
+        CompositionLocalProvider(LocalSeasonalTheme provides season) {
             HomeStreaksContent(
                 data = MonthlyStreakData(
                     activity = persistentMapOf(),

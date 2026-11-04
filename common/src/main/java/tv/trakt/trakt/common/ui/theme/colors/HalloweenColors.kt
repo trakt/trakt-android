@@ -1,6 +1,11 @@
 package tv.trakt.trakt.common.ui.theme.colors
 
+import androidx.compose.ui.graphics.Color
+
+private val HalloweenBackground = Color(0xFF1A1416)
+
 val HalloweenDarkColors: TraktColors = DarkColors.copy(
+    backgroundPrimary = HalloweenBackground,
     accent = Orange500,
     accentPalette = OrangePalette,
     vipAccent = Orange500,

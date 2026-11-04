@@ -31,6 +31,7 @@ android {
     sourceSets {
         getByName("main") {
             res.directories.add("src/main/res-halloween")
+            res.directories.add("src/main/res-christmas")
         }
     }
 

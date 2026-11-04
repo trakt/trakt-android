@@ -166,6 +166,13 @@ internal class CompositeAnalytics(
     ) {
         targets.forEach { it.logBannerDismiss(id, value) }
     }
+
+    override fun logSeasonalFilter(
+        id: String,
+        enabled: Boolean,
+    ) {
+        targets.forEach { it.logSeasonalFilter(id, enabled) }
+    }
 }
 
 private class CompositeReactions(

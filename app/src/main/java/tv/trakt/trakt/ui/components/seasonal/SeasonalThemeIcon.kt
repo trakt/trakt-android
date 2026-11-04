@@ -1,6 +1,7 @@
 package tv.trakt.trakt.ui.components.seasonal
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -45,18 +46,22 @@ internal fun SeasonalThemeIcon(
 @Composable
 private fun SeasonalThemeIconPreview() {
     TraktTheme {
-        Row(modifier = Modifier.padding(16.dp)) {
-            SeasonalThemeIcon(
-                season = SeasonalTheme.Halloween,
-                enabled = true,
-                onClick = {},
-            )
-            SeasonalThemeIcon(
-                season = SeasonalTheme.Halloween,
-                enabled = false,
-                onClick = {},
-                modifier = Modifier.padding(start = 16.dp),
-            )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp),
+        ) {
+            SeasonalTheme.entries.forEach { season ->
+                SeasonalThemeIcon(
+                    season = season,
+                    enabled = true,
+                    onClick = {},
+                )
+                SeasonalThemeIcon(
+                    season = season,
+                    enabled = false,
+                    onClick = {},
+                )
+            }
         }
     }
 }

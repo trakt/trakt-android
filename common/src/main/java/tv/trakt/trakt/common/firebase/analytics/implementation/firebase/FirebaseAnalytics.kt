@@ -98,6 +98,7 @@ internal class FirebaseAnalytics(
         const val LINK_OPEN = "link_open"
         const val BANNER_DISMISS = "banner_dismiss"
         const val EASTER_EGG_LIGHTSABER = "easter_egg_lightsaber"
+        const val SEASONAL_FILTER = "seasonal_filter"
     }
 
     init {
@@ -125,6 +126,7 @@ internal class FirebaseAnalytics(
             LINK_OPEN,
             BANNER_DISMISS,
             EASTER_EGG_LIGHTSABER,
+            SEASONAL_FILTER,
         )
     }
 
@@ -395,6 +397,19 @@ internal class FirebaseAnalytics(
             bundleOf(
                 PARAMETER_ID to id,
                 PARAMETER_VALUE to value,
+            ),
+        )
+    }
+
+    override fun logSeasonalFilter(
+        id: String,
+        enabled: Boolean,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(SEASONAL_FILTER),
+            bundleOf(
+                PARAMETER_ID to id,
+                PARAMETER_STATE to if (enabled) "enabled" else "disabled",
             ),
         )
     }

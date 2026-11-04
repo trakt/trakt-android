@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.D
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SERVICE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SETTINGS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SOURCE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_STATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TARGET
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_THEME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TYPE
@@ -35,6 +36,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REPORT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REPORT_OPEN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SEARCH
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SEASONAL_FILTER
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SETTINGS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE_ARRIVAL
@@ -241,5 +243,18 @@ internal class HalAnalytics(
         value: String,
     ) {
         events.track(EVENT_BANNER_DISMISS, dims = mapOf(DIM_ID to id, DIM_VALUE to value))
+    }
+
+    override fun logSeasonalFilter(
+        id: String,
+        enabled: Boolean,
+    ) {
+        events.track(
+            EVENT_SEASONAL_FILTER,
+            dims = mapOf(
+                DIM_ID to id,
+                DIM_STATE to if (enabled) "enabled" else "disabled",
+            ),
+        )
     }
 }

@@ -1,6 +1,8 @@
 package tv.trakt.trakt.ui.theme.model
 
 import androidx.annotation.DrawableRes
+import tv.trakt.trakt.common.ui.theme.colors.ChristmasDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.ChristmasLightColors
 import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.HalloweenLightColors
 import tv.trakt.trakt.common.ui.theme.colors.TraktColors
@@ -21,6 +23,14 @@ internal enum class SeasonalTheme(
         streakFlameLarge = R.drawable.ic_flame_3_halloween,
         darkColors = HalloweenDarkColors,
         lightColors = HalloweenLightColors,
+    ),
+    Christmas(
+        remoteValue = "christmas",
+        icon = R.drawable.ic_christmas_tree,
+        streakFlameMedium = R.drawable.ic_flame_2_christmas,
+        streakFlameLarge = R.drawable.ic_flame_3_christmas,
+        darkColors = ChristmasDarkColors,
+        lightColors = ChristmasLightColors,
     ),
     ;
 
