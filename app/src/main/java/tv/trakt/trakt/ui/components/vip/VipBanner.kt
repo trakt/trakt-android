@@ -36,7 +36,10 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun VipBanner(
     modifier: Modifier = Modifier,
+    title: String = stringResource(R.string.text_vip_upsell_default_2).uppercase(),
+    description: String = stringResource(R.string.text_vip_features_tagline),
     containerColor: Color = Shade920,
+    containerShape: RoundedCornerShape = DefaultCardShape,
     onClick: () -> Unit = {},
 ) {
     val gradientAccent = TraktTheme.colors.accentPalette.shade600
@@ -59,8 +62,8 @@ internal fun VipBanner(
         modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .shadow(2.dp, DefaultCardShape)
-            .clip(DefaultCardShape)
+            .shadow(2.dp, containerShape)
+            .clip(containerShape)
             .background(containerColor)
             .background(radialGradient)
             .onClick(onClick = onClick),
@@ -73,13 +76,13 @@ internal fun VipBanner(
             verticalArrangement = spacedBy(2.dp),
         ) {
             Text(
-                text = stringResource(R.string.text_vip_upsell_default_2).uppercase(),
+                text = title,
                 style = TraktTheme.typography.heading5,
                 color = TraktTheme.colors.textPrimaryOnAccent,
             )
 
             Text(
-                text = stringResource(R.string.text_vip_features_tagline),
+                text = description,
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     lineHeight = 1.4.em,
                 ),

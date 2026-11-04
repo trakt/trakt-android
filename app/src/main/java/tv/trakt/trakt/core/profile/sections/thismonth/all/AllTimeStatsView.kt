@@ -36,7 +36,7 @@ import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Month
 import kotlin.math.roundToInt
@@ -105,10 +105,13 @@ internal fun AllTimeStatsView(
         }
 
         if (!isVip) {
-            Text(
-                text = stringResource(R.string.text_vip_upsell_more_stats),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmall,
+            VipBanner(
+                containerShape = TileShape,
+                title = stringResource(R.string.text_vip_upsell_dive_deeper),
+                description = stringResource(R.string.text_vip_upsell_more_stats),
+                onClick = onVipClick,
+                modifier = Modifier
+                    .padding(top = 4.dp),
             )
         }
 
@@ -139,7 +142,7 @@ internal fun AllTimeStatsView(
 private fun StatTileView(
     tile: StatTile,
     modifier: Modifier = Modifier,
-    locked: Boolean = true,
+    locked: Boolean,
     onVipClick: () -> Unit = {},
 ) {
     Column(
@@ -158,10 +161,13 @@ private fun StatTileView(
         )
 
         if (tile.value == null && locked) {
-            VipChip(
-                onClick = onVipClick,
+            Icon(
+                painter = painterResource(R.drawable.ic_private_eye),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .padding(top = 4.dp),
+                    .size(20.dp)
+                    .onClick(onClick = onVipClick),
             )
         } else {
             Text(
@@ -291,6 +297,7 @@ private fun PreviewFree() {
                 allShowsCount = 87,
                 allEpisodesCount = 2310,
                 allPlaysCount = 2601,
+                playsCount = 2601,
             ),
         )
     }
