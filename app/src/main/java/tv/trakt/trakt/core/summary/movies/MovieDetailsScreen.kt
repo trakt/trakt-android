@@ -205,6 +205,7 @@ internal fun MovieDetailsScreen(
                 onTrailerClick(url)
             }
         },
+        onLightsaberToggle = viewModel::logLightsaber,
         onExtraClick = { extra ->
             viewModel.logExtra(extra)
             onExtraClick(extra)
@@ -435,6 +436,7 @@ internal fun MovieDetailsContent(
     onInfoClick: (() -> Unit)? = null,
     onWatchedClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
+    onLightsaberToggle: ((Boolean) -> Unit)? = null,
     onExtraClick: ((ExtraVideo) -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
@@ -559,6 +561,7 @@ internal fun MovieDetailsContent(
                         trailer = !movie.trailer.isNullOrBlank(),
                         lightsaber = state.lightsaber,
                         onTrailerClick = onTrailerClick,
+                        onLightsaberToggle = onLightsaberToggle,
                         onPrimaryClick = onTrackClick,
                         onSecondaryClick = onWatchlistClick,
                         onSecondaryLongClick = onListsClick,

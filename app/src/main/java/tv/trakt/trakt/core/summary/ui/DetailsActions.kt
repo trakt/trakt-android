@@ -55,6 +55,7 @@ internal fun DetailsActions(
     onSecondaryClick: (() -> Unit)? = null,
     onSecondaryLongClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
+    onLightsaberToggle: ((Boolean) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
     val isLight = TraktTheme.colors.isLight
@@ -71,6 +72,7 @@ internal fun DetailsActions(
     ) {
         if (lightsaber) {
             Lightsaber(
+                onToggle = onLightsaberToggle,
                 modifier = Modifier.padding(horizontal = 18.dp),
             )
         }

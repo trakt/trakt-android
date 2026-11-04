@@ -77,7 +77,10 @@ internal fun hasLightsaber(title: String): Boolean {
 }
 
 @Composable
-internal fun Lightsaber(modifier: Modifier = Modifier) {
+internal fun Lightsaber(
+    modifier: Modifier = Modifier,
+    onToggle: ((Boolean) -> Unit)? = null,
+) {
     val accent = TraktTheme.colors.accentPalette.shade600
     val beamShape = RoundedCornerShape(
         topStart = 0.dp,
@@ -128,6 +131,7 @@ internal fun Lightsaber(modifier: Modifier = Modifier) {
             .onClick(throttle = false) {
                 ignited = !ignited
                 haptic.performHapticFeedback(if (ignited) ToggleOn else ToggleOff)
+                onToggle?.invoke(ignited)
             },
     ) {
         Image(

@@ -219,6 +219,16 @@ interface Analytics {
         value: String,
     )
 
+    /**
+     * Logs toggling the lightsaber easter egg on movie or show details.
+     * @param ignited Whether the lightsaber is now on.
+     * @param mediaType The details media type (movie, show).
+     */
+    fun logLightsaber(
+        ignited: Boolean,
+        mediaType: String,
+    )
+
     enum class CommentContent {
         Text,
         Gif,

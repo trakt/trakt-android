@@ -126,6 +126,13 @@ internal class DebugAnalytics(
         Timber.d("logMuteSharer")
     }
 
+    override fun logLightsaber(
+        ignited: Boolean,
+        mediaType: String,
+    ) {
+        Timber.d("logLightsaber: ignited=%s, mediaType=%s", ignited, mediaType)
+    }
+
     override fun logReportOpen(type: String) {
         Timber.d("logReportOpen: type=%s", type)
     }

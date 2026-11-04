@@ -97,6 +97,7 @@ internal class FirebaseAnalytics(
         const val STATS_DRILLDOWN = "stats_drilldown"
         const val LINK_OPEN = "link_open"
         const val BANNER_DISMISS = "banner_dismiss"
+        const val EASTER_EGG_LIGHTSABER = "easter_egg_lightsaber"
     }
 
     init {
@@ -123,6 +124,7 @@ internal class FirebaseAnalytics(
             STATS_DRILLDOWN,
             LINK_OPEN,
             BANNER_DISMISS,
+            EASTER_EGG_LIGHTSABER,
         )
     }
 
@@ -312,6 +314,19 @@ internal class FirebaseAnalytics(
             bundleOf(
                 PARAMETER_ACTION to action,
                 PARAMETER_SERVICE to service,
+            ),
+        )
+    }
+
+    override fun logLightsaber(
+        ignited: Boolean,
+        mediaType: String,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(EASTER_EGG_LIGHTSABER),
+            bundleOf(
+                PARAMETER_STATE to if (ignited) "on" else "off",
+                PARAMETER_MEDIA_TYPE to mediaType,
             ),
         )
     }

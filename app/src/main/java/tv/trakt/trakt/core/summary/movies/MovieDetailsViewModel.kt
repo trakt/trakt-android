@@ -934,6 +934,10 @@ internal class MovieDetailsViewModel(
         analytics.playback.logTrailer(movie.ids.slug.value)
     }
 
+    fun logLightsaber(ignited: Boolean) {
+        analytics.logLightsaber(ignited = ignited, mediaType = "movie")
+    }
+
     fun logExtra(extra: ExtraVideo) {
         val movie = movieState.value ?: return
         analytics.playback.logExtras(slug = movie.ids.slug.value, type = extra.type)

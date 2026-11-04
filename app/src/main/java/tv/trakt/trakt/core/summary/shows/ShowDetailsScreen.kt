@@ -221,6 +221,7 @@ internal fun ShowDetailsScreen(
                 onTrailerClick(url)
             }
         },
+        onLightsaberToggle = viewModel::logLightsaber,
         onExtraClick = { extra ->
             viewModel.logExtra(extra)
             onExtraClick(extra)
@@ -509,6 +510,7 @@ internal fun ShowDetailsContent(
     onInfoClick: (() -> Unit)? = null,
     onWatchedClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
+    onLightsaberToggle: ((Boolean) -> Unit)? = null,
     onExtraClick: ((ExtraVideo) -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
@@ -640,6 +642,7 @@ internal fun ShowDetailsContent(
                         onSecondaryClick = onWatchlistClick,
                         onSecondaryLongClick = onListsClick,
                         onTrailerClick = onTrailerClick,
+                        onLightsaberToggle = onLightsaberToggle,
                         onMoreClick = onMoreClick,
                         modifier = Modifier
                             .alpha(

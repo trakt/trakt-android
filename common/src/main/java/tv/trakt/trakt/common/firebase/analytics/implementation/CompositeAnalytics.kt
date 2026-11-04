@@ -127,6 +127,13 @@ internal class CompositeAnalytics(
         targets.forEach { it.logMuteSharer() }
     }
 
+    override fun logLightsaber(
+        ignited: Boolean,
+        mediaType: String,
+    ) {
+        targets.forEach { it.logLightsaber(ignited, mediaType) }
+    }
+
     override fun logReportOpen(type: String) {
         targets.forEach { it.logReportOpen(type) }
     }

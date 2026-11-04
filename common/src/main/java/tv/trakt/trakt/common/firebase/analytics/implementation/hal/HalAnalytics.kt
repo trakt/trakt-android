@@ -198,6 +198,11 @@ internal class HalAnalytics(
         events.track(EVENT_MUTE_SHARER)
     }
 
+    override fun logLightsaber(
+        ignited: Boolean,
+        mediaType: String,
+    ) = Unit
+
     override fun logReportOpen(type: String) {
         events.track(EVENT_REPORT_OPEN, dims = mapOf(DIM_TYPE to type))
     }
