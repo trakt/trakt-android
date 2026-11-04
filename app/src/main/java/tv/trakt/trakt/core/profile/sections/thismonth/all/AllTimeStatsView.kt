@@ -230,11 +230,11 @@ private fun ProfileStats.toSections(): List<StatSection> {
         StatSection(
             titleRes = R.string.header_stats_watched,
             tiles = listOf(
+                StatTile(R.string.label_stats_episodes, allTime?.episodesWatched ?: allEpisodesCount),
+                StatTile(R.string.label_stats_shows, allTime?.showsWatched ?: allShowsCount),
+                StatTile(R.string.label_stats_movies, allTime?.moviesWatched ?: allMoviesCount),
                 StatTile(R.string.label_stats_plays, allTime?.totalPlays),
                 StatTile(R.string.label_stats_hours, allTime?.let { (it.totalMinutes / 60.0).roundToInt() }),
-                StatTile(R.string.label_stats_movies, allTime?.moviesWatched ?: allMoviesCount),
-                StatTile(R.string.label_stats_shows, allTime?.showsWatched ?: allShowsCount),
-                StatTile(R.string.label_stats_episodes, allTime?.episodesWatched ?: allEpisodesCount),
             ),
         ),
         StatSection(
