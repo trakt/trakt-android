@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.SEASONAL_THEME
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.ui.theme.model.SeasonalTheme
-import java.time.Year
+import java.time.LocalDate
 
 internal class SeasonalThemeUseCase(
     private val dataStore: DataStore<Preferences>,
@@ -22,7 +22,6 @@ internal class SeasonalThemeUseCase(
     private val remoteConfig = Firebase.remoteConfig
 
     fun currentSeason(): SeasonalTheme? {
-        return SeasonalTheme.Christmas
         return SeasonalTheme.fromRemoteValue(
             remoteConfig.getString(SEASONAL_THEME),
         )
@@ -70,10 +69,18 @@ internal class SeasonalThemeUseCase(
     }
 
     private fun splashShownKey(season: SeasonalTheme): Preferences.Key<Boolean> {
-        return booleanPreferencesKey("key_seasonal_splash_shown_${season.remoteValue}_${Year.now().value}")
+        return seasonKey(prefix = "key_seasonal_splash_shown", season = season)
     }
 
     private fun enabledKey(season: SeasonalTheme): Preferences.Key<Boolean> {
-        return booleanPreferencesKey("key_seasonal_theme_enabled_${season.remoteValue}_${Year.now().value}")
+        return seasonKey(prefix = "key_seasonal_theme_enabled", season = season)
+    }
+
+    private fun seasonKey(
+        prefix: String,
+        season: SeasonalTheme,
+    ): Preferences.Key<Boolean> {
+        val year = season.seasonYear(LocalDate.now())
+        return booleanPreferencesKey("${prefix}_${season.remoteValue}_$year")
     }
 }

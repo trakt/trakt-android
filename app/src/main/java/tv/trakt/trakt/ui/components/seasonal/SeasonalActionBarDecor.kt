@@ -35,6 +35,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 
 private const val SANTA_HAT_TILT = 15F
+private const val PARTY_HAT_TILT = 18F
 
 private val MascotSize = 40.dp
 private val FrostHeight = 4.dp
@@ -67,8 +68,10 @@ internal fun SeasonalActionBarDecor(
 
         content()
 
-        if (season == SeasonalTheme.Christmas) {
-            ChristmasDecor(shape = shape)
+        when (season) {
+            SeasonalTheme.Christmas -> ChristmasDecor(shape = shape)
+            SeasonalTheme.NewYear -> PartyHat()
+            SeasonalTheme.Halloween, null -> Unit
         }
     }
 }
@@ -110,6 +113,24 @@ private fun BoxScope.ChristmasDecor(shape: Shape) {
             .align(Alignment.TopEnd)
             .offset(x = MascotSize * 0.35F, y = -MascotSize * 0.55F)
             .size(width = MascotSize * 1.1F, height = MascotSize * 0.9F)
+            .rotate(tilt),
+    )
+}
+
+@Composable
+private fun BoxScope.PartyHat() {
+    val tilt = when (LocalLayoutDirection.current) {
+        LayoutDirection.Ltr -> PARTY_HAT_TILT
+        LayoutDirection.Rtl -> -PARTY_HAT_TILT
+    }
+
+    Image(
+        painter = painterResource(R.drawable.img_party_hat),
+        contentDescription = null,
+        modifier = Modifier
+            .align(Alignment.TopEnd)
+            .offset(x = 7.dp, y = -34.dp)
+            .size(width = 39.dp, height = 46.dp)
             .rotate(tilt),
     )
 }

@@ -33,6 +33,11 @@ import tv.trakt.trakt.common.ui.theme.colors.Red700
 import tv.trakt.trakt.common.ui.theme.colors.Red800
 import tv.trakt.trakt.common.ui.theme.colors.Red900
 import tv.trakt.trakt.common.ui.theme.colors.Shade10
+import tv.trakt.trakt.core.main.ui.seasonal.Gold100
+import tv.trakt.trakt.core.main.ui.seasonal.Gold200
+import tv.trakt.trakt.core.main.ui.seasonal.Gold300
+import tv.trakt.trakt.core.main.ui.seasonal.Gold50
+import tv.trakt.trakt.core.main.ui.seasonal.Gold600
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 

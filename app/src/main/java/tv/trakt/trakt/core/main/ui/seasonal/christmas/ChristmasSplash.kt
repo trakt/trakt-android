@@ -16,11 +16,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.ui.theme.colors.Red700
+import tv.trakt.trakt.core.main.ui.seasonal.Gold300
 import tv.trakt.trakt.core.main.ui.seasonal.SplashFrame
+import tv.trakt.trakt.core.main.ui.seasonal.SplashGarland
 import tv.trakt.trakt.core.main.ui.seasonal.SplashGreeting
+import tv.trakt.trakt.core.main.ui.seasonal.SplashGround
+import tv.trakt.trakt.core.main.ui.seasonal.SplashGroundSize
 import tv.trakt.trakt.resources.R
 
 private val ScrimColor = Color(0xFF050406).copy(alpha = 0.95F)
+private val HillsSize = SplashGroundSize(aspectRatio = 3.75F, minHeight = 112.dp, maxHeight = 240.dp)
 
 @Composable
 internal fun ChristmasSplash(
@@ -39,7 +44,9 @@ internal fun ChristmasSplash(
             ChristmasSnow(modifier = Modifier.fillMaxSize())
         }
 
-        ChristmasHills(
+        SplashGround(
+            image = R.drawable.img_christmas_hills,
+            size = HillsSize,
             animate = animate,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
@@ -48,7 +55,9 @@ internal fun ChristmasSplash(
             SantaSleigh()
         }
 
-        ChristmasGarland(
+        SplashGarland(
+            image = R.drawable.img_christmas_garland,
+            height = 24.dp,
             animate = animate,
             modifier = Modifier
                 .align(Alignment.TopCenter)

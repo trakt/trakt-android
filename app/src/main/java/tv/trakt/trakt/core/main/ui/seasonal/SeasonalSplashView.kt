@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Orange700
 import tv.trakt.trakt.core.main.ui.seasonal.christmas.ChristmasSplash
 import tv.trakt.trakt.core.main.ui.seasonal.halloween.HalloweenEmbers
 import tv.trakt.trakt.core.main.ui.seasonal.halloween.HalloweenHero
+import tv.trakt.trakt.core.main.ui.seasonal.newyear.NewYearSplash
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.SeasonalTheme
@@ -89,6 +90,10 @@ private fun SeasonalSplashContent(
                 onDismiss = onDismiss,
             )
             SeasonalTheme.Christmas -> ChristmasSplash(
+                animate = animate,
+                onDismiss = onDismiss,
+            )
+            SeasonalTheme.NewYear -> NewYearSplash(
                 animate = animate,
                 onDismiss = onDismiss,
             )
@@ -191,6 +196,17 @@ private fun ChristmasPreviewLight() {
     TraktTheme(colors = LightColors) {
         SeasonalSplashContent(
             season = SeasonalTheme.Christmas,
+            animate = false,
+        )
+    }
+}
+
+@Preview(device = "id:pixel_5")
+@Composable
+private fun NewYearPreview() {
+    TraktTheme {
+        SeasonalSplashContent(
+            season = SeasonalTheme.NewYear,
             animate = false,
         )
     }
