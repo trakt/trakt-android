@@ -15,3 +15,4 @@ local.properties
 /fastlane/service-account-supply.json
 /buildSrc/build
 /buildSrc/.gradle
+/.claude/worktrees/
