@@ -22,7 +22,6 @@ internal class SeasonalThemeUseCase(
     private val remoteConfig = Firebase.remoteConfig
 
     fun currentSeason(): SeasonalTheme? {
-        return SeasonalTheme.NewYear
         return SeasonalTheme.fromRemoteValue(
             remoteConfig.getString(SEASONAL_THEME),
         )
