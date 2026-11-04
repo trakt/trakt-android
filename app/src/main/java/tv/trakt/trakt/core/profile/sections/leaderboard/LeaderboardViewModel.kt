@@ -8,10 +8,15 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -28,22 +33,26 @@ private const val LEADERBOARD_LIMIT = 100
 @Suppress("UNCHECKED_CAST")
 internal class LeaderboardViewModel(
     private val getLeaderboardUseCase: GetLeaderboardUseCase,
-    analytics: Analytics,
+    private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = LeaderboardState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
+    private val isVipState = MutableStateFlow(initialState.isVip)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var entries: List<LeaderboardEntry> = emptyList()
     private var viewer: LeaderboardEntry? = null
     private var pages = 1
     private var hasMoreData = false
+    private var isVipUpsellSeenLogged = false
 
     init {
         loadData()
+        observeVipStatus()
 
         analytics.logScreenView(
             screenName = "profile_leaderboard",
@@ -81,6 +90,14 @@ internal class LeaderboardViewModel(
                 loadingState.update { Done }
             }
         }
+    }
+
+    private fun observeVipStatus() {
+        sessionManager.observeProfile()
+            .map { it?.isAnyVip }
+            .distinctUntilChanged()
+            .onEach { isVip -> isVipState.update { isVip } }
+            .launchIn(viewModelScope)
     }
 
     private suspend fun loadViewer(): LeaderboardEntry? {
@@ -127,17 +144,25 @@ internal class LeaderboardViewModel(
         }
     }
 
+    fun onVipUpsellSeen() {
+        if (isVipUpsellSeenLogged) return
+        isVipUpsellSeenLogged = true
+        analytics.vip.logUpsellImpression("leaderboard-viewer")
+    }
+
     val state = combine(
         itemsState,
         loadingState,
         loadingMoreState,
+        isVipState,
         errorState,
     ) { state ->
         LeaderboardState(
             items = state[0] as ImmutableList<LeaderboardEntry>?,
             loading = state[1] as LoadingState,
             loadingMore = state[2] as LoadingState,
-            error = state[3] as Exception?,
+            isVip = state[3] as Boolean?,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

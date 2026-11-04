@@ -10,5 +10,6 @@ internal data class LeaderboardState(
     val items: ImmutableList<LeaderboardEntry>? = null,
     val loading: LoadingState = LoadingState.Idle,
     val loadingMore: LoadingState = LoadingState.Idle,
+    val isVip: Boolean? = null,
     val error: Exception? = null,
 )

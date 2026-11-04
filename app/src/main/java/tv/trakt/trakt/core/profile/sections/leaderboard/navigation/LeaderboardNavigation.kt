@@ -16,6 +16,7 @@ internal data class LeaderboardDestination(
 
 internal fun NavGraphBuilder.leaderboardScreen(
     onNavigateToUser: (User) -> Unit,
+    onNavigateToVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<LeaderboardDestination> { backStackEntry ->
@@ -24,6 +25,7 @@ internal fun NavGraphBuilder.leaderboardScreen(
             followingCount = destination.followingCount,
             viewModel = koinViewModel(),
             onUserClick = onNavigateToUser,
+            onVipClick = onNavigateToVip,
             onNavigateBack = onNavigateBack,
         )
     }

@@ -740,6 +740,7 @@ internal fun NavGraphBuilder.profileScreens(
                     currentUserId = userId,
                 )
             },
+            onNavigateToVip = { navigateToBilling(source = "leaderboard-viewer") },
             onNavigateBack = { popBackStack() },
         )
 

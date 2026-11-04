@@ -56,6 +56,8 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.vip.VipBanner
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val TITLE_BAR_BOTTOM_TRIM = 8.dp
@@ -67,6 +69,7 @@ internal fun LeaderboardScreen(
     viewModel: LeaderboardViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
     onUserClick: (User) -> Unit,
+    onVipClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -75,6 +78,8 @@ internal fun LeaderboardScreen(
         modifier = modifier,
         podiumExpected = (followingCount ?: 0) >= PODIUM_SIZE,
         onUserClick = onUserClick,
+        onVipClick = onVipClick,
+        onVipSeen = viewModel::onVipUpsellSeen,
         onEndOfList = viewModel::loadMoreData,
         onBackClick = onNavigateBack,
     )
@@ -86,6 +91,8 @@ private fun LeaderboardContent(
     modifier: Modifier = Modifier,
     podiumExpected: Boolean = false,
     onUserClick: (User) -> Unit = {},
+    onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onEndOfList: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -160,6 +167,18 @@ private fun LeaderboardContent(
                         .padding(top = 3.dp)
                         .onClick { onBackClick() },
                 )
+            }
+
+            if (state.isVip == false) {
+                item(key = "vip_banner") {
+                    VipBanner(
+                        description = stringResource(R.string.text_leaderboard_upsell_footer),
+                        onClick = onVipClick,
+                        modifier = Modifier
+                            .onUpsellSeen(onVipSeen)
+                            .padding(top = 8.dp, bottom = 8.dp),
+                    )
+                }
             }
 
             if (state.loading.isLoading && items.isEmpty()) {
@@ -289,6 +308,7 @@ private fun Preview() {
         LeaderboardContent(
             state = LeaderboardState(
                 loading = Done,
+                isVip = false,
                 items = persistentListOf(
                     LeaderboardEntry(
                         user = PreviewData.user1.copy(isVip = true),

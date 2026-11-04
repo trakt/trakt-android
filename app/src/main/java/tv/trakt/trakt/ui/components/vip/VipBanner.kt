@@ -2,17 +2,15 @@ package tv.trakt.trakt.ui.components.vip
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment.Companion.CenterEnd
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -58,22 +56,26 @@ internal fun VipBanner(
         }
     }
 
-    Box(
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = spacedBy(12.dp),
         modifier = modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Min)
             .shadow(2.dp, containerShape)
             .clip(containerShape)
             .background(containerColor)
             .background(radialGradient)
-            .onClick(onClick = onClick),
+            .onClick(onClick = onClick)
+            .padding(
+                start = 18.dp,
+                end = 16.dp,
+                top = 16.dp,
+                bottom = 16.dp,
+            ),
     ) {
         Column(
-            modifier = Modifier.padding(
-                horizontal = 18.dp,
-                vertical = 16.dp,
-            ),
             verticalArrangement = spacedBy(2.dp),
+            modifier = Modifier.weight(1F),
         ) {
             Text(
                 text = title,
@@ -93,10 +95,7 @@ internal fun VipBanner(
         VipChip(
             text = stringResource(R.string.badge_text_get_vip),
             onClick = onClick,
-            modifier = Modifier
-                .align(CenterEnd)
-                .padding(end = 16.dp)
-                .shadow(2.dp, RoundedCornerShape(100)),
+            modifier = Modifier.shadow(2.dp, RoundedCornerShape(100)),
         )
     }
 }
@@ -106,6 +105,10 @@ internal fun VipBanner(
 private fun Preview() {
     TraktThemeLightDark {
         VipBanner(
+            modifier = Modifier.padding(16.dp),
+        )
+        VipBanner(
+            description = stringResource(R.string.text_leaderboard_upsell_footer),
             modifier = Modifier.padding(16.dp),
         )
     }
