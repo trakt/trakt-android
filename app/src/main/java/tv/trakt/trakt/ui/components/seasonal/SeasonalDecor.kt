@@ -29,7 +29,8 @@ import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 
 private const val GLOW_ALPHA = 0.22F
 private const val EVERGREEN_ALPHA = 0.14F
-private val GarlandHeight = 24.dp
+private const val NIGHT_ALPHA = 0.35F
+private val NightColor = Color(0xFF132B5A)
 
 @Composable
 internal fun SeasonalDecor(modifier: Modifier = Modifier) {
@@ -60,22 +61,39 @@ internal fun SeasonalDecor(modifier: Modifier = Modifier) {
                             radius = (size.width * 0.5F).coerceAtLeast(1F),
                         ),
                     )
+                    SeasonalTheme.NewYear -> listOf(
+                        Brush.radialGradient(
+                            colors = listOf(glow, Color.Transparent),
+                            center = Offset(size.width * 0.5F, -size.height * 0.2F),
+                            radius = (size.width * 0.8F).coerceAtLeast(1F),
+                        ),
+                        Brush.verticalGradient(
+                            0.7F to Color.Transparent,
+                            1F to NightColor.copy(alpha = NIGHT_ALPHA),
+                        ),
+                    )
                 }
                 onDrawBehind {
                     brushes.forEach { drawRect(brush = it) }
                 }
             },
     ) {
-        if (season == SeasonalTheme.Christmas) {
+        val garland = when (season) {
+            SeasonalTheme.Halloween -> null
+            SeasonalTheme.Christmas -> R.drawable.img_christmas_garland to 24.dp
+            SeasonalTheme.NewYear -> R.drawable.img_new_year_sparkles to 40.dp
+        }
+
+        if (garland != null) {
             Image(
-                painter = painterResource(R.drawable.img_christmas_garland),
+                painter = painterResource(garland.first),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .windowInsetsPadding(WindowInsets.statusBars)
                     .fillMaxWidth()
-                    .height(GarlandHeight),
+                    .height(garland.second),
             )
         }
     }
@@ -102,4 +120,10 @@ private fun HalloweenPreview() {
 @Composable
 private fun ChristmasPreview() {
     SeasonalDecorPreview(SeasonalTheme.Christmas)
+}
+
+@Preview(device = "id:pixel_5")
+@Composable
+private fun NewYearPreview() {
+    SeasonalDecorPreview(SeasonalTheme.NewYear)
 }

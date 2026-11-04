@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.core.main.ui.seasonal.Gold600
 import tv.trakt.trakt.core.main.ui.seasonal.SplashEaseOutBack
 import tv.trakt.trakt.core.main.ui.seasonal.rememberSplashIntro
 import tv.trakt.trakt.resources.R

@@ -9,32 +9,23 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import kotlinx.collections.immutable.persistentListOf
-import tv.trakt.trakt.core.main.ui.seasonal.SplashEaseOutQuint
-import tv.trakt.trakt.core.main.ui.seasonal.rememberSplashIntro
 import tv.trakt.trakt.resources.R
 
-private const val HILLS_ASPECT = 3.75F
 private const val SLEIGH_ASPECT = 5.17F
 private const val SLEIGH_TOP = 0.14F
 
-private val HillsMinHeight = 112.dp
-private val HillsMaxHeight = 240.dp
-private val GarlandHeight = 24.dp
 private val SleighWidth = 200.dp
 
 private data class SleighFrame(
@@ -52,57 +43,6 @@ private val SleighFlight = persistentListOf(
     SleighFrame(at = 0.2F, x = 0.7F, y = 0.03F, rotation = -4F),
     SleighFrame(at = 0.3F, x = 1.15F, y = -0.06F, rotation = -8F),
 )
-
-@Composable
-internal fun ChristmasGarland(
-    animate: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    val intro = rememberSplashIntro(animate = animate, delayMillis = 200, durationMillis = 600)
-
-    Image(
-        painter = painterResource(R.drawable.img_christmas_garland),
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(GarlandHeight)
-            .graphicsLayer {
-                alpha = intro.value
-            },
-    )
-}
-
-@Composable
-internal fun ChristmasHills(
-    animate: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    val intro = rememberSplashIntro(
-        animate = animate,
-        delayMillis = 200,
-        durationMillis = 900,
-        easing = SplashEaseOutQuint,
-    )
-
-    BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
-        val height = (maxWidth / HILLS_ASPECT).coerceIn(HillsMinHeight, HillsMaxHeight)
-
-        Image(
-            painter = painterResource(R.drawable.img_christmas_hills),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            alignment = Alignment.BottomCenter,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(height)
-                .graphicsLayer {
-                    alpha = intro.value
-                    translationY = (1F - intro.value) * size.height * 0.3F
-                },
-        )
-    }
-}
 
 @Composable
 internal fun SantaSleigh(modifier: Modifier = Modifier) {

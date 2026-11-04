@@ -95,6 +95,20 @@ val Orange920 = Color(0xFF3F1D0C)
 val Orange940 = Color(0xFF2E1408)
 val Orange1000 = Color(0xFF1D0C04)
 
+// Amber
+val Amber50 = Color(0xFFFEF6E7)
+val Amber100 = Color(0xFFFFE4B5)
+val Amber200 = Color(0xFFF8CD7D)
+val Amber300 = Color(0xFFF1B638)
+val Amber400 = Color(0xFFDEA203)
+val Amber500 = Color(0xFFC79101)
+val Amber600 = Color(0xFFAC7D08)
+val Amber700 = Color(0xFF8B6404)
+val Amber800 = Color(0xFF684A01)
+val Amber900 = Color(0xFF473100)
+val Amber940 = Color(0xFF281A00)
+val Amber1000 = Color(0xFF0F0800)
+
 // Yellow
 val Yellow500 = Color(0xFFDCA81D)
 

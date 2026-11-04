@@ -32,6 +32,7 @@ android {
         getByName("main") {
             res.directories.add("src/main/res-halloween")
             res.directories.add("src/main/res-christmas")
+            res.directories.add("src/main/res-new-year")
         }
     }
 
