@@ -18188,11 +18188,7 @@
                     "movies",
                     "episodes",
                     "network",
-                    "ratings",
-                    "progress",
-                    "lists",
-                    "total_minutes",
-                    "total_plays"
+                    "ratings"
                   ]
                 }
               }

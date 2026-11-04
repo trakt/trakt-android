@@ -226,33 +226,31 @@ private fun ReviewLink(
 }
 
 private fun ProfileStats.toSections(): List<StatSection> {
-    val vip: UserStats? = allTime
-
     return listOf(
         StatSection(
             titleRes = R.string.header_stats_watched,
             tiles = listOf(
-                StatTile(R.string.label_stats_plays, vip?.totalPlays),
-                StatTile(R.string.label_stats_hours, vip?.let { (it.totalMinutes / 60.0).roundToInt() }),
-                StatTile(R.string.label_stats_movies, vip?.moviesWatched ?: allMoviesCount),
-                StatTile(R.string.label_stats_shows, vip?.showsWatched ?: allShowsCount),
-                StatTile(R.string.label_stats_episodes, vip?.episodesWatched ?: allEpisodesCount),
+                StatTile(R.string.label_stats_plays, allTime?.totalPlays),
+                StatTile(R.string.label_stats_hours, allTime?.let { (it.totalMinutes / 60.0).roundToInt() }),
+                StatTile(R.string.label_stats_movies, allTime?.moviesWatched ?: allMoviesCount),
+                StatTile(R.string.label_stats_shows, allTime?.showsWatched ?: allShowsCount),
+                StatTile(R.string.label_stats_episodes, allTime?.episodesWatched ?: allEpisodesCount),
             ),
         ),
         StatSection(
             titleRes = R.string.header_stats_contributions,
             tiles = listOf(
-                StatTile(R.string.label_stats_ratings, vip?.ratings),
-                StatTile(R.string.label_stats_comments, vip?.comments),
-                StatTile(R.string.stat_text_lists, vip?.lists),
+                StatTile(R.string.label_stats_ratings, allTime?.ratings),
+                StatTile(R.string.label_stats_comments, allTime?.comments),
+                StatTile(R.string.stat_text_lists, allTime?.lists),
             ),
         ),
         StatSection(
             titleRes = R.string.header_stats_progress,
             tiles = listOf(
-                StatTile(R.string.tag_text_started, vip?.progressStarted),
-                StatTile(R.string.label_stats_finished, vip?.progressFinished),
-                StatTile(R.string.tag_text_dropped, vip?.progressDropped),
+                StatTile(R.string.tag_text_started, allTime?.progressStarted),
+                StatTile(R.string.label_stats_finished, allTime?.progressFinished),
+                StatTile(R.string.tag_text_dropped, allTime?.progressDropped),
             ),
         ),
     )
@@ -298,6 +296,14 @@ private fun PreviewFree() {
                 allEpisodesCount = 2310,
                 allPlaysCount = 2601,
                 playsCount = 2601,
+                allTime = UserStats(
+                    totalMinutes = 378,
+                    totalPlays = 4,
+                    moviesWatched = 2,
+                    showsWatched = 2,
+                    episodesWatched = 2,
+                    ratings = 1,
+                ),
             ),
         )
     }

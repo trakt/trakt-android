@@ -50,7 +50,7 @@ class UserRemoteSource(
         val response = usersApi.getUsersStats(
             id = userId,
         )
-        // 204 means no precomputed stats are available (non-VIP users).
+        // 204 means no precomputed stats are available.
         return when {
             response.status == 204 -> null
             else -> response.body()

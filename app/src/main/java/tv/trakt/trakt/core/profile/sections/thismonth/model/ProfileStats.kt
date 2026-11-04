@@ -4,8 +4,8 @@ import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.UserStats
 
 /**
- * @property allTime Full all-time stats from the API. Only VIP accounts get them, so it is null
- * for free accounts, which fall back to the local counts.
+ * @property allTime All-time stats from the API. Null when they are not loaded or not available,
+ * in which case the local counts are used.
  */
 @Immutable
 data class ProfileStats(
