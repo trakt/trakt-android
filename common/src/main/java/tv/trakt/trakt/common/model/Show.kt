@@ -59,6 +59,7 @@ data class Show(
     val airs: Airs? = null,
     val homepage: String? = null,
     val socialIds: SocialIds? = null,
+    val ending: ShowEnding? = null,
 ) {
     companion object
 
@@ -162,6 +163,7 @@ fun Companion.fromDto(dto: ShowDto): Show {
         airs = dto.airs?.let { Show.Airs.fromDto(it) },
         homepage = dto.homepage?.toHttpsUrl(),
         socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
+        ending = ShowEnding.fromSlug(dto.ending),
     )
 }
 
@@ -205,6 +207,7 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         airs = dto.airs?.let { Show.Airs.fromDto(it) },
         homepage = dto.homepage?.toHttpsUrl(),
         socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
+        ending = ShowEnding.fromSlug(dto.ending),
     )
 }
 
@@ -248,6 +251,7 @@ fun Companion.fromDto(dto: ShowCalendarsDto): Show {
         airs = dto.airs?.let { Show.Airs.fromDto(it) },
         homepage = dto.homepage?.toHttpsUrl(),
         socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
+        ending = ShowEnding.fromSlug(dto.ending),
     )
 }
 
@@ -291,6 +295,7 @@ fun Companion.fromDto(dto: PopularMediaDto): Show {
         airs = dto.airs?.let { Show.Airs.fromDto(it) },
         homepage = dto.homepage?.toHttpsUrl(),
         socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
+        ending = ShowEnding.fromSlug(dto.ending),
     )
 }
 
