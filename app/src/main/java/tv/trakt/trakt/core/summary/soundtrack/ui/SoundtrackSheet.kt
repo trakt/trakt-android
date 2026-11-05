@@ -20,6 +20,7 @@ import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -95,6 +96,13 @@ private fun SoundtrackSheetContent(
         tracks.filterBySeason(if (hasSeasonTracks && seasonOnly) currentSeason else null)
     }
     val summary = remember(shownTracks) { SoundtrackSummary.from(shownTracks) }
+
+    LaunchedEffect(shownTracks) {
+        val selected = playback.selected ?: return@LaunchedEffect
+        if (shownTracks.none { it.position == selected.position }) {
+            playback.stop()
+        }
+    }
 
     Column(
         verticalArrangement = spacedBy(16.dp),
