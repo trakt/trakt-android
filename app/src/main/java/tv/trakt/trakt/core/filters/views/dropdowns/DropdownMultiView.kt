@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
@@ -39,8 +38,6 @@ import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red400
-import tv.trakt.trakt.common.ui.theme.colors.Red500
-import tv.trakt.trakt.common.ui.theme.colors.Shade10
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -227,7 +224,7 @@ private fun <T> ExcludableMenuItem(
                 style = TraktTheme.typography.buttonTertiary,
                 color = when (state) {
                     DropdownOptionState.Included -> TraktTheme.colors.accent
-                    DropdownOptionState.Excluded -> Red500
+                    DropdownOptionState.Excluded -> Red400
                     null -> TraktTheme.colors.textSecondary
                 },
                 textDecoration = TextDecoration.LineThrough.takeIf {
@@ -241,7 +238,7 @@ private fun <T> ExcludableMenuItem(
             ExclusionToggle(
                 icon = R.drawable.ic_minus,
                 selected = state == DropdownOptionState.Excluded,
-                selectedColor = Red500,
+                selectedColor = Red400,
                 onClick = {
                     onStateChange(DropdownOptionState.Excluded.takeIf { state != it })
                 },
@@ -274,22 +271,18 @@ private fun ExclusionToggle(
             painter = painterResource(icon),
             contentDescription = null,
             tint = when {
-                selected -> Shade10
-                else -> TraktTheme.colors.textSecondary.copy(alpha = 0.35F)
+                selected -> TraktTheme.colors.textPrimaryOnAccent
+                else -> TraktTheme.colors.textSecondary
             },
-            modifier = Modifier.size(12.dp),
+            modifier = Modifier.size(14.dp),
         )
     }
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
+@PreviewTraktLightDark
 @Composable
 private fun PreviewDropdownView() {
-    TraktTheme {
+    TraktThemePreview {
         DropdownMultiView(
             header = "Genre",
             active = true,
@@ -307,14 +300,10 @@ private fun PreviewDropdownView() {
     }
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
+@PreviewTraktLightDark
 @Composable
 private fun PreviewDropdownViewInactive() {
-    TraktTheme {
+    TraktThemePreview {
         DropdownMultiView(
             header = "Genre",
             active = false,
@@ -333,7 +322,7 @@ private fun PreviewDropdownViewInactive() {
 
 @PreviewTraktLightDark
 @Composable
-private fun PreviewDropdownViewExcluded() {
+private fun PreviewDropdownViewMixed() {
     TraktThemePreview {
         DropdownMultiView(
             header = "Genre",
@@ -353,5 +342,53 @@ private fun PreviewDropdownViewExcluded() {
                 onSelectionChange = { _, _ -> },
             ),
         )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDropdownViewExcluded() {
+    TraktThemePreview {
+        DropdownMultiView(
+            header = "Country",
+            active = true,
+            values = persistentListOf(
+                DropdownOption(raw = null, displayString = "All"),
+            ),
+            options = persistentListOf(
+                DropdownOption(raw = null, displayString = "All"),
+                DropdownOption(raw = "be", displayString = "Belgium"),
+                DropdownOption(raw = "bd", displayString = "Bangladesh"),
+            ),
+            exclusion = DropdownExclusion(
+                values = persistentListOf(
+                    DropdownOption(raw = "be", displayString = "Belgium"),
+                    DropdownOption(raw = "bd", displayString = "Bangladesh"),
+                ),
+                onSelectionChange = { _, _ -> },
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewExcludableMenuItems() {
+    TraktThemePreview {
+        Column(
+            modifier = Modifier.background(TraktTheme.colors.dropdownMenuContainer),
+        ) {
+            listOf(
+                DropdownOptionState.Included,
+                DropdownOptionState.Excluded,
+                null,
+            ).forEach { state ->
+                ExcludableMenuItem(
+                    option = DropdownOption(raw = "be", displayString = "Belgium"),
+                    state = state,
+                    onStateChange = {},
+                )
+            }
+        }
     }
 }
