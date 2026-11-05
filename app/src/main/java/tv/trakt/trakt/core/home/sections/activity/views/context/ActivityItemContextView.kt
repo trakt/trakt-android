@@ -58,16 +58,21 @@ internal fun ActivityItemContextView(
     modifier: Modifier = Modifier,
     onPlayRemove: () -> Unit,
     onAddWatchlist: () -> Unit,
+    onRemoveWatchlist: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveSheet by remember { mutableStateOf(false) }
+    var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.loadingRemove, state.loadingWatchlist) {
         when {
             state.loadingRemove == Done -> onPlayRemove()
-            state.loadingWatchlist == Done -> onAddWatchlist()
+            state.loadingWatchlist == Done -> when {
+                state.isWatchlist -> onRemoveWatchlist()
+                else -> onAddWatchlist()
+            }
         }
     }
 
@@ -84,6 +89,27 @@ internal fun ActivityItemContextView(
         onRemoveWatchedClick = {
             confirmRemoveSheet = true
         },
+        onWatchlistClick = {
+            when {
+                state.isWatchlist -> confirmRemoveWatchlistSheet = true
+                else -> viewModel.addToWatchlist()
+            }
+        },
+    )
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    RemoveConfirmationSheet(
+        active = confirmRemoveWatchlistSheet,
+        onYes = {
+            confirmRemoveWatchlistSheet = false
+            viewModel.removeFromWatchlist()
+        },
+        onNo = { confirmRemoveWatchlistSheet = false },
+        title = stringResource(R.string.button_text_watchlist),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watchlist,
+            item.title,
+        ),
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -91,7 +117,7 @@ internal fun ActivityItemContextView(
         active = confirmRemoveSheet,
         onYes = {
             confirmRemoveSheet = false
-            viewModel.removePlayFromHistory(item)
+            viewModel.removePlayFromHistory()
         },
         onNo = { confirmRemoveSheet = false },
         title = stringResource(R.string.button_text_remove_from_history),
@@ -111,6 +137,7 @@ private fun ActivityItemContextViewContent(
     state: ActivityItemContextState,
     modifier: Modifier = Modifier,
     onRemoveWatchedClick: () -> Unit = {},
+    onWatchlistClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -187,8 +214,13 @@ private fun ActivityItemContextViewContent(
             verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
             modifier = Modifier.padding(top = 14.dp),
         ) {
+            val isLoadingOrDone = state.loadingRemove.isLoading ||
+                state.loadingRemove.isDone ||
+                state.loadingWatchlist.isLoading ||
+                state.loadingWatchlist.isDone
+
             GhostButton(
-                enabled = !state.loadingRemove.isLoading,
+                enabled = !isLoadingOrDone,
                 loading = state.loadingRemove.isLoading,
                 text = stringResource(R.string.button_text_remove_from_history),
                 onClick = onRemoveWatchedClick,
@@ -200,6 +232,28 @@ private fun ActivityItemContextViewContent(
                         translationX = -8.dp.toPx()
                     },
             )
+
+            if (item is MovieItem) {
+                GhostButton(
+                    enabled = !isLoadingOrDone,
+                    loading = state.loadingWatchlist.isLoading || state.loadingWatchlist.isDone,
+                    text = when {
+                        state.isWatchlist -> stringResource(R.string.button_text_remove_from_watchlist)
+                        else -> stringResource(R.string.button_text_watchlist)
+                    },
+                    onClick = onWatchlistClick,
+                    icon = when {
+                        state.isWatchlist -> painterResource(R.drawable.ic_bookmark_on)
+                        else -> painterResource(R.drawable.ic_bookmark_off)
+                    },
+                    iconSize = 20.dp,
+                    iconSpace = 12.dp,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = -8.dp.toPx()
+                        },
+                )
+            }
         }
     }
 }

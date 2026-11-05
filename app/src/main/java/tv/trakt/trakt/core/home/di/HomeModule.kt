@@ -19,6 +19,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.core.home.HomeViewModel
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 import tv.trakt.trakt.core.home.sections.activity.features.all.personal.AllActivityPersonalViewModel
@@ -95,7 +96,22 @@ internal val homeModule = module {
     viewModelOf(::HomeHistoryViewModel)
     viewModelOf(::AllActivityPersonalViewModel)
     viewModelOf(::AllActivitySocialViewModel)
-    viewModelOf(::ActivityItemContextViewModel)
+    viewModel { (item: HomeActivityItem) ->
+        ActivityItemContextViewModel(
+            item = item,
+            updateMovieHistoryUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
+            updateMovieWatchlistUseCase = get(),
+            activityLocalSource = get(),
+            allActivityLocalSource = get(),
+            userWatchlistLocalSource = get(),
+            userWatchlistMinLocalSource = get(),
+            loadUserProgressUseCase = get(),
+            loadWatchlistUseCase = get(),
+            dataChanges = get(),
+            analytics = get(),
+        )
+    }
     viewModelOf(::UpNextItemContextViewModel)
     viewModelOf(::HomeStreaksViewModel)
     viewModelOf(::StreaksViewModel)

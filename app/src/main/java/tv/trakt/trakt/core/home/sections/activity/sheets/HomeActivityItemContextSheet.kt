@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextView
@@ -47,6 +48,7 @@ internal fun HomeActivityItemSheet(
                 item = sheetItem,
                 viewModel = koinViewModel(
                     key = viewModelKey,
+                    parameters = { parametersOf(sheetItem) },
                 ),
                 onPlayRemove = {
                     onPlayRemoved(sheetItem)
@@ -77,6 +79,23 @@ internal fun HomeActivityItemSheet(
                         launch {
                             val job = sheetScope.launch {
                                 localSnack.showSnackbar(localRes.getString(R.string.text_info_watchlist_added))
+                            }
+                            delay(ShortSnackDuration)
+                            job.cancel()
+                        }
+                    }
+                },
+                onRemoveWatchlist = {
+                    sheetScope.run {
+                        launch { state.hide() }
+                            .invokeOnCompletion {
+                                if (!state.isVisible) {
+                                    onDismiss()
+                                }
+                            }
+                        launch {
+                            val job = sheetScope.launch {
+                                localSnack.showSnackbar(localRes.getString(R.string.text_info_watchlist_removed))
                             }
                             delay(ShortSnackDuration)
                             job.cancel()

@@ -4,18 +4,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.local.AllActivityLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.activity.HomeActivityItem
@@ -24,22 +31,58 @@ import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalSource
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 
+@Suppress("UNCHECKED_CAST")
 internal class ActivityItemContextViewModel(
+    private val item: HomeActivityItem,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
+    private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val activityLocalSource: HomePersonalLocalSource,
     private val allActivityLocalSource: AllActivityLocalSource,
+    private val userWatchlistLocalSource: UserWatchlistLocalSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ActivityItemContextState()
 
+    private val isWatchlistState = MutableStateFlow(initialState.isWatchlist)
     private val loadingRemoveState = MutableStateFlow(initialState.loadingRemove)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
     private val errorState = MutableStateFlow(initialState.error)
 
-    fun removePlayFromHistory(item: HomeActivityItem) {
+    init {
+        loadWatchlistStatus()
+    }
+
+    private fun loadWatchlistStatus() {
+        if (item !is MovieItem) return
+
+        viewModelScope.launch {
+            try {
+                loadingWatchlistState.update { Loading }
+
+                if (!userWatchlistMinLocalSource.isMoviesLoaded()) {
+                    loadWatchlistUseCase.loadWatchlist()
+                }
+                isWatchlistState.update {
+                    userWatchlistMinLocalSource.containsMovie(item.movie.ids.trakt)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingWatchlistState.update { Idle }
+            }
+        }
+    }
+
+    fun removePlayFromHistory() {
         if (isLoading()) return
         viewModelScope.launch {
             clear()
@@ -85,7 +128,73 @@ internal class ActivityItemContextViewModel(
         }
     }
 
-    fun loadUserProgress() {
+    fun addToWatchlist() {
+        if (item !is MovieItem || isLoading()) return
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingWatchlistState.update { Loading }
+
+                updateMovieWatchlistUseCase.addToWatchlist(movieId = item.movie.ids.trakt)
+                userWatchlistLocalSource.addMovies(
+                    movies = listOf(
+                        WatchlistItem.MovieItem(
+                            rank = 0,
+                            movie = item.movie,
+                            listedAt = nowUtcInstant(),
+                        ),
+                    ),
+                )
+                userWatchlistMinLocalSource.addMovies(
+                    movies = setOf(item.movie.ids.trakt),
+                )
+
+                dataChanges.notify(Kind.Watchlist)
+
+                analytics.progress.logAddWatchlistMedia(
+                    mediaType = "movie",
+                    source = "activity_context",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingWatchlistState.update { Done }
+            }
+        }
+    }
+
+    fun removeFromWatchlist() {
+        if (item !is MovieItem || isLoading()) return
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingWatchlistState.update { Loading }
+
+                updateMovieWatchlistUseCase.removeFromWatchlist(movieId = item.movie.ids.trakt)
+                userWatchlistLocalSource.removeMovies(ids = setOf(item.movie.ids.trakt))
+                userWatchlistMinLocalSource.removeMovies(ids = setOf(item.movie.ids.trakt))
+
+                dataChanges.notify(Kind.Watchlist)
+
+                analytics.progress.logRemoveWatchlistMedia(
+                    mediaType = "movie",
+                    source = "activity_context",
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingWatchlistState.update { Done }
+            }
+        }
+    }
+
+    private fun loadUserProgress() {
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadProgress()
@@ -97,7 +206,7 @@ internal class ActivityItemContextViewModel(
         }
     }
 
-    fun clear() {
+    private fun clear() {
         loadingRemoveState.update { Idle }
         loadingWatchlistState.update { Idle }
         errorState.update { null }
@@ -107,15 +216,17 @@ internal class ActivityItemContextViewModel(
         return loadingRemoveState.value.isLoading || loadingWatchlistState.value.isLoading
     }
 
-    val state: StateFlow<ActivityItemContextState> = combine(
+    val state = combine(
+        isWatchlistState,
         loadingRemoveState,
         loadingWatchlistState,
         errorState,
-    ) { s1, s2, s3 ->
+    ) { state ->
         ActivityItemContextState(
-            loadingRemove = s1,
-            loadingWatchlist = s2,
-            error = s3,
+            isWatchlist = state[0] as Boolean,
+            loadingRemove = state[1] as LoadingState,
+            loadingWatchlist = state[2] as LoadingState,
+            error = state[3] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
