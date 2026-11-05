@@ -1,18 +1,27 @@
 package tv.trakt.trakt.core.summary.ui.header
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
@@ -96,6 +105,10 @@ internal fun DetailsHeader(
                         )
                     }
                 }
+
+                if (onReportClick != null) {
+                    ReportMenuButton(onReportClick = onReportClick)
+                }
             }
         },
         genres = EmptyImmutableList,
@@ -104,7 +117,6 @@ internal fun DetailsHeader(
         imageHorizontal = false,
         onShareClick = onShareClick,
         onShareImageClick = null,
-        onReportClick = onReportClick,
         onBackClick = onBackClick,
         date = null,
         status = null,
@@ -128,4 +140,52 @@ internal fun DetailsHeader(
         onLetterboxdClick = {},
         modifier = modifier,
     )
+}
+
+@Composable
+private fun ReportMenuButton(onReportClick: () -> Unit) {
+    var showMenu by remember { mutableStateOf(false) }
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.size(24.dp),
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_more_vertical),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .size(18.dp)
+                .onClick { showMenu = true },
+        )
+
+        DropdownMenu(
+            expanded = showMenu,
+            containerColor = TraktTheme.colors.dialogContainer,
+            shape = RoundedCornerShape(16.dp),
+            onDismissRequest = { showMenu = false },
+        ) {
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = stringResource(R.string.button_text_report),
+                        style = TraktTheme.typography.buttonTertiary,
+                        color = TraktTheme.colors.textPrimary,
+                    )
+                },
+                onClick = {
+                    showMenu = false
+                    onReportClick()
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_flag),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(21.dp),
+                    )
+                },
+            )
+        }
+    }
 }

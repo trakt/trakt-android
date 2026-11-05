@@ -13,11 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
@@ -61,7 +56,6 @@ fun DetailsHeaderPoster(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onShareImageClick: (() -> Unit)?,
-    onReportClick: (() -> Unit)? = null,
     onWatchedClick: () -> Unit,
     extraRightColumn: @Composable () -> Unit = {},
 ) {
@@ -161,96 +155,14 @@ fun DetailsHeaderPoster(
                     .padding(top = 8.dp),
                 horizontalAlignment = Alignment.Start,
             ) {
-                if (onReportClick != null) {
-                    ShareReportMenuButton(
-                        onShareClick = onShareClick,
-                        onReportClick = onReportClick,
-                        modifier = Modifier.padding(start = 20.dp),
-                    )
-                } else {
-                    TraktShareButton(
-                        onShareLinkClick = onShareClick,
-                        onShareImageClick = onShareImageClick,
-                        modifier = Modifier.padding(start = 20.dp),
-                    )
-                }
+                TraktShareButton(
+                    onShareLinkClick = onShareClick,
+                    onShareImageClick = onShareImageClick,
+                    modifier = Modifier.padding(start = 20.dp),
+                )
 
                 extraRightColumn.invoke()
             }
-        }
-    }
-}
-
-@Composable
-private fun ShareReportMenuButton(
-    onShareClick: () -> Unit,
-    onReportClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    var showMenu by remember { mutableStateOf(false) }
-
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.size(24.dp),
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_more_vertical),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier
-                .size(18.dp)
-                .onClick { showMenu = true },
-        )
-
-        DropdownMenu(
-            expanded = showMenu,
-            containerColor = TraktTheme.colors.dialogContainer,
-            shape = RoundedCornerShape(16.dp),
-            onDismissRequest = { showMenu = false },
-        ) {
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = stringResource(R.string.button_text_share),
-                        style = TraktTheme.typography.buttonTertiary,
-                        color = TraktTheme.colors.textPrimary,
-                    )
-                },
-                onClick = {
-                    showMenu = false
-                    onShareClick()
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_share),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(21.dp),
-                    )
-                },
-            )
-
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = stringResource(R.string.button_text_report),
-                        style = TraktTheme.typography.buttonTertiary,
-                        color = TraktTheme.colors.textPrimary,
-                    )
-                },
-                onClick = {
-                    showMenu = false
-                    onReportClick()
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_flag),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(21.dp),
-                    )
-                },
-            )
         }
     }
 }
