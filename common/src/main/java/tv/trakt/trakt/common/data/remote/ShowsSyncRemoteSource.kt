@@ -10,8 +10,11 @@ import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeId
 import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestShowsInner
+import org.openapitools.client.models.PostUsersHiddenAddRequest
+import org.openapitools.client.models.PostUsersHiddenAddRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
@@ -67,10 +70,10 @@ class ShowsSyncRemoteSource(
         showId: TraktId,
         watchedAt: String,
     ): SyncAddHistoryResponseDto {
-        val request = PostUsersListsListAddRequest(
+        val request = PostUsersHiddenAddRequest(
             shows = listOf(
-                PostUsersListsListAddRequestShowsInner(
-                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                PostUsersHiddenAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -91,8 +94,8 @@ class ShowsSyncRemoteSource(
     suspend fun removeAllFromHistory(showId: TraktId) {
         val request = PostSyncHistoryRemoveRequest(
             shows = listOf(
-                PostUsersListsListAddRequestShowsInner(
-                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                PostUsersHiddenAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -112,7 +115,7 @@ class ShowsSyncRemoteSource(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                    ids = PostUsersListsListAddRequestShowsInnerIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -132,7 +135,7 @@ class ShowsSyncRemoteSource(
         val request = PostUsersListsListAddRequest(
             shows = listOf(
                 PostUsersListsListAddRequestShowsInner(
-                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                    ids = PostUsersListsListAddRequestShowsInnerIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -149,10 +152,10 @@ class ShowsSyncRemoteSource(
     }
 
     suspend fun dropShow(showId: TraktId) {
-        val request = PostUsersListsListAddRequest(
+        val request = PostUsersHiddenAddRequest(
             shows = listOf(
-                PostUsersListsListAddRequestShowsInner(
-                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                PostUsersHiddenAddRequestShowsInner(
+                    ids = PostUsersListsListAddRequestShowsInnerIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -169,13 +172,13 @@ class ShowsSyncRemoteSource(
             val droppedAsync = async {
                 usersApi.postUsersHiddenAdd(
                     section = "dropped",
-                    postUsersListsListAddRequest = request,
+                    postUsersHiddenAddRequest = request,
                 )
             }
             val calendarAsync = async {
                 usersApi.postUsersHiddenAdd(
                     section = "calendar",
-                    postUsersListsListAddRequest = request,
+                    postUsersHiddenAddRequest = request,
                 )
             }
             droppedAsync.await()

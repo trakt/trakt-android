@@ -116,6 +116,8 @@ internal class PostScrobbleStartWorker(
                             ids = PostUsersListsListAddRequestEpisodesInnerIds(
                                 trakt = mediaId,
                                 tvdb = 0,
+                                imdb = null,
+                                tmdb = null,
                             ),
                         ),
                     ),

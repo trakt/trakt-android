@@ -1,17 +1,17 @@
 package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.SyncApi
-import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
-import org.openapitools.client.models.PostUsersListsListAddRequest
-import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInner
+import org.openapitools.client.models.PostUsersHiddenAddRequest
+import org.openapitools.client.models.PostUsersHiddenAddRequestEpisodesInner
+import org.openapitools.client.models.PostUsersHiddenAddRequestSeasonsInner
+import org.openapitools.client.models.PostUsersHiddenAddRequestShowsInner
+import org.openapitools.client.models.PostUsersHiddenAddRequestShowsInnerSeasonsInner
+import org.openapitools.client.models.PostUsersHiddenAddRequestShowsInnerSeasonsInnerEpisodesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
-import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfSeasonsInner
-import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOfSeasonsInnerEpisodesInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressEpisodeDto
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
@@ -26,12 +26,14 @@ class EpisodesSyncRemoteSource(
         episodeId: TraktId,
         watchedAt: String,
     ): PostSyncHistoryAdd200Response {
-        val request = PostUsersListsListAddRequest(
+        val request = PostUsersHiddenAddRequest(
             episodes = listOf(
-                PostUsersListsListAddRequestEpisodesInner(
+                PostUsersHiddenAddRequestEpisodesInner(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = episodeId.value,
                         tvdb = -1,
+                        imdb = null,
+                        tmdb = null,
                     ),
                     watchedAt = watchedAt,
                 ),
@@ -50,13 +52,13 @@ class EpisodesSyncRemoteSource(
         episode: Int,
         watchedAt: String,
     ): PostSyncHistoryAdd200Response {
-        val request = PostUsersListsListAddRequest(
+        val request = PostUsersHiddenAddRequest(
             shows = listOf(
-                PostUsersListsListAddRequestShowsInner(
+                PostUsersHiddenAddRequestShowsInner(
                     seasons = listOf(
-                        PostUsersListsListAddRequestShowsInnerOneOfSeasonsInner(
+                        PostUsersHiddenAddRequestShowsInnerSeasonsInner(
                             episodes = listOf(
-                                PostUsersListsListAddRequestShowsInnerOneOfSeasonsInnerEpisodesInner(
+                                PostUsersHiddenAddRequestShowsInnerSeasonsInnerEpisodesInner(
                                     number = episode,
                                     watchedAt = watchedAt,
                                 ),
@@ -65,7 +67,7 @@ class EpisodesSyncRemoteSource(
                             watchedAt = watchedAt,
                         ),
                     ),
-                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                    ids = PostUsersListsListAddRequestShowsInnerIds(
                         trakt = showId.value,
                         slug = null,
                         imdb = null,
@@ -89,12 +91,14 @@ class EpisodesSyncRemoteSource(
         episodeIds: List<TraktId>,
         watchedAt: String,
     ) {
-        val request = PostUsersListsListAddRequest(
+        val request = PostUsersHiddenAddRequest(
             episodes = episodeIds.map {
-                PostUsersListsListAddRequestEpisodesInner(
+                PostUsersHiddenAddRequestEpisodesInner(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = it.value,
                         tvdb = -1,
+                        imdb = null,
+                        tmdb = null,
                     ),
                     watchedAt = watchedAt,
                 )
@@ -105,12 +109,14 @@ class EpisodesSyncRemoteSource(
     }
 
     suspend fun addToHistory(episodes: List<Pair<TraktId, String>>) {
-        val request = PostUsersListsListAddRequest(
+        val request = PostUsersHiddenAddRequest(
             episodes = episodes.map { (episodeId, watchedAt) ->
-                PostUsersListsListAddRequestEpisodesInner(
+                PostUsersHiddenAddRequestEpisodesInner(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = episodeId.value,
                         tvdb = -1,
+                        imdb = null,
+                        tmdb = null,
                     ),
                     watchedAt = watchedAt,
                 )
@@ -131,10 +137,12 @@ class EpisodesSyncRemoteSource(
     suspend fun removeEpisodeFromHistory(episodeId: Int) {
         val request = PostSyncHistoryRemoveRequest(
             episodes = listOf(
-                PostUsersListsListAddRequestEpisodesInner(
+                PostUsersHiddenAddRequestEpisodesInner(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = episodeId,
                         tvdb = -1,
+                        imdb = null,
+                        tmdb = null,
                     ),
                 ),
             ),
@@ -146,7 +154,7 @@ class EpisodesSyncRemoteSource(
     suspend fun removeSeasonFromHistory(seasonId: Int) {
         val request = PostSyncHistoryRemoveRequest(
             seasons = listOf(
-                PostUsersListsListAddRequestSeasonsInner(
+                PostUsersHiddenAddRequestSeasonsInner(
                     ids = PostUsersListsListAddRequestSeasonsInnerIds(
                         trakt = seasonId,
                         tmdb = null,

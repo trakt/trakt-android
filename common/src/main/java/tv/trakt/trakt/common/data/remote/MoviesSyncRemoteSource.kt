@@ -10,10 +10,12 @@ import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestMoviesInner
+import org.openapitools.client.models.PostUsersHiddenAddRequest
+import org.openapitools.client.models.PostUsersHiddenAddRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
+import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInnerIds
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressMovieDto
@@ -31,7 +33,6 @@ class MoviesSyncRemoteSource(
     suspend fun getPlaybackProgress(
         limit: Int,
         page: Int,
-        filters: GlobalFilter? = null,
     ): List<ProgressMovieDto> {
         val response = syncApi.getSyncProgressMovies(
             extended = "full,images,colors",
@@ -47,10 +48,10 @@ class MoviesSyncRemoteSource(
         movieId: TraktId,
         watchedAt: String,
     ): PostSyncHistoryAdd200Response {
-        val request = PostUsersListsListAddRequest(
+        val request = PostUsersHiddenAddRequest(
             movies = listOf(
-                PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinStartRequestOneOf1MovieIds(
+                PostUsersHiddenAddRequestMoviesInner(
+                    ids = PostUsersListsListAddRequestMoviesInnerIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -79,8 +80,8 @@ class MoviesSyncRemoteSource(
     suspend fun removeAllFromHistory(movieId: TraktId) {
         val request = PostSyncHistoryRemoveRequest(
             movies = listOf(
-                PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinStartRequestOneOf1MovieIds(
+                PostUsersHiddenAddRequestMoviesInner(
+                    ids = PostUsersListsListAddRequestMoviesInnerIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -99,7 +100,7 @@ class MoviesSyncRemoteSource(
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinStartRequestOneOf1MovieIds(
+                    ids = PostUsersListsListAddRequestMoviesInnerIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,
@@ -118,7 +119,7 @@ class MoviesSyncRemoteSource(
         val request = PostUsersListsListAddRequest(
             movies = listOf(
                 PostUsersListsListAddRequestMoviesInner(
-                    ids = PostCheckinStartRequestOneOf1MovieIds(
+                    ids = PostUsersListsListAddRequestMoviesInnerIds(
                         trakt = movieId.value,
                         slug = null,
                         imdb = null,

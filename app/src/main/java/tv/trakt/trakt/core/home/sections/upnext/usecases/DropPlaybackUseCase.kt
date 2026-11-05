@@ -4,7 +4,6 @@ import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
@@ -18,7 +17,6 @@ internal class DropPlaybackUseCase(
         val items = remoteMovieSyncSource.getPlaybackProgress(
             page = 1,
             limit = 100,
-            filters = GlobalFilter.Default,
         )
         val playbackId = items.firstOrNull { it.movie.ids.trakt == movieId.value }?.id
             ?: return

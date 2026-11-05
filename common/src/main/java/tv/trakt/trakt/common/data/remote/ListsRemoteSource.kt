@@ -1,16 +1,16 @@
 package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.ListsApi
-import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
-import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostUsersListsCreateRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
+import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerIds
 import org.openapitools.client.models.PostUsersListsReorderRequest
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
@@ -93,7 +93,7 @@ class ListsRemoteSource(
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 shows = listOf(
                     PostUsersListsListAddRequestShowsInner(
-                        ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                        ids = PostUsersListsListAddRequestShowsInnerIds(
                             trakt = showId.value,
                             slug = null,
                             imdb = null,
@@ -120,7 +120,7 @@ class ListsRemoteSource(
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 shows = listOf(
                     PostUsersListsListAddRequestShowsInner(
-                        ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                        ids = PostUsersListsListAddRequestShowsInnerIds(
                             trakt = showId.value,
                             slug = null,
                             imdb = null,
@@ -147,7 +147,7 @@ class ListsRemoteSource(
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 movies = listOf(
                     PostUsersListsListAddRequestMoviesInner(
-                        ids = PostCheckinStartRequestOneOf1MovieIds(
+                        ids = PostUsersListsListAddRequestMoviesInnerIds(
                             trakt = movieId.value,
                             slug = null,
                             imdb = null,
@@ -173,7 +173,7 @@ class ListsRemoteSource(
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 movies = listOf(
                     PostUsersListsListAddRequestMoviesInner(
-                        ids = PostCheckinStartRequestOneOf1MovieIds(
+                        ids = PostUsersListsListAddRequestMoviesInnerIds(
                             trakt = movieId.value,
                             slug = null,
                             imdb = null,
@@ -261,6 +261,8 @@ class ListsRemoteSource(
                     ids = PostUsersListsListAddRequestEpisodesInnerIds(
                         trakt = episodeId.value,
                         tvdb = -1,
+                        imdb = null,
+                        tmdb = null,
                     ),
                 ),
             ),

@@ -133,7 +133,6 @@ internal class GetUpNextUseCase(
         val remoteItems = remoteMoviesSyncSource.getPlaybackProgress(
             limit = limit,
             page = page,
-            filters = filters,
         )
 
         return remoteItems
