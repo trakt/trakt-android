@@ -38,6 +38,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
@@ -197,6 +198,7 @@ internal fun ProfileFavoritesContent(
                             else -> {
                                 ContentList(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    collectionState = state.collection,
                                     contentPadding = contentPadding,
                                     onShowClick = onShowClick,
                                     onMovieClick = onMovieClick,
@@ -240,6 +242,7 @@ private fun ContentLoadingList(
 @Composable
 private fun ContentList(
     listItems: ImmutableList<FavoriteItem>,
+    collectionState: UserCollectionState,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onShowClick: (Show) -> Unit = {},
@@ -280,6 +283,9 @@ private fun ContentList(
                     item = item,
                     showMore = true,
                     showMediaIcon = true,
+                    watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
+                    watching = collectionState.isWatching(item.id, item.type, item.airedEpisodes),
+                    watchlist = collectionState.isWatchlist(item.id, item.type),
                     onShowClick = {
                         if (item is FavoriteItem.ShowItem && !item.loading) {
                             onShowClick(item.show)

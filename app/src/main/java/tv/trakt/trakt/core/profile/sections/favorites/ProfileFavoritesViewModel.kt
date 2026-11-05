@@ -25,6 +25,8 @@ import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
@@ -57,6 +59,7 @@ internal class ProfileFavoritesViewModel(
     private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = ProfileFavoritesState()
 
@@ -106,6 +109,9 @@ internal class ProfileFavoritesViewModel(
                     localOnly = true,
                 )
             }
+            .launchIn(viewModelScope)
+
+        collectionStateProvider
             .launchIn(viewModelScope)
     }
 
@@ -229,6 +235,7 @@ internal class ProfileFavoritesViewModel(
         collapseState,
         errorState,
         userState,
+        collectionStateProvider.stateFlow,
     ) { states ->
         ProfileFavoritesState(
             loading = states[0] as LoadingState,
@@ -238,6 +245,7 @@ internal class ProfileFavoritesViewModel(
             collapsed = states[4] as Boolean,
             error = states[5] as Exception?,
             user = states[6] as User?,
+            collection = states[7] as UserCollectionState,
         )
     }.stateIn(
         scope = viewModelScope,

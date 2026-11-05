@@ -23,6 +23,8 @@ import tv.trakt.trakt.common.core.favorites.FavoriteItem.ShowItem
 import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
@@ -55,6 +57,7 @@ internal class AllFavoritesViewModel(
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
+    private val collectionStateProvider: CollectionStateProvider,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllFavoritesState()
@@ -90,6 +93,9 @@ internal class AllFavoritesViewModel(
                     localOnly = true,
                 )
             }
+            .launchIn(viewModelScope)
+
+        collectionStateProvider
             .launchIn(viewModelScope)
     }
 
@@ -251,6 +257,7 @@ internal class AllFavoritesViewModel(
         navigateMovie,
         userState,
         errorState,
+        collectionStateProvider.stateFlow,
     ) { state ->
         AllFavoritesState(
             loading = state[0] as LoadingState,
@@ -261,6 +268,7 @@ internal class AllFavoritesViewModel(
             navigateMovie = state[5] as? TraktId,
             user = state[6] as? User,
             error = state[7] as? Exception,
+            collection = state[8] as UserCollectionState,
         )
     }.stateIn(
         scope = viewModelScope,

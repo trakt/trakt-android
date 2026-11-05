@@ -48,6 +48,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.core.favorites.FavoriteItem
 import tv.trakt.trakt.common.core.favorites.FavoriteItem.MovieItem
 import tv.trakt.trakt.common.core.favorites.FavoriteItem.ShowItem
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -200,6 +201,7 @@ internal fun AllFavoritesContent(
 
         ContentList(
             listItems = (state.items ?: emptyList()).toImmutableList(),
+            collectionState = state.collection,
             listState = listState,
             listFilter = state.filter ?: MediaMode.Media,
             listSorting = state.sorting,
@@ -242,6 +244,7 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     listState: LazyListState,
     listItems: ImmutableList<FavoriteItem>,
+    collectionState: UserCollectionState,
     listFilter: MediaMode,
     listSorting: Sorting,
     listLoading: LoadingState,
@@ -315,6 +318,9 @@ private fun ContentList(
                         item = item,
                         sorting = listSorting,
                         mediaIcon = listFilter == MediaMode.Media,
+                        watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
+                        watching = collectionState.isWatching(item.id, item.type, item.airedEpisodes),
+                        watchlist = collectionState.isWatchlist(item.id, item.type),
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -329,6 +335,8 @@ private fun ContentList(
                         item = item,
                         sorting = listSorting,
                         mediaIcon = listFilter == MediaMode.Media,
+                        watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
+                        watchlist = collectionState.isWatchlist(item.id, item.type),
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
