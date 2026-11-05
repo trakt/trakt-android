@@ -67,6 +67,7 @@ internal enum class CollapsingKey(
     MOVIE_LISTS("key_movie_lists"),
     MOVIE_COMMENTS("key_movie_comments"),
     MOVIE_TRIVIA("key_movie_trivia"),
+    MOVIE_SOUNDTRACK("key_movie_soundtrack"),
 
     // Episode Details Screen
     EPISODE_WHERE_TO_WATCH("key_episode_where_to_watch"),
@@ -85,6 +86,7 @@ internal enum class CollapsingKey(
     SHOW_RELATED("key_show_related"),
     SHOW_LISTS("key_show_lists"),
     SHOW_TRIVIA("key_show_trivia"),
+    SHOW_SOUNDTRACK("key_show_soundtrack"),
 
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),

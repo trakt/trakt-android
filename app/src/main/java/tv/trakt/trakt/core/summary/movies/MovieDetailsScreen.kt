@@ -98,6 +98,7 @@ import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.soundtrack.SoundtrackView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
@@ -728,6 +729,22 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onVideoClick = onExtraClick ?: {},
+                            modifier = Modifier
+                                .alpha(ratingAlphaMask)
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
+                        )
+                    }
+
+                    item {
+                        SoundtrackView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(MediaType.Movie, movie.ids.trakt) },
+                            ),
+                            title = movie.title,
+                            posterUrl = movie.images?.getPosterUrl(),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onVipClick = onVipClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),

@@ -99,11 +99,13 @@ import tv.trakt.trakt.core.summary.shows.features.info.ShowInfoSheet
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedView
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsView
+import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsViewModel
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentView
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaView
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.soundtrack.SoundtrackView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
@@ -826,6 +828,28 @@ internal fun ShowDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onVideoClick = onExtraClick ?: {},
+                            modifier = Modifier
+                                .alpha(ratingAlphaMask)
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
+                        )
+                    }
+
+                    item {
+                        val seasonsViewModel: ShowSeasonsViewModel = koinViewModel(
+                            parameters = { parametersOf(show) },
+                        )
+                        val seasonsState by seasonsViewModel.state.collectAsStateWithLifecycle()
+
+                        SoundtrackView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(MediaType.Show, show.ids.trakt) },
+                            ),
+                            title = show.title,
+                            posterUrl = show.images?.getPosterUrl(),
+                            currentSeason = seasonsState.items.selectedSeason?.number,
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onVipClick = onVipClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),

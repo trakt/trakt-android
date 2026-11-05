@@ -51,6 +51,7 @@ internal object HalContract {
     const val EVENT_HIDE_RECOMMENDATION = "media-action.hide-recommendation"
     const val EVENT_TRAILER = "media-action.trailer"
     const val EVENT_EXTRAS = "media-action.extras"
+    const val EVENT_SOUNDTRACK = "media-action.soundtrack"
     const val EVENT_STREAM_ON = "media-action.stream-on"
     const val EVENT_FAVORITE = "media-action.favorite"
     const val EVENT_LOGIN_START = "auth-action.login-start"
@@ -89,6 +90,8 @@ internal object HalContract {
     const val DIM_SERVICE = "service"
     const val DIM_TARGET = "target"
     const val DIM_VALUE = "value"
+    const val DIM_POSITION = "position"
+    const val DIM_MATCHED_ON = "matched_on"
 
     const val METRIC_RATING = "rating"
     const val METRIC_DURATION = "duration"
