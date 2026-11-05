@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.filters.views.dropdowns
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -14,20 +15,30 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -37,13 +48,27 @@ internal fun <T> DropdownMultiView(
     values: ImmutableList<DropdownOption<T>>,
     active: Boolean,
     options: ImmutableList<DropdownOption<T>>,
-    onOptionsSelected: (List<DropdownOption<T>>) -> Unit,
     modifier: Modifier = Modifier,
+    onOptionsSelected: (List<DropdownOption<T>>) -> Unit = {},
     enabled: Boolean = true,
+    exclusion: DropdownExclusion<T>? = null,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
-    val selected = values.any { it.raw != null }
+    val included = values.filter { it.raw != null }
+    val excluded = exclusion?.values.orEmpty()
+    val selected = included.isNotEmpty() || excluded.isNotEmpty()
+
+    val excludedLabels = excluded.map {
+        stringResource(R.string.option_text_excluded, it.displayString)
+    }
+    val selectionLabel = buildAnnotatedString {
+        append(included.joinToString(", ") { it.displayString })
+        excludedLabels.forEachIndexed { index, label ->
+            if (index > 0 || included.isNotEmpty()) append(", ")
+            withStyle(SpanStyle(color = if (TraktTheme.colors.isLight) Color.White else Red400)) { append(label) }
+        }
+    }
 
     Box(
         modifier = modifier,
@@ -69,8 +94,8 @@ internal fun <T> DropdownMultiView(
         ) {
             Text(
                 text = when {
-                    selected -> values.joinToString(", ") { it.displayString }
-                    else -> header
+                    selected -> selectionLabel
+                    else -> buildAnnotatedString { append(header) }
                 },
                 style = TraktTheme.typography.buttonTertiary,
                 color = when (active) {
@@ -94,13 +119,35 @@ internal fun <T> DropdownMultiView(
                 .align(Alignment.BottomEnd),
         ) {
             for (option in options) {
+                if (exclusion != null && option.raw != null) {
+                    ExcludableMenuItem(
+                        option = option,
+                        state = when (option) {
+                            in included -> DropdownOptionState.Included
+                            in excluded -> DropdownOptionState.Excluded
+                            else -> null
+                        },
+                        onStateChange = { state ->
+                            exclusion.onSelectionChange(
+                                included.filterNot { it == option } +
+                                    listOfNotNull(option.takeIf { state == DropdownOptionState.Included }),
+                                excluded.filterNot { it == option } +
+                                    listOfNotNull(option.takeIf { state == DropdownOptionState.Excluded }),
+                            )
+                        },
+                    )
+                    continue
+                }
+
+                val checked = option in values && (option.raw != null || excluded.isEmpty())
+
                 DropdownMenuItem(
                     text = {
                         Row(
                             horizontalArrangement = spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            if (option in values) {
+                            if (checked) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_check),
                                     contentDescription = null,
@@ -111,7 +158,7 @@ internal fun <T> DropdownMultiView(
                             Text(
                                 text = option.displayString,
                                 style = TraktTheme.typography.buttonTertiary,
-                                color = when (option in values) {
+                                color = when (checked) {
                                     true -> TraktTheme.colors.textPrimary
                                     false -> TraktTheme.colors.textSecondary
                                 },
@@ -121,7 +168,10 @@ internal fun <T> DropdownMultiView(
                     onClick = {
                         when {
                             option.raw == null -> {
-                                onOptionsSelected.invoke(emptyList())
+                                when (exclusion) {
+                                    null -> onOptionsSelected.invoke(emptyList())
+                                    else -> exclusion.onSelectionChange(emptyList(), emptyList())
+                                }
                                 return@DropdownMenuItem
                             }
                             option in values -> {
@@ -140,18 +190,103 @@ internal fun <T> DropdownMultiView(
     }
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
+@Immutable
+internal class DropdownExclusion<T>(
+    val values: ImmutableList<DropdownOption<T>>,
+    val onSelectionChange: (included: List<DropdownOption<T>>, excluded: List<DropdownOption<T>>) -> Unit,
 )
+
+private enum class DropdownOptionState {
+    Included,
+    Excluded,
+}
+
+@Composable
+private fun <T> ExcludableMenuItem(
+    option: DropdownOption<T>,
+    state: DropdownOptionState?,
+    onStateChange: (DropdownOptionState?) -> Unit,
+) {
+    DropdownMenuItem(
+        leadingIcon = {
+            ExclusionToggle(
+                icon = R.drawable.ic_plus,
+                selected = state == DropdownOptionState.Included,
+                selectedColor = TraktTheme.colors.accent,
+                onClick = {
+                    onStateChange(DropdownOptionState.Included.takeIf { state != it })
+                },
+            )
+        },
+        text = {
+            Text(
+                text = option.displayString,
+                style = TraktTheme.typography.buttonTertiary,
+                color = when (state) {
+                    DropdownOptionState.Included -> TraktTheme.colors.accent
+                    DropdownOptionState.Excluded -> Red400
+                    null -> TraktTheme.colors.textSecondary
+                },
+                textDecoration = TextDecoration.LineThrough.takeIf {
+                    state == DropdownOptionState.Excluded
+                },
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        trailingIcon = {
+            ExclusionToggle(
+                icon = R.drawable.ic_minus,
+                selected = state == DropdownOptionState.Excluded,
+                selectedColor = Red400,
+                onClick = {
+                    onStateChange(DropdownOptionState.Excluded.takeIf { state != it })
+                },
+            )
+        },
+        onClick = {
+            onStateChange(DropdownOptionState.Included.takeIf { state == null })
+        },
+    )
+}
+
+@Composable
+private fun ExclusionToggle(
+    @DrawableRes icon: Int,
+    selected: Boolean,
+    selectedColor: Color,
+    onClick: () -> Unit,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(24.dp)
+            .background(
+                color = if (selected) selectedColor else Color.Transparent,
+                shape = RoundedCornerShape(6.dp),
+            )
+            .onClick(throttle = false, onClick = onClick),
+    ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+            tint = when {
+                selected -> TraktTheme.colors.textPrimaryOnAccent
+                else -> TraktTheme.colors.textSecondary
+            },
+            modifier = Modifier.size(14.dp),
+        )
+    }
+}
+
+@PreviewTraktLightDark
 @Composable
 private fun PreviewDropdownView() {
-    TraktTheme {
+    TraktThemePreview {
         DropdownMultiView(
             header = "Genre",
             active = true,
-            values = persistentListOf<DropdownOption<String?>>(
+            values = persistentListOf(
                 DropdownOption(raw = "Action", displayString = "Action"),
                 DropdownOption(raw = "Comedy", displayString = "Comedy"),
             ),
@@ -165,18 +300,14 @@ private fun PreviewDropdownView() {
     }
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
+@PreviewTraktLightDark
 @Composable
 private fun PreviewDropdownViewInactive() {
-    TraktTheme {
+    TraktThemePreview {
         DropdownMultiView(
             header = "Genre",
             active = false,
-            values = persistentListOf<DropdownOption<String?>>(
+            values = persistentListOf(
                 DropdownOption(raw = null, displayString = "All"),
             ),
             options = persistentListOf(
@@ -186,5 +317,78 @@ private fun PreviewDropdownViewInactive() {
             ),
             onOptionsSelected = {},
         )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDropdownViewMixed() {
+    TraktThemePreview {
+        DropdownMultiView(
+            header = "Genre",
+            active = true,
+            values = persistentListOf(
+                DropdownOption(raw = "Action", displayString = "Action"),
+            ),
+            options = persistentListOf(
+                DropdownOption(raw = null, displayString = "All"),
+                DropdownOption(raw = "Action", displayString = "Action"),
+                DropdownOption(raw = "Comedy", displayString = "Comedy"),
+            ),
+            exclusion = DropdownExclusion(
+                values = persistentListOf(
+                    DropdownOption(raw = "Comedy", displayString = "Comedy"),
+                ),
+                onSelectionChange = { _, _ -> },
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDropdownViewExcluded() {
+    TraktThemePreview {
+        DropdownMultiView(
+            header = "Country",
+            active = true,
+            values = persistentListOf(
+                DropdownOption(raw = null, displayString = "All"),
+            ),
+            options = persistentListOf(
+                DropdownOption(raw = null, displayString = "All"),
+                DropdownOption(raw = "be", displayString = "Belgium"),
+                DropdownOption(raw = "bd", displayString = "Bangladesh"),
+            ),
+            exclusion = DropdownExclusion(
+                values = persistentListOf(
+                    DropdownOption(raw = "be", displayString = "Belgium"),
+                    DropdownOption(raw = "bd", displayString = "Bangladesh"),
+                ),
+                onSelectionChange = { _, _ -> },
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewExcludableMenuItems() {
+    TraktThemePreview {
+        Column(
+            modifier = Modifier.background(TraktTheme.colors.dropdownMenuContainer),
+        ) {
+            listOf(
+                DropdownOptionState.Included,
+                DropdownOptionState.Excluded,
+                null,
+            ).forEach { state ->
+                ExcludableMenuItem(
+                    option = DropdownOption(raw = "be", displayString = "Belgium"),
+                    state = state,
+                    onStateChange = {},
+                )
+            }
+        }
     }
 }

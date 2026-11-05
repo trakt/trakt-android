@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
 import tv.trakt.trakt.core.lists.model.SmartListItem
@@ -31,9 +32,12 @@ internal class CreateSmartListViewModel(
     private val getSmartListPreviewUseCase: GetSmartListPreviewUseCase,
     private val createSmartListUseCase: CreateSmartListUseCase,
     private val collectionStateProvider: CollectionStateProvider,
+    private val filterManager: GlobalFilterManager,
     private val analytics: Analytics,
 ) : ViewModel() {
-    private val initialState = CreateSmartListState()
+    private val initialState = CreateSmartListState(
+        parentalGuideExpanded = filterManager.isParentalGuideExpanded(),
+    )
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val filtersState = MutableStateFlow(initialState.filters)
@@ -41,6 +45,7 @@ internal class CreateSmartListViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
     private val successState = MutableStateFlow(initialState.success)
+    private val parentalGuideExpandedState = MutableStateFlow(initialState.parentalGuideExpanded)
 
     private var dataJob: Job? = null
 
@@ -125,6 +130,13 @@ internal class CreateSmartListViewModel(
             }
     }
 
+    fun setParentalGuideExpanded(expanded: Boolean) {
+        parentalGuideExpandedState.update { expanded }
+        viewModelScope.launch {
+            filterManager.setParentalGuideExpanded(expanded)
+        }
+    }
+
     fun clearError() {
         errorState.update { null }
     }
@@ -137,6 +149,7 @@ internal class CreateSmartListViewModel(
         errorState,
         successState,
         collectionStateProvider.stateFlow,
+        parentalGuideExpandedState,
     ) { state ->
         CreateSmartListState(
             items = state[0] as? ImmutableList<SmartListItem>,
@@ -146,6 +159,7 @@ internal class CreateSmartListViewModel(
             error = state[4] as? Exception,
             success = state[5] as Boolean,
             collection = state[6] as UserCollectionState,
+            parentalGuideExpanded = state[7] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

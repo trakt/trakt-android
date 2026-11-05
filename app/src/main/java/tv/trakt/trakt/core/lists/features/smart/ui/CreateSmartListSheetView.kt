@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -56,6 +55,7 @@ internal fun CreateSmartListSheetView(
     modifier: Modifier = Modifier,
     onCreateClick: (String) -> Unit = {},
     onFiltersChange: (filter: SmartListFilters) -> Unit = {},
+    onParentalGuideExpandedChange: (Boolean) -> Unit = {},
 ) {
     val inputValid by remember {
         derivedStateOf {
@@ -163,10 +163,6 @@ internal fun CreateSmartListSheetView(
 
                     FilterChipGroup(
                         paddingVertical = PaddingValues.Zero,
-                        modifier = Modifier
-                            .graphicsLayer {
-                                translationY = 10.dp.toPx()
-                            },
                     ) {
                         for (filter in MediaMode.entries) {
                             FilterChip(
@@ -206,6 +202,7 @@ internal fun CreateSmartListSheetView(
                     )
                     GlobalFilterMode.Advanced -> CreateSmartListFiltersAdvancedView(
                         state = state,
+                        onParentalGuideExpandedChange = onParentalGuideExpandedChange,
                         onFiltersChange = { filters, _ ->
                             onFiltersChange(filters)
                         },

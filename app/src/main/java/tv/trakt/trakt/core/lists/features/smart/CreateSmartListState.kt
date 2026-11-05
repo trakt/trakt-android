@@ -12,6 +12,7 @@ internal data class CreateSmartListState(
     val items: ImmutableList<SmartListItem>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val filters: SmartListFilters = SmartListFilters.Default,
+    val parentalGuideExpanded: Boolean = true,
     val creating: LoadingState = LoadingState.Idle,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,

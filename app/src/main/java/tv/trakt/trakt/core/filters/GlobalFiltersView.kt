@@ -78,6 +78,7 @@ internal fun GlobalFiltersView(
             Advanced -> {
                 GlobalFiltersAdvancedView(
                     state = state,
+                    onParentalGuideExpandedChange = viewModel::setParentalGuideExpanded,
                     onToggleMode = { mode ->
                         if (state.filter.isAdvancedActive) {
                             confirmationSheet = true

@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,14 +36,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun ParentalGuideFilters(
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
     rangeOf: (ParentalGuideCategory) -> Pair<Int, Int>?,
     onRangeChange: (ParentalGuideCategory, Pair<Int, Int>?) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    var expanded by rememberSaveable {
-        mutableStateOf(true)
-    }
     val chevronRotation by animateFloatAsState(
         targetValue = if (expanded) 180F else 0F,
         label = "chevronRotation",
@@ -59,7 +57,7 @@ internal fun ParentalGuideFilters(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .onClick { expanded = !expanded },
+                .onClick { onExpandedChange(!expanded) },
         ) {
             Text(
                 text = stringResource(R.string.option_text_certification_parental_guidance),
@@ -186,6 +184,8 @@ private fun ParentalGuideFilter(
 private fun Preview() {
     TraktTheme {
         ParentalGuideFilters(
+            expanded = true,
+            onExpandedChange = {},
             rangeOf = { category ->
                 when (category) {
                     ParentalGuideCategory.Violence -> 0 to 1

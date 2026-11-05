@@ -36,8 +36,10 @@ import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.filters.ColumnsSpacing
 import tv.trakt.trakt.core.filters.RowsSpacing
 import tv.trakt.trakt.core.filters.views.ParentalGuideFilters
+import tv.trakt.trakt.core.filters.views.dropdowns.DropdownExclusion
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownMultiView
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownOption
+import tv.trakt.trakt.core.filters.views.dropdowns.toFilterValues
 import tv.trakt.trakt.core.lists.features.smart.CreateSmartListState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.switch.TraktSwitch
@@ -55,6 +57,7 @@ private val RatingMax = 100
 internal fun CreateSmartListFiltersAdvancedView(
     state: CreateSmartListState,
     onFiltersChange: (SmartListFilters, Boolean) -> Unit = { _, _ -> },
+    onParentalGuideExpandedChange: (Boolean) -> Unit = {},
 ) {
     val enabled = !state.creating.isLoading
 
@@ -124,6 +127,8 @@ internal fun CreateSmartListFiltersAdvancedView(
             )
 
             ParentalGuideFilters(
+                expanded = state.parentalGuideExpanded,
+                onExpandedChange = onParentalGuideExpandedChange,
                 rangeOf = { category ->
                     state.filters.parentalRange(category)?.toSeverityRange()
                 },
@@ -137,6 +142,10 @@ internal fun CreateSmartListFiltersAdvancedView(
                     )
                 },
                 enabled = enabled,
+                modifier = Modifier.padding(
+                    top = 20.dp,
+                    bottom = 12.dp,
+                ),
             )
 
             SwitchesFilter(
@@ -184,24 +193,34 @@ private fun GenreFilter(
         )
     }.toImmutableList()
 
+    val excludedValues: List<DropdownOption<MediaGenre?>> = state.filters.excludedGenres.orEmpty().map {
+        DropdownOption(
+            raw = it,
+            displayString = stringResource(it.displayStringRes),
+        )
+    }
+
     DropdownMultiView(
         header = stringResource(R.string.header_genre),
-        active = !state.filters.genres.isNullOrEmpty(),
+        active = !state.filters.genres.isNullOrEmpty() || !state.filters.excludedGenres.isNullOrEmpty(),
         values = remember(state.filters.genres) {
             genresValues.toImmutableList()
         },
         options = genresOptions,
-        onOptionsSelected = { options ->
-            onUpdateFilter(
-                state.filters.copy(
-                    genres = options
-                        .mapNotNull { it.raw }
-                        .takeIf { it.isNotEmpty() }
-                        ?.toImmutableList(),
-                ),
-                true,
-            )
-        },
+        exclusion = DropdownExclusion(
+            values = remember(state.filters.excludedGenres) {
+                excludedValues.toImmutableList()
+            },
+            onSelectionChange = { included, excluded ->
+                onUpdateFilter(
+                    state.filters.copy(
+                        genres = included.toFilterValues(),
+                        excludedGenres = excluded.toFilterValues(),
+                    ),
+                    true,
+                )
+            },
+        ),
         enabled = enabled,
         modifier = modifier,
     )
@@ -304,24 +323,38 @@ private fun CertificationFilter(
         )
     }.toImmutableList()
 
+    val excludedValues: List<DropdownOption<Certification?>> =
+        state.filters.excludedCertifications.orEmpty().mapNotNull { slug ->
+            Certification.entries.find { it.slug == slug }?.let {
+                DropdownOption(
+                    raw = it,
+                    displayString = stringResource(it.displayStringRes),
+                )
+            }
+        }
+
     DropdownMultiView(
         header = stringResource(R.string.header_certification),
-        active = !state.filters.certifications.isNullOrEmpty(),
+        active = !state.filters.certifications.isNullOrEmpty() ||
+            !state.filters.excludedCertifications.isNullOrEmpty(),
         values = remember(state.filters.certifications) {
             certificationValues.toImmutableList()
         },
         options = certificationOptions,
-        onOptionsSelected = { options ->
-            onUpdateFilter(
-                state.filters.copy(
-                    certifications = options
-                        .mapNotNull { it.raw?.slug }
-                        .takeIf { it.isNotEmpty() }
-                        ?.toImmutableList(),
-                ),
-                true,
-            )
-        },
+        exclusion = DropdownExclusion(
+            values = remember(state.filters.excludedCertifications) {
+                excludedValues.toImmutableList()
+            },
+            onSelectionChange = { included, excluded ->
+                onUpdateFilter(
+                    state.filters.copy(
+                        certifications = included.toFilterValues()?.map { it.slug }?.toImmutableList(),
+                        excludedCertifications = excluded.toFilterValues()?.map { it.slug }?.toImmutableList(),
+                    ),
+                    true,
+                )
+            },
+        ),
         enabled = enabled,
         modifier = modifier,
     )
@@ -362,24 +395,34 @@ private fun RegionFilter(
         )
     }.toImmutableList()
 
+    val excludedValues: List<DropdownOption<String?>> = state.filters.excludedCountries.orEmpty().map { code ->
+        DropdownOption(
+            raw = code,
+            displayString = Locale("", code).displayCountry,
+        )
+    }
+
     DropdownMultiView(
         header = stringResource(R.string.header_country),
-        active = !state.filters.countries.isNullOrEmpty(),
+        active = !state.filters.countries.isNullOrEmpty() || !state.filters.excludedCountries.isNullOrEmpty(),
         values = remember(state.filters.countries) {
             regionValues.toImmutableList()
         },
         options = regionOptions,
-        onOptionsSelected = { options ->
-            onUpdateFilter(
-                state.filters.copy(
-                    countries = options
-                        .mapNotNull { it.raw }
-                        .takeIf { it.isNotEmpty() }
-                        ?.toImmutableList(),
-                ),
-                true,
-            )
-        },
+        exclusion = DropdownExclusion(
+            values = remember(state.filters.excludedCountries) {
+                excludedValues.toImmutableList()
+            },
+            onSelectionChange = { included, excluded ->
+                onUpdateFilter(
+                    state.filters.copy(
+                        countries = included.toFilterValues(),
+                        excludedCountries = excluded.toFilterValues(),
+                    ),
+                    true,
+                )
+            },
+        ),
         enabled = enabled,
         modifier = modifier,
     )

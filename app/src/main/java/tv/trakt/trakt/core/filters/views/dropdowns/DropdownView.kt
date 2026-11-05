@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -138,6 +139,12 @@ internal data class DropdownOption<T>(
     val raw: T,
     val displayString: String,
 )
+
+internal fun <T> List<DropdownOption<T?>>.toFilterValues(): ImmutableList<T>? {
+    return mapNotNull { it.raw }
+        .takeIf { it.isNotEmpty() }
+        ?.toImmutableList()
+}
 
 @DeviceSheetPreview
 @Composable

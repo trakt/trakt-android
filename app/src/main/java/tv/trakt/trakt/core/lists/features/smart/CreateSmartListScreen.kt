@@ -154,6 +154,7 @@ internal fun CreateSmartListScreen(
         nameInputState = nameInputState,
         onCreateClick = { viewModel.createList(nameInputState.text.toString()) },
         onFiltersChange = viewModel::setFilters,
+        onParentalGuideExpandedChange = viewModel::setParentalGuideExpanded,
         onExit = onExit,
     )
 
@@ -202,6 +203,7 @@ private fun CreateSmartListSheetContent(
     nameInputState: TextFieldState,
     onCreateClick: (String) -> Unit,
     onFiltersChange: (filter: SmartListFilters) -> Unit,
+    onParentalGuideExpandedChange: (Boolean) -> Unit,
     onExit: () -> Unit,
 ) {
     val screenHeight = LocalWindowInfo.current.containerDpSize.height
@@ -236,6 +238,7 @@ private fun CreateSmartListSheetContent(
                 nameState = nameInputState,
                 onCreateClick = onCreateClick,
                 onFiltersChange = onFiltersChange,
+                onParentalGuideExpandedChange = onParentalGuideExpandedChange,
                 modifier = Modifier
                     .heightIn(max = expandedHeight)
                     .padding(
