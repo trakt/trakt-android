@@ -312,10 +312,14 @@ private fun ListToggle(
             enabled = enabled,
             checked = checked,
             modifier = Modifier
-                .weight(1F)
+                .fillMaxWidth(0.75F)
                 .onClick(enabled = enabled) {
                     onClick?.invoke(list)
                 },
+        )
+
+        Spacer(
+            modifier = Modifier.weight(1F),
         )
 
         if (onOpenClick != null) {
@@ -337,13 +341,14 @@ private fun ListOpenButton(
         enabled = !loading,
         colors = IconButtonDefaults.filledTonalIconButtonColors(
             containerColor = TraktTheme.colors.textPrimary.copy(
-                alpha = 0.12F,
+                alpha = 0.1F,
             ),
             contentColor = TraktTheme.colors.textPrimary,
             disabledContainerColor = TraktTheme.colors.dialogOnContainer,
             disabledContentColor = TraktTheme.colors.textPrimary,
         ),
-        modifier = Modifier.size(28.dp),
+        modifier = Modifier
+            .size(32.dp),
     ) {
         if (loading) {
             CircularProgressIndicator(
@@ -356,7 +361,7 @@ private fun ListOpenButton(
                 painter = painterResource(R.drawable.ic_chevron_right),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(18.dp)
                     .graphicsLayer {
                         translationX = 1.dp.toPx()
                     },
@@ -399,7 +404,7 @@ private fun MoviePreview() {
                     PreviewData.customListMinimal1.copy(
                         id = TraktId(3),
                         ownerId = TraktId(3),
-                        name = "Another List",
+                        name = "Another List Another List Another List Another List",
                     ),
                 ),
                 listedIds = persistentSetOf(PreviewData.customListMinimal1.id),
