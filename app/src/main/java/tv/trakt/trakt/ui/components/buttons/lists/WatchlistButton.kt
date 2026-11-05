@@ -25,7 +25,7 @@ internal fun WatchlistButton(
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(13.dp),
+        horizontalArrangement = spacedBy(14.dp),
         modifier = modifier,
     ) {
         Icon(
@@ -36,7 +36,7 @@ internal fun WatchlistButton(
             contentDescription = null,
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
-                .size(28.dp),
+                .size(29.dp),
         )
 
         Text(
