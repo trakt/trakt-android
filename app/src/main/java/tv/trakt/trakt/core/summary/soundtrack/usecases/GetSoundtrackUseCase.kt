@@ -20,7 +20,7 @@ internal class GetSoundtrackUseCase(
             .getSoundtrack(
                 type = type,
                 mediaId = mediaId,
-                locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.US,
+                locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
             )
             .toImmutableList()
     }
