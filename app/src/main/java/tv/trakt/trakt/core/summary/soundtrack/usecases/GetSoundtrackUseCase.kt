@@ -22,6 +22,8 @@ internal class GetSoundtrackUseCase(
                 mediaId = mediaId,
                 locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
             )
+            .map(SoundtrackTrack::fromDto)
+            .sortedBy { it.position }
             .toImmutableList()
     }
 }
