@@ -5,22 +5,31 @@ package tv.trakt.trakt.core.lists.features.manage
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -39,6 +48,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.EpisodeTarget
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.MovieTarget
@@ -58,8 +68,16 @@ internal fun ManageListsView(
     inWatchlist: Boolean,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
+    onWatchlistOpen: (() -> Unit)? = null,
+    onListOpen: ((CustomList) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel) {
+        viewModel.openListEvents.collect { list ->
+            onListOpen?.invoke(list)
+        }
+    }
 
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
 
@@ -76,7 +94,9 @@ internal fun ManageListsView(
                 }
             }
         },
+        onWatchlistOpenClick = onWatchlistOpen,
         onListClick = viewModel::toggleList,
+        onListOpenClick = onListOpen?.let { viewModel::openList },
         modifier = modifier,
     )
 
@@ -102,7 +122,9 @@ private fun ManageListsContent(
     modifier: Modifier = Modifier,
     inWatchlist: Boolean = false,
     onWatchlistClick: (() -> Unit)? = null,
+    onWatchlistOpenClick: (() -> Unit)? = null,
     onListClick: ((CustomListMinimal) -> Unit)? = null,
+    onListOpenClick: ((CustomListMinimal) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -143,11 +165,14 @@ private fun ManageListsContent(
             loading = state.loading.isLoading,
             inWatchlist = inWatchlist,
             onWatchlistClick = onWatchlistClick,
+            onWatchlistOpenClick = onWatchlistOpenClick,
             lists = state.lists,
             collaborations = state.collaborations,
             listedIds = state.listedIds,
             toggling = state.toggling,
+            opening = state.opening,
             onListClick = onListClick,
+            onListOpenClick = onListOpenClick,
             modifier = Modifier
                 .padding(top = 12.dp),
         )
@@ -192,9 +217,12 @@ private fun ListButtons(
     collaborations: ImmutableList<CustomListMinimal>,
     listedIds: ImmutableSet<TraktId>,
     toggling: ImmutableSet<TraktId>,
+    opening: TraktId?,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
+    onWatchlistOpenClick: (() -> Unit)? = null,
     onListClick: ((CustomListMinimal) -> Unit)? = null,
+    onListOpenClick: ((CustomListMinimal) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -205,15 +233,28 @@ private fun ListButtons(
             ),
     ) {
         if (onWatchlistClick != null) {
-            WatchlistButton(
-                checked = inWatchlist,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .graphicsLayer {
-                        translationX = -4.dp.toPx()
-                    }
-                    .onClick(onClick = onWatchlistClick),
-            )
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                WatchlistButton(
+                    checked = inWatchlist,
+                    modifier = Modifier
+                        .weight(1F)
+                        .graphicsLayer {
+                            translationX = -4.dp.toPx()
+                        }
+                        .onClick(onClick = onWatchlistClick),
+                )
+
+                if (onWatchlistOpenClick != null) {
+                    ListOpenButton(
+                        loading = false,
+                        onClick = onWatchlistOpenClick,
+                    )
+                }
+            }
         }
 
         if (lists.isNotEmpty() || loading) {
@@ -227,7 +268,9 @@ private fun ListButtons(
                 list = list,
                 enabled = !loading && !toggling.contains(list.id),
                 checked = listedIds.contains(list.id),
+                opening = opening == list.id,
                 onClick = onListClick,
+                onOpenClick = onListOpenClick,
             )
         }
 
@@ -242,7 +285,9 @@ private fun ListButtons(
                 list = list,
                 enabled = !loading && !toggling.contains(list.id),
                 checked = listedIds.contains(list.id),
+                opening = opening == list.id,
                 onClick = onListClick,
+                onOpenClick = onListOpenClick,
             )
         }
     }
@@ -253,18 +298,71 @@ private fun ListToggle(
     list: CustomListMinimal,
     enabled: Boolean,
     checked: Boolean,
+    opening: Boolean,
     onClick: ((CustomListMinimal) -> Unit)?,
+    onOpenClick: ((CustomListMinimal) -> Unit)?,
 ) {
-    ListButton(
-        text = list.name,
-        enabled = enabled,
-        checked = checked,
-        modifier = Modifier
-            .fillMaxWidth()
-            .onClick(enabled = enabled) {
-                onClick?.invoke(list)
-            },
-    )
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = spacedBy(12.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        ListButton(
+            text = list.name,
+            enabled = enabled,
+            checked = checked,
+            modifier = Modifier
+                .weight(1F)
+                .onClick(enabled = enabled) {
+                    onClick?.invoke(list)
+                },
+        )
+
+        if (onOpenClick != null) {
+            ListOpenButton(
+                loading = opening,
+                onClick = { onOpenClick(list) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun ListOpenButton(
+    loading: Boolean,
+    onClick: () -> Unit,
+) {
+    FilledTonalIconButton(
+        onClick = onClick,
+        enabled = !loading,
+        colors = IconButtonDefaults.filledTonalIconButtonColors(
+            containerColor = TraktTheme.colors.textPrimary.copy(
+                alpha = 0.12F,
+            ),
+            contentColor = TraktTheme.colors.textPrimary,
+            disabledContainerColor = TraktTheme.colors.dialogOnContainer,
+            disabledContentColor = TraktTheme.colors.textPrimary,
+        ),
+        modifier = Modifier.size(28.dp),
+    ) {
+        if (loading) {
+            CircularProgressIndicator(
+                color = TraktTheme.colors.textSecondary,
+                strokeWidth = 1.5.dp,
+                modifier = Modifier.size(12.dp),
+            )
+        } else {
+            Icon(
+                painter = painterResource(R.drawable.ic_chevron_right),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(16.dp)
+                    .graphicsLayer {
+                        translationX = 1.dp.toPx()
+                    },
+            )
+        }
+    }
 }
 
 @Composable
@@ -296,11 +394,20 @@ private fun MoviePreview() {
             ),
             state = ManageListsState(
                 loading = LoadingState.Done,
-                lists = persistentListOf(PreviewData.customListMinimal1),
+                lists = persistentListOf(
+                    PreviewData.customListMinimal1,
+                    PreviewData.customListMinimal1.copy(
+                        id = TraktId(3),
+                        ownerId = TraktId(3),
+                        name = "Another List",
+                    ),
+                ),
                 listedIds = persistentSetOf(PreviewData.customListMinimal1.id),
             ),
             inWatchlist = true,
             onWatchlistClick = {},
+            onWatchlistOpenClick = {},
+            onListOpenClick = {},
         )
     }
 }
@@ -333,7 +440,14 @@ private fun EpisodePreview() {
             ),
             state = ManageListsState(
                 loading = LoadingState.Done,
-                lists = persistentListOf(PreviewData.customListMinimal1),
+                lists = persistentListOf(
+                    PreviewData.customListMinimal1,
+                    PreviewData.customListMinimal1.copy(
+                        id = TraktId(3),
+                        ownerId = TraktId(3),
+                        name = "Another List",
+                    ),
+                ),
                 collaborations = persistentListOf(
                     PreviewData.customListMinimal1.copy(
                         id = TraktId(2),

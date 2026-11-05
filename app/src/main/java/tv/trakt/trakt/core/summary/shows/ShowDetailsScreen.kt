@@ -138,6 +138,7 @@ internal fun ShowDetailsScreen(
     onNavigateToAllStreamings: (Show) -> Unit,
     onNavigateToAllCredits: (Show) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
+    onNavigateToWatchlist: () -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -311,6 +312,12 @@ internal fun ShowDetailsScreen(
         inWatchlist = state.showProgress?.inWatchlist == true,
         onWatchlistClick = {
             viewModel.toggleWatchlist()
+        },
+        onWatchlistOpenClick = onNavigateToWatchlist,
+        onListClick = { list ->
+            state.show?.let { show ->
+                onListClick(show, list)
+            }
         },
         onDismiss = {
             listsSheet = null

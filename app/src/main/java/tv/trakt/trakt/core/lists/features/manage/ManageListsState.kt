@@ -16,6 +16,7 @@ internal data class ManageListsState(
     val collaborations: ImmutableList<CustomListMinimal> = EmptyImmutableList,
     val listedIds: ImmutableSet<TraktId> = EmptyImmutableSet,
     val toggling: ImmutableSet<TraktId> = EmptyImmutableSet,
+    val opening: TraktId? = null,
     val user: User? = null,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,

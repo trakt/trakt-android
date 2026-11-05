@@ -39,6 +39,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateToAllStreamings: (Show) -> Unit,
     onNavigateToAllCredits: (Show) -> Unit,
     onNavigateToUser: (User) -> Unit,
+    onNavigateToWatchlist: () -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -62,6 +63,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
             onNavigateToAllStreamings = onNavigateToAllStreamings,
             onNavigateToAllCredits = onNavigateToAllCredits,
             onNavigateToUser = onNavigateToUser,
+            onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )

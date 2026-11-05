@@ -36,6 +36,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToAllStreamings: (Movie) -> Unit,
     onNavigateToAllCredits: (Movie) -> Unit,
     onNavigateToUser: (User) -> Unit,
+    onNavigateToWatchlist: () -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -57,6 +58,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             onNavigateToAllStreamings = onNavigateToAllStreamings,
             onNavigateToAllCredits = onNavigateToAllCredits,
             onNavigateToUser = onNavigateToUser,
+            onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )

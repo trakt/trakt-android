@@ -129,6 +129,7 @@ internal fun MovieDetailsScreen(
     onNavigateToAllStreamings: (Movie) -> Unit,
     onNavigateToAllCredits: (Movie) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
+    onNavigateToWatchlist: () -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -318,6 +319,12 @@ internal fun MovieDetailsScreen(
         inWatchlist = state.movieProgress?.inWatchlist == true,
         onWatchlistClick = {
             viewModel.toggleWatchlist()
+        },
+        onWatchlistOpenClick = onNavigateToWatchlist,
+        onListClick = { list ->
+            state.movie?.let { movie ->
+                onListClick(movie, list)
+            }
         },
         onDismiss = {
             listsSheet = null

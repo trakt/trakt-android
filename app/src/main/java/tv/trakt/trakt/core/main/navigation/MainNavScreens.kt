@@ -334,6 +334,7 @@ internal fun NavGraphBuilder.showsScreens(
                     currentUserId = userId,
                 )
             },
+            onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateVip = { navigateToBilling(source = "show-details") },
             onNavigateBack = { popBackStack() },
         )
@@ -515,6 +516,7 @@ internal fun NavGraphBuilder.moviesScreens(
                     currentUserId = userId,
                 )
             },
+            onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateVip = { navigateToBilling(source = "movie-details") },
             onNavigateBack = { popBackStack() },
         )

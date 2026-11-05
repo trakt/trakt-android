@@ -6,8 +6,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -17,6 +19,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
+import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
@@ -26,11 +29,13 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.EpisodeTarget
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.MovieTarget
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.SeasonTarget
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.ShowTarget
+import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 
@@ -41,6 +46,8 @@ internal class ManageListsViewModel(
     private val loadListsUseCase: LoadUserListsUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
+    private val listsRemoteSource: ListsRemoteSource,
+    private val getCollaborationsUseCase: GetCollaborationsListsUseCase,
     private val dataChanges: DataChanges,
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
@@ -51,6 +58,7 @@ internal class ManageListsViewModel(
     private val collaborationsState = MutableStateFlow(initialState.collaborations)
     private val listedIdsState = MutableStateFlow(initialState.listedIds)
     private val togglingState = MutableStateFlow(initialState.toggling)
+    private val openingState = MutableStateFlow(initialState.opening)
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -141,6 +149,37 @@ internal class ManageListsViewModel(
         }
     }
 
+    fun openList(list: CustomListMinimal) {
+        if (openingState.value != null) {
+            return
+        }
+
+        openingState.update { list.id }
+
+        viewModelScope.launch {
+            try {
+                val details = when (list.ownerId) {
+                    userState.value?.ids?.trakt -> CustomList.fromDto(listsRemoteSource.getList(list.id))
+                    else -> loadCollaborationList(list.id)
+                }
+                openListFlow.emit(details)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                openingState.update { null }
+            }
+        }
+    }
+
+    private suspend fun loadCollaborationList(listId: TraktId): CustomList {
+        return getCollaborationsUseCase.getLocalLists().firstOrNull { it.ids.trakt == listId }
+            ?: getCollaborationsUseCase.getLists().firstOrNull { it.ids.trakt == listId }
+            ?: error("Collaboration list $listId not found")
+    }
+
     private suspend fun addItem(list: CustomListMinimal) {
         when (target) {
             is MovieTarget -> addListItemUseCase.addMovie(
@@ -213,12 +252,16 @@ internal class ManageListsViewModel(
         }
     }
 
+    private val openListFlow = MutableSharedFlow<CustomList>(replay = 0)
+    val openListEvents = openListFlow.asSharedFlow()
+
     val state = combine(
         userState,
         listsState,
         collaborationsState,
         listedIdsState,
         togglingState,
+        openingState,
         loadingState,
         errorState,
     ) { state ->
@@ -228,8 +271,9 @@ internal class ManageListsViewModel(
             collaborations = state[2] as ImmutableList<CustomListMinimal>,
             listedIds = state[3] as ImmutableSet<TraktId>,
             toggling = state[4] as ImmutableSet<TraktId>,
-            loading = state[5] as LoadingState,
-            error = state[6] as Exception?,
+            opening = state[5] as TraktId?,
+            loading = state[6] as LoadingState,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

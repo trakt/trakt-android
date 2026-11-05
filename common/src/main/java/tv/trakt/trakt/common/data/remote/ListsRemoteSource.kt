@@ -18,6 +18,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
@@ -71,6 +72,15 @@ class ListsRemoteSource(
         )
 
         cacheMarker.invalidate()
+    }
+
+    suspend fun getList(listId: TraktId): ListDto {
+        val response = listsApi.getUsersListsListSummary(
+            id = "me",
+            listId = listId.value.toString(),
+            extended = "images",
+        )
+        return response.body()
     }
 
     suspend fun deleteList(listId: TraktId) {
