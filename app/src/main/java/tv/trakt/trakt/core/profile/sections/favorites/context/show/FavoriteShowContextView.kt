@@ -25,8 +25,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,12 +36,17 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -49,16 +55,23 @@ internal fun FavoriteShowContextView(
     viewModel: FavoriteShowContextViewModel,
     modifier: Modifier = Modifier,
     onRemovedFromFavorites: () -> Unit,
+    onAddWatched: () -> Unit,
+    onRemoveWatched: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveSheet by remember { mutableStateOf(false) }
+    var confirmAddWatchedSheet by remember { mutableStateOf(false) }
+    var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
+    var dateSheet by remember { mutableStateOf(false) }
 
-    LaunchedEffect(state.loading) {
+    LaunchedEffect(state.loadingFavorite, state.loadingWatched) {
         when {
-            state.loading == LoadingState.Done -> {
-                onRemovedFromFavorites()
+            state.loadingFavorite == LoadingState.Done -> onRemovedFromFavorites()
+            state.loadingWatched == LoadingState.Done -> when {
+                state.isWatched -> onRemoveWatched()
+                else -> onAddWatched()
             }
         }
     }
@@ -76,6 +89,12 @@ internal fun FavoriteShowContextView(
         onRemoveClick = {
             confirmRemoveSheet = true
         },
+        onWatchedClick = {
+            when {
+                state.isWatched -> confirmRemoveWatchedSheet = true
+                else -> confirmAddWatchedSheet = true
+            }
+        },
     )
 
     RemoveConfirmationSheet(
@@ -91,6 +110,53 @@ internal fun FavoriteShowContextView(
             show.title,
         ),
     )
+
+    ConfirmationSheet(
+        active = confirmAddWatchedSheet,
+        onYes = {
+            confirmAddWatchedSheet = false
+            dateSheet = true
+        },
+        onNo = { confirmAddWatchedSheet = false },
+        title = stringResource(R.string.button_text_mark_as_watched),
+        annotatedMessage = customAnnotatedString(
+            stringResource(
+                R.string.warning_prompt_mark_as_watched_show_android,
+                show.airedEpisodes,
+                show.title,
+            ),
+            style = TraktTheme.typography.paragraph.toSpanStyle()
+                .copy(
+                    fontWeight = FontWeight.W600,
+                    textDecoration = TextDecoration.Underline,
+                ),
+        ),
+        holdToYes = true,
+        yesText = stringResource(R.string.button_text_hold_to_confirm),
+    )
+
+    RemoveConfirmationSheet(
+        active = confirmRemoveWatchedSheet,
+        onYes = {
+            confirmRemoveWatchedSheet = false
+            viewModel.removeFromWatched()
+        },
+        onNo = { confirmRemoveWatchedSheet = false },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
+            show.title,
+        ),
+    )
+
+    DateSelectionSheet(
+        active = dateSheet,
+        title = show.title,
+        onResult = viewModel::addToWatched,
+        onDismiss = {
+            dateSheet = false
+        },
+    )
 }
 
 @Composable
@@ -99,6 +165,7 @@ private fun FavoriteShowContextViewContent(
     state: FavoriteShowContextState,
     modifier: Modifier = Modifier,
     onRemoveClick: () -> Unit = {},
+    onWatchedClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -137,8 +204,10 @@ private fun FavoriteShowContextViewContent(
 
         if (state.user != null) {
             ShowActionButtons(
+                show = show,
                 state = state,
                 onRemoveClick = onRemoveClick,
+                onWatchedClick = onWatchedClick,
             )
         }
     }
@@ -146,42 +215,65 @@ private fun FavoriteShowContextViewContent(
 
 @Composable
 private fun ShowActionButtons(
+    show: Show,
     state: FavoriteShowContextState,
     onRemoveClick: () -> Unit,
+    onWatchedClick: () -> Unit,
 ) {
+    val isReleased = show.rememberReleased()
     val isLoadingOrDone =
-        state.loading.isLoading ||
-            state.loading.isDone
+        state.loadingFavorite.isLoading ||
+            state.loadingFavorite.isDone ||
+            state.loadingWatched.isLoading ||
+            state.loadingWatched.isDone
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = Modifier.padding(top = 14.dp),
     ) {
+        if (isReleased) {
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                loading = state.loadingWatched.isLoading || state.loadingWatched.isDone,
+                text = when {
+                    state.isWatched -> stringResource(R.string.button_text_remove_from_history)
+                    else -> stringResource(R.string.button_text_track)
+                },
+                onClick = onWatchedClick,
+                icon = when {
+                    state.isWatched -> painterResource(R.drawable.ic_trash)
+                    else -> painterResource(R.drawable.ic_check_2)
+                },
+                iconSize = 22.dp,
+                iconSpace = 11.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -7.dp.toPx()
+                    },
+            )
+        }
+
         GhostButton(
             enabled = !isLoadingOrDone,
-            loading = isLoadingOrDone,
+            loading = state.loadingFavorite.isLoading || state.loadingFavorite.isDone,
             text = stringResource(R.string.button_text_remove_from_favorites),
             onClick = onRemoveClick,
             icon = painterResource(R.drawable.ic_close),
-            iconSize = 20.dp,
-            iconSpace = 12.dp,
+            iconSize = 22.dp,
+            iconSpace = 11.dp,
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -8.dp.toPx()
+                    translationX = -7.dp.toPx()
                 },
         )
     }
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
+@PreviewTraktLightDark
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemePreview {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }
@@ -189,6 +281,26 @@ private fun Preview() {
             FavoriteShowContextViewContent(
                 state = FavoriteShowContextState(
                     user = PreviewData.user1,
+                ),
+                show = PreviewData.show1,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@PreviewTraktLightDark
+@Composable
+private fun PreviewWatched() {
+    TraktThemePreview {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            FavoriteShowContextViewContent(
+                state = FavoriteShowContextState(
+                    user = PreviewData.user1,
+                    isWatched = true,
                 ),
                 show = PreviewData.show1,
             )

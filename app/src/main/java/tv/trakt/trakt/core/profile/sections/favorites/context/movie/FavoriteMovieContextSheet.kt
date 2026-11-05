@@ -58,6 +58,22 @@ internal fun FavoriteMovieContextSheet(
                         message = localRes.getString(R.string.text_info_favorites_removed),
                     )
                 },
+                onAddWatched = {
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = localRes.getString(R.string.text_info_history_added),
+                    )
+                },
+                onRemoveWatched = {
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = localRes.getString(R.string.text_info_history_removed),
+                    )
+                },
                 onError = {
                     sheetScope.dismissWithMessage(
                         state = state,

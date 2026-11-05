@@ -7,7 +7,9 @@ import tv.trakt.trakt.common.model.User
 
 @Immutable
 internal data class FavoriteShowContextState(
-    val loading: LoadingState = Idle,
+    val isWatched: Boolean = false,
+    val loadingFavorite: LoadingState = Idle,
+    val loadingWatched: LoadingState = Idle,
     val user: User? = null,
     val error: Exception? = null,
 )
