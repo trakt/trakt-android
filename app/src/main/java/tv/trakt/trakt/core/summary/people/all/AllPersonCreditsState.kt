@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsSection
 
@@ -20,6 +21,7 @@ internal data class AllPersonCreditsState(
     val selectedPosition: String? = null,
     val items: ImmutableList<PersonCreditItem> = persistentListOf(),
     val collection: UserCollectionState = UserCollectionState.Default,
+    val filter: GlobalFilter = GlobalFilter.Default,
     val loading: LoadingState = LoadingState.Idle,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,

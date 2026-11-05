@@ -102,6 +102,7 @@ internal fun DetailsHeader(
     watching: Boolean,
     personImdb: ImdbId? = null,
     loading: Boolean,
+    topRightContent: @Composable (() -> Unit)? = null,
     extraRightColumn: @Composable (() -> Unit)? = null,
     onImdbClick: () -> Unit,
     onMalClick: (link: String) -> Unit,
@@ -133,6 +134,7 @@ internal fun DetailsHeader(
                 onShareImageClick = onShareImageClick,
                 onBackClick = onBackClick,
                 onWatchedClick = onWatchedClick ?: {},
+                topRightContent = topRightContent,
                 extraRightColumn = extraRightColumn ?: {},
             )
         } else {

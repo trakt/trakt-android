@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 
 internal class GetPersonCreditsUseCase(
@@ -19,8 +20,11 @@ internal class GetPersonCreditsUseCase(
 ) {
     private val mutex = Mutex()
 
-    suspend fun getShowCredits(personId: TraktId): ImmutableMap<String, ImmutableList<PersonCreditItem.ShowItem>> {
-        val response = peopleRemoteSource.getPersonShowsCredits(personId)
+    suspend fun getShowCredits(
+        personId: TraktId,
+        filter: GlobalFilter,
+    ): ImmutableMap<String, ImmutableList<PersonCreditItem.ShowItem>> {
+        val response = peopleRemoteSource.getPersonShowsCredits(personId, filter)
         val results = mutableMapOf<String, ImmutableList<PersonCreditItem.ShowItem>>()
 
         val actingResults = mutableListOf<PersonCreditItem.ShowItem>()
@@ -83,8 +87,11 @@ internal class GetPersonCreditsUseCase(
         return results.toImmutableMap()
     }
 
-    suspend fun getMovieCredits(personId: TraktId): ImmutableMap<String, ImmutableList<PersonCreditItem.MovieItem>> {
-        val response = peopleRemoteSource.getPersonMoviesCredits(personId)
+    suspend fun getMovieCredits(
+        personId: TraktId,
+        filter: GlobalFilter,
+    ): ImmutableMap<String, ImmutableList<PersonCreditItem.MovieItem>> {
+        val response = peopleRemoteSource.getPersonMoviesCredits(personId, filter)
         val results = mutableMapOf<String, ImmutableList<PersonCreditItem.MovieItem>>()
 
         val actingResults = mutableListOf<PersonCreditItem.MovieItem>()

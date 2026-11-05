@@ -57,6 +57,7 @@ fun DetailsHeaderPoster(
     onShareClick: () -> Unit,
     onShareImageClick: (() -> Unit)?,
     onWatchedClick: () -> Unit,
+    topRightContent: (@Composable () -> Unit)? = null,
     extraRightColumn: @Composable () -> Unit = {},
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -155,6 +156,14 @@ fun DetailsHeaderPoster(
                     .padding(top = 8.dp),
                 horizontalAlignment = Alignment.Start,
             ) {
+                topRightContent?.let {
+                    Box(
+                        modifier = Modifier.padding(start = 20.dp, bottom = 18.dp),
+                    ) {
+                        it()
+                    }
+                }
+
                 TraktShareButton(
                     onShareLinkClick = onShareClick,
                     onShareImageClick = onShareImageClick,

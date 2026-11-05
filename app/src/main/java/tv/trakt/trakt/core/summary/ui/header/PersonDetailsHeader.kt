@@ -40,6 +40,7 @@ internal fun DetailsHeader(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     onReportClick: (() -> Unit)? = null,
+    topRightContent: (@Composable () -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -65,10 +66,11 @@ internal fun DetailsHeader(
                 modifier = Modifier.padding(top = 1.dp),
             )
         },
+        topRightContent = topRightContent,
         extraRightColumn = {
             Column(
                 horizontalAlignment = CenterHorizontally,
-                verticalArrangement = spacedBy(18.dp),
+                verticalArrangement = spacedBy(20.dp),
                 modifier = Modifier
                     .padding(top = 17.dp)
                     .fillMaxWidth(),

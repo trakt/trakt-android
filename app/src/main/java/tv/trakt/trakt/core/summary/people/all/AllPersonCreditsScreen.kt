@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.summary.people.all
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -48,6 +50,8 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.summary.people.all.views.AllPersonCreditView
@@ -57,6 +61,7 @@ import tv.trakt.trakt.core.summary.people.ui.CreditsPositionFilters
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -77,6 +82,7 @@ internal fun AllPersonCreditsScreen(
 
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(
         state.navigateShow,
@@ -102,6 +108,19 @@ internal fun AllPersonCreditsScreen(
         onMovieClick = viewModel::navigateToMovie,
         onShowLongClick = { contextShowSheet = it },
         onMovieLongClick = { contextMovieSheet = it },
+        onFiltersClick = { filtersSheet = true },
+    )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
     )
 
     ShowContextSheet(
@@ -126,6 +145,7 @@ internal fun AllPersonCreditsContent(
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
 
@@ -169,6 +189,7 @@ internal fun AllPersonCreditsContent(
                 onBackClick = onBackClick,
                 onModeClick = onModeClick,
                 onPositionClick = onPositionClick,
+                onFiltersClick = onFiltersClick,
             )
 
             when {
@@ -226,6 +247,7 @@ private fun LazyListScope.headerContent(
     onBackClick: () -> Unit,
     onModeClick: (MediaMode) -> Unit,
     onPositionClick: (String) -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
     item {
         Column(
@@ -234,13 +256,27 @@ private fun LazyListScope.headerContent(
                     bottom = 4.dp,
                 ),
         ) {
-            TitleBar(
-                title = state.person?.name ?: "",
-                subtitle = subtitleRes(state)?.let { stringResource(it) },
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = CenterVertically,
                 modifier = Modifier
-                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                    .onClick { onBackClick() },
-            )
+                    .fillMaxWidth()
+                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+            ) {
+                TitleBar(
+                    title = state.person?.name ?: "",
+                    subtitle = subtitleRes(state)?.let { stringResource(it) },
+                    modifier = Modifier
+                        .weight(1F, fill = false)
+                        .onClick { onBackClick() },
+                )
+
+                MediaFilterIcon(
+                    active = state.filter.isActive,
+                    enabled = !state.loading.isLoading,
+                    onClick = onFiltersClick,
+                )
+            }
 
             val modeFiltersVisible = state.section.isHistory
             val positionFiltersVisible = state.positions.size > 1

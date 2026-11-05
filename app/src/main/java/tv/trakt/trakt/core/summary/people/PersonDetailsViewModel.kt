@@ -11,6 +11,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,8 +35,10 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
@@ -53,6 +58,7 @@ internal class PersonDetailsViewModel(
     private val showLocalSource: ShowLocalSource,
     private val movieLocalSource: MovieLocalSource,
     private val collectionStateProvider: CollectionStateProvider,
+    private val filterManager: GlobalFilterManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<PersonDestination>()
     private val initialState = PersonDetailsState()
@@ -66,17 +72,20 @@ internal class PersonDetailsViewModel(
     private val preferredCreditsFilterState = MutableStateFlow(destination.creditsFilter)
     private val personShowCreditsState = MutableStateFlow(initialState.personShowCredits)
     private val personMovieCreditsState = MutableStateFlow(initialState.personMovieCredits)
+    private val filterState = MutableStateFlow(filterManager.getFilter())
 
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var mediaLinkJob: Job? = null
+    private var creditsJob: Job? = null
 
     init {
         loadUser()
         loadData()
         observeCollection()
+        observeFilter()
 
         analytics.logScreenView(
             screenName = "person_details",
@@ -86,6 +95,18 @@ internal class PersonDetailsViewModel(
     private fun observeCollection() {
         collectionStateProvider
             .launchIn(viewModelScope)
+    }
+
+    private fun observeFilter() {
+        filterManager.observeFilter()
+            .filter { it != filterState.value }
+            .onEach(::setFilter)
+            .launchIn(viewModelScope)
+    }
+
+    fun setFilter(filter: GlobalFilter) {
+        filterState.update { filter }
+        personDetailsState.value?.let { loadPersonCredits(it.ids.trakt) }
     }
 
     private fun loadUser() {
@@ -153,12 +174,22 @@ internal class PersonDetailsViewModel(
         }
     }
 
-    private suspend fun loadPersonCredits(personId: TraktId) {
-        loadingCreditsState.update { LoadingState.Loading }
+    private fun loadPersonCredits(personId: TraktId) {
+        creditsJob?.cancel()
+        creditsJob = viewModelScope.launch {
+            loadingCreditsState.update { LoadingState.Loading }
+            loadCredits(personId, filterState.value)
+            loadingCreditsState.update { LoadingState.Done }
+        }
+    }
 
+    private suspend fun loadCredits(
+        personId: TraktId,
+        filter: GlobalFilter,
+    ) {
         supervisorScope {
-            val showCreditsAsync = async { getPersonCreditsUseCase.getShowCredits(personId) }
-            val movieCreditsAsync = async { getPersonCreditsUseCase.getMovieCredits(personId) }
+            val showCreditsAsync = async { getPersonCreditsUseCase.getShowCredits(personId, filter) }
+            val movieCreditsAsync = async { getPersonCreditsUseCase.getMovieCredits(personId, filter) }
 
             try {
                 personShowCreditsState.update { showCreditsAsync.await() }
@@ -178,8 +209,6 @@ internal class PersonDetailsViewModel(
                 }
             }
         }
-
-        loadingCreditsState.update { LoadingState.Done }
     }
 
     fun navigateToShow(show: Show) {
@@ -265,6 +294,7 @@ internal class PersonDetailsViewModel(
         navigateMovie,
         errorState,
         preferredCreditsFilterState,
+        filterState,
     ) { state ->
         PersonDetailsState(
             user = state[0] as User?,
@@ -279,6 +309,7 @@ internal class PersonDetailsViewModel(
             navigateMovie = state[9] as TraktId?,
             error = state[10] as Exception?,
             preferredCreditsFilter = state[11] as String?,
+            filter = state[12] as GlobalFilter,
         )
     }.stateIn(
         scope = viewModelScope,

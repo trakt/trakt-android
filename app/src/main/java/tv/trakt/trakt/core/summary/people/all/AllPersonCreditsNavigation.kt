@@ -12,6 +12,7 @@ internal data class AllPersonCreditsDestination(
     val personId: Int,
     val section: PersonCreditsSection,
     val position: String? = null,
+    val filterJson: String? = null,
 )
 
 internal fun NavGraphBuilder.allPersonCreditsScreen(

@@ -54,7 +54,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.serialization.json.Json
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -66,6 +68,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -73,6 +76,8 @@ import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
@@ -86,6 +91,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
@@ -104,6 +110,7 @@ internal fun PersonDetailsScreen(
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
     var reportSheet by remember { mutableStateOf<ReportTarget?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(
         state.navigateShow,
@@ -153,6 +160,9 @@ internal fun PersonDetailsScreen(
         onReportClick = {
             reportSheet = state.personDetails?.let { ReportTarget.Person(it.ids.trakt) }
         },
+        onFiltersClick = {
+            filtersSheet = true
+        },
         onMoreClick = { section, position ->
             val person = state.personDetails ?: return@PersonDetailsContent
             onNavigateToAllCredits(
@@ -160,6 +170,7 @@ internal fun PersonDetailsScreen(
                     personId = person.ids.trakt.value,
                     section = section,
                     position = position,
+                    filterJson = Json.encodeToString(state.filter),
                 ),
             )
         },
@@ -186,6 +197,18 @@ internal fun PersonDetailsScreen(
             reportSheet = null
         },
     )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
 }
 
 @Composable
@@ -201,6 +224,7 @@ internal fun PersonDetailsContent(
     onBackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
+    onFiltersClick: (() -> Unit)? = null,
     onMoreClick: ((PersonCreditsSection, String?) -> Unit)? = null,
 ) {
     val context = LocalContext.current
@@ -260,6 +284,14 @@ internal fun PersonDetailsContent(
                             sharePerson(person, state.user?.settings?.shareCode, context)
                         },
                         onReportClick = onReportClick.takeIf { state.user != null },
+                        topRightContent = onFiltersClick?.let { onClick ->
+                            {
+                                MediaFilterIcon(
+                                    active = state.filter.isActive,
+                                    onClick = onClick,
+                                )
+                            }
+                        },
                         onBackClick = onBackClick ?: {},
                     )
                 }
@@ -297,7 +329,7 @@ internal fun PersonDetailsContent(
 
                 item {
                     AnimatedVisibility(
-                        visible = state.loadingCredits != Idle,
+                        visible = state.loadingCredits != Idle && state.filter.mode != MediaMode.Movies,
                         enter = fadeIn(),
                         exit = fadeOut(),
                     ) {
@@ -321,7 +353,7 @@ internal fun PersonDetailsContent(
 
                 item {
                     AnimatedVisibility(
-                        visible = state.loadingCredits != Idle,
+                        visible = state.loadingCredits != Idle && state.filter.mode != MediaMode.Shows,
                         enter = fadeIn(),
                         exit = fadeOut(),
                     ) {
@@ -352,8 +384,14 @@ internal fun PersonDetailsContent(
                         ) {
                             HistoryCreditsList(
                                 loading = state.loadingCredits,
-                                personShowCredits = state.personShowCredits,
-                                personMovieCredits = state.personMovieCredits,
+                                personShowCredits = when (state.filter.mode) {
+                                    MediaMode.Movies -> persistentMapOf()
+                                    MediaMode.Media, MediaMode.Shows -> state.personShowCredits
+                                },
+                                personMovieCredits = when (state.filter.mode) {
+                                    MediaMode.Shows -> persistentMapOf()
+                                    MediaMode.Media, MediaMode.Movies -> state.personMovieCredits
+                                },
                                 userCollection = state.collection,
                                 sectionPadding = sectionPadding,
                                 contentPadding = sectionPadding,

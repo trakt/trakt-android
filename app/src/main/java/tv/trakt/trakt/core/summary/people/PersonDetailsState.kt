@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 
 @Immutable
@@ -19,6 +20,7 @@ internal data class PersonDetailsState(
     val personShowCredits: ImmutableMap<String, ImmutableList<PersonCreditItem.ShowItem>>? = null,
     val personMovieCredits: ImmutableMap<String, ImmutableList<PersonCreditItem.MovieItem>>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
+    val filter: GlobalFilter = GlobalFilter.Default,
     val loadingDetails: LoadingState = LoadingState.Idle,
     val loadingCredits: LoadingState = LoadingState.Idle,
     val navigateShow: TraktId? = null,

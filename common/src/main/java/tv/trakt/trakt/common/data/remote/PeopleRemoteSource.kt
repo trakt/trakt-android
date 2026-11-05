@@ -5,6 +5,8 @@ import org.openapitools.client.models.PostPeopleReportRequest
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.globalfilter.toApiParams
 import tv.trakt.trakt.common.networking.PersonDto
 import tv.trakt.trakt.common.networking.PersonMoviesDto
 import tv.trakt.trakt.common.networking.PersonShowsDto
@@ -42,12 +44,14 @@ class PeopleRemoteSource(
 
     suspend fun getPersonShowsCredits(
         personId: TraktId,
+        filters: GlobalFilter = GlobalFilter.Default,
         extended: String = "full,images,colors,streaming_ids",
     ): PersonShowsDto {
         return try {
-            peopleApi.getPeopleShows(
+            peopleExtrasApi.getPeopleShows(
                 id = personId.value.toString(),
                 extended = extended,
+                filters = filters.toApiParams(),
             ).body()
         } catch (error: Exception) {
             // People without show credits return 204 No Content, which fails body parsing.
@@ -58,12 +62,14 @@ class PeopleRemoteSource(
 
     suspend fun getPersonMoviesCredits(
         personId: TraktId,
+        filters: GlobalFilter = GlobalFilter.Default,
         extended: String = "full,images,colors,streaming_ids",
     ): PersonMoviesDto {
         return try {
-            peopleApi.getPeopleMovies(
+            peopleExtrasApi.getPeopleMovies(
                 id = personId.value.toString(),
                 extended = extended,
+                filters = filters.toApiParams(),
             ).body()
         } catch (error: Exception) {
             // People without movie credits return 204 No Content, which fails body parsing.

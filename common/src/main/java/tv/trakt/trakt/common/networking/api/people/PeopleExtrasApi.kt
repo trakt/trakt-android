@@ -16,6 +16,8 @@ import org.openapitools.client.infrastructure.RequestConfig
 import org.openapitools.client.infrastructure.RequestMethod
 import org.openapitools.client.infrastructure.wrap
 import tv.trakt.trakt.common.networking.PersonDto
+import tv.trakt.trakt.common.networking.PersonMoviesDto
+import tv.trakt.trakt.common.networking.PersonShowsDto
 
 open class PeopleExtrasApi(
     baseUrl: String,
@@ -49,6 +51,47 @@ open class PeopleExtrasApi(
         return request(
             localVariableConfig,
             localVariableBody,
+            localVariableAuthNames,
+        ).wrap()
+    }
+
+    open suspend fun getPeopleMovies(
+        id: String,
+        extended: String,
+        filters: Map<String, String>,
+    ): HttpResponse<PersonMoviesDto> {
+        return getPeopleCredits("/people/$id/movies", extended, filters)
+    }
+
+    open suspend fun getPeopleShows(
+        id: String,
+        extended: String,
+        filters: Map<String, String>,
+    ): HttpResponse<PersonShowsDto> {
+        return getPeopleCredits("/people/$id/shows", extended, filters)
+    }
+
+    private suspend inline fun <reified T : Any> getPeopleCredits(
+        path: String,
+        extended: String,
+        filters: Map<String, String>,
+    ): HttpResponse<T> {
+        val localVariableAuthNames = listOf("traktAPI", "traktOAuth")
+
+        val localVariableQuery = mutableMapOf("extended" to listOf(extended))
+        filters.forEach { (key, value) -> localVariableQuery[key] = listOf(value) }
+
+        val localVariableConfig = RequestConfig<Any?>(
+            RequestMethod.GET,
+            path,
+            query = localVariableQuery,
+            headers = mutableMapOf(),
+            requiresAuthentication = true,
+        )
+
+        return request(
+            localVariableConfig,
+            EmptyContent,
             localVariableAuthNames,
         ).wrap()
     }
