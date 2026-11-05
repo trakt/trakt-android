@@ -20,6 +20,7 @@ internal fun ListDetailsSeasonView(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: (TraktId) -> Unit = { },
+    onLongClick: (() -> Unit)? = null,
 ) {
     PanelMediaCard(
         modifier = modifier,
@@ -29,12 +30,12 @@ internal fun ListDetailsSeasonView(
         enabled = enabled,
         watched = false,
         watchlist = false,
-        more = false,
+        more = onLongClick != null,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.show.images?.getFanartUrl(THUMB),
         onClick = { onClick(item.show.ids.trakt) },
         onImageClick = { onClick(item.show.ids.trakt) },
-        onLongClick = null,
+        onLongClick = onLongClick,
         footerContent = {
             SeasonMetaFooter(
                 season = item.season,

@@ -264,7 +264,7 @@ private fun ActionButtons(
                     iconSpace = 16.dp,
                     modifier = Modifier
                         .graphicsLayer {
-                            translationX = -4.dp.toPx()
+                            translationX = -6.dp.toPx()
                         },
                 )
             } else {
@@ -292,7 +292,7 @@ private fun ActionButtons(
             text = stringResource(R.string.button_text_remove_from_list),
             onClick = onRemoveListClick,
             iconSize = 22.dp,
-            iconSpace = 17.dp,
+            iconSpace = 16.dp,
             icon = painterResource(R.drawable.ic_minus),
             modifier = Modifier
                 .graphicsLayer {
@@ -309,7 +309,7 @@ private fun ActionButtons(
             },
             onClick = onWatchlistClick,
             iconSize = 22.dp,
-            iconSpace = 17.dp,
+            iconSpace = 16.dp,
             icon = when {
                 state.isWatchlist -> painterResource(R.drawable.ic_bookmark_on)
                 else -> painterResource(R.drawable.ic_bookmark_off)

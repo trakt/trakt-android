@@ -82,6 +82,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
+import tv.trakt.trakt.core.lists.sections.personal.features.context.item.ListItemContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
@@ -127,6 +128,7 @@ internal fun AllPersonalListScreen(
 
     var showContextSheet by remember { mutableStateOf<ShowItem?>(null) }
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var itemContextSheet by remember { mutableStateOf<CustomListItem?>(null) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
     var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
@@ -147,8 +149,7 @@ internal fun AllPersonalListScreen(
             when (it) {
                 is MovieItem -> movieContextSheet = it
                 is ShowItem -> showContextSheet = it
-                is SeasonItem -> Unit
-                is EpisodeItem -> Unit
+                is SeasonItem, is EpisodeItem -> itemContextSheet = it
             }
         },
         onModeClick = { mode ->
@@ -208,6 +209,18 @@ internal fun AllPersonalListScreen(
         },
         onDismiss = {
             movieContextSheet = null
+        },
+    )
+
+    ListItemContextSheet(
+        item = itemContextSheet,
+        list = state.list,
+        removable = true,
+        onRemoveListItem = {
+            viewModel.removeItem(itemContextSheet)
+        },
+        onDismiss = {
+            itemContextSheet = null
         },
     )
 
@@ -693,6 +706,7 @@ private fun ContentList(
                         sorting = listSorting,
                         enabled = !loading,
                         onClick = { onClick(item) },
+                        onLongClick = { onLongClick(item) },
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                             .animateItem(
@@ -706,6 +720,7 @@ private fun ContentList(
                         sorting = listSorting,
                         enabled = !loading,
                         onClick = { onClick(item) },
+                        onLongClick = { onLongClick(item) },
                         modifier = Modifier
                             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                             .animateItem(

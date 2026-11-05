@@ -17,6 +17,7 @@ internal fun ListDetailsEpisodeView(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: (CustomListItem.EpisodeItem) -> Unit = { },
+    onLongClick: (() -> Unit)? = null,
 ) {
     PanelMediaCard(
         modifier = modifier,
@@ -26,13 +27,13 @@ internal fun ListDetailsEpisodeView(
         enabled = enabled,
         watched = false,
         watchlist = false,
-        more = false,
+        more = onLongClick != null,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.episode.images?.getScreenshotUrl(THUMB)
             ?: item.show.images?.getFanartUrl(THUMB),
         onClick = { onClick(item) },
         onImageClick = { onClick(item) },
-        onLongClick = null,
+        onLongClick = onLongClick,
         footerContent = {
             EpisodeMetaFooter(
                 episode = item.episode,

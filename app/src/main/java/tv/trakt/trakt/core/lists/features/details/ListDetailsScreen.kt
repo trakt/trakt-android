@@ -96,6 +96,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
+import tv.trakt.trakt.core.lists.sections.personal.features.context.item.ListItemContextSheet
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -166,6 +167,7 @@ internal fun ListDetailsScreen(
 
     var showContextSheet by remember { mutableStateOf<ShowItem?>(null) }
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var itemContextSheet by remember { mutableStateOf<CustomListItem?>(null) }
     var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var confirmRemoveLikeSheet by remember { mutableStateOf(false) }
     var filtersSheet by remember { mutableStateOf(false) }
@@ -191,7 +193,8 @@ internal fun ListDetailsScreen(
             when (it) {
                 is MovieItem -> movieContextSheet = it
                 is ShowItem -> showContextSheet = it
-                is SeasonItem, is EpisodeItem -> Unit
+                is EpisodeItem -> itemContextSheet = it
+                is SeasonItem -> Unit
             }
         },
         onModeClick = { mode ->
@@ -241,6 +244,15 @@ internal fun ListDetailsScreen(
         movie = movieContextSheet?.movie,
         onDismiss = {
             movieContextSheet = null
+        },
+    )
+
+    ListItemContextSheet(
+        item = itemContextSheet,
+        list = state.list?.list,
+        removable = false,
+        onDismiss = {
+            itemContextSheet = null
         },
     )
 
@@ -667,6 +679,7 @@ private fun ContentList(
                             sorting = listSorting,
                             enabled = !loading,
                             onClick = { onClick(item) },
+                            onLongClick = { onLongClick(item) },
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                                 .animateItem(

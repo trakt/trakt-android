@@ -33,11 +33,13 @@ import tv.trakt.trakt.core.lists.features.reorder.watchlist.usecase.ReorderWatch
 import tv.trakt.trakt.core.lists.features.smart.CreateSmartListViewModel
 import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
+import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListViewModel
+import tv.trakt.trakt.core.lists.sections.personal.features.context.item.ListItemContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.ListMovieContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.ListShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
@@ -116,6 +118,19 @@ internal val listsModule = module {
     viewModelOf(::CreateSmartListViewModel)
     viewModelOf(::WatchlistShowContextViewModel)
     viewModelOf(::ListShowContextViewModel)
+    viewModel { (item: CustomListItem, list: CustomList) ->
+        ListItemContextViewModel(
+            item = item,
+            list = list,
+            sessionManager = get(),
+            updateEpisodeHistoryUseCase = get(),
+            removeListItemUseCase = get(),
+            loadProgressUseCase = get(),
+            userProgressLocalSource = get(),
+            dataChanges = get(),
+            analytics = get(),
+        )
+    }
     viewModelOf(::ManageListsViewModel)
 
     viewModel {
