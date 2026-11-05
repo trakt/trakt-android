@@ -28,6 +28,7 @@ internal fun AllProgressShowView(
     enabled: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
 ) {
     val genresText = item.show.genres.take(2)
         .map { stringResource(it.displayStringRes) }
@@ -41,8 +42,9 @@ internal fun AllProgressShowView(
         subtitle = genresText,
         contentImageUrl = item.show.images?.getPosterUrl(),
         containerImageUrl = item.show.images?.getFanartUrl(Images.Size.THUMB),
-        more = false,
+        more = true,
         onClick = onClick,
+        onLongClick = onLongClick,
         onImageClick = onClick,
         footerContent = {
             val hiddenAt = item.hiddenAt

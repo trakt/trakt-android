@@ -49,6 +49,7 @@ import tv.trakt.trakt.core.profile.sections.library.all.AllLibraryViewModel
 import tv.trakt.trakt.core.profile.sections.library.usecases.GetCollectionLimitServersUseCase
 import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressViewModel
 import tv.trakt.trakt.core.profile.sections.progress.all.AllProgressViewModel
+import tv.trakt.trakt.core.profile.sections.progress.context.ProgressShowContextViewModel
 import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedLocalSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalSource
@@ -220,6 +221,22 @@ internal val profileModule = module {
             userWatchlistLocalSource = get(),
             userWatchlistMinLocalSource = get(),
             ratePromptManager = get(),
+            dataChanges = get(),
+            analytics = get(),
+        )
+    }
+
+    viewModel { (show: Show) ->
+        ProgressShowContextViewModel(
+            show = show,
+            sessionManager = get(),
+            updateShowHistoryUseCase = get(),
+            loadProgressUseCase = get(),
+            upNextLocalSource = get(),
+            upcomingLocalSource = get(),
+            userProgressLocalSource = get(),
+            userWatchlistLocalSource = get(),
+            userWatchlistMinLocalSource = get(),
             dataChanges = get(),
             analytics = get(),
         )

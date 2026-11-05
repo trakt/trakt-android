@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.profile.sections.progress
 
 import androidx.compose.animation.Crossfade
@@ -14,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +42,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
+import tv.trakt.trakt.core.profile.sections.progress.context.ProgressShowContextSheet
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
 import tv.trakt.trakt.core.profile.sections.progress.views.ProgressFilters
 import tv.trakt.trakt.core.profile.sections.progress.views.ProgressItemView
@@ -60,6 +64,8 @@ internal fun ProfileProgressView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var contextSheet by remember { mutableStateOf<ProfileProgressItem.ShowItem?>(null) }
+
     LaunchedEffect(state) {
         state.navigateShow?.let {
             viewModel.clearNavigation()
@@ -75,7 +81,13 @@ internal fun ProfileProgressView(
         onCollapse = viewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
         onShowClick = viewModel::navigateToShow,
+        onShowLongClick = { contextSheet = it },
         onProgressClick = { onMoreClick() },
+    )
+
+    ProgressShowContextSheet(
+        item = contextSheet,
+        onDismiss = { contextSheet = null },
     )
 }
 
@@ -88,6 +100,7 @@ internal fun ProfileProgressContent(
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onFilterClick: (ProgressFilter) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
+    onShowLongClick: (ProfileProgressItem.ShowItem) -> Unit = {},
     onProgressClick: () -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -163,6 +176,7 @@ internal fun ProfileProgressContent(
                                     listItems = state.items ?: EmptyImmutableList,
                                     contentPadding = contentPadding,
                                     onShowClick = onShowClick,
+                                    onShowLongClick = onShowLongClick,
                                 )
                             }
                         }
@@ -179,6 +193,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onShowClick: (Show) -> Unit = {},
+    onShowLongClick: (ProfileProgressItem.ShowItem) -> Unit = {},
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -203,6 +218,11 @@ private fun ContentList(
             ProgressItemView(
                 item = item,
                 onShowClick = onShowClick,
+                onShowLongClick = {
+                    when (item) {
+                        is ProfileProgressItem.ShowItem -> onShowLongClick(item)
+                    }
+                },
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
                     fadeOutSpec = null,

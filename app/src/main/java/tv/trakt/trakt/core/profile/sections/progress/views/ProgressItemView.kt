@@ -31,14 +31,16 @@ internal fun ProgressItemView(
     item: ProfileProgressItem,
     modifier: Modifier = Modifier,
     onShowClick: (Show) -> Unit = {},
+    onShowLongClick: (Show) -> Unit = {},
 ) {
     when (item) {
         is ProfileProgressItem.ShowItem -> {
             VerticalMediaCard(
                 title = item.show.title,
                 imageUrl = item.show.images?.getPosterUrl(),
-                more = false,
+                more = true,
                 onClick = { onShowClick(item.show) },
+                onLongClick = { onShowLongClick(item.show) },
                 cardContent = {
                     item.hiddenAt?.let {
                         InfoChip(

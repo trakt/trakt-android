@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.profile.ProfileProgressItem
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.core.profile.sections.progress.all.views.AllProgressShowView
+import tv.trakt.trakt.core.profile.sections.progress.context.ProgressShowContextSheet
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSortType
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressSorting
@@ -78,6 +79,7 @@ internal fun AllProgressScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var sortSheet by remember { mutableStateOf<ProgressSorting?>(null) }
+    var contextSheet by remember { mutableStateOf<ProfileProgressItem.ShowItem?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -99,6 +101,11 @@ internal fun AllProgressScreen(
                 }
             }
         },
+        onLongClick = { item ->
+            when (item) {
+                is ProfileProgressItem.ShowItem -> contextSheet = item
+            }
+        },
         onFilterClick = { viewModel.setFilter(it) },
         onSortClick = { sortSheet = state.sorting },
         onBackClick = onNavigateBack,
@@ -114,6 +121,11 @@ internal fun AllProgressScreen(
         },
         onDismiss = { sortSheet = null },
     )
+
+    ProgressShowContextSheet(
+        item = contextSheet,
+        onDismiss = { contextSheet = null },
+    )
 }
 
 @Composable
@@ -122,6 +134,7 @@ internal fun AllProgressContent(
     modifier: Modifier = Modifier,
     onLoadMore: () -> Unit = {},
     onClick: (ProfileProgressItem) -> Unit = {},
+    onLongClick: (ProfileProgressItem) -> Unit = {},
     onFilterClick: (ProgressFilter) -> Unit = {},
     onSortClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -167,6 +180,7 @@ internal fun AllProgressContent(
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
             onClick = onClick,
+            onLongClick = onLongClick,
             onFilterClick = onFilterClick,
             onSortClick = onSortClick,
             onBackClick = onBackClick,
@@ -257,6 +271,7 @@ private fun ContentList(
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
     onClick: (ProfileProgressItem) -> Unit,
+    onLongClick: (ProfileProgressItem) -> Unit,
     onFilterClick: (ProgressFilter) -> Unit,
     onSortClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -312,6 +327,7 @@ private fun ContentList(
                     item = item,
                     enabled = !loading,
                     onClick = { onClick(item) },
+                    onLongClick = { onLongClick(item) },
                     modifier = Modifier
                         .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                         .animateItem(
