@@ -107,6 +107,7 @@ val networkingApiModule = module {
             get<MoviesApi>(),
             get<OauthApi>(),
             get<PeopleApi>(),
+            get<PeopleApi>(named("authorizedPeopleApi")),
             get<RatingsApi>(),
             get<ReactionsApi>(),
             get<RecommendationsApi>(),
@@ -257,6 +258,14 @@ val networkingApiModule = module {
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+        )
+    }
+
+    single<PeopleApi>(named("authorizedPeopleApi")) {
+        PeopleApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
     }
 

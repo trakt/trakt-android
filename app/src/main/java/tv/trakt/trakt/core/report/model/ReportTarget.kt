@@ -25,18 +25,30 @@ internal sealed interface ReportTarget {
         val episode: Int,
     ) : ReportTarget
 
+    data class Person(
+        val id: TraktId,
+    ) : ReportTarget
+
+    data class User(
+        val id: TraktId,
+    ) : ReportTarget
+
     val type: String
         get() = when (this) {
             is Comment -> "comment"
             is Movie -> "movie"
             is Show -> "show"
             is Episode -> "episode"
+            is Person -> "person"
+            is User -> "user"
         }
 
     val reasons: ImmutableList<ReportReason>
         get() = when (this) {
             is Comment -> commentReasons
             is Movie, is Show, is Episode -> mediaReasons
+            is Person -> personReasons
+            is User -> userReasons
         }
 }
 
@@ -61,5 +73,24 @@ private val mediaReasons = persistentListOf(
     ReportReason.Language,
     ReportReason.Spam,
     ReportReason.Tmdb,
+    ReportReason.Other,
+)
+
+private val personReasons = persistentListOf(
+    ReportReason.Duplicate,
+    ReportReason.Remove,
+    ReportReason.DataRefresh,
+    ReportReason.Metadata,
+    ReportReason.Adult,
+    ReportReason.Language,
+    ReportReason.Spam,
+    ReportReason.Tmdb,
+    ReportReason.Other,
+)
+
+private val userReasons = persistentListOf(
+    ReportReason.Spam,
+    ReportReason.Adult,
+    ReportReason.Language,
     ReportReason.Other,
 )

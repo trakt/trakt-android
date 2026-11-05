@@ -90,6 +90,8 @@ import tv.trakt.trakt.common.ui.theme.colors.Red80
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
+import tv.trakt.trakt.core.report.ReportSheet
+import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.user.model.UserFollowRequest
 import tv.trakt.trakt.core.userprofile.sections.favorites.UserProfileFavoritesView
 import tv.trakt.trakt.core.userprofile.sections.history.UserProfileHistoryView
@@ -137,6 +139,7 @@ internal fun UserProfileScreen(
     var confirmBlockSheet by remember { mutableStateOf(false) }
     var confirmUnfollowSheet by remember { mutableStateOf(false) }
     var matchSheet by remember { mutableStateOf(false) }
+    var reportSheet by remember { mutableStateOf<ReportTarget?>(null) }
 
     val matchState by matchViewModel.state.collectAsStateWithLifecycle()
 
@@ -195,6 +198,9 @@ internal fun UserProfileScreen(
                 else -> confirmBlockSheet = true
             }
         },
+        onReportClick = {
+            reportSheet = ReportTarget.User(state.user.ids.trakt)
+        },
         onToggleFollowRequest = { approved ->
             state.userRequest.request?.let { request ->
                 viewModel.toggleFollowRequest(
@@ -250,6 +256,14 @@ internal fun UserProfileScreen(
         title = stringResource(R.string.warning_prompt_block_user, state.user.displayName),
         message = stringResource(R.string.warning_prompt_block_user_detail),
     )
+
+    ReportSheet(
+        active = reportSheet != null,
+        target = reportSheet,
+        onDismiss = {
+            reportSheet = null
+        },
+    )
 }
 
 @Composable
@@ -270,6 +284,7 @@ private fun UserProfileContent(
     onShareClick: () -> Unit = {},
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
+    onReportClick: () -> Unit = {},
 ) {
     val preview = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfoV2().windowSizeClass
@@ -327,6 +342,7 @@ private fun UserProfileContent(
                     onShareClick = onShareClick,
                     onFollowClick = onFollowClick,
                     onBlockClick = onBlockClick,
+                    onReportClick = onReportClick,
                 )
             }
 
@@ -613,6 +629,7 @@ private fun TopBar(
     onShareClick: () -> Unit = {},
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
+    onReportClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -729,6 +746,28 @@ private fun TopBar(
                             leadingIcon = {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_block),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(21.dp),
+                                )
+                            },
+                        )
+
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.button_text_report),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onReportClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_flag),
                                     contentDescription = null,
                                     tint = TraktTheme.colors.textPrimary,
                                     modifier = Modifier.size(21.dp),

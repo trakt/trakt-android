@@ -30,6 +30,7 @@ internal fun DetailsHeader(
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onReportClick: (() -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -103,6 +104,7 @@ internal fun DetailsHeader(
         imageHorizontal = false,
         onShareClick = onShareClick,
         onShareImageClick = null,
+        onReportClick = onReportClick,
         onBackClick = onBackClick,
         date = null,
         status = null,

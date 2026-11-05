@@ -74,6 +74,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
+import tv.trakt.trakt.core.report.ReportSheet
+import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.summary.people.all.AllPersonCreditsDestination
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsSection
@@ -101,6 +103,7 @@ internal fun PersonDetailsScreen(
 
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+    var reportSheet by remember { mutableStateOf<ReportTarget?>(null) }
 
     LaunchedEffect(
         state.navigateShow,
@@ -147,6 +150,9 @@ internal fun PersonDetailsScreen(
         onMovieLinkClick = viewModel::navigateToMovie,
         onBackClick = onNavigateBack,
         onShareClick = viewModel::logShare,
+        onReportClick = {
+            reportSheet = state.personDetails?.let { ReportTarget.Person(it.ids.trakt) }
+        },
         onMoreClick = { section, position ->
             val person = state.personDetails ?: return@PersonDetailsContent
             onNavigateToAllCredits(
@@ -172,6 +178,14 @@ internal fun PersonDetailsScreen(
             contextMovieSheet = null
         },
     )
+
+    ReportSheet(
+        active = reportSheet != null,
+        target = reportSheet,
+        onDismiss = {
+            reportSheet = null
+        },
+    )
 }
 
 @Composable
@@ -186,6 +200,7 @@ internal fun PersonDetailsContent(
     onMovieLinkClick: ((SlugId) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
     onMoreClick: ((PersonCreditsSection, String?) -> Unit)? = null,
 ) {
     val context = LocalContext.current
@@ -244,6 +259,7 @@ internal fun PersonDetailsContent(
                             onShareClick?.invoke()
                             sharePerson(person, state.user?.settings?.shareCode, context)
                         },
+                        onReportClick = onReportClick.takeIf { state.user != null },
                         onBackClick = onBackClick ?: {},
                     )
                 }

@@ -3,7 +3,9 @@ package tv.trakt.trakt.core.report.usecases
 import tv.trakt.trakt.common.data.remote.CommentsRemoteSource
 import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.data.remote.PeopleRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
+import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.core.report.model.ReportReason
 import tv.trakt.trakt.core.report.model.ReportTarget
 
@@ -12,6 +14,8 @@ internal class ReportUseCase(
     private val moviesSource: MoviesRemoteSource,
     private val showsSource: ShowsRemoteSource,
     private val episodesSource: EpisodesRemoteSource,
+    private val peopleSource: PeopleRemoteSource,
+    private val userSource: UserRemoteSource,
 ) {
     suspend fun report(
         target: ReportTarget,
@@ -38,6 +42,16 @@ internal class ReportUseCase(
                 showId = target.showId,
                 season = target.season,
                 episode = target.episode,
+                reason = reason.apiValue,
+                message = message,
+            )
+            is ReportTarget.Person -> peopleSource.postReport(
+                personId = target.id,
+                reason = reason.apiValue,
+                message = message,
+            )
+            is ReportTarget.User -> userSource.postReport(
+                userId = target.id,
                 reason = reason.apiValue,
                 message = message,
             )

@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.models.PostUsersReportRequest
 import org.openapitools.client.models.PutUsersCoverRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsing
@@ -268,5 +269,19 @@ class UserRemoteSource(
             includeReplies = null,
         )
         return response.body()
+    }
+
+    suspend fun postReport(
+        userId: TraktId,
+        reason: String,
+        message: String,
+    ) {
+        usersApi.postUsersReport(
+            id = userId.value.toString(),
+            postUsersReportRequest = PostUsersReportRequest(
+                reason = PostUsersReportRequest.Reason.entries.first { it.value == reason },
+                message = message.ifBlank { null },
+            ),
+        )
     }
 }

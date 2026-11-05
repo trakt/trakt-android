@@ -52,7 +52,6 @@ val remoteSourcesModule = module {
     singleOf(::MoviesRemoteSource)
     singleOf(::MoviesSyncRemoteSource)
     singleOf(::ParentalGuideRemoteSource)
-    singleOf(::PeopleRemoteSource)
     singleOf(::PlexRemoteSource)
     singleOf(::RatingsRemoteSource)
     singleOf(::ReactionsRemoteSource)
@@ -96,6 +95,13 @@ val remoteSourcesModule = module {
     single {
         UserCalendarRemoteSource(
             calendarsApi = get(named("authorizedCalendarsApi")),
+        )
+    }
+    single {
+        PeopleRemoteSource(
+            peopleExtrasApi = get(),
+            peopleApi = get(),
+            authorizedPeopleApi = get(named("authorizedPeopleApi")),
         )
     }
     single {
