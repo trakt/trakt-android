@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">下一周期</string>
   <string name="button_label_next_episode">下一集</string>
   <string name="button_label_next_story">下一个故事</string>
+  <string name="button_label_official_website">官方网站</string>
   <string name="button_label_open_calendar_feed">在您的日历应用中订阅此日历</string>
   <string name="button_label_open_comment">打开评论</string>
   <string name="button_label_open_leaderboard">打开关注排行榜</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">显示经典推荐</string>
   <string name="button_label_recommendation_mode_smart">显示智能推荐</string>
   <string name="button_label_reject_follow_request">拒绝来自 %s 的关注请求</string>
+  <string name="button_label_related_mode_personal">显示为你精选的相关作品</string>
+  <string name="button_label_related_mode_standard">显示标准相关作品</string>
   <string name="button_label_remove_collaborator">将“%s”从协作者中移除</string>
   <string name="button_label_remove_from_favorites">将“%s”从你的最爱中移除</string>
   <string name="button_label_remove_from_history">从你的观看历史中移除“%s”的这次播放</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">重置更多筛选器</string>
   <string name="button_label_restore_show">恢复剧集“%s”</string>
   <string name="button_label_retry">重试</string>
+  <string name="button_label_reveal_spoiler">显示剧透</string>
   <string name="button_label_revoke_app">撤销 %s 的访问权限</string>
   <string name="button_label_save_filters">将筛选器设为默认</string>
   <string name="button_label_search">搜索</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">查看所有待看列表项</string>
   <string name="button_label_view_all_where_to_watch">查看所有流媒体服务</string>
   <string name="button_label_view_import_guidelines">查看指南</string>
+  <string name="button_label_view_match">查看匹配度</string>
   <string name="button_label_view_photo">查看你的个人资料照片</string>
   <string name="button_label_view_ratings_breakdown">查看评分详情</string>
   <string name="button_label_view_reality_check">查看真实度核验</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">电影</string>
   <string name="button_text_no_services">无服务</string>
   <string name="button_text_not_now">暂不</string>
+  <string name="button_text_open_advanced_settings">打开高级设置</string>
   <string name="button_text_open_calendar_feed">添加到日历应用</string>
   <string name="button_text_open_in_service">在 %s 中打开</string>
   <string name="button_text_personal">个人</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">智能</string>
   <string name="button_text_reconnect">重新连接</string>
   <string name="button_text_reject_follow_request">拒绝请求</string>
+  <string name="button_text_related_mode_personal">为您推荐</string>
+  <string name="button_text_related_mode_standard">标准</string>
   <string name="button_text_remove">移除</string>
   <string name="button_text_remove_from_favorites">从我的最爱中移除</string>
   <string name="button_text_remove_from_history">从观看历史中移除</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code">在 <b>%s</b> 上的 Jellyfin 中，打开您的个人资料，然后选择快速连接，并输入：</string>
   <string name="description_jellyfin_sync">连接您的 Jellyfin 服务器，将观看历史和收藏与 Trakt 同步。</string>
   <string name="description_jellyfin_synced_servers">自动同步您的观看历史和媒体库。</string>
-  <string name="description_jellyfin_vip_upsell">升级到 VIP，即可在 Jellyfin 同步测试期间，同步您的 Jellyfin 服务器中的观看历史和收藏。</string>
+  <string name="description_jellyfin_vip_upsell_add_server">免费账户每天同步 1 个媒体服务器。升级到 VIP 即可每小时同步不限数量的服务器。</string>
   <string name="description_library_collection_limit">来自%s的某些项目尚未添加到您的Trakt收藏中。免费账户达到收藏上限后会停止；VIP账户可以收藏所有内容。</string>
   <string name="description_manage_collaborators">协作者可以添加和删除此列表中的项目。从关注您的人中选择。</string>
   <string name="description_manage_collaborators_shared">协作者可以添加和删除此列表中的项目。从关注您的人中选择。包含协作者的列表将显示在“共享”下。</string>
   <string name="description_media_sync_add_jellyfin_server">连接另一个 Jellyfin 服务器以同步。</string>
+  <string name="description_media_sync_add_jellyfin_server_free">免费账户只能同步 1 个媒体服务器。升级 VIP 以添加更多。</string>
   <string name="description_media_sync_add_server_free">免费账户可同步1个Plex服务器。升级VIP以添加更多。</string>
   <string name="description_media_sync_add_server_vip">连接另一个Plex服务器以同步。</string>
   <string name="description_media_sync_collection_limit">此服务器中的某些项目尚未添加到您的Trakt收藏中。升级VIP即可收藏所有内容。</string>
@@ -812,7 +821,7 @@
   <string name="description_streaming_sync">自动同步您的观看历史和评分。</string>
   <string name="description_streaming_vip_services">升级即可连接并同步这些流媒体服务。</string>
   <string name="description_sync_detail">此同步的一些详细信息。</string>
-  <string name="description_sync_webhooks_jellyfin_setup">Trakt 会实时显示你当前正在观看的内容，并在你观看结束后几分钟内同步媒体库。只需在 Jellyfin Webhook 插件中设置一次即可。适用于 %s。</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt 会实时显示你当前正在观看的内容，并在你观看结束后立即将其添加到历史记录中。只需在 Jellyfin Webhook 插件中设置一次即可。适用于 %s。</string>
   <string name="description_sync_webhooks_live_progress">您的媒体服务器会告诉 Trakt 您正在观看的内容以及您暂停的位置。观看记录仍然来自同步。</string>
   <string name="description_sync_webhooks_plex">将此地址粘贴到 Plex › 设置 › Webhooks 中。它覆盖 %s。需要 Plex Pass。</string>
   <string name="description_sync_webhooks_unreachable_servers">对于 Trakt 无法连接的服务器，它还会添加您的观看记录和评分。</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">用户名或密码不正确。</string>
   <string name="error_text_jellyfin_invalid_server_url">这不是 Trakt 可以使用的网络地址。请输入您在家庭网络外访问 Jellyfin 所使用的公网地址，例如 https://jellyfin.example.com。</string>
   <string name="error_text_jellyfin_quick_connect_disabled">此服务器上的快速连接已关闭。请在 Jellyfin 控制面板中将其打开，或使用您的密码登录。</string>
+  <string name="error_text_jellyfin_rate_limited">登录尝试次数过多。请稍候一分钟后再试。</string>
   <string name="error_text_jellyfin_raw_ip_address">Trakt 无法访问本地或 IP 地址。请输入您在家庭网络外访问 Jellyfin 所使用的公网地址，例如 https://jellyfin.example.com。</string>
   <string name="error_text_jellyfin_server_limit">免费账户只能同步 1 个媒体服务器。升级 VIP 以添加更多。</string>
   <string name="error_text_jellyfin_server_not_found">该地址没有 Jellyfin 服务器响应。请检查并重试。</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">Jellyfin 同步目前是 VIP 测试版。</string>
   <string name="error_text_lists_limit">你已达到个人列表数量上限。升级至VIP可获得无限量列表！</string>
   <string name="error_text_locked_account_collection_limit">此用户帐户已被锁定，因为收藏已超出限制。请<a>联系支持</a>以解决此问题。</string>
+  <string name="error_text_locked_account_collection_limit_plain">此用户帐户已被锁定，因为收藏已超出限制。请联系支持以解决此问题。</string>
   <string name="error_text_locked_account_guide">请访问<a>高级设置</a>以运行历史分析并解锁您的账户。</string>
+  <string name="error_text_locked_account_guide_plain">请访问高级设置以运行历史分析并解锁您的账户。</string>
   <string name="error_text_locked_account_persists">如果问题仍然存在，请<a>联系支持</a>以解决此问题。</string>
+  <string name="error_text_locked_account_persists_plain">如果问题仍然存在，请联系支持以解决此问题。</string>
   <string name="error_text_media_sync_generic">出错了。请稍后重试。</string>
   <string name="error_text_media_sync_server_limit">免费账户只能同步1个Plex服务器。升级VIP以添加更多。</string>
   <string name="error_text_media_sync_server_removing">此服务器仍在移除中。请稍后几分钟再试。</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">JSON 指南</string>
   <string name="header_insights">洞察</string>
   <string name="header_jellyfin_synced_servers">Jellyfin 服务器</string>
-  <string name="header_jellyfin_vip_upsell">Jellyfin 同步是 VIP 测试版</string>
+  <string name="header_jellyfin_vip_upsell_add_server">多服务器是VIP功能</string>
   <string name="header_jellyfin_webhook_steps">在 Jellyfin 中设置</string>
   <string name="header_landing_discover">发现</string>
   <string name="header_landing_hero">你的下一部心头好已上线。</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">描述</string>
   <string name="header_main_cast">主演</string>
   <string name="header_manage_lists">管理列表</string>
+  <string name="header_match">匹配</string>
+  <string name="header_match_reasons">为什么适合你</string>
+  <string name="header_match_taste">您的喜好</string>
   <string name="header_media_reactions">反应</string>
   <string name="header_media_sync_choose_libraries">选择媒体库</string>
   <string name="header_media_sync_choose_server">选择服务器</string>
@@ -1115,6 +1131,8 @@
   <string name="hint_media_sync_history_resync">您可以稍后从服务器的“管理”菜单导入过去的观看记录。</string>
   <string name="image_alt_comment_gif">评论附带的GIF</string>
   <string name="image_alt_list_preview_poster">%s 中的条目海报</string>
+  <string name="image_alt_match_score">与你的匹配度为 %d%%</string>
+  <string name="image_alt_match_unknown">暂无匹配分数</string>
   <string name="image_alt_media_poster">“%s”海报</string>
   <string name="image_alt_person_headshot">%s 的大头照</string>
   <string name="image_alt_selected_gif">已选中的GIF</string>
@@ -1324,6 +1342,7 @@
   <string name="label_stats_shows">剧集</string>
   <string name="label_streaming_country">国家/地区</string>
   <string name="label_sync_webhooks_server_count">%s 个服务器</string>
+  <string name="label_sync_webhooks_server_count_one">1 个服务器</string>
   <string name="label_today_day">选择日期</string>
   <string name="label_today_grouping">今日动态分组</string>
   <string name="label_usage_limit_loading">正在加载您的用量</string>
@@ -1435,6 +1454,7 @@
   <string name="list_title_popular_shows">热门剧集</string>
   <string name="list_title_progress">进度</string>
   <string name="list_title_ratings">评分</string>
+  <string name="list_title_recent_lists">最新</string>
   <string name="list_title_recently_watched">最近观看</string>
   <string name="list_title_recommendation_sources_activity">你已观看</string>
   <string name="list_title_recommendation_sources_favorite">你喜爱过</string>
@@ -1605,18 +1625,16 @@
   <string name="page_title_year_to_date">年至今</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_large_screen_cards">在更大的屏幕上，所有列表都使用与应用程序其他部分相同的卡片。选择卡片将打开快速预览，而无需离开列表。</string>
+  <string name="preview_feature_description_personalized_related">根据你的喜好对电影和剧集页面的相关作品进行排序。可在列表上方切换“为你推荐”和“标准”。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_season_recap">在剧集页面的季度选择器旁添加“回顾”按钮。点击可快速了解该季内容：关键时刻以及各角色的最新现状。</string>
-  <string name="preview_feature_description_show_ending">在剧集详情中显示结局行：故事完结时为“已完成”，未完结时为“未完结”。</string>
-  <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_vip_veteran">显示会员不间断保持 VIP 身份的时长，拥有资深或传奇徽章、彩色头像环，并在您的个人资料上展示一些庆祝效果。</string>
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_large_screen_cards">大屏幕卡片</string>
+  <string name="preview_feature_title_personalized_related">为你推荐的相关作品</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_season_recap">季回顾</string>
-  <string name="preview_feature_title_show_ending">剧集结局</string>
-  <string name="preview_feature_title_soundtrack">原声带</string>
   <string name="preview_feature_title_vip_veteran">VIP 资深会员身份</string>
   <string name="preview_feature_title_year_in_review_2026">2026 年度回顾</string>
   <string name="row_label_loading_title">正在加载名称</string>
@@ -1838,6 +1856,8 @@
   <string name="text_calendar_placeholder_empty_period">屏幕一片漆黑。没有电影。没有剧集。只有您和寂静。</string>
   <string name="text_calendar_today">今天</string>
   <string name="text_calendar_up_next">接下来</string>
+  <string name="text_checkin_failed_message">请检查您的网络连接，然后重试。</string>
+  <string name="text_checkin_failed_title">无法签到</string>
   <string name="text_clear_data_failed">某些项目无法清除。请重试。</string>
   <string name="text_clear_source_custom_library">自定义媒体库</string>
   <string name="text_clear_source_history">历史</string>
@@ -1980,6 +2000,12 @@
   <string name="text_info_younify_service_linked">流媒体服务已关联。</string>
   <string name="text_info_younify_service_unlinked">流媒体服务已取消关联。</string>
   <string name="text_jellyfin_quick_connect_waiting">等待您批准</string>
+  <string name="text_jellyfin_webhook_status_never_received">尚未收到任何内容。请在 Jellyfin 上播放内容以进行测试。</string>
+  <string name="text_jellyfin_webhook_status_not_vip">Webhook 是 VIP 专属功能。</string>
+  <string name="text_jellyfin_webhook_status_other_account">事件来自其他 Jellyfin 用户。请将用户过滤器设置为您的账户。</string>
+  <string name="text_jellyfin_webhook_status_other_server">事件来自其他 Jellyfin 服务器。请将此地址复制到其所属的服务器。</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">Jellyfin 发送了 Trakt 无法读取的内容。请检查目标是否为 Generic Destination 且已开启 Send All Properties。</string>
+  <string name="text_jellyfin_webhook_status_working">正常运行。最近事件：%s。</string>
   <string name="text_jellyfin_webhook_step_add_destination">打开控制台 &gt; 插件 &gt; Webhook，然后选择“Add Generic Destination”。</string>
   <string name="text_jellyfin_webhook_step_install">在 Jellyfin 中，打开控制台 &gt; 插件 &gt; 目录，安装“Webhook”并重启服务器。</string>
   <string name="text_jellyfin_webhook_step_item_types">在项目类型下，勾选“Movies”和“Episodes”。</string>
@@ -2014,6 +2040,10 @@
   <string name="text_login_failed_title">无法开始登录</string>
   <string name="text_login_rate_limited_message">请稍候片刻，然后重试。</string>
   <string name="text_login_rate_limited_title">登录尝试次数过多</string>
+  <string name="text_match_basis">基于你看过、评分和收藏的内容。无需额外评分。</string>
+  <string name="text_match_basis_free">匹配分数免费提供，匹配原因为 VIP 专属功能。</string>
+  <string name="text_match_better_than">比 %d%% 的影视内容更适合你</string>
+  <string name="text_match_not_enough_data">目前数据不足，暂无法为你计算匹配度。</string>
   <string name="text_media_sync_feed_required">至少开启一个同步设置。</string>
   <string name="text_media_sync_library_removal">关闭此选项将移除它已添加到您的Trakt收藏中的内容。您的观看历史和评分将保留。</string>
   <string name="text_media_sync_no_runs">暂无同步记录。</string>

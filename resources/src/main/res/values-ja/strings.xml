@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">次の期間</string>
   <string name="button_label_next_episode">次のエピソード</string>
   <string name="button_label_next_story">次のストーリー</string>
+  <string name="button_label_official_website">公式サイト</string>
   <string name="button_label_open_calendar_feed">カレンダーアプリでこのカレンダーを購読</string>
   <string name="button_label_open_comment">コメントを開く</string>
   <string name="button_label_open_leaderboard">フォロー中のランキングを開く</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">クラシックなレコメンデーションを表示</string>
   <string name="button_label_recommendation_mode_smart">スマートレコメンデーションを表示</string>
   <string name="button_label_reject_follow_request">%sからのフォローリクエストを拒否</string>
+  <string name="button_label_related_mode_personal">あなた向けに選ばれた関連作品を表示</string>
+  <string name="button_label_related_mode_standard">標準の関連作品を表示</string>
   <string name="button_label_remove_collaborator">%sをコラボレーターから削除</string>
   <string name="button_label_remove_from_favorites">「%s」をお気に入りから削除</string>
   <string name="button_label_remove_from_history">「%s」のこの視聴記録を視聴履歴から削除</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">その他のフィルターをリセット</string>
   <string name="button_label_restore_show">番組「%s」を復元</string>
   <string name="button_label_retry">再試行</string>
+  <string name="button_label_reveal_spoiler">ネタバレを表示</string>
   <string name="button_label_revoke_app">%sのアクセスを取り消す</string>
   <string name="button_label_save_filters">フィルターをデフォルトとして設定</string>
   <string name="button_label_search">検索</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">ウォッチリストの全てのアイテムを表示</string>
   <string name="button_label_view_all_where_to_watch">全てのストリーミングサービスを見る</string>
   <string name="button_label_view_import_guidelines">ガイドラインを表示</string>
+  <string name="button_label_view_match">マッチ度を表示</string>
   <string name="button_label_view_photo">プロフィール写真を見る</string>
   <string name="button_label_view_ratings_breakdown">評価の内訳を表示</string>
   <string name="button_label_view_reality_check">リアリティチェックを表示</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">映画</string>
   <string name="button_text_no_services">サービスなし</string>
   <string name="button_text_not_now">後で</string>
+  <string name="button_text_open_advanced_settings">詳細設定を開く</string>
   <string name="button_text_open_calendar_feed">カレンダーアプリに追加</string>
   <string name="button_text_open_in_service">%sで開く</string>
   <string name="button_text_personal">個人的なアクティビティ</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">スマート</string>
   <string name="button_text_reconnect">再接続</string>
   <string name="button_text_reject_follow_request">リクエストを拒否</string>
+  <string name="button_text_related_mode_personal">あなたへ</string>
+  <string name="button_text_related_mode_standard">標準</string>
   <string name="button_text_remove">削除</string>
   <string name="button_text_remove_from_favorites">お気に入りから削除</string>
   <string name="button_text_remove_from_history">履歴から削除</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code"><b>%s</b> のJellyfinで、プロフィールを開き、クイックコネクトを選択して、以下を入力してください:</string>
   <string name="description_jellyfin_sync">Jellyfinサーバーを接続して、視聴履歴とコレクションをTraktと同期します。</string>
   <string name="description_jellyfin_synced_servers">視聴履歴とライブラリを自動的に同期します。</string>
-  <string name="description_jellyfin_vip_upsell">Jellyfin同期はベータ期間中のため、VIPにアップグレードしてJellyfinサーバーから視聴履歴とコレクションを同期してください。</string>
+  <string name="description_jellyfin_vip_upsell_add_server">無料アカウントでは1日1回、1台のメディアサーバーを同期できます。VIPにアップグレードすると、無制限のサーバーを1時間ごとに同期できます。</string>
   <string name="description_library_collection_limit">%s の一部のアイテムは、まだあなたのTraktコレクションにありません。無料アカウントはコレクション制限で停止します。VIP会員はすべてを収集します。</string>
   <string name="description_manage_collaborators">コラボレーターはこのリストに項目を追加・削除できます。あなたをフォローしている人から選択してください。</string>
   <string name="description_manage_collaborators_shared">コラボレーターはこのリストのアイテムを追加・削除できます。あなたをフォローしている人から選択してください。コラボレーターがいるリストは「共有」に表示されます。</string>
   <string name="description_media_sync_add_jellyfin_server">別のJellyfinサーバーを接続して同期します。</string>
+  <string name="description_media_sync_add_jellyfin_server_free">無料アカウントはメディアサーバーを1つ同期できます。追加するにはVIPに登録してください。</string>
   <string name="description_media_sync_add_server_free">無料アカウントはPlexサーバーを1つ同期できます。追加するにはVIPに登録してください。</string>
   <string name="description_media_sync_add_server_vip">別のPlexサーバーを接続して同期します。</string>
   <string name="description_media_sync_collection_limit">このサーバーのアイテムの一部は、まだTraktコレクションにありません。すべてを収集するにはVIPに登録してください。</string>
@@ -812,7 +821,7 @@
   <string name="description_streaming_sync">視聴履歴と評価を自動的に同期します。</string>
   <string name="description_streaming_vip_services">これらのストリーミングサービスを接続・同期するにはアップグレードしてください。</string>
   <string name="description_sync_detail">この同期に関するいくつかの詳細。</string>
-  <string name="description_sync_webhooks_jellyfin_setup">Traktには現在視聴中の作品が表示され、見終わった数分後にライブラリが同期されます。Jellyfin Webhookプラグインで一度設定するだけで完了します。対象: %s。</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Traktには現在視聴中の作品が表示され、見終わるとすぐに履歴に追加されます。Jellyfin Webhookプラグインで一度設定するだけで完了します。対象: %s。</string>
   <string name="description_sync_webhooks_live_progress">メディアサーバーは、現在視聴しているものや一時停止した場所をTraktに通知します。視聴記録は引き続き同期から取得されます。</string>
   <string name="description_sync_webhooks_plex">このアドレスをPlexの「設定」›「Webhooks」に一度貼り付けてください。%sをカバーします。Plex Passが必要です。</string>
   <string name="description_sync_webhooks_unreachable_servers">Traktがアクセスできないサーバーでは、視聴履歴と評価も追加されます。</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">そのユーザー名とパスワードは無効です。</string>
   <string name="error_text_jellyfin_invalid_server_url">Traktで使用できるウェブアドレスではありません。自宅の外からJellyfinを開く際に使用するパブリックアドレス（例: https://jellyfin.example.com）を入力してください。</string>
   <string name="error_text_jellyfin_quick_connect_disabled">このサーバーではクイックコネクトがオフになっています。Jellyfinダッシュボードでオンにするか、パスワードでサインインしてください。</string>
+  <string name="error_text_jellyfin_rate_limited">サインインの試行回数が多すぎます。1分待ってからもう一度お試しください。</string>
   <string name="error_text_jellyfin_raw_ip_address">TraktはローカルアドレスやIPアドレスにアクセスできません。自宅の外からJellyfinを開く際に使用するパブリックアドレス（例: https://jellyfin.example.com）を入力してください。</string>
   <string name="error_text_jellyfin_server_limit">無料アカウントはメディアサーバーを1つ同期できます。追加するにはVIPに登録してください。</string>
   <string name="error_text_jellyfin_server_not_found">そのアドレスでJellyfinサーバーからの応答がありませんでした。確認してもう一度お試しください。</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">Jellyfin同期は現在VIPベータ版です。</string>
   <string name="error_text_lists_limit">個人のリストの制限に達しました。VIPにアップグレードして無制限のリストを入手しましょう！</string>
   <string name="error_text_locked_account_collection_limit">このユーザーアカウントは、コレクションが上限を超過したためロックされました。この問題を解決するには、<a>サポートに連絡してください</a>。</string>
+  <string name="error_text_locked_account_collection_limit_plain">このユーザーアカウントは、コレクションが上限を超過したためロックされました。この問題を解決するには、サポートに連絡してください。</string>
   <string name="error_text_locked_account_guide">履歴分析を実行してアカウントをロック解除するには、<a>詳細設定</a>をご覧ください。</string>
+  <string name="error_text_locked_account_guide_plain">履歴分析を実行してアカウントをロック解除するには、詳細設定をご覧ください。</string>
   <string name="error_text_locked_account_persists">問題が解決しない場合は、この問題を解決するため<a>サポートにお問い合わせください</a>。</string>
+  <string name="error_text_locked_account_persists_plain">問題が解決しない場合は、この問題を解決するためサポートにお問い合わせください。</string>
   <string name="error_text_media_sync_generic">何らかの問題が発生しました。しばらくしてからもう一度お試しください。</string>
   <string name="error_text_media_sync_server_limit">無料アカウントはPlexサーバーを1つ同期できます。追加するにはVIPに登録してください。</string>
   <string name="error_text_media_sync_server_removing">このサーバーはまだ削除中です。数分後にもう一度お試しください。</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">JSONガイドライン</string>
   <string name="header_insights">インサイト</string>
   <string name="header_jellyfin_synced_servers">Jellyfinサーバー</string>
-  <string name="header_jellyfin_vip_upsell">Jellyfin同期はVIPベータ版です</string>
+  <string name="header_jellyfin_vip_upsell_add_server">複数のサーバーはVIP機能です</string>
   <string name="header_jellyfin_webhook_steps">Jellyfinで設定</string>
   <string name="header_landing_discover">発見</string>
   <string name="header_landing_hero">あなたの次のお気に入りは、もうそこに。</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">説明</string>
   <string name="header_main_cast">メインキャスト</string>
   <string name="header_manage_lists">リストを管理</string>
+  <string name="header_match">マッチ</string>
+  <string name="header_match_reasons">あなたにマッチする理由</string>
+  <string name="header_match_taste">あなたの好み</string>
   <string name="header_media_reactions">リアクション</string>
   <string name="header_media_sync_choose_libraries">ライブラリを選択</string>
   <string name="header_media_sync_choose_server">サーバーを選択</string>
@@ -1115,6 +1131,8 @@
   <string name="hint_media_sync_history_resync">過去の視聴履歴は、後でサーバーの管理メニューからインポートできます。</string>
   <string name="image_alt_comment_gif">コメントに添付されたGIF</string>
   <string name="image_alt_list_preview_poster">%sのリスト内のエントリのポスター</string>
+  <string name="image_alt_match_score">あなたへのマッチ度: %d%%</string>
+  <string name="image_alt_match_unknown">マッチスコアはまだありません</string>
   <string name="image_alt_media_poster">「%s」のポスター</string>
   <string name="image_alt_person_headshot">%sの顔写真</string>
   <string name="image_alt_selected_gif">選択済みのGIF</string>
@@ -1324,6 +1342,7 @@
   <string name="label_stats_shows">番組</string>
   <string name="label_streaming_country">国</string>
   <string name="label_sync_webhooks_server_count">%sのサーバー</string>
+  <string name="label_sync_webhooks_server_count_one">1つのサーバー</string>
   <string name="label_today_day">日付を選択</string>
   <string name="label_today_grouping">今日のアクティビティをグループ化</string>
   <string name="label_usage_limit_loading">利用状況を読み込み中</string>
@@ -1435,6 +1454,7 @@
   <string name="list_title_popular_shows">人気番組</string>
   <string name="list_title_progress">進捗</string>
   <string name="list_title_ratings">評価</string>
+  <string name="list_title_recent_lists">最新</string>
   <string name="list_title_recently_watched">最近視聴した作品</string>
   <string name="list_title_recommendation_sources_activity">視聴済み</string>
   <string name="list_title_recommendation_sources_favorite">お気に入り</string>
@@ -1605,18 +1625,16 @@
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_large_screen_cards">大画面では、すべてのリストでアプリの他の部分と同じカードを使用します。いずれかを選択すると、リストを離れることなくクイック概要が開きます。</string>
+  <string name="preview_feature_description_personalized_related">映画や番組のページで、関連作品を好みに合わせて並び替えます。リスト上部で「あなた向け」と「標準」を切り替えられます。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_season_recap">作品ページのシーズン選択の横に「おさらい」ボタンを追加します。重要シーンや各キャラクターの状況など、そのシーズンの振り返りを確認できます。</string>
-  <string name="preview_feature_description_show_ending">作品の詳細に完結情報行を表示します。ストーリーが完結した場合は「完結済み」、しなかった場合は「未完」と表示されます。</string>
-  <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_vip_veteran">VIPを途切れることなく継続した期間を表示します。ベテランまたはレジェンドバッジ、色付きのアバターリング、そしてプロフィールでのささやかなお祝いが贈られます。</string>
   <string name="preview_feature_description_year_in_review_2026">視聴者ペルソナに基づいたスクロールリール形式の2026年、そしてそれに合わせたスタイルの統計ページです。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_large_screen_cards">大画面カード</string>
+  <string name="preview_feature_title_personalized_related">あなた向けの関連作品</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_season_recap">シーズンのおさらい</string>
-  <string name="preview_feature_title_show_ending">完結情報</string>
-  <string name="preview_feature_title_soundtrack">サウンドトラック</string>
   <string name="preview_feature_title_vip_veteran">VIPベテランステータス</string>
   <string name="preview_feature_title_year_in_review_2026">年間レビュー 2026</string>
   <string name="row_label_loading_title">名前を読み込み中</string>
@@ -1838,6 +1856,8 @@
   <string name="text_calendar_placeholder_empty_period">画面は暗いまま。映画もエピソードもなし。ただあなたと静寂だけ。</string>
   <string name="text_calendar_today">今日</string>
   <string name="text_calendar_up_next">次に公開</string>
+  <string name="text_checkin_failed_message">接続を確認して、もう一度お試しください。</string>
+  <string name="text_checkin_failed_title">チェックインできませんでした</string>
   <string name="text_clear_data_failed">一部のアイテムをクリアできませんでした。もう一度お試しください。</string>
   <string name="text_clear_source_custom_library">カスタムライブラリ</string>
   <string name="text_clear_source_history">歴史</string>
@@ -1980,6 +2000,12 @@
   <string name="text_info_younify_service_linked">ストリーミングサービスがリンクされました。</string>
   <string name="text_info_younify_service_unlinked">ストリーミングサービスのリンクが解除されました。</string>
   <string name="text_jellyfin_quick_connect_waiting">承認をお待ちしています</string>
+  <string name="text_jellyfin_webhook_status_never_received">まだ何も受信していません。テストするにはJellyfinで何か再生してください。</string>
+  <string name="text_jellyfin_webhook_status_not_vip">WebhookはVIP機能です。</string>
+  <string name="text_jellyfin_webhook_status_other_account">別のJellyfinユーザーからイベントを受信しています。ユーザーフィルターをご自身のアカウントに設定してください。</string>
+  <string name="text_jellyfin_webhook_status_other_server">別のJellyfinサーバーからイベントを受信しています。該当するサーバーにこのアドレスをコピーしてください。</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">Traktで読み取れないデータがJellyfinから送信されました。送信先が「Generic Destination」で、「Send All Properties」がオンになっていることを確認してください。</string>
+  <string name="text_jellyfin_webhook_status_working">正常に動作中。最新のイベント: %s。</string>
   <string name="text_jellyfin_webhook_step_add_destination">Dashboard &gt; Plugins &gt; Webhook を開き、「Add Generic Destination」を選択します。</string>
   <string name="text_jellyfin_webhook_step_install">Jellyfinで、Dashboard &gt; Plugins &gt; Catalog を開き、「Webhook」をインストールしてサーバーを再起動します。</string>
   <string name="text_jellyfin_webhook_step_item_types">item typesで、「Movies」と「Episodes」にチェックを入れます。</string>
@@ -2014,6 +2040,10 @@
   <string name="text_login_failed_title">ログインを開始できませんでした</string>
   <string name="text_login_rate_limited_message">しばらく待ってから、もう一度お試しください。</string>
   <string name="text_login_rate_limited_title">ログイン試行回数が多すぎます</string>
+  <string name="text_match_basis">視聴、評価、お気に入り登録した作品に基づいています。評価の必要はありません。</string>
+  <string name="text_match_basis_free">スコアの確認は無料です。その理由はVIP限定機能です。</string>
+  <string name="text_match_better_than">%d%%の作品よりもあなたにマッチしています</string>
+  <string name="text_match_not_enough_data">あなたとのマッチ度を判定するためのデータがまだ不足しています。</string>
   <string name="text_media_sync_feed_required">少なくとも1つの同期設定をオンにしてください。</string>
   <string name="text_media_sync_library_removal">これをオフにすると、Traktコレクションに追加されたものが削除されます。視聴履歴と評価は残ります。</string>
   <string name="text_media_sync_no_runs">まだ同期されていません。</string>

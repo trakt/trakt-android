@@ -17,11 +17,11 @@
   <string name="action_toast_action_failed">لم ينجح ذلك. الرجاء المحاولة مرة أخرى.</string>
   <string name="action_toast_action_view_lists">عرض</string>
   <string name="action_toast_action_view_smart_list">عرض القائمة</string>
-  <string name="action_toast_added_to_watchlist">تمت إضافة \n<b>%s</b> إلى قائمة المشاهدة الخاصة بك</string>
+  <string name="action_toast_added_to_watchlist">تمت إضافة <b>%s</b> إلى قائمة المشاهدة الخاصة بك</string>
   <string name="action_toast_added_to_watchlist_generic">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="action_toast_collaborator_limit_reached">وصلت هذه القائمة إلى حد المتعاونين.</string>
   <string name="action_toast_created_smart_list">تم إنشاء <b>%s</b></string>
-  <string name="action_toast_label_change_list">تغيير القوائم التي ينتمي إليها \n<b>%s</b></string>
+  <string name="action_toast_label_change_list">تغيير القوائم التي ينتمي إليها <b>%s</b></string>
   <string name="action_toast_label_view_personal_lists">فتح قوائمك الشخصية</string>
   <string name="action_toast_label_view_shared_lists">فتح قوائمك المشتركة</string>
   <string name="action_toast_label_view_smart_list">افتح القائمة الذكية التي أنشأتها للتو</string>
@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">الفترة القادمة</string>
   <string name="button_label_next_episode">الحلقة القادمة</string>
   <string name="button_label_next_story">القصة التالية</string>
+  <string name="button_label_official_website">الموقع الرسمي</string>
   <string name="button_label_open_calendar_feed">اشترك في هذا التقويم في تطبيق التقويم الخاص بك</string>
   <string name="button_label_open_comment">افتح التعليق</string>
   <string name="button_label_open_leaderboard">فتح لوحة صدارة المتابَعين</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">إظهار التوصيات الكلاسيكية</string>
   <string name="button_label_recommendation_mode_smart">إظهار التوصيات الذكية</string>
   <string name="button_label_reject_follow_request">رفض طلب المتابعة من %s</string>
+  <string name="button_label_related_mode_personal">عرض العناوين ذات الصلة المختارة لك</string>
+  <string name="button_label_related_mode_standard">عرض العناوين القياسية ذات الصلة</string>
   <string name="button_label_remove_collaborator">إزالة %s كمتعاون</string>
   <string name="button_label_remove_from_favorites">إزالة \"%s\" من مفضّلتك</string>
   <string name="button_label_remove_from_history">أزِل هذه المُشاهدة لِـ \"%s\" من سجلّك</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">إعادة تعيين المزيد من المرشحات</string>
   <string name="button_label_restore_show">استعادة المسلسل \"%s\"</string>
   <string name="button_label_retry">أعد المحاولة</string>
+  <string name="button_label_reveal_spoiler">إظهار الحرق</string>
   <string name="button_label_revoke_app">إبطال الوصول لـ %s</string>
   <string name="button_label_save_filters">تعيين عوامل التصفية كافتراضي</string>
   <string name="button_label_search">بحث</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">عرض جميع عناصر قائمة المشاهدة</string>
   <string name="button_label_view_all_where_to_watch">عرض جميع خدمات البث</string>
   <string name="button_label_view_import_guidelines">عرض الإرشادات</string>
+  <string name="button_label_view_match">عرض مدى الملاءمة</string>
   <string name="button_label_view_photo">عرض صورة ملفك الشخصي</string>
   <string name="button_label_view_ratings_breakdown">عرض تقسيم التقييمات</string>
   <string name="button_label_view_reality_check">عرض التحقق من الواقع</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">أفلام</string>
   <string name="button_text_no_services">لا توجد خدمات</string>
   <string name="button_text_not_now">ليس الآن</string>
+  <string name="button_text_open_advanced_settings">فتح الإعدادات المتقدمة</string>
   <string name="button_text_open_calendar_feed">إضافة إلى تطبيق التقويم</string>
   <string name="button_text_open_in_service">فتح في %s</string>
   <string name="button_text_personal">شخصي</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">ذكي</string>
   <string name="button_text_reconnect">إعادة الاتصال</string>
   <string name="button_text_reject_follow_request">رفض الطلب</string>
+  <string name="button_text_related_mode_personal">لك</string>
+  <string name="button_text_related_mode_standard">قياسي</string>
   <string name="button_text_remove">إزالة</string>
   <string name="button_text_remove_from_favorites">إزالة من المفضلة</string>
   <string name="button_text_remove_from_history">إزالة من سجل المشاهدة</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code">في Jellyfin على <b>%s</b>، افتح ملفك الشخصي، ثم الاتصال السريع، وأدخل:</string>
   <string name="description_jellyfin_sync">قم بتوصيل خادم Jellyfin الخاص بك لمزامنة سجل المشاهدة والمجموعات مع Trakt.</string>
   <string name="description_jellyfin_synced_servers">مزامنة سجل المشاهدة والمكتبة تلقائيًا.</string>
-  <string name="description_jellyfin_vip_upsell">قم بالترقية إلى VIP لمزامنة سجل المشاهدة والمجموعات من خادم Jellyfin الخاص بك بينما يكون في المرحلة التجريبية.</string>
+  <string name="description_jellyfin_vip_upsell_add_server">تقوم الحسابات المجانية بمزامنة خادم وسائط واحد مرة واحدة يوميًا. قم بالترقية إلى VIP لمزامنة خوادم غير محدودة كل ساعة.</string>
   <string name="description_library_collection_limit">بعض العناصر من %s ليست في مجموعتك على Trakt بعد. تتوقف الحسابات المجانية عند حد المجموعة؛ يجمع VIP كل شيء.</string>
   <string name="description_manage_collaborators">يمكن للمتعاونين إضافة عناصر إلى هذه القائمة وإزالتها. اختر من بين الأشخاص الذين يتابعونك.</string>
   <string name="description_manage_collaborators_shared">يمكن للمتعاونين إضافة عناصر إلى هذه القائمة وإزالتها. اختر من بين الأشخاص الذين يتابعونك. تظهر القوائم التي تضم متعاونين ضمن المشتركة.</string>
   <string name="description_media_sync_add_jellyfin_server">ربط خادم Jellyfin آخر لمزامنته أيضًا.</string>
+  <string name="description_media_sync_add_jellyfin_server_free">تقوم الحسابات المجانية بمزامنة خادم وسائط واحد. قم بالترقية إلى VIP لإضافة المزيد.</string>
   <string name="description_media_sync_add_server_free">يمكن للحسابات المجانية مزامنة خادم Plex واحد. كن VIP لإضافة المزيد.</string>
   <string name="description_media_sync_add_server_vip">ربط خادم Plex آخر لمزامنته أيضًا.</string>
   <string name="description_media_sync_collection_limit">بعض العناصر من هذا الخادم ليست في مجموعتك على Trakt بعد. كن VIP لجمع كل شيء.</string>
@@ -812,7 +821,7 @@
   <string name="description_streaming_sync">مزامنة سجل المشاهدة والتقييمات تلقائيًا.</string>
   <string name="description_streaming_vip_services">قم بالترقية للاتصال بخدمات البث هذه ومزامنتها.</string>
   <string name="description_sync_detail">بعض التفاصيل حول هذه المزامنة.</string>
-  <string name="description_sync_webhooks_jellyfin_setup">يعرض Trakt ما تشاهده الآن، وتتم مزامنة مكتبتك بعد دقائق قليلة من إنهائك للمشاهدة. اضبطه لمرة واحدة في ملحق Jellyfin Webhook. وهو يغطي %s.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">يعرض Trakt ما تشاهده الآن ويضيفه إلى سجلك بمجرد انتهائك. اضبطه لمرة واحدة في ملحق Jellyfin Webhook. وهو يغطي %s.</string>
   <string name="description_sync_webhooks_live_progress">يخبر خادم الوسائط الخاص بك Trakt بما تشاهده الآن ومكان التوقف. تستمر المشاهدات في القدوم من المزامنة.</string>
   <string name="description_sync_webhooks_plex">الصق هذا العنوان مرة واحدة في Plex &gt; الإعدادات &gt; Webhooks. يغطي %s. يتطلب Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">على الخوادم التي لا يمكن لـ Trakt الوصول إليها، يقوم أيضًا بإضافة مشاهداتك وتقييماتك.</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">اسم المستخدم وكلمة المرور هذان لم يعملا.</string>
   <string name="error_text_jellyfin_invalid_server_url">هذا ليس عنوان ويب يمكن لـ Trakt استخدامه. أدخل العنوان العام الذي تستخدمه لفتح Jellyfin من خارج منزلك، مثل https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">الاتصال السريع معطّل على هذا الخادم. قم بتشغيله في لوحة تحكم Jellyfin، أو سجّل الدخول بكلمة مرورك.</string>
+  <string name="error_text_jellyfin_rate_limited">محاولات تسجيل دخول كثيرة جدًا. انتظر دقيقة ثم حاول مرة أخرى.</string>
   <string name="error_text_jellyfin_raw_ip_address">لا يمكن لـ Trakt الوصول إلى عنوان محلي أو عنوان IP. أدخل العنوان العام الذي تستخدمه لفتح Jellyfin من خارج منزلك، مثل https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">يمكن للحسابات المجانية مزامنة خادم وسائط واحد. قم بالترقية إلى VIP لإضافة المزيد.</string>
   <string name="error_text_jellyfin_server_not_found">لم يستجب أي خادم Jellyfin على هذا العنوان. تحقق منه وحاول مرة أخرى.</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">مزامنة Jellyfin هي نسخة تجريبية لـ VIP في الوقت الحالي.</string>
   <string name="error_text_lists_limit">لقد وصلت إلى الحد الأقصى لقوائمك الشخصية. الترقية إلى VIP لعدد غير محدود من القوائم!</string>
   <string name="error_text_locked_account_collection_limit">تم قفل حساب المستخدم هذا لأن المجموعة تجاوزت الحد المسموح به. يرجى <a>الاتصال بالدعم</a> لحل هذه المشكلة.</string>
+  <string name="error_text_locked_account_collection_limit_plain">تم قفل حساب المستخدم هذا لأن المجموعة تجاوزت الحد المسموح به. يرجى الاتصال بالدعم لحل هذه المشكلة.</string>
   <string name="error_text_locked_account_guide">يرجى زيارة <a>الإعدادات المتقدمة</a> لتشغيل تحليل السجل وفتح حسابك.</string>
+  <string name="error_text_locked_account_guide_plain">يرجى زيارة الإعدادات المتقدمة لتشغيل تحليل السجل وفتح حسابك.</string>
   <string name="error_text_locked_account_persists">إذا استمرت المشكلة، يرجى <a>الاتصال بالدعم</a> لحل هذه المشكلة.</string>
+  <string name="error_text_locked_account_persists_plain">إذا استمرت المشكلة، يرجى الاتصال بالدعم لحل هذه المشكلة.</string>
   <string name="error_text_media_sync_generic">حدث خطأ ما. حاول مرة أخرى بعد قليل.</string>
   <string name="error_text_media_sync_server_limit">يمكن للحسابات المجانية مزامنة خادم Plex واحد. كن VIP لإضافة المزيد.</string>
   <string name="error_text_media_sync_server_removing">لا يزال هذا الخادم قيد الإزالة. حاول مرة أخرى خلال بضع دقائق.</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">إرشادات JSON</string>
   <string name="header_insights">رؤى</string>
   <string name="header_jellyfin_synced_servers">خوادم Jellyfin</string>
-  <string name="header_jellyfin_vip_upsell">مزامنة Jellyfin هي نسخة تجريبية لـ VIP</string>
+  <string name="header_jellyfin_vip_upsell_add_server">الخوادم المتعددة هي ميزة VIP</string>
   <string name="header_jellyfin_webhook_steps">الإعداد في Jellyfin</string>
   <string name="header_landing_discover">اكتشف</string>
   <string name="header_landing_hero">مفضلتك التالية بانتظارك.</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">الوصف</string>
   <string name="header_main_cast">طاقم التمثيل الرئيسي</string>
   <string name="header_manage_lists">إدارة القوائم</string>
+  <string name="header_match">تطابق</string>
+  <string name="header_match_reasons">لماذا يناسبك</string>
+  <string name="header_match_taste">ذوقك</string>
   <string name="header_media_reactions">ردود الفعل</string>
   <string name="header_media_sync_choose_libraries">اختر المكتبات</string>
   <string name="header_media_sync_choose_server">اختر خادمًا</string>
@@ -1115,6 +1131,8 @@
   <string name="hint_media_sync_history_resync">يمكنك استيراد المشاهدات السابقة لاحقًا من قائمة إدارة الخادم.</string>
   <string name="image_alt_comment_gif">صورة GIF مرفقة بالتعليق</string>
   <string name="image_alt_list_preview_poster">ملصق لإدخال في %s</string>
+  <string name="image_alt_match_score">يناسبك بنسبة %d%%</string>
+  <string name="image_alt_match_unknown">لا توجد درجة ملاءمة لك بعد</string>
   <string name="image_alt_media_poster">\"%s\" ملصق</string>
   <string name="image_alt_person_headshot">صورة %s</string>
   <string name="image_alt_selected_gif">صورة GIF محددة</string>
@@ -1324,6 +1342,7 @@
   <string name="label_stats_shows">عروض</string>
   <string name="label_streaming_country">البلد</string>
   <string name="label_sync_webhooks_server_count">%s خوادم</string>
+  <string name="label_sync_webhooks_server_count_one">خادم واحد</string>
   <string name="label_today_day">اختر يومًا</string>
   <string name="label_today_grouping">تجميع أنشطة اليوم</string>
   <string name="label_usage_limit_loading">جارٍ تحميل استخدامك</string>
@@ -1435,6 +1454,7 @@
   <string name="list_title_popular_shows">مسلسلات شائعة</string>
   <string name="list_title_progress">التقدم</string>
   <string name="list_title_ratings">التقييمات</string>
+  <string name="list_title_recent_lists">الأحدث</string>
   <string name="list_title_recently_watched">تمت مشاهدته مؤخرًا</string>
   <string name="list_title_recommendation_sources_activity">شاهدت</string>
   <string name="list_title_recommendation_sources_favorite">أحببت</string>
@@ -1605,18 +1625,16 @@
   <string name="page_title_year_to_date">منذ بداية العام</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_large_screen_cards">على الشاشات الأكبر حجمًا، تستخدم جميع القوائم نفس البطاقات مثل باقي التطبيق. يؤدي تحديد إحداها إلى فتح لمحة سريعة بدلاً من مغادرة القائمة.</string>
+  <string name="preview_feature_description_personalized_related">يرتّب العناوين ذات الصلة في صفحات الأفلام والمسلسلات وفقاً لما يعجبك. بدّل بين \"لك\" و\"قياسي\" أعلى القائمة.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_season_recap">يضيف زر ملخص بجوار أداة اختيار الموسم في صفحة المسلسل. حيث يعرض ملخصًا لأحداث ذلك الموسم: أهم اللحظات ومآل الشخصيات.</string>
-  <string name="preview_feature_description_show_ending">يعرض صفًا لـ \"النهاية\" في تفاصيل العرض: \"مكتمل\" عندما تنتهي القصة، و\"غير محسوم\" عندما لا تنتهي.</string>
-  <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
   <string name="preview_feature_description_vip_veteran">تُظهر المدة التي احتفظ فيها الأعضاء بخدمة VIP دون انقطاع، مع شارة مخضرم أو أسطورة، وحلقة ملونة للصورة الرمزية، وبعض الاحتفالات على ملفك الشخصي.</string>
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_large_screen_cards">بطاقات الشاشة الكبيرة</string>
+  <string name="preview_feature_title_personalized_related">عناوين ذات صلة لك</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_season_recap">ملخص الموسم</string>
-  <string name="preview_feature_title_show_ending">نهاية العرض</string>
-  <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
   <string name="preview_feature_title_vip_veteran">حالة VIP المخضرم</string>
   <string name="preview_feature_title_year_in_review_2026">العام قيد المراجعة 2026</string>
   <string name="row_label_loading_title">جاري تحميل الاسم</string>
@@ -1838,6 +1856,8 @@
   <string name="text_calendar_placeholder_empty_period">الشاشة مظلمة. لا أفلام. لا حلقات. فقط أنت والصمت.</string>
   <string name="text_calendar_today">اليوم</string>
   <string name="text_calendar_up_next">القادم</string>
+  <string name="text_checkin_failed_message">تحقق من اتصالك وحاول مرة أخرى.</string>
+  <string name="text_checkin_failed_title">تعذر تسجيل الحضور</string>
   <string name="text_clear_data_failed">تعذر مسح بعض العناصر. يرجى المحاولة مرة أخرى.</string>
   <string name="text_clear_source_custom_library">المكتبة المخصصة</string>
   <string name="text_clear_source_history">التاريخ</string>
@@ -1980,6 +2000,12 @@
   <string name="text_info_younify_service_linked">تم ربط خدمة البث.</string>
   <string name="text_info_younify_service_unlinked">تم إلغاء ربط خدمة البث.</string>
   <string name="text_jellyfin_quick_connect_waiting">في انتظار موافقتك</string>
+  <string name="text_jellyfin_webhook_status_never_received">لم يتم استلام أي شيء بعد. شغّل شيئاً على Jellyfin لاختباره.</string>
+  <string name="text_jellyfin_webhook_status_not_vip">تُعد Webhooks ميزة خاصة بـ VIP.</string>
+  <string name="text_jellyfin_webhook_status_other_account">الأحداث واردة من مستخدم Jellyfin مختلف. اضبط فلتر المستخدم على حسابك.</string>
+  <string name="text_jellyfin_webhook_status_other_server">الأحداث واردة من خادم Jellyfin مختلف. انسخ هذا العنوان إلى الخادم الذي ينتمي إليه.</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">أرسل Jellyfin شيئاً لا يستطيع Trakt قراءته. تحقق من أن الوجهة هي Generic Destination مع تفعيل Send All Properties.</string>
+  <string name="text_jellyfin_webhook_status_working">يعمل. آخر حدث %s.</string>
   <string name="text_jellyfin_webhook_step_add_destination">افتح Dashboard &gt; Plugins &gt; Webhook واختر \"Add Generic Destination\".</string>
   <string name="text_jellyfin_webhook_step_install">في Jellyfin، افتح Dashboard &gt; Plugins &gt; Catalog، وثبّت \"Webhook\" ثم أعد تشغيل الخادم.</string>
   <string name="text_jellyfin_webhook_step_item_types">ضمن أنواع العناصر، حدد \"Movies\" و\"Episodes\".</string>
@@ -2014,6 +2040,10 @@
   <string name="text_login_failed_title">تعذر بدء تسجيل الدخول</string>
   <string name="text_login_rate_limited_message">الرجاء الانتظار لحظة والمحاولة مرة أخرى.</string>
   <string name="text_login_rate_limited_title">محاولات تسجيل دخول كثيرة جدًا</string>
+  <string name="text_match_basis">استناداً إلى ما شاهدته وقيّمته وفضّلته. لا شيء لتقييمه.</string>
+  <string name="text_match_basis_free">درجتك مجانية، أما الأسباب الكامنة وراءها فهي ميزة VIP.</string>
+  <string name="text_match_better_than">يناسبك أكثر من %d%% من الأعمال</string>
+  <string name="text_match_not_enough_data">لا تتوفر بيانات كافية لتحديد مدى ملاءمته لك بعد.</string>
   <string name="text_media_sync_feed_required">شغّل إعداد مزامنة واحد على الأقل.</string>
   <string name="text_media_sync_library_removal">إيقاف تشغيل هذا سيزيل ما أضافه إلى مجموعتك في Trakt. سيبقى سجل المشاهدة والتقييمات الخاصة بك.</string>
   <string name="text_media_sync_no_runs">لا توجد مزامنات حتى الآن.</string>

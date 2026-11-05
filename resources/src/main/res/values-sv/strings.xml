@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Nästa period</string>
   <string name="button_label_next_episode">Nästa avsnitt</string>
   <string name="button_label_next_story">Nästa berättelse</string>
+  <string name="button_label_official_website">Officiell webbplats</string>
   <string name="button_label_open_calendar_feed">Prenumerera på den här kalendern i din kalenderapp</string>
   <string name="button_label_open_comment">Öppna kommentaren</string>
   <string name="button_label_open_leaderboard">Öppna följarlistan</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">Visa klassiska rekommendationer</string>
   <string name="button_label_recommendation_mode_smart">Visa smarta rekommendationer</string>
   <string name="button_label_reject_follow_request">Avvisa följningsförfrågan från %s</string>
+  <string name="button_label_related_mode_personal">Visa relaterade titlar valda för dig</string>
+  <string name="button_label_related_mode_standard">Visa relaterade standardtitlar</string>
   <string name="button_label_remove_collaborator">Ta bort %s som samarbetspartner</string>
   <string name="button_label_remove_from_favorites">Ta bort \"%s\" från dina favoriter</string>
   <string name="button_label_remove_from_history">Ta bort denna visning av \"%s\" från din sedda lista</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">Återställ fler filter</string>
   <string name="button_label_restore_show">Återställ serien \"%s\"</string>
   <string name="button_label_retry">Försök igen</string>
+  <string name="button_label_reveal_spoiler">Visa spoiler</string>
   <string name="button_label_revoke_app">Återkalla åtkomst för %s</string>
   <string name="button_label_save_filters">Ange filter som standard</string>
   <string name="button_label_search">Sök</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">Visa alla objekt i bevakningslistan</string>
   <string name="button_label_view_all_where_to_watch">Visa alla streamingtjänster</string>
   <string name="button_label_view_import_guidelines">Visa riktlinjer</string>
+  <string name="button_label_view_match">Visa din matchning</string>
   <string name="button_label_view_photo">Visa din profilbild</string>
   <string name="button_label_view_ratings_breakdown">Visa betygsfördelning</string>
   <string name="button_label_view_reality_check">Visa Reality Check</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">Filmer</string>
   <string name="button_text_no_services">Inga tjänster</string>
   <string name="button_text_not_now">Inte nu</string>
+  <string name="button_text_open_advanced_settings">Öppna avancerade inställningar</string>
   <string name="button_text_open_calendar_feed">Lägg till i kalenderapp</string>
   <string name="button_text_open_in_service">Öppna i %s</string>
   <string name="button_text_personal">Personlig</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">Smart</string>
   <string name="button_text_reconnect">Återanslut</string>
   <string name="button_text_reject_follow_request">Avvisa förfrågan</string>
+  <string name="button_text_related_mode_personal">För dig</string>
+  <string name="button_text_related_mode_standard">Standard</string>
   <string name="button_text_remove">Ta bort</string>
   <string name="button_text_remove_from_favorites">Ta bort från favoriter</string>
   <string name="button_text_remove_from_history">Ta bort från historik</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code">I Jellyfin på <b>%s</b>, öppna din profil, sedan Quick Connect, och ange:</string>
   <string name="description_jellyfin_sync">Anslut din Jellyfin-server för att synkronisera visningshistorik och samlingar med Trakt.</string>
   <string name="description_jellyfin_synced_servers">Synkronisera automatiskt din visningshistorik och ditt bibliotek.</string>
-  <string name="description_jellyfin_vip_upsell">Uppgradera till VIP för att synkronisera visningshistorik och samlingar från din Jellyfin-server medan den är i beta.</string>
+  <string name="description_jellyfin_vip_upsell_add_server">Gratiskonton synkroniserar 1 medieserver en gång om dagen. Uppgradera till VIP för att synkronisera obegränsat antal servrar varje timme.</string>
   <string name="description_library_collection_limit">Vissa objekt från %s finns ännu inte i din Trakt-samling. Gratiskonton stannar vid samlingsgränsen; VIP samlar allt.</string>
   <string name="description_manage_collaborators">Samarbetspartners kan lägga till och ta bort objekt på den här listan. Välj bland personer som följer dig.</string>
   <string name="description_manage_collaborators_shared">Samarbetspartners kan lägga till och ta bort objekt på den här listan. Välj bland personer som följer dig. Listor med samarbetspartners visas under Delade.</string>
   <string name="description_media_sync_add_jellyfin_server">Anslut en annan Jellyfin-server för att synkronisera den också.</string>
+  <string name="description_media_sync_add_jellyfin_server_free">Gratiskonton synkroniserar 1 medieserver. Bli VIP för att lägga till fler.</string>
   <string name="description_media_sync_add_server_free">Gratiskonton synkroniserar 1 Plex-server. Bli VIP för att lägga till fler.</string>
   <string name="description_media_sync_add_server_vip">Anslut en annan Plex-server för att synkronisera den också.</string>
   <string name="description_media_sync_collection_limit">Vissa objekt från den här servern finns ännu inte i din Trakt-samling. Bli VIP för att samla allt.</string>
@@ -812,7 +821,7 @@
   <string name="description_streaming_sync">Synkronisera automatiskt din visningshistorik och dina betyg.</string>
   <string name="description_streaming_vip_services">Uppgradera för att ansluta och synkronisera dessa streamingtjänster.</string>
   <string name="description_sync_detail">Några detaljer om denna synkronisering.</string>
-  <string name="description_sync_webhooks_jellyfin_setup">Trakt visar vad du tittar på just nu, och ditt bibliotek synkroniseras några minuter efter att du har sett klart något. Konfigurera det en gång i Jellyfins Webhook-plugin. Det täcker %s.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt visar vad du tittar på just nu och lägger till det i din historik så fort du har sett klart. Konfigurera det en gång i Jellyfins Webhook-plugin. Det täcker %s.</string>
   <string name="description_sync_webhooks_live_progress">Din medieserver berättar för Trakt vad du tittar på just nu och var du pausade. Tittande kommer fortfarande från synkronisering.</string>
   <string name="description_sync_webhooks_plex">Klistra in denna adress en gång i Plex › Inställningar › Webhooks. Den täcker %s. Kräver Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">På servrar som Trakt inte kan nå, lägger den även till dina tittanden och betyg.</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">Det användarnamnet och lösenordet fungerade inte.</string>
   <string name="error_text_jellyfin_invalid_server_url">Det där är inte en webbadress som Trakt kan använda. Ange den publika adressen du använder för att öppna Jellyfin utanför hemmet, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect är avstängd på den här servern. Slå på den i Jellyfin-panelen, eller logga in med ditt lösenord.</string>
+  <string name="error_text_jellyfin_rate_limited">För många inloggningsförsök. Vänta en minut och försök igen.</string>
   <string name="error_text_jellyfin_raw_ip_address">Trakt kan inte nå en lokal adress eller IP-adress. Ange den publika adressen du använder för att öppna Jellyfin utanför hemmet, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Gratiskonton kan synkronisera 1 medieserver. Bli VIP för att lägga till fler.</string>
   <string name="error_text_jellyfin_server_not_found">Ingen Jellyfin-server svarade på den adressen. Kontrollera den och försök igen.</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">Jellyfin-synkronisering är en VIP-beta för närvarande.</string>
   <string name="error_text_lists_limit">Du har nått gränsen för dina personliga listor. Uppgradera till VIP för obegränsat antal listor!</string>
   <string name="error_text_locked_account_collection_limit">Detta användarkonto har låsts eftersom samlingen har överskridit gränsen. Vänligen <a>kontakta supporten</a> för att lösa detta problem.</string>
+  <string name="error_text_locked_account_collection_limit_plain">Detta användarkonto har låsts eftersom samlingen har överskridit gränsen. Vänligen kontakta supporten för att lösa detta problem.</string>
   <string name="error_text_locked_account_guide">Besök <a>avancerade inställningarna</a> för att köra en historikanalys och låsa upp ditt konto.</string>
+  <string name="error_text_locked_account_guide_plain">Besök de avancerade inställningarna för att köra en historikanalys och låsa upp ditt konto.</string>
   <string name="error_text_locked_account_persists">Om problemet kvarstår, vänligen <a>kontakta support</a> för att lösa problemet.</string>
+  <string name="error_text_locked_account_persists_plain">Om problemet kvarstår, vänligen kontakta support för att lösa problemet.</string>
   <string name="error_text_media_sync_generic">Något gick fel. Försök igen om en stund.</string>
   <string name="error_text_media_sync_server_limit">Gratiskonton kan synkronisera 1 Plex-server. Bli VIP för att lägga till fler.</string>
   <string name="error_text_media_sync_server_removing">Den här servern tas fortfarande bort. Försök igen om några minuter.</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">JSON-riktlinjer</string>
   <string name="header_insights">Insikter</string>
   <string name="header_jellyfin_synced_servers">Jellyfin-servrar</string>
-  <string name="header_jellyfin_vip_upsell">Jellyfin-synkronisering är en VIP-beta</string>
+  <string name="header_jellyfin_vip_upsell_add_server">Flera servrar är en VIP-funktion</string>
   <string name="header_jellyfin_webhook_steps">Konfigurera i Jellyfin</string>
   <string name="header_landing_discover">Upptäck</string>
   <string name="header_landing_hero">Din nästa favorit finns redan därute.</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">Beskrivning</string>
   <string name="header_main_cast">Huvudroller</string>
   <string name="header_manage_lists">Hantera listor</string>
+  <string name="header_match">Matchning</string>
+  <string name="header_match_reasons">Varför den passar dig</string>
+  <string name="header_match_taste">Din smak</string>
   <string name="header_media_reactions">Reaktioner</string>
   <string name="header_media_sync_choose_libraries">Välj bibliotek</string>
   <string name="header_media_sync_choose_server">Välj en server</string>
@@ -1115,6 +1131,8 @@
   <string name="hint_media_sync_history_resync">Du kan importera tidigare visningar senare från serverns Hantera-meny.</string>
   <string name="image_alt_comment_gif">GIF bifogad till kommentaren</string>
   <string name="image_alt_list_preview_poster">Affisch för ett objekt i %s</string>
+  <string name="image_alt_match_score">%d %% matchning för dig</string>
+  <string name="image_alt_match_unknown">Ingen matchningspoäng för dig än</string>
   <string name="image_alt_media_poster">\"%s\" affisch</string>
   <string name="image_alt_person_headshot">Porträtt av %s</string>
   <string name="image_alt_selected_gif">Vald GIF</string>
@@ -1324,6 +1342,7 @@
   <string name="label_stats_shows">Serier</string>
   <string name="label_streaming_country">Land</string>
   <string name="label_sync_webhooks_server_count">%s servrar</string>
+  <string name="label_sync_webhooks_server_count_one">1 server</string>
   <string name="label_today_day">Välj en dag</string>
   <string name="label_today_grouping">Gruppera dagens aktivitet</string>
   <string name="label_usage_limit_loading">Laddar din användning</string>
@@ -1435,6 +1454,7 @@
   <string name="list_title_popular_shows">Populära serier</string>
   <string name="list_title_progress">Förlopp</string>
   <string name="list_title_ratings">Betyg</string>
+  <string name="list_title_recent_lists">Senaste</string>
   <string name="list_title_recently_watched">Nyligen sedda</string>
   <string name="list_title_recommendation_sources_activity">Du har sett</string>
   <string name="list_title_recommendation_sources_favorite">Du älskade</string>
@@ -1605,18 +1625,16 @@
   <string name="page_title_year_to_date">År hittills</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
   <string name="preview_feature_description_large_screen_cards">På större skärmar används samma kort för alla listor som i resten av appen. Att välja ett kort öppnar en snabböverblick istället för att lämna listan.</string>
+  <string name="preview_feature_description_personalized_related">Sorterar relaterade titlar på film- och seriesidor efter vad du gillar. Växla mellan För dig och Standard ovanför listan.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_season_recap">Lägger till knappen Sammanfattning intill säsongsväljaren på en seriesida. Den öppnar en sammanfattning för den säsongen: de viktigaste ögonblicken och var karaktärerna befinner sig.</string>
-  <string name="preview_feature_description_show_ending">Visar en avslutningsrad i en series detaljer: \"Avslutad\" när handlingen är klar, \"Oavslutad\" när den inte är det.</string>
-  <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
   <string name="preview_feature_description_vip_veteran">Visar hur länge medlemmar har behållit VIP utan avbrott, med ett Veteran- eller Legend-märke, en färgad avatarring och några firanden på din egen profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en scrollbar rulle med en tittarpersona, följt av en statistik sida med matchande stil.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_large_screen_cards">Kort för stor skärm</string>
+  <string name="preview_feature_title_personalized_related">Relaterade titlar för dig</string>
   <string name="preview_feature_title_rewatch">Omtittning</string>
   <string name="preview_feature_title_season_recap">Säsongssammanfattning</string>
-  <string name="preview_feature_title_show_ending">Serieavslutning</string>
-  <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP-veteranstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Årsöversikt 2026</string>
   <string name="row_label_loading_title">Laddar namn</string>
@@ -1838,6 +1856,8 @@
   <string name="text_calendar_placeholder_empty_period">Skärmen är mörk. Inga filmer. Inga avsnitt. Bara du och tystnaden.</string>
   <string name="text_calendar_today">Idag</string>
   <string name="text_calendar_up_next">Kommande</string>
+  <string name="text_checkin_failed_message">Kontrollera din anslutning och försök igen.</string>
+  <string name="text_checkin_failed_title">Kunde inte checka in</string>
   <string name="text_clear_data_failed">Vissa objekt kunde inte rensas. Försök igen.</string>
   <string name="text_clear_source_custom_library">Anpassat bibliotek</string>
   <string name="text_clear_source_history">Historia</string>
@@ -1980,6 +2000,12 @@
   <string name="text_info_younify_service_linked">Streamingtjänsten har länkats.</string>
   <string name="text_info_younify_service_unlinked">Streamingtjänsten har avlänkats.</string>
   <string name="text_jellyfin_quick_connect_waiting">Väntar på att du ska godkänna den</string>
+  <string name="text_jellyfin_webhook_status_never_received">Inget har tagits emot än. Spela upp något på Jellyfin för att testa det.</string>
+  <string name="text_jellyfin_webhook_status_not_vip">Webhooks är en VIP-funktion.</string>
+  <string name="text_jellyfin_webhook_status_other_account">Händelser kommer från en annan Jellyfin-användare. Ställ in användarfiltret på ditt konto.</string>
+  <string name="text_jellyfin_webhook_status_other_server">Händelser kommer från en annan Jellyfin-server. Kopiera denna adress till servern den hör till.</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">Jellyfin skickade något som Trakt inte kan läsa. Kontrollera att destinationen är Generic Destination med Send All Properties aktiverat.</string>
+  <string name="text_jellyfin_webhook_status_working">Fungerar. Senaste händelse %s.</string>
   <string name="text_jellyfin_webhook_step_add_destination">Öppna Dashboard &gt; Plugins &gt; Webhook och välj \"Add Generic Destination\".</string>
   <string name="text_jellyfin_webhook_step_install">I Jellyfin, öppna Dashboard &gt; Plugins &gt; Catalog, installera \"Webhook\" och starta om servern.</string>
   <string name="text_jellyfin_webhook_step_item_types">Under objekttyper, kryssa i \"Movies\" och \"Episodes\".</string>
@@ -2014,6 +2040,10 @@
   <string name="text_login_failed_title">Kunde inte starta inloggning</string>
   <string name="text_login_rate_limited_message">Vänta en stund och försök igen.</string>
   <string name="text_login_rate_limited_title">För många inloggningsförsök</string>
+  <string name="text_match_basis">Baserat på vad du sett, betygsatt och favoritmarkerat. Inget att betygsätta.</string>
+  <string name="text_match_basis_free">Din poäng är gratis. Skälen bakom är en VIP-funktion.</string>
+  <string name="text_match_better_than">Bättre matchning för dig än %d %% av titlarna</string>
+  <string name="text_match_not_enough_data">Inte tillräckligt med data för att matcha detta med dig än.</string>
   <string name="text_media_sync_feed_required">Aktivera minst en synkroniseringsinställning.</string>
   <string name="text_media_sync_library_removal">Om du stänger av detta tas det bort som lagts till i din Trakt-samling. Din visningshistorik och dina betyg behålls.</string>
   <string name="text_media_sync_no_runs">Inga synkroniseringar ännu.</string>
