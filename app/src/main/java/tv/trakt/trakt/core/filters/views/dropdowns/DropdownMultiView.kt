@@ -25,8 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -34,6 +38,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade10
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
@@ -60,6 +65,13 @@ internal fun <T> DropdownMultiView(
     val excludedLabels = excluded.map {
         stringResource(R.string.option_text_excluded, it.displayString)
     }
+    val selectionLabel = buildAnnotatedString {
+        append(included.joinToString(", ") { it.displayString })
+        excludedLabels.forEachIndexed { index, label ->
+            if (index > 0 || included.isNotEmpty()) append(", ")
+            withStyle(SpanStyle(color = if (TraktTheme.colors.isLight) Color.White else Red400)) { append(label) }
+        }
+    }
 
     Box(
         modifier = modifier,
@@ -85,8 +97,8 @@ internal fun <T> DropdownMultiView(
         ) {
             Text(
                 text = when {
-                    selected -> (included.map { it.displayString } + excludedLabels).joinToString(", ")
-                    else -> header
+                    selected -> selectionLabel
+                    else -> buildAnnotatedString { append(header) }
                 },
                 style = TraktTheme.typography.buttonTertiary,
                 color = when (active) {
@@ -221,6 +233,8 @@ private fun <T> ExcludableMenuItem(
                 textDecoration = TextDecoration.LineThrough.takeIf {
                     state == DropdownOptionState.Excluded
                 },
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         trailingIcon = {
@@ -279,7 +293,7 @@ private fun PreviewDropdownView() {
         DropdownMultiView(
             header = "Genre",
             active = true,
-            values = persistentListOf<DropdownOption<String?>>(
+            values = persistentListOf(
                 DropdownOption(raw = "Action", displayString = "Action"),
                 DropdownOption(raw = "Comedy", displayString = "Comedy"),
             ),
@@ -304,7 +318,7 @@ private fun PreviewDropdownViewInactive() {
         DropdownMultiView(
             header = "Genre",
             active = false,
-            values = persistentListOf<DropdownOption<String?>>(
+            values = persistentListOf(
                 DropdownOption(raw = null, displayString = "All"),
             ),
             options = persistentListOf(
@@ -324,7 +338,7 @@ private fun PreviewDropdownViewExcluded() {
         DropdownMultiView(
             header = "Genre",
             active = true,
-            values = persistentListOf<DropdownOption<String?>>(
+            values = persistentListOf(
                 DropdownOption(raw = "Action", displayString = "Action"),
             ),
             options = persistentListOf(
