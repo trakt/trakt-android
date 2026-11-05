@@ -9,9 +9,13 @@ internal interface GlobalFilterManager {
 
     suspend fun setMode(mode: GlobalFilterMode)
 
+    suspend fun setParentalGuideExpanded(expanded: Boolean)
+
     fun getFilter(): GlobalFilter
 
     fun getMode(): GlobalFilterMode
+
+    fun isParentalGuideExpanded(): Boolean
 
     fun observeFilter(): Flow<GlobalFilter>
 }

@@ -62,6 +62,7 @@ internal fun GlobalFiltersAdvancedView(
     onUpdateFilter: (GlobalFilter, Boolean) -> Unit = { _, _ -> },
     onResetFilter: () -> Unit = { },
     onToggleMode: (GlobalFilterMode) -> Unit = { },
+    onParentalGuideExpandedChange: (Boolean) -> Unit = { },
 ) {
     Column(
         verticalArrangement = spacedBy(16.dp),
@@ -185,6 +186,8 @@ internal fun GlobalFiltersAdvancedView(
             )
 
             ParentalGuideFilters(
+                expanded = state.parentalGuideExpanded,
+                onExpandedChange = onParentalGuideExpandedChange,
                 rangeOf = state.filter::parentalRange,
                 onRangeChange = { category, range ->
                     onUpdateFilter(state.filter.withParentalRange(category, range), true)

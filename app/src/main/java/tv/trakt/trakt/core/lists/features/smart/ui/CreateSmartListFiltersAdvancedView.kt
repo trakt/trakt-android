@@ -57,6 +57,7 @@ private val RatingMax = 100
 internal fun CreateSmartListFiltersAdvancedView(
     state: CreateSmartListState,
     onFiltersChange: (SmartListFilters, Boolean) -> Unit = { _, _ -> },
+    onParentalGuideExpandedChange: (Boolean) -> Unit = {},
 ) {
     val enabled = !state.creating.isLoading
 
@@ -126,6 +127,8 @@ internal fun CreateSmartListFiltersAdvancedView(
             )
 
             ParentalGuideFilters(
+                expanded = state.parentalGuideExpanded,
+                onExpandedChange = onParentalGuideExpandedChange,
                 rangeOf = { category ->
                     state.filters.parentalRange(category)?.toSeverityRange()
                 },

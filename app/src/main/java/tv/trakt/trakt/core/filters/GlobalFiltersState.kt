@@ -8,4 +8,5 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 internal data class GlobalFiltersState(
     val mode: GlobalFilterMode? = null,
     val filter: GlobalFilter = GlobalFilter.Default,
+    val parentalGuideExpanded: Boolean = true,
 )

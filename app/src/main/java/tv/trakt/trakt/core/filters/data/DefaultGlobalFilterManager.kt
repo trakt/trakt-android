@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.filters.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +18,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 
 private val KEY_FILTERS = stringPreferencesKey("key_global_filters_2")
 private val KEY_FILTERS_MODE = stringPreferencesKey("key_global_filters_mode_2")
+private val KEY_PARENTAL_GUIDE_EXPANDED = booleanPreferencesKey("key_parental_guide_expanded")
 
 internal class DefaultGlobalFilterManager(
     scope: CoroutineScope,
@@ -29,6 +31,10 @@ internal class DefaultGlobalFilterManager(
             GlobalFilterMode.entries.find { it.name == value } ?: GlobalFilterMode.Simple
         }
         .stateIn(scope, SharingStarted.Eagerly, GlobalFilterMode.Simple)
+
+    private val parentalGuideExpandedState = dataStore.data
+        .map { prefs -> prefs[KEY_PARENTAL_GUIDE_EXPANDED] ?: true }
+        .stateIn(scope, SharingStarted.Eagerly, true)
 
     private val filtersState = dataStore.data
         .map { prefs ->
@@ -52,6 +58,12 @@ internal class DefaultGlobalFilterManager(
     override suspend fun setMode(mode: GlobalFilterMode) {
         dataStore.edit { it[KEY_FILTERS_MODE] = mode.name }
     }
+
+    override suspend fun setParentalGuideExpanded(expanded: Boolean) {
+        dataStore.edit { it[KEY_PARENTAL_GUIDE_EXPANDED] = expanded }
+    }
+
+    override fun isParentalGuideExpanded(): Boolean = parentalGuideExpandedState.value
 
     override fun getFilter(): GlobalFilter = filtersState.value
 

@@ -24,9 +24,11 @@ internal class GlobalFiltersViewModel(
     private val initialState = GlobalFiltersState(
         mode = filterManager.getMode(),
         filter = options.initial ?: filterManager.getFilter(),
+        parentalGuideExpanded = filterManager.isParentalGuideExpanded(),
     )
     private val modeState = MutableStateFlow(initialState.mode)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val parentalGuideExpandedState = MutableStateFlow(initialState.parentalGuideExpanded)
 
     fun applyFilter(filter: GlobalFilter) {
         viewModelScope.launch {
@@ -77,13 +79,22 @@ internal class GlobalFiltersViewModel(
         }
     }
 
+    fun setParentalGuideExpanded(expanded: Boolean) {
+        parentalGuideExpandedState.update { expanded }
+        viewModelScope.launch {
+            filterManager.setParentalGuideExpanded(expanded)
+        }
+    }
+
     val state = combine(
         filterState,
         modeState,
+        parentalGuideExpandedState,
     ) { state ->
         GlobalFiltersState(
             filter = state[0] as GlobalFilter,
             mode = state[1] as GlobalFilterMode?,
+            parentalGuideExpanded = state[2] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,
