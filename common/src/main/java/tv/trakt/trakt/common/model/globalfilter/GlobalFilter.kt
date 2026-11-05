@@ -19,6 +19,8 @@ data class GlobalFilter(
     @Serializable(with = ImmutableListSerializer::class)
     val genre: ImmutableList<MediaGenre>? = null,
     @Serializable(with = ImmutableListSerializer::class)
+    val excludedGenres: ImmutableList<MediaGenre>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
     val subgenre: ImmutableList<String>? = null,
     val years: Pair<Int, Int>? = null,
     val runtime: Pair<Int, Int>? = null,
@@ -26,11 +28,17 @@ data class GlobalFilter(
     val availability: ImmutableList<Availability>? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val certification: ImmutableList<Certification>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val excludedCertifications: ImmutableList<Certification>? = null,
     val region: Region? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val countries: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
+    val excludedCountries: ImmutableList<String>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
     val statuses: ImmutableList<MediaStatus>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val excludedStatuses: ImmutableList<MediaStatus>? = null,
     val rating: Pair<Int, Int>? = null,
     val parentalNudity: Pair<Int, Int>? = null,
     val parentalViolence: Pair<Int, Int>? = null,
@@ -203,6 +211,24 @@ data class GlobalFilter(
     private val isParentalActive: Boolean
         get() = ParentalGuideCategory.entries.any { parentalRange(it) != null }
 
+    val genresParam: String?
+        get() = toExclusionParam(genre, excludedGenres) { it.slug }
+
+    val certificationsParam: String?
+        get() = toExclusionParam(certification, excludedCertifications) { it.slug }
+
+    val countriesParam: String?
+        get() = toExclusionParam(countries, excludedCountries) { it } ?: region?.slug
+
+    val statusesParam: String?
+        get() = toExclusionParam(statuses, excludedStatuses) { it.slug }
+
+    private val isExclusionActive: Boolean
+        get() = excludedGenres != null ||
+            excludedCertifications != null ||
+            excludedCountries != null ||
+            excludedStatuses != null
+
     val isActive: Boolean
         get() = genre != null ||
             subgenre != null ||
@@ -213,6 +239,7 @@ data class GlobalFilter(
             region != null ||
             countries != null ||
             statuses != null ||
+            isExclusionActive ||
             (rating != null && rating != 0 to 100) ||
             isParentalActive ||
             hideWatched ||
@@ -228,6 +255,25 @@ data class GlobalFilter(
             region != null ||
             countries != null ||
             statuses != null ||
+            isExclusionActive ||
             (rating != null && rating != 0 to 100) ||
             isParentalActive
+}
+
+private const val EXCLUSION_PREFIX = "-"
+
+private fun <T> toExclusionParam(
+    included: List<T>?,
+    excluded: List<T>?,
+    slug: (T) -> String,
+): String? {
+    val includedTokens = included.orEmpty().flatMap { slug(it).split(',') }
+    val excludedTokens = excluded.orEmpty().flatMap { item ->
+        slug(item).split(',').map { "$EXCLUSION_PREFIX$it" }
+    }
+
+    return (includedTokens + excludedTokens)
+        .distinct()
+        .takeIf { it.isNotEmpty() }
+        ?.joinToString(",")
 }

@@ -9,14 +9,13 @@ internal data class GlobalFilterChange(
 )
 
 private val filterKeys: List<Pair<String, (GlobalFilter) -> Any?>> = listOf(
-    "genres" to GlobalFilter::genre,
+    "genres" to GlobalFilter::genresParam,
     "years" to GlobalFilter::years,
     "runtimes" to GlobalFilter::runtime,
     "watchnow" to GlobalFilter::availability,
-    "certifications" to GlobalFilter::certification,
-    "countries" to GlobalFilter::region,
-    "countries" to GlobalFilter::countries,
-    "statuses" to GlobalFilter::statuses,
+    "certifications" to GlobalFilter::certificationsParam,
+    "countries" to GlobalFilter::countriesParam,
+    "statuses" to GlobalFilter::statusesParam,
     "ratings" to GlobalFilter::rating,
     "ignore_watched" to GlobalFilter::hideWatched,
     "ignore_watchlisted" to GlobalFilter::hideWatchlist,

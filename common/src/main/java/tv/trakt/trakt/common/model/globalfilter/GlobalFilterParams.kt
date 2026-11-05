@@ -4,15 +4,15 @@ import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 
 fun GlobalFilter.toApiParams(): Map<String, String> {
     return listOf(
-        "genres" to genre?.joinToList { it.slug },
+        "genres" to genresParam,
         "subgenres" to subgenre?.joinToList { it },
         "years" to years?.let { "${it.first}-${it.second}" },
         "ratings" to rating?.let { "${it.first}-${it.second}" },
         "runtimes" to runtime?.let { "${it.first}-${it.second}" },
-        "certifications" to certification?.joinToList { it.slug },
+        "certifications" to certificationsParam,
         "watchnow" to availability?.joinToList { it.slug },
-        "countries" to (countries?.joinToList { it } ?: region?.slug),
-        "statuses" to statuses?.joinToList { it.slug },
+        "countries" to countriesParam,
+        "statuses" to statusesParam,
         "ignore_watched" to hideWatched.takeIf { it }?.toString(),
         "ignore_watchlisted" to hideWatchlist.takeIf { it }?.toString(),
     ).plus(
