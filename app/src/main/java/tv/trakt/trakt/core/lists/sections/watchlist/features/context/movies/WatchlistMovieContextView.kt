@@ -230,11 +230,11 @@ private fun MovieActionButtons(
         GhostButton(
             enabled = !isLoading,
             loading = state.loadingWatchlist.isLoading,
-            text = stringResource(R.string.button_text_watchlist),
+            text = stringResource(R.string.button_text_remove_from_watchlist),
             onClick = onWatchlistClick,
             iconSize = 24.dp,
             iconSpace = 16.dp,
-            icon = painterResource(R.drawable.ic_minus),
+            icon = painterResource(R.drawable.ic_bookmark_on),
             modifier = Modifier
                 .graphicsLayer {
                     translationX = -8.5.dp.toPx()

@@ -324,13 +324,16 @@ private fun ActionButtons(
         GhostButton(
             enabled = !isLoadingOrDone,
             loading = state.loadingWatchlist.isLoading || state.loadingWatchlist.isDone,
-            text = stringResource(R.string.button_text_watchlist),
+            text = when {
+                state.isWatchlist -> stringResource(R.string.button_text_remove_from_watchlist)
+                else -> stringResource(R.string.button_text_watchlist)
+            },
             onClick = onWatchlistClick,
             iconSize = 22.dp,
             iconSpace = 17.dp,
             icon = when {
-                state.isWatchlist -> painterResource(R.drawable.ic_minus)
-                else -> painterResource(R.drawable.ic_plus)
+                state.isWatchlist -> painterResource(R.drawable.ic_bookmark_on)
+                else -> painterResource(R.drawable.ic_bookmark_off)
             },
             modifier = Modifier
                 .graphicsLayer {
