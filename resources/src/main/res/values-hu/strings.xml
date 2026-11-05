@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Következő időszak</string>
   <string name="button_label_next_episode">Következő epizód</string>
   <string name="button_label_next_story">Következő történet</string>
+  <string name="button_label_official_website">Hivatalos weboldal</string>
   <string name="button_label_open_calendar_feed">Feliratkozás erre a naptárra a naptáralkalmazásban</string>
   <string name="button_label_open_comment">Hozzászólás megnyitása</string>
   <string name="button_label_open_leaderboard">Követések ranglistájának megnyitása</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">Klasszikus ajánlások megjelenítése</string>
   <string name="button_label_recommendation_mode_smart">Intelligens ajánlások megjelenítése</string>
   <string name="button_label_reject_follow_request">Követési kérelem elutasítása %s felhasználótól</string>
+  <string name="button_label_related_mode_personal">Neked válogatott kapcsolódó címek megjelenítése</string>
+  <string name="button_label_related_mode_standard">Standard kapcsolódó címek megjelenítése</string>
   <string name="button_label_remove_collaborator">Eltávolítás mint közreműködő: %s</string>
   <string name="button_label_remove_from_favorites">\"%s\" eltávolítása a kedvencek közül</string>
   <string name="button_label_remove_from_history">\"%s\" ezen lejátszásának eltávolítása az előzményekből</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">További szűrők visszaállítása</string>
   <string name="button_label_restore_show">Sorozat visszaállítása: „%s”</string>
   <string name="button_label_retry">Újra</string>
+  <string name="button_label_reveal_spoiler">Spoiler felfedése</string>
   <string name="button_label_revoke_app">Hozzáférési jog visszavonása a(z) %s számára</string>
   <string name="button_label_save_filters">Szűrők beállítása alapértelmezettként</string>
   <string name="button_label_search">Keresés</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">Összes Megnézendők listán lévő elem megtekintése</string>
   <string name="button_label_view_all_where_to_watch">Összes streaming szolgáltatás megtekintése</string>
   <string name="button_label_view_import_guidelines">Irányelvek megtekintése</string>
+  <string name="button_label_view_match">Egyezés megtekintése</string>
   <string name="button_label_view_photo">Profilképed megtekintése</string>
   <string name="button_label_view_ratings_breakdown">Értékelési bontás megtekintése</string>
   <string name="button_label_view_reality_check">Valóságellenőrzés megtekintése</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">Filmek</string>
   <string name="button_text_no_services">Nincsenek szolgáltatások</string>
   <string name="button_text_not_now">Nem most</string>
+  <string name="button_text_open_advanced_settings">Haladó beállítások megnyitása</string>
   <string name="button_text_open_calendar_feed">Hozzáadás naptáralkalmazáshoz</string>
   <string name="button_text_open_in_service">Megnyitás ezzel: %s</string>
   <string name="button_text_personal">Személyes</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">Okos</string>
   <string name="button_text_reconnect">Újracsatlakozás</string>
   <string name="button_text_reject_follow_request">Kérelem elutasítása</string>
+  <string name="button_text_related_mode_personal">Neked</string>
+  <string name="button_text_related_mode_standard">Standard</string>
   <string name="button_text_remove">Eltávolítás</string>
   <string name="button_text_remove_from_favorites">Eltávolítás a kedvencek közül</string>
   <string name="button_text_remove_from_history">Eltávolítás az előzményekből</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code">A Jellyfinben, a <b>%s</b> szerveren nyisd meg a profilodat, majd a Gyors csatlakozást, és írd be:</string>
   <string name="description_jellyfin_sync">Csatlakoztasd a Jellyfin szerveredet a megtekintési előzmények és gyűjtemények szinkronizálásához a Trakttal.</string>
   <string name="description_jellyfin_synced_servers">Automatikusan szinkronizáld a megtekintési előzményeidet és könyvtáradat.</string>
-  <string name="description_jellyfin_vip_upsell">Frissíts VIP-re, hogy szinkronizálhasd a megtekintési előzményeket és gyűjteményeket a Jellyfin szerverről, amíg az béta fázisban van.</string>
+  <string name="description_jellyfin_vip_upsell_add_server">Az ingyenes fiókok naponta egyszer szinkronizálnak 1 médiaszervert. Válts VIP-re korlátlan számú szerver óránkénti szinkronizálásához.</string>
   <string name="description_library_collection_limit">A(z) %s szerverekről származó egyes elemek még nincsenek a Trakt gyűjteményedben. Az ingyenes fiókoknál gyűjteménykorlát van; a VIP mindent begyűjt.</string>
   <string name="description_manage_collaborators">A közreműködők elemeket adhatnak hozzá és távolíthatnak el erről a listáról. Válaszd ki azok közül, akik követnek téged.</string>
   <string name="description_manage_collaborators_shared">A közreműködők elemeket adhatnak hozzá ehhez a listához, és távolíthatnak el róla. Válassz azok közül, akik követnek téged. A közreműködőkkel rendelkező listák a Megosztott alatt jelennek meg.</string>
   <string name="description_media_sync_add_jellyfin_server">Csatlakoztass egy másik Jellyfin szervert is a szinkronizáláshoz.</string>
+  <string name="description_media_sync_add_jellyfin_server_free">Az ingyenes fiókok 1 médiaszervert szinkronizálnak. Legyél VIP, hogy többet adhass hozzá.</string>
   <string name="description_media_sync_add_server_free">Az ingyenes fiókok 1 Plex szervert szinkronizálnak. Legyél VIP a továbbiak hozzáadásához.</string>
   <string name="description_media_sync_add_server_vip">Csatlakoztass egy másik Plex szervert a szinkronizáláshoz.</string>
   <string name="description_media_sync_collection_limit">Néhány elem erről a szerverről még nincs a Trakt gyűjteményedben. Legyél VIP, hogy mindent begyűjthess.</string>
@@ -812,7 +821,7 @@
   <string name="description_streaming_sync">Automatikusan szinkronizálja megtekintett előzményeit és értékeléseit.</string>
   <string name="description_streaming_vip_services">Frissíts a csatlakozáshoz és a szinkronizáláshoz ezekkel a streaming szolgáltatásokkal.</string>
   <string name="description_sync_detail">Néhány részlet erről a szinkronizálásról.</string>
-  <string name="description_sync_webhooks_jellyfin_setup">A Trakt mutatja, mit nézel éppen, a gyűjteményed pedig pár perccel azután szinkronizál, hogy befejeztél valamit. Állítsd be egyszer a Jellyfin Webhook bővítményében. A következőkre érvényes: %s.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">A Trakt mutatja, mit nézel éppen, és amint befejezed, hozzáadja az előzményeidhez. Állítsd be egyszer a Jellyfin Webhook bővítményében. A következőkre érvényes: %s.</string>
   <string name="description_sync_webhooks_live_progress">A médiaszervered elmondja a Traktnek, hogy mit nézel éppen, és hol szüneteltetted. A megtekintések továbbra is szinkronizálásból érkeznek.</string>
   <string name="description_sync_webhooks_plex">Illeszd be ezt a címet egyszer a Plex › Beállítások › Webhooks menüpontba. Ez a %s szerverre érvényes. Plex Pass szükséges.</string>
   <string name="description_sync_webhooks_unreachable_servers">Azoknál a szervereknél, amelyeket a Trakt nem ér el, szintén hozzáadja a megtekintéseidet és értékeléseidet.</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">Ez a felhasználónév és jelszó nem működött.</string>
   <string name="error_text_jellyfin_invalid_server_url">Ez nem olyan webcím, amelyet a Trakt használni tud. Add meg azt a nyilvános címet, amellyel az otthonodon kívülről éred el a Jellyfint, például: https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">A Gyors csatlakozás ki van kapcsolva ezen a szerveren. Kapcsold be a Jellyfin irányítópultján, vagy jelentkezz be a jelszavaddal.</string>
+  <string name="error_text_jellyfin_rate_limited">Túl sok bejelentkezési kísérlet. Várj egy percet, és próbáld újra.</string>
   <string name="error_text_jellyfin_raw_ip_address">A Trakt nem tud helyi vagy IP-címet elérni. Add meg azt a nyilvános címet, amellyel az otthonodon kívülről éred el a Jellyfint, például: https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Az ingyenes fiókok 1 médiaszervert szinkronizálhatnak. Legyél VIP, hogy többet adhass hozzá.</string>
   <string name="error_text_jellyfin_server_not_found">Egyetlen Jellyfin szerver sem válaszolt ezen a címen. Ellenőrizd és próbáld újra.</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">A Jellyfin szinkronizálás jelenleg VIP béta.</string>
   <string name="error_text_lists_limit">Elérted a személyes listáid számának a limitjét. Válts VIP tagságra korlátlan számú listákért!</string>
   <string name="error_text_locked_account_collection_limit">Ez a felhasználói fiók zárolásra került, mert a gyűjtemény túllépte a limitet. Kérjük, <a>keresse fel az ügyfélszolgálatot</a> a probléma megoldásához.</string>
+  <string name="error_text_locked_account_collection_limit_plain">Ez a felhasználói fiók zárolásra került, mert a gyűjtemény túllépte a limitet. Kérjük, keresse fel az ügyfélszolgálatot a probléma megoldásához.</string>
   <string name="error_text_locked_account_guide">Kérjük, keresd fel a <a>haladó beállítások</a> oldalt, az előzmények elemzéséhez és a fiók feloldásához.</string>
+  <string name="error_text_locked_account_guide_plain">Kérjük, keresd fel a haladó beállítások oldalt, az előzmények elemzéséhez és a fiók feloldásához.</string>
   <string name="error_text_locked_account_persists">Ha a probléma továbbra is fennáll, kérjük, <a>vedd fel a kapcsolatot az ügyfélszolgálattal</a> a probléma megoldásához.</string>
+  <string name="error_text_locked_account_persists_plain">Ha a probléma továbbra is fennáll, kérjük, vedd fel a kapcsolatot az ügyfélszolgálattal a probléma megoldásához.</string>
   <string name="error_text_media_sync_generic">Valami hiba történt. Kérjük, próbálja meg újra egy pillanat múlva.</string>
   <string name="error_text_media_sync_server_limit">Az ingyenes fiókok 1 Plex szervert szinkronizálhatnak. Legyél VIP a továbbiak hozzáadásához.</string>
   <string name="error_text_media_sync_server_removing">Ezt a szervert még mindig távolítják el. Próbáld újra néhány perc múlva.</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">JSON irányelvek</string>
   <string name="header_insights">Betekintések</string>
   <string name="header_jellyfin_synced_servers">Jellyfin szerverek</string>
-  <string name="header_jellyfin_vip_upsell">A Jellyfin szinkronizálás VIP béta</string>
+  <string name="header_jellyfin_vip_upsell_add_server">Több szerver VIP funkció</string>
   <string name="header_jellyfin_webhook_steps">Beállítás a Jellyfinben</string>
   <string name="header_landing_discover">Felfedezés</string>
   <string name="header_landing_hero">A következő kedvenced már vár rád.</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">Leírás</string>
   <string name="header_main_cast">Főszereplők</string>
   <string name="header_manage_lists">Listák kezelése</string>
+  <string name="header_match">Egyezés</string>
+  <string name="header_match_reasons">Miért illik hozzád</string>
+  <string name="header_match_taste">Az ízlésed</string>
   <string name="header_media_reactions">Reakciók</string>
   <string name="header_media_sync_choose_libraries">Könyvtárak kiválasztása</string>
   <string name="header_media_sync_choose_server">Válassz szervert</string>
@@ -1115,6 +1131,7 @@
   <string name="hint_media_sync_history_resync">Később is importálhatja a korábbi megtekintéseket a szerver Kezelés menüjéből.</string>
   <string name="image_alt_comment_gif">A hozzászóláshoz csatolt GIF</string>
   <string name="image_alt_list_preview_poster">Poszter egy bejegyzéshez: „%s”</string>
+  <string name="image_alt_match_unknown">Még nincs egyezési pontszámod</string>
   <string name="image_alt_media_poster">„%s” posztere</string>
   <string name="image_alt_person_headshot">%s portréja</string>
   <string name="image_alt_selected_gif">Kiválasztott GIF</string>
@@ -1324,6 +1341,7 @@
   <string name="label_stats_shows">Sorozatok</string>
   <string name="label_streaming_country">Ország</string>
   <string name="label_sync_webhooks_server_count">%s szerver</string>
+  <string name="label_sync_webhooks_server_count_one">1 szerver</string>
   <string name="label_today_day">Válassz napot</string>
   <string name="label_today_grouping">Mai tevékenység csoportosítása</string>
   <string name="label_usage_limit_loading">Használati adatok betöltése</string>
@@ -1435,6 +1453,7 @@
   <string name="list_title_popular_shows">Népszerű sorozatok</string>
   <string name="list_title_progress">Folyamat</string>
   <string name="list_title_ratings">Értékelések</string>
+  <string name="list_title_recent_lists">Legújabb</string>
   <string name="list_title_recently_watched">Legutóbb megtekintett</string>
   <string name="list_title_recommendation_sources_activity">Megnézted</string>
   <string name="list_title_recommendation_sources_favorite">Szeretted</string>
@@ -1488,7 +1507,7 @@
   <string name="match_label_soulmates">Lelkitársak</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Egyezés:</string>
-  <string name="match_pill_aria_label">%1$d%% egyezés, %2$s. Egyezési részletek megnyitása.</string>
+  <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
   <string name="mir_banner_body">Havi összefoglalód kész. Íme, amit %s hónapban néztél.</string>
   <string name="mir_banner_body_short">%s havi összefoglalód kész.</string>
@@ -1605,18 +1624,16 @@
   <string name="page_title_year_to_date">Éves összesítés</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_large_screen_cards">Nagyobb képernyőkön minden lista ugyanazokat a kártyákat használja, mint az alkalmazás többi része. Egy elem kiválasztása gyors áttekintést nyit meg ahelyett, hogy elhagyná a listát.</string>
+  <string name="preview_feature_description_personalized_related">Az ízlésednek megfelelően rendezi a kapcsolódó címeket a filmek és sorozatok adatlapján. A lista felett válthatsz a Neked és a Standard beállítás között.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_season_recap">Egy Összefoglaló gombot ad az évadválasztó mellé a sorozat oldalán. Megnyitja az adott évad felzárkóztatóját: a legfontosabb pillanatokat és a szereplők helyzetét.</string>
-  <string name="preview_feature_description_show_ending">Megjelenít egy „Befejezés” sort a sorozat részleteiben: „Befejezett”, ha a történet lezárult, „Lezáratlan”, ha nem.</string>
-  <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
   <string name="preview_feature_description_vip_veteran">Megmutatja, mennyi ideig tartották a tagok szünet nélkül a VIP státuszt, Veterán vagy Legenda jelvénnyel, színes avatargyűrűvel és néhány ünnepséggel a saját profilodon.</string>
   <string name="preview_feature_description_year_in_review_2026">A 2026-os éved egy görgethető videóként, egy nézői személyiséggel, majd egy hozzá illeszkedő statisztikai oldallal.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_large_screen_cards">Nagyképernyős kártyák</string>
+  <string name="preview_feature_title_personalized_related">Kapcsolódó címek neked</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_season_recap">Évadösszefoglaló</string>
-  <string name="preview_feature_title_show_ending">Sorozat befejezése</string>
-  <string name="preview_feature_title_soundtrack">Filmzene</string>
   <string name="preview_feature_title_vip_veteran">VIP veterán státusz</string>
   <string name="preview_feature_title_year_in_review_2026">Éves összefoglaló 2026</string>
   <string name="row_label_loading_title">Név betöltése</string>
@@ -1723,7 +1740,7 @@
   <string name="tag_media_sync_webhook_only">Csak Webhook</string>
   <string name="tag_mixtape_different_mood">Más hangulat</string>
   <string name="tag_mixtape_kept">Megtartva</string>
-  <string name="tag_mixtape_match">%s%% egyezés</string>
+  <string name="tag_mixtape_match">%s% egyezés</string>
   <string name="tag_mixtape_tap_details">Koppints a részletekért</string>
   <string name="tag_text_blocked_user">Blokkolva</string>
   <string name="tag_text_deal_price">Első 2 év</string>
@@ -1838,6 +1855,8 @@
   <string name="text_calendar_placeholder_empty_period">A képernyő sötét. Nincsenek filmek. Nincsenek epizódok. Csak te és a csend.</string>
   <string name="text_calendar_today">Ma</string>
   <string name="text_calendar_up_next">Következik</string>
+  <string name="text_checkin_failed_message">Ellenőrizze az internetkapcsolatát, majd próbálja újra.</string>
+  <string name="text_checkin_failed_title">Nem sikerült becsekkolni</string>
   <string name="text_clear_data_failed">Néhány elemet nem sikerült törölni. Kérjük, próbálja újra.</string>
   <string name="text_clear_source_custom_library">Egyéni könyvtár</string>
   <string name="text_clear_source_history">Történelmi</string>
@@ -1856,7 +1875,7 @@
   <string name="text_connection_status_error_title">Nem sikerült csatlakozni a(z) %s szolgáltatáshoz</string>
   <string name="text_connection_status_expired_message">A munkamenet lejárt. Próbálja újra csatlakoztatni a %s szolgáltatást.</string>
   <string name="text_connection_status_expired_title">Kapcsolat időtúllépés</string>
-  <string name="text_copyright_crafted_by">K\nTézzel k\nTész\nült vil\nTág szerte.</string>
+  <string name="text_copyright_crafted_by">Kézzel készült világszerte.</string>
   <string name="text_copyright_notice">Minden jog fenntartva.</string>
   <string name="text_created_by">Készítette: <a>%s</a></string>
   <string name="text_created_by_plain">Készítette: %s</string>
@@ -1980,6 +1999,12 @@
   <string name="text_info_younify_service_linked">A streaming szolgáltatás összekapcsolva.</string>
   <string name="text_info_younify_service_unlinked">A streaming szolgáltatás leválasztva.</string>
   <string name="text_jellyfin_quick_connect_waiting">Jóváhagyásra várunk</string>
+  <string name="text_jellyfin_webhook_status_never_received">Még nem érkezett semmi. Játssz le valamit a Jellyfinen a teszteléshez.</string>
+  <string name="text_jellyfin_webhook_status_not_vip">A webhookok VIP funkciónak számítanak.</string>
+  <string name="text_jellyfin_webhook_status_other_account">Az események egy másik Jellyfin felhasználótól érkeznek. Állítsd a felhasználói szűrőt a fiókodra.</string>
+  <string name="text_jellyfin_webhook_status_other_server">Az események egy másik Jellyfin szerverről érkeznek. Másold be ezt a címet a hozzá tartozó szerverre.</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">A Jellyfin olyasmit küldött, amit a Trakt nem tud értelmezni. Ellenőrizd, hogy a cél Generic Destination, a Send All Properties pedig be van kapcsolva.</string>
+  <string name="text_jellyfin_webhook_status_working">Működik. Legutóbbi esemény: %s.</string>
   <string name="text_jellyfin_webhook_step_add_destination">Nyisd meg a Dashboard &gt; Plugins &gt; Webhook menüpontot, és válaszd az \"Add Generic Destination\" lehetőséget.</string>
   <string name="text_jellyfin_webhook_step_install">A Jellyfinben nyisd meg a Dashboard &gt; Plugins &gt; Catalog menüpontot, telepítsd a \"Webhook\" bővítményt, és indítsd újra a szervert.</string>
   <string name="text_jellyfin_webhook_step_item_types">Az elemtípusok alatt jelöld be a \"Movies\" és az \"Episodes\" lehetőséget.</string>
@@ -2014,6 +2039,9 @@
   <string name="text_login_failed_title">Nem sikerült elindítani a bejelentkezést</string>
   <string name="text_login_rate_limited_message">Kérem, várjon egy pillanatot, majd próbálja újra.</string>
   <string name="text_login_rate_limited_title">Túl sok bejelentkezési kísérlet</string>
+  <string name="text_match_basis">A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján. Nincs mit értékelni.</string>
+  <string name="text_match_basis_free">A pontszámod ingyenes. A mögötte rejlő okok VIP funkciónak számítanak.</string>
+  <string name="text_match_not_enough_data">Még nincs elég adat az egyezés megállapításához.</string>
   <string name="text_media_sync_feed_required">Kapcsolj be legalább egy szinkronizálási beállítást.</string>
   <string name="text_media_sync_library_removal">Ennek kikapcsolása eltávolítja azt, amit a Trakt gyűjteményedhez adott. A megtekintési előzmények és értékelések megmaradnak.</string>
   <string name="text_media_sync_no_runs">Még nincsenek szinkronizálások.</string>
@@ -2949,7 +2977,7 @@
   <string name="yir_2026_preview_runner_none">Nincs (nem hibrid)</string>
   <string name="yir_2026_preview_runner_up">Második helyezett</string>
   <string name="yir_2026_preview_title">Személyiség előnézet</string>
-  <string name="yir_2026_rarity">Csak %1$d%% %2$s</string>
+  <string name="yir_2026_rarity">Csak %1$d% %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Kicsit %s</string>
   <string name="yir_2026_reel_and_you_are">És te vagy</string>
   <string name="yir_2026_reel_but_mostly">De leginkább</string>

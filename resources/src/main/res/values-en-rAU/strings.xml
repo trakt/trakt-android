@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Next period</string>
   <string name="button_label_next_episode">Next episode</string>
   <string name="button_label_next_story">Next story</string>
+  <string name="button_label_official_website">Official website</string>
   <string name="button_label_open_calendar_feed">Subscribe to this calendar in your calendar app</string>
   <string name="button_label_open_comment">Open the comment</string>
   <string name="button_label_open_leaderboard">Open follows leaderboard</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">Show classic recommendations</string>
   <string name="button_label_recommendation_mode_smart">Show smart recommendations</string>
   <string name="button_label_reject_follow_request">Reject follow request from %s</string>
+  <string name="button_label_related_mode_personal">Show related titles picked for you</string>
+  <string name="button_label_related_mode_standard">Show standard related titles</string>
   <string name="button_label_remove_collaborator">Remove %s as a collaborator</string>
   <string name="button_label_remove_from_favorites">Remove \"%s\" from your Favourites</string>
   <string name="button_label_remove_from_history">Remove this play of \"%s\" from your Watched list</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">Reset more filters</string>
   <string name="button_label_restore_show">Restore show \"%s\"</string>
   <string name="button_label_retry">Retry</string>
+  <string name="button_label_reveal_spoiler">Reveal spoiler</string>
   <string name="button_label_revoke_app">Revoke access for %s</string>
   <string name="button_label_save_filters">Set filters as default</string>
   <string name="button_label_search">Search</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">View all watchlist items</string>
   <string name="button_label_view_all_where_to_watch">View all streaming services</string>
   <string name="button_label_view_import_guidelines">View guidelines</string>
+  <string name="button_label_view_match">View your match</string>
   <string name="button_label_view_photo">View your profile photo</string>
   <string name="button_label_view_ratings_breakdown">View ratings breakdown</string>
   <string name="button_label_view_reality_check">View Reality Check</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">Movies</string>
   <string name="button_text_no_services">No services</string>
   <string name="button_text_not_now">Not now</string>
+  <string name="button_text_open_advanced_settings">Open advanced settings</string>
   <string name="button_text_open_calendar_feed">Add to calendar app</string>
   <string name="button_text_open_in_service">Open in %s</string>
   <string name="button_text_personal">Personal</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">Smart</string>
   <string name="button_text_reconnect">Reconnect</string>
   <string name="button_text_reject_follow_request">Reject Request</string>
+  <string name="button_text_related_mode_personal">For you</string>
+  <string name="button_text_related_mode_standard">Standard</string>
   <string name="button_text_remove">Remove</string>
   <string name="button_text_remove_from_favorites">Remove from Favourites</string>
   <string name="button_text_remove_from_history">Remove from History</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code">In Jellyfin on <b>%s</b>, open your profile, then Quick Connect, and enter:</string>
   <string name="description_jellyfin_sync">Connect your Jellyfin server to sync watch history and collections with Trakt.</string>
   <string name="description_jellyfin_synced_servers">Automatically sync your watch history and library.</string>
-  <string name="description_jellyfin_vip_upsell">Upgrade to VIP to sync watch history and collections from your Jellyfin server while it\'s in beta.</string>
+  <string name="description_jellyfin_vip_upsell_add_server">Free accounts sync 1 media server once a day. Upgrade to VIP to sync unlimited servers every hour.</string>
   <string name="description_library_collection_limit">Some items from %s aren\'t in your Trakt collection yet. Free accounts stop at the collection limit; VIP collects everything.</string>
   <string name="description_manage_collaborators">Collaborators can add and remove items on this list. Choose from people who follow you.</string>
   <string name="description_manage_collaborators_shared">Collaborators can add and remove items on this list. Choose from people who follow you. Lists with collaborators show under Shared.</string>
   <string name="description_media_sync_add_jellyfin_server">Connect another Jellyfin server to sync it too.</string>
+  <string name="description_media_sync_add_jellyfin_server_free">Free accounts sync 1 media server. Go VIP to add more.</string>
   <string name="description_media_sync_add_server_free">Free accounts sync 1 Plex server. Go VIP to add more.</string>
   <string name="description_media_sync_add_server_vip">Connect another Plex server to sync it too.</string>
   <string name="description_media_sync_collection_limit">Some items from this server aren\'t in your Trakt collection yet. Go VIP to collect everything.</string>
@@ -812,7 +821,7 @@
   <string name="description_streaming_sync">Automatically sync your watched history and ratings.</string>
   <string name="description_streaming_vip_services">Upgrade to connect and sync these streaming services.</string>
   <string name="description_sync_detail">Some details about this sync.</string>
-  <string name="description_sync_webhooks_jellyfin_setup">Trakt shows what you\'re watching right now, and your library syncs a few minutes after you finish something. Set it up once in the Jellyfin Webhook plugin. It covers %s.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt shows what you\'re watching right now and adds it to your history as soon as you finish. Set it up once in the Jellyfin Webhook plugin. It covers %s.</string>
   <string name="description_sync_webhooks_live_progress">Your media server tells Trakt what you\'re watching right now and where you paused. Watches still come from sync.</string>
   <string name="description_sync_webhooks_plex">Paste this address once in Plex › Settings › Webhooks. It covers %s. Needs Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">On servers Trakt can\'t reach, it also adds your watches and ratings.</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">That username and password didn\'t work.</string>
   <string name="error_text_jellyfin_invalid_server_url">That isn\'t a web address Trakt can use. Enter the public address you use to open Jellyfin from outside your home, like https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect is off on this server. Turn it on in the Jellyfin dashboard, or sign in with your password.</string>
+  <string name="error_text_jellyfin_rate_limited">Too many sign-in attempts. Wait a minute and try again.</string>
   <string name="error_text_jellyfin_raw_ip_address">Trakt can\'t reach a local or IP address. Enter the public address you use to open Jellyfin from outside your home, like https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Free accounts can sync 1 media server. Go VIP to add more.</string>
   <string name="error_text_jellyfin_server_not_found">No Jellyfin server answered at that address. Check it and try again.</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">Jellyfin sync is a VIP beta for now.</string>
   <string name="error_text_lists_limit">You\'ve reached your limit for personal lists. Upgrade to VIP for unlimited lists!</string>
   <string name="error_text_locked_account_collection_limit">This user account has been locked because the collection has exceeded the limit. Please <a>contact support</a> to resolve this issue.</string>
+  <string name="error_text_locked_account_collection_limit_plain">This user account has been locked because the collection has exceeded the limit. Please contact support to resolve this issue.</string>
   <string name="error_text_locked_account_guide">Please visit the <a>advanced settings</a> to run a history analysis and unlock your account.</string>
+  <string name="error_text_locked_account_guide_plain">Please visit the advanced settings to run a history analysis and unlock your account.</string>
   <string name="error_text_locked_account_persists">If the issue persists, please <a>contact support</a> to resolve this issue.</string>
+  <string name="error_text_locked_account_persists_plain">If the issue persists, please contact support to resolve this issue.</string>
   <string name="error_text_media_sync_generic">Something went wrong. Try again in a moment.</string>
   <string name="error_text_media_sync_server_limit">Free accounts can sync 1 Plex server. Go VIP to add more.</string>
   <string name="error_text_media_sync_server_removing">This server is still being removed. Try again in a few minutes.</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">JSON Guidelines</string>
   <string name="header_insights">Insights</string>
   <string name="header_jellyfin_synced_servers">Jellyfin Servers</string>
-  <string name="header_jellyfin_vip_upsell">Jellyfin sync is a VIP beta</string>
+  <string name="header_jellyfin_vip_upsell_add_server">Multiple servers is a VIP feature</string>
   <string name="header_jellyfin_webhook_steps">Set up in Jellyfin</string>
   <string name="header_landing_discover">Discover</string>
   <string name="header_landing_hero">Your next favourite is already out there.</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">Description</string>
   <string name="header_main_cast">Main Cast</string>
   <string name="header_manage_lists">Manage lists</string>
+  <string name="header_match">Match</string>
+  <string name="header_match_reasons">Why it fits you</string>
+  <string name="header_match_taste">Your taste</string>
   <string name="header_media_reactions">Reactions</string>
   <string name="header_media_sync_choose_libraries">Choose libraries</string>
   <string name="header_media_sync_choose_server">Choose a server</string>
@@ -1115,6 +1131,8 @@
   <string name="hint_media_sync_history_resync">You can import past watches later from the server\'s Manage menu.</string>
   <string name="image_alt_comment_gif">GIF attached to the comment</string>
   <string name="image_alt_list_preview_poster">Poster for an entry in %s</string>
+  <string name="image_alt_match_score">%d% match for you</string>
+  <string name="image_alt_match_unknown">No match score for you yet</string>
   <string name="image_alt_media_poster">\"%s\" poster</string>
   <string name="image_alt_person_headshot">Headshot of %s</string>
   <string name="image_alt_selected_gif">Selected GIF</string>
@@ -1324,6 +1342,7 @@
   <string name="label_stats_shows">Shows</string>
   <string name="label_streaming_country">Country</string>
   <string name="label_sync_webhooks_server_count">%s servers</string>
+  <string name="label_sync_webhooks_server_count_one">1 server</string>
   <string name="label_today_day">Choose a day</string>
   <string name="label_today_grouping">Group today\'s activity</string>
   <string name="label_usage_limit_loading">Loading your usage</string>
@@ -1435,6 +1454,7 @@
   <string name="list_title_popular_shows">Popular Shows</string>
   <string name="list_title_progress">Progress</string>
   <string name="list_title_ratings">Ratings</string>
+  <string name="list_title_recent_lists">Recent</string>
   <string name="list_title_recently_watched">Recently Watched</string>
   <string name="list_title_recommendation_sources_activity">You watched</string>
   <string name="list_title_recommendation_sources_favorite">You loved</string>
@@ -1488,7 +1508,7 @@
   <string name="match_label_soulmates">Soulmates</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open match details.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open match details.</string>
   <string name="match_pill_loading_aria_label">Computing match score</string>
   <string name="mir_banner_body">Your monthly recap is ready. Here\'s what you watched in %s.</string>
   <string name="mir_banner_body_short">Your %s recap is ready.</string>
@@ -1605,18 +1625,16 @@
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_large_screen_cards">On bigger screens, all lists use the same cards as the rest of the app. Selecting one opens a quick glance instead of leaving the list.</string>
+  <string name="preview_feature_description_personalized_related">Sorts the related titles on movie and show pages towards what you like. Switch between For you and Standard above the list.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_season_recap">Adds a Recap button next to the season picker on a show page. It opens a catch-up for that season: the key moments and where the characters stand.</string>
-  <string name="preview_feature_description_show_ending">Shows an Ending row in a show\'s details: Complete when the story wrapped up, Unresolved when it did not.</string>
-  <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
   <string name="preview_feature_description_vip_veteran">Shows how long members have kept VIP without a break, with a Veteran or Legend badge, a coloured avatar ring and a few celebrations on your own profile.</string>
   <string name="preview_feature_description_year_in_review_2026">Your 2026 as a scroll-driven reel with a viewer persona, then a stats page styled to match it.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_large_screen_cards">Large Screen Cards</string>
+  <string name="preview_feature_title_personalized_related">Related titles for you</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_season_recap">Season recap</string>
-  <string name="preview_feature_title_show_ending">Show ending</string>
-  <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP veteran status</string>
   <string name="preview_feature_title_year_in_review_2026">Year in Review 2026</string>
   <string name="row_label_loading_title">Loading name</string>
@@ -1723,7 +1741,7 @@
   <string name="tag_media_sync_webhook_only">Webhook only</string>
   <string name="tag_mixtape_different_mood">Different mood</string>
   <string name="tag_mixtape_kept">Kept</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tap for details</string>
   <string name="tag_text_blocked_user">Blocked</string>
   <string name="tag_text_deal_price">First 2 Years</string>
@@ -1838,6 +1856,8 @@
   <string name="text_calendar_placeholder_empty_period">The screen is dark. No movies. No episodes. Just you and the silence.</string>
   <string name="text_calendar_today">Today</string>
   <string name="text_calendar_up_next">Up next</string>
+  <string name="text_checkin_failed_message">Check your connection and try again.</string>
+  <string name="text_checkin_failed_title">Couldn\'t check in</string>
   <string name="text_clear_data_failed">Some items couldn\'t be cleared. Please try again.</string>
   <string name="text_clear_source_custom_library">Custom Library</string>
   <string name="text_clear_source_history">History</string>
@@ -1980,6 +2000,12 @@
   <string name="text_info_younify_service_linked">Streaming service has been linked.</string>
   <string name="text_info_younify_service_unlinked">Streaming service has been unlinked.</string>
   <string name="text_jellyfin_quick_connect_waiting">Waiting for you to approve it</string>
+  <string name="text_jellyfin_webhook_status_never_received">Nothing received yet. Play something on Jellyfin to test it.</string>
+  <string name="text_jellyfin_webhook_status_not_vip">Webhooks are a VIP feature.</string>
+  <string name="text_jellyfin_webhook_status_other_account">Events are coming from a different Jellyfin user. Set the user filter to your account.</string>
+  <string name="text_jellyfin_webhook_status_other_server">Events are coming from a different Jellyfin server. Copy this address into the server it belongs to.</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">Jellyfin sent something Trakt can\'t read. Check that the destination is Generic Destination with Send All Properties on.</string>
+  <string name="text_jellyfin_webhook_status_working">Working. Last event %s.</string>
   <string name="text_jellyfin_webhook_step_add_destination">Open Dashboard &gt; Plugins &gt; Webhook and choose \"Add Generic Destination\".</string>
   <string name="text_jellyfin_webhook_step_install">In Jellyfin, open Dashboard &gt; Plugins &gt; Catalog, install \"Webhook\" and restart the server.</string>
   <string name="text_jellyfin_webhook_step_item_types">Under item types, tick \"Movies\" and \"Episodes\".</string>
@@ -2014,6 +2040,10 @@
   <string name="text_login_failed_title">Couldn\'t start sign in</string>
   <string name="text_login_rate_limited_message">Please wait a moment and try again.</string>
   <string name="text_login_rate_limited_title">Too many sign in attempts</string>
+  <string name="text_match_basis">From what you watched, rated and favourited. Nothing to rate.</string>
+  <string name="text_match_basis_free">Your score is free. The reasons behind it are a VIP feature.</string>
+  <string name="text_match_better_than">Better match for you than %d% of titles</string>
+  <string name="text_match_not_enough_data">Not enough data to match this to you yet.</string>
   <string name="text_media_sync_feed_required">Turn on at least one sync setting.</string>
   <string name="text_media_sync_library_removal">Turning this off removes what it added to your Trakt collection. Your watch history and ratings will stay.</string>
   <string name="text_media_sync_no_runs">No syncs yet.</string>
@@ -2144,7 +2174,7 @@
   <string name="text_rating_prompt_8">Give it a grade.</string>
   <string name="text_ratings_no_data">No ratings yet.</string>
   <string name="text_ratings_season_extremes">Peak %1$s · %2$s · Low %3$s · %4$s</string>
-  <string name="text_ratings_season_extremes_android">Peak S%1$s (%2$s) \n•\n  Low S%3$s (%4$s)</string>
+  <string name="text_ratings_season_extremes_android">Peak S%1$s (%2$s) • Low S%3$s (%4$s)</string>
   <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votes</string>
   <string name="text_raw_export">Raw export</string>
@@ -2949,7 +2979,7 @@
   <string name="yir_2026_preview_runner_none">None (no hybrid)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona preview</string>
-  <string name="yir_2026_rarity">Only %1$d%% are %2$s</string>
+  <string name="yir_2026_rarity">Only %1$d% are %2$s</string>
   <string name="yir_2026_reel_a_little_bit">A little bit %s</string>
   <string name="yir_2026_reel_and_you_are">And you are</string>
   <string name="yir_2026_reel_but_mostly">But mostly</string>

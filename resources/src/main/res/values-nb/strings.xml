@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Neste periode</string>
   <string name="button_label_next_episode">Neste episode</string>
   <string name="button_label_next_story">Neste historie</string>
+  <string name="button_label_official_website">Offisiell nettside</string>
   <string name="button_label_open_calendar_feed">Abonner på denne kalenderen i kalenderappen din</string>
   <string name="button_label_open_comment">Åpne kommentaren</string>
   <string name="button_label_open_leaderboard">Åpne følgere-rangering</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">Vis klassiske anbefalinger</string>
   <string name="button_label_recommendation_mode_smart">Vis smarte anbefalinger</string>
   <string name="button_label_reject_follow_request">Avslå følgeforspørsel fra %s</string>
+  <string name="button_label_related_mode_personal">Vis relaterte titler valgt for deg</string>
+  <string name="button_label_related_mode_standard">Vis standard relaterte titler</string>
   <string name="button_label_remove_collaborator">Fjern %s som samarbeidspartner</string>
   <string name="button_label_remove_from_favorites">Fjern \"%s\" fra favorittene dine</string>
   <string name="button_label_remove_from_history">Fjern denne avspillingen av \"%s\" fra sett-historikken din</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">Tilbakestill flere filtre</string>
   <string name="button_label_restore_show">Gjenopprett serien \"%s\"</string>
   <string name="button_label_retry">Prøv igjen</string>
+  <string name="button_label_reveal_spoiler">Vis spoiler</string>
   <string name="button_label_revoke_app">Trekk tilbake tilgang for %s</string>
   <string name="button_label_save_filters">Sett filtre som standard</string>
   <string name="button_label_search">Søk</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">Vis alle ønskelisteelementer</string>
   <string name="button_label_view_all_where_to_watch">Vis alle strømmetjenester</string>
   <string name="button_label_view_import_guidelines">Vis retningslinjer</string>
+  <string name="button_label_view_match">Se din match</string>
   <string name="button_label_view_photo">Vis profilbildet ditt</string>
   <string name="button_label_view_ratings_breakdown">Se vurderingsoversikt</string>
   <string name="button_label_view_reality_check">Se virkelighetssjekk</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">Filmer</string>
   <string name="button_text_no_services">Ingen tjenester</string>
   <string name="button_text_not_now">Ikke nå</string>
+  <string name="button_text_open_advanced_settings">Åpne avanserte innstillinger</string>
   <string name="button_text_open_calendar_feed">Legg til i kalenderapp</string>
   <string name="button_text_open_in_service">Åpne i %s</string>
   <string name="button_text_personal">Personlig</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">Smart</string>
   <string name="button_text_reconnect">Koble til igjen</string>
   <string name="button_text_reject_follow_request">Avslå forespørsel</string>
+  <string name="button_text_related_mode_personal">For deg</string>
+  <string name="button_text_related_mode_standard">Standard</string>
   <string name="button_text_remove">Fjern</string>
   <string name="button_text_remove_from_favorites">Fjern fra favoritter</string>
   <string name="button_text_remove_from_history">Fjern fra historikk</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code">I Jellyfin på <b>%s</b>, åpne profilen din, deretter Quick Connect, og skriv inn:</string>
   <string name="description_jellyfin_sync">Koble til Jellyfin-serveren din for å synkronisere visningshistorikk og samlinger med Trakt.</string>
   <string name="description_jellyfin_synced_servers">Synkroniser visningshistorikken og biblioteket ditt automatisk.</string>
-  <string name="description_jellyfin_vip_upsell">Oppgrader til VIP for å synkronisere visningshistorikk og samlinger fra Jellyfin-serveren din mens den er i beta.</string>
+  <string name="description_jellyfin_vip_upsell_add_server">Gratiskontoer synkroniserer 1 medieserver én gang om dagen. Oppgrader til VIP for å synkronisere ubegrensede servere hver time.</string>
   <string name="description_library_collection_limit">Noen elementer fra %s er ikke i Trakt-samlingen din ennå. Gratiskontoer stopper ved samlingsgrensen; VIP samler alt.</string>
   <string name="description_manage_collaborators">Samarbeidspartnere kan legge til og fjerne elementer fra denne listen. Velg blant personer som følger deg.</string>
   <string name="description_manage_collaborators_shared">Samarbeidspartnere kan legge til og fjerne elementer fra denne listen. Velg blant personer som følger deg. Lister med samarbeidspartnere vises under Delt.</string>
   <string name="description_media_sync_add_jellyfin_server">Koble til en annen Jellyfin-server for å synkronisere den også.</string>
+  <string name="description_media_sync_add_jellyfin_server_free">Gratiskontoer synkroniserer 1 medieserver. Gå VIP for å legge til flere.</string>
   <string name="description_media_sync_add_server_free">Gratiskontoer synkroniserer 1 Plex-server. Gå VIP for å legge til flere.</string>
   <string name="description_media_sync_add_server_vip">Koble til en annen Plex-server for å synkronisere den også.</string>
   <string name="description_media_sync_collection_limit">Noen elementer fra denne serveren er ikke i Trakt-samlingen din ennå. Gå VIP for å samle alt.</string>
@@ -812,7 +821,7 @@
   <string name="description_streaming_sync">Synkroniser automatisk din sett historie og rangeringer.</string>
   <string name="description_streaming_vip_services">Oppgrader for å koble til og synkronisere disse strømmetjenestene.</string>
   <string name="description_sync_detail">Noen detaljer om denne synkroniseringen.</string>
-  <string name="description_sync_webhooks_jellyfin_setup">Trakt viser hva du ser på akkurat nå, og biblioteket ditt synkroniseres noen minutter etter at du er ferdig med noe. Sett det opp én gang i Jellyfin Webhook-tillegget. Det dekker %s.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt viser hva du ser på akkurat nå, og legger det til i historikken din så snart du er ferdig. Sett det opp én gang i Jellyfin Webhook-tillegget. Det dekker %s.</string>
   <string name="description_sync_webhooks_live_progress">Medieserveren din forteller Trakt hva du ser på akkurat nå, og hvor du pauset. Seing kommer fortsatt fra synkronisering.</string>
   <string name="description_sync_webhooks_plex">Lim inn denne adressen én gang i Plex › Innstillinger › Webhooks. Den dekker %s. Krever Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">På servere som Trakt ikke kan nå, legger den også til dine seanser og vurderinger.</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">Det brukernavnet og passordet fungerte ikke.</string>
   <string name="error_text_jellyfin_invalid_server_url">Dette er ikke en nettadresse Trakt kan bruke. Skriv inn den offentlige adressen du bruker til å åpne Jellyfin utenfor hjemmet ditt, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect er deaktivert på denne serveren. Slå den på i Jellyfin-dashboardet, eller logg på med passordet ditt.</string>
+  <string name="error_text_jellyfin_rate_limited">For mange påloggingsforsøk. Vent et minutt og prøv igjen.</string>
   <string name="error_text_jellyfin_raw_ip_address">Trakt kan ikke nå en lokal adresse eller IP-adresse. Skriv inn den offentlige adressen du bruker til å åpne Jellyfin utenfor hjemmet ditt, som https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Gratiskontoer kan synkronisere 1 medieserver. Gå VIP for å legge til flere.</string>
   <string name="error_text_jellyfin_server_not_found">Ingen Jellyfin-server svarte på den adressen. Sjekk den og prøv igjen.</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">Jellyfin-synkronisering er foreløpig en VIP-beta.</string>
   <string name="error_text_lists_limit">Du har nådd grensen for dine personlige lister. Oppgrader til VIP for ubegrenset antall lister!</string>
   <string name="error_text_locked_account_collection_limit">Denne brukerkontoen er blitt låst fordi samlingen har overskredet grensen. Vennligst <a>kontakt support</a> for å løse dette problemet.</string>
+  <string name="error_text_locked_account_collection_limit_plain">Denne brukerkontoen er blitt låst fordi samlingen har overskredet grensen. Vennligst kontakt support for å løse dette problemet.</string>
   <string name="error_text_locked_account_guide">Vennligst besøk <a>avanserte innstillinger</a> for å kjøre en historikkanalyse og låse opp kontoen din.</string>
+  <string name="error_text_locked_account_guide_plain">Vennligst besøk avanserte innstillinger for å kjøre en historikkanalyse og låse opp kontoen din.</string>
   <string name="error_text_locked_account_persists">Hvis problemet vedvarer, vennligst <a>kontakt kundestøtte</a> for å løse dette problemet.</string>
+  <string name="error_text_locked_account_persists_plain">Hvis problemet vedvarer, vennligst kontakt kundestøtte for å løse dette problemet.</string>
   <string name="error_text_media_sync_generic">Noe gikk galt. Prøv igjen om et øyeblikk.</string>
   <string name="error_text_media_sync_server_limit">Gratiskontoer kan synkronisere 1 Plex-server. Gå VIP for å legge til flere.</string>
   <string name="error_text_media_sync_server_removing">Denne serveren fjernes fortsatt. Prøv igjen om noen minutter.</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">JSON-retningslinjer</string>
   <string name="header_insights">Innsikt</string>
   <string name="header_jellyfin_synced_servers">Jellyfin-servere</string>
-  <string name="header_jellyfin_vip_upsell">Jellyfin-synkronisering er en VIP-beta</string>
+  <string name="header_jellyfin_vip_upsell_add_server">Flere servere er en VIP-funksjon</string>
   <string name="header_jellyfin_webhook_steps">Sett opp i Jellyfin</string>
   <string name="header_landing_discover">Oppdag</string>
   <string name="header_landing_hero">Din neste favoritt venter der ute.</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">Beskrivelse</string>
   <string name="header_main_cast">Hovedroller</string>
   <string name="header_manage_lists">Administrer lister</string>
+  <string name="header_match">Samsvar</string>
+  <string name="header_match_reasons">Hvorfor den passer for deg</string>
+  <string name="header_match_taste">Din smak</string>
   <string name="header_media_reactions">Reaksjoner</string>
   <string name="header_media_sync_choose_libraries">Velg biblioteker</string>
   <string name="header_media_sync_choose_server">Velg en server</string>
@@ -1115,6 +1131,8 @@
   <string name="hint_media_sync_history_resync">Du kan importere tidligere avspillinger senere fra serverens administrasjonsmeny.</string>
   <string name="image_alt_comment_gif">GIF vedlagt kommentaren</string>
   <string name="image_alt_list_preview_poster">Plakat for et element i %s</string>
+  <string name="image_alt_match_score">%d % match for deg</string>
+  <string name="image_alt_match_unknown">Ingen matchscore for deg ennå</string>
   <string name="image_alt_media_poster">\"%s\" plakat</string>
   <string name="image_alt_person_headshot">Portrett av %s</string>
   <string name="image_alt_selected_gif">Valgt GIF</string>
@@ -1324,6 +1342,7 @@
   <string name="label_stats_shows">Serier</string>
   <string name="label_streaming_country">Land</string>
   <string name="label_sync_webhooks_server_count">%s servere</string>
+  <string name="label_sync_webhooks_server_count_one">1 server</string>
   <string name="label_today_day">Velg en dag</string>
   <string name="label_today_grouping">Grupper dagens aktivitet</string>
   <string name="label_usage_limit_loading">Laster inn bruken din</string>
@@ -1435,6 +1454,7 @@
   <string name="list_title_popular_shows">Populære serier</string>
   <string name="list_title_progress">Fremdrift</string>
   <string name="list_title_ratings">Vurderinger</string>
+  <string name="list_title_recent_lists">Nyeste</string>
   <string name="list_title_recently_watched">Nylig sett</string>
   <string name="list_title_recommendation_sources_activity">Du har sett</string>
   <string name="list_title_recommendation_sources_favorite">Du elsket</string>
@@ -1488,7 +1508,7 @@
   <string name="match_label_soulmates">Sjelevenner</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Treff:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Åpne matchdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Åpne matchdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beregner treffscore</string>
   <string name="mir_banner_body">Din månedlige oppsummering er klar. Her er hva du så i %s.</string>
   <string name="mir_banner_body_short">Din %s oppsummering er klar.</string>
@@ -1605,18 +1625,16 @@
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller for å skjule eller vise konfigurerbare seksjoner i hele appen.</string>
   <string name="preview_feature_description_large_screen_cards">På større skjermer bruker alle lister de samme kortene som resten av appen. Ved å velge ett åpnes en hurtigvisning i stedet for å forlate listen.</string>
+  <string name="preview_feature_description_personalized_related">Sorterer relaterte titler på film- og seriesider etter hva du liker. Bytt mellom For deg og Standard over listen.</string>
   <string name="preview_feature_description_rewatch">Start gjensynsøkter for serier du allerede har sett, sjekk inn eller merk episoder som sett direkte fra gjensynsskuffen.</string>
   <string name="preview_feature_description_season_recap">Legger til en Sammendrag-knapp ved siden av sesongvelgeren på en serieside. Den åpner et sammendrag for den sesongen: de viktigste øyeblikkene og hvordan det står til med karakterene.</string>
-  <string name="preview_feature_description_show_ending">Viser en Avslutning-rad i en series detaljer: Fullført når historien er avsluttet, Uavsluttet når den ikke er det.</string>
-  <string name="preview_feature_description_soundtrack">Legger til en lydspor-seksjon på film- og seriesider, med avspilling der et spor kan matches.</string>
   <string name="preview_feature_description_vip_veteran">Viser hvor lenge medlemmer har beholdt VIP uten avbrudd, med et Veteran- eller Legend-merke, en farget avatarring og noen feiringer på din egen profil.</string>
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en rulle-drevet film med en seerpersona, deretter en statistikkside stylet for å matche den.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
   <string name="preview_feature_title_large_screen_cards">Store skjermkort</string>
+  <string name="preview_feature_title_personalized_related">Relaterte titler for deg</string>
   <string name="preview_feature_title_rewatch">Gjensyn</string>
   <string name="preview_feature_title_season_recap">Sesongsammendrag</string>
-  <string name="preview_feature_title_show_ending">Serieavslutning</string>
-  <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_vip_veteran">VIP veteranstatus</string>
   <string name="preview_feature_title_year_in_review_2026">Året i retrospekt 2026</string>
   <string name="row_label_loading_title">Laster inn navn</string>
@@ -1723,7 +1741,7 @@
   <string name="tag_media_sync_webhook_only">Kun webhook</string>
   <string name="tag_mixtape_different_mood">Annen stemning</string>
   <string name="tag_mixtape_kept">Beholdt</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Trykk for detaljer</string>
   <string name="tag_text_blocked_user">Blokkert</string>
   <string name="tag_text_deal_price">Første 2 år</string>
@@ -1838,6 +1856,8 @@
   <string name="text_calendar_placeholder_empty_period">Skjermen er mørk. Ingen filmer. Ingen episoder. Bare deg og stillheten.</string>
   <string name="text_calendar_today">I dag</string>
   <string name="text_calendar_up_next">Neste</string>
+  <string name="text_checkin_failed_message">Sjekk tilkoblingen din og prøv igjen.</string>
+  <string name="text_checkin_failed_title">Kunne ikke sjekke inn</string>
   <string name="text_clear_data_failed">Noen elementer kunne ikke tømmes. Vennligst prøv igjen.</string>
   <string name="text_clear_source_custom_library">Tilpasset bibliotek</string>
   <string name="text_clear_source_history">Historie</string>
@@ -1980,6 +2000,12 @@
   <string name="text_info_younify_service_linked">Strømmetjenesten er koblet.</string>
   <string name="text_info_younify_service_unlinked">Strømmetjenesten er frakoblet.</string>
   <string name="text_jellyfin_quick_connect_waiting">Venter på at du skal godkjenne det</string>
+  <string name="text_jellyfin_webhook_status_never_received">Ingenting mottatt ennå. Spill av noe på Jellyfin for å teste det.</string>
+  <string name="text_jellyfin_webhook_status_not_vip">Webhooks er en VIP-funksjon.</string>
+  <string name="text_jellyfin_webhook_status_other_account">Hendelser kommer fra en annen Jellyfin-bruker. Sett brukerfilteret til kontoen din.</string>
+  <string name="text_jellyfin_webhook_status_other_server">Hendelser kommer fra en annen Jellyfin-server. Kopier denne adressen til serveren den tilhører.</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">Jellyfin sendte noe Trakt ikke kan lese. Sjekk at destinasjonen er Generic Destination med Send All Properties på.</string>
+  <string name="text_jellyfin_webhook_status_working">Fungerer. Siste hendelse %s.</string>
   <string name="text_jellyfin_webhook_step_add_destination">Åpne Dashboard &gt; Plugins &gt; Webhook og velg \"Add Generic Destination\".</string>
   <string name="text_jellyfin_webhook_step_install">I Jellyfin, åpne Dashboard &gt; Plugins &gt; Catalog, installer \"Webhook\" og start serveren på nytt.</string>
   <string name="text_jellyfin_webhook_step_item_types">Under elementtyper, kryss av for \"Movies\" og \"Episodes\".</string>
@@ -2014,6 +2040,10 @@
   <string name="text_login_failed_title">Kunne ikke starte pålogging</string>
   <string name="text_login_rate_limited_message">Vent litt og prøv igjen.</string>
   <string name="text_login_rate_limited_title">For mange påloggingsforsøk</string>
+  <string name="text_match_basis">Basert på det du har sett, vurdert og favorittmarkert. Ingenting å vurdere.</string>
+  <string name="text_match_basis_free">Matchscoren din er gratis. Begrunnelsene bak er en VIP-funksjon.</string>
+  <string name="text_match_better_than">Bedre match for deg enn %d % av titlene</string>
+  <string name="text_match_not_enough_data">Ikke nok data til å matche denne med deg ennå.</string>
   <string name="text_media_sync_feed_required">Slå på minst én synkroniseringsinnstilling.</string>
   <string name="text_media_sync_library_removal">Hvis du slår av dette, fjernes det som ble lagt til i Trakt-samlingen din. Sehistorikken og vurderingene dine beholdes.</string>
   <string name="text_media_sync_no_runs">Ingen synkroniseringer ennå.</string>
@@ -2949,7 +2979,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ingen hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andreplass</string>
   <string name="yir_2026_preview_title">Forhåndsvisning av persona</string>
-  <string name="yir_2026_rarity">Bare %1$d%% er %2$s</string>
+  <string name="yir_2026_rarity">Bare %1$d% er %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Litt %s</string>
   <string name="yir_2026_reel_and_you_are">Og du er</string>
   <string name="yir_2026_reel_but_mostly">Men mest</string>

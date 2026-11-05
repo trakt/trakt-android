@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Sonraki dönem</string>
   <string name="button_label_next_episode">Sonraki bölüm</string>
   <string name="button_label_next_story">Sonraki hikaye</string>
+  <string name="button_label_official_website">Resmi web sitesi</string>
   <string name="button_label_open_calendar_feed">Bu takvime takvim uygulamanızda abone olun</string>
   <string name="button_label_open_comment">Yorumu aç</string>
   <string name="button_label_open_leaderboard">Takip edilenler liderlik tablosunu aç</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">Klasik önerileri göster</string>
   <string name="button_label_recommendation_mode_smart">Akıllı önerileri göster</string>
   <string name="button_label_reject_follow_request">%s kullanıcısından gelen takip isteğini reddet</string>
+  <string name="button_label_related_mode_personal">Sana özel seçilen ilgili yapımları göster</string>
+  <string name="button_label_related_mode_standard">Standart ilgili yapımları göster</string>
   <string name="button_label_remove_collaborator">%s kişisini iş birlikçisi olarak kaldır</string>
   <string name="button_label_remove_from_favorites">\"%s\" Favorilerinizden kaldır</string>
   <string name="button_label_remove_from_history">\"%s\" öğesinin bu oynatmasını Geçmişinizden kaldır</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">Daha fazla filtreyi sıfırla</string>
   <string name="button_label_restore_show">\"%s\" dizisini geri yükle</string>
   <string name="button_label_retry">Tekrar Dene</string>
+  <string name="button_label_reveal_spoiler">Spoiler\'ı göster</string>
   <string name="button_label_revoke_app">%s için erişimi iptal et</string>
   <string name="button_label_save_filters">Filtreleri varsayılan olarak ayarla</string>
   <string name="button_label_search">Ara</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">Tüm izleme listesi öğelerini görüntüle</string>
   <string name="button_label_view_all_where_to_watch">Tüm yayın hizmetlerini görüntüle</string>
   <string name="button_label_view_import_guidelines">Yönergeleri görüntüle</string>
+  <string name="button_label_view_match">Eşleşmenizi görüntüleyin</string>
   <string name="button_label_view_photo">Profil fotoğrafınızı görüntüle</string>
   <string name="button_label_view_ratings_breakdown">Derecelendirme dökümünü görüntüle</string>
   <string name="button_label_view_reality_check">Gerçeklik Kontrolünü Görüntüle</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">Filmler</string>
   <string name="button_text_no_services">Hizmet yok</string>
   <string name="button_text_not_now">Şimdi değil</string>
+  <string name="button_text_open_advanced_settings">Gelişmiş ayarları aç</string>
   <string name="button_text_open_calendar_feed">Takvim uygulamasına ekle</string>
   <string name="button_text_open_in_service">%s içinde aç</string>
   <string name="button_text_personal">Kişisel</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">Akıllı</string>
   <string name="button_text_reconnect">Yeniden Bağlan</string>
   <string name="button_text_reject_follow_request">İsteği Reddet</string>
+  <string name="button_text_related_mode_personal">Sizin için</string>
+  <string name="button_text_related_mode_standard">Standart</string>
   <string name="button_text_remove">Kaldır</string>
   <string name="button_text_remove_from_favorites">Favorilerden Kaldır</string>
   <string name="button_text_remove_from_history">Geçmişten kaldır</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code"><b>%s</b> adresindeki Jellyfin\'de profilinizi açın, ardından Hızlı Bağlantı\'ya gidin ve girin:</string>
   <string name="description_jellyfin_sync">İzleme geçmişi ve koleksiyonlarınızı Trakt ile senkronize etmek için Jellyfin sunucunuzu bağlayın.</string>
   <string name="description_jellyfin_synced_servers">İzleme geçmişinizi ve kütüphanenizi otomatik olarak senkronize edin.</string>
-  <string name="description_jellyfin_vip_upsell">Beta sürümündeyken Jellyfin sunucunuzdan izleme geçmişi ve koleksiyonlarınızı senkronize etmek için VIP\'ye yükseltin.</string>
+  <string name="description_jellyfin_vip_upsell_add_server">Ücretsiz hesaplar günde bir kez 1 medya sunucusunu senkronize eder. Sınırsız sunucuyu her saat senkronize etmek için VIP\'e yükseltin.</string>
   <string name="description_library_collection_limit">%s konumundaki bazı öğeler henüz Trakt koleksiyonunuzda değil. Ücretsiz hesaplar koleksiyon sınırında durur; VIP her şeyi toplar.</string>
   <string name="description_manage_collaborators">İş birlikçileri bu listeden öğe ekleyebilir ve çıkarabilir. Sizi takip eden kişiler arasından seçim yapın.</string>
   <string name="description_manage_collaborators_shared">İş birlikçiler bu listeye öğe ekleyebilir ve çıkarabilir. Sizi takip eden kişiler arasından seçim yapın. İş birlikçisi olan listeler Paylaşılan altında görünür.</string>
   <string name="description_media_sync_add_jellyfin_server">Başka bir Jellyfin sunucusu bağlayın, onu da senkronize edin.</string>
+  <string name="description_media_sync_add_jellyfin_server_free">Ücretsiz hesaplar 1 medya sunucusunu senkronize eder. Daha fazlasını eklemek için VIP olun.</string>
   <string name="description_media_sync_add_server_free">Ücretsiz hesaplar 1 Plex sunucusu senkronize eder. Daha fazlasını eklemek için VIP olun.</string>
   <string name="description_media_sync_add_server_vip">Başka bir Plex sunucusu bağlayın, onu da senkronize edin.</string>
   <string name="description_media_sync_collection_limit">Bu sunucudaki bazı öğeler henüz Trakt koleksiyonunuzda değil. Her şeyi toplamak için VIP olun.</string>
@@ -812,7 +821,7 @@
   <string name="description_streaming_sync">İzleme geçmişinizi ve puanlarınızı otomatik olarak senkronize edin.</string>
   <string name="description_streaming_vip_services">Bu yayın platformlarını bağlamak ve senkronize etmek için yükseltin.</string>
   <string name="description_sync_detail">Bu senkronizasyon hakkında bazı ayrıntılar.</string>
-  <string name="description_sync_webhooks_jellyfin_setup">Trakt şu anda ne izlediğinizi gösterir ve bir şeyi bitirdikten birkaç dakika sonra kitaplığınız senkronize olur. Bunu Jellyfin Webhook eklentisinde bir kez kurun. %s sunucularını kapsar.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt şu anda ne izlediğinizi gösterir ve bitirdiğiniz anda geçmişinize ekler. Bunu Jellyfin Webhook eklentisinde bir kez kurun. %s sunucularını kapsar.</string>
   <string name="description_sync_webhooks_live_progress">Medya sunucunuz Trakt\'a şu anda ne izlediğinizi ve nerede duraklattığınızı bildirir. İzlemeler hala senkronizasyondan gelir.</string>
   <string name="description_sync_webhooks_plex">Bu adresi Plex › Ayarlar › Webhooks bölümüne bir kez yapıştırın. %s kapsamındadır. Plex Pass gerektirir.</string>
   <string name="description_sync_webhooks_unreachable_servers">Trakt\'in ulaşamadığı sunucularda, izlemelerinizi ve puanlarınızı da ekler.</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">Bu kullanıcı adı ve parola çalışmadı.</string>
   <string name="error_text_jellyfin_invalid_server_url">Bu, Trakt\'ın kullanabileceği bir web adresi değil. https://jellyfin.example.com gibi evinizin dışındayken Jellyfin\'i açmak için kullandığınız genel adresi girin.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Bu sunucuda Hızlı Bağlantı kapalı. Jellyfin kontrol panelinde açın veya parolanızla oturum açın.</string>
+  <string name="error_text_jellyfin_rate_limited">Çok fazla giriş denemesi. Bir dakika bekleyip tekrar deneyin.</string>
   <string name="error_text_jellyfin_raw_ip_address">Trakt yerel bir adrese veya IP adresine erişemez. https://jellyfin.example.com gibi evinizin dışındayken Jellyfin\'i açmak için kullandığınız genel adresi girin.</string>
   <string name="error_text_jellyfin_server_limit">Ücretsiz hesaplar 1 medya sunucusunu senkronize edebilir. Daha fazlasını eklemek için VIP olun.</string>
   <string name="error_text_jellyfin_server_not_found">Bu adreste hiçbir Jellyfin sunucusu yanıt vermedi. Kontrol edin ve tekrar deneyin.</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">Jellyfin senkronizasyonu şimdilik bir VIP beta sürümüdür.</string>
   <string name="error_text_lists_limit">Kişisel listelerinizin sınırına ulaştınız. Sınırsız liste için VIP\'ye yükseltin!</string>
   <string name="error_text_locked_account_collection_limit">Bu kullanıcı hesabı, koleksiyon limiti aşıldığı için kilitlenmiştir. Lütfen bu sorunu çözmek için <a>destek ile iletişime geçin</a>.</string>
+  <string name="error_text_locked_account_collection_limit_plain">Bu kullanıcı hesabı, koleksiyon limiti aşıldığı için kilitlenmiştir. Lütfen bu sorunu çözmek için destek ile iletişime geçin.</string>
   <string name="error_text_locked_account_guide">Bir geçmiş analizi yapmak ve hesabınızın kilidini açmak için lütfen <a>gelişmiş ayarlara</a> gidin.</string>
+  <string name="error_text_locked_account_guide_plain">Bir geçmiş analizi yapmak ve hesabınızın kilidini açmak için lütfen gelişmiş ayarlara gidin.</string>
   <string name="error_text_locked_account_persists">Sorun devam ederse, lütfen bu sorunu çözmek için <a>destek ile iletişime geçin</a>.</string>
+  <string name="error_text_locked_account_persists_plain">Sorun devam ederse, lütfen bu sorunu çözmek için destek ile iletişime geçin.</string>
   <string name="error_text_media_sync_generic">Bir şeyler ters gitti. Birkaç dakika sonra tekrar deneyin.</string>
   <string name="error_text_media_sync_server_limit">Ücretsiz hesaplar 1 Plex sunucusu senkronize edebilir. Daha fazlasını eklemek için VIP olun.</string>
   <string name="error_text_media_sync_server_removing">Bu sunucu hala kaldırılıyor. Birkaç dakika sonra tekrar deneyin.</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">JSON Yönergeleri</string>
   <string name="header_insights">İçgörüler</string>
   <string name="header_jellyfin_synced_servers">Jellyfin Sunucuları</string>
-  <string name="header_jellyfin_vip_upsell">Jellyfin senkronizasyonu bir VIP beta sürümüdür</string>
+  <string name="header_jellyfin_vip_upsell_add_server">Birden fazla sunucu VIP özelliğidir</string>
   <string name="header_jellyfin_webhook_steps">Jellyfin\'de kurun</string>
   <string name="header_landing_discover">Keşfet</string>
   <string name="header_landing_hero">Bir sonraki favoriniz sizi bekliyor.</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">Açıklama</string>
   <string name="header_main_cast">Ana Oyuncular</string>
   <string name="header_manage_lists">Listeleri yönet</string>
+  <string name="header_match">Eşleşme</string>
+  <string name="header_match_reasons">Neden size uygun</string>
+  <string name="header_match_taste">Zevkiniz</string>
   <string name="header_media_reactions">Tepkiler</string>
   <string name="header_media_sync_choose_libraries">Kütüphaneleri seç</string>
   <string name="header_media_sync_choose_server">Bir sunucu seçin</string>
@@ -1115,6 +1131,8 @@
   <string name="hint_media_sync_history_resync">Geçmiş izlemeleri daha sonra sunucunun Yönet menüsünden içe aktarabilirsiniz.</string>
   <string name="image_alt_comment_gif">Yoruma eklenmiş GIF</string>
   <string name="image_alt_list_preview_poster">%s listesindeki bir öğenin afişi</string>
+  <string name="image_alt_match_score">Sizin için %d% eşleşme</string>
+  <string name="image_alt_match_unknown">Sizin için henüz eşleşme puanı yok</string>
   <string name="image_alt_media_poster">\"%s\" afişi</string>
   <string name="image_alt_person_headshot">%s baş fotoğrafı</string>
   <string name="image_alt_selected_gif">Seçilen GIF</string>
@@ -1324,6 +1342,7 @@
   <string name="label_stats_shows">Diziler</string>
   <string name="label_streaming_country">Ülke</string>
   <string name="label_sync_webhooks_server_count">%s sunucu</string>
+  <string name="label_sync_webhooks_server_count_one">1 sunucu</string>
   <string name="label_today_day">Bir gün seçin</string>
   <string name="label_today_grouping">Bugünün etkinliğini grupla</string>
   <string name="label_usage_limit_loading">Kullanımınız yükleniyor</string>
@@ -1435,6 +1454,7 @@
   <string name="list_title_popular_shows">Popüler Diziler</string>
   <string name="list_title_progress">İlerleme</string>
   <string name="list_title_ratings">Derecelendirmeler</string>
+  <string name="list_title_recent_lists">En Yeni</string>
   <string name="list_title_recently_watched">Son İzlenenler</string>
   <string name="list_title_recommendation_sources_activity">İzledikleriniz</string>
   <string name="list_title_recommendation_sources_favorite">Sevdikleriniz</string>
@@ -1488,7 +1508,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
   <string name="mir_banner_body_short">%s özetiniz hazır.</string>
@@ -1605,18 +1625,16 @@
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_large_screen_cards">Daha büyük ekranlarda, tüm listeler uygulamanın geri kalanıyla aynı kartları kullanır. Birini seçmek, listeden ayrılmak yerine hızlı bir bakış açar.</string>
+  <string name="preview_feature_description_personalized_related">Film ve dizi sayfalarındaki ilgili yapımları beğenilerine göre sıralar. Listenin üstünden Sana Özel ve Standart arasında geçiş yap.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_season_recap">Dizi sayfasındaki sezon seçicinin yanına bir Özet butonu ekler. Bu buton ilgili sezonun özetini açar: önemli anlar ve karakterlerin son durumu.</string>
-  <string name="preview_feature_description_show_ending">Bir dizinin ayrıntılarında Bitiş satırını gösterir: Hikaye tamamlandığında \'Tamamlandı\', tamamlanmadığında \'Çözümlenmemiş\'.</string>
-  <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
   <string name="preview_feature_description_vip_veteran">Üyelerin VIP statüsünü ne kadar süre kesintisiz sürdürdüğünü, Kıdemli veya Efsane rozetiyle, renkli bir avatar halkasıyla ve kendi profilinizde birkaç kutlamayla gösterir.</string>
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_large_screen_cards">Geniş Ekran Kartları</string>
+  <string name="preview_feature_title_personalized_related">Sana özel ilgili yapımlar</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_season_recap">Sezon özeti</string>
-  <string name="preview_feature_title_show_ending">Dizi Bitişi</string>
-  <string name="preview_feature_title_soundtrack">Film Müziği</string>
   <string name="preview_feature_title_vip_veteran">VIP kıdemli durumu</string>
   <string name="preview_feature_title_year_in_review_2026">2026 Yılına Genel Bakış</string>
   <string name="row_label_loading_title">İsim yükleniyor</string>
@@ -1723,7 +1741,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s%% eşleşme</string>
+  <string name="tag_mixtape_match">%s% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
@@ -1838,6 +1856,8 @@
   <string name="text_calendar_placeholder_empty_period">Ekran karanlık. Film yok. Bölüm yok. Sadece siz ve sessizlik.</string>
   <string name="text_calendar_today">Bugün</string>
   <string name="text_calendar_up_next">Sırada</string>
+  <string name="text_checkin_failed_message">Bağlantınızı kontrol edin ve tekrar deneyin.</string>
+  <string name="text_checkin_failed_title">Check-in yapılamadı</string>
   <string name="text_clear_data_failed">Bazı öğeler temizlenemedi. Lütfen tekrar deneyin.</string>
   <string name="text_clear_source_custom_library">Özel Kütüphane</string>
   <string name="text_clear_source_history">Geçmiş</string>
@@ -1980,6 +2000,12 @@
   <string name="text_info_younify_service_linked">Yayın hizmeti bağlandı.</string>
   <string name="text_info_younify_service_unlinked">Yayın hizmeti bağlantısı kesildi.</string>
   <string name="text_jellyfin_quick_connect_waiting">Onaylamanızı bekliyor</string>
+  <string name="text_jellyfin_webhook_status_never_received">Henüz bir şey alınmadı. Test etmek için Jellyfin\'de bir şey oynatın.</string>
+  <string name="text_jellyfin_webhook_status_not_vip">Web kancaları bir VIP özelliğidir.</string>
+  <string name="text_jellyfin_webhook_status_other_account">Etkinlikler farklı bir Jellyfin kullanıcısından geliyor. Kullanıcı filtresini kendi hesabınız olarak ayarlayın.</string>
+  <string name="text_jellyfin_webhook_status_other_server">Etkinlikler farklı bir Jellyfin sunucusundan geliyor. Bu adresi ait olduğu sunucuya kopyalayın.</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">Jellyfin, Trakt\'ın okuyamadığı bir şey gönderdi. Hedefin \"Generic Destination\" ve \"Send All Properties\" seçeneğinin açık olduğunu doğrulayın.</string>
+  <string name="text_jellyfin_webhook_status_working">Çalışıyor. Son etkinlik: %s.</string>
   <string name="text_jellyfin_webhook_step_add_destination">Dashboard &gt; Plugins &gt; Webhook bölümünü açın ve \"Add Generic Destination\" seçeneğini seçin.</string>
   <string name="text_jellyfin_webhook_step_install">Jellyfin\'de Dashboard &gt; Plugins &gt; Catalog bölümünü açın, \"Webhook\" eklentisini kurun ve sunucuyu yeniden başlatın.</string>
   <string name="text_jellyfin_webhook_step_item_types">Öğe türleri altında \"Movies\" ve \"Episodes\" seçeneklerini işaretleyin.</string>
@@ -2014,6 +2040,10 @@
   <string name="text_login_failed_title">Oturum açma başlatılamadı</string>
   <string name="text_login_rate_limited_message">Lütfen bir süre bekleyin ve tekrar deneyin.</string>
   <string name="text_login_rate_limited_title">Çok fazla oturum açma denemesi</string>
+  <string name="text_match_basis">İzlediklerinize, puanladıklarınıza ve favorilerinize göre. Puanlanacak bir şey yok.</string>
+  <string name="text_match_basis_free">Puanınız ücretsizdir. Arkasındaki nedenler bir VIP özelliğidir.</string>
+  <string name="text_match_better_than">Sizin için yapımların %d%\'inden daha iyi bir eşleşme</string>
+  <string name="text_match_not_enough_data">Bunu sizinle eşleştirmek için henüz yeterli veri yok.</string>
   <string name="text_media_sync_feed_required">En az bir senkronizasyon ayarını açın.</string>
   <string name="text_media_sync_library_removal">Bunu kapatmak, Trakt koleksiyonunuza eklediklerini kaldırır. İzleme geçmişiniz ve derecelendirmeleriniz kalır.</string>
   <string name="text_media_sync_no_runs">Henüz senkronizasyon yok.</string>
@@ -2949,7 +2979,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

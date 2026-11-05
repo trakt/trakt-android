@@ -201,6 +201,7 @@
   <string name="button_label_next_calendar_period">Следующий период</string>
   <string name="button_label_next_episode">Следующий эпизод</string>
   <string name="button_label_next_story">Следующая история</string>
+  <string name="button_label_official_website">Официальный сайт</string>
   <string name="button_label_open_calendar_feed">Подписаться на этот календарь в приложении календаря</string>
   <string name="button_label_open_comment">Открыть комментарий</string>
   <string name="button_label_open_leaderboard">Открыть таблицу лидеров подписчиков</string>
@@ -244,6 +245,8 @@
   <string name="button_label_recommendation_mode_classic">Показать классические рекомендации</string>
   <string name="button_label_recommendation_mode_smart">Показать умные рекомендации</string>
   <string name="button_label_reject_follow_request">Отклонить запрос на подписку от %s</string>
+  <string name="button_label_related_mode_personal">Показать похожие проекты, подобранные для вас</string>
+  <string name="button_label_related_mode_standard">Показать стандартные похожие проекты</string>
   <string name="button_label_remove_collaborator">Удалить %s из соавторов</string>
   <string name="button_label_remove_from_favorites">Удалить \"%s\" из избранного</string>
   <string name="button_label_remove_from_history">Удалить этот просмотр \"%s\" из истории просмотров</string>
@@ -269,6 +272,7 @@
   <string name="button_label_reset_smart_list_more_filters">Сбросить дополнительные фильтры</string>
   <string name="button_label_restore_show">Восстановить сериал \"%s\"</string>
   <string name="button_label_retry">Повторить</string>
+  <string name="button_label_reveal_spoiler">Показать спойлер</string>
   <string name="button_label_revoke_app">Отозвать доступ для %s</string>
   <string name="button_label_save_filters">Установить фильтры по умолчанию</string>
   <string name="button_label_search">Поиск</string>
@@ -347,6 +351,7 @@
   <string name="button_label_view_all_watchlist_items">Посмотреть все элементы списка просмотра</string>
   <string name="button_label_view_all_where_to_watch">Посмотреть все стриминговые сервисы</string>
   <string name="button_label_view_import_guidelines">Просмотреть рекомендации</string>
+  <string name="button_label_view_match">Посмотреть совпадение</string>
   <string name="button_label_view_photo">Посмотреть ваше фото профиля</string>
   <string name="button_label_view_ratings_breakdown">Посмотреть детали оценок</string>
   <string name="button_label_view_reality_check">Посмотреть проверку достоверности</string>
@@ -533,6 +538,7 @@
   <string name="button_text_movies">Фильмы</string>
   <string name="button_text_no_services">Нет сервисов</string>
   <string name="button_text_not_now">Не сейчас</string>
+  <string name="button_text_open_advanced_settings">Открыть расширенные настройки</string>
   <string name="button_text_open_calendar_feed">Добавить в приложение календаря</string>
   <string name="button_text_open_in_service">Открыть в %s</string>
   <string name="button_text_personal">Личная</string>
@@ -554,6 +560,8 @@
   <string name="button_text_recommendation_mode_smart">Умные</string>
   <string name="button_text_reconnect">Переподключить</string>
   <string name="button_text_reject_follow_request">Отклонить запрос</string>
+  <string name="button_text_related_mode_personal">Для вас</string>
+  <string name="button_text_related_mode_standard">Стандарт</string>
   <string name="button_text_remove">Удалить</string>
   <string name="button_text_remove_from_favorites">Удалить из избранного</string>
   <string name="button_text_remove_from_history">Удалить из истории</string>
@@ -764,11 +772,12 @@
   <string name="description_jellyfin_quick_connect_code">В Jellyfin на <b>%s</b> откройте свой профиль, затем Quick Connect и введите:</string>
   <string name="description_jellyfin_sync">Подключите свой сервер Jellyfin, чтобы синхронизировать историю просмотров и коллекции с Trakt.</string>
   <string name="description_jellyfin_synced_servers">Автоматически синхронизируйте историю просмотров и медиатеку.</string>
-  <string name="description_jellyfin_vip_upsell">Перейдите на VIP, чтобы синхронизировать историю просмотров и коллекции с вашего сервера Jellyfin, пока он находится в бета-версии.</string>
+  <string name="description_jellyfin_vip_upsell_add_server">Бесплатные аккаунты синхронизируют 1 медиасервер один раз в день. Обновитесь до VIP, чтобы синхронизировать неограниченное количество серверов каждый час.</string>
   <string name="description_library_collection_limit">Некоторые элементы из %s пока не добавлены в вашу коллекцию Trakt. На бесплатных аккаунтах действует ограничение коллекции; VIP собирает все.</string>
   <string name="description_manage_collaborators">Соавторы могут добавлять и удалять элементы из этого списка. Выберите из людей, которые на вас подписаны.</string>
   <string name="description_manage_collaborators_shared">Соавторы могут добавлять и удалять элементы из этого списка. Выберите из тех, кто на вас подписан. Списки с соавторами отображаются в разделе «Общие».</string>
   <string name="description_media_sync_add_jellyfin_server">Подключите другой сервер Jellyfin, чтобы синхронизировать и его.</string>
+  <string name="description_media_sync_add_jellyfin_server_free">Бесплатные аккаунты синхронизируют 1 медиасервер. Перейдите на VIP, чтобы добавить больше.</string>
   <string name="description_media_sync_add_server_free">Бесплатные аккаунты синхронизируют 1 сервер Plex. Получите VIP для добавления большего количества.</string>
   <string name="description_media_sync_add_server_vip">Подключите другой сервер Plex для синхронизации.</string>
   <string name="description_media_sync_collection_limit">Некоторые элементы с этого сервера еще не добавлены в вашу коллекцию Trakt. Получите VIP, чтобы собрать все.</string>
@@ -812,9 +821,9 @@
   <string name="description_streaming_sync">Автоматически синхронизируйте историю просмотров и оценки.</string>
   <string name="description_streaming_vip_services">Обновите, чтобы подключить и синхронизировать эти потоковые сервисы.</string>
   <string name="description_sync_detail">Некоторые сведения об этой синхронизации.</string>
-  <string name="description_sync_webhooks_jellyfin_setup">Trakt показывает, что вы смотрите прямо сейчас, а ваша медиатека синхронизируется через несколько минут после окончания просмотра. Настройте это один раз в плагине Jellyfin Webhook. Охватывает %s.</string>
+  <string name="description_sync_webhooks_jellyfin_setup">Trakt показывает, что вы смотрите прямо сейчас, и добавляет это в вашу историю, как только вы закончите просмотр. Настройте это один раз в плагине Jellyfin Webhook. Охватывает %s.</string>
   <string name="description_sync_webhooks_live_progress">Ваш медиасервер сообщает Trakt, что вы смотрите в данный момент и где вы поставили на паузу. Просмотры по-прежнему поступают из синхронизации.</string>
-  <string name="description_sync_webhooks_plex">Вставьте этот адрес один раз в Plex \n Настройки \n Вебхуки. Он охватывает %s. Требуется Plex Pass.</string>
+  <string name="description_sync_webhooks_plex">Вставьте этот адрес один раз в Plex › Настройки › Вебхуки. Он охватывает %s. Требуется Plex Pass.</string>
   <string name="description_sync_webhooks_unreachable_servers">На серверах, до которых Trakt не может достучаться, он также добавляет ваши просмотры и оценки.</string>
   <string name="description_widget_up_next">Быстро узнайте, что продолжить смотреть.</string>
   <string name="dialog_prompt_hide_auto_tracking">Вы всегда можете получить доступ к Автоматическому отслеживанию в настройках.</string>
@@ -863,6 +872,7 @@
   <string name="error_text_jellyfin_invalid_credentials">Это имя пользователя и пароль не подошли.</string>
   <string name="error_text_jellyfin_invalid_server_url">Trakt не может использовать этот веб-адрес. Введите публичный адрес, который вы используете для входа в Jellyfin вне дома, например https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_quick_connect_disabled">Quick Connect отключен на этом сервере. Включите его в панели управления Jellyfin или войдите с помощью пароля.</string>
+  <string name="error_text_jellyfin_rate_limited">Слишком много попыток входа. Подождите минуту и повторите попытку.</string>
   <string name="error_text_jellyfin_raw_ip_address">Trakt не может подключиться к локальному или IP-адресу. Введите публичный адрес, который вы используете для входа в Jellyfin вне дома, например https://jellyfin.example.com.</string>
   <string name="error_text_jellyfin_server_limit">Бесплатные аккаунты могут синхронизировать 1 медиасервер. Перейдите на VIP, чтобы добавить больше.</string>
   <string name="error_text_jellyfin_server_not_found">По этому адресу не ответил ни один сервер Jellyfin. Проверьте его и попробуйте снова.</string>
@@ -872,8 +882,11 @@
   <string name="error_text_jellyfin_vip_required">Синхронизация Jellyfin пока находится в VIP-бета-версии.</string>
   <string name="error_text_lists_limit">Вы достигли лимита личных списков. Обновитесь до VIP для неограниченного количества списков!</string>
   <string name="error_text_locked_account_collection_limit">Эта учетная запись пользователя заблокирована, так как коллекция превысила лимит. Пожалуйста, <a>свяжитесь со службой поддержки</a> для решения этой проблемы.</string>
+  <string name="error_text_locked_account_collection_limit_plain">Эта учетная запись пользователя заблокирована, так как коллекция превысила лимит. Пожалуйста, свяжитесь со службой поддержки для решения этой проблемы.</string>
   <string name="error_text_locked_account_guide">Пожалуйста, посетите <a>расширенные настройки</a>, чтобы запустить анализ истории и разблокировать свою учетную запись.</string>
+  <string name="error_text_locked_account_guide_plain">Пожалуйста, перейдите в расширенные настройки, чтобы запустить анализ истории и разблокировать свою учетную запись.</string>
   <string name="error_text_locked_account_persists">Если проблема не исчезнет, пожалуйста, <a>свяжитесь со службой поддержки</a> для ее решения.</string>
+  <string name="error_text_locked_account_persists_plain">Если проблема не исчезнет, пожалуйста, свяжитесь со службой поддержки для ее решения.</string>
   <string name="error_text_media_sync_generic">Что-то пошло не так. Повторите попытку через мгновение.</string>
   <string name="error_text_media_sync_server_limit">Бесплатные аккаунты могут синхронизировать 1 сервер Plex. Получите VIP для добавления большего количества.</string>
   <string name="error_text_media_sync_server_removing">Этот сервер все еще удаляется. Повторите попытку через несколько минут.</string>
@@ -962,7 +975,7 @@
   <string name="header_import_json_guidelines">Рекомендации по JSON</string>
   <string name="header_insights">Инсайты</string>
   <string name="header_jellyfin_synced_servers">Серверы Jellyfin</string>
-  <string name="header_jellyfin_vip_upsell">Синхронизация с Jellyfin – это VIP-бета</string>
+  <string name="header_jellyfin_vip_upsell_add_server">Несколько серверов — это VIP-функция</string>
   <string name="header_jellyfin_webhook_steps">Настройка в Jellyfin</string>
   <string name="header_landing_discover">Находите</string>
   <string name="header_landing_hero">Ваш следующий фаворит уже ждет.</string>
@@ -973,6 +986,9 @@
   <string name="header_list_description">Описание</string>
   <string name="header_main_cast">Основной состав</string>
   <string name="header_manage_lists">Добавить в список</string>
+  <string name="header_match">Совпадение</string>
+  <string name="header_match_reasons">Почему это вам подходит</string>
+  <string name="header_match_taste">Ваш вкус</string>
   <string name="header_media_reactions">Реакции</string>
   <string name="header_media_sync_choose_libraries">Выберите библиотеки</string>
   <string name="header_media_sync_choose_server">Выберите сервер</string>
@@ -1115,6 +1131,8 @@
   <string name="hint_media_sync_history_resync">Вы можете импортировать прошлые просмотры позже из меню «Управление» сервера.</string>
   <string name="image_alt_comment_gif">GIF прикреплен к комментарию</string>
   <string name="image_alt_list_preview_poster">Постер для записи в %s</string>
+  <string name="image_alt_match_score">Совпадение для вас: %d%</string>
+  <string name="image_alt_match_unknown">Пока нет оценки совпадения</string>
   <string name="image_alt_media_poster">Постер \"%s\"</string>
   <string name="image_alt_person_headshot">Портрет %s</string>
   <string name="image_alt_selected_gif">Выбранный GIF</string>
@@ -1324,6 +1342,7 @@
   <string name="label_stats_shows">Сериалы</string>
   <string name="label_streaming_country">Страна</string>
   <string name="label_sync_webhooks_server_count">%s серверов</string>
+  <string name="label_sync_webhooks_server_count_one">1 сервер</string>
   <string name="label_today_day">Выберите день</string>
   <string name="label_today_grouping">Группировать активность за сегодня</string>
   <string name="label_usage_limit_loading">Загрузка данных об использовании</string>
@@ -1435,6 +1454,7 @@
   <string name="list_title_popular_shows">Популярные сериалы</string>
   <string name="list_title_progress">Прогресс</string>
   <string name="list_title_ratings">Рейтинги</string>
+  <string name="list_title_recent_lists">Недавние</string>
   <string name="list_title_recently_watched">Недавно просмотренное</string>
   <string name="list_title_recommendation_sources_activity">Вы смотрели</string>
   <string name="list_title_recommendation_sources_favorite">Вам понравилось</string>
@@ -1488,7 +1508,7 @@
   <string name="match_label_soulmates">Родственные души</string>
   <string name="match_label_spin_off">Спин-офф</string>
   <string name="match_pill_anchor">Совпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% совпадения, %2$s. Открыть подробности совпадения.</string>
+  <string name="match_pill_aria_label">%1$d% совпадения, %2$s. Открыть подробности совпадения.</string>
   <string name="match_pill_loading_aria_label">Вычисляется оценка соответствия</string>
   <string name="mir_banner_body">Ваш ежемесячный обзор готов. Вот что вы посмотрели в %s.</string>
   <string name="mir_banner_body_short">Ваш обзор за %s готов.</string>
@@ -1605,18 +1625,16 @@
   <string name="page_title_year_to_date">С начала года</string>
   <string name="preview_feature_description_edit_mode">Включите элементы управления для скрытия или отображения настраиваемых разделов во всем приложении.</string>
   <string name="preview_feature_description_large_screen_cards">На больших экранах все списки используют те же карточки, что и остальное приложение. Выбор одной открывает быстрый просмотр вместо выхода из списка.</string>
+  <string name="preview_feature_description_personalized_related">Сортирует похожие проекты на страницах фильмов и сериалов с учётом ваших предпочтений. Переключайтесь между «Для вас» и «Стандарт» над списком.</string>
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
   <string name="preview_feature_description_season_recap">Добавляет кнопку «Рекап» рядом с выбором сезона на странице сериала. Она открывает краткий обзор сезона: ключевые моменты и текущее положение персонажей.</string>
-  <string name="preview_feature_description_show_ending">Отображает строку \"Окончание\" в деталях сериала: \"Завершено\", если история завершена, \"Незавершено\", если нет.</string>
-  <string name="preview_feature_description_soundtrack">Добавляет раздел саундтреков на страницы фильмов и сериалов с возможностью воспроизведения, если трек может быть сопоставлен.</string>
   <string name="preview_feature_description_vip_veteran">Показывает, как долго пользователи сохраняют VIP-статус без перерыва, с помощью значка \"Ветеран\" или \"Легенда\", цветного кольца аватара и нескольких празднований в вашем профиле.</string>
   <string name="preview_feature_description_year_in_review_2026">Ваш 2026 год в виде прокручиваемого ролика с персоной зрителя, затем страница статистики, оформленная в соответствующем стиле.</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_large_screen_cards">Крупноэкранные карточки</string>
+  <string name="preview_feature_title_personalized_related">Похожие проекты для вас</string>
   <string name="preview_feature_title_rewatch">Пересмотр</string>
   <string name="preview_feature_title_season_recap">Рекап сезона</string>
-  <string name="preview_feature_title_show_ending">Окончание сериала</string>
-  <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_vip_veteran">Статус VIP-ветерана</string>
   <string name="preview_feature_title_year_in_review_2026">Обзор года 2026</string>
   <string name="row_label_loading_title">Загрузка названия</string>
@@ -1723,7 +1741,7 @@
   <string name="tag_media_sync_webhook_only">Только вебхук</string>
   <string name="tag_mixtape_different_mood">Другое настроение</string>
   <string name="tag_mixtape_kept">Сохранено</string>
-  <string name="tag_mixtape_match">Совпадение: %s%%</string>
+  <string name="tag_mixtape_match">Совпадение: %s%</string>
   <string name="tag_mixtape_tap_details">Нажмите для подробностей</string>
   <string name="tag_text_blocked_user">Заблокировано</string>
   <string name="tag_text_deal_price">Первые 2 года</string>
@@ -1838,6 +1856,8 @@
   <string name="text_calendar_placeholder_empty_period">Экран темный. Нет фильмов. Нет эпизодов. Только вы и тишина.</string>
   <string name="text_calendar_today">Сегодня</string>
   <string name="text_calendar_up_next">Далее</string>
+  <string name="text_checkin_failed_message">Проверьте подключение и повторите попытку.</string>
+  <string name="text_checkin_failed_title">Не удалось отметиться</string>
   <string name="text_clear_data_failed">Некоторые элементы не удалось очистить. Повторите попытку.</string>
   <string name="text_clear_source_custom_library">Пользовательская библиотека</string>
   <string name="text_clear_source_history">История</string>
@@ -1980,6 +2000,12 @@
   <string name="text_info_younify_service_linked">Стриминговый сервис подключен.</string>
   <string name="text_info_younify_service_unlinked">Стриминговый сервис отключен.</string>
   <string name="text_jellyfin_quick_connect_waiting">Ожидание вашего подтверждения</string>
+  <string name="text_jellyfin_webhook_status_never_received">Пока ничего не получено. Включите что-нибудь в Jellyfin для проверки.</string>
+  <string name="text_jellyfin_webhook_status_not_vip">Вебхуки — это VIP-функция.</string>
+  <string name="text_jellyfin_webhook_status_other_account">События поступают от другого пользователя Jellyfin. Настройте фильтр User filter на свой аккаунт.</string>
+  <string name="text_jellyfin_webhook_status_other_server">События поступают с другого сервера Jellyfin. Скопируйте этот адрес на соответствующий сервер.</string>
+  <string name="text_jellyfin_webhook_status_unreadable_event">Jellyfin отправил данные, которые Trakt не может распознать. Убедитесь, что выбрано назначение Generic Destination и включена опция Send All Properties.</string>
+  <string name="text_jellyfin_webhook_status_working">Работает. Последнее событие: %s.</string>
   <string name="text_jellyfin_webhook_step_add_destination">Откройте Dashboard &gt; Plugins &gt; Webhook и выберите «Add Generic Destination».</string>
   <string name="text_jellyfin_webhook_step_install">В Jellyfin откройте Dashboard &gt; Plugins &gt; Catalog, установите «Webhook» и перезапустите сервер.</string>
   <string name="text_jellyfin_webhook_step_item_types">В разделе типов элементов отметьте «Movies» и «Episodes».</string>
@@ -2014,6 +2040,10 @@
   <string name="text_login_failed_title">Не удалось начать вход</string>
   <string name="text_login_rate_limited_message">Пожалуйста, подождите немного и повторите попытку.</string>
   <string name="text_login_rate_limited_title">Слишком много попыток входа</string>
+  <string name="text_match_basis">На основе того, что вы смотрели, оценивали и добавляли в избранное. Нечего оценивать.</string>
+  <string name="text_match_basis_free">Ваша оценка бесплатна. Причины — функция VIP.</string>
+  <string name="text_match_better_than">Подходит вам лучше, чем %d% проектов</string>
+  <string name="text_match_not_enough_data">Пока недостаточно данных, чтобы рассчитать совпадение.</string>
   <string name="text_media_sync_feed_required">Включите хотя бы одну настройку синхронизации.</string>
   <string name="text_media_sync_library_removal">Отключение этой опции удалит то, что было добавлено в вашу коллекцию Trakt. Ваша история просмотров и оценки останутся.</string>
   <string name="text_media_sync_no_runs">Синхронизаций пока нет.</string>
@@ -2949,7 +2979,7 @@
   <string name="yir_2026_preview_runner_none">Нет (без гибрида)</string>
   <string name="yir_2026_preview_runner_up">Второй</string>
   <string name="yir_2026_preview_title">Предварительный просмотр персоны</string>
-  <string name="yir_2026_rarity">Только %1$d%% являются %2$s</string>
+  <string name="yir_2026_rarity">Только %1$d% являются %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Немного %s</string>
   <string name="yir_2026_reel_and_you_are">И вы</string>
   <string name="yir_2026_reel_but_mostly">Но в основном</string>
@@ -3039,12 +3069,12 @@
   <string name="yir_share_text_all_time">Оцените мою статистику за все время на Trakt</string>
   <string name="yir_state_loading">Загрузка…</string>
   <string name="yir_subtitle_all_time">Статистика</string>
-  <string name="yir_subtitle_all_time_range">Статистика за %1$d \n→ %2$d</string>
+  <string name="yir_subtitle_all_time_range">Статистика за %1$d → %2$d</string>
   <string name="yir_title_year_in_review">Обзор года</string>
   <string name="yir_title_year_to_date">С начала года</string>
   <string name="yir_top_card_description">Самые просматриваемые %s <b>сообществом Trakt</b> за все время. Те, что вы смотрели, выделены.</string>
-  <string name="yir_top_card_description_movies">Лучшие фильмы, просмотренные <b>сообществом Trakt</b> за все время. Фильмы, которые вы смотрели в <b>%1$d \n→ %2$d</b>, выделены.</string>
-  <string name="yir_top_card_description_shows">Лучшие сериалы, просмотренные <b>сообществом Trakt</b> за все время. Сериалы, которые вы смотрели в <b>%1$d \n→ %2$d</b>, выделены.</string>
+  <string name="yir_top_card_description_movies">Лучшие фильмы, просмотренные <b>сообществом Trakt</b> за все время. Фильмы, которые вы смотрели в <b>%1$d → %2$d</b>, выделены.</string>
+  <string name="yir_top_card_description_shows">Лучшие сериалы, просмотренные <b>сообществом Trakt</b> за все время. Сериалы, которые вы смотрели в <b>%1$d → %2$d</b>, выделены.</string>
   <string name="yir_top_card_title_movies">Лучшие фильмы</string>
   <string name="yir_top_card_title_shows">Лучшие сериалы</string>
   <string name="yir_top_your_title_movies">Ваши лучшие фильмы</string>
