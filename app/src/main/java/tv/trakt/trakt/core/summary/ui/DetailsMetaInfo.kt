@@ -19,11 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_SHOW_ENDING_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
@@ -370,7 +367,7 @@ private fun rememberAirsText(show: Show): String? {
 private fun rememberShowEnding(show: Show): ShowEnding? {
     val inspection = LocalInspectionMode.current
     val enabled = remember(inspection) {
-        !inspection && Firebase.remoteConfig.getBoolean(MOBILE_SHOW_ENDING_ENABLED)
+        !inspection
     }
     return show.ending.takeIf { enabled }
 }
