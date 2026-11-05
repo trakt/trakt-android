@@ -260,20 +260,27 @@ data class GlobalFilter(
             isParentalActive
 }
 
-private const val EXCLUSION_PREFIX = "-"
+internal const val EXCLUSION_PREFIX = "-"
+
+internal fun <T> toExclusionTokens(
+    included: List<T>?,
+    excluded: List<T>?,
+    slug: (T) -> String,
+): List<String> {
+    val includedTokens = included.orEmpty().flatMap { slug(it).split(',') }
+    val excludedTokens = excluded.orEmpty().flatMap { item ->
+        slug(item).split(',').map { "$EXCLUSION_PREFIX$it" }
+    }
+
+    return (includedTokens + excludedTokens).distinct()
+}
 
 private fun <T> toExclusionParam(
     included: List<T>?,
     excluded: List<T>?,
     slug: (T) -> String,
 ): String? {
-    val includedTokens = included.orEmpty().flatMap { slug(it).split(',') }
-    val excludedTokens = excluded.orEmpty().flatMap { item ->
-        slug(item).split(',').map { "$EXCLUSION_PREFIX$it" }
-    }
-
-    return (includedTokens + excludedTokens)
-        .distinct()
+    return toExclusionTokens(included, excluded, slug)
         .takeIf { it.isNotEmpty() }
         ?.joinToString(",")
 }

@@ -22,7 +22,9 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.EXCLUSION_PREFIX
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.globalfilter.toExclusionTokens
 import tv.trakt.trakt.common.networking.SmartListDto
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
@@ -109,13 +111,19 @@ data class SmartListFilters(
     @Serializable(with = ImmutableListSerializer::class)
     val genres: ImmutableList<MediaGenre>? = null,
     @Serializable(with = ImmutableListSerializer::class)
+    val excludedGenres: ImmutableList<MediaGenre>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
     val subgenres: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val certifications: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
+    val excludedCertifications: ImmutableList<String>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
     val languages: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val countries: ImmutableList<String>? = null,
+    @Serializable(with = ImmutableListSerializer::class)
+    val excludedCountries: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val statuses: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
@@ -147,15 +155,29 @@ data class SmartListFilters(
     val ignoreWatched: Boolean = false,
     val ignoreWatchlisted: Boolean = false,
 ) {
+    val genreTokens: List<String>
+        get() = toExclusionTokens(genres, excludedGenres) { it.slug }
+
+    val certificationTokens: List<String>
+        get() = toExclusionTokens(certifications, excludedCertifications) { it }
+
+    val countryTokens: List<String>
+        get() = toExclusionTokens(countries, excludedCountries) { it }
+
     fun toSummaryParts(
         resources: Resources,
         locale: Locale,
     ): List<String> {
+        fun excluded(label: String) = resources.getString(R.string.option_text_excluded, label)
+
         val values = genres.orEmpty().map { resources.getString(it.displayStringRes) } +
+            excludedGenres.orEmpty().map { excluded(resources.getString(it.displayStringRes)) } +
             subgenres.orEmpty().map { it.toGenreLabel(resources) } +
             certifications.orEmpty().map { it.uppercase(locale) } +
+            excludedCertifications.orEmpty().map { excluded(it.uppercase(locale)) } +
             languages.orEmpty().map { it.toSummaryTitleCase() } +
             countries.orEmpty().map { it.uppercase(locale) } +
+            excludedCountries.orEmpty().map { excluded(it.uppercase(locale)) } +
             statuses.orEmpty().map { it.toSummaryTitleCase() } +
             networks.orEmpty().map { it.toSummaryTitleCase() } +
             availability.orEmpty().map { resources.getString(it.displayStringRes) }
@@ -223,13 +245,18 @@ data class SmartListFilters(
                     "media" -> MediaMode.Media
                     else -> MediaMode.Shows
                 },
-                genres = filters.genres.orEmpty()
+                genres = filters.genres.included()
+                    .mapNotNull { MediaGenre.fromSlug(it) }
+                    .toImmutableList(),
+                excludedGenres = filters.genres.excluded()
                     .mapNotNull { MediaGenre.fromSlug(it) }
                     .toImmutableList(),
                 subgenres = filters.subgenres.orEmpty().toImmutableList(),
-                certifications = filters.certifications.orEmpty().toImmutableList(),
+                certifications = filters.certifications.included().toImmutableList(),
+                excludedCertifications = filters.certifications.excluded().toImmutableList(),
                 languages = filters.languages.orEmpty().toImmutableList(),
-                countries = filters.countries.orEmpty().toImmutableList(),
+                countries = filters.countries.included().toImmutableList(),
+                excludedCountries = filters.countries.excluded().toImmutableList(),
                 statuses = filters.statuses.orEmpty().toImmutableList(),
                 networks = filters.networks.orEmpty().toImmutableList(),
                 availability = filters.watchnow.orEmpty()
@@ -252,6 +279,13 @@ data class SmartListFilters(
         }
     }
 }
+
+private fun List<String>?.included(): List<String> = orEmpty().filterNot { it.startsWith(EXCLUSION_PREFIX) }
+
+private fun List<String>?.excluded(): List<String> =
+    orEmpty()
+        .filter { it.startsWith(EXCLUSION_PREFIX) }
+        .map { it.removePrefix(EXCLUSION_PREFIX) }
 
 private fun formatParentalRange(
     category: ParentalGuideCategory,

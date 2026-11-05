@@ -20,7 +20,7 @@ import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
-private const val SHEET_MAX_HEIGHT_FRACTION = 0.8F
+private const val SHEET_MAX_HEIGHT_FRACTION = 0.85F
 
 @Composable
 internal fun GlobalFiltersSheet(

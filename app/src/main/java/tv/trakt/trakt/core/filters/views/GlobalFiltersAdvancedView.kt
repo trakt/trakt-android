@@ -46,6 +46,7 @@ import tv.trakt.trakt.core.filters.RowsSpacing
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownExclusion
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownMultiView
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownOption
+import tv.trakt.trakt.core.filters.views.dropdowns.toFilterValues
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -524,12 +525,6 @@ private fun StatusFilter(
         ),
         modifier = modifier,
     )
-}
-
-private fun <T> List<DropdownOption<T?>>.toFilterValues(): ImmutableList<T>? {
-    return mapNotNull { it.raw }
-        .takeIf { it.isNotEmpty() }
-        ?.toImmutableList()
 }
 
 @Composable

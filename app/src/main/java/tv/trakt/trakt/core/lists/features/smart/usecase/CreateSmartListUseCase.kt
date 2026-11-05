@@ -67,12 +67,11 @@ private fun MediaMode.toMediaType(): PostUsersListsListConvertToSmartListRequest
 
 private fun SmartListFilters.toFiltersDto(): SmartListFiltersDto {
     return SmartListFiltersDto(
-        genres = genres?.map { it.slug }.orNullIfEmpty(),
+        genres = genreTokens.orNullIfEmpty(),
         subgenres = subgenres.orNullIfEmpty(),
-        // The create API expects a comma-separated string for certifications, so we need to split them.
-        certifications = certifications?.flatMap { it.split(",") }.orNullIfEmpty(),
+        certifications = certificationTokens.orNullIfEmpty(),
         languages = languages.orNullIfEmpty(),
-        countries = countries.orNullIfEmpty(),
+        countries = countryTokens.orNullIfEmpty(),
         statuses = statuses.orNullIfEmpty(),
         networks = networks.orNullIfEmpty(),
         watchnow = availability?.map { it.slug }.orNullIfEmpty(),
