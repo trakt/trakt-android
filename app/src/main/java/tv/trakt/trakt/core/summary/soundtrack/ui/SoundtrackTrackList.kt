@@ -20,10 +20,9 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
-import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-internal val SoundtrackListShape = DefaultCardShape
+internal val SoundtrackListShape = RoundedCornerShape(16.dp)
 private val SegmentInnerCorner = CornerSize(4.dp)
 
 internal fun segmentShape(

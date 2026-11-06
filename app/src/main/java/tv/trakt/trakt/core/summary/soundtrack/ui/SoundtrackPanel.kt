@@ -40,13 +40,12 @@ import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.core.summary.soundtrack.model.SoundtrackSummary
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
 /** Spotify's embed only lays out at 80 or 152 px tall, so the panel matches the compact card. */
 internal val PanelHeight = 80.dp
-private val PanelShape = DefaultCardShape
+private val PanelShape = RoundedCornerShape(16.dp)
 private val CoverPadding = 12.dp
 
 /** Concentric with the panel: panel corner minus the cover padding. */
