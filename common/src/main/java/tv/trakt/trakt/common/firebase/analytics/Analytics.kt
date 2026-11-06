@@ -552,7 +552,7 @@ interface Analytics {
 
         /**
          * Logs playing a soundtrack track.
-         * @param source The list the track was played from (soundtrack-summary, soundtrack-drawer).
+         * @param source The list the track was played from (soundtrack-summary, soundtrack-screen).
          * @param position The track position in the soundtrack.
          * @param matchedOn How the track was matched to Spotify, or "unknown".
          */

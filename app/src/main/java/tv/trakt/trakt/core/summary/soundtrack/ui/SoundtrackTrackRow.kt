@@ -58,7 +58,7 @@ internal fun SoundtrackTrackRow(
         )
 
         Column(
-            verticalArrangement = spacedBy(1.dp),
+            verticalArrangement = spacedBy(2.dp),
             modifier = Modifier.weight(1F),
         ) {
             Text(

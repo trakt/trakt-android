@@ -28,6 +28,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun SoundtrackSkeleton(
     rows: Int,
     modifier: Modifier = Modifier,
+    panelSize: SoundtrackPanelSize = SoundtrackPanelSize.Compact,
     visible: Boolean = true,
 ) {
     val color = rememberShimmerColor()
@@ -36,7 +37,7 @@ internal fun SoundtrackSkeleton(
         verticalArrangement = spacedBy(10.dp),
         modifier = modifier.alpha(if (visible) 1F else 0F),
     ) {
-        SkeletonBlock(color = color, shape = PanelShape, height = PanelHeight)
+        SkeletonBlock(color = color, shape = PanelShape, height = panelSize.height)
 
         Column(verticalArrangement = spacedBy(ListItemDefaults.SegmentedGap)) {
             repeat(rows) { index ->
@@ -51,11 +52,14 @@ internal fun SoundtrackSkeleton(
 }
 
 @Composable
-internal fun SoundtrackPanelSkeleton(modifier: Modifier = Modifier) {
+internal fun SoundtrackPanelSkeleton(
+    height: Dp,
+    modifier: Modifier = Modifier,
+) {
     SkeletonBlock(
         color = rememberShimmerColor(),
         shape = PanelShape,
-        height = PanelHeight,
+        height = height,
         modifier = modifier,
     )
 }

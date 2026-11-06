@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.delay
@@ -44,14 +45,20 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-/** Spotify's embed only lays out at 80 or 152 px tall, so the panel matches the compact card. */
-internal val PanelHeight = 80.dp
+/** Spotify's embed only lays out at these two heights, so the panel matches one of its cards. */
+internal enum class SoundtrackPanelSize(
+    val height: Dp,
+) {
+    Compact(80.dp),
+    Full(152.dp),
+}
+
 internal val PanelShape = RoundedCornerShape(16.dp)
 private val CoverPadding = 12.dp
 
 /** Concentric with the panel: panel corner minus the cover padding. */
 private val ArtworkShape = RoundedCornerShape(24.dp - CoverPadding)
-private val SpotifyIconSize = 20.dp
+private val SpotifyIconSize = 22.dp
 
 /** Spotify's card reflows after it reports ready, so the cover stays until playback reports in. */
 private val SettleTimeout = 2500.milliseconds
@@ -63,6 +70,7 @@ internal fun SoundtrackPanel(
     title: String,
     posterUrl: String?,
     modifier: Modifier = Modifier,
+    size: SoundtrackPanelSize = SoundtrackPanelSize.Compact,
 ) {
     val spotifyId = playback.selected?.spotifyId
     var embedVisible by remember { mutableStateOf(false) }
@@ -83,13 +91,14 @@ internal fun SoundtrackPanel(
             SpotifyEmbedPlayer(
                 spotifyId = spotifyId,
                 playToken = playback.playToken,
+                embedHeight = size.height,
                 onPlayingChange = {
                     embedVisible = true
                     playback.onPlaybackUpdate(it)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(PanelHeight),
+                    .height(size.height),
             )
         }
 
@@ -99,7 +108,7 @@ internal fun SoundtrackPanel(
             exit = fadeOut(tween(150)),
         ) {
             if (spotifyId != null) {
-                SoundtrackPanelSkeleton()
+                SoundtrackPanelSkeleton(height = size.height)
             } else {
                 SoundtrackPanelCover(
                     title = summary.credit ?: title,
@@ -109,6 +118,7 @@ internal fun SoundtrackPanel(
                         summary.total,
                     ),
                     posterUrl = posterUrl,
+                    height = size.height,
                 )
             }
         }
@@ -120,13 +130,14 @@ private fun SoundtrackPanelCover(
     title: String,
     subtitle: String,
     posterUrl: String?,
+    height: Dp,
 ) {
     Row(
         horizontalArrangement = spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .height(PanelHeight)
+            .height(height)
             .background(TraktTheme.colors.customListContainer)
             .padding(CoverPadding),
     ) {
@@ -189,7 +200,14 @@ private fun Preview() {
                 title = "The Social Network",
                 posterUrl = null,
             )
-            SoundtrackPanelSkeleton()
+            SoundtrackPanel(
+                playback = rememberSoundtrackPlayback(),
+                summary = SoundtrackSummary(total = 24, playable = 15, credit = "Trent Reznor"),
+                title = "The Social Network",
+                posterUrl = null,
+                size = SoundtrackPanelSize.Full,
+            )
+            SoundtrackPanelSkeleton(height = SoundtrackPanelSize.Compact.height)
         }
     }
 }

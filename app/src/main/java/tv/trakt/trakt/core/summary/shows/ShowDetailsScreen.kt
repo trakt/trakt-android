@@ -139,6 +139,7 @@ internal fun ShowDetailsScreen(
     onNavigateToHistory: (Show, watched: Int) -> Unit,
     onNavigateToAllStreamings: (Show) -> Unit,
     onNavigateToAllCredits: (Show) -> Unit,
+    onNavigateToAllSoundtrack: (Show, currentSeason: Int?) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateToWatchlist: () -> Unit,
     onNavigateVip: () -> Unit,
@@ -289,6 +290,11 @@ internal fun ShowDetailsScreen(
         onAllCreditsClick = {
             state.show?.let { show ->
                 onNavigateToAllCredits(show)
+            }
+        },
+        onAllSoundtrackClick = { currentSeason ->
+            state.show?.let { show ->
+                onNavigateToAllSoundtrack(show, currentSeason)
             }
         },
         onNavigateToUser = onNavigateToUser,
@@ -536,6 +542,7 @@ internal fun ShowDetailsContent(
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
     onAllStreamingsClick: (() -> Unit)? = null,
     onAllCreditsClick: (() -> Unit)? = null,
+    onAllSoundtrackClick: ((currentSeason: Int?) -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onVipSeen: (() -> Unit)? = null,
@@ -846,10 +853,12 @@ internal fun ShowDetailsContent(
                             ),
                             title = show.title,
                             posterUrl = show.images?.getPosterUrl(),
-                            currentSeason = seasonsState.items.selectedSeason?.number,
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onVipClick = onVipClick ?: {},
+                            onMoreClick = {
+                                onAllSoundtrackClick?.invoke(seasonsState.items.selectedSeason?.number)
+                            },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),

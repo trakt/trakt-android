@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package tv.trakt.trakt.core.summary.soundtrack
 
 import androidx.compose.animation.Crossfade
@@ -12,9 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -35,7 +30,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
 import tv.trakt.trakt.core.summary.soundtrack.model.SoundtrackSummary
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackPanel
-import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackSheet
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackSkeleton
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackTrackList
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackUpsell
@@ -48,7 +42,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val MAX_ROWS = 5
 private const val SOURCE_SUMMARY = "soundtrack-summary"
-private const val SOURCE_DRAWER = "soundtrack-drawer"
 
 @Composable
 internal fun SoundtrackView(
@@ -58,11 +51,10 @@ internal fun SoundtrackView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onVipClick: () -> Unit,
+    onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
-    currentSeason: Int? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var sheetActive by remember { mutableStateOf(false) }
 
     SoundtrackContent(
         state = state,
@@ -70,23 +62,12 @@ internal fun SoundtrackView(
         posterUrl = posterUrl,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        sheetActive = sheetActive,
         onCollapse = viewModel::setCollapsed,
         onPlay = { viewModel.logPlay(it, SOURCE_SUMMARY) },
-        onMoreClick = { sheetActive = true },
+        onMoreClick = onMoreClick,
         onVipClick = onVipClick,
         onVipSeen = viewModel::logUpsellSeen,
         modifier = modifier,
-    )
-
-    SoundtrackSheet(
-        active = sheetActive,
-        tracks = state.tracks ?: persistentListOf(),
-        title = title,
-        posterUrl = posterUrl,
-        currentSeason = currentSeason,
-        onPlay = { viewModel.logPlay(it, SOURCE_DRAWER) },
-        onDismiss = { sheetActive = false },
     )
 }
 
@@ -98,7 +79,6 @@ private fun SoundtrackContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    sheetActive: Boolean = false,
     onCollapse: (Boolean) -> Unit = {},
     onPlay: (SoundtrackTrack) -> Unit = {},
     onMoreClick: () -> Unit = {},
@@ -157,7 +137,6 @@ private fun SoundtrackContent(
                             tracks = tracks,
                             title = title,
                             posterUrl = posterUrl,
-                            paused = sheetActive,
                             onPlay = onPlay,
                             modifier = contentModifier,
                         )
@@ -179,17 +158,12 @@ private fun SoundtrackBoard(
     tracks: List<SoundtrackTrack>,
     title: String,
     posterUrl: String?,
-    paused: Boolean,
     onPlay: (SoundtrackTrack) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val playback = rememberSoundtrackPlayback()
     val summary = remember(tracks) { SoundtrackSummary.from(tracks) }
     val visibleTracks = remember(tracks) { tracks.take(MAX_ROWS).toImmutableList() }
-
-    LaunchedEffect(paused) {
-        if (paused) playback.stop()
-    }
 
     Column(
         verticalArrangement = spacedBy(10.dp),
@@ -223,7 +197,6 @@ private fun Preview() {
             tracks = List(7) { previewTrack(spotifyId = if (it % 3 == 0) null else "abc", position = it) },
             title = "The Social Network",
             posterUrl = null,
-            paused = false,
             onPlay = {},
         )
     }

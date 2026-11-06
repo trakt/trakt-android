@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -42,6 +43,7 @@ internal fun SpotifyEmbedPlayer(
     spotifyId: String,
     playToken: Int,
     onPlayingChange: (Boolean) -> Unit,
+    embedHeight: Dp,
     modifier: Modifier = Modifier,
 ) {
     val currentOnPlayingChange by rememberUpdatedState(onPlayingChange)
@@ -82,7 +84,7 @@ internal fun SpotifyEmbedPlayer(
                     SpotifyBridge { playing -> currentOnPlayingChange(playing) },
                     BRIDGE_NAME,
                 )
-                loadDataWithBaseURL(BASE_URL, embedHtml(initialUri), "text/html", "utf-8", null)
+                loadDataWithBaseURL(BASE_URL, embedHtml(initialUri, embedHeight), "text/html", "utf-8", null)
                 webView = this
             }
         },
@@ -148,7 +150,10 @@ private fun spotifyUri(spotifyId: String): String {
     return "spotify:track:${spotifyId.filter(Char::isLetterOrDigit)}"
 }
 
-private fun embedHtml(initialUri: String): String {
+private fun embedHtml(
+    initialUri: String,
+    embedHeight: Dp,
+): String {
     return """
         <!doctype html>
         <html>
@@ -162,7 +167,7 @@ private fun embedHtml(initialUri: String): String {
             var controller = null;
             var loadedUri = '$initialUri';
             window.onSpotifyIframeApiReady = function (api) {
-              var options = { uri: loadedUri, width: '100%', height: '${PanelHeight.value.toInt()}' };
+              var options = { uri: loadedUri, width: '100%', height: '${embedHeight.value.toInt()}' };
               api.createController(document.getElementById('embed'), options, function (created) {
                 controller = created;
                 created.addListener('ready', function () { created.play(); });

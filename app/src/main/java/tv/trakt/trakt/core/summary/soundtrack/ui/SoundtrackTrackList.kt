@@ -2,10 +2,8 @@ package tv.trakt.trakt.core.summary.soundtrack.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,30 +48,38 @@ internal fun SoundtrackTrackList(
         modifier = modifier.fillMaxWidth(),
     ) {
         tracks.forEachIndexed { index, track ->
-            val shape = segmentShape(index = index, last = tracks.lastIndex, innerCorner = SegmentInnerCorner)
-            SoundtrackTrackRow(
+            SoundtrackSegmentRow(
                 track = track,
-                number = index + 1,
-                playing = playback.isPlaying(track),
-                loading = playback.isLoading(track),
+                index = index,
+                last = tracks.lastIndex,
+                playback = playback,
                 onPlayClick = onPlayClick,
-                modifier = Modifier
-                    .shadow(TraktTheme.colors.shadowSmall, shape)
-                    .clip(shape)
-                    .background(TraktTheme.colors.customListContainer)
-                    .padding(horizontal = 16.dp),
             )
         }
     }
 }
 
 @Composable
-internal fun SoundtrackRowSeparator(modifier: Modifier = Modifier) {
-    Box(
+internal fun SoundtrackSegmentRow(
+    track: SoundtrackTrack,
+    index: Int,
+    last: Int,
+    playback: SoundtrackPlayback,
+    modifier: Modifier = Modifier,
+    onPlayClick: (SoundtrackTrack) -> Unit = {},
+) {
+    val shape = segmentShape(index = index, last = last, innerCorner = SegmentInnerCorner)
+    SoundtrackTrackRow(
+        track = track,
+        number = index + 1,
+        playing = playback.isPlaying(track),
+        loading = playback.isLoading(track),
+        onPlayClick = onPlayClick,
         modifier = modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(TraktTheme.colors.separator),
+            .shadow(TraktTheme.colors.shadowSmall, shape)
+            .clip(shape)
+            .background(TraktTheme.colors.customListContainer)
+            .padding(horizontal = 16.dp),
     )
 }
 
