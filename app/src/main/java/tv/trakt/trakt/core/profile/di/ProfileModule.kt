@@ -172,6 +172,7 @@ internal val profileModule = module {
             localProfileCompleted = get(),
             localProfileRatings = get(),
             localProfileComments = get(),
+            localSoundtrack = get(),
             appReviewUseCase = get(),
             analytics = get(),
         )
