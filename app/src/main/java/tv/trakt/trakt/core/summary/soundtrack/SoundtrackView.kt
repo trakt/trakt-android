@@ -20,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -162,7 +163,6 @@ private fun SoundtrackBoard(
     modifier: Modifier = Modifier,
 ) {
     val playback = rememberSoundtrackPlayback()
-    // The summary describes the whole soundtrack, not only the rows on screen.
     val summary = remember(tracks) { SoundtrackSummary.from(tracks) }
     val visibleTracks = remember(tracks) { tracks.take(MAX_ROWS).toImmutableList() }
 
@@ -171,7 +171,7 @@ private fun SoundtrackBoard(
     }
 
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        verticalArrangement = spacedBy(10.dp),
         modifier = modifier,
     ) {
         if (summary.playable > 0) {

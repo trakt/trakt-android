@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
@@ -30,53 +30,41 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val RowMinHeight = 56.dp
 private val ActionSize = 28.dp
-private val ActionIconSize = 14.dp
-private const val SELECTED_ALPHA = 0.12F
+private val ActionIconSize = 16.dp
 
 @Composable
 internal fun SoundtrackTrackRow(
     track: SoundtrackTrack,
     number: Int,
-    selected: Boolean,
     playing: Boolean,
     modifier: Modifier = Modifier,
     onPlayClick: (SoundtrackTrack) -> Unit = {},
 ) {
     Row(
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = RowMinHeight)
-            .background(
-                if (selected) {
-                    TraktTheme.colors.accent.copy(
-                        alpha = SELECTED_ALPHA,
-                    )
-                } else {
-                    TraktTheme.colors.panelCardContainer
-                },
-            )
-            .onClick(enabled = track.isPlayable) { onPlayClick(track) }
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .background(TraktTheme.colors.customListContainer),
     ) {
         Text(
             text = number.toString(),
             color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.meta,
+            style = TraktTheme.typography.cardTitle,
             textAlign = TextAlign.End,
-            modifier = Modifier.widthIn(min = 20.dp),
         )
 
         Column(
-            verticalArrangement = spacedBy(2.dp),
+            verticalArrangement = spacedBy(1.dp),
             modifier = Modifier.weight(1F),
         ) {
             Text(
                 text = track.title,
                 color = if (track.isPlayable) TraktTheme.colors.textPrimary else TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmall.copy(
-                    fontWeight = if (track.isPlayable) FontWeight.W600 else FontWeight.Normal,
+                style = TraktTheme.typography.cardTitle.copy(
+                    fontSize = 13.sp,
+                    fontWeight = if (track.isPlayable) FontWeight.W500 else FontWeight.W400,
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -86,7 +74,9 @@ internal fun SoundtrackTrackRow(
                 Text(
                     text = performer,
                     color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta,
+                    style = TraktTheme.typography.cardSubtitle.copy(
+                        fontSize = 11.sp,
+                    ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -98,14 +88,24 @@ internal fun SoundtrackTrackRow(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .size(ActionSize)
-                    .background(TraktTheme.colors.accent, CircleShape),
+                    .background(TraktTheme.colors.accent, CircleShape)
+                    .onClick(enabled = track.isPlayable) { onPlayClick(track) },
             ) {
-                Icon(
-                    painter = painterResource(if (playing) R.drawable.ic_pause else R.drawable.ic_play),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimaryOnAccent,
-                    modifier = Modifier.size(ActionIconSize),
-                )
+                if (playing) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_pause),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimaryOnAccent,
+                        modifier = Modifier.size(ActionIconSize),
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_play_round),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimaryOnAccent,
+                        modifier = Modifier.size(ActionIconSize + 3.dp),
+                    )
+                }
             }
         } else {
             Text(
@@ -127,19 +127,16 @@ private fun Preview() {
             SoundtrackTrackRow(
                 track = previewTrack(spotifyId = "abc"),
                 number = 1,
-                selected = true,
                 playing = true,
             )
             SoundtrackTrackRow(
                 track = previewTrack(spotifyId = "abc"),
                 number = 2,
-                selected = false,
                 playing = false,
             )
             SoundtrackTrackRow(
                 track = previewTrack(spotifyId = null),
                 number = 3,
-                selected = false,
                 playing = false,
             )
         }

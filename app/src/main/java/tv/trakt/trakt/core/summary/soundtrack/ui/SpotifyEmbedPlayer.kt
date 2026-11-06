@@ -24,7 +24,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 
 private const val BASE_URL = "https://app.trakt.tv/"
 private const val BRIDGE_NAME = "TraktSpotify"
-private const val EMBED_HEIGHT = 80
 
 /**
  * Plays Spotify tracks in place through Spotify's iFrame API. One embed is created for the
@@ -116,7 +115,7 @@ private fun embedHtml(initialUri: String): String {
             var controller = null;
             var loadedUri = '$initialUri';
             window.onSpotifyIframeApiReady = function (api) {
-              var options = { uri: loadedUri, width: '100%', height: '$EMBED_HEIGHT' };
+              var options = { uri: loadedUri, width: '100%', height: '${PanelHeight.value.toInt()}' };
               api.createController(document.getElementById('embed'), options, function (created) {
                 controller = created;
                 created.addListener('ready', function () { created.play(); });

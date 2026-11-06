@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,16 +38,16 @@ internal fun SoundtrackUpsell(
         SoundtrackTrackList(
             tracks = SoundtrackTeaserTracks,
             playback = rememberSoundtrackPlayback(),
-            modifier = Modifier.blur(4.dp),
+            modifier = Modifier.blur(5.dp, BlurredEdgeTreatment.Unbounded),
         )
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(16.dp),
+            horizontalArrangement = spacedBy(20.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .onUpsellSeen(onVipSeen)
-                .background(TraktTheme.colors.panelCardContainer, SoundtrackListShape)
+                .background(TraktTheme.colors.customListContainer, SoundtrackListShape)
                 .onClick(onClick = onVipClick)
                 .padding(start = 16.dp, end = 14.dp)
                 .padding(vertical = 12.dp),

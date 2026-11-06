@@ -29,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -155,7 +154,7 @@ private fun SoundtrackSheetContent(
             ) { index, track ->
                 Column(
                     modifier = Modifier
-                        .clip(rowShape(index = index, last = shownTracks.lastIndex))
+                        .clip(segmentShape(index = index, last = shownTracks.lastIndex, innerCorner = ZeroCorner))
                         .background(TraktTheme.colors.panelCardContainer),
                 ) {
                     if (index > 0) {
@@ -164,7 +163,6 @@ private fun SoundtrackSheetContent(
                     SoundtrackTrackRow(
                         track = track,
                         number = index + 1,
-                        selected = playback.isSelected(track),
                         playing = playback.isPlaying(track),
                         onPlayClick = {
                             playback.play(it)
@@ -175,16 +173,6 @@ private fun SoundtrackSheetContent(
             }
         }
     }
-}
-
-private fun rowShape(
-    index: Int,
-    last: Int,
-) = when {
-    index == 0 && last == 0 -> SoundtrackListShape
-    index == 0 -> SoundtrackListShape.copy(bottomStart = ZeroCorner, bottomEnd = ZeroCorner)
-    index == last -> SoundtrackListShape.copy(topStart = ZeroCorner, topEnd = ZeroCorner)
-    else -> RectangleShape
 }
 
 private val ZeroCorner = CornerSize(0.dp)

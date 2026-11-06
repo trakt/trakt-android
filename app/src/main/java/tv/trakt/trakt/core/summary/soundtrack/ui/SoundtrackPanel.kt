@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,12 +40,18 @@ import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.core.summary.soundtrack.model.SoundtrackSummary
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
-private val PanelHeight = 80.dp
-private val PanelShape = RoundedCornerShape(12.dp)
-private val ArtworkShape = RoundedCornerShape(8.dp)
+/** Spotify's embed only lays out at 80 or 152 px tall, so the panel matches the compact card. */
+internal val PanelHeight = 80.dp
+private val PanelShape = DefaultCardShape
+private val CoverPadding = 12.dp
+
+/** Concentric with the panel: panel corner minus the cover padding. */
+private val ArtworkShape = RoundedCornerShape(24.dp - CoverPadding)
+private val SpotifyIconSize = 20.dp
 
 /** Spotify's card reflows after it reports ready, so the cover stays until playback reports in. */
 private val SettleTimeout = 2500.milliseconds
@@ -67,7 +76,6 @@ internal fun SoundtrackPanel(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(PanelHeight)
             .clip(PanelShape),
     ) {
         if (spotifyId != null) {
@@ -78,7 +86,9 @@ internal fun SoundtrackPanel(
                     embedVisible = true
                     playback.playing = it
                 },
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(PanelHeight),
             )
         }
 
@@ -94,7 +104,6 @@ internal fun SoundtrackPanel(
                     summary.playable,
                     summary.total,
                 ),
-                hint = if (spotifyId == null) stringResource(R.string.text_soundtrack_pick_a_track) else null,
                 posterUrl = posterUrl,
             )
         }
@@ -105,16 +114,16 @@ internal fun SoundtrackPanel(
 private fun SoundtrackPanelCover(
     title: String,
     subtitle: String,
-    hint: String?,
     posterUrl: String?,
 ) {
     Row(
         horizontalArrangement = spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .fillMaxSize()
-            .background(TraktTheme.colors.panelCardContainer)
-            .padding(12.dp),
+            .fillMaxWidth()
+            .height(PanelHeight)
+            .background(TraktTheme.colors.customListContainer)
+            .padding(CoverPadding),
     ) {
         Box(
             modifier = Modifier
@@ -140,7 +149,7 @@ private fun SoundtrackPanelCover(
             Text(
                 text = title,
                 color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = FontWeight.W600),
+                style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.W600),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -151,16 +160,16 @@ private fun SoundtrackPanelCover(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            hint?.let {
-                Text(
-                    text = it,
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
         }
+
+        Icon(
+            painter = painterResource(R.drawable.ic_spotify),
+            contentDescription = null,
+            tint = TraktTheme.colors.textSecondary,
+            modifier = Modifier
+                .align(Alignment.Top)
+                .size(SpotifyIconSize),
+        )
     }
 }
 
