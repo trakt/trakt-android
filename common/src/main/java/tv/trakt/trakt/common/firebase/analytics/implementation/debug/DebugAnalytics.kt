@@ -348,6 +348,14 @@ internal class DebugAnalyticsPlayback : Analytics.Playback {
         Timber.d("logExtras: slug=%s, type=%s", slug, type)
     }
 
+    override fun logSoundtrack(
+        source: String,
+        position: Int,
+        matchedOn: String,
+    ) {
+        Timber.d("logSoundtrack: source=%s, position=%d, matchedOn=%s", source, position, matchedOn)
+    }
+
     override fun logStreamOn(source: String) {
         Timber.d("logStreamOn: source=%s", source)
     }

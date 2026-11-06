@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareClickResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShareMuteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3SoundtrackTrackResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
@@ -190,6 +191,22 @@ class V3Api(
         }
         if (response.status == HttpStatusCode.NoContent) {
             return null
+        }
+        return response.body()
+    }
+
+    // Soundtrack
+
+    suspend fun getSoundtrack(
+        type: MediaType,
+        mediaId: TraktId,
+        locale: Locale,
+    ): List<V3SoundtrackTrackResponse> {
+        val response = client.get("${baseV3Url}media/${type.value}/${mediaId.value}/info/15/version/2") {
+            parameter("locale", locale.toLanguageTag())
+        }
+        if (response.status == HttpStatusCode.NoContent) {
+            return emptyList()
         }
         return response.body()
     }

@@ -98,6 +98,7 @@ import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.soundtrack.SoundtrackView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
@@ -128,6 +129,7 @@ internal fun MovieDetailsScreen(
     onNavigateToHistory: (Movie, watched: Int) -> Unit,
     onNavigateToAllStreamings: (Movie) -> Unit,
     onNavigateToAllCredits: (Movie) -> Unit,
+    onNavigateToAllSoundtrack: (Movie) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateToWatchlist: () -> Unit,
     onNavigateVip: () -> Unit,
@@ -269,6 +271,11 @@ internal fun MovieDetailsScreen(
         onAllCreditsClick = {
             state.movie?.let { movie ->
                 onNavigateToAllCredits(movie)
+            }
+        },
+        onAllSoundtrackClick = {
+            state.movie?.let { movie ->
+                onNavigateToAllSoundtrack(movie)
             }
         },
         onBackClick = onNavigateBack,
@@ -462,6 +469,7 @@ internal fun MovieDetailsContent(
     onSentimentClick: ((Sentiments) -> Unit)? = null,
     onAllStreamingsClick: (() -> Unit)? = null,
     onAllCreditsClick: (() -> Unit)? = null,
+    onAllSoundtrackClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -728,6 +736,23 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onVideoClick = onExtraClick ?: {},
+                            modifier = Modifier
+                                .alpha(ratingAlphaMask)
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
+                        )
+                    }
+
+                    item {
+                        SoundtrackView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(MediaType.Movie, movie.ids.trakt) },
+                            ),
+                            title = movie.title,
+                            posterUrl = movie.images?.getPosterUrl(),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onVipClick = onVipClick ?: {},
+                            onMoreClick = { onAllSoundtrackClick?.invoke() },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),

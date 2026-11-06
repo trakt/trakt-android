@@ -44,6 +44,8 @@ private const val PARAMETER_SERVICE = "service"
 private const val PARAMETER_OUTCOME = "outcome"
 private const val PARAMETER_TARGET = "target"
 private const val PARAMETER_VALUE = "value"
+private const val PARAMETER_POSITION = "position"
+private const val PARAMETER_MATCHED_ON = "matched_on"
 
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
@@ -778,11 +780,12 @@ internal class FirebaseAnalyticsPlayback(
         const val PLEX_PLAY_STOP = "plex_play_stop"
         const val MEDIA_TRAILER = "media_trailer"
         const val MEDIA_EXTRAS = "media_extras"
+        const val MEDIA_SOUNDTRACK = "media_soundtrack"
         const val MEDIA_STREAM_ON = "media_stream_on"
     }
 
     init {
-        requireEventNames(MEDIA_TRAILER, MEDIA_EXTRAS, MEDIA_STREAM_ON)
+        requireEventNames(MEDIA_TRAILER, MEDIA_EXTRAS, MEDIA_SOUNDTRACK, MEDIA_STREAM_ON)
     }
 
     override fun logPlaybackStart(mediaType: String) {
@@ -819,6 +822,21 @@ internal class FirebaseAnalyticsPlayback(
             bundleOf(
                 PARAMETER_SLUG to slug,
                 PARAMETER_TYPE to type.lowercase(),
+            ),
+        )
+    }
+
+    override fun logSoundtrack(
+        source: String,
+        position: Int,
+        matchedOn: String,
+    ) {
+        firebase.logEvent(
+            eventName(MEDIA_SOUNDTRACK),
+            bundleOf(
+                PARAMETER_SOURCE to source,
+                PARAMETER_POSITION to position.toLong(),
+                PARAMETER_MATCHED_ON to matchedOn,
             ),
         )
     }

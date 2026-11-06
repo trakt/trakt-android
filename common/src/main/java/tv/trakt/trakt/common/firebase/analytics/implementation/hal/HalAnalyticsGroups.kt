@@ -5,7 +5,9 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.D
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ERROR
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FLOW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FRAME
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_MATCHED_ON
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_PLAN
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_POSITION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_REASON
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SLUG
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_SORT_BY
@@ -32,6 +34,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REACT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_CREATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_DELETE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SOUNDTRACK
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SPOILER_REVEAL
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAM_ON
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_TODAY_ACTION
@@ -323,6 +326,21 @@ internal class HalAnalyticsPlayback(
         type: String,
     ) {
         events.track(EVENT_EXTRAS, dims = mapOf(DIM_SLUG to slug, DIM_TYPE to type.lowercase()))
+    }
+
+    override fun logSoundtrack(
+        source: String,
+        position: Int,
+        matchedOn: String,
+    ) {
+        events.track(
+            EVENT_SOUNDTRACK,
+            dims = mapOf(
+                DIM_SOURCE to source,
+                DIM_POSITION to position.toString(),
+                DIM_MATCHED_ON to matchedOn,
+            ),
+        )
     }
 
     override fun logStreamOn(source: String) {

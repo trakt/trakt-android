@@ -104,6 +104,8 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.allShow
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.navigateToAllShowSeasons
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
+import tv.trakt.trakt.core.summary.soundtrack.all.navigation.allSoundtrackScreen
+import tv.trakt.trakt.core.summary.soundtrack.all.navigation.navigateToAllSoundtrack
 import tv.trakt.trakt.core.today.stories.navigation.navigateToTodayStories
 import tv.trakt.trakt.core.today.stories.navigation.todayStoriesScreen
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
@@ -328,6 +330,16 @@ internal fun NavGraphBuilder.showsScreens(
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateToAllSoundtrack = { show, currentSeason ->
+                navigateToAllSoundtrack(
+                    mediaId = show.ids.trakt,
+                    mediaType = Show,
+                    mediaTitle = show.title,
+                    posterUrl = show.images?.getPosterUrl(),
+                    backgroundUrl = show.images?.getFanartUrl(),
+                    currentSeason = currentSeason,
+                )
+            },
             onNavigateToUser = {
                 navigateToUserProfile(
                     user = it,
@@ -507,6 +519,15 @@ internal fun NavGraphBuilder.moviesScreens(
                     mediaId = movie.ids.trakt,
                     mediaType = Movie,
                     mediaTitle = movie.title,
+                    backgroundUrl = movie.images?.getFanartUrl(),
+                )
+            },
+            onNavigateToAllSoundtrack = { movie ->
+                navigateToAllSoundtrack(
+                    mediaId = movie.ids.trakt,
+                    mediaType = Movie,
+                    mediaTitle = movie.title,
+                    posterUrl = movie.images?.getPosterUrl(),
                     backgroundUrl = movie.images?.getFanartUrl(),
                 )
             },
@@ -828,6 +849,14 @@ internal fun NavGraphBuilder.triviaScreens(controller: NavHostController) {
                     backdropUrl = trivia.mediaImage,
                 )
             },
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.allSoundtrackScreens(controller: NavHostController) {
+    with(controller) {
+        allSoundtrackScreen(
             onNavigateBack = { popBackStack() },
         )
     }

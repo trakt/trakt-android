@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedShowsLocalSource
+import tv.trakt.trakt.common.data.local.SoundtrackLocalSource
 import tv.trakt.trakt.common.data.local.TodaySeenLocalSource
 import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
 import tv.trakt.trakt.common.data.local.UserLibraryLocalSource
@@ -89,6 +90,7 @@ internal class LogoutUserUseCase(
     private val localLeaderboard: LeaderboardLocalSource,
     private val localProfileRatings: ProfileRatingsLocalSource,
     private val localProfileComments: ProfileCommentsLocalSource,
+    private val localSoundtrack: SoundtrackLocalSource,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val analytics: Analytics,
 ) {
@@ -135,6 +137,7 @@ internal class LogoutUserUseCase(
         localLeaderboard.clear()
         localProfileRatings.clear()
         localProfileComments.clear()
+        localSoundtrack.clear()
 
         localRecommendedShows.clear()
         localRecommendedMovies.clear()

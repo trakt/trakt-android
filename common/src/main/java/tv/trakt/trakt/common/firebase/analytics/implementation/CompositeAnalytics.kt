@@ -358,6 +358,14 @@ private class CompositePlayback(
         targets.forEach { it.logExtras(slug, type) }
     }
 
+    override fun logSoundtrack(
+        source: String,
+        position: Int,
+        matchedOn: String,
+    ) {
+        targets.forEach { it.logSoundtrack(source, position, matchedOn) }
+    }
+
     override fun logStreamOn(source: String) {
         targets.forEach { it.logStreamOn(source) }
     }
