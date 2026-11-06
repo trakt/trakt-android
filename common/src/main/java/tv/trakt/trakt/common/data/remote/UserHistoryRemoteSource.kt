@@ -1,6 +1,8 @@
 package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.HistoryApi
+import org.openapitools.client.apis.SyncApi
+import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
@@ -8,10 +10,16 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3WatchedPlayResponse
+import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import kotlin.time.Instant
 
 class UserHistoryRemoteSource(
     private val historyApi: HistoryApi,
+    private val syncApi: SyncApi,
+    private val v3Api: V3Api,
+    private val cacheMarker: CacheMarkerProvider,
 ) {
     suspend fun getMediaHistory(
         page: Int = 1,
@@ -170,5 +178,20 @@ class UserHistoryRemoteSource(
             },
         )
         return response.body()
+    }
+
+    suspend fun getWatchedMoviePlays(): Map<String, List<V3WatchedPlayResponse>> {
+        return v3Api.getWatchedMoviePlays()
+    }
+
+    suspend fun getWatchedShowPlays(): Map<String, Map<String, Map<String, List<V3WatchedPlayResponse>>>> {
+        return v3Api.getWatchedShowPlays()
+    }
+
+    suspend fun removePlays(playIds: List<Long>) {
+        syncApi.postSyncHistoryRemove(
+            PostSyncHistoryRemoveRequest(ids = playIds),
+        )
+        cacheMarker.invalidate()
     }
 }

@@ -14,6 +14,7 @@ import tv.trakt.trakt.core.settings.categories.notifications.NotificationSetting
 import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsScreen
 import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsViewModel
 import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersScreen
+import tv.trakt.trakt.core.settings.features.history.HistoryAnalysisScreen
 import tv.trakt.trakt.core.settings.model.SettingsCategory
 
 @Serializable
@@ -40,11 +41,15 @@ internal data object CommunitySettingsDestination
 @Serializable
 internal data object BlockedUsersDestination
 
+@Serializable
+internal data object HistoryAnalysisDestination
+
 internal fun NavGraphBuilder.settingsScreen(
     onNavigateHome: () -> Unit,
     onNavigateCategory: (SettingsCategory) -> Unit,
     onNavigateYounify: () -> Unit,
     onNavigateBlockedUsers: () -> Unit,
+    onNavigateHistoryAnalysis: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<SettingsDestination> {
@@ -60,6 +65,7 @@ internal fun NavGraphBuilder.settingsScreen(
             viewModel = koinViewModel(),
             onNavigateHome = onNavigateHome,
             onNavigateBlockedUsers = onNavigateBlockedUsers,
+            onNavigateHistoryAnalysis = onNavigateHistoryAnalysis,
             onNavigateBack = onNavigateBack,
         )
     }
@@ -106,6 +112,13 @@ internal fun NavGraphBuilder.settingsScreen(
             onNavigateBack = onNavigateBack,
         )
     }
+
+    composable<HistoryAnalysisDestination> {
+        HistoryAnalysisScreen(
+            viewModel = koinViewModel(),
+            onNavigateBack = onNavigateBack,
+        )
+    }
 }
 
 internal fun NavController.navigateToSettings() {
@@ -126,4 +139,8 @@ internal fun NavController.navigateToSettingsCategory(category: SettingsCategory
 
 internal fun NavController.navigateToBlockedUsers() {
     navigate(route = BlockedUsersDestination)
+}
+
+internal fun NavController.navigateToHistoryAnalysis() {
+    navigate(route = HistoryAnalysisDestination)
 }

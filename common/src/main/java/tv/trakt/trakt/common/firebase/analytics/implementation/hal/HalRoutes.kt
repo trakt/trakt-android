@@ -29,6 +29,7 @@ private val WEB_ROUTES = mapOf(
     "all_person_history" to "/people/[slug]/history",
     "search" to "/search",
     "settings" to "/settings",
+    "history_analysis" to "/settings/advanced",
     "billing" to "/vip",
     "today_stories" to "/today",
     "game_rated_higher" to "/play/rated-higher",

@@ -76,6 +76,7 @@ import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.settings.features.younify.navigation.navigateToYounify
 import tv.trakt.trakt.core.settings.features.younify.navigation.younifyScreen
 import tv.trakt.trakt.core.settings.navigation.navigateToBlockedUsers
+import tv.trakt.trakt.core.settings.navigation.navigateToHistoryAnalysis
 import tv.trakt.trakt.core.settings.navigation.navigateToSettings
 import tv.trakt.trakt.core.settings.navigation.navigateToSettingsCategory
 import tv.trakt.trakt.core.settings.navigation.settingsScreen
@@ -902,6 +903,7 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
             onNavigateCategory = { navigateToSettingsCategory(it) },
             onNavigateYounify = { navigateToYounify() },
             onNavigateBlockedUsers = { navigateToBlockedUsers() },
+            onNavigateHistoryAnalysis = { navigateToHistoryAnalysis() },
             onNavigateBack = { popBackStack() },
         )
 

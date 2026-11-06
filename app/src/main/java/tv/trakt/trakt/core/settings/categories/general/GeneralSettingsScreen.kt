@@ -35,6 +35,7 @@ internal fun GeneralSettingsScreen(
     viewModel: GeneralSettingsViewModel,
     onNavigateHome: () -> Unit,
     onNavigateBlockedUsers: () -> Unit,
+    onNavigateHistoryAnalysis: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -53,6 +54,7 @@ internal fun GeneralSettingsScreen(
         onEnableMultiplePlays = viewModel::enableMultiplePlays,
         onEnableRatePrompts = viewModel::enableRatePrompts,
         onBlockedUsersClick = onNavigateBlockedUsers,
+        onHistoryAnalysisClick = onNavigateHistoryAnalysis,
         onSubscriptionsClick = {
             uriHandler.openUri(Config.WEB_GOOGLE_SUBSCRIPTIONS)
         },
@@ -87,6 +89,7 @@ private fun GeneralSettingsContent(
     onEnableMultiplePlays: (Boolean) -> Unit = { },
     onEnableRatePrompts: (Boolean) -> Unit = { },
     onBlockedUsersClick: () -> Unit = { },
+    onHistoryAnalysisClick: () -> Unit = { },
     onSubscriptionsClick: () -> Unit = { },
     onAllSettingsClick: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
@@ -144,6 +147,14 @@ private fun GeneralSettingsContent(
                     text = stringResource(R.string.heading_blocked_users),
                     description = stringResource(R.string.description_blocked_users),
                     onClick = onBlockedUsersClick,
+                )
+            }
+
+            item {
+                SettingsTextField(
+                    text = stringResource(R.string.header_history_analysis),
+                    description = stringResource(R.string.description_history_analysis),
+                    onClick = onHistoryAnalysisClick,
                 )
             }
         }

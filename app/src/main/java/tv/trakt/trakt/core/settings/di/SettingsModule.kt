@@ -31,6 +31,9 @@ import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsViewMo
 import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersViewModel
 import tv.trakt.trakt.core.settings.features.cover.CoverImageViewModel
+import tv.trakt.trakt.core.settings.features.history.HistoryAnalysisViewModel
+import tv.trakt.trakt.core.settings.features.history.usecases.CleanUpHistoryPlaysUseCase
+import tv.trakt.trakt.core.settings.features.history.usecases.GetWatchedPlaysUseCase
 import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
 import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
@@ -80,6 +83,8 @@ internal val settingsModule = module {
     }
 
     factoryOf(::ClearSeasonalDiscoverCachesUseCase)
+    factoryOf(::GetWatchedPlaysUseCase)
+    factoryOf(::CleanUpHistoryPlaysUseCase)
 
     factory {
         SeasonalThemeUseCase(
@@ -132,6 +137,7 @@ internal val settingsModule = module {
     viewModelOf(::AppearanceSettingsViewModel)
     viewModelOf(::CommunitySettingsViewModel)
     viewModelOf(::StreamingSettingsViewModel)
+    viewModelOf(::HistoryAnalysisViewModel)
 
     viewModel {
         NotificationSettingsViewModel(
