@@ -54,6 +54,7 @@ internal fun SoundtrackTrackList(
                 track = track,
                 number = index + 1,
                 playing = playback.isPlaying(track),
+                loading = playback.isLoading(track),
                 onPlayClick = onPlayClick,
                 modifier = Modifier
                     .shadow(TraktTheme.colors.shadowSmall, shape)

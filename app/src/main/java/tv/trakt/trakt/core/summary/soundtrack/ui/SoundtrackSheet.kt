@@ -164,6 +164,7 @@ private fun SoundtrackSheetContent(
                         track = track,
                         number = index + 1,
                         playing = playback.isPlaying(track),
+                        loading = playback.isLoading(track),
                         onPlayClick = {
                             playback.play(it)
                             onPlay(it)

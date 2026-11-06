@@ -19,19 +19,35 @@ internal class SoundtrackPlayback {
         private set
 
     var playing by mutableStateOf(false)
+        private set
+
+    /** Set from a play request until the embed reports playback started. */
+    private var loading by mutableStateOf(false)
 
     fun play(track: SoundtrackTrack) {
+        val pausing = playing && isSelected(track)
         selected = track
+        loading = !pausing
         playToken += 1
     }
 
     fun stop() {
         selected = null
         playing = false
+        loading = false
+    }
+
+    fun onPlaybackUpdate(playing: Boolean) {
+        this.playing = playing
+        if (playing) loading = false
     }
 
     fun isPlaying(track: SoundtrackTrack): Boolean {
         return playing && selected?.position == track.position
+    }
+
+    fun isLoading(track: SoundtrackTrack): Boolean {
+        return loading && isSelected(track)
     }
 
     fun isSelected(track: SoundtrackTrack): Boolean {

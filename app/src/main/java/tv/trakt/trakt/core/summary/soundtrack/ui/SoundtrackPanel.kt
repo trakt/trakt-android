@@ -85,7 +85,7 @@ internal fun SoundtrackPanel(
                 playToken = playback.playToken,
                 onPlayingChange = {
                     embedVisible = true
-                    playback.playing = it
+                    playback.onPlaybackUpdate(it)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

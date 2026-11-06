@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +39,7 @@ internal fun SoundtrackTrackRow(
     number: Int,
     playing: Boolean,
     modifier: Modifier = Modifier,
+    loading: Boolean = false,
     onPlayClick: (SoundtrackTrack) -> Unit = {},
 ) {
     Row(
@@ -91,7 +93,13 @@ internal fun SoundtrackTrackRow(
                     .background(TraktTheme.colors.accent, CircleShape)
                     .onClick(enabled = track.isPlayable) { onPlayClick(track) },
             ) {
-                if (playing) {
+                if (loading) {
+                    CircularProgressIndicator(
+                        color = TraktTheme.colors.textPrimaryOnAccent,
+                        strokeWidth = 1.5.dp,
+                        modifier = Modifier.size(ActionIconSize / 1.5F),
+                    )
+                } else if (playing) {
                     Icon(
                         painter = painterResource(R.drawable.ic_pause),
                         contentDescription = null,
@@ -138,6 +146,12 @@ private fun Preview() {
                 track = previewTrack(spotifyId = null),
                 number = 3,
                 playing = false,
+            )
+            SoundtrackTrackRow(
+                track = previewTrack(spotifyId = "abc"),
+                number = 4,
+                playing = false,
+                loading = true,
             )
         }
     }
