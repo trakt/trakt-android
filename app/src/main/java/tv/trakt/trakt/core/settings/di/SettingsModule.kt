@@ -14,6 +14,7 @@ import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.MediaType
@@ -21,6 +22,12 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.core.settings.SettingsViewModel
+import tv.trakt.trakt.core.settings.categories.account.AccountSettingsViewModel
+import tv.trakt.trakt.core.settings.categories.appearance.AppearanceSettingsViewModel
+import tv.trakt.trakt.core.settings.categories.community.CommunitySettingsViewModel
+import tv.trakt.trakt.core.settings.categories.general.GeneralSettingsViewModel
+import tv.trakt.trakt.core.settings.categories.notifications.NotificationSettingsViewModel
+import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsViewModel
 import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersViewModel
 import tv.trakt.trakt.core.settings.features.cover.CoverImageViewModel
@@ -119,16 +126,19 @@ internal val settingsModule = module {
         )
     }
 
+    viewModelOf(::SettingsViewModel)
+    viewModelOf(::GeneralSettingsViewModel)
+    viewModelOf(::AccountSettingsViewModel)
+    viewModelOf(::AppearanceSettingsViewModel)
+    viewModelOf(::CommunitySettingsViewModel)
+    viewModelOf(::StreamingSettingsViewModel)
+
     viewModel {
-        SettingsViewModel(
+        NotificationSettingsViewModel(
             appContext = androidApplication(),
-            sessionManager = get(),
-            analytics = get(),
-            updateSettingsUseCase = get(),
             enableNotificationsUseCase = get(),
             updateNotificationsDeliveryUseCase = get(),
-            themeModeUseCase = get(),
-            logoutUseCase = get(),
+            analytics = get(),
         )
     }
 

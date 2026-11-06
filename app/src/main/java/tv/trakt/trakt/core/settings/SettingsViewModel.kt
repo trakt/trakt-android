@@ -1,102 +1,40 @@
 package tv.trakt.trakt.core.settings
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
-import tv.trakt.trakt.common.helpers.DynamicStringResource
-import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.Done
-import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.StringResource
-import tv.trakt.trakt.common.helpers.extensions.recordError
-import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
-import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotificationWorker
-import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
-import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
-import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
-import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
-import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
-import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
-import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.theme.model.ThemeMode
-import kotlin.time.Duration.Companion.milliseconds
+import tv.trakt.trakt.core.settings.data.observeSettingsProfile
 
+@Suppress("UNCHECKED_CAST")
 internal class SettingsViewModel(
-    private val appContext: Context,
     private val sessionManager: SessionManager,
-    private val logoutUseCase: LogoutUserUseCase,
-    private val updateSettingsUseCase: UpdateUserSettingsUseCase,
-    private val enableNotificationsUseCase: EnableNotificationsUseCase,
-    private val updateNotificationsDeliveryUseCase: UpdateNotificationsDeliveryUseCase,
-    private val themeModeUseCase: ThemeModeUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = SettingsState()
 
     private val userState = MutableStateFlow(initialState.user)
-    private val notificationsState = MutableStateFlow(initialState.notifications)
-    private val notificationsDeliveryState = MutableStateFlow(initialState.notificationsDelivery)
-    private val themeModeState = MutableStateFlow(initialState.themeMode)
-    private val accountLoadingState = MutableStateFlow(initialState.accountLoading)
-    private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
 
     init {
         loadUser()
-        loadSettings()
 
         analytics.logScreenView(
             screenName = "settings",
         )
     }
 
-    @OptIn(FlowPreview::class)
     private fun loadUser() {
-        viewModelScope.launch {
-            userState.update {
-                sessionManager.getProfile()
-            }
-        }
-
-        sessionManager.observeProfile()
-            .distinctUntilChanged()
-            .debounce(200.milliseconds)
+        sessionManager.observeSettingsProfile()
             .onEach { user ->
                 userState.update { user }
-            }
-            .launchIn(viewModelScope)
-    }
-
-    private fun loadSettings() {
-        viewModelScope.launch {
-            notificationsState.update {
-                enableNotificationsUseCase.isNotificationsEnabled()
-            }
-            notificationsDeliveryState.update {
-                updateNotificationsDeliveryUseCase.getDeliveryTime()
-            }
-        }
-
-        themeModeUseCase.observeThemeMode()
-            .onEach { mode ->
-                themeModeState.update { mode }
             }
             .launchIn(viewModelScope)
     }
@@ -105,215 +43,11 @@ internal class SettingsViewModel(
         analytics.logLink(source = "settings", target = "reddit")
     }
 
-    fun setThemeMode(mode: ThemeMode) {
-        viewModelScope.launch {
-            themeModeUseCase.setThemeMode(mode)
-            analytics.logTheme(mode.name)
-        }
-    }
-
-    fun updateUserLocation(location: String?) {
-        viewModelScope.launch {
-            try {
-                accountLoadingState.update { Loading }
-                updateSettingsUseCase.updateLocation(location)
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                accountLoadingState.update { Done }
-            }
-        }
-    }
-
-    fun updateUserDisplayName(displayName: String?) {
-        viewModelScope.launch {
-            try {
-                accountLoadingState.update { Loading }
-                updateSettingsUseCase.updateDisplayName(displayName)
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                accountLoadingState.update { Done }
-            }
-        }
-    }
-
-    fun updateUsername(username: String) {
-        viewModelScope.launch {
-            try {
-                accountLoadingState.update { Loading }
-                updateSettingsUseCase.updateUsername(username)
-                analytics.logSettings("profile")
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.w(error, "Unable to update username")
-                }
-                info.emit(DynamicStringResource(R.string.error_text_username))
-            } finally {
-                accountLoadingState.update { Done }
-            }
-        }
-    }
-
-    fun updateUserAbout(about: String?) {
-        viewModelScope.launch {
-            try {
-                accountLoadingState.update { Loading }
-                updateSettingsUseCase.updateAbout(about)
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                accountLoadingState.update { Done }
-            }
-        }
-    }
-
-    fun enableMultiplePlays(enable: Boolean) {
-        viewModelScope.launch {
-            try {
-                accountLoadingState.update { Loading }
-                updateSettingsUseCase.updateMultiplePlays(enable)
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                accountLoadingState.update { Done }
-            }
-        }
-    }
-
-    fun enableRatePrompts(enable: Boolean) {
-        viewModelScope.launch {
-            try {
-                accountLoadingState.update { Loading }
-                updateSettingsUseCase.updateRatingsPrompt(enable)
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                accountLoadingState.update { Done }
-            }
-        }
-    }
-
-    fun enablePrivateAccount(enable: Boolean) {
-        viewModelScope.launch {
-            try {
-                accountLoadingState.update { Loading }
-                updateSettingsUseCase.updatePrivateAccount(enable)
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                accountLoadingState.update { Done }
-            }
-        }
-    }
-
-    fun enableNotifications(enable: Boolean) {
-        viewModelScope.launch {
-            try {
-                notificationsState.update {
-                    enableNotificationsUseCase.enableNotifications(enable)
-                }
-
-                if (enable) {
-                    ScheduleNotificationsWorker.schedule(appContext)
-                    ScheduleMonthReviewNotificationWorker.schedule(appContext)
-                } else {
-                    ScheduleNotificationsWorker.clear(appContext)
-                    ScheduleMonthReviewNotificationWorker.clear(appContext)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    fun setNotificationDeliveryTime(value: DeliveryAdjustment) {
-        viewModelScope.launch {
-            try {
-                notificationsDeliveryState.update {
-                    updateNotificationsDeliveryUseCase.setDeliveryTime(value)
-                }
-
-                if (notificationsState.value) {
-                    ScheduleNotificationsWorker.schedule(appContext)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    fun clearCoverImage() {
-        viewModelScope.launch {
-            try {
-                accountLoadingState.update { Loading }
-                updateSettingsUseCase.updateCoverImage(
-                    mediaId = null,
-                    mediaType = null,
-                )
-                info.emit(DynamicStringResource(R.string.text_info_cover_removed))
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                accountLoadingState.update { Done }
-            }
-        }
-    }
-
-    fun logout() {
-        viewModelScope.launch {
-            try {
-                logoutLoadingState.update { Loading }
-
-                analytics.logUserLogout()
-                logoutUseCase.logoutUser()
-
-                logoutLoadingState.update { Done }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    logoutLoadingState.update { LoadingState.Idle }
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    val info: Flow<StringResource>
-        field = MutableSharedFlow<StringResource>(replay = 0)
-
     val state = combine(
         userState,
-        notificationsState,
-        notificationsDeliveryState,
-        themeModeState,
-        accountLoadingState,
-        logoutLoadingState,
     ) { state ->
         SettingsState(
             user = state[0] as User?,
-            notifications = state[1] as Boolean,
-            notificationsDelivery = state[2] as DeliveryAdjustment?,
-            themeMode = state[3] as ThemeMode,
-            accountLoading = state[4] as LoadingState,
-            logoutLoading = state[5] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,
