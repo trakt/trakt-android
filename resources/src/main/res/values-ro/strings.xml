@@ -1131,7 +1131,7 @@
   <string name="hint_media_sync_history_resync">Poți importa vizionări anterioare mai târziu din meniul Gestionare al serverului.</string>
   <string name="image_alt_comment_gif">GIF atașat comentariului</string>
   <string name="image_alt_list_preview_poster">Afiș pentru o intrare în %s</string>
-  <string name="image_alt_match_score">%d%% potrivire pentru tine</string>
+  <string name="image_alt_match_score">%d% potrivire pentru tine</string>
   <string name="image_alt_match_unknown">Niciun scor de potrivire pentru tine încă</string>
   <string name="image_alt_media_poster">Afișul \"%s\"</string>
   <string name="image_alt_person_headshot">Fotografie tip portret cu %s</string>
@@ -1508,7 +1508,7 @@
   <string name="match_label_soulmates">Suflete pereche</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Potrivire:</string>
-  <string name="match_pill_aria_label">%1$d%% potrivire, %2$s. Deschide detaliile potrivirii.</string>
+  <string name="match_pill_aria_label">%1$d% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
   <string name="mir_banner_body">Recapitularea ta lunară este gata. Iată ce ai vizionat în %s.</string>
   <string name="mir_banner_body_short">Recapitularea ta din %s este gata.</string>
@@ -1741,7 +1741,7 @@
   <string name="tag_media_sync_webhook_only">Doar webhook</string>
   <string name="tag_mixtape_different_mood">Atmosferă diferită</string>
   <string name="tag_mixtape_kept">Păstrat</string>
-  <string name="tag_mixtape_match">%s%% potrivire</string>
+  <string name="tag_mixtape_match">%s% potrivire</string>
   <string name="tag_mixtape_tap_details">Atinge pentru detalii</string>
   <string name="tag_text_blocked_user">Blocat</string>
   <string name="tag_text_deal_price">Primii 2 ani</string>
@@ -2042,7 +2042,7 @@
   <string name="text_login_rate_limited_title">Prea multe încercări de autentificare</string>
   <string name="text_match_basis">Bazat pe ce ai vizionat, evaluat și adăugat la favorite. Nimic de evaluat.</string>
   <string name="text_match_basis_free">Scorul tău este gratuit. Motivele din spatele lui sunt o funcție VIP.</string>
-  <string name="text_match_better_than">O potrivire mai bună pentru tine decât %d%% dintre titluri</string>
+  <string name="text_match_better_than">O potrivire mai bună pentru tine decât %d% dintre titluri</string>
   <string name="text_match_not_enough_data">Nu există suficiente date pentru a stabili o potrivire pentru tine încă.</string>
   <string name="text_media_sync_feed_required">Activați cel puțin o setare de sincronizare.</string>
   <string name="text_media_sync_library_removal">Dezactivarea acestei opțiuni va elimina ce a fost adăugat în colecția dvs. Trakt. Istoricul vizionărilor și evaluările rămân.</string>
@@ -2979,7 +2979,7 @@
   <string name="yir_2026_preview_runner_none">Niciunul (fără hibrid)</string>
   <string name="yir_2026_preview_runner_up">Locul doi</string>
   <string name="yir_2026_preview_title">Previzualizare persona</string>
-  <string name="yir_2026_rarity">Doar %1$d%% sunt %2$s</string>
+  <string name="yir_2026_rarity">Doar %1$d% sunt %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Puțin %s</string>
   <string name="yir_2026_reel_and_you_are">Și tu ești</string>
   <string name="yir_2026_reel_but_mostly">Dar în mare parte</string>

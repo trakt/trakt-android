@@ -1131,7 +1131,7 @@
   <string name="hint_media_sync_history_resync">Μπορείτε να εισαγάγετε παλιές παρακολουθήσεις αργότερα από το μενού Διαχείρισης του διακομιστή.</string>
   <string name="image_alt_comment_gif">GIF συνημμένο στο σχόλιο</string>
   <string name="image_alt_list_preview_poster">Αφίσα για μια καταχώριση στο %s</string>
-  <string name="image_alt_match_score">%d%% αντιστοιχία για εσάς</string>
+  <string name="image_alt_match_score">%d% αντιστοιχία για εσάς</string>
   <string name="image_alt_match_unknown">Δεν υπάρχει ακόμη βαθμολογία αντιστοίχισης για εσάς</string>
   <string name="image_alt_media_poster">Αφίσα του \"%s\"</string>
   <string name="image_alt_person_headshot">Φωτογραφία προσώπου του %s</string>
@@ -1508,7 +1508,7 @@
   <string name="match_label_soulmates">Ψυχές Συγγενείς</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Ταίριασμα:</string>
-  <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
+  <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
   <string name="mir_banner_body">Η μηνιαία ανακεφαλαίωσή σου είναι έτοιμη. Δες τι παρακολούθησες τον %s.</string>
   <string name="mir_banner_body_short">Η ανακεφαλαίωση για τον %s είναι έτοιμη.</string>
@@ -1741,7 +1741,7 @@
   <string name="tag_media_sync_webhook_only">Μόνο Webhook</string>
   <string name="tag_mixtape_different_mood">Διαφορετική διάθεση</string>
   <string name="tag_mixtape_kept">Διατηρήθηκε</string>
-  <string name="tag_mixtape_match">%s%% αντιστοιχία</string>
+  <string name="tag_mixtape_match">%s% αντιστοιχία</string>
   <string name="tag_mixtape_tap_details">Πατήστε για λεπτομέρειες</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
   <string name="tag_text_deal_price">Πρώτα 2 έτη</string>
@@ -2042,7 +2042,7 @@
   <string name="text_login_rate_limited_title">Πάρα πολλές προσπάθειες σύνδεσης</string>
   <string name="text_match_basis">Από όσα παρακολουθήσατε, βαθμολογήσατε και προσθέσατε στα αγαπημένα. Τίποτα προς βαθμολόγηση.</string>
   <string name="text_match_basis_free">Η βαθμολογία σας είναι δωρεάν. Οι λόγοι πίσω από αυτήν είναι λειτουργία VIP.</string>
-  <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d%% των τίτλων</string>
+  <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d% των τίτλων</string>
   <string name="text_match_not_enough_data">Δεν υπάρχουν ακόμη αρκετά δεδομένα για να αντιστοιχιστεί σε εσάς.</string>
   <string name="text_media_sync_feed_required">Ενεργοποιήστε τουλάχιστον μία ρύθμιση συγχρονισμού.</string>
   <string name="text_media_sync_library_removal">Η απενεργοποίηση αυτού αφαιρεί ό,τι έχει προσθέσει στη συλλογή Trakt. Το ιστορικό παρακολούθησης και οι αξιολογήσεις σας παραμένουν.</string>
@@ -2979,7 +2979,7 @@
   <string name="yir_2026_preview_runner_none">Κανένα (όχι υβρίδιο)</string>
   <string name="yir_2026_preview_runner_up">Επιλαχών</string>
   <string name="yir_2026_preview_title">Προεπισκόπηση προφίλ</string>
-  <string name="yir_2026_rarity">Μόνο το %1$d%% είναι %2$s</string>
+  <string name="yir_2026_rarity">Μόνο το %1$d% είναι %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Λίγο %s</string>
   <string name="yir_2026_reel_and_you_are">Και είστε</string>
   <string name="yir_2026_reel_but_mostly">Αλλά κυρίως</string>

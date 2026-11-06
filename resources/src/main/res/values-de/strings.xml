@@ -1131,7 +1131,7 @@
   <string name="hint_media_sync_history_resync">Sie können vergangene Ansehvorgänge später über das Verwalten-Menü des Servers importieren.</string>
   <string name="image_alt_comment_gif">Dem Kommentar angehängtes GIF</string>
   <string name="image_alt_list_preview_poster">Poster für einen Eintrag in %s</string>
-  <string name="image_alt_match_score">%d%% Übereinstimmung für dich</string>
+  <string name="image_alt_match_score">%d% Übereinstimmung für dich</string>
   <string name="image_alt_match_unknown">Noch kein Match-Score für dich</string>
   <string name="image_alt_media_poster">Poster von \"%s\"</string>
   <string name="image_alt_person_headshot">Porträt von %s</string>
@@ -1508,7 +1508,7 @@
   <string name="match_label_soulmates">Seelenverwandte</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Übereinstimmung:</string>
-  <string name="match_pill_aria_label">%1$d%% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
+  <string name="match_pill_aria_label">%1$d% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
   <string name="match_pill_loading_aria_label">Übereinstimmungswert wird berechnet</string>
   <string name="mir_banner_body">Ihr monatlicher Rückblick ist fertig. Hier ist, was Sie im %s gesehen haben.</string>
   <string name="mir_banner_body_short">Ihr %s-Rückblick ist fertig.</string>
@@ -1741,7 +1741,7 @@
   <string name="tag_media_sync_webhook_only">Nur Webhook</string>
   <string name="tag_mixtape_different_mood">Andere Stimmung</string>
   <string name="tag_mixtape_kept">Behalten</string>
-  <string name="tag_mixtape_match">%s%% Übereinstimmung</string>
+  <string name="tag_mixtape_match">%s% Übereinstimmung</string>
   <string name="tag_mixtape_tap_details">Für Details tippen</string>
   <string name="tag_text_blocked_user">Blockiert</string>
   <string name="tag_text_deal_price">Erste 2 Jahre</string>
@@ -2042,7 +2042,7 @@
   <string name="text_login_rate_limited_title">Zu viele Anmeldeversuche</string>
   <string name="text_match_basis">Basierend auf dem, was du gesehen, bewertet und favorisiert hast. Nichts zu bewerten.</string>
   <string name="text_match_basis_free">Dein Score ist kostenlos. Die Gründe dahinter sind ein VIP-Feature.</string>
-  <string name="text_match_better_than">Passt besser zu dir als %d%% der Titel</string>
+  <string name="text_match_better_than">Passt besser zu dir als %d% der Titel</string>
   <string name="text_match_not_enough_data">Noch nicht genügend Daten, um dies für dich abzugleichen.</string>
   <string name="text_media_sync_feed_required">Aktiviere mindestens eine Synchronisierungseinstellung.</string>
   <string name="text_media_sync_library_removal">Das Deaktivieren dieser Option entfernt alles, was sie zu deiner Trakt-Sammlung hinzugefügt hat. Deine Wiedergabehistorie und Bewertungen bleiben erhalten.</string>
@@ -2979,7 +2979,7 @@
   <string name="yir_2026_preview_runner_none">Keine (kein Hybrid)</string>
   <string name="yir_2026_preview_runner_up">Zweitplatzierter</string>
   <string name="yir_2026_preview_title">Persona-Vorschau</string>
-  <string name="yir_2026_rarity">Nur %1$d%% sind %2$s</string>
+  <string name="yir_2026_rarity">Nur %1$d% sind %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Ein bisschen %s</string>
   <string name="yir_2026_reel_and_you_are">Und du bist</string>
   <string name="yir_2026_reel_but_mostly">Aber hauptsächlich</string>
