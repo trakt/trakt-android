@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
@@ -59,7 +60,9 @@ internal fun SoundtrackTrackRow(
 
         Column(
             verticalArrangement = spacedBy(2.dp),
-            modifier = Modifier.weight(1F),
+            modifier = Modifier
+                .weight(1F)
+                .padding(end = 16.dp),
         ) {
             Text(
                 text = track.title,
@@ -119,7 +122,7 @@ internal fun SoundtrackTrackRow(
             Text(
                 text = "-",
                 color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmall,
+                style = TraktTheme.typography.meta,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.widthIn(min = ActionSize),
             )
