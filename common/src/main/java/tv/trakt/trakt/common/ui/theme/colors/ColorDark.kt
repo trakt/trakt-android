@@ -73,7 +73,7 @@ val DarkColors: TraktColors = TraktColors(
     screenTimeMedium = Purple500,
     screenTimeLow = Purple850,
     statsCardGradient = Purple700,
-    settingsHeader = Purple300,
+    settingsHeader = Shade300,
     settingsLinkedStatus = Purple400,
     rateBannerContainer = Purple600,
     // Buttons
