@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package tv.trakt.trakt.core.settings
 
 import androidx.compose.foundation.background
@@ -11,15 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -36,21 +29,19 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.common.Config
-import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
-import tv.trakt.trakt.common.ui.theme.colors.Red400
-import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.settings.model.SettingsCategory
 import tv.trakt.trakt.core.settings.ui.SettingsCategoryField
 import tv.trakt.trakt.core.settings.ui.SettingsScaffold
 import tv.trakt.trakt.core.settings.ui.SettingsSegmentedGroup
-import tv.trakt.trakt.core.settings.ui.SettingsTextField
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.UserHeaderRow
+import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.components.whatsnew.openPlayStore
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -116,6 +107,12 @@ private fun SettingsScreenContent(
             )
         },
     ) {
+        state.user?.let { user ->
+            UserPanel(
+                user = user,
+            )
+        }
+
         SettingsSegmentedGroup {
             SettingsCategory.entries.forEach { category ->
                 item {
@@ -132,6 +129,38 @@ private fun SettingsScreenContent(
 
         SettingsFooter()
     }
+}
+
+@Composable
+private fun UserPanel(
+    user: User,
+    modifier: Modifier = Modifier,
+) {
+    UserHeaderRow(
+        user = user,
+        avatarBadge = { },
+        trailing = {
+            val badge = when {
+                user.isDirector -> R.string.translated_value_job_director
+                user.isAnyVip -> R.string.tag_text_vip
+                else -> null
+            }
+            badge?.let {
+                VipChip(
+                    text = stringResource(it).uppercase(),
+                    icon = painterResource(R.drawable.ic_stars),
+                )
+            }
+        },
+        modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicSmall,
+                shape = DefaultCardShape,
+                clip = true,
+            )
+            .background(TraktTheme.colors.panelCardContainer)
+            .padding(16.dp),
+    )
 }
 
 @Composable
@@ -325,6 +354,38 @@ private fun Preview() {
         SettingsScreenContent(
             state = SettingsState(
                 user = PreviewData.user1,
+            ),
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun PreviewVip() {
+    TraktTheme {
+        SettingsScreenContent(
+            state = SettingsState(
+                user = PreviewData.user1.copy(
+                    location = "Cracow, Poland",
+                    isVip = true,
+                    isDirector = false,
+                ),
+            ),
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun PreviewDirector() {
+    TraktTheme {
+        SettingsScreenContent(
+            state = SettingsState(
+                user = PreviewData.user1.copy(
+                    location = "Cracow, Poland",
+                    isVip = true,
+                    isDirector = true,
+                ),
             ),
         )
     }

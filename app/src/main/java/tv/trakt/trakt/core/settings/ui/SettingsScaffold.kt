@@ -80,7 +80,7 @@ internal fun SettingsScaffold(
 
             Column(
                 verticalArrangement = verticalArrangement,
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = 12.dp),
                 content = content,
             )
         }
