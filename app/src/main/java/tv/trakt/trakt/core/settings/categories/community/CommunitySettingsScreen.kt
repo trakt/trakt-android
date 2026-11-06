@@ -58,6 +58,7 @@ private fun CommunitySettingsContent(
             item {
                 SettingsTextField(
                     text = stringResource(R.string.link_label_reddit),
+                    description = Config.WEB_SOCIAL_REDDIT_URL.toDisplayUrl(),
                     onClick = onRedditClick,
                 )
             }
@@ -66,6 +67,7 @@ private fun CommunitySettingsContent(
                 item {
                     SettingsTextField(
                         text = stringResource(R.string.link_text_support),
+                        description = Config.WEB_SUPPORT_URL.toDisplayUrl(),
                         onClick = onSupportClick,
                     )
                 }
@@ -73,6 +75,7 @@ private fun CommunitySettingsContent(
                 item {
                     SettingsTextField(
                         text = stringResource(R.string.link_text_feedback),
+                        description = Config.WEB_ROADMAP_URL.toDisplayUrl(),
                         icon = R.drawable.ic_feedback,
                         iconSize = 17.dp,
                         onClick = onFeedbackClick,
@@ -93,4 +96,10 @@ private fun Preview() {
             ),
         )
     }
+}
+
+private fun String.toDisplayUrl(): String {
+    return removePrefix("https://")
+        .removePrefix("www.")
+        .removeSuffix("/")
 }
