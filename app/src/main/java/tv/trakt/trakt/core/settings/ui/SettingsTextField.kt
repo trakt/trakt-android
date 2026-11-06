@@ -103,7 +103,7 @@ private fun Preview() {
             item {
                 SettingsTextField(
                     text = "Described",
-                    description = "This is a description that can be up to 3 lines long and will be truncated with an ellipsis if it exceeds that length.",
+                    description = "This is a description that can be up to 3 lines long and will be truncated.",
                 )
             }
             item { SettingsTextField(text = "No icon", icon = null) }
