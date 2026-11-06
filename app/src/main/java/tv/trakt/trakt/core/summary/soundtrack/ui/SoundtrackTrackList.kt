@@ -24,18 +24,19 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val SoundtrackListShape = RoundedCornerShape(16.dp)
-internal val SegmentInnerCorner =CornerSize(4.dp)
+internal val SegmentInnerCorner = CornerSize(4.dp)
 
 internal fun segmentShape(
     index: Int,
     last: Int,
     innerCorner: CornerSize,
-): Shape = when {
-    index == 0 && last == 0 -> SoundtrackListShape
-    index == 0 -> SoundtrackListShape.copy(bottomStart = innerCorner, bottomEnd = innerCorner)
-    index == last -> SoundtrackListShape.copy(topStart = innerCorner, topEnd = innerCorner)
-    else -> RoundedCornerShape(innerCorner)
-}
+): Shape =
+    when {
+        index == 0 && last == 0 -> SoundtrackListShape
+        index == 0 -> SoundtrackListShape.copy(bottomStart = innerCorner, bottomEnd = innerCorner)
+        index == last -> SoundtrackListShape.copy(topStart = innerCorner, topEnd = innerCorner)
+        else -> RoundedCornerShape(innerCorner)
+    }
 
 @Composable
 internal fun SoundtrackTrackList(
