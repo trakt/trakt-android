@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -27,6 +29,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
 import tv.trakt.trakt.core.summary.soundtrack.model.SoundtrackSummary
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackPanel
@@ -86,7 +89,6 @@ private fun SoundtrackContent(
     onVipSeen: () -> Unit = {},
 ) {
     val tracks = state.tracks.orEmpty()
-    if (state.loading.isDone && state.isVip && tracks.isEmpty()) return
 
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
     val hasMore = state.loading.isDone && state.isVip && tracks.size > MAX_ROWS
@@ -132,7 +134,9 @@ private fun SoundtrackContent(
                 }
 
                 Done -> {
-                    if (state.isVip) {
+                    if (state.isVip && tracks.isEmpty()) {
+                        ContentEmpty(contentPadding = headerPadding)
+                    } else if (state.isVip) {
                         SoundtrackBoard(
                             tracks = tracks,
                             title = title,
@@ -151,6 +155,16 @@ private fun SoundtrackContent(
             }
         }
     }
+}
+
+@Composable
+private fun ContentEmpty(contentPadding: PaddingValues) {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+        modifier = Modifier.padding(contentPadding),
+    )
 }
 
 @Composable
@@ -220,6 +234,22 @@ private fun PreviewLoading() {
     TraktThemePreview {
         SoundtrackContent(
             state = SoundtrackState(loading = LoadingState.Loading),
+            title = "The Social Network",
+            posterUrl = null,
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewEmpty() {
+    TraktThemePreview {
+        SoundtrackContent(
+            state = SoundtrackState(
+                user = PreviewData.user1.copy(isVip = true),
+                tracks = persistentListOf(),
+                loading = LoadingState.Done,
+            ),
             title = "The Social Network",
             posterUrl = null,
         )
