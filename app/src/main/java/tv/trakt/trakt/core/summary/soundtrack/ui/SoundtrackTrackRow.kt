@@ -49,7 +49,13 @@ internal fun SoundtrackTrackRow(
             .fillMaxWidth()
             .heightIn(min = RowMinHeight)
             .background(
-                if (selected) TraktTheme.colors.accent.copy(alpha = SELECTED_ALPHA) else TraktTheme.colors.panelCardContainer,
+                if (selected) {
+                    TraktTheme.colors.accent.copy(
+                        alpha = SELECTED_ALPHA,
+                    )
+                } else {
+                    TraktTheme.colors.panelCardContainer
+                },
             )
             .onClick(enabled = track.isPlayable) { onPlayClick(track) }
             .padding(horizontal = 16.dp, vertical = 8.dp),
