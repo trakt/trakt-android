@@ -13,6 +13,7 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
@@ -55,6 +56,7 @@ internal fun SoundtrackTrackList(
                 playing = playback.isPlaying(track),
                 onPlayClick = onPlayClick,
                 modifier = Modifier
+                    .shadow(TraktTheme.colors.shadowSmall, shape)
                     .clip(shape)
                     .background(TraktTheme.colors.customListContainer)
                     .padding(horizontal = 16.dp),

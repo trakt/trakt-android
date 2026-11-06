@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,7 +46,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 /** Spotify's embed only lays out at 80 or 152 px tall, so the panel matches the compact card. */
 internal val PanelHeight = 80.dp
-internal val PanelShape =RoundedCornerShape(16.dp)
+internal val PanelShape = RoundedCornerShape(16.dp)
 private val CoverPadding = 12.dp
 
 /** Concentric with the panel: panel corner minus the cover padding. */
@@ -75,6 +76,7 @@ internal fun SoundtrackPanel(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .shadow(TraktTheme.colors.shadowSmall, PanelShape)
             .clip(PanelShape),
     ) {
         if (spotifyId != null) {

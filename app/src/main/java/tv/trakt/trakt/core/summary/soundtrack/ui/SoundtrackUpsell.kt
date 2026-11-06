@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -47,6 +48,7 @@ internal fun SoundtrackUpsell(
             modifier = Modifier
                 .fillMaxWidth()
                 .onUpsellSeen(onVipSeen)
+                .shadow(TraktTheme.colors.shadowSmall, SoundtrackListShape)
                 .background(TraktTheme.colors.customListContainer, SoundtrackListShape)
                 .onClick(onClick = onVipClick)
                 .padding(start = 16.dp, end = 14.dp)
