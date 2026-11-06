@@ -22,6 +22,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.core.billing.model.VipUsageLimit
+import tv.trakt.trakt.core.billing.usecases.GetVipUsageLimitsUseCase
 import tv.trakt.trakt.core.settings.features.history.model.CleanUpProgress
 import tv.trakt.trakt.core.settings.features.history.model.CleanUpTarget
 import tv.trakt.trakt.core.settings.features.history.model.MediaPlays
@@ -34,6 +36,7 @@ import tv.trakt.trakt.core.settings.features.history.usecases.GetWatchedPlaysUse
 internal class HistoryAnalysisViewModel(
     private val getWatchedPlaysUseCase: GetWatchedPlaysUseCase,
     private val cleanUpHistoryPlaysUseCase: CleanUpHistoryPlaysUseCase,
+    private val getUsageLimitsUseCase: GetVipUsageLimitsUseCase,
     private val dataChanges: DataChanges,
     analytics: Analytics,
 ) : ViewModel() {
@@ -45,11 +48,14 @@ internal class HistoryAnalysisViewModel(
     private val episodePlaysState = MutableStateFlow<ImmutableList<MediaPlays>>(persistentListOf())
     private val loadingState = MutableStateFlow(initialState.loading)
     private val cleanUpState = MutableStateFlow(initialState.cleanUp)
+    private val historyLimitState = MutableStateFlow(initialState.historyLimit)
+    private val historyLimitLoadingState = MutableStateFlow(initialState.historyLimitLoading)
 
     private var cleanUpJob: Job? = null
 
     init {
         loadPlays()
+        loadHistoryLimit()
 
         analytics.logScreenView(
             screenName = "history_analysis",
@@ -74,6 +80,23 @@ internal class HistoryAnalysisViewModel(
                 }
             } finally {
                 loadingState.update { Done }
+            }
+        }
+    }
+
+    private fun loadHistoryLimit(silent: Boolean = false) {
+        viewModelScope.launch {
+            try {
+                if (!silent) {
+                    historyLimitLoadingState.update { Loading }
+                }
+                historyLimitState.update { getUsageLimitsUseCase.getHistoryLimit() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                historyLimitLoadingState.update { Done }
             }
         }
     }
@@ -108,6 +131,7 @@ internal class HistoryAnalysisViewModel(
             cleanUpState.update { it?.copy(removed = duplicateIds.size - failed) }
             dataChanges.notify(Kind.History, origin = origin)
             loadPlays(silent = true)
+            loadHistoryLimit(silent = true)
         }
     }
 
@@ -128,6 +152,8 @@ internal class HistoryAnalysisViewModel(
         episodePlaysState,
         loadingState,
         cleanUpState,
+        historyLimitState,
+        historyLimitLoadingState,
     ) { state ->
         val retention = state[0] as PlayRetention
         HistoryAnalysisState(
@@ -136,6 +162,8 @@ internal class HistoryAnalysisViewModel(
             episodes = PlaysSummary.fromPlays(state[2] as ImmutableList<MediaPlays>, retention),
             loading = state[3] as LoadingState,
             cleanUp = state[4] as CleanUpProgress?,
+            historyLimit = state[5] as VipUsageLimit?,
+            historyLimitLoading = state[6] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

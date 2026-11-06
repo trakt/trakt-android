@@ -38,6 +38,9 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.billing.model.VipUsageLimit
+import tv.trakt.trakt.core.billing.ui.VipUsageLimitItem
+import tv.trakt.trakt.core.billing.ui.VipUsageLimitSkeleton
 import tv.trakt.trakt.core.settings.features.history.components.HistoryAnalysisCard
 import tv.trakt.trakt.core.settings.features.history.model.CleanUpProgress
 import tv.trakt.trakt.core.settings.features.history.model.CleanUpTarget
@@ -190,7 +193,7 @@ private fun HistoryAnalysisContent(
             item {
                 Text(
                     text = stringResource(R.string.description_history_analysis),
-                    style = TraktTheme.typography.paragraphSmaller,
+                    style = TraktTheme.typography.paragraphSmall,
                     color = TraktTheme.colors.textSecondary,
                 )
             }
@@ -203,6 +206,22 @@ private fun HistoryAnalysisContent(
                     modifier = Modifier
                         .padding(top = SECTION_SPACING, bottom = 4.dp),
                 )
+            }
+
+            item {
+                val limitModifier = Modifier.padding(top = SECTION_SPACING, bottom = 8.dp)
+                val limit = state.historyLimit
+                when {
+                    !state.historyLimitLoading.isDone -> VipUsageLimitSkeleton(
+                        title = R.string.limit_title_watch_history,
+                        modifier = limitModifier,
+                    )
+                    limit != null -> VipUsageLimitItem(
+                        limit = limit,
+                        compact = true,
+                        modifier = limitModifier,
+                    )
+                }
             }
 
             item {
@@ -246,7 +265,7 @@ private fun RetentionRow(
     ) {
         Text(
             text = stringResource(R.string.label_keep_play),
-            style = TraktTheme.typography.paragraphSmaller,
+            style = TraktTheme.typography.paragraphSmall,
             color = TraktTheme.colors.textSecondary,
             modifier = Modifier.padding(end = TraktTheme.spacing.filterChipsSpace),
         )
@@ -281,6 +300,13 @@ private fun Preview() {
                     processed = 1,
                     total = 3,
                 ),
+                historyLimit = VipUsageLimit(
+                    title = R.string.limit_title_watch_history,
+                    current = 2400,
+                    free = 100000,
+                    vip = 100000,
+                ),
+                historyLimitLoading = LoadingState.Done,
             ),
         )
     }

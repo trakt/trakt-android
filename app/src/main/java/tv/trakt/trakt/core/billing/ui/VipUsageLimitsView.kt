@@ -1,7 +1,14 @@
 package tv.trakt.trakt.core.billing.ui
 
+import androidx.annotation.StringRes
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +21,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
@@ -58,6 +67,8 @@ private val BarGap = 4.dp
 private val StopIndicatorSize = 4.dp
 private val TouchTargetSize = 48.dp
 private val LoadingIndicatorSize = 32.dp
+private val SkeletonValueWidth = 72.dp
+private val SkeletonValueHeight = 12.dp
 
 private val PlaceholderLimits = persistentListOf(
     VipUsageLimit(R.string.limit_title_total_list_items, current = 0, free = 1, vip = 2),
@@ -140,12 +151,19 @@ internal fun VipUsageLimitsView(
 }
 
 @Composable
-private fun VipUsageLimitItem(limit: VipUsageLimit) {
+internal fun VipUsageLimitItem(
+    limit: VipUsageLimit,
+    modifier: Modifier = Modifier,
+    compact: Boolean = false,
+) {
     val isOverLimit = limit.current > limit.free
-    val hasVipZone = limit.vip != limit.free
+    val hasVipZone = !compact && limit.vip != limit.free
+    val current = if (compact) rememberThousandsFormat(limit.current) else rememberNumberFormat(limit.current)
+    val free = if (compact) rememberThousandsFormat(limit.free) else rememberNumberFormat(limit.free)
 
     Column(
         verticalArrangement = spacedBy(8.dp),
+        modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -158,14 +176,14 @@ private fun VipUsageLimitItem(limit: VipUsageLimit) {
                 modifier = Modifier.weight(1F),
             )
             Text(
-                text = "${rememberNumberFormat(limit.current)} / ${rememberNumberFormat(limit.free)}",
+                text = "$current / $free",
                 style = TraktTheme.typography.paragraphSmall,
                 color = if (isOverLimit) Red400 else TraktTheme.colors.textSecondary,
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
-
             if (hasVipZone) {
+                Spacer(modifier = Modifier.width(12.dp))
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = spacedBy(2.dp),
@@ -196,6 +214,54 @@ private fun VipUsageLimitItem(limit: VipUsageLimit) {
             limit = limit,
             hasVipZone = hasVipZone,
             isOverLimit = isOverLimit,
+        )
+    }
+}
+
+@Composable
+internal fun VipUsageLimitSkeleton(
+    @StringRes title: Int,
+    modifier: Modifier = Modifier,
+) {
+    val containerColor = TraktTheme.colors.skeletonContainer
+    val shimmerColor = TraktTheme.colors.skeletonShimmer
+    val shimmer by rememberInfiniteTransition(label = "infiniteTransition")
+        .animateColor(
+            initialValue = containerColor,
+            targetValue = shimmerColor,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1000),
+                repeatMode = RepeatMode.Reverse,
+            ),
+            label = "shimmerTransition",
+        )
+
+    Column(
+        verticalArrangement = spacedBy(8.dp),
+        modifier = modifier,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                text = stringResource(title),
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textPrimary,
+                modifier = Modifier.weight(1F),
+            )
+            Box(
+                modifier = Modifier
+                    .size(width = SkeletonValueWidth, height = SkeletonValueHeight)
+                    .background(shimmer, CircleShape),
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(BarHeight)
+                .background(shimmer, CircleShape),
         )
     }
 }
@@ -307,6 +373,37 @@ private fun Preview() {
                 VipUsageLimit(R.string.limit_title_personal_lists, current = 2, free = 2, vip = 2),
             ),
             loading = false,
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+@Preview(
+    widthDp = 380,
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun CompactPreview() {
+    TraktThemeLightDark {
+        VipUsageLimitItem(
+            limit = VipUsageLimit(R.string.limit_title_watch_history, current = 2400, free = 100000, vip = 100000),
+            compact = true,
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+@Preview(
+    widthDp = 380,
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun SkeletonPreview() {
+    TraktThemeLightDark {
+        VipUsageLimitSkeleton(
+            title = R.string.limit_title_watch_history,
             modifier = Modifier.padding(16.dp),
         )
     }

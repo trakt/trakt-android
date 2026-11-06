@@ -26,7 +26,7 @@ internal data class VipUsageLimit(
             )
         }
 
-        private fun fromItem(
+        fun fromItem(
             @StringRes title: Int,
             item: V3UsageItem,
         ): VipUsageLimit {
