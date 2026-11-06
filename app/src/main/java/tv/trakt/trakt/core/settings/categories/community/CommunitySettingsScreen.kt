@@ -50,7 +50,7 @@ private fun CommunitySettingsContent(
     onBackClick: () -> Unit = { },
 ) {
     SettingsSubscreen(
-        title = stringResource(R.string.text_footer_category_community),
+        title = stringResource(R.string.link_text_support),
         onBackClick = onBackClick,
         modifier = modifier,
     ) {
