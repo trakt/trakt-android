@@ -2,9 +2,11 @@
 
 package tv.trakt.trakt.core.summary.soundtrack
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,12 +27,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
 import tv.trakt.trakt.core.summary.soundtrack.model.SoundtrackSummary
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackPanel
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackSheet
+import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackSkeleton
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackTrackList
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackUpsell
 import tv.trakt.trakt.core.summary.soundtrack.ui.previewTrack
@@ -99,13 +105,11 @@ private fun SoundtrackContent(
     onVipClick: () -> Unit = {},
     onVipSeen: () -> Unit = {},
 ) {
-    if (state.loading != LoadingState.Done) return
-
     val tracks = state.tracks.orEmpty()
-    if (state.isVip && tracks.isEmpty()) return
+    if (state.loading.isDone && state.isVip && tracks.isEmpty()) return
 
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
-    val hasMore = state.isVip && tracks.size > MAX_ROWS
+    val hasMore = state.loading.isDone && state.isVip && tracks.size > MAX_ROWS
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -134,21 +138,38 @@ private fun SoundtrackContent(
             .padding(contentPadding)
             .padding(bottom = TraktTheme.spacing.shadowClipSpace)
 
-        if (state.isVip) {
-            SoundtrackBoard(
-                tracks = tracks,
-                title = title,
-                posterUrl = posterUrl,
-                paused = sheetActive,
-                onPlay = onPlay,
-                modifier = contentModifier,
-            )
-        } else {
-            SoundtrackUpsell(
-                onVipClick = onVipClick,
-                onVipSeen = onVipSeen,
-                modifier = contentModifier,
-            )
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    SoundtrackSkeleton(
+                        rows = MAX_ROWS,
+                        visible = loading.isLoading,
+                        modifier = contentModifier,
+                    )
+                }
+
+                Done -> {
+                    if (state.isVip) {
+                        SoundtrackBoard(
+                            tracks = tracks,
+                            title = title,
+                            posterUrl = posterUrl,
+                            paused = sheetActive,
+                            onPlay = onPlay,
+                            modifier = contentModifier,
+                        )
+                    } else {
+                        SoundtrackUpsell(
+                            onVipClick = onVipClick,
+                            onVipSeen = onVipSeen,
+                            modifier = contentModifier,
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -214,6 +235,18 @@ private fun PreviewUpsell() {
     TraktThemePreview {
         SoundtrackContent(
             state = SoundtrackState(loading = LoadingState.Done),
+            title = "The Social Network",
+            posterUrl = null,
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewLoading() {
+    TraktThemePreview {
+        SoundtrackContent(
+            state = SoundtrackState(loading = LoadingState.Loading),
             title = "The Social Network",
             posterUrl = null,
         )

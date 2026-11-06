@@ -23,7 +23,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val SoundtrackListShape = RoundedCornerShape(16.dp)
-private val SegmentInnerCorner = CornerSize(4.dp)
+internal val SegmentInnerCorner =CornerSize(4.dp)
 
 internal fun segmentShape(
     index: Int,

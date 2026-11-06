@@ -28,7 +28,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val RowMinHeight = 56.dp
+internal val RowMinHeight = 56.dp
 private val ActionSize = 28.dp
 private val ActionIconSize = 16.dp
 

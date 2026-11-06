@@ -45,7 +45,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 /** Spotify's embed only lays out at 80 or 152 px tall, so the panel matches the compact card. */
 internal val PanelHeight = 80.dp
-private val PanelShape = RoundedCornerShape(16.dp)
+internal val PanelShape =RoundedCornerShape(16.dp)
 private val CoverPadding = 12.dp
 
 /** Concentric with the panel: panel corner minus the cover padding. */
@@ -96,15 +96,19 @@ internal fun SoundtrackPanel(
             enter = EnterTransition.None,
             exit = fadeOut(tween(150)),
         ) {
-            SoundtrackPanelCover(
-                title = summary.credit ?: title,
-                subtitle = stringResource(
-                    R.string.text_soundtrack_playable_ratio,
-                    summary.playable,
-                    summary.total,
-                ),
-                posterUrl = posterUrl,
-            )
+            if (spotifyId != null) {
+                SoundtrackPanelSkeleton()
+            } else {
+                SoundtrackPanelCover(
+                    title = summary.credit ?: title,
+                    subtitle = stringResource(
+                        R.string.text_soundtrack_playable_ratio,
+                        summary.playable,
+                        summary.total,
+                    ),
+                    posterUrl = posterUrl,
+                )
+            }
         }
     }
 }
@@ -176,11 +180,14 @@ private fun SoundtrackPanelCover(
 @Composable
 private fun Preview() {
     TraktThemePreview {
-        SoundtrackPanel(
-            playback = rememberSoundtrackPlayback(),
-            summary = SoundtrackSummary(total = 24, playable = 15, credit = "Trent Reznor"),
-            title = "The Social Network",
-            posterUrl = null,
-        )
+        Column(verticalArrangement = spacedBy(12.dp)) {
+            SoundtrackPanel(
+                playback = rememberSoundtrackPlayback(),
+                summary = SoundtrackSummary(total = 24, playable = 15, credit = "Trent Reznor"),
+                title = "The Social Network",
+                posterUrl = null,
+            )
+            SoundtrackPanelSkeleton()
+        }
     }
 }
