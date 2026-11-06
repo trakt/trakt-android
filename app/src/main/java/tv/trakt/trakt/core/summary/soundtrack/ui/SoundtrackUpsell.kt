@@ -32,7 +32,7 @@ internal fun SoundtrackUpsell(
     onVipSeen: () -> Unit = {},
 ) {
     Column(
-        verticalArrangement = spacedBy(12.dp),
+        verticalArrangement = spacedBy(16.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
         // Sample rows, not this title's data. Blurred so they read as a preview of the feature.
