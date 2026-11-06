@@ -1131,7 +1131,7 @@
   <string name="hint_media_sync_history_resync">Anda dapat mengimpor riwayat tontonan nanti dari menu Kelola server.</string>
   <string name="image_alt_comment_gif">GIF terlampir pada komentar</string>
   <string name="image_alt_list_preview_poster">Poster untuk entri di %s</string>
-  <string name="image_alt_match_score">%d% cocok untuk Anda</string>
+  <string name="image_alt_match_score">%d%% cocok untuk Anda</string>
   <string name="image_alt_match_unknown">Belum ada skor kecocokan untuk Anda</string>
   <string name="image_alt_media_poster">Poster \"%s\"</string>
   <string name="image_alt_person_headshot">Foto kepala %s</string>
@@ -1508,7 +1508,7 @@
   <string name="match_label_soulmates">Satu Frekuensi</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Cocok:</string>
-  <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
+  <string name="match_pill_aria_label">Kecocokan %1$d%%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
   <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
   <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
@@ -1741,7 +1741,7 @@
   <string name="tag_media_sync_webhook_only">Webhook saja</string>
   <string name="tag_mixtape_different_mood">Nuansa berbeda</string>
   <string name="tag_mixtape_kept">Disimpan</string>
-  <string name="tag_mixtape_match">%s% cocok</string>
+  <string name="tag_mixtape_match">%s%% cocok</string>
   <string name="tag_mixtape_tap_details">Ketuk untuk detail</string>
   <string name="tag_text_blocked_user">Diblokir</string>
   <string name="tag_text_deal_price">2 Tahun Pertama</string>
@@ -2042,7 +2042,7 @@
   <string name="text_login_rate_limited_title">Terlalu banyak percobaan masuk</string>
   <string name="text_match_basis">Berdasarkan apa yang Anda tonton, nilai, dan favoritkan. Tidak ada yang perlu dinilai.</string>
   <string name="text_match_basis_free">Skor Anda gratis. Alasan di baliknya adalah fitur VIP.</string>
-  <string name="text_match_better_than">Lebih cocok untuk Anda daripada %d% judul lainnya</string>
+  <string name="text_match_better_than">Lebih cocok untuk Anda daripada %d%% judul lainnya</string>
   <string name="text_match_not_enough_data">Belum cukup data untuk mencocokkan ini dengan Anda.</string>
   <string name="text_media_sync_feed_required">Aktifkan setidaknya satu pengaturan sinkronisasi.</string>
   <string name="text_media_sync_library_removal">Mematikan ini akan menghapus apa yang ditambahkan ke koleksi Trakt Anda. Riwayat tontonan dan peringkat Anda akan tetap ada.</string>
@@ -2979,7 +2979,7 @@
   <string name="yir_2026_preview_runner_none">Tidak ada (tanpa hibrida)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Pratinjau Persona</string>
-  <string name="yir_2026_rarity">Hanya %1$d% adalah %2$s</string>
+  <string name="yir_2026_rarity">Hanya %1$d%% adalah %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Sedikit %s</string>
   <string name="yir_2026_reel_and_you_are">Dan Anda adalah</string>
   <string name="yir_2026_reel_but_mostly">Tapi sebagian besar</string>
