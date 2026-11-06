@@ -1,13 +1,14 @@
 ---
 name: trakt-android-gh-implement
-description: Implement trakt-android GitHub issues one by one - ask which issues and the end state (local branches, draft PRs or ready-for-review PRs), move them to In Progress on the trakt Product board, assess each issue against trakt-web and the Android code, implement each in a fresh subagent inside its own git worktree, verify, commit, optionally open PRs and handle up to 3 Codex review cycles on them. Trigger: /trakt-android-gh-implement, "implement issues", "work on #499 #484", "take care of these issues".
+description: Implement trakt-android GitHub issues one by one - ask which issues and the end state (local branches, draft PRs or ready-for-review PRs), move them to In Progress on the trakt Product board, assess each issue against trakt-web and the Android code, implement each in a fresh subagent on its own branch, verify, commit, optionally open PRs and handle up to 3 Codex review cycles on them. Trigger: /trakt-android-gh-implement, "implement issues", "work on #499 #484", "take care of these issues".
 ---
 
 # Implement issues
 
 Takes a set of trakt-android issues from the board to branches or PRs, one issue at a time. Every
-issue is built in its own git worktree, so the main checkout never switches branches and can stay
-in use while the skill runs.
+issue gets its own branch from `origin/main`, built in the main checkout. The checkout switches
+branches during the run, so do not edit it by hand meanwhile. The skill switches back to the
+starting branch at the end.
 
 ## Constants
 
@@ -17,8 +18,7 @@ in use while the skill runs.
 | Board | `gh project` owner `trakt`, number `11` ("Product") |
 | Status field ID | `PVTSSF_lADOAE01zc4BTaq0zhAqgtk` |
 | Status option IDs | Backlog `f75ad846`, Up Next `607d3ebd`, In Progress `47fc9ee4`, Under Review `df73e18b`, Done `98236657` |
-| Android code | Repo root (`git rev-parse --show-toplevel`), `$ROOT` below. Board, web and effort commands run from there. |
-| Worktree | `$WT` = `$ROOT/.claude/worktrees/<branch with / replaced by ->` (for example `.claude/worktrees/feat-season-rail-highlight`). All issue code work, builds and git commands for the branch run there. |
+| Android code | Repo root (`git rev-parse --show-toplevel`), `$ROOT` below. All commands run from there. |
 | Base ref | `origin/main`, refreshed by the fetch in step 2. |
 | Web code | `$WEB`: `$TRAKT_WEB` if set, else `../trakt-web` next to the repo root (read only, `git pull --ff-only` is fine) |
 
@@ -44,24 +44,24 @@ Use one `AskUserQuestion` call:
 Keep raw dumps in the session scratchpad directory, referred to below as `$S`.
 
 1. **Auth.** `gh auth status 2>&1 | grep -i scopes` must list `project`. If not, ask the user to run `! gh auth refresh -h github.com -s project` and wait.
-2. **Latest `origin/main`.** Branches start from `origin/main`, not from the main checkout, so its
-   branch and local changes do not matter. Refresh the remote ref:
+2. **Clean checkout.** `git status --porcelain --untracked-files=no` must print nothing. If it
+   prints anything, stop and ask the user to commit or stash. Never stash, reset or discard their
+   changes yourself. Save the starting branch: `git branch --show-current > "$S/origin-branch.txt"`.
+3. **Latest `origin/main`.** Branches start from `origin/main`, so refresh the remote ref:
    ```bash
    git -c credential.helper='!gh auth git-credential' fetch -q https://github.com/trakt/trakt-android.git +main:refs/remotes/origin/main
    ```
-   Then `git worktree prune` and `git worktree list`. If a worktree under `.claude/worktrees/`
-   is left over from an earlier run, tell the user and do not reuse or remove it without approval.
-3. **Board items.**
+4. **Board items.**
    ```bash
    gh project item-list 11 --owner trakt --limit 3000 --format json > "$S/items.json"
    ```
    Find each target issue's item `id` (`content.number` plus repository `trakt/trakt-android`). If an issue is not on the board, tell the user and continue without the board step for it.
-4. **Move all target issues to In Progress before any code work.**
+5. **Move all target issues to In Progress before any code work.**
    ```bash
    gh project item-edit --project-id PVT_kwDOAE01zc4BTaq0 --id <item-id> \
      --field-id PVTSSF_lADOAE01zc4BTaq0zhAqgtk --single-select-option-id 47fc9ee4
    ```
-5. **Locate and update trakt-web.**
+6. **Locate and update trakt-web.**
    ```bash
    WEB="${TRAKT_WEB:-$(git rev-parse --show-toplevel)/../trakt-web}"
    git -C "$WEB" rev-parse --show-toplevel || echo "trakt-web not found"
@@ -105,9 +105,9 @@ Main thread, per issue:
 3. **Wait for it.** Do not start the next issue until it returns.
 4. **Stop the effort clock.** `date -u +%Y-%m-%dT%H:%M:%SZ > "$S/endN.txt"`. Save the returned
    summary to `$S/resultN.md` for step 5.
-5. **Check the worktree.** `git worktree list` must no longer show the issue's worktree. The
-   subagent keeps it only when it hit a blocker: note its path in the report and continue. Any
-   other leftover: stop and ask before the next issue.
+5. **Check the checkout.** `git status --porcelain --untracked-files=no` must print nothing. If the
+   subagent hit a blocker and left changes, note the branch in the report and stop: ask before the
+   next issue.
 
 ### Issue steps
 
@@ -120,17 +120,13 @@ come from the prompt.
 3. **Read the web source.** For each `trakt-web#N` or `trakt-web/pull/N` link, read `gh pr view N -R trakt/trakt-web --json title,body,files` and the relevant part of `gh pr diff`. Then read the current web files, not only the diff, because later PRs may have changed them. Match web logic, ordering and edge cases.
 4. **Assess against Android.** Check every claim in the issue against current Android code. Issues often list items that already exist. Note those for the PR body instead of re-implementing them.
 5. **Load rules.** Read the `.agents/rules/` files that match the touched area, as `CLAUDE.md` lists.
-6. **Branch in a worktree.** Pick `<type>/<short-slug>` (for example `feat/season-rail-highlight`,
-   `fix/season-progress-aired`) and create the worktree from the repo root:
+6. **Branch.** Pick `<type>/<short-slug>` (for example `feat/season-rail-highlight`,
+   `fix/season-progress-aired`). The checkout must be clean (`git status --porcelain
+   --untracked-files=no` prints nothing), else stop and report. Then:
    ```bash
-   git worktree add -q -b <branch> "$WT" origin/main
-   for f in local.properties app/google-services.json; do [ -f "$f" ] && cp "$f" "$WT/$f"; done
+   git switch -q -c <branch> origin/main
    ```
-   The two copied files are gitignored but needed to build. If `$WT` or the branch already exists,
-   stop and report. From here on:
-   - Read and edit files only by absolute path under `$WT`. Never edit the main checkout.
-   - Run git, Gradle and ktlint as `cd "$WT" && <command>`.
-   - The first Gradle build in a new worktree is a cold build and takes longer.
+   If the branch already exists, stop and report.
 7. **Implement.** Reuse existing helpers and tokens. Keep the diff small.
 8. **Sync tracking with web.** Read `analytics.md` first. Check whether the web code for this feature tracks anything:
    ```bash
@@ -142,8 +138,16 @@ come from the prompt.
    - Web does not track it, and the change is a new user-facing feature: add HAL tracking per `analytics.md` and `implementation.md`.
    - Web does not track it, and the change tweaks an existing screen: no tracking.
    - State the decision and the event names in the PR body and the report.
-9. **Verify.**
-   - Compile: `./gradlew -q :app:compilePlaystoreDebugKotlin` (plain `compileDebugKotlin` is ambiguous because of flavors). Add `:tv:compileDebugKotlin` when `tv/` or shared code changed.
+9. **Verify.** Gradle output is long and every line stays in context for the rest of the issue,
+   so never print it raw. Write it to a log and read only the exit code and error lines:
+   ```bash
+   ./gradlew -q <tasks> > "$S/buildN.log" 2>&1; echo "exit=$?"
+   grep -E '^e: |FAILED|What went wrong' -A3 "$S/buildN.log" | head -40
+   ```
+   - Compile tasks: `:app:compilePlaystoreDebugKotlin` (plain `compileDebugKotlin` is ambiguous
+     because of flavors). Add `:tv:compilePlaystoreDebugKotlin` when `tv/` or shared code changed.
+   - If compile fails on missing generated API types, run `openApiGenerate` with the same log
+     pattern, then compile again.
    - Lint: the Gradle `ktlintCheck` task is not wired. Run the CLI on changed files: `ktlint -F $(git diff --name-only origin/main; git ls-files -o --exclude-standard)`, then `ktlint` again to confirm it is clean.
    - Fix all errors before committing. Do not claim device testing that did not happen.
 10. **Commit.** Follow `commits.md`: Conventional Commits, body explains why, `Refs: #N` footer, no
@@ -171,14 +175,10 @@ come from the prompt.
      end of the PR body, after the `Closes` line:
      `<!-- convergence-run {"web_pr": <first linked trakt-web PR number or null>, "issue": "trakt-android#N", "client": "android", "lead_model": "<model id>", "subagents": <its "subagents">, "started": "<start time>", "pr_opened": "<now, UTC>", "tokens": <its "tokens">, "tokens_by_model": <its "models">} -->`
      A daily job reads this block to measure how long ports take. When the script prints `"tokens": null`, write `null`. Never estimate.
-12. **Remove the worktree.** Only after the commit exists and, for PRs, the push and
-   `gh pr create` both succeeded. From the repo root:
-   ```bash
-   git worktree remove "$WT"
-   ```
-   The branch stays, so the work is not lost. Never pass `--force`: if removal fails, the worktree
-   has uncommitted changes, so report it instead. On a blocker, keep the worktree and report its
-   path. Then reply with the summary the prompt asks for.
+12. **Leave the checkout clean.** After the commit and, for PRs, the push and `gh pr create`,
+   `git status --porcelain --untracked-files=no` must print nothing. Stay on the branch: the next
+   issue branches from `origin/main` anyway. On a blocker, commit nothing half-done; report the
+   branch and the uncommitted files. Then reply with the summary the prompt asks for.
 
 ## Step 4 - Monitor Codex reviews
 
@@ -221,11 +221,9 @@ Track per PR: cycle count (starts at 1) and `SINCE`, the UTC time the PR was ope
 
    Decide per comment: fix, or decline with a concrete reason (wrong, out of scope, intended
    behaviour, or conflicts with the plan).
-4. **Fix.** Recreate the PR branch's worktree from the repo root:
-   `git worktree add -q "$WT" <branch>`, then copy the two gitignored files as in "Issue steps" 6.
-   In it: apply the fixes, verify as in "Issue steps" 9, commit per `commits.md` (`Refs: #N`), push
-   with the same `push` command as "Issue steps" 11. Never force-push for review fixes. Remove the
-   worktree after the push, as in "Issue steps" 12.
+4. **Fix.** With a clean checkout, `git switch -q <branch>`. Apply the fixes, verify as in
+   "Issue steps" 9, commit per `commits.md` (`Refs: #N`), push with the same `push` command as
+   "Issue steps" 11. Never force-push for review fixes.
 5. **Reply and resolve every handled thread.** Reply with what changed and the commit SHA, or why it
    was declined, then resolve:
    ```bash
@@ -240,9 +238,11 @@ Track per PR: cycle count (starts at 1) and `SINCE`, the UTC time the PR was ope
 
 With several PRs, poll all of them in one loop. Handle one PR at a time, steps 4.2 to 4.5 in full,
 so Codex effort windows never overlap and each one counts only its own issue. Polling time sits
-outside all windows. When done, `git worktree list` must show no worktree left from this step.
+outside all windows.
 
 ## Step 5 - Report
+
+First switch back: `git switch -q "$(cat "$S/origin-branch.txt")"` (clean checkout required).
 
 Build it from the `$S/resultN.md` summaries. Lead with the result. Per issue: link (PR or branch name), what changed in plain words, what was already in place, any deviation from web. Then:
 
@@ -255,7 +255,7 @@ Build it from the `$S/resultN.md` summaries. Lead with the result. Per issue: li
   window of that PR: `--window` once per line of `$S/codexN-windows.txt`.
 - Verified: compile and ktlint per branch.
 - Not verified: device or emulator runs, unless done.
-- Blockers: missing scopes, issues not on the board, anything skipped, and worktrees kept because of them.
+- Blockers: missing scopes, issues not on the board, anything skipped, and branches left with uncommitted changes.
 - Board status of each issue.
 - Codex review, when monitored: cycles run per PR, comments fixed or declined, and the final state (clean, 3-cycle limit reached, or timed out).
 
@@ -265,6 +265,5 @@ Build it from the `$S/resultN.md` summaries. Lead with the result. Per issue: li
 - In zsh, quote globs such as `--include='*.kt'`, or the command fails with `no matches found`.
 - Large issue bodies can get truncated in tool output. Dump to `$S` and print with `python3 -c` or `jq -r` when a read looks cut off.
 - To change a pushed commit message, amend and push with `-f` only on the feature branch, never on `main`.
-- A branch can be checked out in only one worktree. If `git worktree add` says the branch is
-  already checked out, find it with `git worktree list` instead of creating a second one.
-- Removing a worktree directory by hand leaves stale metadata. Run `git worktree prune` to clear it.
+- Untracked files (for example `.kotlin/`) survive branch switches and do not block them. Only
+  tracked changes do.
