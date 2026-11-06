@@ -1,10 +1,15 @@
 package tv.trakt.trakt.core.summary.soundtrack.ui
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.webkit.JavascriptInterface
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
@@ -21,6 +26,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import timber.log.Timber
+import java.net.URISyntaxException
 
 private const val BASE_URL = "https://app.trakt.tv/"
 private const val BRIDGE_NAME = "TraktSpotify"
@@ -70,7 +77,7 @@ internal fun SpotifyEmbedPlayer(
                 settings.domStorageEnabled = true
                 settings.allowFileAccess = false
                 settings.mediaPlaybackRequiresUserGesture = false
-                webViewClient = WebViewClient()
+                webViewClient = ExternalLinksWebViewClient()
                 addJavascriptInterface(
                     SpotifyBridge { playing -> currentOnPlayingChange(playing) },
                     BRIDGE_NAME,
@@ -84,6 +91,46 @@ internal fun SpotifyEmbedPlayer(
             view.destroy()
         },
     )
+}
+
+/**
+ * Keeps the embed in place. Links the card opens ("Get Spotify", track title, `target=_blank`)
+ * navigate the main frame or use app schemes, so they go to the system instead of the WebView.
+ */
+private class ExternalLinksWebViewClient : WebViewClient() {
+    override fun shouldOverrideUrlLoading(
+        view: WebView,
+        request: WebResourceRequest,
+    ): Boolean {
+        val isWebUrl = request.url.scheme in setOf("http", "https")
+        if (!request.isForMainFrame && isWebUrl) {
+            return false
+        }
+
+        openExternally(view.context, request.url)
+        return true
+    }
+
+    private fun openExternally(
+        context: Context,
+        uri: Uri,
+    ) {
+        try {
+            val intent = when (uri.scheme) {
+                "intent" -> Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME).apply {
+                    addCategory(Intent.CATEGORY_BROWSABLE)
+                    component = null
+                    selector = null
+                }
+                else -> Intent(Intent.ACTION_VIEW, uri)
+            }
+            context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        } catch (error: ActivityNotFoundException) {
+            Timber.w(error, "No app to open Spotify embed link")
+        } catch (error: URISyntaxException) {
+            Timber.w(error, "Invalid Spotify embed link")
+        }
+    }
 }
 
 private class SpotifyBridge(
