@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.core.settings.SettingsScreen
 import tv.trakt.trakt.core.settings.categories.account.AccountSettingsScreen
+import tv.trakt.trakt.core.settings.categories.advanced.AdvancedSettingsScreen
 import tv.trakt.trakt.core.settings.categories.appearance.AppearanceSettingsScreen
 import tv.trakt.trakt.core.settings.categories.community.CommunitySettingsScreen
 import tv.trakt.trakt.core.settings.categories.general.GeneralSettingsScreen
@@ -34,6 +35,9 @@ internal data object StreamingSettingsDestination
 
 @Serializable
 internal data object NotificationSettingsDestination
+
+@Serializable
+internal data object AdvancedSettingsDestination
 
 @Serializable
 internal data object CommunitySettingsDestination
@@ -65,7 +69,6 @@ internal fun NavGraphBuilder.settingsScreen(
             viewModel = koinViewModel(),
             onNavigateHome = onNavigateHome,
             onNavigateBlockedUsers = onNavigateBlockedUsers,
-            onNavigateHistoryAnalysis = onNavigateHistoryAnalysis,
             onNavigateBack = onNavigateBack,
         )
     }
@@ -95,6 +98,13 @@ internal fun NavGraphBuilder.settingsScreen(
     composable<NotificationSettingsDestination> {
         NotificationSettingsScreen(
             viewModel = koinViewModel(),
+            onNavigateBack = onNavigateBack,
+        )
+    }
+
+    composable<AdvancedSettingsDestination> {
+        AdvancedSettingsScreen(
+            onNavigateHistoryAnalysis = onNavigateHistoryAnalysis,
             onNavigateBack = onNavigateBack,
         )
     }
@@ -132,6 +142,7 @@ internal fun NavController.navigateToSettingsCategory(category: SettingsCategory
         SettingsCategory.Appearance -> AppearanceSettingsDestination
         SettingsCategory.Streaming -> StreamingSettingsDestination
         SettingsCategory.Notifications -> NotificationSettingsDestination
+        SettingsCategory.Advanced -> AdvancedSettingsDestination
         SettingsCategory.Support -> CommunitySettingsDestination
     }
     navigate(route = route)

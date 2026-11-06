@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.settings.features.history.model.CleanUpProgress
 import tv.trakt.trakt.core.settings.features.history.model.CleanUpTarget
@@ -50,14 +52,17 @@ internal fun HistoryAnalysisCard(
     onCleanUpClick: () -> Unit = {},
 ) {
     val hasDuplicates = summary.duplicates > 0
-    val badAccent = TraktTheme.colors.sentimentsBadAccent
+    val badAccent = when (TraktTheme.colors.isLight) {
+        true -> Red500
+        false -> Red400
+    }
 
     Column(
         verticalArrangement = spacedBy(CARD_ITEM_SPACING),
         modifier = modifier
             .fillMaxWidth()
             .shadow(
-                elevation = TraktTheme.colors.shadowDynamicDefault,
+                elevation = TraktTheme.colors.shadowDynamicSmall,
                 shape = CARD_SHAPE,
             )
             .background(
@@ -80,9 +85,14 @@ internal fun HistoryAnalysisCard(
         if (loading) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 32.dp),
             ) {
-                FilmProgressIndicator()
+                FilmProgressIndicator(
+                    size = 36.dp,
+                    strokeWidth = 4.dp,
+                )
             }
             return@Column
         }
@@ -102,6 +112,7 @@ internal fun HistoryAnalysisCard(
 
         Box(
             modifier = Modifier
+                .padding(vertical = 8.dp)
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(TraktTheme.colors.separator),
@@ -134,6 +145,7 @@ internal fun HistoryAnalysisCard(
                 containerColor = Red500,
                 contentColor = Color.White,
                 onClick = onCleanUpClick,
+                modifier = Modifier.widthIn(min = 86.dp),
             )
         }
 
@@ -167,7 +179,8 @@ internal fun HistoryAnalysisCard(
             Text(
                 text = stringResource(R.string.cleanup_status_done, removed),
                 style = TraktTheme.typography.paragraphSmaller,
-                color = TraktTheme.colors.textSecondary,
+                color = TraktTheme.colors.textPrimary,
+                modifier = Modifier.padding(top = 10.dp),
             )
         }
     }

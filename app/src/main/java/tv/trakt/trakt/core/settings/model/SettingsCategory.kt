@@ -31,6 +31,10 @@ internal enum class SettingsCategory(
         title = R.string.header_settings_notifications,
         icon = R.drawable.ic_bell,
     ),
+    Advanced(
+        title = R.string.link_text_advanced_settings,
+        icon = R.drawable.ic_filters_advanced,
+    ),
     Support(
         title = R.string.link_text_support,
         icon = R.drawable.ic_person_double,

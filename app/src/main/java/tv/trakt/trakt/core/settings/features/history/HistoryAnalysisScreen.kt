@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -163,7 +164,6 @@ private fun HistoryAnalysisContent(
 
         LazyColumn(
             contentPadding = contentPadding,
-            verticalArrangement = spacedBy(SECTION_SPACING),
             overscrollEffect = null,
         ) {
             item {
@@ -190,7 +190,7 @@ private fun HistoryAnalysisContent(
             item {
                 Text(
                     text = stringResource(R.string.description_history_analysis),
-                    style = TraktTheme.typography.paragraphSmall,
+                    style = TraktTheme.typography.paragraphSmaller,
                     color = TraktTheme.colors.textSecondary,
                 )
             }
@@ -200,6 +200,8 @@ private fun HistoryAnalysisContent(
                     retention = state.retention,
                     enabled = state.cleanUp?.isRunning != true,
                     onClick = onRetentionClick,
+                    modifier = Modifier
+                        .padding(top = SECTION_SPACING, bottom = 4.dp),
                 )
             }
 
@@ -211,6 +213,7 @@ private fun HistoryAnalysisContent(
                     cleanUp = state.cleanUp?.takeIf { it.target == CleanUpTarget.Movies },
                     cleanUpEnabled = cleanUpEnabled,
                     onCleanUpClick = { onCleanUpClick(CleanUpTarget.Movies) },
+                    modifier = Modifier.padding(top = SECTION_SPACING),
                 )
             }
 
@@ -222,6 +225,7 @@ private fun HistoryAnalysisContent(
                     cleanUp = state.cleanUp?.takeIf { it.target == CleanUpTarget.Episodes },
                     cleanUpEnabled = cleanUpEnabled,
                     onCleanUpClick = { onCleanUpClick(CleanUpTarget.Episodes) },
+                    modifier = Modifier.padding(top = SECTION_SPACING),
                 )
             }
         }
@@ -233,16 +237,18 @@ private fun RetentionRow(
     retention: PlayRetention,
     enabled: Boolean,
     onClick: (PlayRetention) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(TraktTheme.spacing.filterChipsSpace, Alignment.End),
-        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = spacedBy(TraktTheme.spacing.filterChipsSpace, Alignment.Start),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Text(
             text = stringResource(R.string.label_keep_play),
-            style = TraktTheme.typography.paragraphSmall,
+            style = TraktTheme.typography.paragraphSmaller,
             color = TraktTheme.colors.textSecondary,
+            modifier = Modifier.padding(end = TraktTheme.spacing.filterChipsSpace),
         )
         FilterChip(
             selected = retention == PlayRetention.Oldest,
