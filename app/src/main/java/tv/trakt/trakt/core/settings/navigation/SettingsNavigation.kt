@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.core.settings.SettingsScreen
 import tv.trakt.trakt.core.settings.categories.account.AccountSettingsScreen
+import tv.trakt.trakt.core.settings.categories.advanced.AdvancedSettingsScreen
 import tv.trakt.trakt.core.settings.categories.appearance.AppearanceSettingsScreen
 import tv.trakt.trakt.core.settings.categories.community.CommunitySettingsScreen
 import tv.trakt.trakt.core.settings.categories.general.GeneralSettingsScreen
@@ -14,6 +15,7 @@ import tv.trakt.trakt.core.settings.categories.notifications.NotificationSetting
 import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsScreen
 import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsViewModel
 import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersScreen
+import tv.trakt.trakt.core.settings.features.history.HistoryAnalysisScreen
 import tv.trakt.trakt.core.settings.model.SettingsCategory
 
 @Serializable
@@ -35,16 +37,23 @@ internal data object StreamingSettingsDestination
 internal data object NotificationSettingsDestination
 
 @Serializable
+internal data object AdvancedSettingsDestination
+
+@Serializable
 internal data object CommunitySettingsDestination
 
 @Serializable
 internal data object BlockedUsersDestination
+
+@Serializable
+internal data object HistoryAnalysisDestination
 
 internal fun NavGraphBuilder.settingsScreen(
     onNavigateHome: () -> Unit,
     onNavigateCategory: (SettingsCategory) -> Unit,
     onNavigateYounify: () -> Unit,
     onNavigateBlockedUsers: () -> Unit,
+    onNavigateHistoryAnalysis: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<SettingsDestination> {
@@ -93,6 +102,13 @@ internal fun NavGraphBuilder.settingsScreen(
         )
     }
 
+    composable<AdvancedSettingsDestination> {
+        AdvancedSettingsScreen(
+            onNavigateHistoryAnalysis = onNavigateHistoryAnalysis,
+            onNavigateBack = onNavigateBack,
+        )
+    }
+
     composable<CommunitySettingsDestination> {
         CommunitySettingsScreen(
             viewModel = koinViewModel(),
@@ -102,6 +118,13 @@ internal fun NavGraphBuilder.settingsScreen(
 
     composable<BlockedUsersDestination> {
         BlockedUsersScreen(
+            viewModel = koinViewModel(),
+            onNavigateBack = onNavigateBack,
+        )
+    }
+
+    composable<HistoryAnalysisDestination> {
+        HistoryAnalysisScreen(
             viewModel = koinViewModel(),
             onNavigateBack = onNavigateBack,
         )
@@ -119,6 +142,7 @@ internal fun NavController.navigateToSettingsCategory(category: SettingsCategory
         SettingsCategory.Appearance -> AppearanceSettingsDestination
         SettingsCategory.Streaming -> StreamingSettingsDestination
         SettingsCategory.Notifications -> NotificationSettingsDestination
+        SettingsCategory.Advanced -> AdvancedSettingsDestination
         SettingsCategory.Support -> CommunitySettingsDestination
     }
     navigate(route = route)
@@ -126,4 +150,8 @@ internal fun NavController.navigateToSettingsCategory(category: SettingsCategory
 
 internal fun NavController.navigateToBlockedUsers() {
     navigate(route = BlockedUsersDestination)
+}
+
+internal fun NavController.navigateToHistoryAnalysis() {
+    navigate(route = HistoryAnalysisDestination)
 }

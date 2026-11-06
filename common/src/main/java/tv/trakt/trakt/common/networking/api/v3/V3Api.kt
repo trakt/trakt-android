@@ -41,6 +41,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UserMatchResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsernameSettingsRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3WatchedPlayResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3YouTubeSpecialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3MediaReactionsSummaryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.reactions.V3UserMediaReaction
@@ -373,6 +374,22 @@ class V3Api(
                 ),
             )
         }
+    }
+
+    // History plays
+
+    suspend fun getWatchedMoviePlays(): Map<String, List<V3WatchedPlayResponse>> {
+        val response = client.get("${baseV3Url}users/me/watched/movies/plays") {
+            parameter("limit", "all")
+        }
+        return response.body()
+    }
+
+    suspend fun getWatchedShowPlays(): Map<String, Map<String, Map<String, List<V3WatchedPlayResponse>>>> {
+        val response = client.get("${baseV3Url}users/me/watched/shows/plays") {
+            parameter("limit", "all")
+        }
+        return response.body()
     }
 
     // Reactions
