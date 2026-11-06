@@ -119,7 +119,7 @@ internal fun NavController.navigateToSettingsCategory(category: SettingsCategory
         SettingsCategory.Appearance -> AppearanceSettingsDestination
         SettingsCategory.Streaming -> StreamingSettingsDestination
         SettingsCategory.Notifications -> NotificationSettingsDestination
-        SettingsCategory.Community -> CommunitySettingsDestination
+        SettingsCategory.Support -> CommunitySettingsDestination
     }
     navigate(route = route)
 }

@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -44,21 +44,27 @@ internal fun SettingsSegmentedGroup(
     ) {
         title?.let {
             TraktHeader(
-                title = it.uppercase(),
+                title = it,
                 titleColor = TraktTheme.colors.settingsHeader,
-                titleStyle = TraktTheme.typography.heading6,
+                titleStyle = TraktTheme.typography.paragraph.copy(
+                    fontSize = 14.sp,
+                ),
                 modifier = Modifier.padding(horizontal = 4.dp),
             )
         }
 
         Column(
-            verticalArrangement = spacedBy(ListItemDefaults.SegmentedGap),
+            verticalArrangement = spacedBy(3.dp),
         ) {
             items.forEachIndexed { index, item ->
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(segmentShape(index = index, count = items.size))
+                        .shadow(
+                            elevation = TraktTheme.colors.shadowDynamicSmall,
+                            shape = segmentShape(index = index, count = items.size),
+                            clip = true,
+                        )
                         .background(TraktTheme.colors.panelCardContainer)
                         .padding(horizontal = 16.dp, vertical = 12.dp),
                 ) {

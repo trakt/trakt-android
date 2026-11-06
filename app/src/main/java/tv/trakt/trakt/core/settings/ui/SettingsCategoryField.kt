@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.settings.ui
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -45,18 +47,23 @@ internal fun SettingsCategoryField(
                 enabled = enabled,
             ),
     ) {
-        Icon(
-            painter = painterResource(category.icon),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier.size(
-                when (category) {
-                    SettingsCategory.Account -> 23.dp
-                    SettingsCategory.Community -> 20.dp
-                    else -> 22.dp
-                },
-            ),
-        )
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.size(24.dp),
+        ) {
+            Icon(
+                painter = painterResource(category.icon),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier.size(
+                    when (category) {
+                        SettingsCategory.Account -> 23.dp
+                        SettingsCategory.Support -> 20.dp
+                        else -> 22.dp
+                    },
+                ),
+            )
+        }
 
         Column(
             verticalArrangement = spacedBy(1.dp),

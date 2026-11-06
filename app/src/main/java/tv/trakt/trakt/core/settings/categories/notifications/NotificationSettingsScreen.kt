@@ -120,7 +120,7 @@ private fun NotificationSettingsContent(
 
             item {
                 SettingsTextField(
-                    text = stringResource(R.string.text_all_settings),
+                    text = stringResource(R.string.link_text_advanced_settings),
                     onClick = {
                         val intent = Intent(ACTION_APP_NOTIFICATION_SETTINGS).apply {
                             putExtra(EXTRA_APP_PACKAGE, context.packageName)
