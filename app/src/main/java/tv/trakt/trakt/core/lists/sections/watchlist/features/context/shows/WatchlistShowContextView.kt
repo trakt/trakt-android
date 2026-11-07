@@ -58,6 +58,7 @@ internal fun WatchlistShowContextView(
     addLocally: Boolean,
     onAddWatched: (Show) -> Unit,
     onRemoveWatchlist: (Show) -> Unit,
+    onListsClick: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -94,6 +95,7 @@ internal fun WatchlistShowContextView(
         onWatchlistClick = {
             confirmRemoveWatchlistSheet = true
         },
+        onListsClick = onListsClick,
     )
 
     RemoveConfirmationSheet(
@@ -151,6 +153,7 @@ private fun WatchlistShowContextViewContent(
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
+    onListsClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -195,6 +198,7 @@ private fun WatchlistShowContextViewContent(
                 state = state,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
+                onListsClick = onListsClick,
             )
         }
     }
@@ -208,6 +212,7 @@ private fun ShowActionButtons(
     state: WatchlistShowContextState,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onListsClick: () -> Unit,
 ) {
     val isReleased = show.rememberReleased()
 
@@ -255,6 +260,19 @@ private fun ShowActionButtons(
             modifier = Modifier
                 .graphicsLayer {
                     translationX = -8.5.dp.toPx()
+                },
+        )
+
+        GhostButton(
+            enabled = !isLoadingOrDone,
+            text = stringResource(R.string.button_text_manage_lists),
+            onClick = onListsClick,
+            iconSize = 20.dp,
+            iconSpace = 16.dp,
+            icon = painterResource(R.drawable.ic_lists_off),
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -6.dp.toPx()
                 },
         )
     }

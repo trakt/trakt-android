@@ -61,6 +61,7 @@ internal fun ShowContextView(
     onRemoveWatchlist: (Show) -> Unit,
     onHideRecommendation: (Show) -> Unit,
     onWhyThis: () -> Unit,
+    onListsClick: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -112,6 +113,7 @@ internal fun ShowContextView(
             confirmHideRecommendationSheet = true
         },
         onWhyThisClick = onWhyThis,
+        onListsClick = onListsClick,
         modifier = modifier,
     )
 
@@ -202,6 +204,7 @@ private fun ShowContextViewContent(
     onWatchlistClick: () -> Unit = {},
     onHideRecommendationClick: () -> Unit = {},
     onWhyThisClick: () -> Unit = {},
+    onListsClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -248,6 +251,7 @@ private fun ShowContextViewContent(
                 onWatchlistClick = onWatchlistClick,
                 onHideRecommendationClick = onHideRecommendationClick,
                 onWhyThisClick = onWhyThisClick,
+                onListsClick = onListsClick,
                 modifier = Modifier
                     .padding(top = 14.dp),
             )
@@ -266,6 +270,7 @@ private fun ShowActionButtons(
     onWatchlistClick: () -> Unit,
     onHideRecommendationClick: () -> Unit,
     onWhyThisClick: () -> Unit,
+    onListsClick: () -> Unit,
 ) {
     val isReleased = show.rememberReleased()
 
@@ -343,6 +348,19 @@ private fun ShowActionButtons(
             modifier = Modifier
                 .graphicsLayer {
                     translationX = -8.dp.toPx()
+                },
+        )
+
+        GhostButton(
+            enabled = !isLoadingOrDone,
+            text = stringResource(R.string.button_text_manage_lists),
+            onClick = onListsClick,
+            iconSize = 20.dp,
+            iconSpace = 16.dp,
+            icon = painterResource(R.drawable.ic_lists_off),
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -6.dp.toPx()
                 },
         )
 
