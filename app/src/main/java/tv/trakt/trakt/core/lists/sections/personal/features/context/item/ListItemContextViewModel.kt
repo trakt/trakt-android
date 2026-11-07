@@ -47,13 +47,21 @@ internal class ListItemContextViewModel(
 ) : ViewModel() {
     private val initialState = ListItemContextState()
 
+    private val isAuthenticatedState = MutableStateFlow(initialState.isAuthenticated)
     private val isWatchedState = MutableStateFlow(initialState.isWatched)
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingListState = MutableStateFlow(initialState.loadingList)
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
+        loadAuthentication()
         loadWatchedStatus()
+    }
+
+    private fun loadAuthentication() {
+        viewModelScope.launch {
+            isAuthenticatedState.update { sessionManager.isAuthenticated() }
+        }
     }
 
     private fun loadWatchedStatus() {
@@ -180,12 +188,14 @@ internal class ListItemContextViewModel(
         loadingWatchedState,
         loadingListState,
         errorState,
+        isAuthenticatedState,
     ) { state ->
         ListItemContextState(
             isWatched = state[0] as Boolean,
             loadingWatched = state[1] as LoadingState,
             loadingList = state[2] as LoadingState,
             error = state[3] as Exception?,
+            isAuthenticated = state[4] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

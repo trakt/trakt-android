@@ -233,7 +233,7 @@ private fun ActionButtons(
             )
         }
 
-        if (item is EpisodeItem || item is SeasonItem) {
+        if (state.isAuthenticated && (item is EpisodeItem || item is SeasonItem)) {
             GhostButton(
                 enabled = !isLoadingOrDone,
                 text = stringResource(R.string.button_text_manage_lists),
@@ -287,7 +287,7 @@ private fun Preview() {
                 rank = 1,
                 listedAt = Instant.now(),
             ),
-            state = ListItemContextState(),
+            state = ListItemContextState(isAuthenticated = true),
             removable = true,
         )
     }
