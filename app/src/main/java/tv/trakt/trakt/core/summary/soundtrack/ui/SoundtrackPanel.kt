@@ -58,7 +58,6 @@ private val CoverPadding = 12.dp
 
 /** Concentric with the panel: panel corner minus the cover padding. */
 private val ArtworkShape = RoundedCornerShape(24.dp - CoverPadding)
-private val SpotifyIconSize = 22.dp
 
 /** Spotify's card reflows after it reports ready, so the cover stays until playback reports in. */
 private val SettleTimeout = 2500.milliseconds
@@ -139,7 +138,12 @@ private fun SoundtrackPanelCover(
             .fillMaxWidth()
             .height(height)
             .background(TraktTheme.colors.customListContainer)
-            .padding(CoverPadding),
+            .padding(
+                start = CoverPadding,
+                top = CoverPadding,
+                end = SegmentHorizontalPadding,
+                bottom = CoverPadding,
+            ),
     ) {
         Box(
             modifier = Modifier
@@ -184,7 +188,7 @@ private fun SoundtrackPanelCover(
             tint = TraktTheme.colors.textSecondary,
             modifier = Modifier
                 .align(Alignment.Top)
-                .size(SpotifyIconSize),
+                .size(ActionSize),
         )
     }
 }

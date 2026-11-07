@@ -23,6 +23,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val SoundtrackListShape = RoundedCornerShape(16.dp)
 internal val SegmentInnerCorner = CornerSize(4.dp)
+internal val SegmentHorizontalPadding = 16.dp
 
 internal fun segmentShape(
     index: Int,
@@ -79,7 +80,7 @@ internal fun SoundtrackSegmentRow(
             .shadow(TraktTheme.colors.shadowSmall, shape)
             .clip(shape)
             .background(TraktTheme.colors.customListContainer)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = SegmentHorizontalPadding),
     )
 }
 

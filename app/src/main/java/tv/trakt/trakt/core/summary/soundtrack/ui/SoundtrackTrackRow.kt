@@ -31,7 +31,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val RowMinHeight = 56.dp
-private val ActionSize = 28.dp
+internal val ActionSize = 28.dp
 private val ActionIconSize = 16.dp
 
 @Composable
