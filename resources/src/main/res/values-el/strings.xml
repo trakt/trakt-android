@@ -1134,10 +1134,10 @@
   <string name="hype_tier_cant_wait">Ανυπομονώ</string>
   <string name="hype_tier_looking_good">Φαίνεται καλό</string>
   <string name="image_alt_comment_gif">GIF συνημμένο στο σχόλιο</string>
-  <string name="image_alt_hype_score">%d% hype για εσάς</string>
+  <string name="image_alt_hype_score">%d%% hype για εσάς</string>
   <string name="image_alt_hype_unknown">Δεν υπάρχει ακόμη βαθμολογία hype για εσάς</string>
   <string name="image_alt_list_preview_poster">Αφίσα για μια καταχώριση στο %s</string>
-  <string name="image_alt_match_score">%d% αντιστοιχία για εσάς</string>
+  <string name="image_alt_match_score">%d%% αντιστοιχία για εσάς</string>
   <string name="image_alt_match_unknown">Δεν υπάρχει ακόμη βαθμολογία αντιστοίχισης για εσάς</string>
   <string name="image_alt_media_poster">Αφίσα του \"%s\"</string>
   <string name="image_alt_person_headshot">Φωτογραφία προσώπου του %s</string>
@@ -1514,7 +1514,7 @@
   <string name="match_label_soulmates">Ψυχές Συγγενείς</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Ταίριασμα:</string>
-  <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
+  <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
   <string name="match_tier_good_fit">Καλό ταίριασμα</string>
   <string name="match_tier_maybe">Ίσως</string>
@@ -1751,7 +1751,7 @@
   <string name="tag_media_sync_webhook_only">Μόνο Webhook</string>
   <string name="tag_mixtape_different_mood">Διαφορετική διάθεση</string>
   <string name="tag_mixtape_kept">Διατηρήθηκε</string>
-  <string name="tag_mixtape_match">%s% αντιστοιχία</string>
+  <string name="tag_mixtape_match">%s%% αντιστοιχία</string>
   <string name="tag_mixtape_tap_details">Πατήστε για λεπτομέρειες</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
   <string name="tag_text_deal_price">Πρώτα 2 έτη</string>
@@ -1976,7 +1976,7 @@
   <string name="text_hype_basis">Δεν έχει κυκλοφορήσει ακόμη. Από τις ταινίες αυτής της σειράς που παρακολουθήσατε και βαθμολογήσατε.</string>
   <string name="text_hype_basis_taste">Δεν έχει κυκλοφορήσει ακόμη. Από όσα παρακολουθήσατε, βαθμολογήσατε και προσθέσατε στα αγαπημένα.</string>
   <string name="text_hype_lists">Από τους επερχόμενους τίτλους στις περισσότερες λίστες</string>
-  <string name="text_hype_lists_badge">Κορυφαίο %s%</string>
+  <string name="text_hype_lists_badge">Κορυφαίο %s%%</string>
   <string name="text_hype_lists_detail">Ο κόσμος συνεχίζει να το προσθέτει στις λίστες του</string>
   <string name="text_hype_out_on">Κυκλοφορεί %s</string>
   <string name="text_hype_series_about">Περίπου στα συνηθισμένα σας</string>
@@ -2065,7 +2065,7 @@
   <string name="text_match_basis_free">Η βαθμολογία σας είναι δωρεάν. Οι λόγοι πίσω από αυτήν είναι λειτουργία VIP.</string>
   <string name="text_match_basis_history">Από όσα παρακολουθήσατε, βαθμολογήσατε και προσθέσατε στα αγαπημένα.</string>
   <string name="text_match_because_liked">Επειδή σας άρεσε</string>
-  <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d% των τίτλων</string>
+  <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d%% των τίτλων</string>
   <string name="text_match_not_enough_data">Δεν υπάρχουν ακόμη αρκετά δεδομένα για να αντιστοιχιστεί σε εσάς.</string>
   <string name="text_match_rating_liked">Άρεσε στο Trakt</string>
   <string name="text_match_rating_loved">Αγαπήθηκε στο Trakt</string>
@@ -3008,7 +3008,7 @@
   <string name="yir_2026_preview_runner_none">Κανένα (όχι υβρίδιο)</string>
   <string name="yir_2026_preview_runner_up">Επιλαχών</string>
   <string name="yir_2026_preview_title">Προεπισκόπηση προφίλ</string>
-  <string name="yir_2026_rarity">Μόνο το %1$d% είναι %2$s</string>
+  <string name="yir_2026_rarity">Μόνο το %1$d%% είναι %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Λίγο %s</string>
   <string name="yir_2026_reel_and_you_are">Και είστε</string>
   <string name="yir_2026_reel_but_mostly">Αλλά κυρίως</string>

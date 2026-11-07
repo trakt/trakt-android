@@ -1134,10 +1134,10 @@
   <string name="hype_tier_cant_wait">Abia aștept</string>
   <string name="hype_tier_looking_good">Arată bine</string>
   <string name="image_alt_comment_gif">GIF atașat comentariului</string>
-  <string name="image_alt_hype_score">%d% hype pentru tine</string>
+  <string name="image_alt_hype_score">%d%% hype pentru tine</string>
   <string name="image_alt_hype_unknown">Niciun scor de hype pentru tine încă</string>
   <string name="image_alt_list_preview_poster">Afiș pentru o intrare în %s</string>
-  <string name="image_alt_match_score">%d% potrivire pentru tine</string>
+  <string name="image_alt_match_score">%d%% potrivire pentru tine</string>
   <string name="image_alt_match_unknown">Niciun scor de potrivire pentru tine încă</string>
   <string name="image_alt_media_poster">Afișul \"%s\"</string>
   <string name="image_alt_person_headshot">Fotografie tip portret cu %s</string>
@@ -1514,7 +1514,7 @@
   <string name="match_label_soulmates">Suflete pereche</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Potrivire:</string>
-  <string name="match_pill_aria_label">%1$d% potrivire, %2$s. Deschide detaliile potrivirii.</string>
+  <string name="match_pill_aria_label">%1$d%% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
   <string name="match_tier_good_fit">Potrivire bună</string>
   <string name="match_tier_maybe">Poate</string>
@@ -1751,7 +1751,7 @@
   <string name="tag_media_sync_webhook_only">Doar webhook</string>
   <string name="tag_mixtape_different_mood">Atmosferă diferită</string>
   <string name="tag_mixtape_kept">Păstrat</string>
-  <string name="tag_mixtape_match">%s% potrivire</string>
+  <string name="tag_mixtape_match">%s%% potrivire</string>
   <string name="tag_mixtape_tap_details">Atinge pentru detalii</string>
   <string name="tag_text_blocked_user">Blocat</string>
   <string name="tag_text_deal_price">Primii 2 ani</string>
@@ -1976,7 +1976,7 @@
   <string name="text_hype_basis">Nu este lansat încă. Bazat pe filmele din această serie pe care le-ai vizionat și evaluat.</string>
   <string name="text_hype_basis_taste">Nu a apărut încă. Bazat pe ce ai vizionat, evaluat și adăugat la favorite.</string>
   <string name="text_hype_lists">Unul dintre cele mai adăugate titluri viitoare în liste</string>
-  <string name="text_hype_lists_badge">Top %s%</string>
+  <string name="text_hype_lists_badge">Top %s%%</string>
   <string name="text_hype_lists_detail">Oamenii continuă să-l adauge în listele lor</string>
   <string name="text_hype_out_on">Lansare pe %s</string>
   <string name="text_hype_series_about">Aproape de evaluarea ta obișnuită</string>
@@ -2065,7 +2065,7 @@
   <string name="text_match_basis_free">Scorul tău este gratuit. Motivele din spatele lui sunt o funcție VIP.</string>
   <string name="text_match_basis_history">Bazat pe ce ai vizionat, evaluat și adăugat la favorite.</string>
   <string name="text_match_because_liked">Deoarece ți-a plăcut</string>
-  <string name="text_match_better_than">O potrivire mai bună pentru tine decât %d% dintre titluri</string>
+  <string name="text_match_better_than">O potrivire mai bună pentru tine decât %d%% dintre titluri</string>
   <string name="text_match_not_enough_data">Nu există suficiente date pentru a stabili o potrivire pentru tine încă.</string>
   <string name="text_match_rating_liked">Apreciat pe Trakt</string>
   <string name="text_match_rating_loved">Adorat pe Trakt</string>
@@ -3008,7 +3008,7 @@
   <string name="yir_2026_preview_runner_none">Niciunul (fără hibrid)</string>
   <string name="yir_2026_preview_runner_up">Locul doi</string>
   <string name="yir_2026_preview_title">Previzualizare persona</string>
-  <string name="yir_2026_rarity">Doar %1$d% sunt %2$s</string>
+  <string name="yir_2026_rarity">Doar %1$d%% sunt %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Puțin %s</string>
   <string name="yir_2026_reel_and_you_are">Și tu ești</string>
   <string name="yir_2026_reel_but_mostly">Dar în mare parte</string>
