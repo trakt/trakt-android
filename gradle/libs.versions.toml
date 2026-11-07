@@ -9,7 +9,7 @@ targetSdk = "37"
 # Libraries
 
 activityCompose = "1.13.0"
-agp = "9.5.0"
+agp = "9.5.1"
 androidxLifecycle = "2.11.0"
 androidxFoundation = "1.12.1"
 appcompat = "1.8.0"
