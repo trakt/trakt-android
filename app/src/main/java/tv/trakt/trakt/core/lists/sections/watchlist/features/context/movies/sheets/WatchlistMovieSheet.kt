@@ -5,10 +5,15 @@ package tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.she
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
@@ -17,6 +22,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.WatchlistMovieContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
@@ -25,8 +32,9 @@ import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun WatchlistMovieSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     movie: Movie?,
     watched: Boolean,
@@ -38,6 +46,7 @@ internal fun WatchlistMovieSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(movie) { nextInt().toString() }
+    var listsTarget by remember { mutableStateOf<ManageListsTarget?>(null) }
 
     if (movie != null) {
         val localSnack = LocalSnackbarState.current
@@ -102,6 +111,15 @@ internal fun WatchlistMovieSheet(
                             }
                         }
                 },
+                onListsClick = {
+                    listsTarget = ManageListsTarget.MovieTarget(movie)
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
                 onError = {
                     sheetScope.run {
                         launch { state.hide() }
@@ -127,4 +145,9 @@ internal fun WatchlistMovieSheet(
             )
         }
     }
+
+    ManageListsSheet(
+        target = listsTarget,
+        onDismiss = { listsTarget = null },
+    )
 }

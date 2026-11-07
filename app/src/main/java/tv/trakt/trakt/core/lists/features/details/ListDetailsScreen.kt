@@ -193,8 +193,7 @@ internal fun ListDetailsScreen(
             when (it) {
                 is MovieItem -> movieContextSheet = it
                 is ShowItem -> showContextSheet = it
-                is EpisodeItem -> itemContextSheet = it
-                is SeasonItem -> Unit
+                is EpisodeItem, is SeasonItem -> itemContextSheet = it
             }
         },
         onModeClick = { mode ->

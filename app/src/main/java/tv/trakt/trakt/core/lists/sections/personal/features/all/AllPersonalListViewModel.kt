@@ -113,8 +113,8 @@ internal class AllPersonalListViewModel(
     }
 
     private fun observeReorder() {
-        dataChanges.observe(Kind.ListOrder)
-            .filter { it.targetId == destination.listId.toTraktId().value }
+        dataChanges.observe(Kind.ListOrder, Kind.Lists)
+            .filter { Kind.Lists in it.kinds || it.targetId == destination.listId.toTraktId().value }
             .debounce(250.milliseconds)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)

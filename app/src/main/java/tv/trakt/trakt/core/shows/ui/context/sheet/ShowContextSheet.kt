@@ -5,11 +5,16 @@ package tv.trakt.trakt.core.shows.ui.context.sheet
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
@@ -20,6 +25,8 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.shows.ui.context.ShowContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
@@ -28,8 +35,9 @@ import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun ShowContextSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     show: Show?,
     showWatched: Boolean = true,
@@ -40,6 +48,7 @@ internal fun ShowContextSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(show) { nextInt().toString() }
+    var listsTarget by remember { mutableStateOf<ManageListsTarget?>(null) }
 
     if (show != null) {
         val localSnack = LocalSnackbarState.current
@@ -101,6 +110,15 @@ internal fun ShowContextSheet(
                     )
                 },
                 onWhyThis = { onWhyThis() },
+                onListsClick = {
+                    listsTarget = ManageListsTarget.ShowTarget(show)
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = null,
+                    )
+                },
                 onError = {
                     sheetScope.dismissWithMessage(
                         state = state,
@@ -115,6 +133,11 @@ internal fun ShowContextSheet(
             )
         }
     }
+
+    ManageListsSheet(
+        target = listsTarget,
+        onDismiss = { listsTarget = null },
+    )
 }
 
 private fun CoroutineScope.dismissWithMessage(

@@ -5,11 +5,16 @@ package tv.trakt.trakt.core.movies.ui.context.sheet
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
@@ -20,6 +25,8 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.movies.ui.context.MovieContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
@@ -28,8 +35,9 @@ import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun MovieContextSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     movie: Movie?,
     showWatched: Boolean = true,
@@ -41,6 +49,7 @@ internal fun MovieContextSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(movie) { nextInt().toString() }
+    var listsTarget by remember { mutableStateOf<ManageListsTarget?>(null) }
 
     if (movie != null) {
         val localSnack = LocalSnackbarState.current
@@ -104,6 +113,15 @@ internal fun MovieContextSheet(
                     )
                 },
                 onWhyThis = { onWhyThis() },
+                onListsClick = {
+                    listsTarget = ManageListsTarget.MovieTarget(movie)
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = onDismiss,
+                        message = null,
+                    )
+                },
                 onCheckIn = {
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
@@ -126,6 +144,11 @@ internal fun MovieContextSheet(
             )
         }
     }
+
+    ManageListsSheet(
+        target = listsTarget,
+        onDismiss = { listsTarget = null },
+    )
 }
 
 private fun CoroutineScope.dismissWithMessage(
