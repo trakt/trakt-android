@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Masquer les vus</string>
   <string name="header_hide_watchlisted">Masquer les éléments de la liste de suivi</string>
   <string name="header_history_analysis">Analyse de l\'historique</string>
+  <string name="header_hype_why">Pourquoi cet engouement</string>
   <string name="header_import">Importation</string>
   <string name="header_import_csv_guidelines">Lignes directrices CSV</string>
   <string name="header_import_example">Exemple</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Correspondance</string>
   <string name="header_match_reasons">Pourquoi cela vous correspond</string>
   <string name="header_match_taste">Vos goûts</string>
+  <string name="header_match_why">Pourquoi cela vous correspond</string>
   <string name="header_media_reactions">Réactions</string>
   <string name="header_media_sync_choose_libraries">Choisir les bibliothèques</string>
   <string name="header_media_sync_choose_server">Choisir un serveur</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Qu\'est-ce que Trakt?</string>
   <string name="hint_jellyfin_server_url">L\'adresse publique que vous utilisez pour ouvrir Jellyfin de l\'extérieur de votre domicile. Trakt y accède par Internet, donc les adresses locales et IP ne fonctionneront pas.</string>
   <string name="hint_media_sync_history_resync">Vous pourrez importer les visionnements passés plus tard à partir du menu Gérer du serveur.</string>
+  <string name="hype_tier_cant_wait">Très hâte</string>
+  <string name="hype_tier_looking_good">Prometteur</string>
   <string name="image_alt_comment_gif">GIF joint au commentaire</string>
+  <string name="image_alt_hype_score">Engouement de %d %% pour vous</string>
+  <string name="image_alt_hype_unknown">Aucun score d\'engouement pour vous pour l\'instant</string>
   <string name="image_alt_list_preview_poster">Affiche d\'une entrée dans %s</string>
   <string name="image_alt_match_score">Correspondance de %d %% pour vous</string>
   <string name="image_alt_match_unknown">Aucun score de correspondance pour vous pour l\'instant</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">Correspondance:</string>
   <string name="match_pill_aria_label">%1$d%% de correspondance, %2$s. Ouvrir les détails de la correspondance.</string>
   <string name="match_pill_loading_aria_label">Calcul du score de compatibilité</string>
+  <string name="match_tier_good_fit">Bonne correspondance</string>
+  <string name="match_tier_maybe">Peut-être</string>
+  <string name="match_tier_not_your_usual">Pas dans vos habitudes</string>
+  <string name="match_tier_top_pick">Meilleur choix</string>
   <string name="mir_banner_body">Votre récapitulatif mensuel est prêt. Voici ce que vous avez regardé en %s.</string>
   <string name="mir_banner_body_short">Votre récapitulatif de %s est prêt.</string>
   <string name="mir_banner_explore">Découvrir</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">Vous n\'avez pas encore d\'historique de visionnage. Ce sera votre première entrée.</string>
   <string name="text_history_sync_filter">ID de synchronisation %d</string>
   <string name="text_history_sync_filter_with_source">ID de synchronisation %1$d (%2$s)</string>
+  <string name="text_hype_basis">Pas encore sorti. D\'après les films de cette série que vous avez regardés et notés.</string>
+  <string name="text_hype_basis_taste">Pas encore sorti. D\'après ce que vous avez regardé, noté et ajouté à vos favoris.</string>
+  <string name="text_hype_lists">L\'un des titres à venir les plus ajoutés aux listes</string>
+  <string name="text_hype_lists_badge">Top %s %%</string>
+  <string name="text_hype_lists_detail">Les gens continuent de l\'ajouter à leurs listes</string>
+  <string name="text_hype_out_on">Sortie le %s</string>
+  <string name="text_hype_series_about">Dans vos notes habituelles</string>
+  <string name="text_hype_series_above">Au-dessus de vos notes habituelles</string>
+  <string name="text_hype_series_below">En dessous de vos notes habituelles</string>
+  <string name="text_hype_series_rated">Films précédents que vous avez notés</string>
   <string name="text_info_blocked">%s a été bloqué.</string>
   <string name="text_info_calendar_feed_copied">Lien iCal copié. Collez-le dans votre application de calendrier pour vous abonner.</string>
   <string name="text_info_cover_removed">L\'image de couverture a été supprimée.</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">Définir le niveau de transparence du fond.</string>
   <string name="text_info_younify_service_linked">Le service de streaming a été lié.</string>
   <string name="text_info_younify_service_unlinked">Le service de streaming a été dissocié.</string>
+  <string name="text_insights_taste">Correspond à vos goûts</string>
   <string name="text_jellyfin_quick_connect_waiting">En attente de votre approbation</string>
   <string name="text_jellyfin_webhook_status_never_received">Rien n\'a encore été reçu. Lancez la lecture d\'un contenu sur Jellyfin pour tester.</string>
   <string name="text_jellyfin_webhook_status_not_vip">Les webhooks sont une fonctionnalité VIP.</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">Trop de tentatives de connexion</string>
   <string name="text_match_basis">D\'après ce que vous avez regardé, noté et ajouté à vos favoris. Rien à noter.</string>
   <string name="text_match_basis_free">Votre score est gratuit. Les raisons derrière celui-ci sont une fonctionnalité VIP.</string>
+  <string name="text_match_basis_history">D\'après ce que vous avez regardé, noté et ajouté à vos favoris.</string>
+  <string name="text_match_because_liked">Parce que vous avez aimé</string>
   <string name="text_match_better_than">Vous correspond mieux que %d %% des titres</string>
   <string name="text_match_not_enough_data">Pas assez de données pour établir une correspondance pour l\'instant.</string>
+  <string name="text_match_rating_liked">Aimé sur Trakt</string>
+  <string name="text_match_rating_loved">Adoré sur Trakt</string>
+  <string name="text_match_rating_votes">D\'après %s notes</string>
+  <string name="text_match_unreleased">Non sorti</string>
   <string name="text_media_sync_feed_required">Activez au moins un paramètre de synchronisation.</string>
   <string name="text_media_sync_library_removal">Désactiver cette option supprimera ce qui a été ajouté à votre collection Trakt. Votre historique de visionnement et vos évaluations resteront.</string>
   <string name="text_media_sync_no_runs">Aucune synchronisation pour l\'instant.</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">Pas encore diffusé</string>
   <string name="text_watch_until_here_episode_count">%d épisodes</string>
   <string name="text_watch_until_here_preview_title">Horodatages visionnés</string>
+  <string name="text_where_to_watch_not_streaming_yet">Pas encore offert en continu</string>
+  <string name="text_where_to_watch_release_date">Sortie le %s</string>
   <string name="text_year_in_review_banner_tagline">Douze personas. L\'une d\'elles, c\'est vous.</string>
   <string name="text_younify_status_broken">Rompu</string>
   <string name="text_younify_status_linked">Lié</string>

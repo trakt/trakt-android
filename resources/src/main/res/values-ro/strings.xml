@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Ascunde vizionate</string>
   <string name="header_hide_watchlisted">Ascunde din lista de vizionare</string>
   <string name="header_history_analysis">Analiza istoricului</string>
+  <string name="header_hype_why">De ce atâta interes</string>
   <string name="header_import">Import</string>
   <string name="header_import_csv_guidelines">Ghiduri CSV</string>
   <string name="header_import_example">Exemplu</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Potrivire</string>
   <string name="header_match_reasons">De ce ți se potrivește</string>
   <string name="header_match_taste">Gusturile tale</string>
+  <string name="header_match_why">De ce ți se potrivește</string>
   <string name="header_media_reactions">Reacții</string>
   <string name="header_media_sync_choose_libraries">Alegeți bibliotecile</string>
   <string name="header_media_sync_choose_server">Alegeți un server</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Ce este Trakt?</string>
   <string name="hint_jellyfin_server_url">Adresa publică pe care o folosești pentru a deschide Jellyfin din afara casei. Trakt o accesează prin internet, așa că adresele locale și IP nu vor funcționa.</string>
   <string name="hint_media_sync_history_resync">Poți importa vizionări anterioare mai târziu din meniul Gestionare al serverului.</string>
+  <string name="hype_tier_cant_wait">Abia aștept</string>
+  <string name="hype_tier_looking_good">Arată bine</string>
   <string name="image_alt_comment_gif">GIF atașat comentariului</string>
+  <string name="image_alt_hype_score">%d%% hype pentru tine</string>
+  <string name="image_alt_hype_unknown">Niciun scor de hype pentru tine încă</string>
   <string name="image_alt_list_preview_poster">Afiș pentru o intrare în %s</string>
   <string name="image_alt_match_score">%d%% potrivire pentru tine</string>
   <string name="image_alt_match_unknown">Niciun scor de potrivire pentru tine încă</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">Potrivire:</string>
   <string name="match_pill_aria_label">%1$d%% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
+  <string name="match_tier_good_fit">Potrivire bună</string>
+  <string name="match_tier_maybe">Poate</string>
+  <string name="match_tier_not_your_usual">Nu e stilul tău obișnuit</string>
+  <string name="match_tier_top_pick">Alegere de top</string>
   <string name="mir_banner_body">Recapitularea ta lunară este gata. Iată ce ai vizionat în %s.</string>
   <string name="mir_banner_body_short">Recapitularea ta din %s este gata.</string>
   <string name="mir_banner_explore">Explorează</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">Nu ai încă un istoric de vizionare. Aceasta va fi prima ta înregistrare.</string>
   <string name="text_history_sync_filter">ID sincronizare %d</string>
   <string name="text_history_sync_filter_with_source">ID sincronizare %1$d (%2$s)</string>
+  <string name="text_hype_basis">Nu este lansat încă. Bazat pe filmele din această serie pe care le-ai vizionat și evaluat.</string>
+  <string name="text_hype_basis_taste">Nu a apărut încă. Bazat pe ce ai vizionat, evaluat și adăugat la favorite.</string>
+  <string name="text_hype_lists">Unul dintre cele mai adăugate titluri viitoare în liste</string>
+  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_detail">Oamenii continuă să-l adauge în listele lor</string>
+  <string name="text_hype_out_on">Lansare pe %s</string>
+  <string name="text_hype_series_about">Aproape de evaluarea ta obișnuită</string>
+  <string name="text_hype_series_above">Peste evaluarea ta obișnuită</string>
+  <string name="text_hype_series_below">Sub evaluarea ta obișnuită</string>
+  <string name="text_hype_series_rated">Filme anterioare evaluate de tine</string>
   <string name="text_info_blocked">%s a fost blocat.</string>
   <string name="text_info_calendar_feed_copied">Linkul iCal a fost copiat. Lipește-l în aplicația ta de calendar pentru a te abona.</string>
   <string name="text_info_cover_removed">Imaginea de copertă a fost ștearsă.</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">Setează nivelul de transparență al fundalului.</string>
   <string name="text_info_younify_service_linked">Serviciul de streaming a fost conectat.</string>
   <string name="text_info_younify_service_unlinked">Serviciul de streaming a fost deconectat.</string>
+  <string name="text_insights_taste">Se potrivește gusturilor tale</string>
   <string name="text_jellyfin_quick_connect_waiting">Așteptăm aprobarea dumneavoastră</string>
   <string name="text_jellyfin_webhook_status_never_received">Nu s-a primit nimic încă. Redă ceva pe Jellyfin pentru a testa.</string>
   <string name="text_jellyfin_webhook_status_not_vip">Webhook-urile sunt o funcționalitate VIP.</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">Prea multe încercări de autentificare</string>
   <string name="text_match_basis">Bazat pe ce ai vizionat, evaluat și adăugat la favorite. Nimic de evaluat.</string>
   <string name="text_match_basis_free">Scorul tău este gratuit. Motivele din spatele lui sunt o funcție VIP.</string>
+  <string name="text_match_basis_history">Bazat pe ce ai vizionat, evaluat și adăugat la favorite.</string>
+  <string name="text_match_because_liked">Deoarece ți-a plăcut</string>
   <string name="text_match_better_than">O potrivire mai bună pentru tine decât %d%% dintre titluri</string>
   <string name="text_match_not_enough_data">Nu există suficiente date pentru a stabili o potrivire pentru tine încă.</string>
+  <string name="text_match_rating_liked">Apreciat pe Trakt</string>
+  <string name="text_match_rating_loved">Adorat pe Trakt</string>
+  <string name="text_match_rating_votes">Din %s evaluări</string>
+  <string name="text_match_unreleased">Nelansat</string>
   <string name="text_media_sync_feed_required">Activați cel puțin o setare de sincronizare.</string>
   <string name="text_media_sync_library_removal">Dezactivarea acestei opțiuni va elimina ce a fost adăugat în colecția dvs. Trakt. Istoricul vizionărilor și evaluările rămân.</string>
   <string name="text_media_sync_no_runs">Nicio sincronizare încă.</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">Nedifuzat încă</string>
   <string name="text_watch_until_here_episode_count">%d episoade</string>
   <string name="text_watch_until_here_preview_title">Marcaje orare vizionate</string>
+  <string name="text_where_to_watch_not_streaming_yet">Nu este disponibil încă pe streaming</string>
+  <string name="text_where_to_watch_release_date">Se lansează pe %s</string>
   <string name="text_year_in_review_banner_tagline">Douăsprezece personalități. Una dintre ele ești tu.</string>
   <string name="text_younify_status_broken">Defect</string>
   <string name="text_younify_status_linked">Conectat</string>

@@ -968,6 +968,7 @@
   <string name="header_hide_watched">視聴済みを非表示</string>
   <string name="header_hide_watchlisted">ウォッチリストに追加済みを非表示</string>
   <string name="header_history_analysis">履歴分析</string>
+  <string name="header_hype_why">注目の理由</string>
   <string name="header_import">インポート</string>
   <string name="header_import_csv_guidelines">CSVガイドライン</string>
   <string name="header_import_example">例</string>
@@ -989,6 +990,7 @@
   <string name="header_match">マッチ</string>
   <string name="header_match_reasons">あなたにマッチする理由</string>
   <string name="header_match_taste">あなたの好み</string>
+  <string name="header_match_why">マッチする理由</string>
   <string name="header_media_reactions">リアクション</string>
   <string name="header_media_sync_choose_libraries">ライブラリを選択</string>
   <string name="header_media_sync_choose_server">サーバーを選択</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Traktとは？</string>
   <string name="hint_jellyfin_server_url">自宅の外からJellyfinを開く際に使用するパブリックアドレスです。Traktはインターネット経由でアクセスするため、ローカルアドレスやIPアドレスは使用できません。</string>
   <string name="hint_media_sync_history_resync">過去の視聴履歴は、後でサーバーの管理メニューからインポートできます。</string>
+  <string name="hype_tier_cant_wait">待ちきれない</string>
+  <string name="hype_tier_looking_good">期待大</string>
   <string name="image_alt_comment_gif">コメントに添付されたGIF</string>
+  <string name="image_alt_hype_score">あなたへの期待度: %d%%</string>
+  <string name="image_alt_hype_unknown">期待度スコアはまだありません</string>
   <string name="image_alt_list_preview_poster">%sのリスト内のエントリのポスター</string>
   <string name="image_alt_match_score">あなたへのマッチ度: %d%%</string>
   <string name="image_alt_match_unknown">マッチスコアはまだありません</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">マッチ:</string>
   <string name="match_pill_aria_label">%1$d%%一致、%2$s。一致の詳細を開く。</string>
   <string name="match_pill_loading_aria_label">マッチスコアを計算中</string>
+  <string name="match_tier_good_fit">好みに合いそう</string>
+  <string name="match_tier_maybe">好みに合うかも</string>
+  <string name="match_tier_not_your_usual">いつもと違う作品</string>
+  <string name="match_tier_top_pick">イチオシ</string>
   <string name="mir_banner_body">あなたの月間まとめができました。%sに視聴したコンテンツはこちらです。</string>
   <string name="mir_banner_body_short">あなたの%sのまとめができました。</string>
   <string name="mir_banner_explore">探索</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">まだ視聴履歴がありません。これが最初の登録になります。</string>
   <string name="text_history_sync_filter">同期ID %d</string>
   <string name="text_history_sync_filter_with_source">同期ID %1$d (%2$s)</string>
+  <string name="text_hype_basis">未公開です。あなたが視聴・評価したこのシリーズの映画に基づいています。</string>
+  <string name="text_hype_basis_taste">まだリリースされていません。視聴、評価、お気に入り登録した作品に基づいています。</string>
+  <string name="text_hype_lists">最も多くリストに追加されている新作</string>
+  <string name="text_hype_lists_badge">上位%s%%</string>
+  <string name="text_hype_lists_detail">多くのユーザーがリストに追加しています</string>
+  <string name="text_hype_out_on">%s リリース</string>
+  <string name="text_hype_series_about">普段どおりの評価</string>
+  <string name="text_hype_series_above">普段の評価より高め</string>
+  <string name="text_hype_series_below">普段の評価より低め</string>
+  <string name="text_hype_series_rated">評価した過去作</string>
   <string name="text_info_blocked">%sをブロックしました。</string>
   <string name="text_info_calendar_feed_copied">iCalリンクがコピーされました。購読するにはカレンダーアプリに貼り付けてください。</string>
   <string name="text_info_cover_removed">カバー画像がクリアされました。</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">背景の透明度を設定します。</string>
   <string name="text_info_younify_service_linked">ストリーミングサービスがリンクされました。</string>
   <string name="text_info_younify_service_unlinked">ストリーミングサービスのリンクが解除されました。</string>
+  <string name="text_insights_taste">あなたの好みにマッチ</string>
   <string name="text_jellyfin_quick_connect_waiting">承認をお待ちしています</string>
   <string name="text_jellyfin_webhook_status_never_received">まだ何も受信していません。テストするにはJellyfinで何か再生してください。</string>
   <string name="text_jellyfin_webhook_status_not_vip">WebhookはVIP機能です。</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">ログイン試行回数が多すぎます</string>
   <string name="text_match_basis">視聴、評価、お気に入り登録した作品に基づいています。評価の必要はありません。</string>
   <string name="text_match_basis_free">スコアの確認は無料です。その理由はVIP限定機能です。</string>
+  <string name="text_match_basis_history">視聴、評価、お気に入り登録した作品に基づいています。</string>
+  <string name="text_match_because_liked">気に入った作品から</string>
   <string name="text_match_better_than">%d%%の作品よりもあなたにマッチしています</string>
   <string name="text_match_not_enough_data">あなたとのマッチ度を判定するためのデータがまだ不足しています。</string>
+  <string name="text_match_rating_liked">Traktで好評</string>
+  <string name="text_match_rating_loved">Traktで大好評</string>
+  <string name="text_match_rating_votes">%s件の評価から</string>
+  <string name="text_match_unreleased">未公開</string>
   <string name="text_media_sync_feed_required">少なくとも1つの同期設定をオンにしてください。</string>
   <string name="text_media_sync_library_removal">これをオフにすると、Traktコレクションに追加されたものが削除されます。視聴履歴と評価は残ります。</string>
   <string name="text_media_sync_no_runs">まだ同期されていません。</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">未放送</string>
   <string name="text_watch_until_here_episode_count">%d話</string>
   <string name="text_watch_until_here_preview_title">視聴日時</string>
+  <string name="text_where_to_watch_not_streaming_yet">まだ配信されていません</string>
+  <string name="text_where_to_watch_release_date">%sに公開</string>
   <string name="text_year_in_review_banner_tagline">12種類のペルソナ。そのうちの1つはあなたです。</string>
   <string name="text_younify_status_broken">破損</string>
   <string name="text_younify_status_linked">リンク済み</string>

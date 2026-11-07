@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Απόκρυψη Παρακολουθήθηκαν</string>
   <string name="header_hide_watchlisted">Απόκρυψη Λίστας Παρακολούθησης</string>
   <string name="header_history_analysis">Ανάλυση Ιστορικού</string>
+  <string name="header_hype_why">Γιατί τόσος ντόρος</string>
   <string name="header_import">Εισαγωγή</string>
   <string name="header_import_csv_guidelines">Οδηγίες CSV</string>
   <string name="header_import_example">Παράδειγμα</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Ταίριασμα</string>
   <string name="header_match_reasons">Γιατί σας ταιριάζει</string>
   <string name="header_match_taste">Το γούστο σας</string>
+  <string name="header_match_why">Γιατί σας ταιριάζει</string>
   <string name="header_media_reactions">Αντιδράσεις</string>
   <string name="header_media_sync_choose_libraries">Επιλέξτε βιβλιοθήκες</string>
   <string name="header_media_sync_choose_server">Επιλέξτε έναν διακομιστή</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Τι είναι το Trakt;</string>
   <string name="hint_jellyfin_server_url">Η δημόσια διεύθυνση που χρησιμοποιείτε για να ανοίγετε το Jellyfin εκτός του σπιτιού σας. Το Trakt συνδέεται σε αυτό μέσω διαδικτύου, επομένως οι τοπικές διευθύνσεις και οι διευθύνσεις IP δεν λειτουργούν.</string>
   <string name="hint_media_sync_history_resync">Μπορείτε να εισαγάγετε παλιές παρακολουθήσεις αργότερα από το μενού Διαχείρισης του διακομιστή.</string>
+  <string name="hype_tier_cant_wait">Ανυπομονώ</string>
+  <string name="hype_tier_looking_good">Φαίνεται καλό</string>
   <string name="image_alt_comment_gif">GIF συνημμένο στο σχόλιο</string>
+  <string name="image_alt_hype_score">%d%% hype για εσάς</string>
+  <string name="image_alt_hype_unknown">Δεν υπάρχει ακόμη βαθμολογία hype για εσάς</string>
   <string name="image_alt_list_preview_poster">Αφίσα για μια καταχώριση στο %s</string>
   <string name="image_alt_match_score">%d%% αντιστοιχία για εσάς</string>
   <string name="image_alt_match_unknown">Δεν υπάρχει ακόμη βαθμολογία αντιστοίχισης για εσάς</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">Ταίριασμα:</string>
   <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
+  <string name="match_tier_good_fit">Καλό ταίριασμα</string>
+  <string name="match_tier_maybe">Ίσως</string>
+  <string name="match_tier_not_your_usual">Όχι στα συνηθισμένα σας</string>
+  <string name="match_tier_top_pick">Κορυφαία επιλογή</string>
   <string name="mir_banner_body">Η μηνιαία ανακεφαλαίωσή σου είναι έτοιμη. Δες τι παρακολούθησες τον %s.</string>
   <string name="mir_banner_body_short">Η ανακεφαλαίωση για τον %s είναι έτοιμη.</string>
   <string name="mir_banner_explore">Εξερεύνηση</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">Δεν έχετε ακόμα ιστορικό παρακολούθησης. Αυτή θα είναι η πρώτη σας καταχώριση.</string>
   <string name="text_history_sync_filter">Αναγνωριστικό συγχρονισμού %d</string>
   <string name="text_history_sync_filter_with_source">Αναγνωριστικό συγχρονισμού %1$d (%2$s)</string>
+  <string name="text_hype_basis">Δεν έχει κυκλοφορήσει ακόμη. Από τις ταινίες αυτής της σειράς που παρακολουθήσατε και βαθμολογήσατε.</string>
+  <string name="text_hype_basis_taste">Δεν έχει κυκλοφορήσει ακόμη. Από όσα παρακολουθήσατε, βαθμολογήσατε και προσθέσατε στα αγαπημένα.</string>
+  <string name="text_hype_lists">Από τους επερχόμενους τίτλους στις περισσότερες λίστες</string>
+  <string name="text_hype_lists_badge">Κορυφαίο %s%%</string>
+  <string name="text_hype_lists_detail">Ο κόσμος συνεχίζει να το προσθέτει στις λίστες του</string>
+  <string name="text_hype_out_on">Κυκλοφορεί %s</string>
+  <string name="text_hype_series_about">Περίπου στα συνηθισμένα σας</string>
+  <string name="text_hype_series_above">Υψηλότερα απ\' ό,τι βαθμολογείτε συνήθως</string>
+  <string name="text_hype_series_below">Χαμηλότερα απ\' ό,τι βαθμολογείτε συνήθως</string>
+  <string name="text_hype_series_rated">Προηγούμενες ταινίες που βαθμολογήσατε</string>
   <string name="text_info_blocked">Ο/Η %s έχει αποκλειστεί.</string>
   <string name="text_info_calendar_feed_copied">Ο σύνδεσμος iCal αντιγράφηκε. Επικολλήστε τον στην εφαρμογή ημερολογίου σας για να εγγραφείτε.</string>
   <string name="text_info_cover_removed">Η εικόνα εξωφύλλου έχει αφαιρεθεί.</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">Ορίστε το επίπεδο διαφάνειας του φόντου.</string>
   <string name="text_info_younify_service_linked">Η υπηρεσία ροής έχει συνδεθεί.</string>
   <string name="text_info_younify_service_unlinked">Η υπηρεσία ροής έχει αποσυνδεθεί.</string>
+  <string name="text_insights_taste">Ταιριάζει στο γούστο σας</string>
   <string name="text_jellyfin_quick_connect_waiting">Αναμονή για την έγκρισή σας</string>
   <string name="text_jellyfin_webhook_status_never_received">Δεν έχει ληφθεί τίποτα ακόμα. Αναπαραγάγετε κάτι στο Jellyfin για να το δοκιμάσετε.</string>
   <string name="text_jellyfin_webhook_status_not_vip">Τα webhooks είναι δυνατότητα VIP.</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">Πάρα πολλές προσπάθειες σύνδεσης</string>
   <string name="text_match_basis">Από όσα παρακολουθήσατε, βαθμολογήσατε και προσθέσατε στα αγαπημένα. Τίποτα προς βαθμολόγηση.</string>
   <string name="text_match_basis_free">Η βαθμολογία σας είναι δωρεάν. Οι λόγοι πίσω από αυτήν είναι λειτουργία VIP.</string>
+  <string name="text_match_basis_history">Από όσα παρακολουθήσατε, βαθμολογήσατε και προσθέσατε στα αγαπημένα.</string>
+  <string name="text_match_because_liked">Επειδή σας άρεσε</string>
   <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d%% των τίτλων</string>
   <string name="text_match_not_enough_data">Δεν υπάρχουν ακόμη αρκετά δεδομένα για να αντιστοιχιστεί σε εσάς.</string>
+  <string name="text_match_rating_liked">Άρεσε στο Trakt</string>
+  <string name="text_match_rating_loved">Αγαπήθηκε στο Trakt</string>
+  <string name="text_match_rating_votes">Από %s βαθμολογίες</string>
+  <string name="text_match_unreleased">Δεν έχει κυκλοφορήσει</string>
   <string name="text_media_sync_feed_required">Ενεργοποιήστε τουλάχιστον μία ρύθμιση συγχρονισμού.</string>
   <string name="text_media_sync_library_removal">Η απενεργοποίηση αυτού αφαιρεί ό,τι έχει προσθέσει στη συλλογή Trakt. Το ιστορικό παρακολούθησης και οι αξιολογήσεις σας παραμένουν.</string>
   <string name="text_media_sync_no_runs">Δεν υπάρχουν συγχρονισμοί ακόμα.</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">Δεν έχει προβληθεί ακόμα</string>
   <string name="text_watch_until_here_episode_count">%d επεισόδια</string>
   <string name="text_watch_until_here_preview_title">Χρονοσφραγίδες παρακολούθησης</string>
+  <string name="text_where_to_watch_not_streaming_yet">Δεν διατίθεται ακόμη σε streaming</string>
+  <string name="text_where_to_watch_release_date">Κυκλοφορεί στις %s</string>
   <string name="text_year_in_review_banner_tagline">Δώδεκα προσωπικότητες. Μία από αυτές είστε εσείς.</string>
   <string name="text_younify_status_broken">Χαλασμένο</string>
   <string name="text_younify_status_linked">Συνδεδεμένο</string>

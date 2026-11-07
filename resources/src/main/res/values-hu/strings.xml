@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Megnézettek elrejtése</string>
   <string name="header_hide_watchlisted">Megnézendő listán lévők elrejtése</string>
   <string name="header_history_analysis">Előzmények elemzése</string>
+  <string name="header_hype_why">A hype oka</string>
   <string name="header_import">Importálás</string>
   <string name="header_import_csv_guidelines">CSV irányelvek</string>
   <string name="header_import_example">Példa</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Egyezés</string>
   <string name="header_match_reasons">Miért illik hozzád</string>
   <string name="header_match_taste">Az ízlésed</string>
+  <string name="header_match_why">Miért illik hozzád</string>
   <string name="header_media_reactions">Reakciók</string>
   <string name="header_media_sync_choose_libraries">Könyvtárak kiválasztása</string>
   <string name="header_media_sync_choose_server">Válassz szervert</string>
@@ -1129,7 +1131,10 @@
   <string name="heading_what_is_trakt">Mi az a Trakt?</string>
   <string name="hint_jellyfin_server_url">A nyilvános cím, amellyel az otthonodon kívülről éred el a Jellyfint. A Trakt az interneten keresztül éri el, így a helyi és IP-címek nem működnek.</string>
   <string name="hint_media_sync_history_resync">Később is importálhatja a korábbi megtekintéseket a szerver Kezelés menüjéből.</string>
+  <string name="hype_tier_cant_wait">Alig várom</string>
+  <string name="hype_tier_looking_good">Ígéretes</string>
   <string name="image_alt_comment_gif">A hozzászóláshoz csatolt GIF</string>
+  <string name="image_alt_hype_unknown">Még nincs hype-pontszámod</string>
   <string name="image_alt_list_preview_poster">Poszter egy bejegyzéshez: „%s”</string>
   <string name="image_alt_match_unknown">Még nincs egyezési pontszámod</string>
   <string name="image_alt_media_poster">„%s” posztere</string>
@@ -1509,6 +1514,10 @@
   <string name="match_pill_anchor">Egyezés:</string>
   <string name="match_pill_aria_label">%1$d%% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
+  <string name="match_tier_good_fit">Jó választás</string>
+  <string name="match_tier_maybe">Talán</string>
+  <string name="match_tier_not_your_usual">Nem a megszokott</string>
+  <string name="match_tier_top_pick">Legjobb választás</string>
   <string name="mir_banner_body">Havi összefoglalód kész. Íme, amit %s hónapban néztél.</string>
   <string name="mir_banner_body_short">%s havi összefoglalód kész.</string>
   <string name="mir_banner_explore">Felfedezés</string>
@@ -1962,6 +1971,16 @@
   <string name="text_history_slot_picker_empty">Még nincs megtekintési előzménye. Ez lesz az első bejegyzése.</string>
   <string name="text_history_sync_filter">Szinkronizálási azonosító: %d</string>
   <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
+  <string name="text_hype_basis">Még nem jelent meg. A sorozat megnézett és értékelt filmjei alapján.</string>
+  <string name="text_hype_basis_taste">Még nem jelent meg. A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján.</string>
+  <string name="text_hype_lists">Az egyik legtöbb listára felvett várható cím</string>
+  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_detail">A felhasználók folyamatosan hozzáadják a listáikhoz</string>
+  <string name="text_hype_out_on">Megjelenés: %s</string>
+  <string name="text_hype_series_about">Körülbelül a megszokott</string>
+  <string name="text_hype_series_above">A szokásos értékelésednél magasabb</string>
+  <string name="text_hype_series_below">A szokásos értékelésednél alacsonyabb</string>
+  <string name="text_hype_series_rated">Korábbi filmek, amiket értékeltél</string>
   <string name="text_info_blocked">%s blokkolva lett.</string>
   <string name="text_info_calendar_feed_copied">iCal link másolva. Illessze be a naptáralkalmazásába a feliratkozáshoz.</string>
   <string name="text_info_cover_removed">Borítókép törölve.</string>
@@ -1998,6 +2017,7 @@
   <string name="text_info_widget_background">Állítsa be a háttér átlátszósági szintjét.</string>
   <string name="text_info_younify_service_linked">A streaming szolgáltatás összekapcsolva.</string>
   <string name="text_info_younify_service_unlinked">A streaming szolgáltatás leválasztva.</string>
+  <string name="text_insights_taste">Illik az ízlésedhez</string>
   <string name="text_jellyfin_quick_connect_waiting">Jóváhagyásra várunk</string>
   <string name="text_jellyfin_webhook_status_never_received">Még nem érkezett semmi. Játssz le valamit a Jellyfinen a teszteléshez.</string>
   <string name="text_jellyfin_webhook_status_not_vip">A webhookok VIP funkciónak számítanak.</string>
@@ -2041,7 +2061,14 @@
   <string name="text_login_rate_limited_title">Túl sok bejelentkezési kísérlet</string>
   <string name="text_match_basis">A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján. Nincs mit értékelni.</string>
   <string name="text_match_basis_free">A pontszámod ingyenes. A mögötte rejlő okok VIP funkciónak számítanak.</string>
+  <string name="text_match_basis_history">A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján.</string>
+  <string name="text_match_because_liked">Mert tetszett neked</string>
+  <string name="text_match_better_than">Jobban illik hozzád a címek %d%%-ánál</string>
   <string name="text_match_not_enough_data">Még nincs elég adat az egyezés megállapításához.</string>
+  <string name="text_match_rating_liked">Kedvelik a Trakton</string>
+  <string name="text_match_rating_loved">Imádják a Trakton</string>
+  <string name="text_match_rating_votes">%s értékelés alapján</string>
+  <string name="text_match_unreleased">Még nem jelent meg</string>
   <string name="text_media_sync_feed_required">Kapcsolj be legalább egy szinkronizálási beállítást.</string>
   <string name="text_media_sync_library_removal">Ennek kikapcsolása eltávolítja azt, amit a Trakt gyűjteményedhez adott. A megtekintési előzmények és értékelések megmaradnak.</string>
   <string name="text_media_sync_no_runs">Még nincsenek szinkronizálások.</string>
@@ -2498,6 +2525,8 @@
   <string name="text_watch_state_not_aired">Még nem került adásba</string>
   <string name="text_watch_until_here_episode_count">%d epizód</string>
   <string name="text_watch_until_here_preview_title">Megnézés időpontjai</string>
+  <string name="text_where_to_watch_not_streaming_yet">Még nem streamelhető</string>
+  <string name="text_where_to_watch_release_date">Megjelenés: %s</string>
   <string name="text_year_in_review_banner_tagline">Tizenkét személyiség. Egyikük te vagy.</string>
   <string name="text_younify_status_broken">Hibás</string>
   <string name="text_younify_status_linked">Összekapcsolva</string>

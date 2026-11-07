@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Skjul sett</string>
   <string name="header_hide_watchlisted">Skjul på ønskeliste</string>
   <string name="header_history_analysis">Historieanalyse</string>
+  <string name="header_hype_why">Hvorfor hypen</string>
   <string name="header_import">Import</string>
   <string name="header_import_csv_guidelines">CSV-retningslinjer</string>
   <string name="header_import_example">Eksempel</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Samsvar</string>
   <string name="header_match_reasons">Hvorfor den passer for deg</string>
   <string name="header_match_taste">Din smak</string>
+  <string name="header_match_why">Hvorfor den passer</string>
   <string name="header_media_reactions">Reaksjoner</string>
   <string name="header_media_sync_choose_libraries">Velg biblioteker</string>
   <string name="header_media_sync_choose_server">Velg en server</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Hva er Trakt?</string>
   <string name="hint_jellyfin_server_url">Den offentlige adressen du bruker til å åpne Jellyfin utenfor hjemmet ditt. Trakt kobler til over internett, så lokale adresser og IP-adresser fungerer ikke.</string>
   <string name="hint_media_sync_history_resync">Du kan importere tidligere avspillinger senere fra serverens administrasjonsmeny.</string>
+  <string name="hype_tier_cant_wait">Kan ikke vente</string>
+  <string name="hype_tier_looking_good">Ser lovende ut</string>
   <string name="image_alt_comment_gif">GIF vedlagt kommentaren</string>
+  <string name="image_alt_hype_score">%d %% hype for deg</string>
+  <string name="image_alt_hype_unknown">Ingen hypescore for deg ennå</string>
   <string name="image_alt_list_preview_poster">Plakat for et element i %s</string>
   <string name="image_alt_match_score">%d %% match for deg</string>
   <string name="image_alt_match_unknown">Ingen matchscore for deg ennå</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">Treff:</string>
   <string name="match_pill_aria_label">%1$d%% match, %2$s. Åpne matchdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beregner treffscore</string>
+  <string name="match_tier_good_fit">God match</string>
+  <string name="match_tier_maybe">Kanskje</string>
+  <string name="match_tier_not_your_usual">Uvanlig for deg</string>
+  <string name="match_tier_top_pick">Toppvalg</string>
   <string name="mir_banner_body">Din månedlige oppsummering er klar. Her er hva du så i %s.</string>
   <string name="mir_banner_body_short">Din %s oppsummering er klar.</string>
   <string name="mir_banner_explore">Utforsk</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">Du har ingen seerhistorikk ennå. Dette blir ditt første innlegg.</string>
   <string name="text_history_sync_filter">Synkroniserings-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
+  <string name="text_hype_basis">Ikke ute ennå. Basert på filmene i denne serien du har sett og vurdert.</string>
+  <string name="text_hype_basis_taste">Ikke ute ennå. Basert på det du har sett, vurdert og favorittmarkert.</string>
+  <string name="text_hype_lists">En av de mest oppførte kommende titlene</string>
+  <string name="text_hype_lists_badge">Topp %s%%</string>
+  <string name="text_hype_lists_detail">Folk fortsetter å legge den til på listene sine</string>
+  <string name="text_hype_out_on">Ute %s</string>
+  <string name="text_hype_series_about">Omtrent som vanlig</string>
+  <string name="text_hype_series_above">Høyere enn du vanligvis vurderer</string>
+  <string name="text_hype_series_below">Lavere enn du vanligvis vurderer</string>
+  <string name="text_hype_series_rated">Tidligere filmer du har vurdert</string>
   <string name="text_info_blocked">%s er blokkert.</string>
   <string name="text_info_calendar_feed_copied">iCal-lenke kopiert. Lim den inn i kalenderappen din for å abonnere.</string>
   <string name="text_info_cover_removed">Forsidebilde er fjernet.</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">Angi gjennomsiktighetsnivå for bakgrunn.</string>
   <string name="text_info_younify_service_linked">Strømmetjenesten er koblet.</string>
   <string name="text_info_younify_service_unlinked">Strømmetjenesten er frakoblet.</string>
+  <string name="text_insights_taste">Passer din smak</string>
   <string name="text_jellyfin_quick_connect_waiting">Venter på at du skal godkjenne det</string>
   <string name="text_jellyfin_webhook_status_never_received">Ingenting mottatt ennå. Spill av noe på Jellyfin for å teste det.</string>
   <string name="text_jellyfin_webhook_status_not_vip">Webhooks er en VIP-funksjon.</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">For mange påloggingsforsøk</string>
   <string name="text_match_basis">Basert på det du har sett, vurdert og favorittmarkert. Ingenting å vurdere.</string>
   <string name="text_match_basis_free">Matchscoren din er gratis. Begrunnelsene bak er en VIP-funksjon.</string>
+  <string name="text_match_basis_history">Basert på det du har sett, vurdert og favorittmarkert.</string>
+  <string name="text_match_because_liked">Fordi du likte</string>
   <string name="text_match_better_than">Bedre match for deg enn %d %% av titlene</string>
   <string name="text_match_not_enough_data">Ikke nok data til å matche denne med deg ennå.</string>
+  <string name="text_match_rating_liked">Likt på Trakt</string>
+  <string name="text_match_rating_loved">Elsket på Trakt</string>
+  <string name="text_match_rating_votes">Fra %s vurderinger</string>
+  <string name="text_match_unreleased">Ikke utgitt</string>
   <string name="text_media_sync_feed_required">Slå på minst én synkroniseringsinnstilling.</string>
   <string name="text_media_sync_library_removal">Hvis du slår av dette, fjernes det som ble lagt til i Trakt-samlingen din. Sehistorikken og vurderingene dine beholdes.</string>
   <string name="text_media_sync_no_runs">Ingen synkroniseringer ennå.</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">Ikke sendt ennå</string>
   <string name="text_watch_until_here_episode_count">%d episoder</string>
   <string name="text_watch_until_here_preview_title">Sett tidsstempler</string>
+  <string name="text_where_to_watch_not_streaming_yet">Strømmes ikke ennå</string>
+  <string name="text_where_to_watch_release_date">Slippes %s</string>
   <string name="text_year_in_review_banner_tagline">Tolv personligheter. Én av dem er deg.</string>
   <string name="text_younify_status_broken">Ødelagt</string>
   <string name="text_younify_status_linked">Koblet</string>

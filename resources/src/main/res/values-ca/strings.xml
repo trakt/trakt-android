@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Oculta vists</string>
   <string name="header_hide_watchlisted">Oculta a la llista de seguiment</string>
   <string name="header_history_analysis">Anàlisi de l\'historial</string>
+  <string name="header_hype_why">Per què tanta expectació</string>
   <string name="header_import">Importar</string>
   <string name="header_import_csv_guidelines">Directrius CSV</string>
   <string name="header_import_example">Exemple</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Coincidència</string>
   <string name="header_match_reasons">Per què encaixa amb tu</string>
   <string name="header_match_taste">El teu gust</string>
+  <string name="header_match_why">Per què encaixa</string>
   <string name="header_media_reactions">Reaccions</string>
   <string name="header_media_sync_choose_libraries">Tria biblioteques</string>
   <string name="header_media_sync_choose_server">Tria un servidor</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Què és Trakt?</string>
   <string name="hint_jellyfin_server_url">L\'adreça pública que utilitzes per obrir Jellyfin des de fora de casa. Trakt hi accedeix a través d\'internet, de manera que les adreces locals i IP no funcionaran.</string>
   <string name="hint_media_sync_history_resync">Podeu importar visualitzacions passades més tard des del menú Gestionar del servidor.</string>
+  <string name="hype_tier_cant_wait">Quines ganes</string>
+  <string name="hype_tier_looking_good">Pinta bé</string>
   <string name="image_alt_comment_gif">GIF adjunt al comentari</string>
+  <string name="image_alt_hype_score">%d%% d\'expectació per a tu</string>
+  <string name="image_alt_hype_unknown">Encara no hi ha cap puntuació d\'expectació per a tu</string>
   <string name="image_alt_list_preview_poster">Pòster d\'una entrada a %s</string>
   <string name="image_alt_match_score">%d%% de coincidència per a tu</string>
   <string name="image_alt_match_unknown">Encara no hi ha cap puntuació de coincidència per a tu</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">Coincidència:</string>
   <string name="match_pill_aria_label">%1$d%% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
+  <string name="match_tier_good_fit">Bona tria</string>
+  <string name="match_tier_maybe">Potser</string>
+  <string name="match_tier_not_your_usual">Fora del teu estil</string>
+  <string name="match_tier_top_pick">Tria destacada</string>
   <string name="mir_banner_body">El teu resum mensual està llest. Aquí teniu el que vau veure a %s.</string>
   <string name="mir_banner_body_short">El teu resum de %s està llest.</string>
   <string name="mir_banner_explore">Explorar</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">Encara no teniu cap historial de reproducció. Aquesta serà la vostra primera entrada.</string>
   <string name="text_history_sync_filter">ID de sincronització %d</string>
   <string name="text_history_sync_filter_with_source">ID de sincronització %1$d (%2$s)</string>
+  <string name="text_hype_basis">Encara no s\'ha estrenat. A partir de les pel·lícules d\'aquesta saga que has vist i valorat.</string>
+  <string name="text_hype_basis_taste">Encara no ha sortit. A partir del que has vist, valorat i afegit a preferits.</string>
+  <string name="text_hype_lists">Un dels propers títols més afegits a llistes</string>
+  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_detail">La gent el continua afegint a les seves llistes</string>
+  <string name="text_hype_out_on">Estrena el %s</string>
+  <string name="text_hype_series_about">Al voltant del que sols valorar</string>
+  <string name="text_hype_series_above">Més alt del que sols valorar</string>
+  <string name="text_hype_series_below">Més baix del que sols valorar</string>
+  <string name="text_hype_series_rated">Pel·lícules anteriors que has valorat</string>
   <string name="text_info_blocked">%s ha estat bloquejat.</string>
   <string name="text_info_calendar_feed_copied">Enllaç iCal copiat. Enganxa\'l a la teva aplicació de calendari per subscriure\'t.</string>
   <string name="text_info_cover_removed">La imatge de portada s\'ha esborrat.</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">Estableix el nivell de transparència del fons.</string>
   <string name="text_info_younify_service_linked">El servei de streaming s\'ha vinculat.</string>
   <string name="text_info_younify_service_unlinked">El servei de streaming s\'ha desvinculat.</string>
+  <string name="text_insights_taste">Encaixa amb el teu gust</string>
   <string name="text_jellyfin_quick_connect_waiting">Esperant la teva aprovació</string>
   <string name="text_jellyfin_webhook_status_never_received">Encara no s\'ha rebut res. Reprodueix alguna cosa a Jellyfin per provar-ho.</string>
   <string name="text_jellyfin_webhook_status_not_vip">Els webhooks són una funció VIP.</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">Massa intents d\'iniciar sessió</string>
   <string name="text_match_basis">A partir del que has vist, valorat i afegit a preferits. Res per valorar.</string>
   <string name="text_match_basis_free">La teva puntuació és gratuïta. Els motius que hi ha al darrere són una funció VIP.</string>
+  <string name="text_match_basis_history">A partir del que has vist, valorat i afegit a preferits.</string>
+  <string name="text_match_because_liked">Perquè t\'ha agradat</string>
   <string name="text_match_better_than">Encaixa millor amb tu que el %d%% dels títols</string>
   <string name="text_match_not_enough_data">Encara no hi ha prou dades per saber si encaixa amb tu.</string>
+  <string name="text_match_rating_liked">Agrada a Trakt</string>
+  <string name="text_match_rating_loved">Encanta a Trakt</string>
+  <string name="text_match_rating_votes">De %s valoracions</string>
+  <string name="text_match_unreleased">Sense estrenar</string>
   <string name="text_media_sync_feed_required">Activa almenys una configuració de sincronització.</string>
   <string name="text_media_sync_library_removal">Si desactives això, s\'eliminarà el que s\'hagi afegit a la teva col·lecció de Trakt. El teu historial de reproduccions i valoracions es mantenen.</string>
   <string name="text_media_sync_no_runs">Encara no hi ha sincronitzacions.</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">Encara no s\'ha emès</string>
   <string name="text_watch_until_here_episode_count">%d episodis</string>
   <string name="text_watch_until_here_preview_title">Marques de temps visualitzades</string>
+  <string name="text_where_to_watch_not_streaming_yet">Encara no disponible en streaming</string>
+  <string name="text_where_to_watch_release_date">S\'estrena el %s</string>
   <string name="text_year_in_review_banner_tagline">Dotze personalitats. Una d\'elles ets tu.</string>
   <string name="text_younify_status_broken">Trencat</string>
   <string name="text_younify_status_linked">Vinculat</string>

@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Sembunyikan Ditonton</string>
   <string name="header_hide_watchlisted">Sembunyikan di Daftar Tontonan</string>
   <string name="header_history_analysis">Analisis Riwayat</string>
+  <string name="header_hype_why">Mengapa heboh</string>
   <string name="header_import">Impor</string>
   <string name="header_import_csv_guidelines">Panduan CSV</string>
   <string name="header_import_example">Contoh</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Cocokkan</string>
   <string name="header_match_reasons">Mengapa ini cocok untuk Anda</string>
   <string name="header_match_taste">Selera Anda</string>
+  <string name="header_match_why">Mengapa ini cocok</string>
   <string name="header_media_reactions">Reaksi</string>
   <string name="header_media_sync_choose_libraries">Pilih pustaka</string>
   <string name="header_media_sync_choose_server">Pilih server</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Apa itu Trakt?</string>
   <string name="hint_jellyfin_server_url">Alamat publik yang Anda gunakan untuk membuka Jellyfin dari luar rumah. Trakt menjangkaunya melalui internet, jadi alamat lokal dan IP tidak akan berfungsi.</string>
   <string name="hint_media_sync_history_resync">Anda dapat mengimpor riwayat tontonan nanti dari menu Kelola server.</string>
+  <string name="hype_tier_cant_wait">Tak sabar</string>
+  <string name="hype_tier_looking_good">Tampak menarik</string>
   <string name="image_alt_comment_gif">GIF terlampir pada komentar</string>
+  <string name="image_alt_hype_score">%d%% antusiasme untuk Anda</string>
+  <string name="image_alt_hype_unknown">Belum ada skor antusiasme untuk Anda</string>
   <string name="image_alt_list_preview_poster">Poster untuk entri di %s</string>
   <string name="image_alt_match_score">%d%% cocok untuk Anda</string>
   <string name="image_alt_match_unknown">Belum ada skor kecocokan untuk Anda</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">Cocok:</string>
   <string name="match_pill_aria_label">Kecocokan %1$d%%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
+  <string name="match_tier_good_fit">Cocok</string>
+  <string name="match_tier_maybe">Mungkin</string>
+  <string name="match_tier_not_your_usual">Di luar kebiasaan</string>
+  <string name="match_tier_top_pick">Pilihan utama</string>
   <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
   <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
   <string name="mir_banner_explore">Jelajahi</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">Anda belum memiliki riwayat tontonan. Ini akan menjadi entri pertama Anda.</string>
   <string name="text_history_sync_filter">ID Sinkronisasi %d</string>
   <string name="text_history_sync_filter_with_source">ID Sinkronisasi %1$d (%2$s)</string>
+  <string name="text_hype_basis">Belum dirilis. Berdasarkan film dalam seri ini yang Anda tonton dan nilai.</string>
+  <string name="text_hype_basis_taste">Belum dirilis. Berdasarkan apa yang Anda tonton, nilai, dan favoritkan.</string>
+  <string name="text_hype_lists">Salah satu judul mendatang yang paling banyak masuk daftar</string>
+  <string name="text_hype_lists_badge">%s%% Teratas</string>
+  <string name="text_hype_lists_detail">Orang-orang terus menambahkannya ke daftar mereka</string>
+  <string name="text_hype_out_on">Rilis %s</string>
+  <string name="text_hype_series_about">Sekitar nilai biasa Anda</string>
+  <string name="text_hype_series_above">Lebih tinggi dari yang biasa Anda nilai</string>
+  <string name="text_hype_series_below">Lebih rendah dari yang biasa Anda nilai</string>
+  <string name="text_hype_series_rated">Film sebelumnya yang Anda nilai</string>
   <string name="text_info_blocked">%s telah diblokir.</string>
   <string name="text_info_calendar_feed_copied">Tautan iCal disalin. Tempelkan ke aplikasi kalender Anda untuk berlangganan.</string>
   <string name="text_info_cover_removed">Gambar sampul telah dihapus.</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">Atur tingkat transparansi latar belakang.</string>
   <string name="text_info_younify_service_linked">Layanan streaming telah ditautkan.</string>
   <string name="text_info_younify_service_unlinked">Layanan streaming telah dilepas tautan.</string>
+  <string name="text_insights_taste">Sesuai selera Anda</string>
   <string name="text_jellyfin_quick_connect_waiting">Menunggu Anda menyetujuinya</string>
   <string name="text_jellyfin_webhook_status_never_received">Belum ada yang diterima. Putar sesuatu di Jellyfin untuk mengujinya.</string>
   <string name="text_jellyfin_webhook_status_not_vip">Webhook adalah fitur VIP.</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">Terlalu banyak percobaan masuk</string>
   <string name="text_match_basis">Berdasarkan apa yang Anda tonton, nilai, dan favoritkan. Tidak ada yang perlu dinilai.</string>
   <string name="text_match_basis_free">Skor Anda gratis. Alasan di baliknya adalah fitur VIP.</string>
+  <string name="text_match_basis_history">Berdasarkan apa yang Anda tonton, nilai, dan favoritkan.</string>
+  <string name="text_match_because_liked">Karena Anda menyukai</string>
   <string name="text_match_better_than">Lebih cocok untuk Anda daripada %d%% judul lainnya</string>
   <string name="text_match_not_enough_data">Belum cukup data untuk mencocokkan ini dengan Anda.</string>
+  <string name="text_match_rating_liked">Disukai di Trakt</string>
+  <string name="text_match_rating_loved">Sangat disukai di Trakt</string>
+  <string name="text_match_rating_votes">Dari %s penilaian</string>
+  <string name="text_match_unreleased">Belum dirilis</string>
   <string name="text_media_sync_feed_required">Aktifkan setidaknya satu pengaturan sinkronisasi.</string>
   <string name="text_media_sync_library_removal">Mematikan ini akan menghapus apa yang ditambahkan ke koleksi Trakt Anda. Riwayat tontonan dan peringkat Anda akan tetap ada.</string>
   <string name="text_media_sync_no_runs">Belum ada sinkronisasi.</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">Belum tayang</string>
   <string name="text_watch_until_here_episode_count">%d episode</string>
   <string name="text_watch_until_here_preview_title">Waktu Tonton</string>
+  <string name="text_where_to_watch_not_streaming_yet">Belum tersedia untuk streaming</string>
+  <string name="text_where_to_watch_release_date">Rilis %s</string>
   <string name="text_year_in_review_banner_tagline">Dua belas persona. Salah satunya adalah Anda.</string>
   <string name="text_younify_status_broken">Rusak</string>
   <string name="text_younify_status_linked">Tertaut</string>

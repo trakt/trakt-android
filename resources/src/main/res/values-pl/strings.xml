@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Ukryj obejrzane</string>
   <string name="header_hide_watchlisted">Ukryj obserwowane</string>
   <string name="header_history_analysis">Analiza Historii</string>
+  <string name="header_hype_why">Skąd ten szum</string>
   <string name="header_import">Import</string>
   <string name="header_import_csv_guidelines">Instrukcje CSV</string>
   <string name="header_import_example">Przykład</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Dopasowanie</string>
   <string name="header_match_reasons">Dlaczego to do Ciebie pasuje</string>
   <string name="header_match_taste">Twój gust</string>
+  <string name="header_match_why">Dlaczego pasuje</string>
   <string name="header_media_reactions">Reakcje</string>
   <string name="header_media_sync_choose_libraries">Wybierz biblioteki</string>
   <string name="header_media_sync_choose_server">Wybierz serwer</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Czym jest Trakt?</string>
   <string name="hint_jellyfin_server_url">Publiczny adres używany do otwierania Jellyfin poza domem. Trakt łączy się z nim przez internet, więc adresy lokalne i IP nie zadziałają.</string>
   <string name="hint_media_sync_history_resync">Możesz zaimportować wcześniejsze seanse później z menu Zarządzaj serwera.</string>
+  <string name="hype_tier_cant_wait">Nie mogę się doczekać</string>
+  <string name="hype_tier_looking_good">Zapowiada się dobrze</string>
   <string name="image_alt_comment_gif">GIF dołączony do komentarza</string>
+  <string name="image_alt_hype_score">%d%% oczekiwania dla Ciebie</string>
+  <string name="image_alt_hype_unknown">Brak jeszcze wyniku oczekiwania dla Ciebie</string>
   <string name="image_alt_list_preview_poster">Plakat dla %s</string>
   <string name="image_alt_match_score">%d%% dopasowania do Ciebie</string>
   <string name="image_alt_match_unknown">Brak jeszcze wyniku dopasowania dla Ciebie</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">Dopasowanie:</string>
   <string name="match_pill_aria_label">%1$d%% dopasowania, %2$s. Otwórz szczegóły dopasowania.</string>
   <string name="match_pill_loading_aria_label">Obliczanie wyniku dopasowania</string>
+  <string name="match_tier_good_fit">Dobry wybór</string>
+  <string name="match_tier_maybe">Może Ci się spodobać</string>
+  <string name="match_tier_not_your_usual">Poza Twoim stylem</string>
+  <string name="match_tier_top_pick">Świetny wybór</string>
   <string name="mir_banner_body">Twoje miesięczne podsumowanie jest gotowe. Oto, co obejrzałeś(-aś) w %s.</string>
   <string name="mir_banner_body_short">Twoje podsumowanie z %s jest gotowe.</string>
   <string name="mir_banner_explore">Odkryj</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">Nie masz jeszcze żadnej historii oglądania. To będzie Twój pierwszy wpis.</string>
   <string name="text_history_sync_filter">Identyfikator synchronizacji %d</string>
   <string name="text_history_sync_filter_with_source">Identyfikator synchronizacji %1$d (%2$s)</string>
+  <string name="text_hype_basis">Jeszcze niewydane. Na podstawie obejrzanych i ocenionych filmów z tej serii.</string>
+  <string name="text_hype_basis_taste">Jeszcze przed premierą. Na podstawie tego, co obejrzano, oceniono i dodano do ulubionych.</string>
+  <string name="text_hype_lists">Jeden z najczęściej dodawanych na listy nadchodzących tytułów</string>
+  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_detail">Użytkownicy stale dodają go do swoich list</string>
+  <string name="text_hype_out_on">Premiera: %s</string>
+  <string name="text_hype_series_about">Na Twoim typowym poziomie</string>
+  <string name="text_hype_series_above">Wyżej niż zwykle oceniasz</string>
+  <string name="text_hype_series_below">Niżej niż zwykle oceniasz</string>
+  <string name="text_hype_series_rated">Wcześniejsze ocenione przez Ciebie filmy</string>
   <string name="text_info_blocked">%s został zablokowany.</string>
   <string name="text_info_calendar_feed_copied">Skopiowano link iCal. Wklej go do swojej aplikacji kalendarza, aby zasubskrybować.</string>
   <string name="text_info_cover_removed">Obraz tła został zresetowany.</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">Ustaw poziom przezroczystości tła.</string>
   <string name="text_info_younify_service_linked">Serwis streamingowy został połączony.</string>
   <string name="text_info_younify_service_unlinked">Serwis streamingowy został odłączony.</string>
+  <string name="text_insights_taste">W Twoim guście</string>
   <string name="text_jellyfin_quick_connect_waiting">Czekam na Twoje zatwierdzenie</string>
   <string name="text_jellyfin_webhook_status_never_received">Jeszcze nic nie odebrano. Odtwórz coś w Jellyfin, aby to przetestować.</string>
   <string name="text_jellyfin_webhook_status_not_vip">Webhooki to funkcja VIP.</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">Zbyt wiele prób logowania</string>
   <string name="text_match_basis">Na podstawie tego, co obejrzałeś, oceniłeś i dodałeś do ulubionych. Nic do oceny.</string>
   <string name="text_match_basis_free">Twój wynik jest bezpłatny. Uzasadnienie to funkcja VIP.</string>
+  <string name="text_match_basis_history">Na podstawie tego, co obejrzano, oceniono i dodano do ulubionych.</string>
+  <string name="text_match_because_liked">Ponieważ spodobał Ci się</string>
   <string name="text_match_better_than">Lepsze dopasowanie dla Ciebie niż %d%% tytułów</string>
   <string name="text_match_not_enough_data">Za mało danych, aby dopasować to do Ciebie.</string>
+  <string name="text_match_rating_liked">Lubiany na Trakt</string>
+  <string name="text_match_rating_loved">Uwielbiany na Trakt</string>
+  <string name="text_match_rating_votes">Na podstawie %s ocen</string>
+  <string name="text_match_unreleased">Przed premierą</string>
   <string name="text_media_sync_feed_required">Włącz przynajmniej jedno ustawienie synchronizacji.</string>
   <string name="text_media_sync_library_removal">Wyłączenie tej opcji usunie to, co zostało dodane do Twojej kolekcji Trakt. Twoja historia oglądania i oceny pozostaną.</string>
   <string name="text_media_sync_no_runs">Brak synchronizacji.</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">Jeszcze niewyemitowane</string>
   <string name="text_watch_until_here_episode_count">%d odcinków</string>
   <string name="text_watch_until_here_preview_title">Sygnatury czasowe oglądania</string>
+  <string name="text_where_to_watch_not_streaming_yet">Jeszcze niedostępne w streamingu</string>
+  <string name="text_where_to_watch_release_date">Premiera %s</string>
   <string name="text_year_in_review_banner_tagline">Dwanaście osobowości. Jedna z nich to Ty.</string>
   <string name="text_younify_status_broken">Uszkodzony</string>
   <string name="text_younify_status_linked">Połączono</string>

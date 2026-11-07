@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Скрыть просмотренные</string>
   <string name="header_hide_watchlisted">Скрыть из списка просмотра</string>
   <string name="header_history_analysis">Анализ истории</string>
+  <string name="header_hype_why">Почему такой ажиотаж</string>
   <string name="header_import">Импорт</string>
   <string name="header_import_csv_guidelines">Рекомендации по CSV</string>
   <string name="header_import_example">Пример</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Совпадение</string>
   <string name="header_match_reasons">Почему это вам подходит</string>
   <string name="header_match_taste">Ваш вкус</string>
+  <string name="header_match_why">Почему вам подходит</string>
   <string name="header_media_reactions">Реакции</string>
   <string name="header_media_sync_choose_libraries">Выберите библиотеки</string>
   <string name="header_media_sync_choose_server">Выберите сервер</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Что такое Trakt?</string>
   <string name="hint_jellyfin_server_url">Публичный адрес, который вы используете для входа в Jellyfin вне дома. Trakt подключается к нему через интернет, поэтому локальные и IP-адреса не подойдут.</string>
   <string name="hint_media_sync_history_resync">Вы можете импортировать прошлые просмотры позже из меню «Управление» сервера.</string>
+  <string name="hype_tier_cant_wait">Жду с нетерпением</string>
+  <string name="hype_tier_looking_good">Многообещающе</string>
   <string name="image_alt_comment_gif">GIF прикреплен к комментарию</string>
+  <string name="image_alt_hype_score">Уровень ожидания для вас: %d%%</string>
+  <string name="image_alt_hype_unknown">Для вас пока нет оценки ожидания</string>
   <string name="image_alt_list_preview_poster">Постер для записи в %s</string>
   <string name="image_alt_match_score">Совпадение для вас: %d%%</string>
   <string name="image_alt_match_unknown">Пока нет оценки совпадения</string>
@@ -1510,6 +1516,10 @@
   <string name="match_pill_anchor">Совпадение:</string>
   <string name="match_pill_aria_label">%1$d%% совпадения, %2$s. Открыть подробности совпадения.</string>
   <string name="match_pill_loading_aria_label">Вычисляется оценка соответствия</string>
+  <string name="match_tier_good_fit">Хороший выбор</string>
+  <string name="match_tier_maybe">Возможно</string>
+  <string name="match_tier_not_your_usual">Не в вашем вкусе</string>
+  <string name="match_tier_top_pick">Лучший выбор</string>
   <string name="mir_banner_body">Ваш ежемесячный обзор готов. Вот что вы посмотрели в %s.</string>
   <string name="mir_banner_body_short">Ваш обзор за %s готов.</string>
   <string name="mir_banner_explore">Изучить</string>
@@ -1963,6 +1973,16 @@
   <string name="text_history_slot_picker_empty">У вас еще нет истории просмотров. Это будет ваша первая запись.</string>
   <string name="text_history_sync_filter">Идентификатор синхронизации %d</string>
   <string name="text_history_sync_filter_with_source">Идентификатор синхронизации %1$d (%2$s)</string>
+  <string name="text_hype_basis">Еще не вышло. На основе просмотренных и оцененных вами фильмов этой серии.</string>
+  <string name="text_hype_basis_taste">Ещё не вышло. На основе того, что вы смотрели, оценивали и добавляли в избранное.</string>
+  <string name="text_hype_lists">Один из самых добавляемых в списки будущих релизов</string>
+  <string name="text_hype_lists_badge">Топ %s%%</string>
+  <string name="text_hype_lists_detail">Пользователи продолжают добавлять его в списки</string>
+  <string name="text_hype_out_on">Выходит %s</string>
+  <string name="text_hype_series_about">На уровне вашей обычной оценки</string>
+  <string name="text_hype_series_above">Выше вашей обычной оценки</string>
+  <string name="text_hype_series_below">Ниже вашей обычной оценки</string>
+  <string name="text_hype_series_rated">Предыдущие фильмы с вашей оценкой</string>
   <string name="text_info_blocked">%s заблокирован.</string>
   <string name="text_info_calendar_feed_copied">Ссылка iCal скопирована. Вставьте ее в приложение календаря, чтобы подписаться.</string>
   <string name="text_info_cover_removed">Обложка удалена.</string>
@@ -1999,6 +2019,7 @@
   <string name="text_info_widget_background">Установить уровень прозрачности фона.</string>
   <string name="text_info_younify_service_linked">Стриминговый сервис подключен.</string>
   <string name="text_info_younify_service_unlinked">Стриминговый сервис отключен.</string>
+  <string name="text_insights_taste">В вашем вкусе</string>
   <string name="text_jellyfin_quick_connect_waiting">Ожидание вашего подтверждения</string>
   <string name="text_jellyfin_webhook_status_never_received">Пока ничего не получено. Включите что-нибудь в Jellyfin для проверки.</string>
   <string name="text_jellyfin_webhook_status_not_vip">Вебхуки — это VIP-функция.</string>
@@ -2042,8 +2063,14 @@
   <string name="text_login_rate_limited_title">Слишком много попыток входа</string>
   <string name="text_match_basis">На основе того, что вы смотрели, оценивали и добавляли в избранное. Нечего оценивать.</string>
   <string name="text_match_basis_free">Ваша оценка бесплатна. Причины — функция VIP.</string>
+  <string name="text_match_basis_history">На основе того, что вы смотрели, оценивали и добавляли в избранное.</string>
+  <string name="text_match_because_liked">Потому что вам понравилось</string>
   <string name="text_match_better_than">Подходит вам лучше, чем %d%% проектов</string>
   <string name="text_match_not_enough_data">Пока недостаточно данных, чтобы рассчитать совпадение.</string>
+  <string name="text_match_rating_liked">Нравится на Trakt</string>
+  <string name="text_match_rating_loved">Любят на Trakt</string>
+  <string name="text_match_rating_votes">На основе %s оценок</string>
+  <string name="text_match_unreleased">Еще не вышло</string>
   <string name="text_media_sync_feed_required">Включите хотя бы одну настройку синхронизации.</string>
   <string name="text_media_sync_library_removal">Отключение этой опции удалит то, что было добавлено в вашу коллекцию Trakt. Ваша история просмотров и оценки останутся.</string>
   <string name="text_media_sync_no_runs">Синхронизаций пока нет.</string>
@@ -2500,6 +2527,8 @@
   <string name="text_watch_state_not_aired">Ещё не вышло</string>
   <string name="text_watch_until_here_episode_count">%d эпизодов</string>
   <string name="text_watch_until_here_preview_title">Временные метки просмотра</string>
+  <string name="text_where_to_watch_not_streaming_yet">Пока не транслируется</string>
+  <string name="text_where_to_watch_release_date">Выходит %s</string>
   <string name="text_year_in_review_banner_tagline">Двенадцать персон. Одна из них — вы.</string>
   <string name="text_younify_status_broken">Нарушено</string>
   <string name="text_younify_status_linked">Подключено</string>
