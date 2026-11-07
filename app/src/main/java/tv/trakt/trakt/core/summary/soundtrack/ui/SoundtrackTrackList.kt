@@ -42,6 +42,7 @@ internal fun SoundtrackTrackList(
     tracks: ImmutableList<SoundtrackTrack>,
     playback: SoundtrackPlayback,
     modifier: Modifier = Modifier,
+    searchTitle: String? = null,
     onPlayClick: (SoundtrackTrack) -> Unit = {},
 ) {
     Column(
@@ -54,6 +55,7 @@ internal fun SoundtrackTrackList(
                 index = index,
                 last = tracks.lastIndex,
                 playback = playback,
+                searchTitle = searchTitle,
                 onPlayClick = onPlayClick,
             )
         }
@@ -67,6 +69,7 @@ internal fun SoundtrackSegmentRow(
     last: Int,
     playback: SoundtrackPlayback,
     modifier: Modifier = Modifier,
+    searchTitle: String? = null,
     onPlayClick: (SoundtrackTrack) -> Unit = {},
 ) {
     val shape = segmentShape(index = index, last = last, innerCorner = SegmentInnerCorner)
@@ -75,6 +78,7 @@ internal fun SoundtrackSegmentRow(
         number = index + 1,
         playing = playback.isPlaying(track),
         loading = playback.isLoading(track),
+        searchTitle = searchTitle,
         onPlayClick = onPlayClick,
         modifier = modifier
             .shadow(TraktTheme.colors.shadowSmall, shape)

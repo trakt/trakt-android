@@ -41,6 +41,7 @@ internal fun SoundtrackTrackRow(
     playing: Boolean,
     modifier: Modifier = Modifier,
     loading: Boolean = false,
+    searchTitle: String? = null,
     onPlayClick: (SoundtrackTrack) -> Unit = {},
 ) {
     Row(
@@ -118,6 +119,11 @@ internal fun SoundtrackTrackRow(
                     )
                 }
             }
+        } else if (searchTitle != null) {
+            SoundtrackSearchMenu(
+                track = track,
+                mediaTitle = searchTitle,
+            )
         } else {
             Text(
                 text = "-",
@@ -149,6 +155,12 @@ private fun Preview() {
                 track = previewTrack(spotifyId = null),
                 number = 3,
                 playing = false,
+            )
+            SoundtrackTrackRow(
+                track = previewTrack(spotifyId = null),
+                number = 3,
+                playing = false,
+                searchTitle = "Walk the Line",
             )
             SoundtrackTrackRow(
                 track = previewTrack(spotifyId = "abc"),

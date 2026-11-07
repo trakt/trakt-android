@@ -195,6 +195,7 @@ private fun AllSoundtrackContent(
                             index = index,
                             last = shownTracks.lastIndex,
                             playback = playback,
+                            searchTitle = state.mediaTitle,
                             onPlayClick = {
                                 playback.play(it)
                                 onPlay(it)
