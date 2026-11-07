@@ -18198,20 +18198,16 @@
                         "started",
                         "finished",
                         "dropped"
-                      ],
-                      "nullable": true
+                      ]
                     },
                     "lists": {
-                      "type": "integer",
-                      "nullable": true
+                      "type": "integer"
                     },
                     "total_minutes": {
-                      "type": "integer",
-                      "nullable": true
+                      "type": "integer"
                     },
                     "total_plays": {
-                      "type": "integer",
-                      "nullable": true
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -18220,7 +18216,11 @@
                     "movies",
                     "episodes",
                     "network",
-                    "ratings"
+                    "ratings",
+                    "progress",
+                    "lists",
+                    "total_minutes",
+                    "total_plays"
                   ]
                 }
               }
@@ -60185,7 +60185,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -60383,7 +60395,19 @@
                                       "type": "integer"
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -60395,7 +60419,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -60407,7 +60443,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -60488,7 +60536,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -60613,7 +60673,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -60782,7 +60854,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -60980,7 +61064,19 @@
                                             "type": "integer"
                                           },
                                           "watched_at": {
-                                            "type": "string",
+                                            "oneOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "released",
+                                                  "unknown",
+                                                  "now"
+                                                ]
+                                              }
+                                            ],
                                             "nullable": true,
                                             "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                           }
@@ -60992,7 +61088,19 @@
                                       "nullable": true
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -61004,7 +61112,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -61085,7 +61205,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -61210,7 +61342,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -62465,7 +62609,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -62663,7 +62819,19 @@
                                       "type": "integer"
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -62675,7 +62843,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -62687,7 +62867,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -62768,7 +62960,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -62893,7 +63097,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -63058,7 +63274,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -63256,7 +63484,19 @@
                                             "type": "integer"
                                           },
                                           "watched_at": {
-                                            "type": "string",
+                                            "oneOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "released",
+                                                  "unknown",
+                                                  "now"
+                                                ]
+                                              }
+                                            ],
                                             "nullable": true,
                                             "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                           }
@@ -63268,7 +63508,19 @@
                                       "nullable": true
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -63280,7 +63532,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -63361,7 +63625,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -63486,7 +63762,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -63661,7 +63949,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -63859,7 +64159,19 @@
                                       "type": "integer"
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -63871,7 +64183,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -63883,7 +64207,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -63964,7 +64300,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -64089,7 +64437,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -64254,7 +64614,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -64452,7 +64824,19 @@
                                             "type": "integer"
                                           },
                                           "watched_at": {
-                                            "type": "string",
+                                            "oneOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "released",
+                                                  "unknown",
+                                                  "now"
+                                                ]
+                                              }
+                                            ],
                                             "nullable": true,
                                             "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                           }
@@ -64464,7 +64848,19 @@
                                       "nullable": true
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -64476,7 +64872,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -64557,7 +64965,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -64682,7 +65102,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -64874,7 +65306,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -65072,7 +65516,19 @@
                                       "type": "integer"
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -65084,7 +65540,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -65096,7 +65564,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -65177,7 +65657,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -65302,7 +65794,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -65467,7 +65971,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -65665,7 +66181,19 @@
                                             "type": "integer"
                                           },
                                           "watched_at": {
-                                            "type": "string",
+                                            "oneOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "released",
+                                                  "unknown",
+                                                  "now"
+                                                ]
+                                              }
+                                            ],
                                             "nullable": true,
                                             "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                           }
@@ -65677,7 +66205,19 @@
                                       "nullable": true
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -65689,7 +66229,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -65770,7 +66322,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -65895,7 +66459,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -67194,7 +67770,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -67392,7 +67980,19 @@
                                       "type": "integer"
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -67404,7 +68004,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -67416,7 +68028,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -67497,7 +68121,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -67622,7 +68258,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -67802,7 +68450,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -68000,7 +68660,19 @@
                                             "type": "integer"
                                           },
                                           "watched_at": {
-                                            "type": "string",
+                                            "oneOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "released",
+                                                  "unknown",
+                                                  "now"
+                                                ]
+                                              }
+                                            ],
                                             "nullable": true,
                                             "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                           }
@@ -68012,7 +68684,19 @@
                                       "nullable": true
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -68024,7 +68708,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -68105,7 +68801,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -68230,7 +68938,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -68402,7 +69122,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -68600,7 +69332,19 @@
                                       "type": "integer"
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -68612,7 +69356,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -68624,7 +69380,19 @@
                           "nullable": true
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -68705,7 +69473,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -68830,7 +69610,19 @@
                           ]
                         },
                         "watched_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                         }
@@ -69003,7 +69795,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -69201,7 +70005,19 @@
                                             "type": "integer"
                                           },
                                           "watched_at": {
-                                            "type": "string",
+                                            "oneOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "released",
+                                                  "unknown",
+                                                  "now"
+                                                ]
+                                              }
+                                            ],
                                             "nullable": true,
                                             "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                           }
@@ -69213,7 +70029,19 @@
                                       "nullable": true
                                     },
                                     "watched_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                                     }
@@ -69225,7 +70053,19 @@
                                 "nullable": true
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -69306,7 +70146,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -69431,7 +70283,19 @@
                                 ]
                               },
                               "watched_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was watched: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time."
                               }
@@ -85358,7 +86222,19 @@
                           "nullable": true
                         },
                         "collected_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                         },
@@ -85646,7 +86522,19 @@
                                       "type": "integer"
                                     },
                                     "collected_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                                     },
@@ -85748,7 +86636,19 @@
                                 "nullable": true
                               },
                               "collected_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                               },
@@ -85850,7 +86750,19 @@
                           "nullable": true
                         },
                         "collected_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                         },
@@ -86021,7 +86933,19 @@
                           ]
                         },
                         "collected_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                         },
@@ -86236,7 +87160,19 @@
                           ]
                         },
                         "collected_at": {
-                          "type": "string",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "released",
+                                "unknown",
+                                "now"
+                              ]
+                            }
+                          ],
                           "nullable": true,
                           "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                         },
@@ -86521,7 +87457,19 @@
                                 "nullable": true
                               },
                               "collected_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                               },
@@ -86809,7 +87757,19 @@
                                             "type": "integer"
                                           },
                                           "collected_at": {
-                                            "type": "string",
+                                            "oneOf": [
+                                              {
+                                                "type": "string"
+                                              },
+                                              {
+                                                "type": "string",
+                                                "enum": [
+                                                  "released",
+                                                  "unknown",
+                                                  "now"
+                                                ]
+                                              }
+                                            ],
                                             "nullable": true,
                                             "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                                           },
@@ -86911,7 +87871,19 @@
                                       "nullable": true
                                     },
                                     "collected_at": {
-                                      "type": "string",
+                                      "oneOf": [
+                                        {
+                                          "type": "string"
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "released",
+                                            "unknown",
+                                            "now"
+                                          ]
+                                        }
+                                      ],
                                       "nullable": true,
                                       "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                                     },
@@ -87013,7 +87985,19 @@
                                 "nullable": true
                               },
                               "collected_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                               },
@@ -87184,7 +88168,19 @@
                                 ]
                               },
                               "collected_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                               },
@@ -87399,7 +88395,19 @@
                                 ]
                               },
                               "collected_at": {
-                                "type": "string",
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "released",
+                                      "unknown",
+                                      "now"
+                                    ]
+                                  }
+                                ],
                                 "nullable": true,
                                 "description": "When the item was collected: a UTC datetime, `released` for its release date, `unknown` for no specific date, or `now` for the current time. Defaults to the stored date, else now."
                               },
