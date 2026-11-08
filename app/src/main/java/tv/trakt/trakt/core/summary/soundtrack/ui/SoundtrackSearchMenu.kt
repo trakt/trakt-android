@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.soundtrack.ui
 
 import android.net.Uri
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -28,7 +29,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val SearchIconSize = 18.dp
+private val SearchIconSize = 16.dp
 
 @Composable
 internal fun SoundtrackSearchMenu(
@@ -48,7 +49,7 @@ internal fun SoundtrackSearchMenu(
             .onClick { showMenu = true },
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_search_off),
+            painter = painterResource(R.drawable.ic_more_vertical),
             contentDescription = null,
             tint = TraktTheme.colors.textSecondary,
             modifier = Modifier.size(SearchIconSize),
@@ -62,6 +63,7 @@ internal fun SoundtrackSearchMenu(
         ) {
             SearchMenuItem(
                 text = stringResource(R.string.button_text_soundtrack_search_web),
+                icon = R.drawable.ic_search_off,
                 onClick = {
                     showMenu = false
                     uriHandler.openUri(webSearchUrl(query))
@@ -69,6 +71,7 @@ internal fun SoundtrackSearchMenu(
             )
             SearchMenuItem(
                 text = stringResource(R.string.button_text_soundtrack_search_youtube),
+                icon = R.drawable.ic_trailer,
                 onClick = {
                     showMenu = false
                     uriHandler.openUri(youtubeSearchUrl(query))
@@ -81,6 +84,7 @@ internal fun SoundtrackSearchMenu(
 @Composable
 private fun SearchMenuItem(
     text: String,
+    @DrawableRes icon: Int,
     onClick: () -> Unit,
 ) {
     DropdownMenuItem(
@@ -90,6 +94,14 @@ private fun SearchMenuItem(
                 style = TraktTheme.typography.buttonTertiary,
                 color = TraktTheme.colors.textPrimary,
                 modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(icon),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier.size(20.dp),
             )
         },
         onClick = onClick,
