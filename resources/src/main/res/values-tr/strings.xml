@@ -1136,10 +1136,10 @@
   <string name="hype_tier_cant_wait">Sabırsızlıkla bekleniyor</string>
   <string name="hype_tier_looking_good">İyi görünüyor</string>
   <string name="image_alt_comment_gif">Yoruma eklenmiş GIF</string>
-  <string name="image_alt_hype_score">Sizin için %d% beklenti</string>
+  <string name="image_alt_hype_score">Sizin için %d%% beklenti</string>
   <string name="image_alt_hype_unknown">Sizin için henüz beklenti puanı yok</string>
   <string name="image_alt_list_preview_poster">%s listesindeki bir öğenin afişi</string>
-  <string name="image_alt_match_score">Sizin için %d% eşleşme</string>
+  <string name="image_alt_match_score">Sizin için %d%% eşleşme</string>
   <string name="image_alt_match_unknown">Sizin için henüz eşleşme puanı yok</string>
   <string name="image_alt_media_poster">\"%s\" afişi</string>
   <string name="image_alt_person_headshot">%s baş fotoğrafı</string>
@@ -1519,7 +1519,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="match_tier_good_fit">İyi seçim</string>
   <string name="match_tier_maybe">Belki</string>
@@ -1764,7 +1764,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s% eşleşme</string>
+  <string name="tag_mixtape_match">%s%% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_deal_price">İlk 2 Yıl</string>
@@ -2080,7 +2080,7 @@
   <string name="text_match_basis_free">Puanınız ücretsizdir. Arkasındaki nedenler bir VIP özelliğidir.</string>
   <string name="text_match_basis_history">İzlediklerinize, puanladıklarınıza ve favorilerinize göre.</string>
   <string name="text_match_because_liked">Beğendiğiniz için</string>
-  <string name="text_match_better_than">Sizin için yapımların %d%\'inden daha iyi bir eşleşme</string>
+  <string name="text_match_better_than">Sizin için yapımların %d%%\'inden daha iyi bir eşleşme</string>
   <string name="text_match_not_enough_data">Bunu sizinle eşleştirmek için henüz yeterli veri yok.</string>
   <string name="text_match_rating_liked">Trakt\'ta beğenildi</string>
   <string name="text_match_rating_loved">Trakt\'ta çok sevildi</string>
@@ -3022,7 +3022,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

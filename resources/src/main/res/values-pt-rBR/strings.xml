@@ -1136,10 +1136,10 @@
   <string name="hype_tier_cant_wait">Mal posso esperar</string>
   <string name="hype_tier_looking_good">Parece promissor</string>
   <string name="image_alt_comment_gif">GIF anexado ao comentário</string>
-  <string name="image_alt_hype_score">%d% de hype para você</string>
+  <string name="image_alt_hype_score">%d%% de hype para você</string>
   <string name="image_alt_hype_unknown">Sem pontuação de hype para você ainda</string>
   <string name="image_alt_list_preview_poster">Pôster para uma entrada em %s</string>
-  <string name="image_alt_match_score">%d% de compatibilidade com você</string>
+  <string name="image_alt_match_score">%d%% de compatibilidade com você</string>
   <string name="image_alt_match_unknown">Sem pontuação de compatibilidade para você ainda</string>
   <string name="image_alt_media_poster">Pôster de \"%s\"</string>
   <string name="image_alt_person_headshot">Foto de rosto de %s</string>
@@ -1519,7 +1519,7 @@
   <string name="match_label_soulmates">Almas Gêmeas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Compatibilidade:</string>
-  <string name="match_pill_aria_label">%1$d% de compatibilidade, %2$s. Abrir detalhes da compatibilidade.</string>
+  <string name="match_pill_aria_label">%1$d%% de compatibilidade, %2$s. Abrir detalhes da compatibilidade.</string>
   <string name="match_pill_loading_aria_label">Calculando pontuação de compatibilidade</string>
   <string name="match_tier_good_fit">Boa combinação</string>
   <string name="match_tier_maybe">Talvez</string>
@@ -1764,7 +1764,7 @@
   <string name="tag_media_sync_webhook_only">Somente Webhook</string>
   <string name="tag_mixtape_different_mood">Vibe diferente</string>
   <string name="tag_mixtape_kept">Mantido</string>
-  <string name="tag_mixtape_match">%s% de correspondência</string>
+  <string name="tag_mixtape_match">%s%% de correspondência</string>
   <string name="tag_mixtape_tap_details">Toque para detalhes</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
   <string name="tag_text_deal_price">Primeiros 2 Anos</string>
@@ -1992,7 +1992,7 @@
   <string name="text_history_sync_filter">ID da Sincronização %d</string>
   <string name="text_history_sync_filter_with_source">ID da Sincronização %1$d (%2$s)</string>
   <string name="text_hype_lists">Um dos lançamentos mais adicionados a listas</string>
-  <string name="text_hype_lists_badge">Top %s%</string>
+  <string name="text_hype_lists_badge">Top %s%%</string>
   <string name="text_hype_lists_detail">As pessoas continuam adicionando às suas listas</string>
   <string name="text_hype_out_on">Estreia em %s</string>
   <string name="text_hype_series_about">Dentro do seu padrão</string>
@@ -2081,7 +2081,7 @@
   <string name="text_match_basis_free">Sua pontuação é gratuita. Os motivos por trás dela são um recurso VIP.</string>
   <string name="text_match_basis_history">Com base no que você assistiu, avaliou e favoritou.</string>
   <string name="text_match_because_liked">Porque você gostou de</string>
-  <string name="text_match_better_than">Combina mais com você do que %d% dos títulos</string>
+  <string name="text_match_better_than">Combina mais com você do que %d%% dos títulos</string>
   <string name="text_match_not_enough_data">Ainda não há dados suficientes para combinar isso com você.</string>
   <string name="text_match_rating_liked">Aprovado no Trakt</string>
   <string name="text_match_rating_loved">Amado no Trakt</string>
@@ -3023,7 +3023,7 @@
   <string name="yir_2026_preview_runner_none">Nenhum (sem híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo lugar</string>
   <string name="yir_2026_preview_title">Prévia da persona</string>
-  <string name="yir_2026_rarity">Apenas %1$d% são %2$s</string>
+  <string name="yir_2026_rarity">Apenas %1$d%% são %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Um pouco %s</string>
   <string name="yir_2026_reel_and_you_are">E você é</string>
   <string name="yir_2026_reel_but_mostly">Mas principalmente</string>
