@@ -112,6 +112,7 @@
   <string name="button_label_drop_show">\"%s\" jelölése félbehagyottként</string>
   <string name="button_label_earlier_episodes">Mutasd a(z) %s korábbi epizódot</string>
   <string name="button_label_edit_comment">Értékelés szerkesztése</string>
+  <string name="button_label_edit_disliked_genres">Nem kedvelt műfajok szerkesztése</string>
   <string name="button_label_edit_list">Listád szerkesztése: %s</string>
   <string name="button_label_edit_loved_genres">Kedvelt műfajok szerkesztése</string>
   <string name="button_label_edit_mode">Szerkesztési mód</string>
@@ -242,8 +243,8 @@
   <string name="button_label_react">Reagálás ezzel: %s</string>
   <string name="button_label_read_more">Bővebben</string>
   <string name="button_label_recent_comments">Legújabb értékelések</string>
-  <string name="button_label_recommendation_mode_classic">Klasszikus ajánlások megjelenítése</string>
-  <string name="button_label_recommendation_mode_smart">Intelligens ajánlások megjelenítése</string>
+  <string name="button_label_recommended_mode_coming_soon">Hamarosan érkező címek ajánlásainak megjelenítése</string>
+  <string name="button_label_recommended_mode_out_now">Már megjelent ajánlások megjelenítése</string>
   <string name="button_label_reject_follow_request">Követési kérelem elutasítása %s felhasználótól</string>
   <string name="button_label_related_mode_personal">Neked válogatott kapcsolódó címek megjelenítése</string>
   <string name="button_label_related_mode_standard">Standard kapcsolódó címek megjelenítése</string>
@@ -253,7 +254,6 @@
   <string name="button_label_remove_from_list">\"%s\" eltávolítása a listáról</string>
   <string name="button_label_remove_from_personal_list">\"%1$s\" eltávolítása ebből: %2$s</string>
   <string name="button_label_remove_from_watched">\"Eltávolítás a(z) \"%s\" az előzményekből\"</string>
-  <string name="button_label_remove_from_watchlist">\"%s\" eltávolítása a Megnézendők közül</string>
   <string name="button_label_remove_gif">GIF eltávolítása</string>
   <string name="button_label_remove_photo">Profilképed eltávolítása</string>
   <string name="button_label_remove_reaction">%s eltávolítása</string>
@@ -348,7 +348,6 @@
   <string name="button_label_view_all_today">Tekintsd meg mindazt, ami ma történt</string>
   <string name="button_label_view_all_trending_movies">Összes felkapott film megtekintése</string>
   <string name="button_label_view_all_trending_shows">Összes felkapott sorozat megtekintése</string>
-  <string name="button_label_view_all_watchlist_items">Összes Megnézendők listán lévő elem megtekintése</string>
   <string name="button_label_view_all_where_to_watch">Összes streaming szolgáltatás megtekintése</string>
   <string name="button_label_view_import_guidelines">Irányelvek megtekintése</string>
   <string name="button_label_view_match">Egyezés megtekintése</string>
@@ -556,8 +555,8 @@
   <string name="button_text_raw_export">Exportálás most</string>
   <string name="button_text_recap_show_anyway">Mutasd mégis</string>
   <string name="button_text_recent_comments">Legújabb</string>
-  <string name="button_text_recommendation_mode_classic">Klasszikus</string>
-  <string name="button_text_recommendation_mode_smart">Okos</string>
+  <string name="button_text_recommended_mode_coming_soon">Hamarosan</string>
+  <string name="button_text_recommended_mode_out_now">Már megjelent</string>
   <string name="button_text_reconnect">Újracsatlakozás</string>
   <string name="button_text_reject_follow_request">Kérelem elutasítása</string>
   <string name="button_text_related_mode_personal">Neked</string>
@@ -961,6 +960,7 @@
   <string name="header_follows_leaderboard">Ranglista</string>
   <string name="header_game_rated_higher">Magasabb pontszámú?</string>
   <string name="header_genre">Műfaj</string>
+  <string name="header_genres_disliked">Nem kedvelt műfajok</string>
   <string name="header_genres_loved">Kedvelt műfajok</string>
   <string name="header_get_notified">Értesítést kérek!</string>
   <string name="header_get_trakt_app">Szerezd be a Trakt alkalmazást</string>
@@ -968,6 +968,7 @@
   <string name="header_hide_watched">Megnézettek elrejtése</string>
   <string name="header_hide_watchlisted">Megnézendő listán lévők elrejtése</string>
   <string name="header_history_analysis">Előzmények elemzése</string>
+  <string name="header_hype_why">A hype oka</string>
   <string name="header_import">Importálás</string>
   <string name="header_import_csv_guidelines">CSV irányelvek</string>
   <string name="header_import_example">Példa</string>
@@ -989,6 +990,7 @@
   <string name="header_match">Egyezés</string>
   <string name="header_match_reasons">Miért illik hozzád</string>
   <string name="header_match_taste">Az ízlésed</string>
+  <string name="header_match_why">Miért illik hozzád</string>
   <string name="header_media_reactions">Reakciók</string>
   <string name="header_media_sync_choose_libraries">Könyvtárak kiválasztása</string>
   <string name="header_media_sync_choose_server">Válassz szervert</string>
@@ -1129,7 +1131,11 @@
   <string name="heading_what_is_trakt">Mi az a Trakt?</string>
   <string name="hint_jellyfin_server_url">A nyilvános cím, amellyel az otthonodon kívülről éred el a Jellyfint. A Trakt az interneten keresztül éri el, így a helyi és IP-címek nem működnek.</string>
   <string name="hint_media_sync_history_resync">Később is importálhatja a korábbi megtekintéseket a szerver Kezelés menüjéből.</string>
+  <string name="hype_tier_cant_wait">Alig várom</string>
+  <string name="hype_tier_looking_good">Ígéretes</string>
   <string name="image_alt_comment_gif">A hozzászóláshoz csatolt GIF</string>
+  <string name="image_alt_hype_score">%d% hype számodra</string>
+  <string name="image_alt_hype_unknown">Még nincs hype-pontszámod</string>
   <string name="image_alt_list_preview_poster">Poszter egy bejegyzéshez: „%s”</string>
   <string name="image_alt_match_unknown">Még nincs egyezési pontszámod</string>
   <string name="image_alt_media_poster">„%s” posztere</string>
@@ -1199,7 +1205,6 @@
   <string name="import_summary_history">%d elem az Előzményekhez</string>
   <string name="import_summary_list">%d lista elem</string>
   <string name="import_summary_ratings">%d értékelés</string>
-  <string name="import_summary_watchlist">%d elem a Megnézendők listájához</string>
   <string name="import_tab_ambiguous">Több találat</string>
   <string name="import_tab_unresolved">Kihagyott</string>
   <string name="import_vip_limit_exceeded">Az importálásod túllépi az ingyenes szint korlátját. Frissíts VIP-re mind a(z) %d elem importálásához.</string>
@@ -1253,6 +1258,7 @@
   <string name="label_game_streak">Sorozat</string>
   <string name="label_genres_drawer_all">Összes műfaj</string>
   <string name="label_genres_drawer_selected">Kiválasztott</string>
+  <string name="label_genres_drawer_subtitle_disliked">Válasszon ki legfeljebb 5 műfajt, amelyekből kevesebbet szeretne látni.</string>
   <string name="label_genres_drawer_subtitle_loved">Válasszon ki legfeljebb 5 műfajt, amelyekből többet szeretne látni.</string>
   <string name="label_jellyfin_password">Jelszó</string>
   <string name="label_jellyfin_server">Jellyfin szerver</string>
@@ -1495,11 +1501,13 @@
   <string name="list_title_watchlist_shows">Megnézendő sorozatok</string>
   <string name="list_title_where_to_watch">Hol nézhető</string>
   <string name="match_drawer_breakdown_favorites">Kedvencek</string>
-  <string name="match_drawer_breakdown_header">Részletek</string>
-  <string name="match_drawer_breakdown_topics">Témák</string>
+  <string name="match_drawer_more_watched_together">+%s</string>
+  <string name="match_drawer_more_watched_together_aria_label">%s további, amit mindketten megnéztetek</string>
+  <string name="match_drawer_no_shared_topics">Még nincsenek közös témák</string>
+  <string name="match_drawer_nothing_watched_together">Még semmit sem néztetek meg mindketten</string>
   <string name="match_drawer_overlap_caption">Hogyan fedi egymást az ízlésetek</string>
-  <string name="match_drawer_shared_topics_header">Közös témák</string>
   <string name="match_drawer_title">Egyezés bontása</string>
+  <string name="match_drawer_watched_together">Mindketten megnéztétek</string>
   <string name="match_label_cameo">Cameo</string>
   <string name="match_label_co_stars">Színésztársak</string>
   <string name="match_label_crossover">Kereszteződés</string>
@@ -1507,8 +1515,12 @@
   <string name="match_label_soulmates">Lelkitársak</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Egyezés:</string>
-  <string name="match_pill_aria_label">%1$d%% egyezés, %2$s. Egyezési részletek megnyitása.</string>
+  <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
+  <string name="match_tier_good_fit">Jó választás</string>
+  <string name="match_tier_maybe">Talán</string>
+  <string name="match_tier_not_your_usual">Nem a megszokott</string>
+  <string name="match_tier_top_pick">Legjobb választás</string>
   <string name="mir_banner_body">Havi összefoglalód kész. Íme, amit %s hónapban néztél.</string>
   <string name="mir_banner_body_short">%s havi összefoglalód kész.</string>
   <string name="mir_banner_explore">Felfedezés</string>
@@ -1622,6 +1634,7 @@
   <string name="page_title_widget_background">Háttér</string>
   <string name="page_title_year_in_review">%s év áttekintése</string>
   <string name="page_title_year_to_date">Éves összesítés</string>
+  <string name="preview_feature_description_anticipated_recommendations">Még meg nem jelent, neked válogatott címeket ajánl. Válts a „Már megjelent” és a „Hamarosan” között az Ajánlott lista felett.</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_large_screen_cards">Nagyobb képernyőkön minden lista ugyanazokat a kártyákat használja, mint az alkalmazás többi része. Egy elem kiválasztása gyors áttekintést nyit meg ahelyett, hogy elhagyná a listát.</string>
   <string name="preview_feature_description_personalized_related">Az ízlésednek megfelelően rendezi a kapcsolódó címeket a filmek és sorozatok adatlapján. A lista felett válthatsz a Neked és a Standard beállítás között.</string>
@@ -1629,6 +1642,7 @@
   <string name="preview_feature_description_season_recap">Egy Összefoglaló gombot ad az évadválasztó mellé a sorozat oldalán. Megnyitja az adott évad felzárkóztatóját: a legfontosabb pillanatokat és a szereplők helyzetét.</string>
   <string name="preview_feature_description_vip_veteran">Megmutatja, mennyi ideig tartották a tagok szünet nélkül a VIP státuszt, Veterán vagy Legenda jelvénnyel, színes avatargyűrűvel és néhány ünnepséggel a saját profilodon.</string>
   <string name="preview_feature_description_year_in_review_2026">A 2026-os éved egy görgethető videóként, egy nézői személyiséggel, majd egy hozzá illeszkedő statisztikai oldallal.</string>
+  <string name="preview_feature_title_anticipated_recommendations">Hamarosan érkező ajánlások</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_large_screen_cards">Nagyképernyős kártyák</string>
   <string name="preview_feature_title_personalized_related">Kapcsolódó címek neked</string>
@@ -1650,6 +1664,8 @@
   <string name="smart_list_template_a24_after_dark_pitch">A stúdió, amely újra művészetté tette a horrort.</string>
   <string name="smart_list_template_a24_essentials_name">A24 Alapvetők</string>
   <string name="smart_list_template_a24_essentials_pitch">Minden A24 film, amit az emberek ténylegesen megnéztek.</string>
+  <string name="smart_list_template_best_of_the_year_name">Az év legjobbjai</string>
+  <string name="smart_list_template_best_of_the_year_pitch">Az elmúlt 12 hónap legjobbra értékelt filmjei.</string>
   <string name="smart_list_template_beyond_the_stars_name">Csillagokon Túl</string>
   <string name="smart_list_template_beyond_the_stars_pitch">Nagy ötletek, más világok, szuperhősök nélkül.</string>
   <string name="smart_list_template_critics_darlings_name">Kritikusok kedvencei</string>
@@ -1668,10 +1684,14 @@
   <string name="smart_list_template_kdrama_fever_pitch">A koreai sorozatok, amelyekre mindenki rákattan.</string>
   <string name="smart_list_template_little_ones_name">Kicsiknek Ajánlott</string>
   <string name="smart_list_template_little_ones_pitch">Kíméletes válogatás kisgyerekeknek.</string>
+  <string name="smart_list_template_new_shows_worth_it_name">Új sorozatok, amik megérik</string>
+  <string name="smart_list_template_new_shows_worth_it_pitch">Új sorozatok az elmúlt 12 hónapból, amelyek nem okoznak csalódást.</string>
   <string name="smart_list_template_next_obsession_name">A következő mániád</string>
   <string name="smart_list_template_next_obsession_pitch">Neked válogatva, még nincs a figyelőlistádon.</string>
   <string name="smart_list_template_short_and_sweet_name">Rövid és édes</string>
   <string name="smart_list_template_short_and_sweet_pitch">Nagyszerű filmek 95 perc alatt.</string>
+  <string name="smart_list_template_still_running_name">Még fut</string>
+  <string name="smart_list_template_still_running_pitch">Remek sorozatok, amelyekhez még készülnek új évadok.</string>
   <string name="smart_list_template_the_auteurs_name">A Mesterek</string>
   <string name="smart_list_template_the_auteurs_pitch">Villeneuve, Nolan és Fincher, mind egy helyen.</string>
   <string name="smart_list_template_time_twisters_name">Időcsavarok</string>
@@ -1740,7 +1760,7 @@
   <string name="tag_media_sync_webhook_only">Csak Webhook</string>
   <string name="tag_mixtape_different_mood">Más hangulat</string>
   <string name="tag_mixtape_kept">Megtartva</string>
-  <string name="tag_mixtape_match">%s%% egyezés</string>
+  <string name="tag_mixtape_match">%s% egyezés</string>
   <string name="tag_mixtape_tap_details">Koppints a részletekért</string>
   <string name="tag_text_blocked_user">Blokkolva</string>
   <string name="tag_text_deal_price">Első 2 év</string>
@@ -1844,7 +1864,6 @@
   <string name="text_calendar_nothing_scheduled">Nincs semmi beütemezve</string>
   <string name="text_calendar_placeholder_1">Mára nincs semmi dolgod. Tarts egy szabadnapot, élvezd a jó időt!</string>
   <string name="text_calendar_placeholder_10">Minden tiszta. Itt az idő, hogy felfedezz valami újat!</string>
-  <string name="text_calendar_placeholder_2">Erre a dátumra nincsenek elemek. Esetleg próbálj meg egy másik napot.</string>
   <string name="text_calendar_placeholder_3">Úgy tűnik, mára nincs semmi betervezve. Pihenj és dőlj hátra!</string>
   <string name="text_calendar_placeholder_4">Erre a napra üres a naptárad. Tökéletes alkalom egy kis pihenésre!</string>
   <string name="text_calendar_placeholder_5">Ez a nap teljesen szabad. Mit szólnál valami újhoz?</string>
@@ -1959,9 +1978,22 @@
   <string name="text_game_spoiler">Spoiler: %1$s értékelése %2$s</string>
   <string name="text_game_spotlight_subtitle">Találd meg, melyik címnek van magasabb Trakt értékelése</string>
   <string name="text_game_versus">VS</string>
+  <string name="text_headline_genre">A(z) %s a te világod.</string>
+  <string name="text_headline_genres">A(z) %s a te világod.</string>
+  <string name="text_headline_lists">Az egyik legtöbb listára felvett várható cím.</string>
+  <string name="text_headline_rating">A Trakt-felhasználók értékelése: %s.</string>
+  <string name="text_headline_series_rated">%1$s: %2$s/10-re értékelted.</string>
   <string name="text_history_slot_picker_empty">Még nincs megtekintési előzménye. Ez lesz az első bejegyzése.</string>
   <string name="text_history_sync_filter">Szinkronizálási azonosító: %d</string>
   <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
+  <string name="text_hype_lists">Az egyik legtöbb listára felvett várható cím</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
+  <string name="text_hype_lists_detail">A felhasználók folyamatosan hozzáadják a listáikhoz</string>
+  <string name="text_hype_out_on">Megjelenés: %s</string>
+  <string name="text_hype_series_about">Körülbelül a megszokott</string>
+  <string name="text_hype_series_above">A szokásos értékelésednél magasabb</string>
+  <string name="text_hype_series_below">A szokásos értékelésednél alacsonyabb</string>
+  <string name="text_hype_series_rated">Korábbi filmek, amiket értékeltél</string>
   <string name="text_info_blocked">%s blokkolva lett.</string>
   <string name="text_info_calendar_feed_copied">iCal link másolva. Illessze be a naptáralkalmazásába a feliratkozáshoz.</string>
   <string name="text_info_cover_removed">Borítókép törölve.</string>
@@ -1998,6 +2030,7 @@
   <string name="text_info_widget_background">Állítsa be a háttér átlátszósági szintjét.</string>
   <string name="text_info_younify_service_linked">A streaming szolgáltatás összekapcsolva.</string>
   <string name="text_info_younify_service_unlinked">A streaming szolgáltatás leválasztva.</string>
+  <string name="text_insights_taste">Illik az ízlésedhez</string>
   <string name="text_jellyfin_quick_connect_waiting">Jóváhagyásra várunk</string>
   <string name="text_jellyfin_webhook_status_never_received">Még nem érkezett semmi. Játssz le valamit a Jellyfinen a teszteléshez.</string>
   <string name="text_jellyfin_webhook_status_not_vip">A webhookok VIP funkciónak számítanak.</string>
@@ -2041,7 +2074,14 @@
   <string name="text_login_rate_limited_title">Túl sok bejelentkezési kísérlet</string>
   <string name="text_match_basis">A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján. Nincs mit értékelni.</string>
   <string name="text_match_basis_free">A pontszámod ingyenes. A mögötte rejlő okok VIP funkciónak számítanak.</string>
+  <string name="text_match_basis_history">A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján.</string>
+  <string name="text_match_because_liked">Mert tetszett neked</string>
+  <string name="text_match_better_than">Jobban illik hozzád a címek %d%-ánál</string>
   <string name="text_match_not_enough_data">Még nincs elég adat az egyezés megállapításához.</string>
+  <string name="text_match_rating_liked">Kedvelik a Trakton</string>
+  <string name="text_match_rating_loved">Imádják a Trakton</string>
+  <string name="text_match_rating_votes">%s értékelés alapján</string>
+  <string name="text_match_unreleased">Még nem jelent meg</string>
   <string name="text_media_sync_feed_required">Kapcsolj be legalább egy szinkronizálási beállítást.</string>
   <string name="text_media_sync_library_removal">Ennek kikapcsolása eltávolítja azt, amit a Trakt gyűjteményedhez adott. A megtekintési előzmények és értékelések megmaradnak.</string>
   <string name="text_media_sync_no_runs">Még nincsenek szinkronizálások.</string>
@@ -2218,7 +2258,6 @@
   <string name="text_recommendation_person_watched_making_acting_other">Készítette és szerepelt %d általad nézett címben</string>
   <string name="text_recommendation_person_watched_making_one">Készítette %d általad nézett címben</string>
   <string name="text_recommendation_person_watched_making_other">Készítette %d általad nézett címben</string>
-  <string name="text_recommended_meta_info">%1$s · %2$s</string>
   <string name="text_reconnect_streaming_warning">Kérjük, csatlakoztassa újra az alábbi %s szolgáltatásokat.</string>
   <string name="text_rent">Kölcsönözhető</string>
   <string name="text_rewatching_next_episode_prompt">Mi a következő epizód, amit újra szeretnél nézni?</string>
@@ -2498,6 +2537,8 @@
   <string name="text_watch_state_not_aired">Még nem került adásba</string>
   <string name="text_watch_until_here_episode_count">%d epizód</string>
   <string name="text_watch_until_here_preview_title">Megnézés időpontjai</string>
+  <string name="text_where_to_watch_not_streaming_yet">Még nem streamelhető</string>
+  <string name="text_where_to_watch_release_date">Megjelenés: %s</string>
   <string name="text_year_in_review_banner_tagline">Tizenkét személyiség. Egyikük te vagy.</string>
   <string name="text_younify_status_broken">Hibás</string>
   <string name="text_younify_status_linked">Összekapcsolva</string>
@@ -2806,7 +2847,6 @@
   <string name="warning_prompt_remove_from_liked_lists">Biztosan eltávolítod a(z) „%s” nevű listát a kedvelt listáid közül?</string>
   <string name="warning_prompt_remove_from_personal_list">Biztosan eltávolítod a(z) \"%1$s\" címet a(z) \"%2$s\" listáról?</string>
   <string name="warning_prompt_remove_from_watched">A(z) \"%s\" összes lejátszása eltávolításra kerül. Ez nem vonható vissza.</string>
-  <string name="warning_prompt_remove_from_watchlist">Biztosan eltávolítod a(z) \"%s\" címet a Megnézendők közül?</string>
   <string name="warning_prompt_remove_single_watched">A(z) \"%s\" ezen lejátszása eltávolításra kerül. A többi lejátszás megmarad.</string>
   <string name="warning_prompt_restore_show">Biztosan visszaállítod a(z) \"%s\" címet? Ezzel visszaállítod az előrehaladásodban és a naptáradban.</string>
   <string name="warning_prompt_set_cover_image">Használod a(z) „%s” címet profil háttérképedként?</string>
@@ -2977,7 +3017,7 @@
   <string name="yir_2026_preview_runner_none">Nincs (nem hibrid)</string>
   <string name="yir_2026_preview_runner_up">Második helyezett</string>
   <string name="yir_2026_preview_title">Személyiség előnézet</string>
-  <string name="yir_2026_rarity">Csak %1$d%% %2$s</string>
+  <string name="yir_2026_rarity">Csak %1$d% %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Kicsit %s</string>
   <string name="yir_2026_reel_and_you_are">És te vagy</string>
   <string name="yir_2026_reel_but_mostly">De leginkább</string>
