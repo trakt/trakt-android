@@ -819,7 +819,7 @@ internal fun ShowDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             gifPaused = listState.isScrollInProgress,
-                            mediaWatched = state.showProgress?.isWatched == true,
+                            mediaWatched = state.showProgress?.isEveryEpisodeWatched == true,
                             onMoreClick = onMoreCommentsClick,
                             onUserClick = onNavigateToUser,
                             modifier = Modifier

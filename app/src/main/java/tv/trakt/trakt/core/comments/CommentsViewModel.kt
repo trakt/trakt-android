@@ -117,6 +117,7 @@ internal class CommentsViewModel(
 
     private var reactionJob: Job? = null
     private var repliesJob: Job? = null
+    private var mediaWatchedJob: Job? = null
 
     init {
         loadBackground()
@@ -130,6 +131,11 @@ internal class CommentsViewModel(
             .debounce(200.milliseconds)
             .mapNotNull { it.targetId }
             .onEach(::updateReactions)
+            .launchIn(viewModelScope)
+
+        dataChanges.observe(Kind.Progress, Kind.History)
+            .debounce(200.milliseconds)
+            .onEach { loadMediaWatched() }
             .launchIn(viewModelScope)
     }
 
@@ -201,7 +207,8 @@ internal class CommentsViewModel(
     }
 
     private fun loadMediaWatched() {
-        viewModelScope.launch {
+        mediaWatchedJob?.cancel()
+        mediaWatchedJob = viewModelScope.launch {
             try {
                 if (!sessionManager.isAuthenticated()) {
                     return@launch
@@ -229,7 +236,7 @@ internal class CommentsViewModel(
                 val aired = destination.mediaEpisodes ?: return false
                 val plays = loadProgressUseCase.loadLocalShows()
                     .firstOrNull { it.showId == mediaId }
-                    ?.playsWithoutSpecials
+                    ?.playsDistinctWithoutSpecials
                     ?: return false
                 plays > 0 && plays >= aired
             }
