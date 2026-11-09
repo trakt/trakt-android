@@ -57,6 +57,7 @@ internal fun MovieContextView(
     onRemoveWatchlist: (Movie) -> Unit,
     onHideRecommendation: (Movie) -> Unit,
     onWhyThis: () -> Unit,
+    onListsClick: () -> Unit,
     onCheckIn: () -> Unit,
     onError: () -> Unit,
 ) {
@@ -121,6 +122,7 @@ internal fun MovieContextView(
             confirmHideRecommendationSheet = true
         },
         onWhyThisClick = onWhyThis,
+        onListsClick = onListsClick,
     )
 
     RemoveConfirmationSheet(
@@ -188,6 +190,7 @@ private fun MovieContextViewContent(
     onWatchlistClick: () -> Unit = {},
     onHideRecommendationClick: () -> Unit = {},
     onWhyThisClick: () -> Unit = {},
+    onListsClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -234,6 +237,7 @@ private fun MovieContextViewContent(
                 onWatchlistClick = onWatchlistClick,
                 onHideRecommendationClick = onHideRecommendationClick,
                 onWhyThisClick = onWhyThisClick,
+                onListsClick = onListsClick,
                 modifier = Modifier
                     .padding(top = 14.dp),
             )
@@ -252,6 +256,7 @@ private fun MovieActionButtons(
     onWatchlistClick: () -> Unit,
     onHideRecommendationClick: () -> Unit,
     onWhyThisClick: () -> Unit,
+    onListsClick: () -> Unit,
 ) {
     val isReleased = remember { movie.isReleased }
     val isLoadingOrDone =
@@ -335,6 +340,19 @@ private fun MovieActionButtons(
             modifier = Modifier
                 .graphicsLayer {
                     translationX = -8.dp.toPx()
+                },
+        )
+
+        GhostButton(
+            enabled = !isLoadingOrDone,
+            text = stringResource(R.string.button_text_manage_lists),
+            onClick = onListsClick,
+            iconSize = 22.dp,
+            iconSpace = 16.dp,
+            icon = painterResource(R.drawable.ic_lists_off),
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -6.dp.toPx()
                 },
         )
 

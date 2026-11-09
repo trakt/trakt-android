@@ -49,6 +49,7 @@ internal fun CalendarEpisodeContextView(
     onRemoveWatched: () -> Unit,
     onAddWatchlist: () -> Unit,
     onRemoveWatchlist: () -> Unit,
+    onListsClick: () -> Unit,
     onDropped: () -> Unit,
     onError: () -> Unit,
 ) {
@@ -101,6 +102,7 @@ internal fun CalendarEpisodeContextView(
                 else -> viewModel.addToWatchlist()
             }
         },
+        onListsClick = onListsClick,
         onDropClick = {
             confirmDropSheet = true
         },
@@ -169,6 +171,7 @@ private fun CalendarEpisodeContextViewContent(
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
+    onListsClick: () -> Unit = {},
     onDropClick: () -> Unit = {},
 ) {
     Column(
@@ -216,6 +219,7 @@ private fun CalendarEpisodeContextViewContent(
                 showDrop = showDrop,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
+                onListsClick = onListsClick,
                 onDropClick = onDropClick,
                 modifier = Modifier.padding(top = 14.dp),
             )
@@ -232,6 +236,7 @@ private fun CalendarEpisodeActionButtons(
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onListsClick: () -> Unit,
     onDropClick: () -> Unit,
 ) {
     val isReleased = item.episodes.last().rememberReleased()
@@ -262,7 +267,10 @@ private fun CalendarEpisodeActionButtons(
                     else -> painterResource(R.drawable.ic_check_2)
                 },
                 iconSize = 22.dp,
-                iconSpace = 16.dp,
+                iconSpace = when {
+                    state.isWatched -> 12.dp
+                    else -> 16.dp
+                },
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -6.dp.toPx()
@@ -288,6 +296,19 @@ private fun CalendarEpisodeActionButtons(
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -8.dp.toPx()
+                    },
+            )
+
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                text = stringResource(R.string.button_text_manage_lists),
+                onClick = onListsClick,
+                icon = painterResource(R.drawable.ic_lists_off),
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
                     },
             )
         }

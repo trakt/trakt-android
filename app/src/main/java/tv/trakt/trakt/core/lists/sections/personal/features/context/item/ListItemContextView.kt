@@ -53,6 +53,7 @@ internal fun ListItemContextView(
     onAddWatched: () -> Unit,
     onRemoveWatched: () -> Unit,
     onRemoveList: () -> Unit,
+    onListsClick: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -91,6 +92,7 @@ internal fun ListItemContextView(
         onRemoveListClick = {
             confirmRemoveListSheet = true
         },
+        onListsClick = onListsClick,
     )
 
     RemoveConfirmationSheet(
@@ -140,6 +142,7 @@ private fun ListItemContextViewContent(
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onRemoveListClick: () -> Unit = {},
+    onListsClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -184,6 +187,7 @@ private fun ListItemContextViewContent(
             removable = removable,
             onWatchedClick = onWatchedClick,
             onRemoveListClick = onRemoveListClick,
+            onListsClick = onListsClick,
         )
     }
 }
@@ -195,6 +199,7 @@ private fun ActionButtons(
     removable: Boolean,
     onWatchedClick: () -> Unit,
     onRemoveListClick: () -> Unit,
+    onListsClick: () -> Unit,
 ) {
     val isLoadingOrDone =
         state.loadingWatched.isLoading ||
@@ -219,6 +224,21 @@ private fun ActionButtons(
                     state.isWatched -> painterResource(R.drawable.ic_trash)
                     else -> painterResource(R.drawable.ic_check_2)
                 },
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+            )
+        }
+
+        if (state.isAuthenticated && (item is EpisodeItem || item is SeasonItem)) {
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                text = stringResource(R.string.button_text_manage_lists),
+                onClick = onListsClick,
+                icon = painterResource(R.drawable.ic_lists_off),
                 iconSize = 22.dp,
                 iconSpace = 16.dp,
                 modifier = Modifier
@@ -267,7 +287,7 @@ private fun Preview() {
                 rank = 1,
                 listedAt = Instant.now(),
             ),
-            state = ListItemContextState(),
+            state = ListItemContextState(isAuthenticated = true),
             removable = true,
         )
     }

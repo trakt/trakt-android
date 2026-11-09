@@ -54,6 +54,7 @@ internal fun WatchlistMovieContextView(
     modifier: Modifier = Modifier,
     onAddWatched: (Movie) -> Unit,
     onRemoveWatchlist: () -> Unit,
+    onListsClick: () -> Unit,
     onCheckIn: () -> Unit,
     onError: () -> Unit,
 ) {
@@ -91,6 +92,7 @@ internal fun WatchlistMovieContextView(
         onRemoveWatchlist = {
             confirmRemoveSheet = true
         },
+        onListsClick = onListsClick,
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -133,6 +135,7 @@ private fun WatchlistMovieContextViewContent(
     modifier: Modifier = Modifier,
     onAddWatched: () -> Unit = {},
     onRemoveWatchlist: () -> Unit = {},
+    onListsClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -176,6 +179,7 @@ private fun WatchlistMovieContextViewContent(
                 watchOnlyOnce = state.user.settings?.watchOnlyOnce,
                 onWatchedClick = onAddWatched,
                 onWatchlistClick = onRemoveWatchlist,
+                onListsClick = onListsClick,
                 state = state,
                 modifier = Modifier
                     .padding(top = 14.dp),
@@ -192,6 +196,7 @@ private fun MovieActionButtons(
     watchOnlyOnce: Boolean?,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onListsClick: () -> Unit,
     state: WatchlistMovieContextState,
 ) {
     Column(
@@ -238,6 +243,19 @@ private fun MovieActionButtons(
             modifier = Modifier
                 .graphicsLayer {
                     translationX = -8.5.dp.toPx()
+                },
+        )
+
+        GhostButton(
+            enabled = !isLoading,
+            text = stringResource(R.string.button_text_manage_lists),
+            onClick = onListsClick,
+            iconSize = 22.dp,
+            iconSpace = 16.dp,
+            icon = painterResource(R.drawable.ic_lists_off),
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -6.dp.toPx()
                 },
         )
     }

@@ -10,8 +10,11 @@ import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
@@ -23,6 +26,8 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.core.calendar.ui.context.CalendarEpisodeContextView
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
@@ -42,6 +47,7 @@ internal fun CalendarEpisodeContextSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(item) { nextInt().toString() }
+    var listsTarget by remember { mutableStateOf<ManageListsTarget?>(null) }
 
     if (item != null) {
         val localSnack = LocalSnackbarState.current
@@ -80,6 +86,15 @@ internal fun CalendarEpisodeContextSheet(
                 onRemoveWatchlist = {
                     dismissWithMessage(localRes.getString(R.string.text_info_watchlist_removed))
                 },
+                onListsClick = {
+                    listsTarget = ManageListsTarget.ShowTarget(item.show)
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
                 onDropped = {
                     onDataChange()
                     dismissWithMessage(localRes.getString(R.string.text_info_show_dropped))
@@ -93,6 +108,11 @@ internal fun CalendarEpisodeContextSheet(
             )
         }
     }
+
+    ManageListsSheet(
+        target = listsTarget,
+        onDismiss = { listsTarget = null },
+    )
 }
 
 private fun CoroutineScope.dismissWithMessage(
