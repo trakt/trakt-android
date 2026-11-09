@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
@@ -66,6 +68,7 @@ internal class ShowProgressViewModel(
     private var seasons: List<Season> = emptyList()
     private val loadingSeasons = mutableSetOf<Int>()
     private var loadJob: Job? = null
+    private val historyMutex = Mutex()
 
     init {
         loadData()
@@ -223,16 +226,15 @@ internal class ShowProgressViewModel(
             return
         }
 
+        busyEpisodesState.update { (it + ids).toImmutableSet() }
+
         viewModelScope.launch {
             try {
-                busyEpisodesState.update { (it + ids).toImmutableSet() }
-
-                write()
-                applyProgress(getProgressUseCase.getUserProgress(show.ids.trakt, refresh = true))
-                upNextState.update { loadUpNext() }
-                loadExpandedEpisodes()
-
-                dataChanges.notify(Kind.History, origin = origin)
+                historyMutex.withLock {
+                    write()
+                    refreshProgress()
+                    dataChanges.notify(Kind.History, origin = origin)
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -240,6 +242,18 @@ internal class ShowProgressViewModel(
                 }
             } finally {
                 busyEpisodesState.update { (it - ids.toSet()).toImmutableSet() }
+            }
+        }
+    }
+
+    private suspend fun refreshProgress() {
+        try {
+            applyProgress(getProgressUseCase.getUserProgress(show.ids.trakt, refresh = true))
+            upNextState.update { loadUpNext() }
+            loadExpandedEpisodes()
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }
