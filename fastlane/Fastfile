@@ -67,38 +67,6 @@ platform :android do
       )
   end
 
-  desc "Upload version to PlayStore Closed Beta Track"
-    lane :playstore_upload_closed_beta do
-      gradle(
-        task: "app:bundlePlaystoreRelease"
-      )
-
-      supply(
-        track: "Trakt Beta",
-        aab: "app/build/outputs/bundle/playstoreRelease/app-playstore-release.aab",
-        rollout: "1",
-        skip_upload_apk: true,
-        skip_upload_metadata: true,
-        skip_upload_images: true,
-        skip_upload_screenshots: true
-      )
-  end
-
-  desc "Promote PlayStore Internal Track to Closed Beta Track"
-    lane :playstore_promote_internal_to_trakt_beta do
-      supply(
-        track: "internal",
-        track_promote_to: "Trakt Beta",
-        rollout: "1",
-        skip_upload_apk: true,
-        skip_upload_aab: true,
-        skip_upload_metadata: true,
-        skip_upload_changelogs: true,
-        skip_upload_images: true,
-        skip_upload_screenshots: true
-      )
-  end
-
   desc "Promote PlayStore Internal Track to Production"
     lane :playstore_promote_internal_to_production do
         supply(
@@ -114,49 +82,7 @@ platform :android do
         )
   end
 
-  desc "Promote PlayStore Internal Track to Closed Beta & Production"
-    lane :playstore_promote_internal_to_trakt_beta_and_production do
-        supply(
-            track: "internal",
-            track_promote_to: "Trakt Beta",
-            rollout: "1",
-            skip_upload_apk: true,
-            skip_upload_aab: true,
-            skip_upload_metadata: true,
-            skip_upload_changelogs: true,
-            skip_upload_images: true,
-            skip_upload_screenshots: true
-        )
-
-        supply(
-            track: "internal",
-            track_promote_to: "production",
-            rollout: "1",
-            skip_upload_apk: true,
-            skip_upload_aab: true,
-            skip_upload_metadata: true,
-            skip_upload_changelogs: true,
-            skip_upload_images: true,
-            skip_upload_screenshots: true
-        )
-  end
-
-  desc "Promote PlayStore Closed Beta Track to Production"
-    lane :playstore_promote_trakt_beta_to_production do
-        supply(
-            track: "Trakt Beta",
-            track_promote_to: "production",
-            rollout: "1",
-            skip_upload_apk: true,
-            skip_upload_aab: true,
-            skip_upload_metadata: true,
-            skip_upload_changelogs: true,
-            skip_upload_images: true,
-            skip_upload_screenshots: true
-        )
-  end
-
-  desc "Upload to PlayStore Internal Track and promote to Closed Beta and Production"
+  desc "Upload to PlayStore Internal Track and promote to Production"
     lane :playstore_release_all do
       gradle(
         task: "app:bundlePlaystoreRelease"
@@ -168,18 +94,6 @@ platform :android do
         rollout: "1",
         skip_upload_apk: true,
         skip_upload_metadata: true,
-        skip_upload_images: true,
-        skip_upload_screenshots: true
-      )
-
-      supply(
-        track: "internal",
-        track_promote_to: "Trakt Beta",
-        rollout: "1",
-        skip_upload_apk: true,
-        skip_upload_aab: true,
-        skip_upload_metadata: true,
-        skip_upload_changelogs: true,
         skip_upload_images: true,
         skip_upload_screenshots: true
       )

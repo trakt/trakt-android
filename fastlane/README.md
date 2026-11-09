@@ -39,22 +39,6 @@ Distribute Firebase version to Internal Testers group
 
 Upload version to PlayStore Internal Track
 
-### android playstore_upload_closed_beta
-
-```sh
-[bundle exec] fastlane android playstore_upload_closed_beta
-```
-
-Upload version to PlayStore Closed Beta Track
-
-### android playstore_promote_internal_to_trakt_beta
-
-```sh
-[bundle exec] fastlane android playstore_promote_internal_to_trakt_beta
-```
-
-Promote PlayStore Internal Track to Closed Beta Track
-
 ### android playstore_promote_internal_to_production
 
 ```sh
@@ -63,29 +47,13 @@ Promote PlayStore Internal Track to Closed Beta Track
 
 Promote PlayStore Internal Track to Production
 
-### android playstore_promote_internal_to_trakt_beta_and_production
-
-```sh
-[bundle exec] fastlane android playstore_promote_internal_to_trakt_beta_and_production
-```
-
-Promote PlayStore Internal Track to Closed Beta & Production
-
-### android playstore_promote_trakt_beta_to_production
-
-```sh
-[bundle exec] fastlane android playstore_promote_trakt_beta_to_production
-```
-
-Promote PlayStore Closed Beta Track to Production
-
 ### android playstore_release_all
 
 ```sh
 [bundle exec] fastlane android playstore_release_all
 ```
 
-Upload to PlayStore Internal Track and promote to Closed Beta and Production
+Upload to PlayStore Internal Track and promote to Production
 
 ### android build_apk
 
