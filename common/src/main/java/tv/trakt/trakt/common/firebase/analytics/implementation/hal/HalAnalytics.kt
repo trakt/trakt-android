@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SETTINGS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE_ARRIVAL
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SPOILER_REVEAL
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAMING_SERVICE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_THEME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPGRADE
@@ -207,6 +208,10 @@ internal class HalAnalytics(
 
     override fun logReportOpen(type: String) {
         events.track(EVENT_REPORT_OPEN, dims = mapOf(DIM_TYPE to type))
+    }
+
+    override fun logSpoilerReveal(type: String) {
+        events.track(EVENT_SPOILER_REVEAL, dims = mapOf(DIM_TYPE to type))
     }
 
     override fun logReport(

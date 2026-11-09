@@ -12,12 +12,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CastPerson
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -26,6 +29,8 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 internal class ShowActorsViewModel(
     private val show: Show,
     private val getActorsUseCase: GetShowActorsUseCase,
+    private val getSpoilerStateUseCase: GetSpoilerStateUseCase,
+    private val analytics: Analytics,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ShowActorsState()
@@ -34,11 +39,13 @@ internal class ShowActorsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_ACTORS))
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
 
     private var collapseJob: Job? = null
 
     init {
         loadData()
+        loadSpoilerState()
     }
 
     private fun loadData() {
@@ -60,6 +67,23 @@ internal class ShowActorsViewModel(
         }
     }
 
+    private fun loadSpoilerState() {
+        viewModelScope.launch {
+            try {
+                val hidden = getSpoilerStateUseCase.isShowHidden(show.ids.trakt)
+                spoilersHiddenState.update { hidden }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun logEpisodeCountReveal() {
+        analytics.logSpoilerReveal(MediaType.Show.value)
+    }
+
     fun setCollapsed(collapsed: Boolean) {
         collapseState.update { collapsed }
         collapseJob?.cancel()
@@ -77,12 +101,14 @@ internal class ShowActorsViewModel(
         loadingState,
         errorState,
         collapseState,
+        spoilersHiddenState,
     ) { state ->
         ShowActorsState(
             items = state[0] as ImmutableList<CastPerson>?,
             loading = state[1] as LoadingState,
             error = state[2] as Exception?,
             collapsed = state[3] as Boolean,
+            spoilersHidden = state[4] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

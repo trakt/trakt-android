@@ -11,11 +11,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.credits.model.CreditsMode
 import tv.trakt.trakt.core.summary.credits.model.MediaCredits
 import tv.trakt.trakt.core.summary.credits.navigation.AllCreditsDestination
@@ -25,6 +29,8 @@ import tv.trakt.trakt.core.summary.credits.usecases.GetMediaCreditsUseCase
 internal class AllCreditsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getCreditsUseCase: GetMediaCreditsUseCase,
+    private val getSpoilerStateUseCase: GetSpoilerStateUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllCreditsDestination>()
 
@@ -37,9 +43,11 @@ internal class AllCreditsViewModel(
     private val modeState = MutableStateFlow(initialState.mode)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
 
     init {
         loadData()
+        loadSpoilerState()
     }
 
     private fun loadData() {
@@ -64,8 +72,29 @@ internal class AllCreditsViewModel(
         }
     }
 
+    private fun loadSpoilerState() {
+        if (destination.mediaType != MediaType.Show) {
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val hidden = getSpoilerStateUseCase.isShowHidden(destination.mediaId.toTraktId())
+                spoilersHiddenState.update { hidden }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     fun setMode(mode: CreditsMode) {
         modeState.update { mode }
+    }
+
+    fun logEpisodeCountReveal() {
+        analytics.logSpoilerReveal(MediaType.Show.value)
     }
 
     val state = combine(
@@ -73,6 +102,7 @@ internal class AllCreditsViewModel(
         modeState,
         loadingState,
         errorState,
+        spoilersHiddenState,
     ) { state ->
         AllCreditsState(
             mediaTitle = initialState.mediaTitle,
@@ -81,6 +111,7 @@ internal class AllCreditsViewModel(
             mode = state[1] as CreditsMode,
             loading = state[2] as LoadingState,
             error = state[3] as Exception?,
+            spoilersHidden = state[4] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

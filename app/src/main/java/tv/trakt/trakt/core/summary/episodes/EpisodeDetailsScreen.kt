@@ -502,6 +502,7 @@ internal fun EpisodeDetailsContent(
                         ratings = state.episodeRatings,
                         creator = state.episodeCreator,
                         playsCount = state.episodeProgress?.plays ?: 0,
+                        spoilersHidden = state.spoilersHidden,
                         loading = state.loading.isLoading || state.loadingProgress.isLoading,
                         onCreatorClick = { onPersonClick?.invoke(it, PersonCreditsRole.Directing) },
                         onShowClick = onShowClick ?: {},

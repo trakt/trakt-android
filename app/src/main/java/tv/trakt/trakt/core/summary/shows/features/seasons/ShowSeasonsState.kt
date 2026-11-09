@@ -18,4 +18,5 @@ internal data class ShowSeasonsState(
     val error: Exception? = null,
     val collapsed: Boolean? = null,
     val watchedUntilPrompt: Episode? = null,
+    val spoilersHidden: Boolean = false,
 )

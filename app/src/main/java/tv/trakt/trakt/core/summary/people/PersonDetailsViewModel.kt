@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -278,6 +279,10 @@ internal class PersonDetailsViewModel(
 
     fun logShare() {
         analytics.logShare(source = "person", type = null)
+    }
+
+    fun logEpisodeCountReveal() {
+        analytics.logSpoilerReveal(MediaType.Show.value)
     }
 
     @Suppress("UNCHECKED_CAST")

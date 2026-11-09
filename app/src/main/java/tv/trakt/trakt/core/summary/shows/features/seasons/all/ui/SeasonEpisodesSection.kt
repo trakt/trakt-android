@@ -115,6 +115,7 @@ internal fun LazyListScope.SeasonEpisodesSection(
                 EpisodeListItem(
                     show = state.show!!,
                     episode = item,
+                    spoilersHidden = state.user?.settings?.hideSpoilers == true,
                     onClick = onEpisodeClick,
                     onCheckClick = onCheckEpisodeClick,
                     onCheckLongClick = onCheckEpisodeLongClick,
