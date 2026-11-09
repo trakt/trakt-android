@@ -66,7 +66,7 @@ import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.segmentShape
 
-private const val SKELETON_SEASON_COUNT = 4
+private const val SKELETON_SEASON_COUNT = 3
 private const val HEADER_ITEM_COUNT = 1
 private val ButtonHeight = 46.dp
 private val SegmentGap = 3.dp
