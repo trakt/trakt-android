@@ -209,6 +209,7 @@ object PreviewData {
         number = 2,
         rating = Rating(rating = 4.34f, votes = 5394),
         episodeCount = 12,
+        airedEpisodes = null,
         images = Images(
             poster = listOf(
                 "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",

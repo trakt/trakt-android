@@ -401,6 +401,7 @@ private fun Preview() {
                         ),
                         episodeCount = 10,
                         images = null,
+                        airedEpisodes = null,
                         overview = null,
                         firstAired = null,
                         updatedAt = null,

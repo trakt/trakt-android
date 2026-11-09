@@ -2,17 +2,24 @@
 
 package tv.trakt.trakt.core.summary.shows.features.progress
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,11 +30,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +46,7 @@ import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.flow.first
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.rememberPercentFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -54,8 +64,12 @@ import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.segmentShape
 
 private const val SKELETON_SEASON_COUNT = 4
+private const val HEADER_ITEM_COUNT = 1
+private val ButtonHeight = 46.dp
+private val SegmentGap = 3.dp
 
 @Composable
 internal fun ShowProgressView(
@@ -136,33 +150,11 @@ private fun ShowProgressContent(
     onMarkWatchedClick: () -> Unit = {},
     onRemoveWatchedClick: () -> Unit = {},
 ) {
-    val tint = state.show?.colors?.colors?.first ?: TraktTheme.colors.accent
-
-    Box(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(240.dp)
-                .background(
-                    Brush.verticalGradient(
-                        listOf(tint.copy(alpha = 0.2F), Color.Transparent),
-                    ),
-                ),
-        )
-
-        Column(
-            verticalArrangement = spacedBy(16.dp),
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .padding(top = 8.dp, bottom = 24.dp),
-        ) {
-            TraktHeader(
-                title = state.show?.title.orEmpty(),
-            )
-
-            ProgressHero(state = state)
-
-            ProgressSeasons(
+    Box(
+        modifier = modifier.padding(bottom = 16.dp),
+    ) {
+        Column {
+            ProgressList(
                 state = state,
                 onSeasonClick = onSeasonClick,
                 onEpisodeClick = onEpisodeClick,
@@ -170,45 +162,68 @@ private fun ShowProgressContent(
                 modifier = Modifier.weight(1F, fill = false),
             )
 
-            when {
-                state.isWatched -> PrimaryButton(
-                    text = stringResource(R.string.button_text_remove_from_history),
-                    containerColor = Red500,
-                    contentColor = Color.White,
-                    onClick = onRemoveWatchedClick,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+            Spacer(modifier = Modifier.height(ButtonHeight / 2))
+        }
 
-                else -> PrimaryButton(
-                    text = stringResource(R.string.button_text_mark_as_watched),
-                    icon = painterResource(R.drawable.ic_check),
-                    enabled = state.totalEpisodes > 0,
-                    onClick = onMarkWatchedClick,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+        val buttonModifier = Modifier
+            .align(Alignment.BottomCenter)
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+
+        when {
+            state.isWatched -> PrimaryButton(
+                text = stringResource(R.string.button_text_remove_from_history),
+                containerColor = Red500,
+                contentColor = Color.White,
+                height = ButtonHeight,
+                onClick = onRemoveWatchedClick,
+                modifier = buttonModifier,
+            )
+
+            else -> PrimaryButton(
+                text = stringResource(R.string.button_text_mark_as_watched),
+                icon = painterResource(R.drawable.ic_check_2),
+                enabled = state.totalEpisodes > 0,
+                height = ButtonHeight,
+                onClick = onMarkWatchedClick,
+                modifier = buttonModifier,
+            )
         }
     }
 }
 
 @Composable
 private fun ProgressHero(state: ShowProgressState) {
+    val loading = state.seasons == null && state.error == null
+    val shimmerColor = rememberSkeletonShimmerColor()
+    val textColor: (Color) -> Color = { if (loading) Color.Transparent else it }
+
     Column(
-        verticalArrangement = spacedBy(16.dp),
+        verticalArrangement = spacedBy(2.dp),
     ) {
         Row(
-            verticalAlignment = Bottom,
             horizontalArrangement = SpaceBetween,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = (state.fraction * 100).toInt().rememberPercentFormat(),
                 style = TraktTheme.typography.heading1.copy(fontWeight = FontWeight.W200),
-                color = TraktTheme.colors.textPrimary,
+                color = textColor(TraktTheme.colors.textPrimary),
+                modifier = Modifier
+                    .alignBy(LastBaseline)
+                    .then(
+                        when {
+                            loading -> Modifier.background(shimmerColor, RoundedCornerShape(12.dp))
+                            else -> Modifier
+                        },
+                    ),
             )
 
             Column(
                 horizontalAlignment = Alignment.End,
+                modifier = Modifier
+                    .alignBy(LastBaseline)
+                    .alpha(if (loading) 0F else 1F),
             ) {
                 Text(
                     text = stringResource(
@@ -227,16 +242,24 @@ private fun ProgressHero(state: ShowProgressState) {
             }
         }
 
-        WatchProgressLine(
-            progress = state.fraction,
-            lit = true,
-            size = WatchProgressSize.Large,
-        )
+        when {
+            loading -> Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(WatchProgressSize.Large.height)
+                    .background(shimmerColor, RoundedCornerShape(100)),
+            )
+            else -> WatchProgressLine(
+                progress = state.fraction,
+                size = WatchProgressSize.Large,
+                animate = false,
+            )
+        }
     }
 }
 
 @Composable
-private fun ProgressSeasons(
+private fun ProgressList(
     state: ShowProgressState,
     onSeasonClick: (Int) -> Unit,
     onEpisodeClick: (Episode, watched: Boolean) -> Unit,
@@ -244,40 +267,76 @@ private fun ProgressSeasons(
     modifier: Modifier = Modifier,
 ) {
     val seasons = state.seasons
-    if (seasons == null) {
-        if (state.error == null) {
-            ProgressSeasonsSkeleton(modifier = modifier)
-        }
-        return
-    }
-
     val listState = rememberLazyListState()
     var hasScrolled by remember { mutableStateOf(false) }
-    val currentIndex = seasons.indexOfFirst { it.number == state.currentSeason }
+    val currentIndex = seasons?.indexOfFirst { it.number == state.currentSeason } ?: -1
 
     LaunchedEffect(currentIndex) {
         if (hasScrolled || currentIndex < 0) return@LaunchedEffect
         hasScrolled = true
-        listState.scrollToItem(currentIndex)
+
+        val itemIndex = currentIndex + HEADER_ITEM_COUNT
+        snapshotFlow { listState.layoutInfo.totalItemsCount }.first { it > itemIndex }
+
+        val visible = listState.layoutInfo.visibleItemsInfo.any { it.index == itemIndex }
+        if (!visible) {
+            listState.scrollToItem(itemIndex)
+        }
     }
 
     LazyColumn(
         state = listState,
+        contentPadding = PaddingValues(
+            start = 24.dp,
+            end = 24.dp,
+            top = 8.dp,
+            bottom = ButtonHeight / 2 + 16.dp,
+        ),
         modifier = modifier,
     ) {
-        items(
+        item(key = "header") {
+            Column(
+                verticalArrangement = spacedBy(16.dp),
+                modifier = Modifier.padding(bottom = 16.dp),
+            ) {
+                TraktHeader(
+                    title = state.show?.title.orEmpty(),
+                    subtitle = stringResource(R.string.list_title_progress),
+                )
+
+                ProgressHero(state = state)
+            }
+        }
+
+        if (seasons == null) {
+            if (state.error == null) {
+                item(key = "skeleton") {
+                    ProgressSeasonsSkeleton()
+                }
+            }
+            return@LazyColumn
+        }
+
+        itemsIndexed(
             items = seasons,
-            key = { it.number },
-        ) { season ->
+            key = { _, season -> season.number },
+        ) { index, season ->
             SeasonProgressRow(
                 season = season,
                 expanded = state.isExpanded(season.number),
+                loading = season.number in state.loadingSeasons,
                 episodes = state.episodes[season.number],
                 upNextEpisodeId = state.upNext?.episodeId,
                 busyEpisodes = state.busyEpisodes,
                 onToggle = { onSeasonClick(season.number) },
                 onEpisodeClick = onEpisodeClick,
                 onFinishClick = onFinishClick,
+                modifier = Modifier
+                    .padding(top = if (index > 0) SegmentGap else 0.dp)
+                    .segment(
+                        index = index,
+                        count = seasons.size,
+                    ),
             )
         }
     }
@@ -285,29 +344,64 @@ private fun ProgressSeasons(
 
 @Composable
 private fun ProgressSeasonsSkeleton(modifier: Modifier = Modifier) {
+    val shimmerColor = rememberSkeletonShimmerColor()
+
     Column(
-        verticalArrangement = spacedBy(20.dp),
-        modifier = modifier.padding(vertical = 10.dp),
+        verticalArrangement = spacedBy(SegmentGap),
+        modifier = modifier,
     ) {
-        repeat(SKELETON_SEASON_COUNT) {
+        repeat(SKELETON_SEASON_COUNT) { index ->
             Column(
                 verticalArrangement = spacedBy(8.dp),
+                modifier = Modifier
+                    .segment(index = index, count = SKELETON_SEASON_COUNT)
+                    .padding(horizontal = 16.dp, vertical = 14.dp),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.3F)
                         .height(14.dp)
-                        .background(TraktTheme.colors.skeletonContainer, RoundedCornerShape(4.dp)),
+                        .background(shimmerColor, RoundedCornerShape(4.dp)),
                 )
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp)
-                        .background(TraktTheme.colors.skeletonContainer, RoundedCornerShape(100)),
+                        .background(shimmerColor, RoundedCornerShape(100)),
                 )
             }
         }
     }
+}
+
+@Composable
+private fun rememberSkeletonShimmerColor(): Color {
+    val color by rememberInfiniteTransition(label = "skeletonShimmer")
+        .animateColor(
+            initialValue = TraktTheme.colors.chipContainer,
+            targetValue = TraktTheme.colors.chipContainer.copy(alpha = 0.5F),
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 1000),
+                repeatMode = RepeatMode.Reverse,
+            ),
+            label = "skeletonShimmerColor",
+        )
+    return color
+}
+
+@Composable
+private fun Modifier.segment(
+    index: Int,
+    count: Int,
+): Modifier {
+    val shape = segmentShape(index = index, count = count)
+    return fillMaxWidth()
+        .shadow(
+            elevation = TraktTheme.colors.shadowDynamicSmall,
+            shape = shape,
+            clip = true,
+        )
+        .background(TraktTheme.colors.dialogOnContainer)
 }
 
 @PreviewTraktLightDark

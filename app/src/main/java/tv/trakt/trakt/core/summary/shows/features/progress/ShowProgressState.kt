@@ -20,6 +20,7 @@ internal data class ShowProgressState(
     val upNext: UpNext? = null,
     val watchedEpisodes: Int = 0,
     val busyEpisodes: ImmutableSet<TraktId> = persistentSetOf(),
+    val loadingSeasons: ImmutableSet<Int> = persistentSetOf(),
     val error: Exception? = null,
 ) {
     @Immutable
@@ -44,6 +45,7 @@ internal data class ShowProgressState(
         get() = resolveCurrentSeason(seasons, upNext)
 
     fun isExpanded(season: Int): Boolean {
+        if (!episodes.containsKey(season)) return false
         return expanded[season] ?: (season == currentSeason)
     }
 }

@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.summary.shows.features.progress.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -24,27 +26,27 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal enum class WatchProgressSize(
     val height: Dp,
 ) {
-    Regular(6.dp),
-    Large(10.dp),
+    Regular(5.dp),
+    Large(8.dp),
 }
 
 @Composable
 internal fun WatchProgressLine(
     progress: Float,
     modifier: Modifier = Modifier,
-    lit: Boolean = false,
     size: WatchProgressSize = WatchProgressSize.Regular,
+    animate: Boolean = true,
 ) {
     val shape = RoundedCornerShape(100)
 
     val fraction by animateFloatAsState(
         targetValue = progress.coerceIn(0F, 1F),
+        animationSpec = if (animate) spring() else snap(),
         label = "fraction",
     )
     val fillColor by animateColorAsState(
         targetValue = when {
-            lit -> TraktTheme.colors.accent
-            else -> TraktTheme.colors.textSecondary
+            else -> TraktTheme.colors.textPrimary
         },
         label = "fillColor",
     )
@@ -75,8 +77,8 @@ private fun Preview() {
             verticalArrangement = spacedBy(16.dp),
             modifier = Modifier.padding(16.dp),
         ) {
-            WatchProgressLine(progress = 0.4F, lit = true, size = WatchProgressSize.Large)
-            WatchProgressLine(progress = 0.7F, lit = true)
+            WatchProgressLine(progress = 0.4F, size = WatchProgressSize.Large)
+            WatchProgressLine(progress = 0.7F)
             WatchProgressLine(progress = 1F)
             WatchProgressLine(progress = 0F)
         }

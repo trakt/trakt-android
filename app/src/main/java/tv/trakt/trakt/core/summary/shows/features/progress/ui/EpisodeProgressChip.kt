@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.shows.features.progress.ui
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,9 +24,14 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Shade920
+import tv.trakt.trakt.core.summary.shows.features.progress.ui.EpisodeWatchState.Unwatched
+import tv.trakt.trakt.core.summary.shows.features.progress.ui.EpisodeWatchState.Upcoming
+import tv.trakt.trakt.core.summary.shows.features.progress.ui.EpisodeWatchState.Watched
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 
 internal enum class EpisodeWatchState {
     Watched,
@@ -43,18 +49,26 @@ internal fun EpisodeProgressChip(
     onClick: () -> Unit = {},
 ) {
     val border = when {
-        state == EpisodeWatchState.Watched -> null
-        upNext && state == EpisodeWatchState.Unwatched -> BorderStroke(2.dp, TraktTheme.colors.accent)
-        else -> BorderStroke(1.5.dp, TraktTheme.colors.textSecondary.copy(alpha = 0.4F))
+        state == Watched -> null
+        upNext && state == Unwatched -> BorderStroke(1.dp, TraktTheme.colors.accent)
+        else -> BorderStroke(1.dp, TraktTheme.colors.textPrimary)
+    }
+
+    val contentColor = when (state) {
+        Watched -> when (TraktTheme.colors.isLight) {
+            true -> TraktTheme.colors.textPrimaryOnAccent
+            false -> Shade920
+        }
+        Unwatched, Upcoming -> TraktTheme.colors.textPrimary
     }
 
     Column(
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = spacedBy(4.dp),
         modifier = modifier
-            .alpha(if (state == EpisodeWatchState.Upcoming) 0.4F else 1F)
+            .alpha(if (state == Upcoming) 0.33F else 1F)
             .onClick(
-                enabled = state != EpisodeWatchState.Upcoming && !busy,
+                enabled = state != Upcoming && !busy,
                 onClick = onClick,
             ),
     ) {
@@ -64,8 +78,8 @@ internal fun EpisodeProgressChip(
                 .size(32.dp)
                 .background(
                     color = when (state) {
-                        EpisodeWatchState.Watched -> TraktTheme.colors.accent
-                        EpisodeWatchState.Unwatched, EpisodeWatchState.Upcoming -> Color.Transparent
+                        Watched -> TraktTheme.colors.textPrimary
+                        Unwatched, Upcoming -> Color.Transparent
                     },
                     shape = CircleShape,
                 )
@@ -75,23 +89,20 @@ internal fun EpisodeProgressChip(
         ) {
             if (busy) {
                 FilmProgressIndicator(
-                    size = 16.dp,
-                    color = TraktTheme.colors.textSecondary,
+                    size = 14.dp,
+                    color = contentColor,
                 )
             } else {
                 Icon(
-                    painter = painterResource(R.drawable.ic_check),
-                    tint = when (state) {
-                        EpisodeWatchState.Watched -> TraktTheme.colors.textPrimaryOnAccent
-                        EpisodeWatchState.Unwatched, EpisodeWatchState.Upcoming -> TraktTheme.colors.textSecondary
-                    },
-                    contentDescription = null,
-                    modifier = Modifier.size(
+                    painter = painterResource(
                         when (state) {
-                            EpisodeWatchState.Watched -> 16.dp
-                            EpisodeWatchState.Unwatched, EpisodeWatchState.Upcoming -> 12.dp
+                            Watched -> R.drawable.ic_check_double
+                            Unwatched, Upcoming -> R.drawable.ic_check_2
                         },
                     ),
+                    tint = contentColor,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
                 )
             }
         }
@@ -108,15 +119,37 @@ internal fun EpisodeProgressChip(
 @Composable
 private fun Preview() {
     TraktThemePreview {
-        Row(
-            horizontalArrangement = spacedBy(12.dp),
-            modifier = Modifier.padding(16.dp),
-        ) {
-            EpisodeProgressChip(number = 1, state = EpisodeWatchState.Watched)
-            EpisodeProgressChip(number = 2, state = EpisodeWatchState.Watched, busy = true)
-            EpisodeProgressChip(number = 3, state = EpisodeWatchState.Unwatched, upNext = true)
-            EpisodeProgressChip(number = 4, state = EpisodeWatchState.Unwatched)
-            EpisodeProgressChip(number = 5, state = EpisodeWatchState.Upcoming)
+        PreviewChips()
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun SeasonalPreview() {
+    val dark = isSystemInDarkTheme()
+
+    Column {
+        SeasonalTheme.entries.forEach { season ->
+            TraktTheme(colors = if (dark) season.darkColors else season.lightColors) {
+                PreviewChips(
+                    modifier = Modifier.background(TraktTheme.colors.backgroundPrimary),
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun PreviewChips(modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = spacedBy(12.dp),
+        modifier = modifier.padding(16.dp),
+    ) {
+        EpisodeProgressChip(number = 1, state = Watched)
+        EpisodeProgressChip(number = 2, state = Watched, busy = true)
+        EpisodeProgressChip(number = 3, state = Unwatched, upNext = true)
+        EpisodeProgressChip(number = 4, state = Unwatched)
+        EpisodeProgressChip(number = 6, state = Unwatched, busy = true)
+        EpisodeProgressChip(number = 5, state = Upcoming)
     }
 }

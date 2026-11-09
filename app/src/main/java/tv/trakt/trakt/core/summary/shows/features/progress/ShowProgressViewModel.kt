@@ -7,6 +7,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.collections.immutable.toPersistentMap
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -63,10 +64,10 @@ internal class ShowProgressViewModel(
     private val upNextState = MutableStateFlow(initialState.upNext)
     private val watchedEpisodesState = MutableStateFlow(initialState.watchedEpisodes)
     private val busyEpisodesState = MutableStateFlow(initialState.busyEpisodes)
+    private val loadingSeasonsState = MutableStateFlow(initialState.loadingSeasons)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var seasons: List<Season> = emptyList()
-    private val loadingSeasons = mutableSetOf<Int>()
     private var loadJob: Job? = null
     private val historyMutex = Mutex()
 
@@ -98,8 +99,16 @@ internal class ShowProgressViewModel(
                     val upNextAsync = async { loadUpNext() }
 
                     seasons = seasonsAsync.await()
-                    applyProgress(progressAsync.await())
-                    upNextState.update { upNextAsync.await() }
+                    val progress = progressAsync.await()
+                    val upNext = upNextAsync.await()
+                    val seasonProgress = SeasonProgress.fromSeasons(seasons, progress)
+
+                    resolveCurrentSeason(seasonProgress, upNext)
+                        ?.takeIf { expandedState.value[it] != false }
+                        ?.let { preloadEpisodes(it) }
+
+                    upNextState.update { upNext }
+                    applyProgress(progress, seasonProgress)
                 }
                 loadExpandedEpisodes()
             } catch (error: Exception) {
@@ -122,9 +131,27 @@ internal class ShowProgressViewModel(
         }
     }
 
-    private fun applyProgress(progress: ShowItem?) {
-        seasonsState.update { SeasonProgress.fromSeasons(seasons, progress) }
+    private fun applyProgress(
+        progress: ShowItem?,
+        seasonProgress: ImmutableList<SeasonProgress> = SeasonProgress.fromSeasons(seasons, progress),
+    ) {
         watchedEpisodesState.update { progress?.watchedEpisodesWithoutSpecials ?: 0 }
+        seasonsState.update { seasonProgress }
+    }
+
+    private suspend fun preloadEpisodes(season: Int) {
+        if (episodesState.value.containsKey(season)) {
+            return
+        }
+
+        try {
+            val episodes = getProgressUseCase.getSeasonEpisodes(show.ids.trakt, season)
+            episodesState.update { it.toPersistentMap().put(season, episodes) }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+        }
     }
 
     private fun isExpanded(season: Int): Boolean {
@@ -138,33 +165,53 @@ internal class ShowProgressViewModel(
             ?.forEach { loadEpisodes(it.number) }
     }
 
-    private fun loadEpisodes(season: Int) {
-        if (episodesState.value.containsKey(season) || !loadingSeasons.add(season)) {
+    private fun loadEpisodes(
+        season: Int,
+        onLoaded: () -> Unit = {},
+    ) {
+        if (episodesState.value.containsKey(season) || season in loadingSeasonsState.value) {
             return
         }
+        loadingSeasonsState.update { it.toPersistentSet().add(season) }
 
         viewModelScope.launch {
             try {
                 val episodes = getProgressUseCase.getSeasonEpisodes(show.ids.trakt, season)
                 episodesState.update { it.toPersistentMap().put(season, episodes) }
+                onLoaded()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
             } finally {
-                loadingSeasons.remove(season)
+                loadingSeasonsState.update { it.toPersistentSet().remove(season) }
             }
         }
     }
 
     fun toggleSeason(season: Int) {
-        val expanded = !isExpanded(season)
-        expandedState.update { it.toPersistentMap().put(season, expanded) }
-
-        if (expanded) {
-            loadEpisodes(season)
-            analytics.logSummaryDrilldown(source = DRILLDOWN_SOURCE, type = "season")
+        if (season in loadingSeasonsState.value) {
+            return
         }
+
+        val loaded = episodesState.value.containsKey(season)
+        if (loaded && isExpanded(season)) {
+            setExpanded(season, false)
+            return
+        }
+
+        analytics.logSummaryDrilldown(source = DRILLDOWN_SOURCE, type = "season")
+        when {
+            loaded -> setExpanded(season, true)
+            else -> loadEpisodes(season) { setExpanded(season, true) }
+        }
+    }
+
+    private fun setExpanded(
+        season: Int,
+        expanded: Boolean,
+    ) {
+        expandedState.update { it.toPersistentMap().put(season, expanded) }
     }
 
     fun addToWatched(
@@ -266,6 +313,7 @@ internal class ShowProgressViewModel(
         upNextState,
         watchedEpisodesState,
         busyEpisodesState,
+        loadingSeasonsState,
         errorState,
     ) { state ->
         ShowProgressState(
@@ -276,7 +324,8 @@ internal class ShowProgressViewModel(
             upNext = state[4] as UpNext?,
             watchedEpisodes = state[5] as Int,
             busyEpisodes = state[6] as ImmutableSet<TraktId>,
-            error = state[7] as Exception?,
+            loadingSeasons = state[7] as ImmutableSet<Int>,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

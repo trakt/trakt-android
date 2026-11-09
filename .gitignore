@@ -9,6 +9,7 @@
 /captures
 .externalNativeBuild
 .cxx
+.kotlin
 *.jks
 debug.keystore
 local.properties

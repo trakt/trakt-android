@@ -695,6 +695,7 @@ private fun Preview() {
                                 votes = 1000,
                             ),
                             images = null,
+                            airedEpisodes = null,
                             overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
                                 "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
                             firstAired = nowUtc(),

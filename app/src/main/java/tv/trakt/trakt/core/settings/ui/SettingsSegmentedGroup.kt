@@ -6,21 +6,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private const val SEGMENT_INNER_CORNER_DP = 4
+import tv.trakt.trakt.ui.theme.segmentShape
 
 internal class SettingsSegmentScope {
     internal val items = mutableListOf<@Composable () -> Unit>()
@@ -72,22 +67,6 @@ internal fun SettingsSegmentedGroup(
                 }
             }
         }
-    }
-}
-
-private fun segmentShape(
-    index: Int,
-    count: Int,
-): Shape {
-    val first = index == 0
-    val last = index == count - 1
-    val inner = CornerSize(SEGMENT_INNER_CORNER_DP.dp)
-
-    return when {
-        first && last -> DefaultCardShape
-        first -> DefaultCardShape.copy(bottomStart = inner, bottomEnd = inner)
-        last -> DefaultCardShape.copy(topStart = inner, topEnd = inner)
-        else -> RoundedCornerShape(inner)
     }
 }
 
