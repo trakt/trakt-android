@@ -89,6 +89,7 @@ internal fun CommentReplyCard(
     userReaction: Reaction? = null,
     translations: CommentTranslations = EmptyTranslations,
     progressTotal: Int? = null,
+    mediaWatched: Boolean = false,
     onClick: (() -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
@@ -123,6 +124,7 @@ internal fun CommentReplyCard(
             userReaction = userReaction,
             translations = translations,
             progressTotal = progressTotal,
+            mediaWatched = mediaWatched,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
             onDeleteClick = onDeleteClick,
@@ -177,6 +179,7 @@ private fun CommentReplyCardContent(
     userReaction: Reaction?,
     translations: CommentTranslations,
     progressTotal: Int?,
+    mediaWatched: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
@@ -219,7 +222,7 @@ private fun CommentReplyCardContent(
             )
         }
 
-        val spoilerBlurred = comment.hasSpoilers && !isUserReply && !showSpoilers
+        val spoilerBlurred = comment.hasSpoilers && !isUserReply && !mediaWatched && !showSpoilers
         CommentReplyBody(
             text = markdownText,
             blurred = spoilerBlurred,
@@ -515,8 +518,9 @@ private fun Preview() {
                 CommentReplyCard(
                     onClick = {},
                     user = null,
-                    reply = PreviewData.comment1.copy(userRating = 7),
+                    reply = PreviewData.comment1.copy(userRating = 7, isSpoiler = true),
                     progressTotal = 10,
+                    mediaWatched = true,
                 )
 
                 CommentReplyCard(

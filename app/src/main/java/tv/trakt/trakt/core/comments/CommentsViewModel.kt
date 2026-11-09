@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -83,6 +84,7 @@ internal class CommentsViewModel(
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val getCommentRepliesUseCase: GetCommentRepliesUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+    private val loadProgressUseCase: LoadUserProgressUseCase,
     private val dataChanges: DataChanges,
     private val translationsStore: CommentTranslationsStore,
     private val analytics: Analytics,
@@ -118,6 +120,7 @@ internal class CommentsViewModel(
 
     init {
         loadBackground()
+        loadMediaWatched()
         loadData()
         observeData()
     }
@@ -193,6 +196,52 @@ internal class CommentsViewModel(
         } catch (error: Exception) {
             error.rethrowCancellation {
                 Timber.recordError(error)
+            }
+        }
+    }
+
+    private fun loadMediaWatched() {
+        viewModelScope.launch {
+            try {
+                if (!sessionManager.isAuthenticated()) {
+                    return@launch
+                }
+                val watched = isMediaWatched()
+                mediaState.update { it.copy(watched = watched) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private suspend fun isMediaWatched(): Boolean {
+        val mediaId = destination.mediaId.toTraktId()
+        return when (destination.mediaType) {
+            MediaType.Movie -> {
+                loadProgressUseCase.loadLocalMovies()
+                    .firstOrNull { it.movie.ids.trakt == mediaId }
+                    ?.plays
+                    ?.isNotEmpty() == true
+            }
+            MediaType.Show -> {
+                val aired = destination.mediaEpisodes ?: return false
+                val plays = loadProgressUseCase.loadLocalShows()
+                    .firstOrNull { it.showId == mediaId }
+                    ?.playsWithoutSpecials
+                    ?: return false
+                plays > 0 && plays >= aired
+            }
+            MediaType.Episode -> {
+                val showId = destination.mediaShowId?.toTraktId() ?: return false
+                val season = destination.mediaSeason ?: return false
+                loadProgressUseCase.loadLocalShows()
+                    .firstOrNull { it.showId == showId }
+                    ?.isEpisodeWatched(season, mediaId) == true
+            }
+            MediaType.Season -> {
+                false
             }
         }
     }

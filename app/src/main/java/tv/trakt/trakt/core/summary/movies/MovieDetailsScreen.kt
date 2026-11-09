@@ -720,6 +720,7 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             gifPaused = listState.isScrollInProgress,
+                            mediaWatched = (state.movieProgress?.plays ?: 0) > 0,
                             onMoreClick = onMoreCommentsClick,
                             onUserClick = onNavigateToUser,
                             modifier = Modifier

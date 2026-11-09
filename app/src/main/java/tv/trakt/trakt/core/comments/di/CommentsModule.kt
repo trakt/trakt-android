@@ -102,6 +102,7 @@ internal val commentsModule = module {
             getCommentRepliesUseCase = get(),
             sessionManager = get(),
             loadUserReactionsUseCase = get(),
+            loadProgressUseCase = get(),
             dataChanges = get(),
             translationsStore = get(),
             analytics = get(),
