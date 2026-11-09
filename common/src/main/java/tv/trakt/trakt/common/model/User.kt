@@ -48,7 +48,15 @@ data class User(
     @Serializable
     data class Images(
         val avatar: Image?,
-    )
+    ) {
+        companion object {
+            fun forUser(id: TraktId): Images {
+                return Images(
+                    avatar = Image(full = "${Config.MEDIA_BASE_URL}users/${id.value}/avatar.webp"),
+                )
+            }
+        }
+    }
 
     @Immutable
     @Serializable
@@ -83,11 +91,7 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
         isVipEp = dto.user.vipEp,
         isVipOg = dto.user.vipOg,
         isDirector = dto.user.director,
-        images = User.Images(
-            avatar = dto.user.images.avatar.let {
-                User.Image(it.full)
-            },
-        ),
+        images = dto.user.ids.trakt?.let { User.Images.forUser(TraktId(it)) },
         streamings = dto.browsing?.watchnow?.let {
             User.Streamings(
                 country = it.country ?: Config.DEFAULT_COUNTRY_CODE,
@@ -121,11 +125,7 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
         isVipEp = dto.vipEp ?: false,
         isVipOg = dto.vipOg ?: false,
         isDirector = dto.director ?: false,
-        images = User.Images(
-            avatar = dto.images?.avatar?.let {
-                User.Image(it.full)
-            },
-        ),
+        images = User.Images.forUser(dto.ids.trakt.toTraktId()),
         streamings = null,
         settings = User.Settings(
             watchOnlyOnce = false,

@@ -27,7 +27,7 @@ class UserSocialRemoteSource(
         limit: Int,
         type: String,
         filters: GlobalFilter?,
-        extended: String = "full,images,colors,rating,vip",
+        extended: String = "full,colors,rating,vip",
     ): List<SocialActivityItemDto> {
         val response = usersApi.getUsersActivities(
             id = "me",

@@ -42,7 +42,7 @@ class MoviesRemoteSource(
         theme: String? = null,
     ): List<TrendingMovieDto> {
         val response = moviesApi.getMoviesTrending(
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -83,7 +83,7 @@ class MoviesRemoteSource(
         theme: String? = null,
     ): List<MovieCalendarDto> {
         val response = moviesApi.getMoviesPopular(
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -118,7 +118,7 @@ class MoviesRemoteSource(
         return v3Api.getMovieRecommendations(
             V3RecommendationsRequest(
                 limit = limit,
-                extended = "full,streaming_ids,images,colors",
+                extended = "full,streaming_ids,colors",
                 watchWindow = 25,
                 watchnow = filters.availability?.joinToString(",") { it.slug },
                 genres = filters.genresParam,
@@ -143,7 +143,7 @@ class MoviesRemoteSource(
 
     suspend fun getRecommendedV2(limit: Int): List<RecommendedMovieDto> {
         val response = recommendationsApi.getRecommendationsMoviesRecommend(
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             limit = limit,
             watchWindow = 25,
             ignoreWatched = true,
@@ -172,7 +172,7 @@ class MoviesRemoteSource(
         theme: String? = null,
     ): List<AnticipatedMovieDto> {
         val response = moviesApi.getMoviesAnticipated(
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -212,7 +212,7 @@ class MoviesRemoteSource(
         filters: GlobalFilter = GlobalFilter.Default,
     ): List<CalendarMediaDto> {
         val response = calendarsApi.getCalendarsReleasesHot(
-            extended = "full,images,colors",
+            extended = "full,colors",
             startDate = startDate.truncatedTo(DAYS).toString(),
             endDate = null,
             days = days,
@@ -249,7 +249,7 @@ class MoviesRemoteSource(
     private suspend fun getMovieSummary(id: String): MovieCalendarDto {
         val response = moviesApi.getMoviesSummary(
             id = id,
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
         )
 
         return response.body()
@@ -289,7 +289,7 @@ class MoviesRemoteSource(
 
     suspend fun getCastCrew(
         movieId: TraktId,
-        extended: String = "images,full,markdown",
+        extended: String = "full,markdown",
     ): CastCrewDto {
         return try {
             moviesApi.getMoviesPeople(
@@ -310,7 +310,7 @@ class MoviesRemoteSource(
     ): List<MovieCalendarDto> {
         val response = moviesApi.getMoviesRelated(
             id = movieId.value.toString(),
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             limit = limit,
             page = null,
         )
@@ -349,7 +349,7 @@ class MoviesRemoteSource(
         limit: Int,
         sort: String,
         language: String? = null,
-        extended: String = "full,images,vip",
+        extended: String = "full,vip",
     ): List<CommentDto> {
         val response = moviesApi.getMoviesComments(
             id = movieId.value.toString(),

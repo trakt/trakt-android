@@ -15,6 +15,7 @@ val coilModule = module {
             .timeout(15.seconds)
             .components {
                 add(TimeoutInterceptor())
+                add(FallbackInterceptor())
                 add(SvgDecoder.Factory())
                 add(AnimatedImageDecoder.Factory())
             }

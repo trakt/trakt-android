@@ -21,6 +21,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
@@ -148,7 +149,7 @@ internal class CalendarWidgetDataSource(
                 image = loadImage(
                     context = context,
                     url = show.images?.getFanartUrl()
-                        ?: episode.images?.getScreenshotUrl(),
+                        .withFallback(episode.images?.getScreenshotUrl()),
                 ),
                 timeText = timeText,
                 tag = episode.tag(),

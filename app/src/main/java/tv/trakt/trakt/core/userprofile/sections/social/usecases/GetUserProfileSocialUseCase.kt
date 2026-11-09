@@ -14,7 +14,7 @@ internal class GetUserProfileSocialUseCase(
     suspend fun getFollowing(userId: TraktId): ImmutableList<User> {
         return remoteSource.getFollowing(
             userId = userId.value.toString(),
-            extended = "full,images,vip",
+            extended = "full,vip",
         )
             .entries
             .asyncMap { User.fromDto(it.key) }
@@ -24,7 +24,7 @@ internal class GetUserProfileSocialUseCase(
     suspend fun getFollowers(userId: TraktId): ImmutableList<User> {
         return remoteSource.getFollowers(
             userId = userId.value.toString(),
-            extended = "full,images,vip",
+            extended = "full,vip",
         )
             .entries
             .asyncMap { User.fromDto(it.key) }

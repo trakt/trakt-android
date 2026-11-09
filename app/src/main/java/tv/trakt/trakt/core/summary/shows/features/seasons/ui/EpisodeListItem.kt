@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -48,7 +49,7 @@ internal fun EpisodeListItem(
         ),
         contentImageUrl = when {
             isReleased -> episode.episode.images?.getScreenshotUrl(Images.Size.THUMB)
-                ?: show.images?.getFanartUrl(Images.Size.THUMB)
+                .withFallback(show.images?.getFanartUrl(Images.Size.THUMB))
             else -> show.images?.getFanartUrl(Images.Size.THUMB)
         },
         containerImageUrl = null,

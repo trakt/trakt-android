@@ -19,14 +19,14 @@ class PeopleRemoteSource(
 ) {
     suspend fun getPersonDetails(
         personId: TraktId,
-        extended: String = "full,images,markdown",
+        extended: String = "full,markdown",
     ): PersonDto {
         return getPersonSummary(personId.value.toString(), extended)
     }
 
     suspend fun getPersonDetails(
         personSlug: SlugId,
-        extended: String = "full,images,markdown",
+        extended: String = "full,markdown",
     ): PersonDto {
         return getPersonSummary(personSlug.value, extended)
     }
@@ -45,7 +45,7 @@ class PeopleRemoteSource(
     suspend fun getPersonShowsCredits(
         personId: TraktId,
         filters: GlobalFilter = GlobalFilter.Default,
-        extended: String = "full,images,colors,streaming_ids",
+        extended: String = "full,colors,streaming_ids",
     ): PersonShowsDto {
         return try {
             peopleExtrasApi.getPeopleShows(
@@ -63,7 +63,7 @@ class PeopleRemoteSource(
     suspend fun getPersonMoviesCredits(
         personId: TraktId,
         filters: GlobalFilter = GlobalFilter.Default,
-        extended: String = "full,images,colors,streaming_ids",
+        extended: String = "full,colors,streaming_ids",
     ): PersonMoviesDto {
         return try {
             peopleExtrasApi.getPeopleMovies(
@@ -80,7 +80,7 @@ class PeopleRemoteSource(
 
     suspend fun getBirthdayPeople(): List<PersonDto> {
         val response = peopleExtrasApi.getBirthdayPeople(
-            extended = "full,images,markdown",
+            extended = "full,markdown",
         )
         return response.body()
     }

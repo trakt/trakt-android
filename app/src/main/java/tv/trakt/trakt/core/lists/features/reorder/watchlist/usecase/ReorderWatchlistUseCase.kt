@@ -24,7 +24,7 @@ internal class ReorderWatchlistUseCase(
             val pageItems = remoteSource.getWatchlist(
                 page = page,
                 limit = LISTS_ITEMS_ALL_LIMIT,
-                extended = "full,images",
+                extended = "full",
                 sorting = RankSorting,
                 filters = null,
             )

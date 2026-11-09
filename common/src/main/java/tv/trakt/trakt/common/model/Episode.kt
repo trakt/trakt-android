@@ -6,7 +6,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -104,9 +103,7 @@ fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
         commentCount = dto.commentCount ?: 0,
         runtime = dto.runtime?.minutes,
         originalTitle = dto.originalTitle ?: "",
-        images = Images(
-            screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
-        ),
+        images = Images.forEpisode(TraktId(dto.ids.trakt)),
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
@@ -133,9 +130,7 @@ fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
         commentCount = dto.commentCount ?: 0,
         runtime = dto.runtime?.minutes,
         originalTitle = dto.originalTitle ?: "",
-        images = Images(
-            screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
-        ),
+        images = Images.forEpisode(TraktId(dto.ids.trakt)),
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
@@ -162,9 +157,7 @@ fun Episode.Companion.fromDto(dto: EpisodeLikesDto): Episode {
         commentCount = dto.commentCount ?: 0,
         runtime = dto.runtime?.minutes,
         originalTitle = dto.originalTitle ?: "",
-        images = Images(
-            screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
-        ),
+        images = Images.forEpisode(TraktId(dto.ids.trakt)),
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
@@ -191,9 +184,7 @@ fun Episode.Companion.fromDto(dto: EpisodeCalendarsDto): Episode {
         commentCount = dto.commentCount ?: 0,
         runtime = dto.runtime?.minutes,
         originalTitle = dto.originalTitle ?: "",
-        images = Images(
-            screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
-        ),
+        images = Images.forEpisode(TraktId(dto.ids.trakt)),
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),
@@ -220,9 +211,7 @@ fun Episode.Companion.fromDto(dto: EpisodeCalendarDto): Episode {
         commentCount = dto.commentCount ?: 0,
         runtime = dto.runtime?.minutes,
         originalTitle = dto.originalTitle ?: "",
-        images = Images(
-            screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
-        ),
+        images = Images.forEpisode(TraktId(dto.ids.trakt)),
         firstAired = dto.firstAired?.toInstant(),
         effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
         updatedAt = dto.updatedAt?.toInstant(),

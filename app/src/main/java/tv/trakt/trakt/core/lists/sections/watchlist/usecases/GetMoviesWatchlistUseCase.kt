@@ -42,7 +42,7 @@ internal class GetMoviesWatchlistUseCase(
             page = page,
             limit = limit,
             sorting = sorting,
-            extended = "full,images,colors",
+            extended = "full,colors",
             filters = filters,
         ).asyncMap {
             val mediaId = it.movie.ids.trakt.toTraktId()

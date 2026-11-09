@@ -22,7 +22,7 @@ internal class GetCastCrewUseCase(
             showId = showId,
             season = seasonEpisode.season,
             episode = seasonEpisode.episode,
-            extended = "images",
+            extended = "min",
         )
 
         val cast = (castCrew.cast ?: emptyList())

@@ -37,6 +37,7 @@ import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressMovie
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Episode
@@ -212,7 +213,7 @@ private fun ContentShowListItem(
         title = "",
         containerImageUrl =
             item.show.images?.getFanartUrl()
-                ?: item.progress.nextEpisode?.images?.getScreenshotUrl(),
+                .withFallback(item.progress.nextEpisode?.images?.getScreenshotUrl()),
         onClick = {
             item.progress.nextEpisode?.let {
                 onClick(item.show, it)

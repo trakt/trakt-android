@@ -42,7 +42,7 @@ class ShowsRemoteSource(
         theme: String? = null,
     ): List<TrendingShowDto> {
         val response = showsApi.getShowsTrending(
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -83,7 +83,7 @@ class ShowsRemoteSource(
         theme: String? = null,
     ): List<ShowCalendarsDto> {
         val response = showsApi.getShowsPopular(
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -118,7 +118,7 @@ class ShowsRemoteSource(
         return v3Api.getShowRecommendations(
             V3RecommendationsRequest(
                 limit = limit,
-                extended = "full,streaming_ids,images,colors",
+                extended = "full,streaming_ids,colors",
                 watchWindow = 25,
                 watchnow = filters.availability?.joinToString(",") { it.slug },
                 genres = filters.genresParam,
@@ -143,7 +143,7 @@ class ShowsRemoteSource(
 
     suspend fun getRecommendedV2(limit: Int): List<RecommendedShowDto> {
         val response = recommendationsApi.getRecommendationsShowsRecommend(
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             limit = limit,
             watchWindow = 25,
             ignoreWatched = true,
@@ -172,7 +172,7 @@ class ShowsRemoteSource(
         theme: String? = null,
     ): List<AnticipatedShowDto> {
         val response = showsApi.getShowsAnticipated(
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             page = page,
             limit = limit,
             theme = theme,
@@ -212,7 +212,7 @@ class ShowsRemoteSource(
         filters: GlobalFilter = GlobalFilter.Default,
     ): List<CalendarMediaDto> {
         val response = calendarsApi.getCalendarsReleasesHot(
-            extended = "full,images,colors",
+            extended = "full,colors",
             startDate = startDate.truncatedTo(DAYS).toString(),
             endDate = null,
             days = days,
@@ -244,7 +244,7 @@ class ShowsRemoteSource(
         filters: GlobalFilter = GlobalFilter.Default,
     ): List<CalendarShowDto> {
         return calendarsApi.getCalendarsReleasesHotPremieres(
-            extended = "full,images,colors",
+            extended = "full,colors",
             startDate = startDate.truncatedTo(DAYS).toString(),
             endDate = null,
             days = days,
@@ -272,7 +272,7 @@ class ShowsRemoteSource(
         filters: GlobalFilter = GlobalFilter.Default,
     ): List<CalendarShowDto> {
         return calendarsApi.getCalendarsReleasesHotFinales(
-            extended = "full,images,colors",
+            extended = "full,colors",
             startDate = startDate.truncatedTo(DAYS).toString(),
             endDate = null,
             days = days,
@@ -305,7 +305,7 @@ class ShowsRemoteSource(
     private suspend fun getShowSummary(id: String): ShowCalendarsDto {
         val response = showsApi.getShowsSummary(
             id = id,
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
         )
 
         return response.body()
@@ -344,7 +344,7 @@ class ShowsRemoteSource(
         return try {
             showsApi.getShowsPeople(
                 id = showId.value.toString(),
-                extended = extended ?: if (guestStars) "images,full,guest_stars,markdown" else "images,full,markdown",
+                extended = extended ?: if (guestStars) "full,guest_stars,markdown" else "full,markdown",
             ).body()
         } catch (error: Exception) {
             if (error.getHttpCode() == 204) {
@@ -372,7 +372,7 @@ class ShowsRemoteSource(
     ): List<ShowCalendarsDto> {
         val response = showsApi.getShowsRelated(
             id = showId.value.toString(),
-            extended = "full,streaming_ids,images,colors",
+            extended = "full,streaming_ids,colors",
             limit = limit,
             page = null,
         )
@@ -401,7 +401,7 @@ class ShowsRemoteSource(
         limit: Int,
         sort: String,
         language: String? = null,
-        extended: String = "full,images,vip",
+        extended: String = "full,vip",
     ): List<CommentDto> {
         val response = showsApi.getShowsComments(
             id = showId.value.toString(),
@@ -425,7 +425,7 @@ class ShowsRemoteSource(
     suspend fun getSeasons(showId: TraktId): List<SeasonDto> {
         val response = showsApi.getShowsSeasons(
             id = showId.value.toString(),
-            extended = "full,images",
+            extended = "full",
         )
         return response.body()
     }

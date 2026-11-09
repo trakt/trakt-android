@@ -20,7 +20,7 @@ internal class GetListsShowsWatchlistUseCase(
         val shows = remoteSyncSource.getWatchlist(
             page = page,
             limit = limit,
-            extended = "full,images,colors,streaming_ids",
+            extended = "full,colors,streaming_ids",
             sorting = Sorting.RecentlyAdded,
         ).asyncMap {
             Show.fromDto(it.show)

@@ -30,7 +30,7 @@ internal class LoadUserSocialUseCase(
     suspend fun loadFollowing(): ImmutableList<User> {
         val response = remoteSource.getFollowing(
             userId = "me",
-            extended = "full,images,vip",
+            extended = "full,vip",
         ).entries
             .asyncMap {
                 User.fromDto(it.key)
@@ -42,7 +42,7 @@ internal class LoadUserSocialUseCase(
     suspend fun loadFollowers(): ImmutableList<User> {
         val response = remoteSource.getFollowers(
             userId = "me",
-            extended = "full,images,vip",
+            extended = "full,vip",
         )
             .entries
             .asyncMap {

@@ -41,7 +41,7 @@ class UserRemoteSource(
     suspend fun getUserProfile(userId: TraktId): User {
         val response = usersApi.getUsersProfile(
             id = userId.value.toString(),
-            extended = "full,vip,images",
+            extended = "full,vip",
         ).body()
 
         return User.fromDto(response)
@@ -74,7 +74,7 @@ class UserRemoteSource(
     suspend fun getWatchingNow(): UserWatchingDto? {
         val response = usersApi.getUsersWatching(
             id = "me",
-            extended = "full,images,colors",
+            extended = "full,colors",
         )
         return when {
             response.status == 204 -> null
@@ -250,7 +250,7 @@ class UserRemoteSource(
         val response = usersApi.getUsersHiddenDropped(
             page = page,
             limit = limit,
-            extended = "full,images,colors",
+            extended = "full,colors",
         )
         return response.body()
     }
@@ -265,7 +265,7 @@ class UserRemoteSource(
             limit = limit,
             commentType = "all",
             type = "all",
-            extended = "full,images,colors",
+            extended = "full,colors",
             includeReplies = null,
         )
         return response.body()

@@ -19,7 +19,7 @@ internal class GetFavoriteMoviesUseCase(
         limit: Int,
     ): ImmutableList<Movie> {
         return remoteUserSource.getFavoriteMovies(
-            extended = "full,images,colors,streaming_ids",
+            extended = "full,colors,streaming_ids",
             sorting = Sorting.RecentlyAdded,
             pagination = Pagination(page = page, limit = limit),
         )

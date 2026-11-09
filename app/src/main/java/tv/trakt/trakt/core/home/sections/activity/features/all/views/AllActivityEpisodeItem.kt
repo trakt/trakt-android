@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.isTraktUnknown
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
@@ -69,7 +70,7 @@ internal fun AllActivityEpisodeItem(
         subtitle = item.episode.seasonEpisodeString(),
         contentImageUrl = item.show.images?.getPosterUrl(),
         containerImageUrl = item.episode.images?.getScreenshotUrl(THUMB)
-            ?: item.episode.images?.getFanartUrl(THUMB),
+            .withFallback(item.episode.images?.getFanartUrl(THUMB)),
         onClick = onClick,
         onImageClick = onShowClick,
         onLongClick = onLongClick,

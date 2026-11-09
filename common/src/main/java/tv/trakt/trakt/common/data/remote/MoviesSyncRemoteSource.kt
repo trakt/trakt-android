@@ -35,7 +35,7 @@ class MoviesSyncRemoteSource(
         page: Int,
     ): List<ProgressMovieDto> {
         val response = syncApi.getSyncProgressMovies(
-            extended = "full,images,colors",
+            extended = "full,colors",
             page = page,
             limit = limit,
             startAt = null,

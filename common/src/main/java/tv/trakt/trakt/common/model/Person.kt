@@ -1,7 +1,6 @@
 package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.serializers.LocalDateSerializer
 import tv.trakt.trakt.common.model.Person.Companion
@@ -66,11 +65,7 @@ fun Companion.fromDto(dto: PersonDto): Person {
         heightCm = dto.height?.takeIf { it > 0 },
         birthplace = dto.birthplace,
         knownForDepartment = dto.knownForDepartment,
-        images = dto.images?.let {
-            Images(
-                headshot = it.headshot.toImmutableList(),
-            )
-        },
+        images = Images.forPerson(dto.ids.trakt.toTraktId()),
         socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }
@@ -89,11 +84,7 @@ fun Companion.fromDto(dto: PersonSearchDto): Person {
         death = dto.death?.let { LocalDate.parse(it) },
         knownForDepartment = dto.knownForDepartment,
         birthplace = dto.birthplace,
-        images = dto.images?.let {
-            Images(
-                headshot = it.headshot.toImmutableList(),
-            )
-        },
+        images = Images.forPerson(dto.ids.trakt.toTraktId()),
         socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }

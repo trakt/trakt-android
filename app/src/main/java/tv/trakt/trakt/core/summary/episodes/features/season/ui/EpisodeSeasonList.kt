@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -93,7 +94,7 @@ internal fun EpisodeSeasonList(
                 watched = item.isWatched,
                 highlighted = isCurrent,
                 containerImageUrl = item.episode.images?.getScreenshotUrl()
-                    ?: show?.images?.getFanartUrl(),
+                    .withFallback(show?.images?.getFanartUrl()),
                 onClick = { onEpisodeClick(item) },
                 onLongClick = {
                     if (hasMore) {

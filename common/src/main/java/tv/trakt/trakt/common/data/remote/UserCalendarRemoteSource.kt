@@ -16,7 +16,7 @@ class UserCalendarRemoteSource(
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter? = null,
-        extended: String = "full,images,colors",
+        extended: String = "full,colors",
     ): List<CalendarMediaDto> {
         val response = calendarsApi.getCalendarsMedia(
             target = "my",
@@ -53,7 +53,7 @@ class UserCalendarRemoteSource(
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter? = null,
-        extended: String = "full,images,colors",
+        extended: String = "full,colors",
     ): List<CalendarShowDto> {
         val response = calendarsApi.getCalendarsShows(
             target = "my",
@@ -88,7 +88,7 @@ class UserCalendarRemoteSource(
         startDate: LocalDate,
         days: Int,
         filters: GlobalFilter? = null,
-        extended: String = "full,images,colors",
+        extended: String = "full,colors",
     ): List<CalendarMovieDto> {
         val response = calendarsApi.getCalendarsMovies(
             target = "my",

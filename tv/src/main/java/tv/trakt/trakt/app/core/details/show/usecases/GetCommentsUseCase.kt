@@ -14,7 +14,7 @@ internal class GetCommentsUseCase(
             showId = showId,
             limit = 20,
             sort = "likes",
-            extended = "images",
+            extended = "min",
         )
             .map { Comment.fromDto(it) }
 

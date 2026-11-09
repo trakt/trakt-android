@@ -42,7 +42,7 @@ class UserSmartListsRemoteSource(
     suspend fun getSmartListItems(
         listId: TraktId,
         pagination: Pagination = Pagination(),
-        extended: String = "full,images,colors",
+        extended: String = "full,colors",
     ): List<SmartListItemDto> {
         return smartListsApi.getSmartListsItems(
             listId = listId.value.toString(),
@@ -65,7 +65,7 @@ class UserSmartListsRemoteSource(
     suspend fun getSmartListPreviewItems(
         filters: SmartListFilters,
         pagination: Pagination = Pagination(),
-        extended: String = "full,images,colors",
+        extended: String = "full,colors",
     ): List<SmartListItemDto> {
         return v3Api.getSmartListPreviewItems(
             params = filters.toPreviewParams() + ("extended" to extended),

@@ -135,7 +135,7 @@ fun Companion.fromDto(dto: ShowDto): Show {
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
-        images = dto.images?.let { Images.fromDto(it) },
+        images = Images.forShow(TraktId(dto.ids.trakt)),
         colors = dto.colors?.poster?.let {
             MediaColors(
                 Pair(
@@ -178,7 +178,7 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
-        images = dto.images?.let { Images.fromDto(it) },
+        images = Images.forShow(TraktId(dto.ids.trakt)),
         colors = dto.colors?.poster?.let {
             MediaColors(
                 Pair(
@@ -222,7 +222,7 @@ fun Companion.fromDto(dto: ShowCalendarsDto): Show {
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
-        images = dto.images?.let { Images.fromDto(it) },
+        images = Images.forShow(TraktId(dto.ids.trakt)),
         colors = dto.colors?.poster?.let {
             MediaColors(
                 Pair(
@@ -266,7 +266,7 @@ fun Companion.fromDto(dto: PopularMediaDto): Show {
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
-        images = dto.images?.let { Images.fromDto(it) },
+        images = Images.forShow(TraktId(dto.ids.trakt)),
         colors = dto.colors?.poster?.let {
             MediaColors(
                 Pair(

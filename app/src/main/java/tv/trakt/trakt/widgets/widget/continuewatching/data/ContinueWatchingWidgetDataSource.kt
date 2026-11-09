@@ -19,6 +19,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.core.home.model.UpNextItem
 import tv.trakt.trakt.common.core.home.model.UpNextMovie
 import tv.trakt.trakt.common.core.home.model.UpNextShow
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -96,7 +97,7 @@ internal class ContinueWatchingWidgetDataSource(
                 image = loadImage(
                     context = context,
                     url = show.images?.getFanartUrl()
-                        ?: progress.nextEpisode?.images?.getScreenshotUrl(),
+                        .withFallback(progress.nextEpisode?.images?.getScreenshotUrl()),
                 ),
                 progress = progress.remainingPercent,
                 imageTarget = progress.nextEpisode.episodeTarget(showId = show.ids.trakt),

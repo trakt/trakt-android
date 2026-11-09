@@ -64,7 +64,7 @@ class PeopleRemoteSource(
 ) {
     suspend fun getPersonDetails(
         personId: TraktId,
-        extended: String = "full,images,markdown",
+        extended: String = "full,markdown",
     ): PersonDto { … }
 }
 
@@ -84,10 +84,15 @@ Rules:
   `data/remote/`, even when only one platform calls them today.
 - **Hand-written DTOs** (endpoints the OpenAPI spec lacks) go to `data/dto/` for responses and
   `data/request/` for request bodies. Never next to the remote source.
-- **Platform differences are parameters with the phone default** (`extended: String = "full,images,markdown"`).
-  TV passes its own value (`"full,images"`) at the call site; extract repeated values into a
+- **Platform differences are parameters with the phone default** (`extended: String = "full,markdown"`).
+  TV passes its own value (`"full"`) at the call site; extract repeated values into a
   `private const val` in the calling use-case.
-- **Images use `extended=images`.** `cloud9` is legacy; do not add it back.
+- **Media images are built client-side** from the trakt id (`Images.forMovie`, `forShow`,
+  `forSeason`, `forEpisode`, `forPerson` -> `https://media.trakt.tv/{type}/{id}/{size}/{slot}.webp`).
+  Avatars are built the same way (`User.Images.forUser` -> `users/{id}/avatar.webp`). Do not
+  request `extended=images` except on list endpoints, whose poster collages only the API returns;
+  use `min` when nothing else is needed.
+  Missing images are a 404, so chain alternatives with `withFallback` instead of `?:`.
 - **API instances come from `networkingApiModule`** (`common/.../networking/di/NetworkingModule.kt`).
   Never construct `PeopleApi(...)` inside a feature module.
 - **All remote sources bind in one `remoteSourcesModule`**, registered in both
@@ -106,7 +111,7 @@ Rules:
 
 The domain model owns its mapping through a `companion object { fun fromDto(...) }`. No separate
 mapper files (`*Mapper.kt`, `mapTo*.kt`) and no `Dto.toDomain()` extension functions. See
-`Comment.fromDto`, `Images.fromDto`, `Ids.fromDto`.
+`Comment.fromDto`, `Ids.fromDto`.
 
 ```kotlin
 // common/.../model/Movie.kt

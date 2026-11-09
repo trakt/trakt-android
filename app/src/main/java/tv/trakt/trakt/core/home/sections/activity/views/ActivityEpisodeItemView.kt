@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
@@ -63,7 +64,7 @@ internal fun ActivityEpisodeItemView(
         onLongClick = onLongClick,
         containerImageUrl =
             item.episode.images?.getScreenshotUrl()
-                ?: item.show.images?.getFanartUrl(),
+                .withFallback(item.show.images?.getFanartUrl()),
         cardContent = {
             val isPast = remember(item.activityAt) {
                 !item.activityAt.isAfter(nowUtcInstant())

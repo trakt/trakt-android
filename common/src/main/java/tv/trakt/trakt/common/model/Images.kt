@@ -2,11 +2,11 @@ package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
-import tv.trakt.trakt.common.networking.ImagesDto
 
 private val imageSizeRegex = Regex("/(thumb|medium|original|full)/")
 
@@ -95,13 +95,48 @@ data class Images(
     }
 
     companion object {
-        fun fromDto(dto: ImagesDto): Images {
+        fun forMovie(id: TraktId): Images = forTitle(type = "movies", id = id)
+
+        fun forShow(id: TraktId): Images = forTitle(type = "shows", id = id)
+
+        fun forSeason(id: TraktId): Images {
             return Images(
-                fanart = dto.fanart.toImmutableList(),
-                poster = dto.poster.toImmutableList(),
-                thumb = dto.thumb.toImmutableList(),
-                logo = dto.logo.toImmutableList(),
+                poster = mediaUrls("seasons", id, "poster"),
+                thumb = mediaUrls("seasons", id, "thumb"),
             )
+        }
+
+        fun forEpisode(id: TraktId): Images {
+            return Images(
+                screenshot = mediaUrls("episodes", id, "screenshot"),
+            )
+        }
+
+        fun forPerson(id: TraktId): Images {
+            return Images(
+                headshot = mediaUrls("people", id, "headshot"),
+                fanart = mediaUrls("people", id, "fanart"),
+            )
+        }
+
+        private fun forTitle(
+            type: String,
+            id: TraktId,
+        ): Images {
+            return Images(
+                fanart = mediaUrls(type, id, "fanart"),
+                poster = mediaUrls(type, id, "poster"),
+                logo = mediaUrls(type, id, "logo"),
+                thumb = mediaUrls(type, id, "thumb"),
+            )
+        }
+
+        private fun mediaUrls(
+            type: String,
+            id: TraktId,
+            slot: String,
+        ): ImmutableList<String> {
+            return persistentListOf("${Config.MEDIA_BASE_URL}$type/${id.value}/${Size.MEDIUM.value}/$slot.webp")
         }
     }
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.core.home.model.Progress
 import tv.trakt.trakt.common.core.home.model.UpNextShow
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -57,7 +58,7 @@ internal fun AllUpNextShowView(
         subtitle = item.progress.nextEpisode?.seasonEpisodeString() ?: "N/A",
         contentImageUrl = item.show.images?.getPosterUrl(),
         containerImageUrl = item.progress.nextEpisode?.images?.getScreenshotUrl(Images.Size.THUMB)
-            ?: item.show.images?.getFanartUrl(Images.Size.THUMB),
+            .withFallback(item.show.images?.getFanartUrl(Images.Size.THUMB)),
         onClick = onClick,
         onLongClick = onLongClick,
         onImageClick = onShowClick,

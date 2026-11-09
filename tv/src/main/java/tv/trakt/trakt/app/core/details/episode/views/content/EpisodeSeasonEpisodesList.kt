@@ -20,6 +20,7 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -74,7 +75,7 @@ internal fun EpisodeSeasonEpisodesList(
                     title = "",
                     watched = timestamp != null,
                     containerImageUrl = when (episode.rememberReleased()) {
-                        true -> episode.images?.getScreenshotUrl() ?: show?.images?.getFanartUrl()
+                        true -> episode.images?.getScreenshotUrl().withFallback(show?.images?.getFanartUrl())
                         false -> show?.images?.getFanartUrl()
                     },
                     onClick = { onClicked(episode) },

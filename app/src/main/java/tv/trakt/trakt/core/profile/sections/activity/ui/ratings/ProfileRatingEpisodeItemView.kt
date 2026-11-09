@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -36,7 +37,7 @@ internal fun ProfileRatingEpisodeItemView(
         more = false,
         onClick = { onClick(item.episode.ids.trakt) },
         containerImageUrl = item.episode.images?.getScreenshotUrl()
-            ?: item.show.images?.getFanartUrl(),
+            .withFallback(item.show.images?.getFanartUrl()),
         cardContent = {
             InfoChip(
                 text = item.ratedAt.toLocal().relativePastDateString(),

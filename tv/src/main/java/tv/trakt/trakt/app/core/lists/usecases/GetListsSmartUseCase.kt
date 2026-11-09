@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.lists.SmartListSource.Unknown
@@ -44,10 +45,11 @@ internal class GetListsSmartUseCase(
         val posters = remoteSource.getSmartListItems(
             listId = list.ids.trakt,
             pagination = Pagination(limit = PREVIEW_POSTERS_LIMIT),
-            extended = "images",
+            extended = "min",
         ).mapNotNull { item ->
-            item.show?.images?.poster?.firstOrNull()
-                ?: item.movie?.images?.poster?.firstOrNull()
+            val images = item.show?.let { Images.forShow(TraktId(it.ids.trakt)) }
+                ?: item.movie?.let { Images.forMovie(TraktId(it.ids.trakt)) }
+            images?.poster?.firstOrNull()
         }
 
         return Images(posters = posters.toImmutableList())
