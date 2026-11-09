@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -126,7 +127,7 @@ internal fun DetailsActions(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Button(
+                    Box(
                         modifier = Modifier
                             .weight(1F)
                             .height(40.dp)
@@ -134,54 +135,58 @@ internal fun DetailsActions(
                                 fraction = progressFraction,
                                 color = TraktTheme.colors.primaryButtonContainer,
                             ),
-                        contentPadding = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
-                        ),
-                        shape = shape,
-                        colors = buttonColors(
-                            containerColor = when (watched) {
-                                true -> TraktTheme.colors.primaryButtonContainer
-                                else -> Color.Transparent
-                            },
-                            contentColor = when (watched) {
-                                true -> TraktTheme.colors.primaryButtonContainer
-                                else -> TraktTheme.colors.accent
-                            },
-                            disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
-                            disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
-                        ),
-                        border = when (watched) {
-                            true -> null
-                            else -> when (enabled && primaryEnabled) {
-                                true -> BorderStroke(
-                                    width = 1.5.dp,
-                                    color = TraktTheme.colors.primaryButtonContainer,
-                                )
-                                else -> null
-                            }
-                        },
-                        enabled = enabled && primaryEnabled,
-                        onClick = onPrimaryClick ?: {},
                     ) {
-                        if (!loading) {
-                            Icon(
-                                painter = painterResource(primaryIcon),
-                                tint = when {
-                                    enabled && primaryEnabled -> when (watched) {
-                                        true -> TraktTheme.colors.textPrimaryOnAccent
-                                        false -> TraktTheme.colors.textPrimary
-                                    }
-                                    else -> Shade400
+                        Button(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(
+                                start = 16.dp,
+                                end = 16.dp,
+                            ),
+                            shape = shape,
+                            colors = buttonColors(
+                                containerColor = when (watched) {
+                                    true -> TraktTheme.colors.primaryButtonContainer
+                                    else -> Color.Transparent
                                 },
-                                contentDescription = null,
-                                modifier = Modifier.size(23.dp),
-                            )
-                        } else {
-                            FilmProgressIndicator(
-                                size = 20.dp,
-                                color = Shade400,
-                            )
+                                contentColor = when (watched) {
+                                    true -> TraktTheme.colors.primaryButtonContainer
+                                    else -> TraktTheme.colors.accent
+                                },
+                                disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
+                                disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
+                            ),
+                            border = when (watched) {
+                                true -> null
+                                else -> when (enabled && primaryEnabled) {
+                                    true -> BorderStroke(
+                                        width = 1.5.dp,
+                                        color = TraktTheme.colors.primaryButtonContainer,
+                                    )
+                                    else -> null
+                                }
+                            },
+                            enabled = enabled && primaryEnabled,
+                            onClick = onPrimaryClick ?: {},
+                        ) {
+                            if (!loading) {
+                                Icon(
+                                    painter = painterResource(primaryIcon),
+                                    tint = when {
+                                        enabled && primaryEnabled -> when (watched) {
+                                            true -> TraktTheme.colors.textPrimaryOnAccent
+                                            false -> TraktTheme.colors.textPrimary
+                                        }
+                                        else -> Shade400
+                                    },
+                                    contentDescription = null,
+                                    modifier = Modifier.size(23.dp),
+                                )
+                            } else {
+                                FilmProgressIndicator(
+                                    size = 20.dp,
+                                    color = Shade400,
+                                )
+                            }
                         }
                     }
 
@@ -257,22 +262,15 @@ private fun Modifier.trackProgress(
         val inset = 4.dp.toPx()
         val height = size.height - inset * 2
         val trackWidth = size.width - inset * 2
-        val radius = CornerRadius(height / 2)
         val fillWidth = (trackWidth * fraction)
-            .coerceAtLeast(height + inset)
+            .coerceAtLeast(height)
             .coerceAtMost(trackWidth)
 
         drawRoundRect(
-            color = color.copy(alpha = 0.1F),
-            topLeft = Offset(inset, inset),
-            size = Size(trackWidth, height),
-            cornerRadius = radius,
-        )
-        drawRoundRect(
-            color = color.copy(alpha = 0.26F),
+            color = color.copy(alpha = 0.33F),
             topLeft = Offset(inset, inset),
             size = Size(fillWidth, height),
-            cornerRadius = radius,
+            cornerRadius = CornerRadius(height / 2),
         )
     }
 }
