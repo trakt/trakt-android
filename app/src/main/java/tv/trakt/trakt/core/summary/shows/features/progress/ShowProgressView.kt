@@ -292,6 +292,7 @@ private fun ProgressList(
             top = 8.dp,
             bottom = ButtonHeight / 2 + 16.dp,
         ),
+        overscrollEffect = null,
         modifier = modifier,
     ) {
         item(key = "header") {
