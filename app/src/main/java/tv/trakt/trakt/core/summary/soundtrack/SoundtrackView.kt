@@ -195,7 +195,6 @@ private fun SoundtrackBoard(
         SoundtrackTrackList(
             tracks = visibleTracks,
             playback = playback,
-            searchTitle = title,
             onPlayClick = {
                 playback.play(it)
                 onPlay(it)

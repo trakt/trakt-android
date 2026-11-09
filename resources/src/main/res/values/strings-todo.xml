@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="button_text_soundtrack_search_web">Search on web</string>
-  <string name="button_text_soundtrack_search_youtube">Search on YouTube</string>
   <plurals name="text_ratings_count">
     <item quantity="one">%s rating</item>
     <item quantity="other">%s ratings</item>
