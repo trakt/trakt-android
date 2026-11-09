@@ -341,7 +341,7 @@ internal fun PersonDetailsContent(
                             preferredFilter = state.preferredCreditsFilter,
                             listItems = (state.personShowCredits ?: emptyMap()).toImmutableMap(),
                             userCollection = state.collection,
-                            spoilersHidden = state.user?.settings?.hideSpoilers == true,
+                            spoilersHidden = state.spoilersHidden,
                             sectionPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onEpisodeCountReveal = { onEpisodeCountReveal?.invoke() },

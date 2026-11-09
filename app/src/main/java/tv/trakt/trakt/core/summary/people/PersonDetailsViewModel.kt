@@ -78,6 +78,7 @@ internal class PersonDetailsViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val errorState = MutableStateFlow(initialState.error)
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
 
     private var mediaLinkJob: Job? = null
     private var creditsJob: Job? = null
@@ -113,9 +114,9 @@ internal class PersonDetailsViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
+                val user = sessionManager.getProfile()
+                userState.update { user }
+                spoilersHiddenState.update { user?.settings?.hideSpoilers == true }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -300,6 +301,7 @@ internal class PersonDetailsViewModel(
         errorState,
         preferredCreditsFilterState,
         filterState,
+        spoilersHiddenState,
     ) { state ->
         PersonDetailsState(
             user = state[0] as User?,
@@ -315,6 +317,7 @@ internal class PersonDetailsViewModel(
             error = state[10] as Exception?,
             preferredCreditsFilter = state[11] as String?,
             filter = state[12] as GlobalFilter,
+            spoilersHidden = state[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

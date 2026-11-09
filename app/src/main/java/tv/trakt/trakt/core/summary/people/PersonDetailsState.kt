@@ -26,4 +26,5 @@ internal data class PersonDetailsState(
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val error: Exception? = null,
+    val spoilersHidden: Boolean = true,
 )
