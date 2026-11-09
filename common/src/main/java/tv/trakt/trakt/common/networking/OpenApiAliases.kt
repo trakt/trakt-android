@@ -39,6 +39,7 @@ import org.openapitools.client.models.GetSearchQuery200ResponseInnerList
 import org.openapitools.client.models.GetSearchQuery200ResponseInnerPerson
 import org.openapitools.client.models.GetSearchTrending200ResponseInner
 import org.openapitools.client.models.GetShowsEpisodeTranslations200ResponseInner
+import org.openapitools.client.models.GetShowsProgressWatched200Response
 import org.openapitools.client.models.GetShowsRatings200Response
 import org.openapitools.client.models.GetShowsSeasonRatings200Response
 import org.openapitools.client.models.GetShowsSeasonStats200Response
@@ -137,6 +138,7 @@ typealias ShowCalendarsDto = GetCalendarsShows200ResponseInnerShow
 typealias ShowDto = GetCalendarsMedia200ResponseInnerShow
 typealias ShowIdsDto = GetCalendarsShows200ResponseInnerShowIds
 typealias ShowStatsDto = GetMoviesStats200Response
+typealias ShowWatchedProgressDto = GetShowsProgressWatched200Response
 typealias SmartListDto = GetUsersSmartListsPersonal200ResponseInner
 typealias SmartListFiltersDto = GetUsersListsListSmartListDraft200ResponseFilters
 typealias SmartListItemDto = GetSmartListsItems200ResponseInner

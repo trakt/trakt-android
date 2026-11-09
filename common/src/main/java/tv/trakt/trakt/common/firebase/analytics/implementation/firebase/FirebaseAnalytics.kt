@@ -97,6 +97,7 @@ internal class FirebaseAnalytics(
         const val REPORT_OPEN = "report_open"
         const val REPORT_SEND = "report_send"
         const val STATS_DRILLDOWN = "stats_drilldown"
+        const val SUMMARY_DRILLDOWN = "summary_drilldown"
         const val LINK_OPEN = "link_open"
         const val BANNER_DISMISS = "banner_dismiss"
         const val EASTER_EGG_LIGHTSABER = "easter_egg_lightsaber"
@@ -125,6 +126,7 @@ internal class FirebaseAnalytics(
             REPORT_OPEN,
             REPORT_SEND,
             STATS_DRILLDOWN,
+            SUMMARY_DRILLDOWN,
             LINK_OPEN,
             BANNER_DISMISS,
             EASTER_EGG_LIGHTSABER,
@@ -370,6 +372,19 @@ internal class FirebaseAnalytics(
     ) {
         firebaseAnalytics.logEvent(
             eventName(STATS_DRILLDOWN),
+            bundleOf(
+                PARAMETER_SOURCE to source,
+                PARAMETER_TYPE to type,
+            ),
+        )
+    }
+
+    override fun logSummaryDrilldown(
+        source: String,
+        type: String,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(SUMMARY_DRILLDOWN),
             bundleOf(
                 PARAMETER_SOURCE to source,
                 PARAMETER_TYPE to type,

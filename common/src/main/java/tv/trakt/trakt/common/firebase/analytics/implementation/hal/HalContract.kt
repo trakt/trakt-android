@@ -65,6 +65,7 @@ internal object HalContract {
     const val EVENT_SPOILER_REVEAL = "action.spoiler-reveal"
     const val EVENT_GIF_PICKER = "action.gif-picker"
     const val EVENT_DRILLDOWN = "action.drilldown"
+    const val EVENT_SUMMARY_DRILLDOWN = "action.summary-drilldown"
     const val EVENT_LINK = "action.link"
     const val EVENT_BANNER_DISMISS = "banner-action.dismiss"
     const val EVENT_SEASONAL_FILTER = "seasonal-action.filter"

@@ -273,6 +273,7 @@ internal class ShowDetailsViewModel(
                             playsWithoutSpecials = progress?.playsWithoutSpecials,
                             inWatchlist = watchlist.contains(showId),
                             inLists = lists.isNotEmpty(),
+                            watchedEpisodes = progress?.watchedEpisodesWithoutSpecials ?: 0,
                         )
                     }
                 }
@@ -478,6 +479,7 @@ internal class ShowDetailsViewModel(
                         plays = progress?.plays,
                         playsWithoutSpecials = progress?.playsWithoutSpecials,
                         inWatchlist = false,
+                        watchedEpisodes = progress?.watchedEpisodesWithoutSpecials ?: 0,
                     )
                 }
 
@@ -528,6 +530,7 @@ internal class ShowDetailsViewModel(
                     it?.copy(
                         plays = 0,
                         playsWithoutSpecials = 0,
+                        watchedEpisodes = 0,
                     )
                 }
 
