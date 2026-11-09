@@ -133,7 +133,7 @@ internal fun MatchTitleStage(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = spacedBy(12.dp),
+        verticalArrangement = spacedBy(4.dp),
         horizontalAlignment = CenterHorizontally,
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -371,7 +371,7 @@ private fun MorePill(more: Int) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .height(28.dp)
+            .height(30.dp)
             .border(1.dp, TraktTheme.colors.chipContainer, CircleShape)
             .padding(
                 start = 12.dp,
