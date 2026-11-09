@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,7 +35,11 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.res.painterResource
@@ -68,6 +73,8 @@ import tv.trakt.trakt.ui.theme.segmentShape
 
 private const val SKELETON_SEASON_COUNT = 3
 private const val HEADER_ITEM_COUNT = 1
+
+private const val DIGIT_HEIGHT_RATIO = 0.87F
 private val ButtonHeight = 46.dp
 private val SegmentGap = 3.dp
 
@@ -197,6 +204,8 @@ private fun ProgressHero(state: ShowProgressState) {
     val loading = state.seasons == null && state.error == null
     val shimmerColor = rememberSkeletonShimmerColor()
     val textColor: (Color) -> Color = { if (loading) Color.Transparent else it }
+    val percentStyle = TraktTheme.typography.heading1.copy(fontWeight = FontWeight.W200)
+    var percentBaseline by remember { mutableFloatStateOf(0F) }
 
     Column(
         verticalArrangement = spacedBy(2.dp),
@@ -207,13 +216,22 @@ private fun ProgressHero(state: ShowProgressState) {
         ) {
             Text(
                 text = (state.fraction * 100).toInt().rememberPercentFormat(),
-                style = TraktTheme.typography.heading1.copy(fontWeight = FontWeight.W200),
+                style = percentStyle,
                 color = textColor(TraktTheme.colors.textPrimary),
+                onTextLayout = { percentBaseline = it.firstBaseline },
                 modifier = Modifier
                     .alignBy(LastBaseline)
                     .then(
                         when {
-                            loading -> Modifier.background(shimmerColor, RoundedCornerShape(12.dp))
+                            loading -> Modifier.drawBehind {
+                                val height = percentStyle.fontSize.toPx() * DIGIT_HEIGHT_RATIO
+                                drawRoundRect(
+                                    color = shimmerColor,
+                                    topLeft = Offset(0F, percentBaseline - height),
+                                    size = Size(size.width, height),
+                                    cornerRadius = CornerRadius(8.dp.toPx()),
+                                )
+                            }
                             else -> Modifier
                         },
                     ),
