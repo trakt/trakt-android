@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.summary.soundtrack.ui
 
+import android.content.ClipData
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -13,16 +15,23 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
@@ -43,6 +52,8 @@ internal fun SoundtrackTrackRow(
     loading: Boolean = false,
     onPlayClick: (SoundtrackTrack) -> Unit = {},
 ) {
+    val copyTrack = rememberCopyTrack(track)
+
     Row(
         horizontalArrangement = spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -62,6 +73,7 @@ internal fun SoundtrackTrackRow(
             verticalArrangement = spacedBy(2.dp),
             modifier = Modifier
                 .weight(1F)
+                .onClick(onClick = copyTrack)
                 .padding(end = 16.dp),
         ) {
             Text(
@@ -126,6 +138,28 @@ internal fun SoundtrackTrackRow(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.widthIn(min = ActionSize),
             )
+        }
+    }
+}
+
+@Composable
+private fun rememberCopyTrack(track: SoundtrackTrack): () -> Unit {
+    val clipboard = LocalClipboard.current
+    val snackbar = LocalSnackbarState.current
+    val scope = rememberCoroutineScope()
+    val copiedLabel = stringResource(R.string.button_label_copied)
+
+    return {
+        val text = listOfNotNull(track.performer, track.title).joinToString(" - ")
+        scope.launch {
+            clipboard.setClipEntry(ClipEntry(ClipData.newPlainText(text, text)))
+            // Android 13+ shows its own clipboard confirmation overlay.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                snackbar.showSnackbar(
+                    message = copiedLabel,
+                    duration = SnackbarDuration.Short,
+                )
+            }
         }
     }
 }
