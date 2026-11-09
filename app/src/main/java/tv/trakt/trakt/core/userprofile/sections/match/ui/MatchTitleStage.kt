@@ -182,7 +182,7 @@ internal fun MatchTitleStage(
                 }
 
                 val spreads = slots.map { abs(it.x) }.distinct().sorted()
-                items.zip(slots).forEach { (item, slot) ->
+                items.zip(slots.byProminence()).forEach { (item, slot) ->
                     StageCard(
                         item = item,
                         slot = slot,
@@ -258,6 +258,10 @@ private fun StageCard(
             }
         }
     }
+}
+
+private fun List<StageSlot>.byProminence(): List<StageSlot> {
+    return sortedWith(compareByDescending<StageSlot> { it.layer }.thenBy { abs(it.x) })
 }
 
 /**
