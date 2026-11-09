@@ -201,6 +201,7 @@ internal class ShowDetailsViewModel(
                     )
                 }
                 showState.update { show }
+                showProgressState.update { it?.copy(aired = show.airedEpisodes) }
                 lightsaberState.update { hasLightsaber(show.title) }
 
                 loadTranslations()
