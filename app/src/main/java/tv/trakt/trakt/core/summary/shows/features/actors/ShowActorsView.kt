@@ -54,7 +54,6 @@ import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun ShowActorsView(
@@ -172,7 +171,7 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { it.person.ids.trakt.value.plus(nextInt()) },
+            key = { it.person.ids.trakt.value },
         ) { item ->
             VerticalMediaCard(
                 title = "",

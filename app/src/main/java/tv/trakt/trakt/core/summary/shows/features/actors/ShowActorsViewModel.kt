@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -45,7 +46,6 @@ internal class ShowActorsViewModel(
 
     init {
         loadData()
-        loadSpoilerState()
     }
 
     private fun loadData() {
@@ -53,9 +53,11 @@ internal class ShowActorsViewModel(
             try {
                 loadingState.update { Loading }
 
-                itemsState.update {
-                    getActorsUseCase.getCastCrew(show.ids.trakt)
-                }
+                val spoilersHidden = async { loadSpoilersHidden() }
+                val items = getActorsUseCase.getCastCrew(show.ids.trakt)
+
+                spoilersHiddenState.update { spoilersHidden.await() }
+                itemsState.update { items }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -67,16 +69,15 @@ internal class ShowActorsViewModel(
         }
     }
 
-    private fun loadSpoilerState() {
-        viewModelScope.launch {
-            try {
-                val hidden = getSpoilerStateUseCase.isShowHidden(show.ids.trakt)
-                spoilersHiddenState.update { hidden }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+    private suspend fun loadSpoilersHidden(): Boolean {
+        return try {
+            getSpoilerStateUseCase.isShowHidden(show.ids.trakt)
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
+            // Unknown watched progress must not expose episode counts.
+            true
         }
     }
 

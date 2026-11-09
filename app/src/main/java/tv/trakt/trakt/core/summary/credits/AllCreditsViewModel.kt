@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -47,7 +48,6 @@ internal class AllCreditsViewModel(
 
     init {
         loadData()
-        loadSpoilerState()
     }
 
     private fun loadData() {
@@ -55,8 +55,10 @@ internal class AllCreditsViewModel(
             try {
                 loadingState.update { Loading }
 
+                val spoilersHidden = async { loadSpoilersHidden() }
                 val credits = getCreditsUseCase.getCredits(destination.toSource())
 
+                spoilersHiddenState.update { spoilersHidden.await() }
                 creditsState.update { credits }
                 modeState.update { mode ->
                     if (mode in credits.modes) mode else credits.modes.firstOrNull() ?: mode
@@ -72,20 +74,19 @@ internal class AllCreditsViewModel(
         }
     }
 
-    private fun loadSpoilerState() {
+    private suspend fun loadSpoilersHidden(): Boolean {
         if (destination.mediaType != MediaType.Show) {
-            return
+            return false
         }
 
-        viewModelScope.launch {
-            try {
-                val hidden = getSpoilerStateUseCase.isShowHidden(destination.mediaId.toTraktId())
-                spoilersHiddenState.update { hidden }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+        return try {
+            getSpoilerStateUseCase.isShowHidden(destination.mediaId.toTraktId())
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
+            // Unknown watched progress must not expose episode counts.
+            true
         }
     }
 
