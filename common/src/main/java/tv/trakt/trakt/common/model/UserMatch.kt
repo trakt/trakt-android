@@ -17,6 +17,8 @@ data class UserMatch(
     val sharedTopics: ImmutableList<SharedTopic>,
     val sharedMovies: ImmutableList<TraktId>,
     val sharedShows: ImmutableList<TraktId>,
+    val favoriteMovies: ImmutableList<TraktId>,
+    val favoriteShows: ImmutableList<TraktId>,
 ) {
     /**
      * @property rarity Corpus rarity from 0 to 1, higher is more niche. Null means no signal, not common.
@@ -30,6 +32,7 @@ data class UserMatch(
 
     companion object {
         fun fromDto(dto: V3UserMatchResponse): UserMatch {
+            val shared = dto.shared.watched ?: dto.shared.favorites
             return UserMatch(
                 score = dto.score.coerceIn(0, 100),
                 topicsScore = dto.breakdown.subgenres.coerceIn(0, 100),
@@ -43,10 +46,16 @@ data class UserMatch(
                         )
                     }
                     .toImmutableList(),
-                sharedMovies = dto.shared.favorites.movies
+                sharedMovies = shared.movies
                     .map(::TraktId)
                     .toImmutableList(),
-                sharedShows = dto.shared.favorites.shows
+                sharedShows = shared.shows
+                    .map(::TraktId)
+                    .toImmutableList(),
+                favoriteMovies = dto.shared.favorites.movies
+                    .map(::TraktId)
+                    .toImmutableList(),
+                favoriteShows = dto.shared.favorites.shows
                     .map(::TraktId)
                     .toImmutableList(),
             )

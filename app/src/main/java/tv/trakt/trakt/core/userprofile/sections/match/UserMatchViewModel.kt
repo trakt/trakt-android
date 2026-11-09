@@ -37,11 +37,11 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserMatch
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.userprofile.navigation.UserProfileDestination
+import tv.trakt.trakt.core.userprofile.sections.match.model.MatchStripEntry
+import tv.trakt.trakt.core.userprofile.sections.match.model.toMatchStrip
 import tv.trakt.trakt.core.userprofile.sections.match.usecases.GetUserMatchUseCase
 import tv.trakt.trakt.core.userprofile.usecases.GetUserProfileDetailsUseCase
 import kotlin.time.Duration.Companion.milliseconds
-
-private const val SHARED_MEDIA_LIMIT = 6
 
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
@@ -159,13 +159,17 @@ internal class UserMatchViewModel(
             return
         }
 
+        val strip = match.toMatchStrip()
+        val movieIds = strip.filter { it.type == MatchStripEntry.Type.Movie }.map { it.id }
+        val showIds = strip.filter { it.type == MatchStripEntry.Type.Show }.map { it.id }
+
         sharedMediaJob = viewModelScope.launch {
             launch {
-                val movies = getUserMatchUseCase.getMovies(match.sharedMovies.take(SHARED_MEDIA_LIMIT))
+                val movies = getUserMatchUseCase.getMovies(movieIds)
                 sharedMoviesState.update { movies }
             }
             launch {
-                val shows = getUserMatchUseCase.getShows(match.sharedShows.take(SHARED_MEDIA_LIMIT))
+                val shows = getUserMatchUseCase.getShows(showIds)
                 sharedShowsState.update { shows }
             }
         }
