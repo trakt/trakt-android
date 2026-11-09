@@ -233,7 +233,7 @@ internal class CommentsViewModel(
                     ?.isNotEmpty() == true
             }
             MediaType.Show -> {
-                val aired = destination.mediaEpisodes ?: return false
+                val aired = destination.mediaEpisodes?.takeIf { it > 0 } ?: return false
                 val plays = loadProgressUseCase.loadLocalShows()
                     .firstOrNull { it.showId == mediaId }
                     ?.playsDistinctWithoutSpecials
