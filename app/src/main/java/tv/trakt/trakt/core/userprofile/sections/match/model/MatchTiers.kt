@@ -3,8 +3,6 @@ package tv.trakt.trakt.core.userprofile.sections.match.model
 import androidx.annotation.StringRes
 import tv.trakt.trakt.resources.R
 
-private const val UNICORN_RARITY_THRESHOLD = 0.5F
-
 internal enum class MatchBand {
     High,
     Mid,
@@ -18,29 +16,6 @@ internal enum class MatchBand {
                 score >= 40 -> Mid
                 else -> Low
             }
-        }
-    }
-}
-
-internal enum class MatchChipTier {
-    Unicorn,
-    Rare,
-    Notable,
-    Common,
-    ;
-
-    val hasSparkle: Boolean
-        get() = this == Unicorn || this == Rare
-
-    companion object {
-        fun of(
-            index: Int,
-            rarity: Float?,
-        ): MatchChipTier {
-            if (rarity != null && rarity >= UNICORN_RARITY_THRESHOLD) return Unicorn
-            if (index <= 0) return Rare
-            if (index <= 2) return Notable
-            return Common
         }
     }
 }

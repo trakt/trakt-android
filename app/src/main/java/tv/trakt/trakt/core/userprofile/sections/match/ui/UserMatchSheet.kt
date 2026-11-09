@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.userprofile.sections.match.UserMatchState
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 
-private const val SHEET_MAX_HEIGHT_FRACTION = 0.75F
+private const val SHEET_MAX_HEIGHT_FRACTION = 0.85F
 
 @Composable
 internal fun UserMatchSheet(

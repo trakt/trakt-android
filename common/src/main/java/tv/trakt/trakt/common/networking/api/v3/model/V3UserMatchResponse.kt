@@ -22,6 +22,7 @@ data class V3UserMatchResponse(
     data class V3Shared(
         val subgenres: List<V3SharedSubgenre>,
         val favorites: V3SharedFavorites,
+        val watched: V3SharedFavorites? = null,
     )
 
     @Immutable
