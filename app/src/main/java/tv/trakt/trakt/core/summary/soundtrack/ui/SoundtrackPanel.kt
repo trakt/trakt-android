@@ -157,6 +157,7 @@ private fun SoundtrackPanelCover(
                     model = posterUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
+                    alignment = Alignment.TopCenter,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
