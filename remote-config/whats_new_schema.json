@@ -1,5 +1,27 @@
 [
   {
+    "id": 32,
+    "version": "3.28.0",
+    "notes": [
+      {
+        "title": "Soundtracks",
+        "text": "Movie and show pages now have a Soundtrack section. VIP members can play tracks right there with Spotify."
+      },
+      {
+        "title": "History Cleanup",
+        "text": "Remove duplicate plays from your history. Go to Settings > History Analysis, pick which play to keep, and clean up in one tap."
+      },
+      {
+        "title": "Exclude Filters",
+        "text": "Advanced filters can now hide genres, certifications, countries and statuses. Tap the minus next to any option to exclude it."
+      },
+      {
+        "title": "Manage Lists",
+        "text": "Add anything to your lists straight from the long-press menu on movies, shows, seasons and episodes."
+      }
+    ]
+  },
+  {
     "id": 31,
     "version": "3.27.0",
     "notes": [
