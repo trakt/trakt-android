@@ -355,7 +355,7 @@ private fun ShowActionButtons(
             enabled = !isLoadingOrDone,
             text = stringResource(R.string.button_text_manage_lists),
             onClick = onListsClick,
-            iconSize = 20.dp,
+            iconSize = 22.dp,
             iconSpace = 16.dp,
             icon = painterResource(R.drawable.ic_lists_off),
             modifier = Modifier

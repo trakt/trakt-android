@@ -239,7 +239,7 @@ private fun ActionButtons(
                 text = stringResource(R.string.button_text_manage_lists),
                 onClick = onListsClick,
                 icon = painterResource(R.drawable.ic_lists_off),
-                iconSize = 20.dp,
+                iconSize = 22.dp,
                 iconSpace = 16.dp,
                 modifier = Modifier
                     .graphicsLayer {

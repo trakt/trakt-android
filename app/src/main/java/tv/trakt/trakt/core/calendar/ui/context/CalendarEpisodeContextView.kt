@@ -267,7 +267,10 @@ private fun CalendarEpisodeActionButtons(
                     else -> painterResource(R.drawable.ic_check_2)
                 },
                 iconSize = 22.dp,
-                iconSpace = 16.dp,
+                iconSpace = when {
+                    state.isWatched -> 12.dp
+                    else -> 16.dp
+                },
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -6.dp.toPx()
@@ -301,7 +304,7 @@ private fun CalendarEpisodeActionButtons(
                 text = stringResource(R.string.button_text_manage_lists),
                 onClick = onListsClick,
                 icon = painterResource(R.drawable.ic_lists_off),
-                iconSize = 20.dp,
+                iconSize = 22.dp,
                 iconSpace = 16.dp,
                 modifier = Modifier
                     .graphicsLayer {
