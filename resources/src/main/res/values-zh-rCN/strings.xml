@@ -1151,10 +1151,10 @@
   <string name="hype_tier_cant_wait">迫不及待</string>
   <string name="hype_tier_looking_good">值得期待</string>
   <string name="image_alt_comment_gif">评论附带的GIF</string>
-  <string name="image_alt_hype_score">你的期待度为 %d%</string>
+  <string name="image_alt_hype_score">你的期待度为 %d%%</string>
   <string name="image_alt_hype_unknown">暂无期待度分数</string>
   <string name="image_alt_list_preview_poster">%s 中的条目海报</string>
-  <string name="image_alt_match_score">与你的匹配度为 %d%</string>
+  <string name="image_alt_match_score">与你的匹配度为 %d%%</string>
   <string name="image_alt_match_unknown">暂无匹配分数</string>
   <string name="image_alt_media_poster">“%s”海报</string>
   <string name="image_alt_person_headshot">%s 的大头照</string>
@@ -1544,7 +1544,7 @@
   <string name="match_label_soulmates">灵魂伴侣</string>
   <string name="match_label_spin_off">衍生作品</string>
   <string name="match_pill_anchor">匹配:</string>
-  <string name="match_pill_aria_label">%1$d% 匹配，%2$s。打开匹配详情。</string>
+  <string name="match_pill_aria_label">%1$d%% 匹配，%2$s。打开匹配详情。</string>
   <string name="match_pill_loading_aria_label">正在计算匹配度</string>
   <string name="match_tier_good_fit">契合喜好</string>
   <string name="match_tier_maybe">或许喜欢</string>
@@ -1792,7 +1792,7 @@
   <string name="tag_media_sync_webhook_only">仅限 Webhook</string>
   <string name="tag_mixtape_different_mood">风格不符</string>
   <string name="tag_mixtape_kept">已保留</string>
-  <string name="tag_mixtape_match">%s% 匹配</string>
+  <string name="tag_mixtape_match">%s%% 匹配</string>
   <string name="tag_mixtape_tap_details">轻触查看详情</string>
   <string name="tag_text_blocked_user">已屏蔽</string>
   <string name="tag_text_deal_price">前两年</string>
@@ -2038,7 +2038,7 @@
   <string name="text_history_sync_filter">同步 ID %d</string>
   <string name="text_history_sync_filter_with_source">同步 ID %1$d (%2$s)</string>
   <string name="text_hype_lists">被加入列表最多的待推出作品之一</string>
-  <string name="text_hype_lists_badge">前 %s%</string>
+  <string name="text_hype_lists_badge">前 %s%%</string>
   <string name="text_hype_lists_detail">大家不断将其加入列表</string>
   <string name="text_hype_out_on">%s 推出</string>
   <string name="text_hype_series_about">与您的平时评分相当</string>
@@ -2127,7 +2127,7 @@
   <string name="text_match_basis_free">匹配分数免费提供，匹配原因为 VIP 专属功能。</string>
   <string name="text_match_basis_history">基于你看过、评分和收藏的内容。</string>
   <string name="text_match_because_liked">因为您喜欢</string>
-  <string name="text_match_better_than">比 %d% 的影视内容更适合你</string>
+  <string name="text_match_better_than">比 %d%% 的影视内容更适合你</string>
   <string name="text_match_not_enough_data">目前数据不足，暂无法为你计算匹配度。</string>
   <string name="text_match_rating_liked">在 Trakt 上颇受欢迎</string>
   <string name="text_match_rating_loved">在 Trakt 上备受喜爱</string>
@@ -3071,7 +3071,7 @@
   <string name="yir_2026_preview_runner_none">无（非混合）</string>
   <string name="yir_2026_preview_runner_up">第二名</string>
   <string name="yir_2026_preview_title">角色预览</string>
-  <string name="yir_2026_rarity">仅有 %1$d% 是 %2$s</string>
+  <string name="yir_2026_rarity">仅有 %1$d%% 是 %2$s</string>
   <string name="yir_2026_reel_a_little_bit">有点 %s</string>
   <string name="yir_2026_reel_and_you_are">而您是</string>
   <string name="yir_2026_reel_but_mostly">但主要是</string>
