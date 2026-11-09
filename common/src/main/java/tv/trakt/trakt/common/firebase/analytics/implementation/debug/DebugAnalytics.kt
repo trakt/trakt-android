@@ -152,6 +152,13 @@ internal class DebugAnalytics(
         Timber.d("logDrilldown: source=%s, type=%s", source, type)
     }
 
+    override fun logSummaryDrilldown(
+        source: String,
+        type: String,
+    ) {
+        Timber.d("logSummaryDrilldown: source=%s, type=%s", source, type)
+    }
+
     override fun logLink(
         source: String,
         target: String,

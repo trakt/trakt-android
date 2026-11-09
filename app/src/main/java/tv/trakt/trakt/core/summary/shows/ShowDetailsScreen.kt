@@ -97,6 +97,7 @@ import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContex
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
 import tv.trakt.trakt.core.summary.shows.features.info.ShowInfoSheet
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
+import tv.trakt.trakt.core.summary.shows.features.progress.ShowProgressSheet
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedView
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsView
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsViewModel
@@ -156,6 +157,7 @@ internal fun ShowDetailsScreen(
     var detailsSheet by remember { mutableStateOf<Show?>(null) }
     var contextSheet by remember { mutableStateOf<Show?>(null) }
     var listsSheet by remember { mutableStateOf<Show?>(null) }
+    var progressSheet by remember { mutableStateOf<Show?>(null) }
     var confirmAddWatchedSheet by remember { mutableStateOf(false) }
     var confirmWatchAgainSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
@@ -199,11 +201,7 @@ internal fun ShowDetailsScreen(
             }
         },
         onTrackClick = {
-            if (state.showProgress?.isWatched == true) {
-                confirmRemoveWatchedSheet = true
-            } else {
-                confirmAddWatchedSheet = true
-            }
+            progressSheet = state.show
         },
         onShareClick = {
             state.show?.let {
@@ -329,6 +327,20 @@ internal fun ShowDetailsScreen(
         },
         onDismiss = {
             listsSheet = null
+        },
+    )
+
+    ShowProgressSheet(
+        show = progressSheet,
+        onMarkWatchedClick = {
+            progressSheet = null
+            confirmAddWatchedSheet = true
+        },
+        onRemoveWatchedClick = {
+            confirmRemoveWatchedSheet = true
+        },
+        onDismiss = {
+            progressSheet = null
         },
     )
 
@@ -651,6 +663,7 @@ internal fun ShowDetailsContent(
                         loading = state.loadingProgress.isLoading ||
                             state.loadingLists.isLoading,
                         watched = isWatched,
+                        progress = state.showProgress?.progressStep ?: 0,
                         watchlist = state.showProgress?.inWatchlist,
                         trailer = !show.trailer.isNullOrBlank(),
                         lightsaber = state.lightsaber,

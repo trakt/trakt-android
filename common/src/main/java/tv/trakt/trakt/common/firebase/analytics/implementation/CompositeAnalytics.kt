@@ -153,6 +153,13 @@ internal class CompositeAnalytics(
         targets.forEach { it.logDrilldown(source, type) }
     }
 
+    override fun logSummaryDrilldown(
+        source: String,
+        type: String,
+    ) {
+        targets.forEach { it.logSummaryDrilldown(source, type) }
+    }
+
     override fun logLink(
         source: String,
         target: String,

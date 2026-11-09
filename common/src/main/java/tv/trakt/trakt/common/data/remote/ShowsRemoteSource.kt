@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
+import tv.trakt.trakt.common.networking.ShowWatchedProgressDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
@@ -425,6 +426,16 @@ class ShowsRemoteSource(
         val response = showsApi.getShowsSeasons(
             id = showId.value.toString(),
             extended = "full,images",
+        )
+        return response.body()
+    }
+
+    suspend fun getWatchedProgress(showId: TraktId): ShowWatchedProgressDto {
+        val response = showsApi.getShowsProgressWatched(
+            id = showId.value.toString(),
+            hidden = false,
+            specials = false,
+            countSpecials = false,
         )
         return response.body()
     }

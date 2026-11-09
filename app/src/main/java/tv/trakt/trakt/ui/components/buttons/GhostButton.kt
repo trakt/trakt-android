@@ -1,5 +1,6 @@
 package tv.trakt.trakt.ui.components.buttons
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -42,6 +43,8 @@ internal fun GhostButton(
     loading: Boolean = false,
     uppercase: Boolean = true,
     corner: Dp = 8.dp,
+    horizontalPadding: Dp = 8.dp,
+    border: BorderStroke? = null,
     fillWidth: Boolean = true,
     containerColor: Color = Color.Transparent,
     contentColor: Color = TraktTheme.colors.ghostButtonContent,
@@ -53,10 +56,11 @@ internal fun GhostButton(
             .height(iconSize + 16.dp),
         enabled = enabled,
         contentPadding = PaddingValues(
-            horizontal = 8.dp,
+            horizontal = horizontalPadding,
             vertical = 0.dp,
         ),
         shape = RoundedCornerShape(corner),
+        border = border,
         colors = buttonColors(
             containerColor = containerColor,
             contentColor = contentColor,

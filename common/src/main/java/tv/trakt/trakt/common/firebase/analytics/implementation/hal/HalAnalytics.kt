@@ -41,6 +41,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SHARE_ARRIVAL
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAMING_SERVICE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SUMMARY_DRILLDOWN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_THEME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPGRADE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPSELL
@@ -229,6 +230,16 @@ internal class HalAnalytics(
             type?.let { put(DIM_TYPE, it) }
         }
         events.track(EVENT_DRILLDOWN, dims = dims)
+    }
+
+    override fun logSummaryDrilldown(
+        source: String,
+        type: String,
+    ) {
+        events.track(
+            EVENT_SUMMARY_DRILLDOWN,
+            dims = mapOf(DIM_SOURCE to source, DIM_TYPE to type),
+        )
     }
 
     override fun logLink(

@@ -39,7 +39,15 @@ internal data class ShowDetailsState(
         val playsWithoutSpecials: Int?,
         val inWatchlist: Boolean,
         val inLists: Boolean,
+        val watchedEpisodes: Int = 0,
     ) {
+        val progressStep: Int
+            get() {
+                if (aired <= 0) return 0
+                val percentage = watchedEpisodes.coerceAtMost(aired) * 100 / aired
+                return percentage / PROGRESS_STEP * PROGRESS_STEP
+            }
+
         val isWatched: Boolean
             get() = playsWithoutSpecials != null && playsWithoutSpecials > 0 && playsWithoutSpecials >= aired
 
@@ -51,6 +59,10 @@ internal data class ShowDetailsState(
                 playsWithoutSpecials != null -> aired - playsWithoutSpecials
                 else -> aired
             }
+
+        private companion object {
+            const val PROGRESS_STEP = 10
+        }
     }
 
     data class UserRatingsState(

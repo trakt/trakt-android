@@ -42,6 +42,11 @@ sealed class ProgressItem(
                 .flatMap { it.episodes }
                 .sumOf { it.playsDistinct }
 
+        val watchedEpisodesWithoutSpecials: Int
+            get() = seasons
+                .filter { !it.isSpecial }
+                .sumOf { season -> season.episodes.count { it.plays.isNotEmpty() } }
+
         data class Season(
             val id: TraktId,
             val number: Int,

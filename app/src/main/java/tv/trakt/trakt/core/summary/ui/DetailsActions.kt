@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.ui
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,10 +21,15 @@ import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.res.painterResource
@@ -51,6 +58,7 @@ internal fun DetailsActions(
     secondaryVisible: Boolean = true,
     loading: Boolean = false,
     watched: Boolean = false,
+    progress: Int = 0,
     watchlist: Boolean? = false,
     trailer: Boolean = false,
     lightsaber: Boolean = false,
@@ -69,6 +77,14 @@ internal fun DetailsActions(
         true -> DefaultShadowColor.copy(alpha = 0.5F)
         false -> DefaultShadowColor.copy(alpha = 0.33F)
     }
+
+    val progressFraction by animateFloatAsState(
+        targetValue = when {
+            watched || !enabled || !primaryEnabled -> 0F
+            else -> progress.coerceIn(0, 100) / 100F
+        },
+        label = "progressFraction",
+    )
 
     Column(
         verticalArrangement = spacedBy(20.dp),
@@ -111,58 +127,66 @@ internal fun DetailsActions(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Button(
+                    Box(
                         modifier = Modifier
                             .weight(1F)
-                            .height(40.dp),
-                        contentPadding = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
-                        ),
-                        shape = shape,
-                        colors = buttonColors(
-                            containerColor = when (watched) {
-                                true -> TraktTheme.colors.primaryButtonContainer
-                                else -> Color.Transparent
-                            },
-                            contentColor = when (watched) {
-                                true -> TraktTheme.colors.primaryButtonContainer
-                                else -> TraktTheme.colors.accent
-                            },
-                            disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
-                            disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
-                        ),
-                        border = when (watched) {
-                            true -> null
-                            else -> when (enabled && primaryEnabled) {
-                                true -> BorderStroke(
-                                    width = 1.5.dp,
-                                    color = TraktTheme.colors.primaryButtonContainer,
-                                )
-                                else -> null
-                            }
-                        },
-                        enabled = enabled && primaryEnabled,
-                        onClick = onPrimaryClick ?: {},
+                            .height(40.dp)
+                            .trackProgress(
+                                fraction = progressFraction,
+                                color = TraktTheme.colors.primaryButtonContainer,
+                            ),
                     ) {
-                        if (!loading) {
-                            Icon(
-                                painter = painterResource(primaryIcon),
-                                tint = when {
-                                    enabled && primaryEnabled -> when (watched) {
-                                        true -> TraktTheme.colors.textPrimaryOnAccent
-                                        false -> TraktTheme.colors.textPrimary
-                                    }
-                                    else -> Shade400
+                        Button(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(
+                                start = 16.dp,
+                                end = 16.dp,
+                            ),
+                            shape = shape,
+                            colors = buttonColors(
+                                containerColor = when (watched) {
+                                    true -> TraktTheme.colors.primaryButtonContainer
+                                    else -> Color.Transparent
                                 },
-                                contentDescription = null,
-                                modifier = Modifier.size(23.dp),
-                            )
-                        } else {
-                            FilmProgressIndicator(
-                                size = 20.dp,
-                                color = Shade400,
-                            )
+                                contentColor = when (watched) {
+                                    true -> TraktTheme.colors.primaryButtonContainer
+                                    else -> TraktTheme.colors.accent
+                                },
+                                disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
+                                disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
+                            ),
+                            border = when (watched) {
+                                true -> null
+                                else -> when (enabled && primaryEnabled) {
+                                    true -> BorderStroke(
+                                        width = 1.5.dp,
+                                        color = TraktTheme.colors.primaryButtonContainer,
+                                    )
+                                    else -> null
+                                }
+                            },
+                            enabled = enabled && primaryEnabled,
+                            onClick = onPrimaryClick ?: {},
+                        ) {
+                            if (!loading) {
+                                Icon(
+                                    painter = painterResource(primaryIcon),
+                                    tint = when {
+                                        enabled && primaryEnabled -> when (watched) {
+                                            true -> TraktTheme.colors.textPrimaryOnAccent
+                                            false -> TraktTheme.colors.textPrimary
+                                        }
+                                        else -> Shade400
+                                    },
+                                    contentDescription = null,
+                                    modifier = Modifier.size(23.dp),
+                                )
+                            } else {
+                                FilmProgressIndicator(
+                                    size = 20.dp,
+                                    color = Shade400,
+                                )
+                            }
                         }
                     }
 
@@ -228,6 +252,29 @@ internal fun DetailsActions(
     }
 }
 
+private fun Modifier.trackProgress(
+    fraction: Float,
+    color: Color,
+): Modifier {
+    if (fraction <= 0F) return this
+
+    return drawBehind {
+        val inset = 4.dp.toPx()
+        val height = size.height - inset * 2
+        val trackWidth = size.width - inset * 2
+        val fillWidth = (trackWidth * fraction)
+            .coerceAtLeast(height)
+            .coerceAtMost(trackWidth)
+
+        drawRoundRect(
+            color = color.copy(alpha = 0.33F),
+            topLeft = Offset(inset, inset),
+            size = Size(fillWidth, height),
+            cornerRadius = CornerRadius(height / 2),
+        )
+    }
+}
+
 @PreviewTraktLightDark
 @Composable
 private fun Preview() {
@@ -244,6 +291,11 @@ private fun Preview() {
                 watched = false,
                 watchlist = true,
                 lightsaber = true,
+            )
+
+            DetailsActions(
+                watched = false,
+                progress = 40,
             )
 
             DetailsActions(

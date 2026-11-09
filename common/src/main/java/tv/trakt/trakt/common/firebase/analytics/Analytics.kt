@@ -200,6 +200,16 @@ interface Analytics {
     )
 
     /**
+     * Logs opening a drilldown surface on a media summary.
+     * @param source The surface (watch-state).
+     * @param type The surface kind (show, season).
+     */
+    fun logSummaryDrilldown(
+        source: String,
+        type: String,
+    )
+
+    /**
      * Logs opening a promotional link, such as a banner.
      * @param source The surface the link lives on (mir-banner).
      * @param target The opened route.

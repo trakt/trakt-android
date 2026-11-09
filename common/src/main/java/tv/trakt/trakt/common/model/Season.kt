@@ -14,6 +14,7 @@ data class Season(
     val number: Int,
     val rating: Rating,
     val episodeCount: Int?,
+    val airedEpisodes: Int?,
     val images: Images?,
     val overview: String?,
     val firstAired: ZonedDateTime?,
@@ -37,6 +38,7 @@ fun Season.Companion.fromDto(dto: SeasonDto): Season {
             votes = dto.votes ?: 0,
         ),
         episodeCount = dto.episodeCount,
+        airedEpisodes = dto.airedEpisodes,
         images = dto.images?.let {
             Images(poster = it.poster.toImmutableList())
         },
@@ -58,6 +60,7 @@ fun Season.Companion.fromDto(dto: SeasonLikesDto): Season {
             votes = dto.votes ?: 0,
         ),
         episodeCount = dto.episodeCount,
+        airedEpisodes = null,
         images = dto.images?.let {
             Images(poster = it.poster.toImmutableList())
         },
@@ -78,6 +81,7 @@ fun Season.Companion.fromDto(dto: SeasonRatingDto): Season {
         episodeCount = dto.airedEpisodes,
         images = null,
         overview = null,
+        airedEpisodes = null,
         firstAired = null,
         updatedAt = null,
     )
