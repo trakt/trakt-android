@@ -11,9 +11,11 @@ import androidx.compose.material3.SheetValue.Expanded
 import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
@@ -35,6 +37,7 @@ internal fun UserMatchSheet(
     onShowClick: (Show) -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val sheetScope = rememberCoroutineScope()
     val maxHeight = LocalWindowInfo.current.containerDpSize.height * SHEET_MAX_HEIGHT_FRACTION
     val match = matchState.match
     if (visible && match != null) {
@@ -49,8 +52,24 @@ internal fun UserMatchSheet(
                 user = user,
                 sharedMovies = matchState.sharedMovies,
                 sharedShows = matchState.sharedShows,
-                onMovieClick = onMovieClick,
-                onShowClick = onShowClick,
+                onMovieClick = { movie ->
+                    sheetScope
+                        .launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onMovieClick(movie)
+                            }
+                        }
+                },
+                onShowClick = { show ->
+                    sheetScope
+                        .launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onShowClick(show)
+                            }
+                        }
+                },
                 modifier = Modifier
                     .heightIn(max = maxHeight)
                     .padding(horizontal = 24.dp),
