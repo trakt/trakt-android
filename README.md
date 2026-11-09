@@ -8,7 +8,11 @@
   <a href="https://github.com/trakt/trakt-android/releases"><img src="https://img.shields.io/github/v/tag/trakt/trakt-android?label=version&style=flat" alt="Version"></a>
   <a href="https://github.com/trakt/trakt-android/commits"><img src="https://img.shields.io/github/commit-activity/m/trakt/trakt-android?style=flat" alt="Commits"></a>
   <a href="https://github.com/trakt/trakt-android/stargazers"><img src="https://img.shields.io/github/stars/trakt/trakt-android?style=flat" alt="Stars"></a>
-  <a href="https://github.com/trakt/trakt-android/stargazers"><img src="https://img.shields.io/github/actions/workflow/status/trakt/trakt-android/master.yml?branch=main" alt="Build"></a>
+  <a href="https://github.com/trakt/trakt-android/actions/workflows/master.yml"><img src="https://img.shields.io/github/actions/workflow/status/trakt/trakt-android/master.yml?branch=main&label=lint" alt="Lint"></a>
+</p>
+
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=tv.trakt.trakt">Get it on Google Play</a>
 </p>
 
 <br>
@@ -26,32 +30,58 @@
 ## Supported Form Factors
 
 - Mobile
-- Android TV
 - Tablets
+- Android TV
+
+Requires Android 9 (API 28) or newer.
+
+## Project Structure
+
+| Module      | Purpose                                              |
+| ----------- | ---------------------------------------------------- |
+| `app`       | Phone and tablet app, entry point                    |
+| `tv`        | Android TV app                                       |
+| `common`    | Shared domain, networking (OpenAPI client), DI       |
+| `resources` | Strings, drawables, translations                     |
+
+Built with Kotlin, Jetpack Compose, Koin, Ktor and Coil.
 
 ## Getting Started
 
-1. Download and install the latest stable Android Studio:
-
-   https://developer.android.com/studio
-   
+1. Install the latest stable [Android Studio](https://developer.android.com/studio) and JDK 17.
 2. Clone this repo and open it.
-3. Open `local.properties` and make sure they contain all required values like below:
-```
-TRAKT_API_KEY = "PUT_YOUR_VALUE_HERE"
-YOUNIFY_API_KEY "PUT_YOUR_VALUE_HERE (Optional)"
+3. Create `local.properties` in the root folder with the values below:
+   ```properties
+   TRAKT_API_KEY = "PUT_YOUR_VALUE_HERE"
 
-KEYSTORE_ALIAS = PUT_YOUR_VALUE_HERE
-KEYSTORE_PASSWORD = PUT_YOUR_VALUE_HERE
-KEYSTORE_KEY_PASSWORD = PUT_YOUR_VALUE_HERE
-```
-4. Download `google-services.json` Firebase config from your Firebase console project settings:
-      
-   Put it into `/app/` folder -> `/app/google-services.json`.
+   # Optional
+   YOUNIFY_API_KEY = "PUT_YOUR_VALUE_HERE"
+   KLIPY_API_KEY = "PUT_YOUR_VALUE_HERE"
 
-6. Make sure `keystore.jks` is located in the root folder (same level as `/local.properties`)
+   # Release signing. Required by Gradle even for debug builds,
+   # so use any placeholder values if you only build debug.
+   KEYSTORE_ALIAS = PUT_YOUR_VALUE_HERE
+   KEYSTORE_PASSWORD = PUT_YOUR_VALUE_HERE
+   KEYSTORE_KEY_PASSWORD = PUT_YOUR_VALUE_HERE
+   ```
+   API key values are injected into `BuildConfig` as-is, so keep the quotes.
+4. Download `google-services.json` from your Firebase console project settings and put it in `/app/google-services.json`.
+   The Firebase project needs apps for both `tv.trakt.trakt` and `tv.trakt.trakt.v3` (internal flavor).
+5. Put `debug.keystore` and `keystore.jks` in the root folder (same level as `local.properties`).
+   Both are gitignored. For debug builds you can copy your local Android debug keystore from `~/.android/debug.keystore`.
 
 You are all set!
+
+## Building
+
+The app has two flavors: `playstore` and `internal` (installs side by side with the `.v3` package suffix).
+
+```bash
+./gradlew :app:assembleInternalDebug    # internal debug build
+./gradlew :app:assemblePlaystoreDebug   # Play Store debug build
+./gradlew ktlintCheck                   # lint, run before opening a PR
+./gradlew ktlintFormat                  # auto-fix formatting
+```
 
 ## Localisation 🌐
 
@@ -62,10 +92,18 @@ Join the CrowdIn project: [Translate Trakt](https://crwd.in/trakt-poc/3857d5ea66
 
 ## Contributions 👏
 
-All contributions are welcome BUT, as a general rule we try to keep our Trakt apps in parity with what's happening on the [Website](github.com/trakt/trakt-web)
+All contributions are welcome BUT, as a general rule we try to keep our Trakt apps in parity with what's happening on the [Website](https://github.com/trakt/trakt-web).
 
-If you wish to introduce something new into the app that's NOT already available on the website please open PR for the web first - or even better start with a website Github issue or [Featurebase](https://roadmap.trakt.tv/) request. This way your tokens and time will not be wasted ;)
+If you wish to introduce something new into the app that's NOT already available on the website, please open a PR for the web first - or even better, start with a website GitHub issue or [Featurebase](https://roadmap.trakt.tv/) request. This way your tokens and time will not be wasted ;)
 
-If you see something that's already available on web but not yet in the Android app then PR is welcome surely (it is still better to start with an Issue first so we can assess and not duplicate any work by accident).
+If you see something that's already available on web but not yet in the Android app, PRs are welcome (it is still better to start with an issue first so we can assess and not duplicate any work by accident).
 
 Let's keep the PRs small and focused on a single feature/issue. This way it is easier for everyone to understand it and review.
+
+- Commits and PR titles follow [Conventional Commits](https://www.conventionalcommits.org/), e.g. `feat(app): add notes drawer`.
+- Make sure `./gradlew ktlintCheck` passes.
+- Using an AI coding agent? It should follow [`AGENTS.md`](AGENTS.md) and the rules in [`.agents/rules/`](.agents/rules/).
+
+## License
+
+Licensed under the [GNU General Public License v3.0](LICENSE).
