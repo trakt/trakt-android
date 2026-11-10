@@ -44,7 +44,7 @@ internal fun SettingsUserPanel(
         },
         modifier = modifier
             .shadow(
-                elevation = TraktTheme.colors.shadowDynamicSmall,
+                elevation = TraktTheme.colors.shadowSmall,
                 shape = DefaultCardShape,
                 clip = true,
             )
