@@ -42,7 +42,7 @@ Hold across every layer. Lifted from Now in Android's `ArchitectureLearningJourn
 └──────────────────────────────────────────┘
 ```
 
-- Add `UseCase` **only when** ViewModel needs to combine multiple repositories or apply non-trivial business logic that is reused. No `UseCase` that just forwards to single repository method — call repository directly.
+- ViewModels and workers reach remote sources through a `UseCase`, for consistency. A `UseCase` that only forwards a single call is fine: keep it, do not inline or delete it.
 - Repositories own **offline-first** behaviour: read local first, refresh remote in background, emit updates through same Flow.
 
 ## Composables
@@ -102,13 +102,15 @@ events, concurrency, DI, size limits. Read it before writing or editing a ViewMo
 
 ## Domain Layer (Optional)
 
-Use-cases live in `core/<feature>/domain/` only when they earn keep:
+Use-cases live in `core/<feature>/domain/`. A use-case typically does one of:
 
 - Combine 2+ repositories.
 - Encapsulate non-trivial business logic (rate-limit-aware refreshes, complex ranking).
-- Shared by multiple ViewModels.
+- Share logic between multiple ViewModels.
+- Forward a single remote source call, so ViewModels and workers go through the same layer everywhere.
 
-Avoid one-line `UseCase` wrappers around repository calls.
+Keep pass-through use-cases: do not inline them into the caller or delete them. Remove a use-case
+only when nothing references it.
 
 ## Data Layer
 

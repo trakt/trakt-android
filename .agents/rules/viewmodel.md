@@ -246,10 +246,11 @@ internal val movieModule = module {
 
 ## Collaborators
 
-- ViewModel talks to repositories directly for single-source reads.
-- Add a `UseCase` **only when** it combines 2+ repositories, encapsulates
-  non-trivial reused business logic, or is shared across ViewModels. No
-  one-line `UseCase` wrapper around a single repository call.
+- ViewModel reaches remote sources through a `UseCase`, for consistency. A
+  `UseCase` that only forwards a single call is fine: keep it, do not inline
+  or delete it.
+- A `UseCase` also combines 2+ repositories, encapsulates non-trivial reused
+  business logic, or shares logic across ViewModels.
 - Non-trivial mapping DTO/domain → UI belongs in a pure mapper or the state
   type, not inline in the flow chain.
 - Typed IDs (`MovieId`, `EpisodeId`, `Slug`) in ViewModel signatures where
