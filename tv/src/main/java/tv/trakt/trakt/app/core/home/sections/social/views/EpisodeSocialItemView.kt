@@ -25,6 +25,7 @@ import coil3.compose.AsyncImage
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -50,7 +51,7 @@ internal fun EpisodeSocialItemView(
             title = "",
             containerImageUrl =
                 item.episode.images?.getScreenshotUrl()
-                    ?: item.show.images?.getFanartUrl(),
+                    .withFallback(item.show.images?.getFanartUrl()),
             onClick = {
                 onClick(
                     item.show.ids.trakt,

@@ -311,7 +311,7 @@ class V3Api(
         window: ClosedRange<Instant>? = null,
     ): List<V3FollowingActivityResponse> {
         val response = client.get("${baseV3Url}users/me/following/activities") {
-            parameter("extended", "full,images")
+            parameter("extended", "full")
             parameter("page", pagination.page)
             parameter("limit", pagination.limit)
             window?.let {

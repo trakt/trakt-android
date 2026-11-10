@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.checkin.model
 
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.MediaType
@@ -78,7 +79,7 @@ val CheckInState.image: String?
         return when (this) {
             is ActiveMovie -> movie.images?.getFanartUrl(Size.THUMB)
             is ActiveEpisode -> show.images?.getFanartUrl(Size.THUMB)
-                ?: episode.images?.getScreenshotUrl(Size.THUMB)
+                .withFallback(episode.images?.getScreenshotUrl(Size.THUMB))
             else -> null
         }
     }

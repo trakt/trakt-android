@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -45,7 +46,7 @@ internal fun ProfileAllActivityEpisodeItem(
         containerImageUrl = when {
             item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl(THUMB)
             else -> item.episode.images?.getScreenshotUrl(THUMB)
-                ?: item.episode.images?.getFanartUrl(THUMB)
+                .withFallback(item.episode.images?.getFanartUrl(THUMB))
         },
         onClick = onClick,
         onImageClick = onShowClick,

@@ -22,7 +22,7 @@ internal class GetSocialActivityUseCase(
             limit = limit,
             type = "following",
             filters = null,
-            extended = "full,images,streaming_ids",
+            extended = "full,streaming_ids",
         )
         return items
             .asyncMap {

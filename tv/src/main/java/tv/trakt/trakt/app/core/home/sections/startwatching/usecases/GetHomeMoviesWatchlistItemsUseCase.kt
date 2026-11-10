@@ -27,7 +27,7 @@ internal class GetHomeMoviesWatchlistItemsUseCase(
         val response = remoteSyncSource.getWatchlist(
             page = pagination.page,
             limit = pagination.limit,
-            extended = "full,images,colors,streaming_ids",
+            extended = "full,colors,streaming_ids",
             sorting = Sorting(
                 type = SortType.Released,
                 order = SortOrder.Desc,

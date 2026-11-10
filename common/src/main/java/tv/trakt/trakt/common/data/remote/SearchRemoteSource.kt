@@ -15,7 +15,7 @@ class SearchRemoteSource(
     suspend fun getPeople(
         query: String,
         limit: Int,
-        extended: String = "full,images,markdown",
+        extended: String = "full,markdown",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -54,7 +54,7 @@ class SearchRemoteSource(
         query: String,
         limit: Int,
         exact: Boolean = false,
-        extended: String = "full,images,colors,streaming_ids",
+        extended: String = "full,colors,streaming_ids",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -82,7 +82,7 @@ class SearchRemoteSource(
         query: String,
         limit: Int,
         exact: Boolean = false,
-        extended: String = "full,images,colors,streaming_ids",
+        extended: String = "full,colors,streaming_ids",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -111,7 +111,7 @@ class SearchRemoteSource(
         query: String,
         limit: Int,
         exact: Boolean = false,
-        extended: String = "full,images,colors,streaming_ids",
+        extended: String = "full,colors,streaming_ids",
     ): List<SearchItemDto> {
         if (query.trim().isBlank()) {
             return emptyList()
@@ -149,7 +149,7 @@ class SearchRemoteSource(
             type = "shows",
             page = 1,
             limit = limit,
-            extended = "full,images,colors",
+            extended = "full,colors",
             query = null,
         )
 
@@ -161,7 +161,7 @@ class SearchRemoteSource(
             type = "movies",
             page = 1,
             limit = limit,
-            extended = "full,images,colors",
+            extended = "full,colors",
             query = null,
         )
 
@@ -171,7 +171,7 @@ class SearchRemoteSource(
     suspend fun getTrending(
         query: String,
         type: String,
-        extended: String = "full,images,colors,streaming_ids",
+        extended: String = "full,colors,streaming_ids",
     ): List<TrendingSearchDto> {
         if (query.trim().isBlank()) {
             return emptyList()

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
@@ -62,7 +63,7 @@ internal fun CalendarEpisodeItemView(
         containerImageUrl = when {
             item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
             else -> item.show.images?.getFanartUrl()
-                ?: item.episode.images?.getScreenshotUrl()
+                .withFallback(item.episode.images?.getScreenshotUrl())
         },
         cardContent = {
             val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))

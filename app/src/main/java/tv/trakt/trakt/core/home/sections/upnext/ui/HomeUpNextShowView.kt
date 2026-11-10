@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.core.home.model.Progress
 import tv.trakt.trakt.common.core.home.model.UpNextShow
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -57,7 +58,7 @@ internal fun HomeUpNextShowView(
         containerImageUrl = when {
             item.progress.nextEpisode?.isSpoilerHidden() == true -> item.show.images?.getFanartUrl()
             else -> item.show.images?.getFanartUrl()
-                ?: item.progress.nextEpisode?.images?.getScreenshotUrl()
+                .withFallback(item.progress.nextEpisode?.images?.getScreenshotUrl())
         },
         cardContent = {
             Row {

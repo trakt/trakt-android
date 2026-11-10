@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
 import tv.trakt.trakt.common.data.remote.UserSmartListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.lists.SmartListSource.Unknown
@@ -42,13 +43,13 @@ internal class GetSmartListsUseCase(
                                 page = 1,
                                 limit = 8,
                             ),
-                            extended = "images",
+                            extended = "min",
                         ).mapNotNull { item ->
                             when {
-                                item.show != null -> item.show?.images?.poster?.firstOrNull()
-                                item.movie != null -> item.movie?.images?.poster?.firstOrNull()
+                                item.show != null -> item.show?.let { Images.forShow(TraktId(it.ids.trakt)) }
+                                item.movie != null -> item.movie?.let { Images.forMovie(TraktId(it.ids.trakt)) }
                                 else -> null
-                            }
+                            }?.poster?.firstOrNull()
                         }.toImmutableList(),
                     ),
                 )

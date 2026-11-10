@@ -72,6 +72,7 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.NoOpBringIntoViewSpec
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
@@ -258,7 +259,7 @@ private fun EpisodeDetailsScreenContent(
         val episodeFanartUrl = state.episodeDetails?.images?.getScreenshotUrl(Images.Size.FULL)
 
         BackdropImage(
-            imageUrl = episodeFanartUrl ?: showFanartUrl,
+            imageUrl = episodeFanartUrl.withFallback(showFanartUrl),
             blur = 4.dp,
             imageAlpha = 0.85F,
             saturation = 0.95F,

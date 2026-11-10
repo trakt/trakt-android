@@ -14,7 +14,7 @@ internal class LoadUserSocialRequestsUseCase(
 ) {
     suspend fun loadRequests(): ImmutableList<UserFollowRequest> {
         val response = remoteSource.getRequests(
-            extended = "full,images,vip",
+            extended = "full,vip",
         ).asyncMap {
             UserFollowRequest(
                 id = it.id,

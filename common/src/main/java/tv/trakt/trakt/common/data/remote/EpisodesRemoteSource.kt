@@ -30,7 +30,7 @@ class EpisodesRemoteSource(
             id = showId.value.toString(),
             season = season,
             episode = episode,
-            extended = "full,images",
+            extended = "full",
         )
         return response.body()
     }
@@ -47,7 +47,7 @@ class EpisodesRemoteSource(
         val response = showsApi.getShowsSeasonEpisodes(
             id = showId.value.toString(),
             season = season,
-            extended = "full,images",
+            extended = "full",
         )
         return response.body()
     }
@@ -88,7 +88,7 @@ class EpisodesRemoteSource(
         limit: Int = 20,
         sort: String = "likes",
         language: String? = null,
-        extended: String = "full,images,vip",
+        extended: String = "full,vip",
     ): List<CommentDto> {
         val response = showsApi.getShowsEpisodeComments(
             id = showId.value.toString(),
@@ -124,7 +124,7 @@ class EpisodesRemoteSource(
             id = showId.value.toString(),
             season = season,
             sort = sort,
-            extended = "full,images,vip",
+            extended = "full,vip",
             page = null,
             limit = limit.toString(),
             language = language,
@@ -146,7 +146,7 @@ class EpisodesRemoteSource(
             id = showId.value.toString(),
             season = season,
             episode = episode,
-            extended = extended ?: if (guestStars) "images,full,guest_stars,markdown" else "images,full,markdown",
+            extended = extended ?: if (guestStars) "full,guest_stars,markdown" else "full,markdown",
         )
         return response.body()
     }
@@ -161,7 +161,7 @@ class EpisodesRemoteSource(
         val response = showsApi.getShowsSeasonPeople(
             id = showId.value.toString(),
             season = season,
-            extended = "images,full,markdown",
+            extended = "full,markdown",
         )
         return response.body()
     }
@@ -189,7 +189,7 @@ class EpisodesRemoteSource(
         val response = usersApi.getUsersHistoryEpisode(
             id = "me",
             itemId = episodeId.value.toString(),
-            extended = "full,images",
+            extended = "full",
             startAt = null,
             endAt = null,
             page = 1,

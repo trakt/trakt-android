@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.features.details.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.sorting.SortType.Runtime
 import tv.trakt.trakt.common.model.sorting.SortType.UserRating
@@ -33,7 +34,7 @@ internal fun ListDetailsEpisodeView(
         containerImageUrl = when {
             item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl(THUMB)
             else -> item.episode.images?.getScreenshotUrl(THUMB)
-                ?: item.show.images?.getFanartUrl(THUMB)
+                .withFallback(item.show.images?.getFanartUrl(THUMB))
         },
         onClick = { onClick(item) },
         onImageClick = { onClick(item) },

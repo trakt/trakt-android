@@ -29,7 +29,7 @@ internal class GetProfileLibraryUseCase(
     ): ImmutableList<LibraryItem> {
         return coroutineScope {
             val items = remoteSource.getLibrary(
-                extended = "full,images,colors,available_on",
+                extended = "full,colors,available_on",
                 availableOn = availableOn,
                 page = page,
                 limit = limit,

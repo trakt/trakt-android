@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -180,7 +181,7 @@ internal fun DetailsHeader(
         imageUrl = when {
             spoilersHidden -> show.images?.getFanartUrl()
             else -> episode.images?.getScreenshotUrl()
-                ?: show.images?.getFanartUrl()
+                .withFallback(show.images?.getFanartUrl())
         },
         imagePlaceholderUrl = null,
         imageHorizontal = true,

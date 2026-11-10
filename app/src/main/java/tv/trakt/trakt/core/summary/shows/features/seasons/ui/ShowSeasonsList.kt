@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
@@ -88,7 +89,7 @@ internal fun ShowSeasonsList(
             VerticalMediaCard(
                 title = "",
                 width = itemWidth,
-                imageUrl = seasonPosterUrl ?: showPosterUrl,
+                imageUrl = seasonPosterUrl.withFallback(showPosterUrl),
                 blackWhite = !isSelected,
                 more = isSelected,
                 watched = item.isWatched,

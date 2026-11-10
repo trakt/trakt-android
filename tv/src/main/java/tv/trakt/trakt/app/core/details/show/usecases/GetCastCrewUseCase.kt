@@ -16,7 +16,7 @@ internal class GetCastCrewUseCase(
     suspend fun getCastCrew(showId: TraktId): ImmutableList<CastPerson> {
         val castCrew = remoteSource.getCastCrew(
             showId = showId,
-            extended = "images",
+            extended = "min",
         )
 
         val cast = (castCrew.cast ?: emptyList())

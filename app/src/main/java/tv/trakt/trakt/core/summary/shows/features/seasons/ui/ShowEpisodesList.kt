@@ -35,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -135,7 +136,7 @@ internal fun ShowEpisodesList(
                             !isReleased -> show?.images?.getFanartUrl()
                             spoilersHidden && !item.isWatched -> show?.images?.getFanartUrl()
                             else -> item.episode.images?.getScreenshotUrl()
-                                ?: show?.images?.getFanartUrl()
+                                .withFallback(show?.images?.getFanartUrl())
                         },
                         onClick = { onEpisodeClick(item) },
                         onLongClick = {

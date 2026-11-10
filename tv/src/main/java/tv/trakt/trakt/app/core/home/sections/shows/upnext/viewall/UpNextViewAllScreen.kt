@@ -46,6 +46,7 @@ import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressMovie
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size.FULL
@@ -237,7 +238,7 @@ private fun UpNextViewAllContent(
                             title = "",
                             containerImageUrl =
                                 item.show.images?.getFanartUrl()
-                                    ?: item.progress.nextEpisode?.images?.getScreenshotUrl(),
+                                    .withFallback(item.progress.nextEpisode?.images?.getScreenshotUrl()),
                             onClick = {
                                 item.progress.nextEpisode?.let {
                                     onShowClick(item.show, it)

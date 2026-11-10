@@ -18,7 +18,7 @@ internal class GetCommentsUseCase(
             showId,
             season = seasonEpisode.season,
             episode = seasonEpisode.episode,
-            extended = "images",
+            extended = "min",
         )
             .map { Comment.fromDto(it) }
 

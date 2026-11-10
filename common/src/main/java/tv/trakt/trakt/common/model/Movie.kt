@@ -87,7 +87,7 @@ fun Companion.fromDto(dto: MovieDto): Movie {
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
-        images = dto.images?.let { Images.fromDto(it) },
+        images = Images.forMovie(TraktId(dto.ids.trakt)),
         colors = dto.colors?.poster?.let {
             MediaColors(
                 Pair(
@@ -126,7 +126,7 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
-        images = dto.images?.let { Images.fromDto(it) },
+        images = Images.forMovie(TraktId(dto.ids.trakt)),
         colors = dto.colors?.poster?.let {
             MediaColors(
                 Pair(
@@ -165,7 +165,7 @@ fun Companion.fromDto(dto: MovieCalendarDto): Movie {
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
-        images = dto.images?.let { Images.fromDto(it) },
+        images = Images.forMovie(TraktId(dto.ids.trakt)),
         colors = dto.colors?.poster?.let {
             MediaColors(
                 Pair(
@@ -204,7 +204,7 @@ fun Companion.fromDto(dto: PopularMediaDto): Movie {
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
-        images = dto.images?.let { Images.fromDto(it) },
+        images = Images.forMovie(TraktId(dto.ids.trakt)),
         colors = dto.colors?.poster?.let {
             MediaColors(
                 Pair(

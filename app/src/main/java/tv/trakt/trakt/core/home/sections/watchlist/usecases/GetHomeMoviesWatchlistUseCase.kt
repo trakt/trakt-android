@@ -34,7 +34,7 @@ internal class GetHomeMoviesWatchlistUseCase(
         return userRemoteSource.getWatchlistMovies(
             page = 1,
             limit = limit,
-            extended = "full,images,colors",
+            extended = "full,colors",
             sorting = Sorting(
                 type = SortType.Released,
                 order = SortOrder.Desc,

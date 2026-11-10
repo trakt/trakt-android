@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.core.home.model.Progress
 import tv.trakt.trakt.common.core.home.model.UpNextShow
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -60,7 +61,7 @@ internal fun AllUpNextShowView(
         containerImageUrl = when {
             item.progress.nextEpisode?.isSpoilerHidden() == true -> item.show.images?.getFanartUrl(Images.Size.THUMB)
             else -> item.progress.nextEpisode?.images?.getScreenshotUrl(Images.Size.THUMB)
-                ?: item.show.images?.getFanartUrl(Images.Size.THUMB)
+                .withFallback(item.show.images?.getFanartUrl(Images.Size.THUMB))
         },
         onClick = onClick,
         onLongClick = onLongClick,

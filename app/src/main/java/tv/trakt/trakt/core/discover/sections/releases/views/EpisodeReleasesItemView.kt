@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -44,7 +45,7 @@ internal fun EpisodeReleasesItemView(
         containerImageUrl = when {
             item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
             else -> item.show.images?.getFanartUrl()
-                ?: item.episode.images?.getScreenshotUrl()
+                .withFallback(item.episode.images?.getScreenshotUrl())
         },
         cardContent = {
             Row(

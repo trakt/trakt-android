@@ -46,6 +46,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -283,7 +284,7 @@ private fun CommentHeader(
                 containerImageUrl = when {
                     item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
                     else -> item.episode.images?.getScreenshotUrl(Size.THUMB)
-                        ?: item.show.images?.getFanartUrl()
+                        .withFallback(item.show.images?.getFanartUrl())
                 },
                 more = false,
                 onClick = {

@@ -224,7 +224,7 @@ class CommentsRemoteSource(
             id = commentId.toString(),
             page = null,
             limit = 99,
-            extended = "images",
+            extended = "min",
         )
 
         return response.body()
