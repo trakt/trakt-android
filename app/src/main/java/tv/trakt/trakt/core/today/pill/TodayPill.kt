@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.today.pill
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.tween
@@ -57,7 +56,7 @@ private val PosterCorner = 2.dp
 private const val POSTER_TILT = 10F
 
 private val BadgeSize = 13.dp
-private val BadgeOffset = 1.5.dp
+private val BadgeOffset = 1.dp
 private val BadgePadding = 3.5.dp
 
 private const val POP_CYCLE_MS = 8_000
@@ -103,15 +102,6 @@ internal fun TodayPillContent(
     val unseen = unseenCount > 0
     val animate = unseen && !rememberAnimationsDisabled()
 
-    val ringColor by animateColorAsState(
-        targetValue = when {
-            unseen -> TraktTheme.colors.accent
-            else -> TraktTheme.colors.chipContainer
-        },
-        animationSpec = tween(durationMillis = 200),
-        label = "todayPillRing",
-    )
-
     // Keeps the last count on screen while the badge fades out after everything is seen.
     val lastCount = remember { mutableIntStateOf(unseenCount) }
     SideEffect {
@@ -134,7 +124,7 @@ internal fun TodayPillContent(
                 .fillMaxSize()
                 .border(
                     width = RingWidth,
-                    color = ringColor,
+                    color = TraktTheme.colors.chipContainer,
                     shape = CircleShape,
                 ),
         )
