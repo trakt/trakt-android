@@ -178,6 +178,12 @@ interface Analytics {
     fun logReportOpen(type: String)
 
     /**
+     * Logs revealing a blurred spoiler outside comments, such as an episode count.
+     * @param type The revealed media type (show).
+     */
+    fun logSpoilerReveal(type: String)
+
+    /**
      * Logs the outcome of sending a report.
      * @param type The reported item type (comment, movie, show, episode).
      * @param reason The fixed report reason key, never the message.

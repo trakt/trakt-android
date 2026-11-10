@@ -56,6 +56,7 @@ internal fun ShowEpisodesList(
     season: Int?,
     episodes: ImmutableList<EpisodeItem>,
     highlightedEpisode: Int?,
+    spoilersHidden: Boolean,
     onEpisodeClick: (episode: EpisodeItem) -> Unit,
     onCheckClick: (episode: EpisodeItem) -> Unit,
     onCheckLongClick: (episode: EpisodeItem) -> Unit,
@@ -130,6 +131,7 @@ internal fun ShowEpisodesList(
                         highlighted = isHighlighted,
                         containerImageUrl = when {
                             !isReleased -> show?.images?.getFanartUrl()
+                            spoilersHidden && !item.isWatched -> show?.images?.getFanartUrl()
                             else -> item.episode.images?.getScreenshotUrl()
                                 ?: show?.images?.getFanartUrl()
                         },

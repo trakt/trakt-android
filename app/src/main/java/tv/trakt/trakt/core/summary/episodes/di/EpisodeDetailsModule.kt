@@ -112,6 +112,7 @@ internal val episodeDetailsModule = module {
             updateEpisodeHistoryUseCase = get(),
             dataChanges = get(),
             sessionManager = get(),
+            getSpoilerStateUseCase = get(),
             analytics = get(),
             collapsingManager = get(),
         )

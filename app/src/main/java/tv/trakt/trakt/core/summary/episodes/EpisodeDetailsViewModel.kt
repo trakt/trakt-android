@@ -12,8 +12,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -112,7 +114,7 @@ internal class EpisodeDetailsViewModel(
     private var ratingJob: Job? = null
 
     init {
-        loadUser()
+        observeUser()
         loadData()
         loadProgressData()
         loadUserRatingData()
@@ -159,18 +161,12 @@ internal class EpisodeDetailsViewModel(
             .launchIn(viewModelScope)
     }
 
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
+    private fun observeUser() {
+        sessionManager.observeProfile()
+            .distinctUntilChanged()
+            .onEach { user -> userState.update { user } }
+            .catch { error -> Timber.recordError(error) }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {

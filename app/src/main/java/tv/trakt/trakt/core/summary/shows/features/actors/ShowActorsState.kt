@@ -11,4 +11,5 @@ internal data class ShowActorsState(
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
     val collapsed: Boolean? = null,
+    val spoilersHidden: Boolean = false,
 )

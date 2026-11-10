@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -77,6 +78,7 @@ internal class PersonDetailsViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val errorState = MutableStateFlow(initialState.error)
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
 
     private var mediaLinkJob: Job? = null
     private var creditsJob: Job? = null
@@ -112,9 +114,9 @@ internal class PersonDetailsViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
+                val user = sessionManager.getProfile()
+                userState.update { user }
+                spoilersHiddenState.update { user?.settings?.hideSpoilers == true }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -280,6 +282,10 @@ internal class PersonDetailsViewModel(
         analytics.logShare(source = "person", type = null)
     }
 
+    fun logEpisodeCountReveal() {
+        analytics.logSpoilerReveal(MediaType.Show.value)
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         userState,
@@ -295,6 +301,7 @@ internal class PersonDetailsViewModel(
         errorState,
         preferredCreditsFilterState,
         filterState,
+        spoilersHiddenState,
     ) { state ->
         PersonDetailsState(
             user = state[0] as User?,
@@ -310,6 +317,7 @@ internal class PersonDetailsViewModel(
             error = state[10] as Exception?,
             preferredCreditsFilter = state[11] as String?,
             filter = state[12] as GlobalFilter,
+            spoilersHidden = state[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

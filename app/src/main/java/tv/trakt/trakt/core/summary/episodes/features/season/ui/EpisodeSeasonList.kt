@@ -49,6 +49,7 @@ internal fun EpisodeSeasonList(
     show: Show?,
     episodes: ImmutableList<EpisodeItem>,
     currentEpisode: Int?,
+    spoilersHidden: Boolean,
     onEpisodeClick: (episode: EpisodeItem) -> Unit,
     onCheckClick: (episode: EpisodeItem) -> Unit,
     onCheckLongClick: (episode: EpisodeItem) -> Unit,
@@ -92,8 +93,11 @@ internal fun EpisodeSeasonList(
                 more = hasMore,
                 watched = item.isWatched,
                 highlighted = isCurrent,
-                containerImageUrl = item.episode.images?.getScreenshotUrl()
-                    ?: show?.images?.getFanartUrl(),
+                containerImageUrl = when {
+                    spoilersHidden && !item.isWatched -> show?.images?.getFanartUrl()
+                    else -> item.episode.images?.getScreenshotUrl()
+                        ?: show?.images?.getFanartUrl()
+                },
                 onClick = { onEpisodeClick(item) },
                 onLongClick = {
                     if (hasMore) {

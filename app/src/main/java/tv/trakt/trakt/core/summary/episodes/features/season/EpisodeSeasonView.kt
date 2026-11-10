@@ -278,6 +278,7 @@ private fun EpisodeSeasonContent(
                                 show = state.show,
                                 episodes = state.episodes,
                                 currentEpisode = state.episode?.number,
+                                spoilersHidden = state.spoilersHidden,
                                 contentPadding = contentPadding,
                                 onEpisodeClick = onEpisodeClick ?: {},
                                 onCheckClick = onCheckClick ?: {},
