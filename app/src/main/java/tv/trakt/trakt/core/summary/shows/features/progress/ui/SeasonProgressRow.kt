@@ -74,7 +74,8 @@ internal fun SeasonProgressRow(
             verticalArrangement = spacedBy(8.dp),
             modifier = Modifier
                 .onClick(onClick = onToggle)
-                .padding(horizontal = 16.dp, vertical = 14.dp),
+                .padding(horizontal = 16.dp, vertical = 14.dp)
+                .padding(bottom = 4.dp),
         ) {
             val chevronOffset = when {
                 loading -> 1.dp

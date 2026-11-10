@@ -243,6 +243,10 @@ private fun ProgressHero(state: ShowProgressState) {
                     .alignBy(LastBaseline)
                     .alpha(if (loading) 0F else 1F),
             ) {
+                val color = when {
+                    state.isWatched -> TraktTheme.colors.textPrimary
+                    else -> TraktTheme.colors.textSecondary
+                }
                 Text(
                     text = stringResource(
                         R.string.text_watch_state_fraction,
@@ -250,12 +254,12 @@ private fun ProgressHero(state: ShowProgressState) {
                         state.totalEpisodes,
                     ),
                     style = TraktTheme.typography.cardTitle,
-                    color = TraktTheme.colors.textPrimary,
+                    color = color,
                 )
                 Text(
                     text = stringResource(R.string.text_watch_state_episodes),
                     style = TraktTheme.typography.meta,
-                    color = TraktTheme.colors.textSecondary,
+                    color = color,
                 )
             }
         }
