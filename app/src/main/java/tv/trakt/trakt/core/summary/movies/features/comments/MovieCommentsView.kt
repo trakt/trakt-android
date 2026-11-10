@@ -69,6 +69,8 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
+import tv.trakt.trakt.core.comments.features.media.MediaCommentsState
+import tv.trakt.trakt.core.comments.features.media.MediaCommentsViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
@@ -90,7 +92,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MovieCommentsView(
-    viewModel: MovieCommentsViewModel,
+    viewModel: MediaCommentsViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -207,7 +209,7 @@ internal fun MovieCommentsView(
 
 @Composable
 private fun MovieCommentsContent(
-    state: MovieCommentsState,
+    state: MediaCommentsState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -502,7 +504,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieCommentsContent(
-                state = MovieCommentsState(),
+                state = MediaCommentsState(),
             )
         }
     }
@@ -522,7 +524,7 @@ private fun Preview2() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieCommentsContent(
-                state = MovieCommentsState(
+                state = MediaCommentsState(
                     user = PreviewData.user1,
                     items = emptyList<Comment>().toImmutableList(),
                     loading = Loading,
@@ -546,7 +548,7 @@ private fun Preview3() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieCommentsContent(
-                state = MovieCommentsState(
+                state = MediaCommentsState(
                     items = emptyList<Comment>().toImmutableList(),
                     loading = Done,
                 ),

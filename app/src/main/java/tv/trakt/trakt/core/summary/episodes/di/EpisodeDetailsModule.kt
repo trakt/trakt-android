@@ -11,8 +11,6 @@ import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeActorsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeDirectorUseCase
-import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsViewModel
-import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisodeCommentsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextViewModel
 import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryViewModel
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
@@ -34,7 +32,6 @@ internal val episodeDetailsModule = module {
     factoryOf(::GetEpisodeRatingsUseCase)
     factoryOf(::GetEpisodeActorsUseCase)
     factoryOf(::GetEpisodeDirectorUseCase)
-    factoryOf(::GetEpisodeCommentsUseCase)
     factoryOf(::GetEpisodeHistoryUseCase)
     factoryOf(::GetEpisodeSeasonUseCase)
     factoryOf(::HasSkippedEpisodesUseCase)
@@ -79,24 +76,6 @@ internal val episodeDetailsModule = module {
             episode = episode,
             getActorsUseCase = get(),
             collapsingManager = get(),
-        )
-    }
-
-    viewModel { (show: Show, episode: Episode) ->
-        EpisodeCommentsViewModel(
-            appContext = androidApplication(),
-            show = show,
-            episode = episode,
-            getFilterUseCase = get(),
-            getLanguageUseCase = get(),
-            getCommentsUseCase = get(),
-            getCommentReactionsUseCase = get(),
-            loadUserReactionsUseCase = get(),
-            dataChanges = get(),
-            sessionManager = get(),
-            collapsingManager = get(),
-            translationsStore = get(),
-            analytics = get(),
         )
     }
 
