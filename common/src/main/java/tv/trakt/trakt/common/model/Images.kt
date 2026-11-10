@@ -28,6 +28,14 @@ data class Images(
     @Serializable(with = ImmutableListSerializer::class)
     val screenshot: ImmutableList<String> = EmptyImmutableList,
 ) {
+    enum class Size(
+        val value: String,
+    ) {
+        THUMB("thumb"),
+        MEDIUM("medium"),
+        FULL("full"),
+    }
+
     fun getFanartUrl(size: Size = Size.MEDIUM): String? {
         return fanart.firstOrNull()?.let {
             buildString {
@@ -86,18 +94,10 @@ data class Images(
         }
     }
 
-    enum class Size(
-        val value: String,
-    ) {
-        THUMB("thumb"),
-        MEDIUM("medium"),
-        FULL("full"),
-    }
-
     companion object {
-        fun forMovie(id: TraktId): Images = forTitle(type = "movies", id = id)
+        fun forMovie(id: TraktId): Images = forMedia(type = "movies", id = id)
 
-        fun forShow(id: TraktId): Images = forTitle(type = "shows", id = id)
+        fun forShow(id: TraktId): Images = forMedia(type = "shows", id = id)
 
         fun forSeason(id: TraktId): Images {
             return Images(
@@ -119,7 +119,7 @@ data class Images(
             )
         }
 
-        private fun forTitle(
+        private fun forMedia(
             type: String,
             id: TraktId,
         ): Images {
