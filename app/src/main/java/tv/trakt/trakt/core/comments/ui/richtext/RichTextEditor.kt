@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.comments.ui.richtext
 
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.util.TypedValue
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -149,11 +148,9 @@ private fun EditorField(
                 highlightColor = colors.accent.copy(alpha = 0.4F).toArgb()
                 setMinLines(minLines)
                 setMaxLines(maxLines)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    textCursorDrawable = GradientDrawable().apply {
-                        setColor(colors.textPrimary.toArgb())
-                        setSize(with(density) { CursorWidth.roundToPx() }, 0)
-                    }
+                textCursorDrawable = GradientDrawable().apply {
+                    setColor(colors.textPrimary.toArgb())
+                    setSize(with(density) { CursorWidth.roundToPx() }, 0)
                 }
                 state.attach(this)
             }

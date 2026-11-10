@@ -180,7 +180,6 @@
 
     <activity
       android:name=".widgets.configuration.WidgetConfigurationActivity"
-      android:enabled="@bool/widgets_enabled"
       android:excludeFromRecents="true"
       android:exported="true"
       android:label="@string/page_title_widget_background"
@@ -193,7 +192,6 @@
 
     <receiver
       android:name=".widgets.widget.continuewatching.ContinueWatchingWidgetReceiver"
-      android:enabled="@bool/widgets_enabled"
       android:exported="false"
       android:label="@string/page_title_up_next"
       >
@@ -209,7 +207,6 @@
 
     <receiver
       android:name=".widgets.widget.calendar.CalendarWidgetReceiver"
-      android:enabled="@bool/widgets_enabled"
       android:exported="false"
       android:label="@string/page_title_calendar"
       >
@@ -225,7 +222,6 @@
 
     <receiver
       android:name=".widgets.widget.streaks.StreaksWidgetReceiver"
-      android:enabled="@bool/widgets_enabled"
       android:exported="false"
       android:label="@string/drawer_title_streak_activity"
       >

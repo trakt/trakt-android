@@ -168,8 +168,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.proto)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)
-    implementation(libs.haze)
-    implementation(libs.haze.blur)
     implementation(libs.phoenix)
     implementation(libs.younify)
     implementation(libs.mlkit.genai.prompt)

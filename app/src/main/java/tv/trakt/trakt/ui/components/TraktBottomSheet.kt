@@ -1,6 +1,5 @@
 package tv.trakt.trakt.ui.components
 
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -73,9 +72,7 @@ internal fun TraktBottomSheet(
         val view = LocalView.current
         (view.parent as? DialogWindowProvider)?.window?.let { window ->
             LaunchedEffect(Unit) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    window.isNavigationBarContrastEnforced = false
-                }
+                window.isNavigationBarContrastEnforced = false
             }
 
             SideEffect {

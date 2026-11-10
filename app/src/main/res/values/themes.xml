@@ -1,7 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!-- Base application theme. -->
+  <!--
+    The system splash screen paints windowSplashScreenBackground rather than windowBackground, so
+    it needs the same day/night colour or the splash keeps the platform default.
+  -->
   <style name="Theme.Trakt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     <item name="android:windowBackground">@color/window_background</item>
+    <item name="android:windowSplashScreenBackground">@color/window_background</item>
   </style>
 
   <!--
