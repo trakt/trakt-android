@@ -103,6 +103,7 @@ internal fun CommentDetailsView(
     gifQuery: String? = null,
     mentionSource: MentionSource? = null,
     progressTotal: Int? = null,
+    mediaWatched: Boolean = false,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
     onReportComment: () -> Unit = {},
     onUserClick: ((User) -> Unit)? = null,
@@ -129,6 +130,7 @@ internal fun CommentDetailsView(
     CommentDetailsViewContent(
         state = state,
         progressTotal = progressTotal,
+        mediaWatched = mediaWatched,
         modifier = modifier,
         onReplyLoaded = {
             viewModel.loadReactions(it.id)
@@ -225,6 +227,7 @@ private fun CommentDetailsViewContent(
     state: CommentDetailsState,
     modifier: Modifier = Modifier,
     progressTotal: Int? = null,
+    mediaWatched: Boolean = false,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onEditClick: ((Comment) -> Unit)? = null,
@@ -251,6 +254,7 @@ private fun CommentDetailsViewContent(
                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
                     translations = state.translations,
                     progressTotal = progressTotal,
+                    mediaWatched = mediaWatched,
                     onReplyLoaded = onReplyLoaded,
                     onReactionClick = onReactionClick,
                     onReplyClick = onReplyClick,
@@ -295,6 +299,7 @@ private fun CommentContent(
     userReactions: ImmutableMap<Int, Reaction?>,
     translations: CommentTranslations,
     progressTotal: Int?,
+    mediaWatched: Boolean,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((User) -> Unit)? = null,
@@ -385,6 +390,7 @@ private fun CommentContent(
                             userReaction = userReactions[reply.id],
                             translations = translations,
                             progressTotal = progressTotal,
+                            mediaWatched = mediaWatched,
                             onRequestReactions = { onReplyLoaded?.invoke(reply) },
                             onReactionClick = { onReactionClick?.invoke(it, reply) },
                             onReplyClick = { onReplyClick?.invoke(reply.user) },

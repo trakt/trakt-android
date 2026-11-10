@@ -52,6 +52,13 @@ internal class GeneralSettingsViewModel(
             .launchIn(viewModelScope)
     }
 
+    fun enableSpoilers(enable: Boolean) {
+        updateSettings {
+            updateSettingsUseCase.updateHideSpoilers(hidden = !enable)
+            analytics.logSettings("spoilers")
+        }
+    }
+
     fun enableMultiplePlays(enable: Boolean) {
         updateSettings {
             updateSettingsUseCase.updateMultiplePlays(enable)

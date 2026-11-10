@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.helpers.extensions.spoilerFreeTitle
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -47,7 +48,7 @@ internal fun EpisodeContextView(
             verticalArrangement = spacedBy(2.dp),
         ) {
             Text(
-                text = episode.title,
+                text = episode.spoilerFreeTitle(),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading3,
                 maxLines = 1,

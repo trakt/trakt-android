@@ -97,6 +97,12 @@ class CollectionStateProvider(
                         watchedMovies = progressMovies
                             .asyncMap { it.mediaId }
                             .toImmutableSet(),
+                        watchedEpisodes = progressShows
+                            .flatMap { it.seasons }
+                            .flatMap { it.episodes }
+                            .filter { it.plays.isNotEmpty() }
+                            .map { it.id }
+                            .toImmutableSet(),
                     )
                 }
             }

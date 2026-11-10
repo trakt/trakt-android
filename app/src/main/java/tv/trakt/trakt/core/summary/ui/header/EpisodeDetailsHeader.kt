@@ -41,6 +41,7 @@ internal fun DetailsHeader(
     ratings: ExternalRating?,
     creator: Person?,
     playsCount: Int?,
+    spoilersHidden: Boolean,
     loading: Boolean,
     onShowClick: (Show) -> Unit,
     onCreatorClick: (Person) -> Unit,
@@ -54,8 +55,11 @@ internal fun DetailsHeader(
     val isReleased = episode.rememberReleased()
 
     DetailsHeader(
-        title = episode.title,
-        titleTranslation = episodeTranslation?.title,
+        title = when {
+            spoilersHidden -> episode.seasonEpisodeString()
+            else -> episode.title
+        },
+        titleTranslation = episodeTranslation?.title.takeUnless { spoilersHidden },
         titleHeader = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -173,8 +177,11 @@ internal fun DetailsHeader(
         },
         genres = show.genres,
         runtime = episode.runtime,
-        imageUrl = episode.images?.getScreenshotUrl()
-            ?: show.images?.getFanartUrl(),
+        imageUrl = when {
+            spoilersHidden -> show.images?.getFanartUrl()
+            else -> episode.images?.getScreenshotUrl()
+                ?: show.images?.getFanartUrl()
+        },
         imagePlaceholderUrl = null,
         imageHorizontal = true,
         accentColor = null,

@@ -41,10 +41,15 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import tv.trakt.trakt.app.TvSplashActivity
+import tv.trakt.trakt.common.core.user.SpoilerState
+import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HTTPS_AUTH_CALLBACK_ENABLED
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.helpers.extensions.recordError
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerReveal
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.auth.AuthBrowser
@@ -92,6 +97,10 @@ internal class MainActivity : AppCompatActivity() {
 
     private val analytics: Analytics by lazy {
         inject<Analytics>().value
+    }
+
+    private val getSpoilerStateUseCase: GetSpoilerStateUseCase by lazy {
+        inject<GetSpoilerStateUseCase>().value
     }
 
     private val authBrowser = AuthBrowser(
@@ -175,6 +184,13 @@ internal class MainActivity : AppCompatActivity() {
                 { source: LoginSource -> startAuthorization(source) }
             }
 
+            val spoilerState by remember { getSpoilerStateUseCase.observe() }
+                .collectAsStateWithLifecycle(initialValue = SpoilerState())
+
+            val revealSpoiler = remember {
+                { type: MediaType -> analytics.logSpoilerReveal(type.value) }
+            }
+
             TraktTheme(
                 colors = when {
                     darkTheme -> seasonalTheme?.darkColors ?: DarkColors
@@ -188,6 +204,8 @@ internal class MainActivity : AppCompatActivity() {
                     LocalSnackbarState provides snackbarState,
                     LocalStartAuthorization provides startAuthorization,
                     LocalSeasonalTheme provides seasonalTheme,
+                    LocalSpoilerState provides spoilerState,
+                    LocalSpoilerReveal provides revealSpoiler,
                 ) {
                     MainScreen(
                         viewModel = koinViewModel(),

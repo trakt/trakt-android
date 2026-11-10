@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -52,6 +53,7 @@ internal class ShowSeasonsViewModel(
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
+    private val getSpoilerStateUseCase: GetSpoilerStateUseCase,
     private val analytics: Analytics,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -66,6 +68,7 @@ internal class ShowSeasonsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val watchedUntilPromptState = MutableStateFlow(initialState.watchedUntilPrompt)
     private val errorState = MutableStateFlow(initialState.error)
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_SEASONS))
 
     private var collapseJob: Job? = null
@@ -73,6 +76,13 @@ internal class ShowSeasonsViewModel(
     init {
         loadData()
         observeData()
+        observeSpoilers()
+    }
+
+    private fun observeSpoilers() {
+        getSpoilerStateUseCase.observeEnabled()
+            .onEach { enabled -> spoilersHiddenState.update { enabled } }
+            .launchIn(viewModelScope)
     }
 
     private fun observeData() {
@@ -498,6 +508,7 @@ internal class ShowSeasonsViewModel(
         errorState,
         collapseState,
         watchedUntilPromptState,
+        spoilersHiddenState,
     ) { state ->
         ShowSeasonsState(
             show = state[0] as Show,
@@ -509,6 +520,7 @@ internal class ShowSeasonsViewModel(
             error = state[6] as Exception?,
             collapsed = state[7] as Boolean,
             watchedUntilPrompt = state[8] as Episode?,
+            spoilersHidden = state[9] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

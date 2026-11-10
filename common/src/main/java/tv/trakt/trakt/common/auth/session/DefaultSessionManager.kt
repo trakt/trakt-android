@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
@@ -14,7 +15,7 @@ import tv.trakt.trakt.common.model.User
 
 // Token storage versioning.
 // Can be used to force clearing old data when the structure changes.
-private const val KEY_VERSION = 8
+private const val KEY_VERSION = 9
 
 private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile_$KEY_VERSION")
 private val KEY_USER_PROFILE_IMAGE = stringPreferencesKey("key_user_profile_image_$KEY_VERSION")
@@ -75,6 +76,6 @@ internal class DefaultSessionManager(
                 clear()
                 null
             }
-        }
+        }.distinctUntilChanged()
     }
 }

@@ -11,17 +11,20 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -47,12 +50,14 @@ internal class TriviaViewModel(
     private val getMovieTriviaUseCase: GetMovieTriviaUseCase,
     private val getShowTriviaUseCase: GetShowTriviaUseCase,
     private val sessionManager: SessionManager,
+    private val getSpoilerStateUseCase: GetSpoilerStateUseCase,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<TriviaDestination>()
 
     private val initialState = TriviaState(
         backgroundUrl = destination.mediaImage,
         mediaTitle = destination.mediaTitle,
+        mediaType = destination.mediaType,
     )
 
     private val userState = MutableStateFlow(initialState.user)
@@ -61,10 +66,12 @@ internal class TriviaViewModel(
     private val filterState = MutableStateFlow(initialState.filter)
     private val categoryState = MutableStateFlow(initialState.category)
     private val errorState = MutableStateFlow(initialState.error)
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
 
     init {
         loadData()
         observeUser()
+        observeSpoilers()
 
         analytics.trivia.logScreenView(
             source = destination.navSource,
@@ -132,6 +139,21 @@ internal class TriviaViewModel(
         }
     }
 
+    private fun observeSpoilers() {
+        val mediaId = destination.mediaId.toTraktId()
+        val hidden = when (destination.mediaType) {
+            MediaType.Movie -> getSpoilerStateUseCase.observe().map { it.isMovieHidden(mediaId) }
+            MediaType.Show -> getSpoilerStateUseCase.observeShowHidden(mediaId)
+            MediaType.Season, MediaType.Episode -> return
+        }
+
+        hidden
+            .distinctUntilChanged()
+            .onEach { isHidden -> spoilersHiddenState.update { isHidden } }
+            .catch { error -> Timber.recordError(error) }
+            .launchIn(viewModelScope)
+    }
+
     fun setFilter(filter: TriviaFilter) {
         filterState.update { current ->
             if (current == filter) null else filter
@@ -150,6 +172,7 @@ internal class TriviaViewModel(
         filterState,
         categoryState,
         errorState,
+        spoilersHiddenState,
     ) { state ->
         val items = state[2] as ImmutableList<TriviaFact>?
         val filter = state[3] as TriviaFilter?
@@ -180,7 +203,9 @@ internal class TriviaViewModel(
             category = category,
             backgroundUrl = initialState.backgroundUrl,
             mediaTitle = initialState.mediaTitle,
+            mediaType = initialState.mediaType,
             error = state[5] as Exception?,
+            spoilersHidden = state[6] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -73,6 +73,7 @@ import tv.trakt.trakt.core.comments.ui.SideGifMaxSize
 import tv.trakt.trakt.core.comments.ui.SideGifShape
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -279,8 +280,11 @@ private fun CommentHeader(
                 title = "",
                 width = 112.dp,
                 corner = 8.dp,
-                containerImageUrl = item.episode.images?.getScreenshotUrl(Size.THUMB)
-                    ?: item.show.images?.getFanartUrl(),
+                containerImageUrl = when {
+                    item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
+                    else -> item.episode.images?.getScreenshotUrl(Size.THUMB)
+                        ?: item.show.images?.getFanartUrl()
+                },
                 more = false,
                 onClick = {
                     onEpisodeClick?.invoke(item.show, item.episode)

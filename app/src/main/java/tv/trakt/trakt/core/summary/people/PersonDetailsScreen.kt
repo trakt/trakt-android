@@ -157,6 +157,7 @@ internal fun PersonDetailsScreen(
         onMovieLinkClick = viewModel::navigateToMovie,
         onBackClick = onNavigateBack,
         onShareClick = viewModel::logShare,
+        onEpisodeCountReveal = viewModel::logEpisodeCountReveal,
         onReportClick = {
             reportSheet = state.personDetails?.let { ReportTarget.Person(it.ids.trakt) }
         },
@@ -223,6 +224,7 @@ internal fun PersonDetailsContent(
     onMovieLinkClick: ((SlugId) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onEpisodeCountReveal: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onFiltersClick: (() -> Unit)? = null,
     onMoreClick: ((PersonCreditsSection, String?) -> Unit)? = null,
@@ -339,8 +341,10 @@ internal fun PersonDetailsContent(
                             preferredFilter = state.preferredCreditsFilter,
                             listItems = (state.personShowCredits ?: emptyMap()).toImmutableMap(),
                             userCollection = state.collection,
+                            spoilersHidden = state.spoilersHidden,
                             sectionPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onEpisodeCountReveal = { onEpisodeCountReveal?.invoke() },
                             onClick = onShowClick,
                             onLongClick = onShowLongClick,
                             onMoreClick = { onMoreClick?.invoke(PersonCreditsSection.Shows, it) },

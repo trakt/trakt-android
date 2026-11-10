@@ -36,6 +36,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
@@ -269,7 +270,10 @@ private fun ActionButtons(
 @Composable
 private fun CustomListItem.subtitle(): String {
     return when (this) {
-        is EpisodeItem -> "${episode.seasonEpisodeString()} ${episode.title}"
+        is EpisodeItem -> when {
+            episode.isSpoilerHidden() -> episode.seasonEpisodeString()
+            else -> "${episode.seasonEpisodeString()} ${episode.title}"
+        }
         is SeasonItem -> stringResource(R.string.text_season_number, season.number)
         is MovieItem, is ShowItem -> title
     }

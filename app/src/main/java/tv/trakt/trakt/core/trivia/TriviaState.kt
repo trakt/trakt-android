@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.core.trivia.model.TriviaCategory
@@ -18,6 +19,8 @@ internal data class TriviaState(
     val categories: ImmutableList<TriviaCategory>? = null,
     val category: TriviaCategory? = null,
     val mediaTitle: String? = null,
+    val mediaType: MediaType? = null,
+    val spoilersHidden: Boolean = false,
     val backgroundUrl: String? = null,
     val loading: LoadingState = Idle,
     val error: Exception? = null,

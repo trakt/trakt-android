@@ -53,6 +53,7 @@ internal fun AllShowSeasonsScreen(
         modifier = modifier,
         onModeClick = viewModel::setMode,
         onPeopleModeClick = viewModel::setPeopleMode,
+        onEpisodeCountReveal = viewModel::logEpisodeCountReveal,
         onCommentsFilterClick = viewModel::setCommentsFilter,
         onCommentsLanguageClick = viewModel::setCommentsLanguage,
         onCommentRepliesClick = {

@@ -48,12 +48,12 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun ShowActorsView(
@@ -72,6 +72,7 @@ internal fun ShowActorsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
+        onEpisodeCountReveal = viewModel::logEpisodeCountReveal,
         onPersonClick = onPersonClick,
         onMoreClick = onMoreClick,
     )
@@ -84,6 +85,7 @@ private fun ShowActorsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
+    onEpisodeCountReveal: () -> Unit = {},
     onPersonClick: ((Person) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
@@ -134,6 +136,8 @@ private fun ShowActorsContent(
                             ContentList(
                                 listItems = (state.items ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
+                                spoilersHidden = state.spoilersHidden,
+                                onEpisodeCountReveal = onEpisodeCountReveal,
                                 onPersonClick = onPersonClick,
                             )
                         }
@@ -148,6 +152,8 @@ private fun ShowActorsContent(
 private fun ContentList(
     listItems: ImmutableList<CastPerson>,
     contentPadding: PaddingValues,
+    spoilersHidden: Boolean,
+    onEpisodeCountReveal: () -> Unit,
     onPersonClick: ((Person) -> Unit)? = null,
 ) {
     val listState = rememberLazyListState(
@@ -165,7 +171,7 @@ private fun ContentList(
     ) {
         items(
             items = listItems,
-            key = { it.person.ids.trakt.value.plus(nextInt()) },
+            key = { it.person.ids.trakt.value },
         ) { item ->
             VerticalMediaCard(
                 title = "",
@@ -174,10 +180,15 @@ private fun ContentList(
                 more = false,
                 cardContent = {
                     if (item.episodesCount > 0) {
-                        InfoChip(
-                            text = stringResource(R.string.tag_text_number_of_episodes, item.episodesCount),
-                            containerColor = TraktTheme.colors.chipContainerOnContent,
-                        )
+                        SpoilerBlur(
+                            hidden = spoilersHidden,
+                            onReveal = onEpisodeCountReveal,
+                        ) {
+                            InfoChip(
+                                text = stringResource(R.string.tag_text_number_of_episodes, item.episodesCount),
+                                containerColor = TraktTheme.colors.chipContainerOnContent,
+                            )
+                        }
                     }
                 },
                 chipContent = {

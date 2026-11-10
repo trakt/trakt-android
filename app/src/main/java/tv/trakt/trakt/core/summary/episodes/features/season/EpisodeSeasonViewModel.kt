@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.sync.model.ProgressItem
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -55,6 +56,7 @@ internal class EpisodeSeasonViewModel(
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
+    private val getSpoilerStateUseCase: GetSpoilerStateUseCase,
     private val analytics: Analytics,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -70,12 +72,20 @@ internal class EpisodeSeasonViewModel(
     private val errorState = MutableStateFlow(initialState.error)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_SEASON))
     private val watchedUntilPromptState = MutableStateFlow(initialState.watchedUntilPrompt)
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
 
     private var collapseJob: Job? = null
 
     init {
         loadData()
         observeData()
+        observeSpoilers()
+    }
+
+    private fun observeSpoilers() {
+        getSpoilerStateUseCase.observeEnabled()
+            .onEach { enabled -> spoilersHiddenState.update { enabled } }
+            .launchIn(viewModelScope)
     }
 
     private fun observeData() {
@@ -350,6 +360,7 @@ internal class EpisodeSeasonViewModel(
         errorState,
         collapseState,
         watchedUntilPromptState,
+        spoilersHiddenState,
     ) { state ->
         EpisodeSeasonState(
             episode = state[0] as Episode,
@@ -361,6 +372,7 @@ internal class EpisodeSeasonViewModel(
             error = state[6] as Exception?,
             collapsed = state[7] as Boolean,
             watchedUntilPrompt = state[8] as Episode?,
+            spoilersHidden = state[9] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

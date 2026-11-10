@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.home.model.UpNextMovie
 import tv.trakt.trakt.common.core.home.model.UpNextShow
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
@@ -126,13 +127,11 @@ internal class HomeUpNextViewModel(
         viewModelScope.launch {
             user = sessionManager.getProfile()
             sessionManager.observeProfile()
+                .onEach { user = it }
+                .distinctUntilSessionChanged()
                 .drop(1)
-                .distinctUntilChanged()
                 .debounce(200.milliseconds)
-                .collect {
-                    user = it
-                    loadData()
-                }
+                .collect { loadData() }
         }
     }
 

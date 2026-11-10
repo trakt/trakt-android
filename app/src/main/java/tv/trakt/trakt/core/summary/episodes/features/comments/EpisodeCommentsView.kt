@@ -94,6 +94,7 @@ internal fun EpisodeCommentsView(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     gifPaused: Boolean = false,
+    mediaWatched: Boolean = false,
     onMoreClick: ((CommentsFilter) -> Unit)?,
     onUserClick: ((User) -> Unit)?,
 ) {
@@ -121,6 +122,7 @@ internal fun EpisodeCommentsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         gifPaused = gifPaused,
+        mediaWatched = mediaWatched,
         onMoreClick = {
             if (!state.items.isNullOrEmpty()) {
                 onMoreClick?.invoke(state.filter)
@@ -162,6 +164,7 @@ internal fun EpisodeCommentsView(
 
     CommentDetailsSheet(
         comment = commentSheet,
+        mediaWatched = mediaWatched,
         gifQuery = MediaType.Episode.toGifQuery(state.media?.first?.title),
         mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
@@ -210,6 +213,7 @@ private fun EpisodeCommentsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     gifPaused: Boolean = false,
+    mediaWatched: Boolean = false,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -336,6 +340,7 @@ private fun EpisodeCommentsContent(
                                     listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
                                     user = state.user,
                                     gifPaused = gifPaused,
+                                    mediaWatched = mediaWatched,
                                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
                                     translations = state.translations,
                                     contentPadding = contentPadding,
@@ -367,6 +372,7 @@ private fun ContentList(
     translations: CommentTranslations,
     contentPadding: PaddingValues,
     gifPaused: Boolean,
+    mediaWatched: Boolean,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onEditCommentClick: ((Comment) -> Unit)? = null,
@@ -403,6 +409,7 @@ private fun ContentList(
                 userReactions = userReactions,
                 gifLayout = CommentGifLayout.Side,
                 gifPaused = gifPaused,
+                mediaWatched = mediaWatched,
                 onClick = { onCommentClick?.invoke(comment) },
                 onRepliesClick = { onCommentClick?.invoke(comment) },
                 onEditClick = { onEditCommentClick?.invoke(comment) },

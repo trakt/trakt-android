@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.AllActivityLocalSource
@@ -120,13 +121,11 @@ internal class HomeHistoryViewModel(
         viewModelScope.launch {
             userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
+                .onEach { user -> userState.update { user } }
+                .distinctUntilSessionChanged()
                 .drop(1)
-                .distinctUntilChanged()
                 .debounce(200.milliseconds)
-                .collect { user ->
-                    userState.update { user }
-                    loadData()
-                }
+                .collect { loadData() }
         }
     }
 

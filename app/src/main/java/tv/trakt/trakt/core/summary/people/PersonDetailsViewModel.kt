@@ -11,8 +11,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,6 +31,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -77,6 +80,7 @@ internal class PersonDetailsViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val errorState = MutableStateFlow(initialState.error)
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
 
     private var mediaLinkJob: Job? = null
     private var creditsJob: Job? = null
@@ -84,6 +88,7 @@ internal class PersonDetailsViewModel(
     init {
         loadUser()
         loadData()
+        observeSpoilers()
         observeCollection()
         observeFilter()
 
@@ -107,6 +112,14 @@ internal class PersonDetailsViewModel(
     fun setFilter(filter: GlobalFilter) {
         filterState.update { filter }
         personDetailsState.value?.let { loadPersonCredits(it.ids.trakt) }
+    }
+
+    private fun observeSpoilers() {
+        sessionManager.observeProfile()
+            .map { it?.settings?.hideSpoilers == true }
+            .distinctUntilChanged()
+            .onEach { enabled -> spoilersHiddenState.update { enabled } }
+            .launchIn(viewModelScope)
     }
 
     private fun loadUser() {
@@ -280,6 +293,10 @@ internal class PersonDetailsViewModel(
         analytics.logShare(source = "person", type = null)
     }
 
+    fun logEpisodeCountReveal() {
+        analytics.logSpoilerReveal(MediaType.Show.value)
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         userState,
@@ -295,6 +312,7 @@ internal class PersonDetailsViewModel(
         errorState,
         preferredCreditsFilterState,
         filterState,
+        spoilersHiddenState,
     ) { state ->
         PersonDetailsState(
             user = state[0] as User?,
@@ -310,6 +328,7 @@ internal class PersonDetailsViewModel(
             error = state[10] as Exception?,
             preferredCreditsFilter = state[11] as String?,
             filter = state[12] as GlobalFilter,
+            spoilersHidden = state[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

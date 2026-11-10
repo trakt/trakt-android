@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.model.TraktId
 data class UserCollectionState(
     private val watchedShowsPlays: ImmutableMap<TraktId, Int> = persistentMapOf(),
     private val watchedMovies: ImmutableSet<TraktId> = EmptyImmutableSet,
+    private val watchedEpisodes: ImmutableSet<TraktId> = EmptyImmutableSet,
     private val watchlistShows: ImmutableSet<TraktId> = EmptyImmutableSet,
     private val watchlistMovies: ImmutableSet<TraktId> = EmptyImmutableSet,
 ) {
@@ -39,6 +40,10 @@ data class UserCollectionState(
             Movie -> watchlistMovies.contains(traktId)
             else -> false
         }
+    }
+
+    fun isEpisodeWatched(episodeId: TraktId): Boolean {
+        return watchedEpisodes.contains(episodeId)
     }
 
     fun isWatched(

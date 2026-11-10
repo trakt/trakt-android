@@ -31,6 +31,9 @@ internal data class EpisodeDetailsState(
     val error: Exception? = null,
     val user: User? = null,
 ) {
+    val spoilersHidden: Boolean
+        get() = user?.settings?.hideSpoilers == true && episodeProgress?.watched != true
+
     data class ProgressState(
         val plays: Int?,
     ) {

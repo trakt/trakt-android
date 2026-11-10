@@ -37,6 +37,7 @@ internal data class ShowDetailsState(
         val aired: Int,
         val plays: Int?,
         val playsWithoutSpecials: Int?,
+        val playsDistinctWithoutSpecials: Int?,
         val inWatchlist: Boolean,
         val inLists: Boolean,
         val watchedEpisodes: Int = 0,
@@ -50,6 +51,11 @@ internal data class ShowDetailsState(
 
         val isWatched: Boolean
             get() = playsWithoutSpecials != null && playsWithoutSpecials > 0 && playsWithoutSpecials >= aired
+
+        val isEveryEpisodeWatched: Boolean
+            get() = aired > 0 &&
+                playsDistinctWithoutSpecials != null &&
+                playsDistinctWithoutSpecials >= aired
 
         val isWatching: Boolean
             get() = playsWithoutSpecials != null && playsWithoutSpecials > 0 && playsWithoutSpecials < aired

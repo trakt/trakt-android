@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.chips.EpisodeStatusChip
@@ -53,9 +54,11 @@ internal fun HomeUpNextShowView(
         title = "",
         onClick = onClick,
         onLongClick = onLongClick,
-        containerImageUrl =
-            item.show.images?.getFanartUrl()
-                ?: item.progress.nextEpisode?.images?.getScreenshotUrl(),
+        containerImageUrl = when {
+            item.progress.nextEpisode?.isSpoilerHidden() == true -> item.show.images?.getFanartUrl()
+            else -> item.show.images?.getFanartUrl()
+                ?: item.progress.nextEpisode?.images?.getScreenshotUrl()
+        },
         cardContent = {
             Row {
                 val runtime = item.progress.nextEpisode?.runtime?.inWholeMinutes

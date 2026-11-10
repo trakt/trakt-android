@@ -55,6 +55,7 @@ import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.MovieTarget
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.SeasonTarget
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.ShowTarget
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
+import tv.trakt.trakt.helpers.extensions.spoilerFreeTitle
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.lists.ListButton
 import tv.trakt.trakt.ui.components.buttons.lists.WatchlistButton
@@ -188,7 +189,7 @@ private fun ManageListsTarget.title(): String {
             0 -> stringResource(R.string.text_season_specials)
             else -> stringResource(R.string.text_season_number, season.number)
         }
-        is EpisodeTarget -> episode.title
+        is EpisodeTarget -> episode.spoilerFreeTitle()
     }
 }
 

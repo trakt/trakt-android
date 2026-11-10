@@ -95,6 +95,7 @@ internal class FirebaseAnalytics(
         const val STREAMING_SERVICE = "streaming_service"
         const val SOCIAL_MUTE_SHARER = "social_mute_sharer"
         const val REPORT_OPEN = "report_open"
+        const val SPOILER_REVEAL = "spoiler_reveal"
         const val REPORT_SEND = "report_send"
         const val STATS_DRILLDOWN = "stats_drilldown"
         const val SUMMARY_DRILLDOWN = "summary_drilldown"
@@ -124,6 +125,7 @@ internal class FirebaseAnalytics(
             STREAMING_SERVICE,
             SOCIAL_MUTE_SHARER,
             REPORT_OPEN,
+            SPOILER_REVEAL,
             REPORT_SEND,
             STATS_DRILLDOWN,
             SUMMARY_DRILLDOWN,
@@ -347,6 +349,13 @@ internal class FirebaseAnalytics(
     override fun logReportOpen(type: String) {
         firebaseAnalytics.logEvent(
             eventName(REPORT_OPEN),
+            bundleOf(PARAMETER_TYPE to type),
+        )
+    }
+
+    override fun logSpoilerReveal(type: String) {
+        firebaseAnalytics.logEvent(
+            eventName(SPOILER_REVEAL),
             bundleOf(PARAMETER_TYPE to type),
         )
     }

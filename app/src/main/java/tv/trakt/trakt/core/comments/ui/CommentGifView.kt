@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +26,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CommentGif
+import tv.trakt.trakt.ui.components.spoilerBlur
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 // Fixed ratio reserves space before the GIF loads, so the layout never jumps.
@@ -91,7 +92,10 @@ internal fun CommentGifView(
                 .gifBounds(imageRatio)
                 .clip(shape)
                 .then(
-                    if (blurred) Modifier.blur(SpoilerBlurRadius) else Modifier,
+                    when {
+                        blurred -> Modifier.spoilerBlur(SpoilerBlurRadius, BlurredEdgeTreatment.Rectangle)
+                        else -> Modifier
+                    },
                 ),
         )
     }

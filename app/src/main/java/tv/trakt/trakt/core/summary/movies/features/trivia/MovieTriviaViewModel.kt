@@ -49,6 +49,7 @@ internal class MovieTriviaViewModel(
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(collapsingKey))
     private val errorState = MutableStateFlow(initialState.error)
 
+    private var loadJob: kotlinx.coroutines.Job? = null
     private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
@@ -73,7 +74,8 @@ internal class MovieTriviaViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             try {
                 loadingState.update { Loading }
 
