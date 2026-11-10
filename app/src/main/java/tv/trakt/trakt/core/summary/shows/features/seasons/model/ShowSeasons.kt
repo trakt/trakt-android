@@ -35,7 +35,7 @@ internal data class ShowSeasons(
         get() = selectedSeasonEpisodes.isNotEmpty() &&
             selectedSeasonEpisodes.all { it.isWatched }
 
-    val isSelectedSeasonRateable: Boolean
+    val isSelectedSeasonStarted: Boolean
         get() = selectedSeasonEpisodes.any { it.isWatched }
 
     /**
