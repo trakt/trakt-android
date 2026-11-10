@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
 import tv.trakt.trakt.core.summary.soundtrack.model.SoundtrackSummary
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackPanel
+import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackPanelSize
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackSkeleton
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackTrackList
 import tv.trakt.trakt.core.summary.soundtrack.ui.SoundtrackUpsell
@@ -40,6 +41,7 @@ import tv.trakt.trakt.core.summary.soundtrack.ui.previewTrack
 import tv.trakt.trakt.core.summary.soundtrack.ui.rememberSoundtrackPlayback
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -159,11 +161,10 @@ private fun SoundtrackContent(
 
 @Composable
 private fun ContentEmpty(contentPadding: PaddingValues) {
-    Text(
-        text = stringResource(R.string.list_placeholder_empty),
-        color = TraktTheme.colors.textSecondary,
-        style = TraktTheme.typography.heading6,
-        modifier = Modifier.padding(contentPadding),
+    EmptyListCard(
+        modifier = Modifier
+            .height(SoundtrackPanelSize.Compact.height)
+            .padding(contentPadding),
     )
 }
 
