@@ -390,7 +390,7 @@ private fun HomeScreenContent(
             onFiltersClick = onFiltersClick,
             onWhatsNewClick = onWhatsNewClick,
             onTodayClick = onTodayClick,
-            onTodayLongClick = onMoreSocialClick,
+            onTodayViewAllClick = onMoreSocialClick,
         )
     }
 }
@@ -406,7 +406,7 @@ private fun HomeScreenHeader(
     onFiltersClick: () -> Unit,
     onWhatsNewClick: () -> Unit,
     onTodayClick: (groupKey: String) -> Unit,
-    onTodayLongClick: () -> Unit,
+    onTodayViewAllClick: () -> Unit,
 ) {
     val (userLoaded, userLoggedIn) = remember(state.user) {
         val userLoaded = state.user.loading == Done
@@ -425,7 +425,7 @@ private fun HomeScreenHeader(
             if (userLoggedIn) {
                 TodayPill(
                     onClick = onTodayClick,
-                    onLongClick = onTodayLongClick,
+                    onViewAllClick = onTodayViewAllClick,
                 )
             }
         },

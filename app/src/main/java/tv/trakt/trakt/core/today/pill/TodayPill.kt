@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.today.pill
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
@@ -9,9 +10,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -19,20 +22,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,8 +49,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.helpers.extensions.rememberAnimationsDisabled
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -59,6 +70,8 @@ private val BadgeSize = 14.dp
 private val BadgeOffset = 1.dp
 private val BadgePadding = 4.dp
 
+private val MenuCorner = 16.dp
+
 private const val POP_CYCLE_MS = 8_000
 private const val POP_DELAY_MS = 3000L
 private const val POP_COUNT = 3
@@ -69,7 +82,7 @@ internal fun TodayPill(
     modifier: Modifier = Modifier,
     viewModel: TodayPillViewModel = koinViewModel(),
     onClick: (groupKey: String) -> Unit,
-    onLongClick: () -> Unit,
+    onViewAllClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -83,9 +96,10 @@ internal fun TodayPill(
             posters = state.posters,
             unseenCount = state.unseenCount,
             onClick = { state.targetKey?.let(onClick) },
-            onLongClick = {
+            onMarkAllSeenClick = viewModel::markAllSeen,
+            onViewAllClick = {
                 viewModel.markAllSeen()
-                onLongClick()
+                onViewAllClick()
             },
         )
     }
@@ -97,8 +111,10 @@ internal fun TodayPillContent(
     unseenCount: Int,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    onLongClick: () -> Unit = {},
+    onMarkAllSeenClick: () -> Unit = {},
+    onViewAllClick: () -> Unit = {},
 ) {
+    var showMenu by remember { mutableStateOf(false) }
     val unseen = unseenCount > 0
     val animate = unseen && !rememberAnimationsDisabled()
 
@@ -116,7 +132,7 @@ internal fun TodayPillContent(
             .onClickCombined(
                 indication = false,
                 onClick = onClick,
-                onLongClick = onLongClick,
+                onLongClick = { showMenu = true },
             ),
     ) {
         Box(
@@ -150,7 +166,77 @@ internal fun TodayPillContent(
                 animate = animate,
             )
         }
+
+        TodayPillMenu(
+            expanded = showMenu,
+            showMarkAllSeen = unseen,
+            onDismiss = { showMenu = false },
+            onMarkAllSeenClick = onMarkAllSeenClick,
+            onViewAllClick = onViewAllClick,
+        )
     }
+}
+
+@Composable
+private fun TodayPillMenu(
+    expanded: Boolean,
+    showMarkAllSeen: Boolean,
+    onDismiss: () -> Unit,
+    onMarkAllSeenClick: () -> Unit,
+    onViewAllClick: () -> Unit,
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismiss,
+        containerColor = TraktTheme.colors.dialogContainer,
+        shape = RoundedCornerShape(MenuCorner),
+    ) {
+        if (showMarkAllSeen) {
+            TodayPillMenuItem(
+                text = stringResource(R.string.button_label_dismiss),
+                iconRes = R.drawable.ic_check,
+                onClick = {
+                    onDismiss()
+                    onMarkAllSeenClick()
+                },
+            )
+        }
+        TodayPillMenuItem(
+            text = stringResource(R.string.page_title_social_activity),
+            iconRes = R.drawable.ic_person_double,
+            onClick = {
+                onDismiss()
+                onViewAllClick()
+            },
+        )
+    }
+}
+
+@Composable
+private fun TodayPillMenuItem(
+    text: String,
+    @DrawableRes iconRes: Int,
+    onClick: () -> Unit,
+) {
+    DropdownMenuItem(
+        text = {
+            Text(
+                text = text,
+                style = TraktTheme.typography.buttonTertiary,
+                color = TraktTheme.colors.textPrimary,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(iconRes),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier.size(19.dp),
+            )
+        },
+        onClick = onClick,
+    )
 }
 
 @Composable
@@ -249,13 +335,14 @@ private fun TodayPillBadge(
     }
 }
 
-@Preview
+@PreviewTraktLightDark
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemePreview {
         Row(
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
             modifier = Modifier
-                .background(Color(0xFF131517))
+                .background(TraktTheme.colors.backgroundPrimary)
                 .padding(16.dp),
         ) {
             TodayPillContent(
@@ -266,13 +353,16 @@ private fun Preview() {
             TodayPillContent(
                 posters = persistentListOf("a"),
                 unseenCount = 7,
-                modifier = Modifier.padding(start = 24.dp),
+                onClick = {},
+            )
+            TodayPillContent(
+                posters = persistentListOf("a", "b"),
+                unseenCount = 120,
                 onClick = {},
             )
             TodayPillContent(
                 posters = persistentListOf("a", "b"),
                 unseenCount = 0,
-                modifier = Modifier.padding(start = 24.dp),
                 onClick = {},
             )
         }
