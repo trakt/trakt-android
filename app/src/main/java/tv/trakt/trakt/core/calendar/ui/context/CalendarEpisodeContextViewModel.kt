@@ -65,20 +65,12 @@ internal class CalendarEpisodeContextViewModel(
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
     private val loadingDropState = MutableStateFlow(initialState.loadingDrop)
-    private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
 
     private val showId = item.show.ids.trakt
 
     init {
-        loadUser()
         loadData()
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            userState.update { sessionManager.getProfile() }
-        }
     }
 
     private fun loadData() {
@@ -321,7 +313,7 @@ internal class CalendarEpisodeContextViewModel(
         loadingWatchedState,
         loadingWatchlistState,
         loadingDropState,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
     ) { state ->
         CalendarEpisodeContextState(

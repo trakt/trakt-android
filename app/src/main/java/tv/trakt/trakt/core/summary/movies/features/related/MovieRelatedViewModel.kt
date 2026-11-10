@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.features.related.usecases.GetMovieRelatedUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -32,10 +33,12 @@ internal class MovieRelatedViewModel(
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_RELATED))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.MOVIE_RELATED,
+    )
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -67,15 +70,7 @@ internal class MovieRelatedViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_RELATED)
-                else -> collapsingManager.expand(CollapsingKey.MOVIE_RELATED)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -83,7 +78,7 @@ internal class MovieRelatedViewModel(
         itemsState,
         collectionStateProvider.stateFlow,
         loadingState,
-        collapseState,
+        collapse.state,
         errorState,
     ) { state ->
         MovieRelatedState(

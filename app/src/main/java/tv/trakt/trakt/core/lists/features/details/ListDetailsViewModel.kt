@@ -100,7 +100,6 @@ internal class ListDetailsViewModel(
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
-    private val userState = MutableStateFlow(initialState.user)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -111,7 +110,6 @@ internal class ListDetailsViewModel(
     private var hasMoreData: Boolean = false
 
     init {
-        loadUser()
         loadInitialData()
         loadLikedData()
 
@@ -121,20 +119,6 @@ internal class ListDetailsViewModel(
     private fun observeCollection() {
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadLikedData() {
@@ -410,7 +394,7 @@ internal class ListDetailsViewModel(
         navigateShow,
         navigateMovie,
         navigateEpisode,
-        userState,
+        sessionManager.observeProfile(),
         infoState,
         errorState,
     ) { state ->

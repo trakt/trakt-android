@@ -50,20 +50,7 @@ internal class WatchlistMovieContextViewModel(
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
     private val loadingCheckInState = MutableStateFlow(initialState.loadingCheckIn)
 
-    private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
-
-    init {
-        loadUser()
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            userState.update {
-                sessionManager.getProfile()
-            }
-        }
-    }
 
     fun addToWatched(
         movieId: TraktId,
@@ -181,7 +168,7 @@ internal class WatchlistMovieContextViewModel(
         loadingWatchedState,
         loadingWatchlistState,
         loadingCheckInState,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
     ) { state ->
         WatchlistMovieContextState(

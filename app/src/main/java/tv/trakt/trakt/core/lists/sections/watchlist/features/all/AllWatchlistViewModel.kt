@@ -83,7 +83,6 @@ internal class AllWatchlistViewModel(
     private val origin = ChangeOrigin.unique()
     private val initialMode = filterManager.getFilter()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
     private val sortingState = MutableStateFlow(initialState.sorting)
@@ -102,7 +101,6 @@ internal class AllWatchlistViewModel(
     private var hasMoreData: Boolean = false
 
     init {
-        loadUser()
         loadInitialData()
 
         observeData()
@@ -127,20 +125,6 @@ internal class AllWatchlistViewModel(
     private fun observeCollection() {
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadInitialData() {
@@ -492,7 +476,7 @@ internal class AllWatchlistViewModel(
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
-        userState,
+        sessionManager.observeProfile(),
         infoState,
         errorState,
     ) { state ->

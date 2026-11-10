@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
 import tv.trakt.trakt.core.summary.soundtrack.usecases.GetSoundtrackUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -56,12 +57,15 @@ internal class SoundtrackViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val tracksState = MutableStateFlow(initialState.tracks)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(collapsingKey))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = collapsingKey,
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -125,15 +129,7 @@ internal class SoundtrackViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(collapsingKey)
-                else -> collapsingManager.expand(collapsingKey)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     fun logPlay(
@@ -154,7 +150,7 @@ internal class SoundtrackViewModel(
     val state = combine(
         userState,
         tracksState,
-        collapseState,
+        collapse.state,
         loadingState,
         errorState,
     ) { state ->

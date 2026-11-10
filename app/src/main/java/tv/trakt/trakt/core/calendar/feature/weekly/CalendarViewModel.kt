@@ -86,7 +86,6 @@ internal class CalendarViewModel(
     private val selectedStartDayState = MutableStateFlow(initialState.selectedStartDay)
     private val filterState = MutableStateFlow(filterManager.getFilter())
     private val typeState = MutableStateFlow(initialState.type)
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsLoadingState = MutableStateFlow(initialState.itemsLoading)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -108,10 +107,8 @@ internal class CalendarViewModel(
     init {
         rememberView()
         observeViewHint()
-        loadUser()
         loadData()
 
-        observeUser()
         observeFilters()
         observeData()
 
@@ -125,14 +122,6 @@ internal class CalendarViewModel(
         viewModelScope.launch {
             getCalendarViewUseCase.setView(source = source, view = CalendarView.Weekly)
         }
-    }
-
-    private fun observeUser() {
-        sessionManager.observeProfile()
-            .distinctUntilChanged()
-            .debounce(200.milliseconds)
-            .onEach { user -> userState.update { user } }
-            .launchIn(viewModelScope)
     }
 
     private fun observeViewHint() {
@@ -155,14 +144,6 @@ internal class CalendarViewModel(
             .debounce(200.milliseconds)
             .onEach { loadData() }
             .launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            userState.update {
-                sessionManager.getProfile()
-            }
-        }
     }
 
     private fun loadData() {
@@ -442,7 +423,7 @@ internal class CalendarViewModel(
     val state = combine(
         selectedStartDayState,
         filterState,
-        userState,
+        sessionManager.observeProfile(),
         itemsState,
         itemsLoadingState,
         navigateShow,

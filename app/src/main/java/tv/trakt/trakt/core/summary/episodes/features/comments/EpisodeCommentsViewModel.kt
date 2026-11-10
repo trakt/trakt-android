@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisodeCommentsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.seconds
@@ -88,10 +89,13 @@ internal class EpisodeCommentsViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_COMMENTS))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.EPISODE_COMMENTS,
+    )
 
     private var reactionJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -391,14 +395,7 @@ internal class EpisodeCommentsViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.EPISODE_COMMENTS)
-                else -> collapsingManager.expand(CollapsingKey.EPISODE_COMMENTS)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     val events: Flow<CommentTranslationEvent>
@@ -415,7 +412,7 @@ internal class EpisodeCommentsViewModel(
         loadingState,
         userState,
         errorState,
-        collapseState,
+        collapse.state,
         translationsStore.translations,
     ) { state ->
         EpisodeCommentsState(

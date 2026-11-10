@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.episodes.features.related.usecases.GetEpisodeRelatedUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -34,9 +35,11 @@ internal class EpisodeRelatedViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_RELATED))
-
-    private var collapseJob: Job? = null
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.EPISODE_RELATED,
+    )
 
     init {
         loadData()
@@ -68,14 +71,7 @@ internal class EpisodeRelatedViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.EPISODE_RELATED)
-                else -> collapsingManager.expand(CollapsingKey.EPISODE_RELATED)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -84,7 +80,7 @@ internal class EpisodeRelatedViewModel(
         collectionStateProvider.stateFlow,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
     ) { state ->
         EpisodeRelatedState(
             items = state[0] as ImmutableList<Show>?,

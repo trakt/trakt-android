@@ -46,20 +46,7 @@ internal class WatchlistShowContextViewModel(
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
 
-    private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
-
-    init {
-        loadUser()
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            userState.update {
-                sessionManager.getProfile()
-            }
-        }
-    }
 
     fun removeFromWatchlist() {
         if (isLoading()) {
@@ -166,7 +153,7 @@ internal class WatchlistShowContextViewModel(
     val state = combine(
         loadingWatchedState,
         loadingWatchlistState,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
     ) { state ->
         WatchlistShowContextState(

@@ -74,7 +74,6 @@ internal class AllPersonalListViewModel(
     private val initialState = AllPersonalListState()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val userState = MutableStateFlow(initialState.user)
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -96,7 +95,6 @@ internal class AllPersonalListViewModel(
     init {
         loadDetails()
         loadInitialData()
-        loadUser()
 
         observeCollection()
         observeReorder()
@@ -139,14 +137,6 @@ internal class AllPersonalListViewModel(
             if (sorting != sortingState.value) {
                 sortingState.update { sorting }
                 loadData()
-            }
-        }
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            userState.update {
-                sessionManager.getProfile()
             }
         }
     }
@@ -393,7 +383,7 @@ internal class AllPersonalListViewModel(
     val state = combine(
         loadingState,
         loadingMoreState,
-        userState,
+        sessionManager.observeProfile(),
         filterState,
         sortingState,
         listState,

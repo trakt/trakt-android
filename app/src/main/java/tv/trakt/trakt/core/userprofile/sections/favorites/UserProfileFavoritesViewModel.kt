@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.userprofile.UserProfileConfig.FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.core.userprofile.sections.favorites.usecases.GetUserProfileFavoritesUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -38,9 +39,11 @@ internal class UserProfileFavoritesViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.USER_PROFILE_FAVORITES))
-
-    private var collapseJob: Job? = null
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.USER_PROFILE_FAVORITES,
+    )
 
     init {
         loadData()
@@ -81,14 +84,7 @@ internal class UserProfileFavoritesViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.USER_PROFILE_FAVORITES)
-                else -> collapsingManager.expand(CollapsingKey.USER_PROFILE_FAVORITES)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -96,7 +92,7 @@ internal class UserProfileFavoritesViewModel(
         itemsState,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
         collectionStateProvider.stateFlow,
     ) { state ->
         UserProfileFavoritesState(

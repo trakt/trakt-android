@@ -51,6 +51,7 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -78,12 +79,15 @@ internal class ProfileHistoryViewModel(
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.PROFILE_HISTORY,
+    )
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
     private var ratingJob: Job? = null
 
     init {
@@ -286,19 +290,7 @@ internal class ProfileHistoryViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_HISTORY)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_HISTORY)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_HISTORY)
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -309,7 +301,7 @@ internal class ProfileHistoryViewModel(
         navigateShow,
         navigateEpisode,
         navigateMovie,
-        collapseState,
+        collapse.state,
         errorState,
     ) { states ->
         ProfileHistoryState(

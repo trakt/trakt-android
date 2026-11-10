@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -42,10 +43,12 @@ internal class ShowActorsViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_ACTORS))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.SHOW_ACTORS,
+    )
     private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
-
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -97,14 +100,7 @@ internal class ShowActorsViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_ACTORS)
-                else -> collapsingManager.expand(CollapsingKey.SHOW_ACTORS)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -112,7 +108,7 @@ internal class ShowActorsViewModel(
         itemsState,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
         spoilersHiddenState,
     ) { state ->
         ShowActorsState(

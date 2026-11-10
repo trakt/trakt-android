@@ -27,6 +27,7 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Person
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.userprofile.UserProfileConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.userprofile.sections.lists.usecases.GetUserProfileListsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -41,10 +42,13 @@ internal class UserProfileListsViewModel(
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.USER_PROFILE_LISTS))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.USER_PROFILE_LISTS,
+    )
 
     private var loadDataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -90,14 +94,7 @@ internal class UserProfileListsViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.USER_PROFILE_LISTS)
-                else -> collapsingManager.expand(CollapsingKey.USER_PROFILE_LISTS)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -106,7 +103,7 @@ internal class UserProfileListsViewModel(
         filterState,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
     ) { state ->
         UserProfileListsState(
             items = state[0] as ImmutableList<CustomList>?,

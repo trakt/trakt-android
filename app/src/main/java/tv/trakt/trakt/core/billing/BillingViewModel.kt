@@ -80,7 +80,6 @@ internal class BillingViewModel(
 ) : ViewModel() {
     private val initialState = BillingState()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val productsState = MutableStateFlow(initialState.products)
     private val limitsState = MutableStateFlow(initialState.limits)
     private val loadingLimitsState = MutableStateFlow(initialState.loadingLimits)
@@ -131,9 +130,7 @@ internal class BillingViewModel(
     }
 
     init {
-        loadUser()
         loadLimits()
-        observeUser()
 
         initPlayBilling()
         startPlayBilling()
@@ -154,14 +151,6 @@ internal class BillingViewModel(
         }
     }
 
-    private fun loadUser() {
-        viewModelScope.launch {
-            userState.update {
-                sessionManager.getProfile()
-            }
-        }
-    }
-
     private fun loadLimits() {
         viewModelScope.launch {
             loadingLimitsState.update { LoadingState.Loading }
@@ -176,16 +165,6 @@ internal class BillingViewModel(
             }
             loadingLimitsState.update { LoadingState.Done }
         }
-    }
-
-    private fun observeUser() {
-        sessionManager.observeProfile()
-            .distinctUntilChanged()
-            .debounce(200.milliseconds)
-            .onEach { user ->
-                userState.update { user }
-            }
-            .launchIn(viewModelScope)
     }
 
     private fun initPlayBilling() {
@@ -454,7 +433,7 @@ internal class BillingViewModel(
     }
 
     val state = combine(
-        userState,
+        sessionManager.observeProfile(),
         productsState,
         loadingState,
         errorState,

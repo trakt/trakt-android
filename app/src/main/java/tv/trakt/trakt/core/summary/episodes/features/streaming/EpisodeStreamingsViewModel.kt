@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.streamings.StreamingService
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -40,9 +41,11 @@ internal class EpisodeStreamingsViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_WHERE_TO_WATCH))
-
-    private var collapseJob: Job? = null
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.EPISODE_WHERE_TO_WATCH,
+    )
 
     init {
         loadData()
@@ -82,14 +85,7 @@ internal class EpisodeStreamingsViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.EPISODE_WHERE_TO_WATCH)
-                else -> collapsingManager.expand(CollapsingKey.EPISODE_WHERE_TO_WATCH)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     fun logStreamOn(service: StreamingService) {
@@ -101,7 +97,7 @@ internal class EpisodeStreamingsViewModel(
         itemsState,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
     ) { state ->
         EpisodeStreamingsState(
             items = state[0] as StreamingsResult?,

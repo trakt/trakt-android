@@ -43,7 +43,6 @@ internal class PostReplyViewModel(
     private val initialState = PostReplyState()
 
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val userState = MutableStateFlow(initialState.user)
     private val commentUserState = MutableStateFlow(commentUser ?: comment.user)
     private val resultState = MutableStateFlow(initialState.result)
     private val errorState = MutableStateFlow(initialState.error)
@@ -52,22 +51,7 @@ internal class PostReplyViewModel(
     private var job: Job? = null
 
     init {
-        loadUser()
         loadMentions()
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadMentions() {
@@ -133,7 +117,7 @@ internal class PostReplyViewModel(
 
     val state = combine(
         loadingState,
-        userState,
+        sessionManager.observeProfile(),
         commentUserState,
         resultState,
         errorState,

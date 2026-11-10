@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.profile.sections.progress.model.pageOfEnded
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -64,11 +65,14 @@ internal class ProfileProgressViewModel(
     private val filterState = MutableStateFlow(initialState.filter)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.PROFILE_PROGRESS,
+    )
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -197,19 +201,7 @@ internal class ProfileProgressViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_PROGRESS)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_PROGRESS)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_PROGRESS)
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -218,7 +210,7 @@ internal class ProfileProgressViewModel(
         itemsState,
         filterState,
         navigateShow,
-        collapseState,
+        collapse.state,
         errorState,
         userState,
     ) { states ->
