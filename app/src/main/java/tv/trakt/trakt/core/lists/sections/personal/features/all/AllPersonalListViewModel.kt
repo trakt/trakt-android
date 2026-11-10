@@ -53,6 +53,7 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
@@ -62,12 +63,10 @@ internal class AllPersonalListViewModel(
     private val analytics: Analytics,
     private val getListUseCase: GetPersonalListsUseCase,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val episodeLocalSource: EpisodeLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsPersonalDestination>()
 
@@ -77,9 +76,10 @@ internal class AllPersonalListViewModel(
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
-    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+        isBusy = { processingJob?.isActive == true },
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val errorState = MutableStateFlow(initialState.error)
@@ -327,46 +327,22 @@ internal class AllPersonalListViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
-            navigateMovie.update { movie.ids.trakt }
-        }
+        navigation.toMovie(movie)
     }
 
     fun navigateToEpisode(
         show: Show,
         episode: Episode,
     ) {
-        if (navigateEpisode.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            episodeLocalSource.upsertEpisodes(listOf(episode))
-
-            navigateEpisode.update {
-                Pair(show.ids.trakt, episode)
-            }
-        }
+        navigation.toEpisode(show, episode)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateMovie.update { null }
-        navigateEpisode.update { null }
+        navigation.clear()
     }
 
     override fun onCleared() {
@@ -389,9 +365,9 @@ internal class AllPersonalListViewModel(
         listState,
         itemsState,
         collectionStateProvider.stateFlow,
-        navigateShow,
-        navigateMovie,
-        navigateEpisode,
+        navigation.show,
+        navigation.movie,
+        navigation.episode,
         errorState,
     ) { state ->
         AllPersonalListState(

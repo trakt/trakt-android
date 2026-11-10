@@ -1,9 +1,10 @@
-package tv.trakt.trakt.core.summary.movies.features.trivia
+package tv.trakt.trakt.core.trivia
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -24,37 +25,42 @@ import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_NOT_FOUND
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.trivia.TriviaFact
-import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
+import tv.trakt.trakt.core.trivia.usecases.GetTriviaUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
 
-private val collapsingKey = CollapsingKey.MOVIE_TRIVIA
-
-internal class MovieTriviaViewModel(
-    private val movie: Movie,
-    private val getTriviaUseCase: GetMovieTriviaUseCase,
-    private val collapsingManager: CollapsingManager,
+@Suppress("UNCHECKED_CAST")
+internal class MediaTriviaViewModel(
+    private val mediaId: TraktId,
+    private val mediaType: MediaType,
+    private val getTriviaUseCase: GetTriviaUseCase,
     private val sessionManager: SessionManager,
+    collapsingManager: CollapsingManager,
 ) : ViewModel() {
-    private val initialState = MovieTriviaState()
+    private val initialState = MediaTriviaState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val summaryState = MutableStateFlow(initialState.summary)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val errorState = MutableStateFlow(initialState.error)
     private val collapse = CollapseDelegate(
         manager = collapsingManager,
         scope = viewModelScope,
-        key = collapsingKey,
+        key = when (mediaType) {
+            MediaType.Movie -> CollapsingKey.MOVIE_TRIVIA
+            MediaType.Show -> CollapsingKey.SHOW_TRIVIA
+            MediaType.Season, MediaType.Episode -> error("Trivia is not available for $mediaType")
+        },
     )
-    private val errorState = MutableStateFlow(initialState.error)
 
-    private var loadJob: kotlinx.coroutines.Job? = null
+    private var loadJob: Job? = null
 
     init {
         loadData()
@@ -84,7 +90,10 @@ internal class MovieTriviaViewModel(
                 loadingState.update { Loading }
 
                 loadUser()
-                val (summary, items) = getTriviaUseCase.getTrivia(movie.ids.trakt)
+                val (summary, items) = getTriviaUseCase.getTrivia(
+                    mediaId = mediaId,
+                    mediaType = mediaType,
+                )
 
                 summaryState.update { summary }
                 itemsState.update { items }
@@ -126,8 +135,7 @@ internal class MovieTriviaViewModel(
         collapse.state,
         errorState,
     ) { state ->
-        @Suppress("UNCHECKED_CAST")
-        MovieTriviaState(
+        MediaTriviaState(
             user = state[0] as User?,
             items = state[1] as ImmutableList<TriviaFact>?,
             summary = state[2] as ImmutableList<String>?,

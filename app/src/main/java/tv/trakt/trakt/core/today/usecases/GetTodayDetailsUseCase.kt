@@ -5,17 +5,16 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.helpers.extensions.stripMarkdownLinks
 import tv.trakt.trakt.common.model.ExternalRating
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Sentiments
-import tv.trakt.trakt.core.summary.movies.features.sentiment.usecases.GetMovieSentimentUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
-import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
+import tv.trakt.trakt.core.summary.sentiment.usecases.GetSentimentUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 
 internal class GetTodayDetailsUseCase(
     private val getMovieRatingsUseCase: GetMovieRatingsUseCase,
     private val getShowRatingsUseCase: GetShowRatingsUseCase,
-    private val getMovieSentimentUseCase: GetMovieSentimentUseCase,
-    private val getShowSentimentUseCase: GetShowSentimentUseCase,
+    private val getSentimentUseCase: GetSentimentUseCase,
 ) {
     suspend fun getRatings(media: TodayMedia): ExternalRating {
         return when (media) {
@@ -26,8 +25,8 @@ internal class GetTodayDetailsUseCase(
 
     suspend fun getSentiment(media: TodayMedia): Sentiments? {
         val sentiment = when (media) {
-            is TodayMedia.MovieMedia -> getMovieSentimentUseCase.getSentiments(media.ids.trakt)
-            is TodayMedia.ShowMedia -> getShowSentimentUseCase.getSentiments(media.ids.trakt)
+            is TodayMedia.MovieMedia -> getSentimentUseCase.getSentiments(media.ids.trakt, MediaType.Movie)
+            is TodayMedia.ShowMedia -> getSentimentUseCase.getSentiments(media.ids.trakt, MediaType.Show)
         }
 
         if (sentiment.isEmpty) return null

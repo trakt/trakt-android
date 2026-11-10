@@ -782,7 +782,7 @@ internal fun ShowDetailsContent(
                         item {
                             ShowSentimentView(
                                 viewModel = koinViewModel(
-                                    parameters = { parametersOf(show) },
+                                    parameters = { parametersOf(show.ids.trakt, MediaType.Show) },
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
@@ -919,7 +919,7 @@ internal fun ShowDetailsContent(
                     item {
                         ShowTriviaView(
                             viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
+                                parameters = { parametersOf(show.ids.trakt, MediaType.Show) },
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,

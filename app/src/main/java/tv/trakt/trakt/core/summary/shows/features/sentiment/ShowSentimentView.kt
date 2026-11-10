@@ -38,6 +38,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
+import tv.trakt.trakt.core.summary.sentiment.MediaSentimentState
+import tv.trakt.trakt.core.summary.sentiment.MediaSentimentViewModel
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentiment
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentimentSkeleton
 import tv.trakt.trakt.resources.R
@@ -47,7 +49,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun ShowSentimentView(
-    viewModel: ShowSentimentViewModel,
+    viewModel: MediaSentimentViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -71,7 +73,7 @@ internal fun ShowSentimentView(
 
 @Composable
 private fun ShowSentimentContent(
-    state: ShowSentimentState,
+    state: MediaSentimentState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -157,7 +159,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowSentimentContent(
-                state = ShowSentimentState(),
+                state = MediaSentimentState(),
             )
         }
     }
@@ -177,7 +179,7 @@ private fun Preview2() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowSentimentContent(
-                state = ShowSentimentState(
+                state = MediaSentimentState(
                     sentiment = Sentiments(Positive),
                     loading = Loading,
                 ),
@@ -200,7 +202,7 @@ private fun Preview3() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowSentimentContent(
-                state = ShowSentimentState(
+                state = MediaSentimentState(
                     sentiment = Sentiments(Positive),
                     loading = Done,
                 ),

@@ -686,7 +686,7 @@ internal fun MovieDetailsContent(
                         item {
                             MovieSentimentView(
                                 viewModel = koinViewModel(
-                                    parameters = { parametersOf(movie) },
+                                    parameters = { parametersOf(movie.ids.trakt, MediaType.Movie) },
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
@@ -800,7 +800,7 @@ internal fun MovieDetailsContent(
                     item {
                         MovieTriviaView(
                             viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
+                                parameters = { parametersOf(movie.ids.trakt, MediaType.Movie) },
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,

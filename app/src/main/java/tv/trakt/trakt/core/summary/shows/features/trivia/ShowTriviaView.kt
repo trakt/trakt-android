@@ -39,6 +39,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.core.summary.ui.views.DetailsTrivia
 import tv.trakt.trakt.core.summary.ui.views.DetailsTriviaSkeleton
+import tv.trakt.trakt.core.trivia.MediaTriviaState
+import tv.trakt.trakt.core.trivia.MediaTriviaViewModel
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -46,7 +48,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun ShowTriviaView(
-    viewModel: ShowTriviaViewModel,
+    viewModel: MediaTriviaViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onVipClick: () -> Unit,
@@ -74,7 +76,7 @@ internal fun ShowTriviaView(
 
 @Composable
 private fun ShowTriviaContent(
-    state: ShowTriviaState,
+    state: MediaTriviaState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
@@ -167,7 +169,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowTriviaContent(
-                state = ShowTriviaState(
+                state = MediaTriviaState(
                     summary = listOf(
                         "The famous chase scene was filmed in a single take over three days.",
                         "This scene reveals the true identity of the killer.",

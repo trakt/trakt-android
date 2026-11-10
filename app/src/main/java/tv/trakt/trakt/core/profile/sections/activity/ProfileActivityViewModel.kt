@@ -62,6 +62,7 @@ import tv.trakt.trakt.core.profile.sections.activity.usecases.withItemRating
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import kotlin.time.Duration.Companion.milliseconds
 
 // Ratings and comments mix shows and movies, so a filtered mode fetches more to fill the section.
@@ -74,12 +75,10 @@ internal class ProfileActivityViewModel(
     private val getCommentsUseCase: GetProfileCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val collapsingManager: CollapsingManager,
-    private val showLocalSource: ShowLocalSource,
-    private val episodeLocalSource: EpisodeLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val filterManager: GlobalFilterManager,
     private val appLifecycleProvider: AppLifecycleProvider,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = ProfileActivityState()
     private val origin = ChangeOrigin.unique()
@@ -97,12 +96,11 @@ internal class ProfileActivityViewModel(
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+    )
 
     private var dataJob: Job? = null
-    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -339,54 +337,22 @@ internal class ProfileActivityViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToEpisode(
         show: Show,
         episode: Episode,
     ) {
-        if (navigateEpisode.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            episodeLocalSource.upsertEpisodes(listOf(episode))
-
-            navigateEpisode.update {
-                Pair(show.ids.trakt, episode)
-            }
-        }
+        navigation.toEpisode(show, episode)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            try {
-                movieLocalSource.upsertMovies(listOf(movie))
-                navigateMovie.update { movie.ids.trakt }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                processingJob = null
-            }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateEpisode.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -395,9 +361,9 @@ internal class ProfileActivityViewModel(
         ratingItemsState,
         commentItemsState,
         reactionsState,
-        navigateShow,
-        navigateEpisode,
-        navigateMovie,
+        navigation.show,
+        navigation.episode,
+        navigation.movie,
         filterState,
         collapse.state,
         errorState,

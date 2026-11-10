@@ -157,8 +157,6 @@ internal val homeModule = module {
             getMoviesUseCase = get(),
             addHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
-            showLocalSource = get(),
-            movieLocalSource = get(),
             userWatchlistMinSource = get(),
             userWatchlistSource = get(),
             filterManager = get(),
@@ -169,6 +167,7 @@ internal val homeModule = module {
             dataChanges = get(),
             appLifecycleProvider = get(),
             analytics = get(),
+            navigationFactory = get(),
         )
     }
 
@@ -181,14 +180,13 @@ internal val homeModule = module {
             loadUserProgressUseCase = get(),
             userWatchlistSource = get(),
             userWatchlistMinSource = get(),
-            showLocalSource = get(),
-            movieLocalSource = get(),
             filterManager = get(),
             sessionManager = get(),
             checkInManager = get(),
             ratePromptManager = get(),
             dataChanges = get(),
             analytics = get(),
+            navigationFactory = get(),
         )
     }
 
@@ -197,14 +195,12 @@ internal val homeModule = module {
             appContext = androidApplication(),
             getUpcomingUseCase = get(),
             getCalendarTypeUseCase = get(),
-            showLocalSource = get(),
-            episodeLocalSource = get(),
-            movieLocalSource = get(),
             dataChanges = get(),
             sessionManager = get(),
             filterManager = get(),
             collapsingManager = get(),
             appLifecycleProvider = get(),
+            navigationFactory = get(),
         )
     }
 

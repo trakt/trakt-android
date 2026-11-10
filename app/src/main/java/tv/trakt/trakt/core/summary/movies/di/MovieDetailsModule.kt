@@ -23,12 +23,8 @@ import tv.trakt.trakt.core.summary.movies.features.lists.MovieListsViewModel
 import tv.trakt.trakt.core.summary.movies.features.lists.usecases.GetMovieListsUseCase
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedViewModel
 import tv.trakt.trakt.core.summary.movies.features.related.usecases.GetMovieRelatedUseCase
-import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentViewModel
-import tv.trakt.trakt.core.summary.movies.features.sentiment.usecases.GetMovieSentimentUseCase
 import tv.trakt.trakt.core.summary.movies.features.socials.GetMovieSocialsUseCase
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsViewModel
-import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaViewModel
-import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 
@@ -42,10 +38,8 @@ internal val movieDetailsModule = module {
     factoryOf(::GetMovieDirectorUseCase)
     factoryOf(::GetMovieCrewUseCase)
     factoryOf(::GetMovieRelatedUseCase)
-    factoryOf(::GetMovieSentimentUseCase)
     factoryOf(::GetMovieHistoryUseCase)
     factoryOf(::GetMovieListsUseCase)
-    factoryOf(::GetMovieTriviaUseCase)
     factoryOf(::GetMovieSocialsUseCase)
 
     viewModel {
@@ -133,24 +127,6 @@ internal val movieDetailsModule = module {
     }
 
     viewModelOf(::MovieHistoryViewModel)
-
-    viewModel { (movie: Movie) ->
-        MovieSentimentViewModel(
-            movie = movie,
-            getSentimentUseCase = get(),
-            collapsingManager = get(),
-            sessionManager = get(),
-        )
-    }
-
-    viewModel { (movie: Movie) ->
-        MovieTriviaViewModel(
-            movie = movie,
-            getTriviaUseCase = get(),
-            collapsingManager = get(),
-            sessionManager = get(),
-        )
-    }
 
     viewModel { (movie: Movie) ->
         MovieDetailsContextViewModel(

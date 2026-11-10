@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
@@ -33,6 +34,7 @@ import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import tv.trakt.trakt.core.main.usecases.YearInReviewBannerUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.DefaultCollapsingManager
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 
 internal const val MAIN_PREFERENCES = "main_preferences"
 internal const val WHATS_NEW_PREFERENCES = "whats_new_preferences"
@@ -65,6 +67,8 @@ internal val mainModule = module {
             dataStore = get(named(COLLAPSING_PREFERENCES)),
         )
     }
+
+    factoryOf(MediaNavigationDelegate::Factory)
 
     single<AppLifecycleProvider> {
         DefaultAppLifecycleProvider()

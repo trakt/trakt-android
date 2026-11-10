@@ -29,9 +29,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
@@ -148,7 +150,10 @@ private fun DiscoverScreen(
         ) {
             item {
                 DiscoverTrendingView(
-                    viewModel = koinViewModel(),
+                    viewModel = koinViewModel(
+                        key = DiscoverSection.Trending.name,
+                        parameters = { parametersOf(DiscoverSection.Trending) },
+                    ),
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -172,7 +177,10 @@ private fun DiscoverScreen(
 
             item {
                 DiscoverAnticipatedView(
-                    viewModel = koinViewModel(),
+                    viewModel = koinViewModel(
+                        key = DiscoverSection.Anticipated.name,
+                        parameters = { parametersOf(DiscoverSection.Anticipated) },
+                    ),
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
@@ -184,7 +192,10 @@ private fun DiscoverScreen(
 
             item {
                 DiscoverPopularView(
-                    viewModel = koinViewModel(),
+                    viewModel = koinViewModel(
+                        key = DiscoverSection.Popular.name,
+                        parameters = { parametersOf(DiscoverSection.Popular) },
+                    ),
                     collection = state.collection,
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,

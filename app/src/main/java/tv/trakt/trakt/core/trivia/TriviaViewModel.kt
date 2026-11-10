@@ -36,19 +36,17 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.model.trivia.TriviaFact
-import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
-import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
 import tv.trakt.trakt.core.trivia.model.TriviaCategory
 import tv.trakt.trakt.core.trivia.model.TriviaFilter
 import tv.trakt.trakt.core.trivia.model.TriviaFilter.NoSpoilers
 import tv.trakt.trakt.core.trivia.model.TriviaFilter.Spoilers
 import tv.trakt.trakt.core.trivia.navigation.TriviaDestination
+import tv.trakt.trakt.core.trivia.usecases.GetTriviaUseCase
 
 internal class TriviaViewModel(
     savedStateHandle: SavedStateHandle,
     analytics: Analytics,
-    private val getMovieTriviaUseCase: GetMovieTriviaUseCase,
-    private val getShowTriviaUseCase: GetShowTriviaUseCase,
+    private val getTriviaUseCase: GetTriviaUseCase,
     private val sessionManager: SessionManager,
     private val getSpoilerStateUseCase: GetSpoilerStateUseCase,
 ) : ViewModel() {
@@ -109,8 +107,11 @@ internal class TriviaViewModel(
                 itemsState.update {
                     val mediaId = destination.mediaId.toTraktId()
                     when (destination.mediaType) {
-                        MediaType.Movie -> getMovieTriviaUseCase.getTrivia(mediaId)
-                        MediaType.Show -> getShowTriviaUseCase.getTrivia(mediaId)
+                        MediaType.Movie, MediaType.Show -> getTriviaUseCase.getTrivia(
+                            mediaId = mediaId,
+                            mediaType = destination.mediaType,
+                        )
+
                         else -> return@launch
                     }.facts
                 }

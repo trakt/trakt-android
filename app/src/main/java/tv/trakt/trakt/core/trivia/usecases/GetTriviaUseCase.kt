@@ -1,7 +1,8 @@
-package tv.trakt.trakt.core.summary.movies.features.trivia.usecases
+package tv.trakt.trakt.core.trivia.usecases
 
 import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.trivia.Trivia
 import tv.trakt.trakt.common.model.trivia.TriviaFact
@@ -10,14 +11,27 @@ import java.util.Locale
 
 private const val SUMMARY_LIMIT = 3
 
-internal class GetMovieTriviaUseCase(
+internal class GetTriviaUseCase(
     private val v3Api: V3Api,
 ) {
-    suspend fun getTrivia(movieId: TraktId): Trivia {
-        val response = v3Api.getMovieTrivia(
-            movieId = movieId,
-            locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.US,
-        )
+    suspend fun getTrivia(
+        mediaId: TraktId,
+        mediaType: MediaType,
+    ): Trivia {
+        val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.US
+        val response = when (mediaType) {
+            MediaType.Movie -> v3Api.getMovieTrivia(
+                movieId = mediaId,
+                locale = locale,
+            )
+
+            MediaType.Show -> v3Api.getShowTrivia(
+                showId = mediaId,
+                locale = locale,
+            )
+
+            MediaType.Season, MediaType.Episode -> error("Trivia is not available for $mediaType")
+        }
 
         val summary = response.summary.orEmpty()
         val items = response.items.orEmpty()

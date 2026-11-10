@@ -1,6 +1,4 @@
-@file:Suppress("UNCHECKED_CAST")
-
-package tv.trakt.trakt.core.discover.sections.popular
+package tv.trakt.trakt.core.discover.sections
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,14 +22,16 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
+import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
+import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
 import tv.trakt.trakt.core.discover.usecases.GetDiscoverMediaUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
@@ -39,28 +39,24 @@ import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
-internal class DiscoverPopularViewModel(
+@Suppress("UNCHECKED_CAST")
+internal class DiscoverSectionViewModel(
+    private val section: DiscoverSection,
     private val filterManager: GlobalFilterManager,
-    private val getPopularShowsUseCase: GetPopularShowsUseCase,
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getShowsUseCase: GetAllDiscoverShowsUseCase,
+    private val getMoviesUseCase: GetAllDiscoverMoviesUseCase,
     private val getDiscoverMediaUseCase: GetDiscoverMediaUseCase,
-    private val collapsingManager: CollapsingManager,
     private val seasonalThemeUseCase: SeasonalThemeUseCase,
     private val appLifecycleProvider: AppLifecycleProvider,
+    collapsingManager: CollapsingManager,
 ) : ViewModel() {
-    private val initialState = DiscoverPopularState()
+    private val initialState = DiscoverSectionState()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapse = CollapseDelegate(
         manager = collapsingManager,
         scope = viewModelScope,
-        key = {
-            when (filterState.value.mode) {
-                Media -> CollapsingKey.DISCOVER_MEDIA_POPULAR
-                Shows -> CollapsingKey.DISCOVER_SHOWS_POPULAR
-                Movies -> CollapsingKey.DISCOVER_MOVIES_POPULAR
-            }
-        },
+        key = { section.collapsingKey(filterState.value.mode) },
     )
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -121,9 +117,9 @@ internal class DiscoverPopularViewModel(
 
     private suspend fun loadLocalData() {
         val localItems = when (filterState.value.mode) {
-            Media -> getDiscoverMediaUseCase.getLocalMedia(DiscoverSection.Popular)
-            Shows -> getPopularShowsUseCase.getLocalShows()
-            Movies -> getPopularMoviesUseCase.getLocalMovies()
+            Media -> getDiscoverMediaUseCase.getLocalMedia(section)
+            Shows -> getShowsUseCase.getLocalShows(section)
+            Movies -> getMoviesUseCase.getLocalMovies(section)
         }
 
         if (localItems.isNotEmpty()) {
@@ -138,11 +134,21 @@ internal class DiscoverPopularViewModel(
         val filter = filterState.value
         val items = when (filter.mode) {
             Media -> getDiscoverMediaUseCase.getMedia(
-                section = DiscoverSection.Popular,
+                section = section,
                 filters = filter,
             )
-            Shows -> getPopularShowsUseCase.getShows(filters = filter)
-            Movies -> getPopularMoviesUseCase.getMovies(filters = filter)
+
+            Shows -> getShowsUseCase.getShows(
+                source = section,
+                limit = DEFAULT_SECTION_LIMIT,
+                filters = filter,
+            )
+
+            Movies -> getMoviesUseCase.getMovies(
+                source = section,
+                limit = DEFAULT_SECTION_LIMIT,
+                filters = filter,
+            )
         }
 
         itemsState.update { items }
@@ -159,7 +165,7 @@ internal class DiscoverPopularViewModel(
         loadingState,
         errorState,
     ) { state ->
-        DiscoverPopularState(
+        DiscoverSectionState(
             items = state[0] as ImmutableList<DiscoverItem>?,
             filter = state[1] as GlobalFilter?,
             collapsed = state[2] as Boolean,
@@ -171,4 +177,32 @@ internal class DiscoverPopularViewModel(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialState,
     )
+}
+
+private fun DiscoverSection.collapsingKey(mode: MediaMode): CollapsingKey {
+    return when (this) {
+        DiscoverSection.Trending -> when (mode) {
+            Media -> CollapsingKey.DISCOVER_MEDIA_TRENDING
+            Shows -> CollapsingKey.DISCOVER_SHOWS_TRENDING
+            Movies -> CollapsingKey.DISCOVER_MOVIES_TRENDING
+        }
+
+        DiscoverSection.Popular -> when (mode) {
+            Media -> CollapsingKey.DISCOVER_MEDIA_POPULAR
+            Shows -> CollapsingKey.DISCOVER_SHOWS_POPULAR
+            Movies -> CollapsingKey.DISCOVER_MOVIES_POPULAR
+        }
+
+        DiscoverSection.Anticipated -> when (mode) {
+            Media -> CollapsingKey.DISCOVER_MEDIA_ANTICIPATED
+            Shows -> CollapsingKey.DISCOVER_SHOWS_ANTICIPATED
+            Movies -> CollapsingKey.DISCOVER_MOVIES_ANTICIPATED
+        }
+
+        DiscoverSection.Recommended -> when (mode) {
+            Media -> CollapsingKey.DISCOVER_MEDIA_RECOMMENDED
+            Shows -> CollapsingKey.DISCOVER_SHOWS_RECOMMENDED
+            Movies -> CollapsingKey.DISCOVER_MOVIES_RECOMMENDED
+        }
+    }
 }

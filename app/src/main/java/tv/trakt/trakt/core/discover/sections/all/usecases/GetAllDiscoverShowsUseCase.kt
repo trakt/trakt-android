@@ -24,6 +24,7 @@ internal class GetAllDiscoverShowsUseCase(
 ) {
     suspend fun getShows(
         source: DiscoverSection,
+        limit: Int = DEFAULT_ALL_LIMIT,
         page: Int = 1,
         skipLocal: Boolean = false,
         filters: GlobalFilter,
@@ -31,27 +32,27 @@ internal class GetAllDiscoverShowsUseCase(
         return when (source) {
             Trending -> getTrendingShowsUseCase.getShows(
                 page = page,
-                limit = DEFAULT_ALL_LIMIT,
+                limit = limit,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
             Anticipated -> getAnticipatedShowsUseCase.getShows(
                 page = page,
-                limit = DEFAULT_ALL_LIMIT,
+                limit = limit,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
             Popular -> getPopularShowsUseCase.getShows(
                 page = page,
-                limit = DEFAULT_ALL_LIMIT,
+                limit = limit,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
             Recommended -> getRecommendedShowsUseCase.getShows(
-                limit = DEFAULT_ALL_LIMIT,
+                limit = limit,
                 skipLocal = skipLocal,
                 filters = filters,
             ).toDiscoverItems()
