@@ -38,10 +38,9 @@ import tv.trakt.trakt.core.settings.model.SettingsCategory
 import tv.trakt.trakt.core.settings.ui.SettingsCategoryField
 import tv.trakt.trakt.core.settings.ui.SettingsScaffold
 import tv.trakt.trakt.core.settings.ui.SettingsSegmentedGroup
+import tv.trakt.trakt.core.settings.ui.SettingsUserPanel
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.UserHeaderRow
-import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.components.whatsnew.openPlayStore
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -53,6 +52,7 @@ internal const val SECTION_ITEM_HEIGHT_DP = 32
 internal fun SettingsScreen(
     viewModel: SettingsViewModel,
     onNavigateCategory: (SettingsCategory) -> Unit,
+    onNavigateUsage: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -62,6 +62,7 @@ internal fun SettingsScreen(
     SettingsScreenContent(
         state = state,
         onCategoryClick = onNavigateCategory,
+        onUserClick = onNavigateUsage,
         onGithubClick = {
             uriHandler.openUri(Config.WEB_SOCIAL_GITHUB_URL)
         },
@@ -84,6 +85,7 @@ private fun SettingsScreenContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onCategoryClick: (SettingsCategory) -> Unit = { },
+    onUserClick: () -> Unit = { },
     onGithubClick: () -> Unit = { },
     onInstagramClick: () -> Unit = { },
     onTwitterClick: () -> Unit = { },
@@ -108,8 +110,9 @@ private fun SettingsScreenContent(
         },
     ) {
         state.user?.let { user ->
-            UserPanel(
+            SettingsUserPanel(
                 user = user,
+                onClick = onUserClick,
             )
         }
 
@@ -129,38 +132,6 @@ private fun SettingsScreenContent(
 
         SettingsFooter()
     }
-}
-
-@Composable
-private fun UserPanel(
-    user: User,
-    modifier: Modifier = Modifier,
-) {
-    UserHeaderRow(
-        user = user,
-        avatarBadge = { },
-        trailing = {
-            val badge = when {
-                user.isDirector -> R.string.translated_value_job_director
-                user.isAnyVip -> R.string.tag_text_vip
-                else -> null
-            }
-            badge?.let {
-                VipChip(
-                    text = stringResource(it).uppercase(),
-                    icon = painterResource(R.drawable.ic_stars),
-                )
-            }
-        },
-        modifier = modifier
-            .shadow(
-                elevation = TraktTheme.colors.shadowDynamicSmall,
-                shape = DefaultCardShape,
-                clip = true,
-            )
-            .background(TraktTheme.colors.panelCardContainer)
-            .padding(16.dp),
-    )
 }
 
 @Composable
