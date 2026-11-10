@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.model
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.SocialIds.Companion
+import tv.trakt.trakt.common.networking.PersonSocialIdsDto
 import tv.trakt.trakt.common.networking.SocialIdsDto
 
 @Immutable
@@ -17,6 +18,15 @@ data class SocialIds(
 }
 
 fun Companion.fromDto(dto: SocialIdsDto): SocialIds {
+    return SocialIds(
+        twitter = dto.twitter,
+        facebook = dto.facebook,
+        instagram = dto.instagram,
+        wikipedia = dto.wikipedia,
+    )
+}
+
+fun Companion.fromDto(dto: PersonSocialIdsDto): SocialIds {
     return SocialIds(
         twitter = dto.twitter,
         facebook = dto.facebook,

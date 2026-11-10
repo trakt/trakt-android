@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import org.openapitools.client.models.PostCheckinStart200Response
+import org.openapitools.client.models.PostCheckinStart201Response
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
@@ -105,7 +105,7 @@ internal class DefaultCheckInManager(
         state.update { CheckInState.Loading }
         Timber.d("Checking in episode $seasonEpisode of show: ${showId.value}")
 
-        var checkIn: PostCheckinStart200Response? = null
+        var checkIn: PostCheckinStart201Response? = null
         try {
             checkIn = checkInRemoteSource.postEpisodeCheckIn(
                 showId = showId,
@@ -195,7 +195,7 @@ internal class DefaultCheckInManager(
         state.update { CheckInState.Loading }
         Timber.d("Checking in movie with ID: ${movieId.value}")
 
-        var checkIn: PostCheckinStart200Response? = null
+        var checkIn: PostCheckinStart201Response? = null
         try {
             checkIn = checkInRemoteSource.postMovieCheckIn(movieId)
             cacheMarkerProvider.invalidate()
@@ -484,7 +484,7 @@ internal class DefaultCheckInManager(
     }
 
     private fun CustomKeysAndValues.Builder.putCheckIn(
-        checkIn: PostCheckinStart200Response?,
+        checkIn: PostCheckinStart201Response?,
     ): CustomKeysAndValues.Builder {
         return this
             .putBoolean("checkin_response_parsed", checkIn != null)
