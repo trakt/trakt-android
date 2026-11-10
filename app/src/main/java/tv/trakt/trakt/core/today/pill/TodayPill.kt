@@ -55,9 +55,9 @@ private val PosterOffset = 2.5.dp
 private val PosterCorner = 2.dp
 private const val POSTER_TILT = 10F
 
-private val BadgeSize = 13.dp
+private val BadgeSize = 14.dp
 private val BadgeOffset = 1.dp
-private val BadgePadding = 3.5.dp
+private val BadgePadding = 4.dp
 
 private const val POP_CYCLE_MS = 8_000
 private const val POP_DELAY_MS = 3000L
@@ -228,7 +228,10 @@ private fun TodayPillBadge(
             .padding(horizontal = BadgePadding),
     ) {
         Text(
-            text = count.toString(),
+            text = when {
+                count > 99 -> "99+"
+                else -> count.toString()
+            },
             style = TraktTheme.typography.meta.copy(
                 fontSize = 10.sp,
             ),
@@ -248,7 +251,7 @@ private fun Preview() {
         ) {
             TodayPillContent(
                 posters = persistentListOf("a", "b"),
-                unseenCount = 7,
+                unseenCount = 12,
                 onClick = {},
             )
             TodayPillContent(
