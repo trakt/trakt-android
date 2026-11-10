@@ -484,6 +484,91 @@
         "operationId": "postOauthRevoke"
       }
     },
+    "/awards": {
+      "get": {
+        "description": "#### 🫣 Limited Access\nThis endpoint is limited to official apps and may not be available to all API consumers.\n\nReturns every award grouped by ceremony, with each ceremony's `media_types` and each award's `slug`, `name` and `kind` (`title` or `person`). Use the slugs for the `awards` smart list filter.",
+        "summary": "Get the award catalog",
+        "tags": [
+          "awards"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "slug": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "media_types": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "movie",
+                            "show"
+                          ]
+                        }
+                      },
+                      "awards": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "slug": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "title",
+                                "person"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "slug",
+                            "name",
+                            "kind"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "slug",
+                      "name",
+                      "media_types",
+                      "awards"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getAwardsCatalog"
+      }
+    },
     "/awards/ceremonies": {
       "get": {
         "description": "#### 🫣 Limited Access\nThis endpoint is limited to official apps and may not be available to all API consumers.\n\nReturns the next ceremony of each award, with its edition, `year`, `nominations_at` and `held_at` dates.",
