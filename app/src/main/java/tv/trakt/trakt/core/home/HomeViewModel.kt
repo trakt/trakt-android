@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.auth.session.helpers.distinctIgnoringPreferences
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_WELCOME_BANNER_ENABLED
@@ -77,16 +77,18 @@ internal class HomeViewModel(
 
     private fun observeUser() {
         sessionManager.observeProfile()
-            .distinctIgnoringPreferences()
             .onEach { user ->
-                loadData()
-                loadMonthReview(user)
                 userState.update {
                     UserState(
                         user = user,
                         loading = LoadingState.Done,
                     )
                 }
+            }
+            .distinctUntilSessionChanged()
+            .onEach { user ->
+                loadData()
+                loadMonthReview(user)
             }
             .launchIn(viewModelScope)
     }

@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.auth.session.helpers.distinctIgnoringPreferences
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
@@ -120,7 +120,7 @@ internal class TodayPillViewModel(
     private fun observeUser() {
         viewModelScope.launch {
             sessionManager.observeProfile()
-                .distinctIgnoringPreferences()
+                .distinctUntilSessionChanged()
                 .drop(1)
                 .debounce(200.milliseconds)
                 .collect { loadData() }

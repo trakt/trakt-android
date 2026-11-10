@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class ShowSentimentViewModel(
     private val show: Show,
@@ -54,7 +55,7 @@ internal class ShowSentimentViewModel(
     private fun observeUser() {
         sessionManager.observeProfile()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .filter {
                 val user = userState.value
                 user != null && user.isAnyVip != it?.isAnyVip

@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.auth.session.helpers.distinctIgnoringPreferences
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
@@ -117,13 +117,11 @@ internal class HomeUpcomingViewModel(
         viewModelScope.launch {
             userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
-                .distinctIgnoringPreferences()
+                .onEach { user -> userState.update { user } }
+                .distinctUntilSessionChanged()
                 .drop(1)
                 .debounce(200.milliseconds)
-                .collect { user ->
-                    userState.update { user }
-                    loadData()
-                }
+                .collect { loadData() }
         }
     }
 

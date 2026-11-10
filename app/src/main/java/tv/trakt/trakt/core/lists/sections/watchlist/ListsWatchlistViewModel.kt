@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.auth.session.helpers.distinctIgnoringPreferences
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
@@ -110,13 +110,11 @@ internal class ListsWatchlistViewModel(
         viewModelScope.launch {
             userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
-                .distinctIgnoringPreferences()
+                .onEach { user -> userState.update { user } }
+                .distinctUntilSessionChanged()
                 .drop(1)
                 .debounce(200)
-                .collect { user ->
-                    userState.update { user }
-                    loadData()
-                }
+                .collect { loadData() }
         }
     }
 

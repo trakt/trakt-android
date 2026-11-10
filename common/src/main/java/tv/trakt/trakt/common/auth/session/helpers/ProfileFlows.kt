@@ -4,18 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import tv.trakt.trakt.common.model.User
 
-fun Flow<User?>.distinctIgnoringPreferences(): Flow<User?> {
+fun Flow<User?>.distinctUntilSessionChanged(): Flow<User?> {
     return distinctUntilChanged { old, new ->
-        old?.withoutPreferences() == new?.withoutPreferences()
+        old?.ids?.trakt == new?.ids?.trakt && old?.isAnyVip == new?.isAnyVip
     }
-}
-
-private fun User.withoutPreferences(): User {
-    return copy(
-        settings = settings?.copy(
-            hideSpoilers = false,
-            watchOnlyOnce = false,
-            ratingPrompts = false,
-        ),
-    )
 }
