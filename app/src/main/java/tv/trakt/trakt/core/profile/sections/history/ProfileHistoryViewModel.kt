@@ -54,30 +54,29 @@ import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileHistoryViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
     private val rateActivityItemUseCase: RateActivityItemUseCase,
     private val allActivitySource: AllActivityLocalSource,
-    private val showLocalSource: ShowLocalSource,
-    private val movieLocalSource: MovieLocalSource,
-    private val episodeLocalSource: EpisodeLocalSource,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = ProfileHistoryState()
 
     private val modeState = MutableStateFlow(filterManager.getFilter().mode)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val collapse = CollapseDelegate(
         manager = collapsingManager,
@@ -87,7 +86,6 @@ internal class ProfileHistoryViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
-    private var processingJob: Job? = null
     private var ratingJob: Job? = null
 
     init {
@@ -232,40 +230,18 @@ internal class ProfileHistoryViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToEpisode(
         show: Show,
         episode: Episode,
     ) {
-        if (navigateEpisode.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            episodeLocalSource.upsertEpisodes(listOf(episode))
-
-            navigateEpisode.update {
-                Pair(show.ids.trakt, episode)
-            }
-        }
+        navigation.toEpisode(show, episode)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
-            navigateMovie.update { movie.ids.trakt }
-        }
+        navigation.toMovie(movie)
     }
 
     fun rateItem(
@@ -284,9 +260,7 @@ internal class ProfileHistoryViewModel(
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateEpisode.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     fun setCollapsed(collapsed: Boolean) {
@@ -298,9 +272,9 @@ internal class ProfileHistoryViewModel(
         loadingState,
         itemsState,
         itemsRatingsState,
-        navigateShow,
-        navigateEpisode,
-        navigateMovie,
+        navigation.show,
+        navigation.episode,
+        navigation.movie,
         collapse.state,
         errorState,
     ) { states ->

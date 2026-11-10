@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.shows.features.trivia
+package tv.trakt.trakt.core.trivia
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 
 @Immutable
-internal data class ShowTriviaState(
+internal data class MediaTriviaState(
     val user: User? = null,
     val summary: ImmutableList<String>? = null,
     val items: ImmutableList<TriviaFact>? = null,

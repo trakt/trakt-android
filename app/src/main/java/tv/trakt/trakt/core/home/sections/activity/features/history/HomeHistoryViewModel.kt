@@ -57,6 +57,7 @@ import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class HomeHistoryViewModel(
@@ -64,14 +65,12 @@ internal class HomeHistoryViewModel(
     private val rateActivityItemUseCase: RateActivityItemUseCase,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val allActivitySource: AllActivityLocalSource,
-    private val showLocalSource: ShowLocalSource,
-    private val movieLocalSource: MovieLocalSource,
-    private val episodeLocalSource: EpisodeLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = HomeHistoryState()
 
@@ -89,9 +88,10 @@ internal class HomeHistoryViewModel(
             }
         },
     )
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+        isBusy = { processingJob?.isActive == true },
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -248,40 +248,18 @@ internal class HomeHistoryViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToEpisode(
         show: Show,
         episode: Episode,
     ) {
-        if (navigateEpisode.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            episodeLocalSource.upsertEpisodes(listOf(episode))
-
-            navigateEpisode.update {
-                Pair(show.ids.trakt, episode)
-            }
-        }
+        navigation.toEpisode(show, episode)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
-            navigateMovie.update { movie.ids.trakt }
-        }
+        navigation.toMovie(movie)
     }
 
     fun rateItem(
@@ -300,9 +278,7 @@ internal class HomeHistoryViewModel(
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateEpisode.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
 
         processingJob?.cancel()
         processingJob = null
@@ -318,9 +294,9 @@ internal class HomeHistoryViewModel(
         itemsState,
         itemsRatingsState,
         collapse.state,
-        navigateShow,
-        navigateEpisode,
-        navigateMovie,
+        navigation.show,
+        navigation.episode,
+        navigation.movie,
         errorState,
         sessionManager.observeProfile(),
     ) { states ->

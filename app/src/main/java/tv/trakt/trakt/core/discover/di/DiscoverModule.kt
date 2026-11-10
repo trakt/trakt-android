@@ -16,16 +16,15 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.core.discover.DiscoverViewModel
 import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalSource
+import tv.trakt.trakt.core.discover.sections.DiscoverSectionViewModel
 import tv.trakt.trakt.core.discover.sections.all.AllDiscoverViewModel
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedViewModel
-import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularViewModel
 import tv.trakt.trakt.core.discover.sections.releases.DiscoverReleasesViewModel
 import tv.trakt.trakt.core.discover.sections.releases.usecases.GetReleasesTypeUseCase
-import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingViewModel
 import tv.trakt.trakt.core.discover.usecases.GetDiscoverMediaUseCase
 
 internal const val DISCOVER_PREFERENCES = "discover_preferences_mobile"
@@ -99,39 +98,16 @@ internal val discoverModule = module {
         )
     }
 
-    viewModel {
-        DiscoverTrendingViewModel(
+    viewModel { (section: DiscoverSection) ->
+        DiscoverSectionViewModel(
+            section = section,
             filterManager = get(),
-            collapsingManager = get(),
-            getTrendingShowsUseCase = get(named("defaultTrendingShowsUseCase")),
-            getTrendingMoviesUseCase = get(named("defaultTrendingMoviesUseCase")),
+            getShowsUseCase = get(named("defaultAllDiscoverShowsUseCase")),
+            getMoviesUseCase = get(named("defaultAllDiscoverMoviesUseCase")),
             getDiscoverMediaUseCase = get(),
             seasonalThemeUseCase = get(),
             appLifecycleProvider = get(),
-        )
-    }
-
-    viewModel {
-        DiscoverAnticipatedViewModel(
-            filterManager = get(),
             collapsingManager = get(),
-            getAnticipatedShowsUseCase = get(named("defaultAnticipatedShowsUseCase")),
-            getAnticipatedMoviesUseCase = get(named("defaultAnticipatedMoviesUseCase")),
-            getDiscoverMediaUseCase = get(),
-            seasonalThemeUseCase = get(),
-            appLifecycleProvider = get(),
-        )
-    }
-
-    viewModel {
-        DiscoverPopularViewModel(
-            filterManager = get(),
-            collapsingManager = get(),
-            getPopularShowsUseCase = get(named("defaultPopularShowsUseCase")),
-            getPopularMoviesUseCase = get(named("defaultPopularMoviesUseCase")),
-            getDiscoverMediaUseCase = get(),
-            seasonalThemeUseCase = get(),
-            appLifecycleProvider = get(),
         )
     }
 

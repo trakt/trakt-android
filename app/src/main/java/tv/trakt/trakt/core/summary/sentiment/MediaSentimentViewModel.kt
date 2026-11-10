@@ -1,8 +1,7 @@
-package tv.trakt.trakt.core.summary.shows.features.trivia
+package tv.trakt.trakt.core.summary.sentiment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,39 +19,41 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.Sentiments
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.model.trivia.TriviaFact
-import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
+import tv.trakt.trakt.core.summary.sentiment.usecases.GetSentimentUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
-private val collapsingKey = CollapsingKey.SHOW_TRIVIA
-
-internal class ShowTriviaViewModel(
-    private val show: Show,
-    private val getTriviaUseCase: GetShowTriviaUseCase,
-    private val collapsingManager: CollapsingManager,
+@Suppress("UNCHECKED_CAST")
+internal class MediaSentimentViewModel(
+    private val mediaId: TraktId,
+    private val mediaType: MediaType,
+    private val getSentimentUseCase: GetSentimentUseCase,
     private val sessionManager: SessionManager,
+    collapsingManager: CollapsingManager,
 ) : ViewModel() {
-    private val initialState = ShowTriviaState()
+    private val initialState = MediaSentimentState()
 
     private val userState = MutableStateFlow(initialState.user)
-    private val summaryState = MutableStateFlow(initialState.summary)
-    private val itemsState = MutableStateFlow(initialState.items)
+    private val sentimentState = MutableStateFlow(initialState.sentiment)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val errorState = MutableStateFlow(initialState.error)
     private val collapse = CollapseDelegate(
         manager = collapsingManager,
         scope = viewModelScope,
-        key = collapsingKey,
+        key = when (mediaType) {
+            MediaType.Movie -> CollapsingKey.MOVIE_SENTIMENT
+            MediaType.Show -> CollapsingKey.SHOW_SENTIMENT
+            MediaType.Season, MediaType.Episode -> error("Sentiment is not available for $mediaType")
+        },
     )
-    private val errorState = MutableStateFlow(initialState.error)
-
-    private var loadJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -63,10 +64,10 @@ internal class ShowTriviaViewModel(
     private fun observeUser() {
         sessionManager.observeProfile()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .filter {
-                // Only update if VIP status has changed, as trivia may be VIP locked.
-                userState.value?.isAnyVip != it?.isAnyVip
+                val user = userState.value
+                user != null && user.isAnyVip != it?.isAnyVip
             }
             .onEach { user ->
                 userState.update { user }
@@ -76,23 +77,21 @@ internal class ShowTriviaViewModel(
     }
 
     private fun loadData() {
-        loadJob?.cancel()
-        loadJob = viewModelScope.launch {
+        viewModelScope.launch {
             try {
                 loadingState.update { Loading }
 
                 loadUser()
-                val (summary, items) = getTriviaUseCase.getTrivia(show.ids.trakt)
-
-                summaryState.update { summary }
-                itemsState.update { items }
+                sentimentState.update {
+                    getSentimentUseCase.getSentiments(
+                        mediaId = mediaId,
+                        mediaType = mediaType,
+                    )
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    // Ignore 404 errors, as they simply mean no trivia is available.
-                    if (error.getHttpCode() != 404) {
-                        errorState.update { error }
-                        Timber.recordError(error)
-                    }
+                    errorState.update { error }
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingState.update { Done }
@@ -118,20 +117,17 @@ internal class ShowTriviaViewModel(
 
     val state = combine(
         userState,
-        itemsState,
-        summaryState,
+        sentimentState,
         loadingState,
         collapse.state,
         errorState,
     ) { state ->
-        @Suppress("UNCHECKED_CAST")
-        ShowTriviaState(
+        MediaSentimentState(
             user = state[0] as User?,
-            items = state[1] as ImmutableList<TriviaFact>?,
-            summary = state[2] as ImmutableList<String>?,
-            loading = state[3] as LoadingState,
-            collapsed = state[4] as Boolean,
-            error = state[5] as Exception?,
+            sentiment = state[1] as Sentiments?,
+            loading = state[2] as LoadingState,
+            collapsed = state[3] as Boolean,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

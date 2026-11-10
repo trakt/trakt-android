@@ -54,6 +54,7 @@ import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.AllPer
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import java.time.LocalDate
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -64,12 +65,10 @@ internal class AllActivityPersonalViewModel(
     analytics: Analytics,
     private val getActivityUseCase: GetPersonalActivityUseCase,
     private val rateActivityItemUseCase: RateActivityItemUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val episodeLocalSource: EpisodeLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllPersonalActivityDestination>()
     private val initialState = AllActivityState()
@@ -83,9 +82,10 @@ internal class AllActivityPersonalViewModel(
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+        isBusy = { processingJob?.isActive == true },
+    )
 
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
@@ -340,54 +340,22 @@ internal class AllActivityPersonalViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToEpisode(
         show: Show,
         episode: Episode,
     ) {
-        if (navigateEpisode.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            episodeLocalSource.upsertEpisodes(listOf(episode))
-
-            navigateEpisode.update {
-                Pair(show.ids.trakt, episode)
-            }
-        }
+        navigation.toEpisode(show, episode)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            try {
-                movieLocalSource.upsertMovies(listOf(movie))
-                navigateMovie.update { movie.ids.trakt }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                processingJob = null
-            }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateEpisode.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
@@ -407,9 +375,9 @@ internal class AllActivityPersonalViewModel(
         itemsState,
         itemsRatingsState,
         filterState,
-        navigateShow,
-        navigateEpisode,
-        navigateMovie,
+        navigation.show,
+        navigation.episode,
+        navigation.movie,
         loadingState,
         loadingMoreState,
         sessionManager.observeProfile(),

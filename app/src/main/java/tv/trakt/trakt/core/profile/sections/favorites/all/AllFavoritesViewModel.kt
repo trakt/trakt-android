@@ -46,27 +46,29 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class AllFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
     private val loadRatingsUseCase: LoadUserRatingsUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val collectionStateProvider: CollectionStateProvider,
     private val analytics: Analytics,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = AllFavoritesState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow<MediaMode?>(filterManager.getFilter().mode)
     private val sortingState = MutableStateFlow(initialState.sorting)
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+        isBusy = { processingJob?.isActive == true },
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -200,28 +202,15 @@ internal class AllFavoritesViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
-            navigateMovie.update { movie.ids.trakt }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     override fun onCleared() {
@@ -237,8 +226,8 @@ internal class AllFavoritesViewModel(
         itemsState,
         filterState,
         sortingState,
-        navigateShow,
-        navigateMovie,
+        navigation.show,
+        navigation.movie,
         sessionManager.observeProfile(),
         errorState,
         collectionStateProvider.stateFlow,

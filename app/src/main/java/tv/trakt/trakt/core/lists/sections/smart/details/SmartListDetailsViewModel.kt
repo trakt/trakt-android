@@ -35,6 +35,7 @@ import tv.trakt.trakt.core.lists.model.SmartListItem
 import tv.trakt.trakt.core.lists.sections.smart.details.navigation.SmartListDetailsDestination
 import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListItemsUseCase
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 
 private const val PAGE_LIMIT = LISTS_ITEMS_ALL_LIMIT
 
@@ -42,10 +43,9 @@ internal class SmartListDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getSmartListItemsUseCase: GetSmartListItemsUseCase,
     private val deleteSmartListUseCase: DeleteSmartListUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val analytics: Analytics,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<SmartListDetailsDestination>()
     private val destinationList = Json.decodeFromString<SmartList>(destination.listJson)
@@ -54,8 +54,10 @@ internal class SmartListDetailsViewModel(
 
     private val listState = MutableStateFlow<SmartList?>(destinationList)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+        isBusy = { processingJob?.isActive == true },
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val deletingState = MutableStateFlow(initialState.deleting)
@@ -168,28 +170,15 @@ internal class SmartListDetailsViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
-            navigateMovie.update { movie.ids.trakt }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     fun clearError() {
@@ -209,8 +198,8 @@ internal class SmartListDetailsViewModel(
         listState,
         itemsState,
         collectionStateProvider.stateFlow,
-        navigateShow,
-        navigateMovie,
+        navigation.show,
+        navigation.movie,
         deletingState,
         deletedState,
         errorState,

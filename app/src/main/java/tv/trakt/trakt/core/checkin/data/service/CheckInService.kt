@@ -45,8 +45,7 @@ import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EXTRAS
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
-import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
-import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
+import tv.trakt.trakt.core.trivia.usecases.GetTriviaUseCase
 import tv.trakt.trakt.resources.R
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -62,8 +61,7 @@ internal class CheckInService : Service() {
     private val checkInManager: CheckInManager by inject()
     private val sessionManager: SessionManager by inject()
 
-    private val showTriviaUseCase: GetShowTriviaUseCase by inject()
-    private val movieTriviaUseCase: GetMovieTriviaUseCase by inject()
+    private val getTriviaUseCase: GetTriviaUseCase by inject()
     private var hasTrivia: Boolean = false
 
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -231,8 +229,11 @@ internal class CheckInService : Service() {
                 val showId = serviceData.extraId?.toTraktId()
 
                 hasTrivia = when (serviceData.mediaType) {
-                    MediaType.Movie -> movieTriviaUseCase.getTrivia(movieId).facts.isNotEmpty()
-                    MediaType.Episode if showId != null -> showTriviaUseCase.getTrivia(showId).facts.isNotEmpty()
+                    MediaType.Movie -> getTriviaUseCase.getTrivia(movieId, MediaType.Movie).facts.isNotEmpty()
+                    MediaType.Episode if showId != null -> getTriviaUseCase.getTrivia(
+                        showId,
+                        MediaType.Show,
+                    ).facts.isNotEmpty()
                     else -> false
                 }
             } catch (error: Exception) {

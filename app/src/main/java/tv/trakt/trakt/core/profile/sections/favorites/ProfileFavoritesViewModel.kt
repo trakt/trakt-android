@@ -49,26 +49,27 @@ import tv.trakt.trakt.core.profile.helpers.matches
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 
 @OptIn(FlowPreview::class)
 internal class ProfileFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val collectionStateProvider: CollectionStateProvider,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = ProfileFavoritesState()
 
     private val modeState = MutableStateFlow(filterManager.getFilter().mode)
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val collapse = CollapseDelegate(
         manager = collapsingManager,
@@ -78,7 +79,6 @@ internal class ProfileFavoritesViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
-    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -190,28 +190,15 @@ internal class ProfileFavoritesViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
-            navigateMovie.update { movie.ids.trakt }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     fun setCollapsed(collapsed: Boolean) {
@@ -222,8 +209,8 @@ internal class ProfileFavoritesViewModel(
     val state = combine(
         loadingState,
         itemsState,
-        navigateShow,
-        navigateMovie,
+        navigation.show,
+        navigation.movie,
         collapse.state,
         errorState,
         userState,

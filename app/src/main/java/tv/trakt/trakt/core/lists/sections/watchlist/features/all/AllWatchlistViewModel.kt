@@ -59,6 +59,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUs
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -72,12 +73,11 @@ internal class AllWatchlistViewModel(
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val updateMovieHistoryUseCase: AddHomeHistoryUseCase,
     private val collectionStateProvider: CollectionStateProvider,
-    private val showLocalSource: ShowLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = AllWatchlistState()
     private val origin = ChangeOrigin.unique()
@@ -86,8 +86,10 @@ internal class AllWatchlistViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
     private val sortingState = MutableStateFlow(initialState.sorting)
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+        isBusy = { processingJob?.isActive == true },
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val infoState = MutableStateFlow(initialState.info)
@@ -431,28 +433,15 @@ internal class AllWatchlistViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
-            navigateMovie.update { movie.ids.trakt }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     fun clearInfo() {
@@ -474,8 +463,8 @@ internal class AllWatchlistViewModel(
         filterState,
         sortingState,
         collectionStateProvider.stateFlow,
-        navigateShow,
-        navigateMovie,
+        navigation.show,
+        navigation.movie,
         sessionManager.observeProfile(),
         infoState,
         errorState,

@@ -57,6 +57,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.discover.DiscoverItem.MovieItem
 import tv.trakt.trakt.common.model.discover.DiscoverItem.ShowItem
+import tv.trakt.trakt.core.discover.sections.DiscoverSectionState
+import tv.trakt.trakt.core.discover.sections.DiscoverSectionViewModel
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
@@ -69,7 +71,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun DiscoverPopularView(
     modifier: Modifier = Modifier,
-    viewModel: DiscoverPopularViewModel,
+    viewModel: DiscoverSectionViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     collection: UserCollectionState,
@@ -124,7 +126,7 @@ internal fun DiscoverPopularView(
 
 @Composable
 internal fun DiscoverPopularContent(
-    state: DiscoverPopularState,
+    state: DiscoverSectionState,
     collectionState: UserCollectionState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
@@ -367,7 +369,7 @@ private fun ContentListItem(
 private fun Preview() {
     TraktTheme {
         DiscoverPopularContent(
-            state = DiscoverPopularState(
+            state = DiscoverSectionState(
                 loading = Idle,
             ),
             collectionState = UserCollectionState.Default,
@@ -380,7 +382,7 @@ private fun Preview() {
 private fun PreviewLoading() {
     TraktTheme {
         DiscoverPopularContent(
-            state = DiscoverPopularState(
+            state = DiscoverSectionState(
                 loading = Done,
             ),
             collectionState = UserCollectionState.Default,

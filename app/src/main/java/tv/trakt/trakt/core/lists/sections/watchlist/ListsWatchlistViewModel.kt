@@ -53,19 +53,19 @@ import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 
 internal class ListsWatchlistViewModel(
     private val filterManager: GlobalFilterManager,
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
     private val collectionStateProvider: CollectionStateProvider,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
     private val appLifecycleProvider: AppLifecycleProvider,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = ListsWatchlistState()
 
@@ -82,13 +82,13 @@ internal class ListsWatchlistViewModel(
             }
         },
     )
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
-    private var processingJob: Job? = null
 
     init {
         loadData()
@@ -215,28 +215,15 @@ internal class ListsWatchlistViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
-            navigateMovie.update { movie.ids.trakt }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     fun setCollapsed(collapsed: Boolean) {
@@ -250,8 +237,8 @@ internal class ListsWatchlistViewModel(
         filterState,
         collapse.state,
         collectionStateProvider.stateFlow,
-        navigateShow,
-        navigateMovie,
+        navigation.show,
+        navigation.movie,
         errorState,
         sessionManager.observeProfile(),
     ) { states ->

@@ -39,25 +39,25 @@ import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_ACTIVITY_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import java.time.LocalDate
 
 internal class AllActivitySocialViewModel(
     private val getActivityUseCase: GetSocialActivityUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val episodeLocalSource: EpisodeLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val sessionManager: SessionManager,
     analytics: Analytics,
     filterManager: GlobalFilterManager,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = AllActivityState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsFilterState = MutableStateFlow(filterManager.getFilter())
     private val usersFilterState = MutableStateFlow(initialState.usersFilter)
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+        isBusy = { processingJob?.isActive == true },
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
     private val errorState = MutableStateFlow(initialState.error)
@@ -220,54 +220,22 @@ internal class AllActivitySocialViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToEpisode(
         show: Show,
         episode: Episode,
     ) {
-        if (navigateEpisode.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            episodeLocalSource.upsertEpisodes(listOf(episode))
-
-            navigateEpisode.update {
-                Pair(show.ids.trakt, episode)
-            }
-        }
+        navigation.toEpisode(show, episode)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            try {
-                movieLocalSource.upsertMovies(listOf(movie))
-                navigateMovie.update { movie.ids.trakt }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                processingJob = null
-            }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateEpisode.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -275,9 +243,9 @@ internal class AllActivitySocialViewModel(
         itemsState,
         itemsFilterState,
         usersFilterState,
-        navigateShow,
-        navigateEpisode,
-        navigateMovie,
+        navigation.show,
+        navigation.episode,
+        navigation.movie,
         loadingState,
         loadingMoreState,
         sessionManager.observeProfile(),

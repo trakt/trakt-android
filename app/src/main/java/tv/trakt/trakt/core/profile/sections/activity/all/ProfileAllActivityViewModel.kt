@@ -53,6 +53,7 @@ import tv.trakt.trakt.core.profile.sections.activity.usecases.RateProfileRatingU
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.reconciledWith
 import tv.trakt.trakt.core.profile.sections.activity.usecases.withItemRating
+import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileAllActivityViewModel(
@@ -61,10 +62,8 @@ internal class ProfileAllActivityViewModel(
     private val rateRatingUseCase: RateProfileRatingUseCase,
     private val getCommentsUseCase: GetProfileCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val episodeLocalSource: EpisodeLocalSource,
-    private val movieLocalSource: MovieLocalSource,
     private val dataChanges: DataChanges,
+    navigationFactory: MediaNavigationDelegate.Factory,
 ) : ViewModel() {
     private val initialState = ProfileAllActivityState()
     private val origin = ChangeOrigin.unique()
@@ -78,12 +77,11 @@ internal class ProfileAllActivityViewModel(
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private val navigateShow = MutableStateFlow(initialState.navigateShow)
-    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
-    private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
+    private val navigation = navigationFactory.create(
+        scope = viewModelScope,
+    )
 
     private var loadDataJob: Job? = null
-    private var processingJob: Job? = null
 
     private var page: Int = 1
     private var hasMoreData: Boolean = false
@@ -332,54 +330,22 @@ internal class ProfileAllActivityViewModel(
     }
 
     fun navigateToShow(show: Show) {
-        if (navigateShow.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            navigateShow.update { show.ids.trakt }
-        }
+        navigation.toShow(show)
     }
 
     fun navigateToEpisode(
         show: Show,
         episode: Episode,
     ) {
-        if (navigateEpisode.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            episodeLocalSource.upsertEpisodes(listOf(episode))
-
-            navigateEpisode.update {
-                Pair(show.ids.trakt, episode)
-            }
-        }
+        navigation.toEpisode(show, episode)
     }
 
     fun navigateToMovie(movie: Movie) {
-        if (navigateMovie.value != null || processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            try {
-                movieLocalSource.upsertMovies(listOf(movie))
-                navigateMovie.update { movie.ids.trakt }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            } finally {
-                processingJob = null
-            }
-        }
+        navigation.toMovie(movie)
     }
 
     fun clearNavigation() {
-        navigateShow.update { null }
-        navigateEpisode.update { null }
-        navigateMovie.update { null }
+        navigation.clear()
     }
 
     override fun onCleared() {
@@ -395,9 +361,9 @@ internal class ProfileAllActivityViewModel(
         commentItemsState,
         reactionsState,
         filterState,
-        navigateShow,
-        navigateEpisode,
-        navigateMovie,
+        navigation.show,
+        navigation.episode,
+        navigation.movie,
         userState,
         errorState,
     ) { states ->
