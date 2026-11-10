@@ -5,8 +5,8 @@ import org.koin.dsl.module
 import tv.trakt.trakt.app.core.auth.AuthViewModel
 import tv.trakt.trakt.app.core.auth.usecases.GetDeviceCodeUseCase
 import tv.trakt.trakt.app.core.auth.usecases.GetDeviceTokenUseCase
-import tv.trakt.trakt.app.core.auth.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.auth.TokenProvider
+import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
 
 internal val authModule = module {
     factory {

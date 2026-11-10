@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
@@ -62,7 +63,6 @@ import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotificationWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
-import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.widgets.data.WidgetsUpdater

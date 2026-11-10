@@ -1,17 +1,64 @@
 package tv.trakt.trakt.core.discover.sections.anticipated.usecases
 
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.local.AnticipatedMoviesLocalSource
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.discover.DiscoverItem
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
+import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 
-internal interface GetAnticipatedMoviesUseCase {
-    suspend fun getLocalMovies(): ImmutableList<DiscoverItem>
+internal class GetAnticipatedMoviesUseCase(
+    private val remoteSource: MoviesRemoteSource,
+    private val localAnticipatedSource: AnticipatedMoviesLocalSource,
+    private val localMovieSource: MovieLocalSource,
+    private val seasonalThemeUseCase: SeasonalThemeUseCase,
+) {
+    suspend fun getLocalMovies(): ImmutableList<DiscoverItem.MovieItem> {
+        return localAnticipatedSource.getMovies()
+            .sortedByDescending { it.count }
+            .toImmutableList()
+            .also {
+                localMovieSource.upsertMovies(
+                    it.asyncMap { item -> item.movie },
+                )
+            }
+    }
 
     suspend fun getMovies(
         limit: Int = DEFAULT_SECTION_LIMIT,
         page: Int = 1,
         skipLocal: Boolean = false,
         filters: GlobalFilter,
-    ): ImmutableList<DiscoverItem>
+    ): ImmutableList<DiscoverItem.MovieItem> {
+        return remoteSource.getAnticipated(
+            page = page,
+            limit = limit,
+            theme = seasonalThemeUseCase.activeSeason()?.remoteValue,
+            filters = filters,
+        )
+            .asyncMap {
+                DiscoverItem.MovieItem(
+                    movie = Movie.fromDto(it.movie),
+                    count = it.listCount,
+                )
+            }
+            .toImmutableList()
+            .also { movies ->
+                if (!skipLocal) {
+                    localAnticipatedSource.setMovies(
+                        movies = movies.take(DEFAULT_SECTION_LIMIT),
+                    )
+                }
+
+                localMovieSource.upsertMovies(
+                    movies.asyncMap { item -> item.movie },
+                )
+            }
+    }
 }

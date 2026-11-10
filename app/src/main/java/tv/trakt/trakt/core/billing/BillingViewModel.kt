@@ -43,6 +43,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -60,7 +61,6 @@ import tv.trakt.trakt.core.billing.model.toVipFailureCode
 import tv.trakt.trakt.core.billing.navigation.BillingDestination
 import tv.trakt.trakt.core.billing.usecases.GetVipUsageLimitsUseCase
 import tv.trakt.trakt.core.billing.usecases.VerifyPurchaseUseCase
-import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val VIP_FLOW = "new"

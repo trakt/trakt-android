@@ -21,11 +21,11 @@ import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.REJECTED
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.SUCCESS
 import tv.trakt.trakt.app.core.auth.usecases.GetDeviceCodeUseCase
 import tv.trakt.trakt.app.core.auth.usecases.GetDeviceTokenUseCase
-import tv.trakt.trakt.app.core.auth.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.auth.model.AuthDeviceTokenCode.PENDING
 import tv.trakt.trakt.common.auth.model.AuthDeviceTokenState.Failure
 import tv.trakt.trakt.common.auth.model.AuthDeviceTokenState.Success
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.nowUtc

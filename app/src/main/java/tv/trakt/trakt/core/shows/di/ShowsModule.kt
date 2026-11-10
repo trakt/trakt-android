@@ -6,23 +6,18 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.shows.DefaultGetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.DefaultGetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.DefaultGetReleasesShowsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.GetReleasesShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
-import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.DefaultGetTrendingShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
-import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 
 internal val showsModule = module {
-    factory<GetTrendingShowsUseCase>(
+    factory(
         qualifier = named("defaultTrendingShowsUseCase"),
     ) {
-        DefaultGetTrendingShowsUseCase(
+        GetTrendingShowsUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
             localShowSource = get(),
@@ -30,10 +25,10 @@ internal val showsModule = module {
         )
     }
 
-    factory<GetPopularShowsUseCase>(
+    factory(
         qualifier = named("defaultPopularShowsUseCase"),
     ) {
-        DefaultGetPopularShowsUseCase(
+        GetPopularShowsUseCase(
             remoteSource = get(),
             localPopularSource = get(),
             localShowSource = get(),
@@ -41,10 +36,10 @@ internal val showsModule = module {
         )
     }
 
-    factory<GetAnticipatedShowsUseCase>(
+    factory(
         qualifier = named("defaultAnticipatedShowsUseCase"),
     ) {
-        DefaultGetAnticipatedShowsUseCase(
+        GetAnticipatedShowsUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
             localShowSource = get(),
@@ -52,10 +47,10 @@ internal val showsModule = module {
         )
     }
 
-    factory<GetReleasesShowsUseCase>(
+    factory(
         qualifier = named("defaultReleasesShowsUseCase"),
     ) {
-        DefaultGetReleasesShowsUseCase(
+        GetReleasesShowsUseCase(
             remoteSource = get(),
             localSource = get(),
             localShowSource = get(),
@@ -63,10 +58,10 @@ internal val showsModule = module {
         )
     }
 
-    factory<GetRecommendedShowsUseCase>(
+    factory(
         qualifier = named("defaultRecommendedShowsUseCase"),
     ) {
-        DefaultGetRecommendedShowsUseCase(
+        GetRecommendedShowsUseCase(
             remoteSource = get(),
             localRecommendedSource = get(),
             localShowSource = get(),
