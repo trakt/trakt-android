@@ -84,6 +84,7 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
@@ -834,7 +835,7 @@ internal fun ShowDetailsContent(
                     item {
                         ShowCommentsView(
                             viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
+                                parameters = { parametersOf(CommentsMedia.ForShow(show)) },
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,

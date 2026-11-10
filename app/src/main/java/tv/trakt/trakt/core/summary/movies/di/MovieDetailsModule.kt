@@ -10,8 +10,6 @@ import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsViewModel
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieActorsUseCase
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
-import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsViewModel
-import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtrasUseCase
@@ -46,7 +44,6 @@ internal val movieDetailsModule = module {
     factoryOf(::GetMovieRelatedUseCase)
     factoryOf(::GetMovieSentimentUseCase)
     factoryOf(::GetMovieHistoryUseCase)
-    factoryOf(::GetMovieCommentsUseCase)
     factoryOf(::GetMovieListsUseCase)
     factoryOf(::GetMovieTriviaUseCase)
     factoryOf(::GetMovieSocialsUseCase)
@@ -152,23 +149,6 @@ internal val movieDetailsModule = module {
             getTriviaUseCase = get(),
             collapsingManager = get(),
             sessionManager = get(),
-        )
-    }
-
-    viewModel { (movie: Movie) ->
-        MovieCommentsViewModel(
-            appContext = androidApplication(),
-            movie = movie,
-            getFilterUseCase = get(),
-            getLanguageUseCase = get(),
-            getCommentsUseCase = get(),
-            getCommentReactionsUseCase = get(),
-            loadUserReactionsUseCase = get(),
-            dataChanges = get(),
-            sessionManager = get(),
-            collapsingManager = get(),
-            translationsStore = get(),
-            analytics = get(),
         )
     }
 

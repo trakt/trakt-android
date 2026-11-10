@@ -42,6 +42,7 @@ import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent.OpenExternalTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
+import tv.trakt.trakt.core.reactions.CommentReactionsDelegate
 import tv.trakt.trakt.core.reactions.data.ReactionSource
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
@@ -50,28 +51,28 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 internal class CommentDetailsViewModel(
-    private val appContext: Context,
     private val comment: Comment,
     private val sessionManager: SessionManager,
     private val getRepliesUseCase: GetCommentRepliesUseCase,
-    private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
-    private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val dataChanges: DataChanges,
     private val translationsStore: CommentTranslationsStore,
     private val analytics: Analytics,
+    reactionsFactory: CommentReactionsDelegate.Factory,
 ) : ViewModel() {
     private val initialState = CommentDetailsState()
     private val origin = ChangeOrigin.unique()
 
     private val commentState = MutableStateFlow(comment)
     private val commentReplies = MutableStateFlow(initialState.replies)
-    private val reactionsState = MutableStateFlow(initialState.reactions)
-    private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val reactions = reactionsFactory.create(
+        scope = viewModelScope,
+        source = ReactionSource.CommentDetails,
+        origin = origin,
+    )
 
-    private var reactionJob: Job? = null
     private var loadingJob: Job? = null
 
     init {
@@ -104,22 +105,12 @@ internal class CommentDetailsViewModel(
                     val repliesAsync = async {
                         getRepliesUseCase.getCommentReplies(comment.id)
                     }
-                    val userReactionsAsync = async {
-                        if (!sessionManager.isAuthenticated()) {
-                            return@async null
-                        }
-                        if (loadUserReactionsUseCase.isLoaded()) {
-                            loadUserReactionsUseCase.loadLocalReactions()
-                        } else {
-                            loadUserReactionsUseCase.loadReactions()
-                        }
-                    }
+                    val userReactionsAsync = async { reactions.loadUserReactions() }
 
                     val replies = repliesAsync.await()
-                    val userReactions = userReactionsAsync.await()
+                    userReactionsAsync.await()
 
                     commentReplies.update { replies }
-                    userReactionsState.update { userReactions }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -169,122 +160,14 @@ internal class CommentDetailsViewModel(
     }
 
     fun loadReactions(commentId: Int) {
-        viewModelScope.launch {
-            if (reactionsState.value?.containsKey(commentId) == true) {
-                // Reactions already loaded for this comment.
-                return@launch
-            }
-
-            try {
-                val reactions = getCommentReactionsUseCase.getReactions(commentId)
-                reactionsState.update { current ->
-                    val mutable = current?.toMutableMap() ?: mutableMapOf()
-                    mutable[commentId] = reactions
-                    mutable.toImmutableMap()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
+        reactions.load(commentId)
     }
 
     fun setReaction(
         reaction: Reaction,
         commentId: Int,
     ) {
-        reactionJob?.cancel()
-        reactionJob = viewModelScope.launch {
-            try {
-                val userReaction = userReactionsState.value?.get(commentId)
-
-                userReactionsState.update {
-                    val mutable = it?.toMutableMap() ?: mutableMapOf()
-                    mutable[commentId] = when {
-                        userReaction == reaction -> null
-                        else -> reaction
-                    }
-                    mutable.toImmutableMap()
-                }
-
-                reactionsState.update { current ->
-                    val mutable = current?.toMutableMap() ?: mutableMapOf()
-
-                    mutable[commentId]?.let {
-                        val updatedReactions = it.copy(
-                            reactionsCount = when (userReaction) {
-                                reaction -> it.reactionsCount - 1
-                                null -> it.reactionsCount + 1
-                                else -> it.reactionsCount
-                            },
-                            distribution = it.distribution
-                                .toMutableMap()
-                                .apply {
-                                    for ((r, count) in entries) {
-                                        if (r == reaction && userReaction != reaction) {
-                                            this[r] = count + 1
-                                        } else if (r == userReaction) {
-                                            this[r] = (count - 1).coerceAtLeast(0)
-                                        }
-                                    }
-                                }
-                                .toImmutableMap(),
-                        )
-                        mutable[commentId] = updatedReactions
-                    }
-
-                    mutable.toImmutableMap()
-                }
-
-                // Debounce to avoid multiple rapid calls.
-                delay(1.seconds)
-                if (reaction == userReaction) {
-                    deleteReactionWork(
-                        commentId = commentId,
-                    )
-                } else {
-                    postReactionWork(
-                        commentId = commentId,
-                        reaction = reaction,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    private suspend fun postReactionWork(
-        commentId: Int,
-        reaction: Reaction,
-    ) {
-        if (!sessionManager.isAuthenticated()) {
-            return
-        }
-
-        PostReactionWorker.scheduleOneTime(
-            appContext = appContext,
-            commentId = commentId,
-            reaction = reaction,
-            source = ReactionSource.CommentDetails,
-            origin = origin,
-        )
-    }
-
-    private suspend fun deleteReactionWork(commentId: Int) {
-        if (!sessionManager.isAuthenticated()) {
-            return
-        }
-
-        DeleteReactionWorker.scheduleOneTime(
-            appContext = appContext,
-            commentId = commentId,
-            source = ReactionSource.CommentDetails,
-            origin = origin,
-        )
+        reactions.set(reaction, commentId)
     }
 
     val events: Flow<CommentTranslationEvent>
@@ -293,8 +176,8 @@ internal class CommentDetailsViewModel(
     val state = combine(
         commentState,
         commentReplies,
-        reactionsState,
-        userReactionsState,
+        reactions.summaries,
+        reactions.userReactions,
         userState,
         loadingState,
         errorState,

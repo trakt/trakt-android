@@ -75,6 +75,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
@@ -656,7 +657,7 @@ internal fun EpisodeDetailsContent(
                         EpisodeCommentsView(
                             viewModel = koinViewModel(
                                 parameters = {
-                                    parametersOf(state.show, state.episode)
+                                    parametersOf(CommentsMedia.ForEpisode(state.show, state.episode))
                                 },
                             ),
                             headerPadding = sectionPadding,
