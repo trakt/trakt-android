@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.summary.movies.features.info
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.data.remote.ParentalGuideRemoteSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -28,10 +26,13 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.parentalguide.ParentalGuide
 import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieCrewUseCase
+import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUseCase
+import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStudiosUseCase
 
 internal class MovieInfoViewModel(
     private val movie: Movie,
-    private val moviesRemoteSource: MoviesRemoteSource,
+    private val getStatsUseCase: GetMovieStatsUseCase,
+    private val getStudiosUseCase: GetMovieStudiosUseCase,
     private val getCrewUseCase: GetMovieCrewUseCase,
     private val parentalGuideSource: ParentalGuideRemoteSource,
 ) : ViewModel() {
@@ -76,7 +77,7 @@ internal class MovieInfoViewModel(
     private suspend fun loadStats() {
         try {
             movieStatsState.update {
-                moviesRemoteSource.getStats(movie.ids.trakt)
+                getStatsUseCase.getStats(movie.ids.trakt)
             }
         } catch (error: Exception) {
             error.rethrowCancellation {
@@ -88,7 +89,7 @@ internal class MovieInfoViewModel(
     private suspend fun loadStudios() {
         try {
             movieStudiosState.update {
-                moviesRemoteSource.getStudios(movie.ids.trakt).toImmutableList()
+                getStudiosUseCase.getStudios(movie.ids.trakt)
             }
         } catch (error: Exception) {
             error.rethrowCancellation {

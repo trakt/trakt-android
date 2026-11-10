@@ -18,7 +18,6 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -36,13 +35,14 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.features.reorder.navigation.ListReorderDestination
+import tv.trakt.trakt.core.lists.features.reorder.usecase.ReorderListUseCase
 import tv.trakt.trakt.core.lists.model.CustomListItem
 
 @Suppress("UNCHECKED_CAST")
 internal class ListReorderViewModel(
     savedStateHandle: SavedStateHandle,
     private val getListItemsUseCase: GetListItemsUseCase,
-    private val listsRemoteSource: ListsRemoteSource,
+    private val reorderListUseCase: ReorderListUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -166,9 +166,9 @@ internal class ListReorderViewModel(
             try {
                 loadingState.update { Loading }
 
-                listsRemoteSource.reorderListItems(
+                reorderListUseCase.reorderList(
                     listId = listId,
-                    itemsIds = currentItems.map { it.itemId },
+                    itemIds = currentItems.map { it.itemId },
                 )
 
                 dataChanges.notify(Kind.ListOrder, targetId = listId.value)

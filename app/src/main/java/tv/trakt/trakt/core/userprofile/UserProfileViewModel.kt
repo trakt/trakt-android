@@ -23,14 +23,13 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.blocking.BlockUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.blocking.GetBlockedUsersUseCase
+import tv.trakt.trakt.common.core.user.usecases.following.FollowRequestUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase.Result.Approved
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase.Result.RequestPending
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
-import tv.trakt.trakt.common.data.remote.UserRemoteSource
-import tv.trakt.trakt.common.data.remote.UserSocialRemoteSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -49,18 +48,19 @@ import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
 import tv.trakt.trakt.core.userprofile.UserProfileState.UserFollowRequestState
 import tv.trakt.trakt.core.userprofile.navigation.UserProfileDestination
 import tv.trakt.trakt.core.userprofile.sections.thismonth.GetUserProfileMonthUseCase
+import tv.trakt.trakt.core.userprofile.usecases.GetUserProfileDetailsUseCase
 import tv.trakt.trakt.resources.R
 
 internal class UserProfileViewModel(
     savedStateHandle: SavedStateHandle,
-    private val userRemoteSource: UserRemoteSource,
+    private val getUserProfileUseCase: GetUserProfileDetailsUseCase,
     private val getUserMonthUseCase: GetUserProfileMonthUseCase,
     private val getBlockedUsersUseCase: GetBlockedUsersUseCase,
     private val getSocialUseCase: LoadUserSocialUseCase,
     private val getSocialRequestsUseCase: LoadUserSocialRequestsUseCase,
     private val blockUserUseCase: BlockUserUseCase,
     private val followUserUseCase: FollowUserUseCase,
-    private val userSocialRemoteSource: UserSocialRemoteSource,
+    private val followRequestUserUseCase: FollowRequestUserUseCase,
     private val showLocalSource: ShowLocalSource,
     private val episodeLocalSource: EpisodeLocalSource,
     private val movieLocalSource: MovieLocalSource,
@@ -171,7 +171,7 @@ internal class UserProfileViewModel(
 
     private suspend fun loadDetails() {
         try {
-            val details = userRemoteSource.getUserProfile(user.ids.trakt)
+            val details = getUserProfileUseCase.getUserProfileDetails(user.ids.trakt)
             userState.update {
                 when {
                     it.hasAvatar -> details.copy(images = it.images)
@@ -357,7 +357,7 @@ internal class UserProfileViewModel(
                 userRequestState.update { it.copy(loading = true) }
 
                 if (approved) {
-                    userSocialRemoteSource.approveRequest(request.id)
+                    followRequestUserUseCase.approveRequest(request.id)
                     infoState.update {
                         DynamicStringResource(
                             R.string.text_info_follow_request_approved,
@@ -365,7 +365,7 @@ internal class UserProfileViewModel(
                         )
                     }
                 } else {
-                    userSocialRemoteSource.rejectRequest(request.id)
+                    followRequestUserUseCase.rejectRequest(request.id)
                     infoState.update {
                         DynamicStringResource(
                             R.string.text_info_follow_request_rejected,

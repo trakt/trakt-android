@@ -24,7 +24,6 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -41,6 +40,7 @@ import tv.trakt.trakt.core.userprofile.navigation.UserProfileDestination
 import tv.trakt.trakt.core.userprofile.sections.match.model.MatchStripEntry
 import tv.trakt.trakt.core.userprofile.sections.match.model.toMatchStrip
 import tv.trakt.trakt.core.userprofile.sections.match.usecases.GetUserMatchUseCase
+import tv.trakt.trakt.core.userprofile.usecases.GetUserProfileDetailsUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
@@ -48,7 +48,7 @@ import kotlin.time.Duration.Companion.milliseconds
 internal class UserMatchViewModel(
     savedStateHandle: SavedStateHandle,
     private val getUserMatchUseCase: GetUserMatchUseCase,
-    private val userRemoteSource: UserRemoteSource,
+    private val getUserProfileUseCase: GetUserProfileDetailsUseCase,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val dataChanges: DataChanges,
@@ -144,7 +144,7 @@ internal class UserMatchViewModel(
     }
 
     private suspend fun loadUserSlug(): SlugId {
-        return userSlug ?: userRemoteSource.getUserProfile(user.ids.trakt).ids.slug
+        return userSlug ?: getUserProfileUseCase.getUserProfileDetails(user.ids.trakt).ids.slug
             .also { userSlug = it }
     }
 

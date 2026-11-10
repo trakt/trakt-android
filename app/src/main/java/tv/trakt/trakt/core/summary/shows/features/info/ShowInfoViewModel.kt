@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.summary.shows.features.info
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.data.remote.ParentalGuideRemoteSource
-import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -29,10 +27,13 @@ import tv.trakt.trakt.common.model.parentalguide.ParentalGuide
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowCrewUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowNetworksUseCase
+import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStatsUseCase
+import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStudiosUseCase
 
 internal class ShowInfoViewModel(
     private val show: Show,
-    private val showsRemoteSource: ShowsRemoteSource,
+    private val getStatsUseCase: GetShowStatsUseCase,
+    private val getStudiosUseCase: GetShowStudiosUseCase,
     private val getNetworksUseCase: GetShowNetworksUseCase,
     private val getCrewUseCase: GetShowCrewUseCase,
     private val parentalGuideSource: ParentalGuideRemoteSource,
@@ -80,7 +81,7 @@ internal class ShowInfoViewModel(
     private suspend fun loadStudios() {
         try {
             showStudiosState.update {
-                showsRemoteSource.getStudios(show.ids.trakt).toImmutableList()
+                getStudiosUseCase.getStudios(show.ids.trakt)
             }
         } catch (error: Exception) {
             error.rethrowCancellation {
@@ -104,7 +105,7 @@ internal class ShowInfoViewModel(
     private suspend fun loadStats() {
         try {
             showStatsState.update {
-                showsRemoteSource.getStats(show.ids.trakt)
+                getStatsUseCase.getStats(show.ids.trakt)
             }
         } catch (error: Exception) {
             error.rethrowCancellation {

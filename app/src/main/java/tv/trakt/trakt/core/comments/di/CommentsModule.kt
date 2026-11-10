@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.comments.features.translation.data.MlKitCommentTransl
 import tv.trakt.trakt.core.comments.features.translation.download.CommentTranslationDownloadViewModel
 import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.comments.model.MentionSource
+import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.EditCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentMentionsUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
@@ -78,6 +79,7 @@ internal val commentsModule = module {
     factoryOf(::EditCommentUseCase)
     factoryOf(::GetCommentMentionsUseCase)
     factoryOf(::PostReplyUseCase)
+    factoryOf(::DeleteCommentUseCase)
 
     factory {
         GetCommentsFilterUseCase(
@@ -182,7 +184,7 @@ internal val commentsModule = module {
     viewModel { (commentId: TraktId) ->
         DeleteCommentViewModel(
             commentId = commentId,
-            commentsRemoteSource = get(),
+            deleteCommentUseCase = get(),
             analytics = get(),
         )
     }

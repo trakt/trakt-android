@@ -13,8 +13,13 @@ import tv.trakt.trakt.core.reactions.media.usecases.DeleteMediaReactionUseCase
 import tv.trakt.trakt.core.reactions.media.usecases.GetMediaReactionsSummaryUseCase
 import tv.trakt.trakt.core.reactions.media.usecases.LoadUserMediaReactionsUseCase
 import tv.trakt.trakt.core.reactions.media.usecases.PostMediaReactionUseCase
+import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
+import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
 
 internal val reactionsModule = module {
+    factoryOf(::PostCommentReactionUseCase)
+    factoryOf(::DeleteCommentReactionUseCase)
+
     factoryOf(::GetMediaReactionsSummaryUseCase)
     factoryOf(::LoadUserMediaReactionsUseCase)
     factoryOf(::PostMediaReactionUseCase)
@@ -36,7 +41,7 @@ internal val reactionsModule = module {
         PostReactionWorker(
             appContext = androidApplication(),
             workerParams = get(),
-            reactionsRemoteSource = get(),
+            postReactionUseCase = get(),
             loadUserReactionsUseCase = get(),
             dataChanges = get(),
             sessionManager = get(),
@@ -48,7 +53,7 @@ internal val reactionsModule = module {
         DeleteReactionWorker(
             appContext = androidApplication(),
             workerParams = get(),
-            reactionsRemoteSource = get(),
+            deleteReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
             dataChanges = get(),
             sessionManager = get(),

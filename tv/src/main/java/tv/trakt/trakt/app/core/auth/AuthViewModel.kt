@@ -19,13 +19,13 @@ import timber.log.Timber
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.LOADING
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.REJECTED
 import tv.trakt.trakt.app.core.auth.AuthState.LoadingState.SUCCESS
+import tv.trakt.trakt.app.core.auth.usecases.GetDeviceCodeUseCase
 import tv.trakt.trakt.app.core.auth.usecases.GetDeviceTokenUseCase
 import tv.trakt.trakt.common.auth.model.AuthDeviceTokenCode.PENDING
 import tv.trakt.trakt.common.auth.model.AuthDeviceTokenState.Failure
 import tv.trakt.trakt.common.auth.model.AuthDeviceTokenState.Success
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
-import tv.trakt.trakt.common.data.remote.AuthRemoteSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -33,7 +33,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import kotlin.time.Duration
 
 internal class AuthViewModel(
-    private val authRemoteSource: AuthRemoteSource,
+    private val getDeviceCodeUseCase: GetDeviceCodeUseCase,
     private val getDeviceTokenUseCase: GetDeviceTokenUseCase,
     private val loadUserProfileUseCase: LoadUserProfileUseCase,
     private val sessionManager: SessionManager,
@@ -60,7 +60,7 @@ internal class AuthViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { LOADING }
-                val authData = authRemoteSource.getDeviceCode()
+                val authData = getDeviceCodeUseCase.getDeviceCode()
 
                 deviceCodeState.update { authData }
 
