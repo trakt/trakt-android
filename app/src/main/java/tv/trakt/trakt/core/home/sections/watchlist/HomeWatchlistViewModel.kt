@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctIgnoringPreferences
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
@@ -125,8 +126,8 @@ internal class HomeWatchlistViewModel(
         viewModelScope.launch {
             user = sessionManager.getProfile()
             sessionManager.observeProfile()
+                .distinctIgnoringPreferences()
                 .drop(1)
-                .distinctUntilChanged()
                 .debounce(200.milliseconds)
                 .collect {
                     user = it

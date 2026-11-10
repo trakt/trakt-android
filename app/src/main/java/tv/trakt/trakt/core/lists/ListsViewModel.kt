@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctIgnoringPreferences
 import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
@@ -98,7 +99,7 @@ internal class ListsViewModel(
 
     private fun observeUser() {
         sessionManager.observeProfile()
-            .distinctUntilChanged()
+            .distinctIgnoringPreferences()
             .onEach { user ->
                 userState.update {
                     UserState(

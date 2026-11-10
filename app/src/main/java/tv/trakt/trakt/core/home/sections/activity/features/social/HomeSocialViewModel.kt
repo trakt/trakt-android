@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctIgnoringPreferences
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
@@ -42,6 +43,7 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class HomeSocialViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
@@ -79,9 +81,9 @@ internal class HomeSocialViewModel(
         viewModelScope.launch {
             userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
+                .distinctIgnoringPreferences()
                 .drop(1)
-                .distinctUntilChanged()
-                .debounce(200)
+                .debounce(200.milliseconds)
                 .collect { user ->
                     userState.update { user }
                     loadData()
