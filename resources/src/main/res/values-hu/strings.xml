@@ -1151,10 +1151,10 @@
   <string name="hype_tier_cant_wait">Alig várom</string>
   <string name="hype_tier_looking_good">Ígéretes</string>
   <string name="image_alt_comment_gif">A hozzászóláshoz csatolt GIF</string>
-  <string name="image_alt_hype_score">%d% hype számodra</string>
+  <string name="image_alt_hype_score">%d%% hype számodra</string>
   <string name="image_alt_hype_unknown">Még nincs hype-pontszámod</string>
   <string name="image_alt_list_preview_poster">Poszter egy bejegyzéshez: „%s”</string>
-  <string name="image_alt_match_score">%d% egyezés neked</string>
+  <string name="image_alt_match_score">%d%% egyezés neked</string>
   <string name="image_alt_match_unknown">Még nincs egyezési pontszámod</string>
   <string name="image_alt_media_poster">„%s” posztere</string>
   <string name="image_alt_person_headshot">%s portréja</string>
@@ -1544,7 +1544,7 @@
   <string name="match_label_soulmates">Lelkitársak</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Egyezés:</string>
-  <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
+  <string name="match_pill_aria_label">%1$d%% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
   <string name="match_tier_good_fit">Jó választás</string>
   <string name="match_tier_maybe">Talán</string>
@@ -1792,7 +1792,7 @@
   <string name="tag_media_sync_webhook_only">Csak Webhook</string>
   <string name="tag_mixtape_different_mood">Más hangulat</string>
   <string name="tag_mixtape_kept">Megtartva</string>
-  <string name="tag_mixtape_match">%s% egyezés</string>
+  <string name="tag_mixtape_match">%s%% egyezés</string>
   <string name="tag_mixtape_tap_details">Koppints a részletekért</string>
   <string name="tag_text_blocked_user">Blokkolva</string>
   <string name="tag_text_deal_price">Első 2 év</string>
@@ -2038,7 +2038,7 @@
   <string name="text_history_sync_filter">Szinkronizálási azonosító: %d</string>
   <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
   <string name="text_hype_lists">Az egyik legtöbb listára felvett várható cím</string>
-  <string name="text_hype_lists_badge">Top %s%</string>
+  <string name="text_hype_lists_badge">Top %s%%</string>
   <string name="text_hype_lists_detail">A felhasználók folyamatosan hozzáadják a listáikhoz</string>
   <string name="text_hype_out_on">Megjelenés: %s</string>
   <string name="text_hype_series_about">Körülbelül a megszokott</string>
@@ -2127,7 +2127,7 @@
   <string name="text_match_basis_free">A pontszámod ingyenes. A mögötte rejlő okok VIP funkciónak számítanak.</string>
   <string name="text_match_basis_history">A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján.</string>
   <string name="text_match_because_liked">Mert tetszett neked</string>
-  <string name="text_match_better_than">Jobban illik hozzád a címek %d%-ánál</string>
+  <string name="text_match_better_than">Jobban illik hozzád a címek %d%%-ánál</string>
   <string name="text_match_not_enough_data">Még nincs elég adat az egyezés megállapításához.</string>
   <string name="text_match_rating_liked">Kedvelik a Trakton</string>
   <string name="text_match_rating_loved">Imádják a Trakton</string>
@@ -3071,7 +3071,7 @@
   <string name="yir_2026_preview_runner_none">Nincs (nem hibrid)</string>
   <string name="yir_2026_preview_runner_up">Második helyezett</string>
   <string name="yir_2026_preview_title">Személyiség előnézet</string>
-  <string name="yir_2026_rarity">Csak %1$d% %2$s</string>
+  <string name="yir_2026_rarity">Csak %1$d%% %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Kicsit %s</string>
   <string name="yir_2026_reel_and_you_are">És te vagy</string>
   <string name="yir_2026_reel_but_mostly">De leginkább</string>
