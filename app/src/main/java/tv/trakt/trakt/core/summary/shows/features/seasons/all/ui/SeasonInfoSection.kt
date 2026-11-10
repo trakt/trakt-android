@@ -88,7 +88,7 @@ internal fun LazyListScope.SeasonInfoSection(
                 },
         ) {
             val userRatingVisible = state.seasonUserRating.loading == Done &&
-                (state.items.isSelectedSeasonWatched || state.seasonUserRating.rating != null)
+                (state.items.isSelectedSeasonStarted || state.seasonUserRating.rating != null)
 
             if (userRatingVisible) {
                 UserRatingBar(

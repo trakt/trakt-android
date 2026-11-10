@@ -35,6 +35,9 @@ internal data class ShowSeasons(
         get() = selectedSeasonEpisodes.isNotEmpty() &&
             selectedSeasonEpisodes.all { it.isWatched }
 
+    val isSelectedSeasonStarted: Boolean
+        get() = selectedSeasonEpisodes.any { it.isWatched }
+
     /**
      * The episode after the newest watched one, or the first episode once the previous
      * season is complete. Null when the next episode lives in another season. Specials ignored.
