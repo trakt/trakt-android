@@ -43,10 +43,8 @@ class GetSpoilerStateUseCase(
     }
 
     suspend fun isEnabled(): Boolean {
-        if (!sessionManager.isAuthenticated()) {
-            return false
-        }
-        return sessionManager.getProfile()?.settings?.hideSpoilers == true
+        return sessionManager.isAuthenticated() &&
+            sessionManager.getProfile()?.settings?.hideSpoilers == true
     }
 
     suspend fun isShowHidden(showId: TraktId): Boolean {
