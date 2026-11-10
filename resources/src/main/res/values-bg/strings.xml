@@ -1151,10 +1151,10 @@
   <string name="hype_tier_cant_wait">Нямам търпение</string>
   <string name="hype_tier_looking_good">Изглежда добре</string>
   <string name="image_alt_comment_gif">GIF, прикачен към коментара</string>
-  <string name="image_alt_hype_score">%d%% очакване за вас</string>
+  <string name="image_alt_hype_score">%d% очакване за вас</string>
   <string name="image_alt_hype_unknown">Все още няма оценка за очакване за вас</string>
   <string name="image_alt_list_preview_poster">Плакат за запис в %s</string>
-  <string name="image_alt_match_score">%d%% съвпадение за вас</string>
+  <string name="image_alt_match_score">%d% съвпадение за вас</string>
   <string name="image_alt_match_unknown">Все още няма оценка за съвпадение за вас</string>
   <string name="image_alt_media_poster">Плакат на \"%s\"</string>
   <string name="image_alt_person_headshot">Портретна снимка на %s</string>
@@ -1544,7 +1544,7 @@
   <string name="match_label_soulmates">Сродни души</string>
   <string name="match_label_spin_off">Спин-оф</string>
   <string name="match_pill_anchor">Съвпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
+  <string name="match_pill_aria_label">%1$d% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
   <string name="match_pill_loading_aria_label">Изчисляване на резултат за съвпадение</string>
   <string name="match_tier_good_fit">Добро съвпадение</string>
   <string name="match_tier_maybe">Може би</string>
@@ -1792,7 +1792,7 @@
   <string name="tag_media_sync_webhook_only">Само Webhook</string>
   <string name="tag_mixtape_different_mood">Различно усещане</string>
   <string name="tag_mixtape_kept">Запазено</string>
-  <string name="tag_mixtape_match">%s%% съвпадение</string>
+  <string name="tag_mixtape_match">%s% съвпадение</string>
   <string name="tag_mixtape_tap_details">Докоснете за подробности</string>
   <string name="tag_text_blocked_user">Блокиран</string>
   <string name="tag_text_deal_price">Първите 2 години</string>
@@ -2038,7 +2038,7 @@
   <string name="text_history_sync_filter">ID на синхронизация %d</string>
   <string name="text_history_sync_filter_with_source">ID на синхронизация %1$d (%2$s)</string>
   <string name="text_hype_lists">Едно от най-добавяните предстоящи заглавия</string>
-  <string name="text_hype_lists_badge">Топ %s%%</string>
+  <string name="text_hype_lists_badge">Топ %s%</string>
   <string name="text_hype_lists_detail">Хората продължават да го добавят в списъците си</string>
   <string name="text_hype_out_on">Излиза на %s</string>
   <string name="text_hype_series_about">Около обичайното за вас</string>
@@ -2127,7 +2127,7 @@
   <string name="text_match_basis_free">Резултатът ви е безплатен. Причините за него са VIP функция.</string>
   <string name="text_match_basis_history">Въз основа на това, което сте гледали, оценили и добавили в любими.</string>
   <string name="text_match_because_liked">Защото харесахте</string>
-  <string name="text_match_better_than">По-добро съвпадение за вас от %d%% от заглавията</string>
+  <string name="text_match_better_than">По-добро съвпадение за вас от %d% от заглавията</string>
   <string name="text_match_not_enough_data">Все още няма достатъчно данни, за да определим съвпадението за вас.</string>
   <string name="text_match_rating_liked">Харесвано в Trakt</string>
   <string name="text_match_rating_loved">Обожавано в Trakt</string>
@@ -3071,7 +3071,7 @@
   <string name="yir_2026_preview_runner_none">Няма (без хибрид)</string>
   <string name="yir_2026_preview_runner_up">Подгласник</string>
   <string name="yir_2026_preview_title">Предварителен преглед на персона</string>
-  <string name="yir_2026_rarity">Само %1$d%% са %2$s</string>
+  <string name="yir_2026_rarity">Само %1$d% са %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Малко %s</string>
   <string name="yir_2026_reel_and_you_are">И вие сте</string>
   <string name="yir_2026_reel_but_mostly">Но предимно</string>

@@ -1151,10 +1151,10 @@
   <string name="hype_tier_cant_wait">Жду с нетерпением</string>
   <string name="hype_tier_looking_good">Многообещающе</string>
   <string name="image_alt_comment_gif">GIF прикреплен к комментарию</string>
-  <string name="image_alt_hype_score">Уровень ожидания для вас: %d%%</string>
+  <string name="image_alt_hype_score">Уровень ожидания для вас: %d%</string>
   <string name="image_alt_hype_unknown">Для вас пока нет оценки ожидания</string>
   <string name="image_alt_list_preview_poster">Постер для записи в %s</string>
-  <string name="image_alt_match_score">Совпадение для вас: %d%%</string>
+  <string name="image_alt_match_score">Совпадение для вас: %d%</string>
   <string name="image_alt_match_unknown">Пока нет оценки совпадения</string>
   <string name="image_alt_media_poster">Постер \"%s\"</string>
   <string name="image_alt_person_headshot">Портрет %s</string>
@@ -1544,7 +1544,7 @@
   <string name="match_label_soulmates">Родственные души</string>
   <string name="match_label_spin_off">Спин-офф</string>
   <string name="match_pill_anchor">Совпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% совпадения, %2$s. Открыть подробности совпадения.</string>
+  <string name="match_pill_aria_label">%1$d% совпадения, %2$s. Открыть подробности совпадения.</string>
   <string name="match_pill_loading_aria_label">Вычисляется оценка соответствия</string>
   <string name="match_tier_good_fit">Хороший выбор</string>
   <string name="match_tier_maybe">Возможно</string>
@@ -1792,7 +1792,7 @@
   <string name="tag_media_sync_webhook_only">Только вебхук</string>
   <string name="tag_mixtape_different_mood">Другое настроение</string>
   <string name="tag_mixtape_kept">Сохранено</string>
-  <string name="tag_mixtape_match">Совпадение: %s%%</string>
+  <string name="tag_mixtape_match">Совпадение: %s%</string>
   <string name="tag_mixtape_tap_details">Нажмите для подробностей</string>
   <string name="tag_text_blocked_user">Заблокировано</string>
   <string name="tag_text_deal_price">Первые 2 года</string>
@@ -2038,7 +2038,7 @@
   <string name="text_history_sync_filter">Идентификатор синхронизации %d</string>
   <string name="text_history_sync_filter_with_source">Идентификатор синхронизации %1$d (%2$s)</string>
   <string name="text_hype_lists">Один из самых добавляемых в списки будущих релизов</string>
-  <string name="text_hype_lists_badge">Топ %s%%</string>
+  <string name="text_hype_lists_badge">Топ %s%</string>
   <string name="text_hype_lists_detail">Пользователи продолжают добавлять его в списки</string>
   <string name="text_hype_out_on">Выходит %s</string>
   <string name="text_hype_series_about">На уровне вашей обычной оценки</string>
@@ -2127,7 +2127,7 @@
   <string name="text_match_basis_free">Ваша оценка бесплатна. Причины — функция VIP.</string>
   <string name="text_match_basis_history">На основе того, что вы смотрели, оценивали и добавляли в избранное.</string>
   <string name="text_match_because_liked">Потому что вам понравилось</string>
-  <string name="text_match_better_than">Подходит вам лучше, чем %d%% проектов</string>
+  <string name="text_match_better_than">Подходит вам лучше, чем %d% проектов</string>
   <string name="text_match_not_enough_data">Пока недостаточно данных, чтобы рассчитать совпадение.</string>
   <string name="text_match_rating_liked">Нравится на Trakt</string>
   <string name="text_match_rating_loved">Любят на Trakt</string>
@@ -3071,7 +3071,7 @@
   <string name="yir_2026_preview_runner_none">Нет (без гибрида)</string>
   <string name="yir_2026_preview_runner_up">Второй</string>
   <string name="yir_2026_preview_title">Предварительный просмотр персоны</string>
-  <string name="yir_2026_rarity">Только %1$d%% являются %2$s</string>
+  <string name="yir_2026_rarity">Только %1$d% являются %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Немного %s</string>
   <string name="yir_2026_reel_and_you_are">И вы</string>
   <string name="yir_2026_reel_but_mostly">Но в основном</string>
