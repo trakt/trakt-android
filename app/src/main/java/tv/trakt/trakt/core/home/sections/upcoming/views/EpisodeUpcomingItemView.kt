@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.rememberEpisodeStatus
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.EpisodeStatusChip
 import tv.trakt.trakt.ui.components.chips.InfoChip
@@ -42,9 +43,11 @@ internal fun EpisodeUpcomingItemView(
         more = onLongClick != null,
         onLongClick = onLongClick,
         onClick = onClick,
-        containerImageUrl =
-            item.show.images?.getFanartUrl()
-                .withFallback(item.episode.images?.getScreenshotUrl()),
+        containerImageUrl = when {
+            item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
+            else -> item.show.images?.getFanartUrl()
+                .withFallback(item.episode.images?.getScreenshotUrl())
+        },
         cardContent = {
             Row(
                 horizontalArrangement = spacedBy(3.dp),

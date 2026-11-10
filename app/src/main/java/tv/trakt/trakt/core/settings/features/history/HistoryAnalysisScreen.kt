@@ -162,6 +162,7 @@ private fun HistoryAnalysisContent(
             .nestedScroll(scrollConnection),
     ) {
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = scrollConnection.resultOffset,
         )
 

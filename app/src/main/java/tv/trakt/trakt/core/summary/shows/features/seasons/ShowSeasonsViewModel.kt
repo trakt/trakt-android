@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -39,6 +40,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons.Help
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons.Helpers.markWatchedSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
@@ -52,6 +54,7 @@ internal class ShowSeasonsViewModel(
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
+    private val getSpoilerStateUseCase: GetSpoilerStateUseCase,
     private val analytics: Analytics,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -66,13 +69,23 @@ internal class ShowSeasonsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val watchedUntilPromptState = MutableStateFlow(initialState.watchedUntilPrompt)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_SEASONS))
-
-    private var collapseJob: Job? = null
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.SHOW_SEASONS,
+    )
 
     init {
         loadData()
         observeData()
+        observeSpoilers()
+    }
+
+    private fun observeSpoilers() {
+        getSpoilerStateUseCase.observeEnabled()
+            .onEach { enabled -> spoilersHiddenState.update { enabled } }
+            .launchIn(viewModelScope)
     }
 
     private fun observeData() {
@@ -477,14 +490,7 @@ internal class ShowSeasonsViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_SEASONS)
-                else -> collapsingManager.expand(CollapsingKey.SHOW_SEASONS)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -496,8 +502,9 @@ internal class ShowSeasonsViewModel(
         loadingSeasonState,
         infoState,
         errorState,
-        collapseState,
+        collapse.state,
         watchedUntilPromptState,
+        spoilersHiddenState,
     ) { state ->
         ShowSeasonsState(
             show = state[0] as Show,
@@ -509,6 +516,7 @@ internal class ShowSeasonsViewModel(
             error = state[6] as Exception?,
             collapsed = state[7] as Boolean,
             watchedUntilPrompt = state[8] as Episode?,
+            spoilersHidden = state[9] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

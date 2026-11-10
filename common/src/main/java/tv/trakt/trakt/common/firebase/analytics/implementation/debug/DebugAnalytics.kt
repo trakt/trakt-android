@@ -137,6 +137,10 @@ internal class DebugAnalytics(
         Timber.d("logReportOpen: type=%s", type)
     }
 
+    override fun logSpoilerReveal(type: String) {
+        Timber.d("logSpoilerReveal: type=%s", type)
+    }
+
     override fun logReport(
         type: String,
         reason: String,

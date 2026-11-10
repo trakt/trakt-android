@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.spoilers.GetSpoilerStateUseCase
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.profile.ScreenTimeData
@@ -109,6 +110,7 @@ internal val profileModule = module {
     factoryOf(::LoadUserListsUseCase)
     factoryOf(::LoadUserLikedListsUseCase)
     factoryOf(::LoadUserProgressUseCase)
+    factoryOf(::GetSpoilerStateUseCase)
     factoryOf(::GetScreenTimeUseCase)
     factoryOf(::LoadUserReactionsUseCase)
     factoryOf(::LoadUserRatingsUseCase)

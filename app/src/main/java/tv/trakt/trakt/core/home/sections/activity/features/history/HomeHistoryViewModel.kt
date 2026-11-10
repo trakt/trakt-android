@@ -26,6 +26,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
+import tv.trakt.trakt.common.auth.session.helpers.observeSessionChanges
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.AllActivityLocalSource
@@ -52,6 +54,7 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.RateActivityItemUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -72,11 +75,20 @@ internal class HomeHistoryViewModel(
 ) : ViewModel() {
     private val initialState = HomeHistoryState()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = {
+            when (filterState.value.mode) {
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_HISTORY
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_HISTORY
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_HISTORY
+            }
+        },
+    )
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -85,7 +97,6 @@ internal class HomeHistoryViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
     private var ratingJob: Job? = null
 
     init {
@@ -110,24 +121,16 @@ internal class HomeHistoryViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
+                collapse.refresh()
                 loadData()
             }
             .launchIn(viewModelScope)
     }
 
     private fun observeUser() {
-        viewModelScope.launch {
-            userState.update { sessionManager.getProfile() }
-            sessionManager.observeProfile()
-                .drop(1)
-                .distinctUntilChanged()
-                .debounce(200.milliseconds)
-                .collect { user ->
-                    userState.update { user }
-                    loadData()
-                }
-        }
+        sessionManager.observeSessionChanges()
+            .onEach { loadData() }
+            .launchIn(viewModelScope)
     }
 
     private fun observeUpdates() {
@@ -306,30 +309,7 @@ internal class HomeHistoryViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MediaMode.Media -> CollapsingKey.HOME_MEDIA_HISTORY
-                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_HISTORY
-                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_HISTORY
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                MediaMode.Media -> CollapsingKey.HOME_MEDIA_HISTORY
-                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_HISTORY
-                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_HISTORY
-            },
-        )
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -337,12 +317,12 @@ internal class HomeHistoryViewModel(
         loadingState,
         itemsState,
         itemsRatingsState,
-        collapseState,
+        collapse.state,
         navigateShow,
         navigateEpisode,
         navigateMovie,
         errorState,
-        userState,
+        sessionManager.observeProfile(),
     ) { states ->
         HomeHistoryState(
             loading = states[0] as LoadingState,

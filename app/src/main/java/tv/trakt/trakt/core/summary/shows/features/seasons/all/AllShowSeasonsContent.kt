@@ -67,6 +67,7 @@ internal fun AllShowSeasonsContent(
     modifier: Modifier = Modifier,
     onModeClick: ((SeasonsMode) -> Unit)? = null,
     onPeopleModeClick: ((SeasonsPeopleMode) -> Unit)? = null,
+    onEpisodeCountReveal: (() -> Unit)? = null,
     onCommentsFilterClick: ((CommentsFilter) -> Unit)? = null,
     onCommentsLanguageClick: ((String?) -> Unit)? = null,
     onCommentRepliesClick: ((Comment) -> Unit)? = null,
@@ -224,6 +225,7 @@ internal fun AllShowSeasonsContent(
                         onModeClick = { onPeopleModeClick?.invoke(it) },
                         onRatingClick = { onSeasonRatingClick?.invoke(it) },
                         onRatingRemoveClick = { onSeasonRatingRemoveClick?.invoke() },
+                        onSpoilerReveal = { onEpisodeCountReveal?.invoke() },
                     )
                 }
                 SeasonsMode.Reviews -> {

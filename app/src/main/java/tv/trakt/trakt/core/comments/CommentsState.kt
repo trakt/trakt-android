@@ -37,5 +37,6 @@ internal data class CommentsState(
         val title: String?,
         val episodes: Int? = null,
         val mentionSource: MentionSource? = null,
+        val watched: Boolean = false,
     )
 }

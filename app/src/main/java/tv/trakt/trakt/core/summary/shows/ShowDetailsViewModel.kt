@@ -128,13 +128,11 @@ internal class ShowDetailsViewModel(
     private val loadingFavorite = MutableStateFlow(initialState.loadingFavorite)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
-    private val userState = MutableStateFlow(initialState.user)
     private val lightsaberState = MutableStateFlow(initialState.lightsaber)
 
     private var ratingJob: Job? = null
 
     init {
-        loadUser()
         loadData()
         loadProgressData()
         loadUserRatingData()
@@ -174,20 +172,6 @@ internal class ShowDetailsViewModel(
                 refreshLists()
             }
             .launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadData() {
@@ -272,6 +256,7 @@ internal class ShowDetailsViewModel(
                             aired = showState.value?.airedEpisodes ?: 0,
                             plays = progress?.plays,
                             playsWithoutSpecials = progress?.playsWithoutSpecials,
+                            playsDistinctWithoutSpecials = progress?.playsDistinctWithoutSpecials,
                             inWatchlist = watchlist.contains(showId),
                             inLists = lists.isNotEmpty(),
                             watchedEpisodes = progress?.watchedEpisodesWithoutSpecials ?: 0,
@@ -479,6 +464,7 @@ internal class ShowDetailsViewModel(
                         aired = showState.value?.airedEpisodes ?: 0,
                         plays = progress?.plays,
                         playsWithoutSpecials = progress?.playsWithoutSpecials,
+                        playsDistinctWithoutSpecials = progress?.playsDistinctWithoutSpecials,
                         inWatchlist = false,
                         watchedEpisodes = progress?.watchedEpisodesWithoutSpecials ?: 0,
                     )
@@ -944,7 +930,7 @@ internal class ShowDetailsViewModel(
         loadingFavorite,
         infoState,
         errorState,
-        userState,
+        sessionManager.observeProfile(),
         lightsaberState,
     ) { state ->
         ShowDetailsState(

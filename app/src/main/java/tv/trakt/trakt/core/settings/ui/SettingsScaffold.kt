@@ -65,6 +65,7 @@ internal fun SettingsScaffold(
             .nestedScroll(scrollConnection),
     ) {
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = scrollConnection.resultOffset,
         )
 

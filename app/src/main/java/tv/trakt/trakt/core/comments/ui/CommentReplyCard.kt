@@ -34,7 +34,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -65,6 +64,7 @@ import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
@@ -74,6 +74,7 @@ import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.spoilerBlur
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
@@ -89,6 +90,7 @@ internal fun CommentReplyCard(
     userReaction: Reaction? = null,
     translations: CommentTranslations = EmptyTranslations,
     progressTotal: Int? = null,
+    mediaWatched: Boolean = false,
     onClick: (() -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
@@ -123,6 +125,7 @@ internal fun CommentReplyCard(
             userReaction = userReaction,
             translations = translations,
             progressTotal = progressTotal,
+            mediaWatched = mediaWatched,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
             onDeleteClick = onDeleteClick,
@@ -177,6 +180,7 @@ private fun CommentReplyCardContent(
     userReaction: Reaction?,
     translations: CommentTranslations,
     progressTotal: Int?,
+    mediaWatched: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
@@ -219,7 +223,11 @@ private fun CommentReplyCardContent(
             )
         }
 
-        val spoilerBlurred = comment.hasSpoilers && !isUserReply && !showSpoilers
+        val spoilersHidden = LocalSpoilerState.current.enabled
+        val spoilerBlurred = (comment.hasSpoilers || spoilersHidden) &&
+            !isUserReply &&
+            !mediaWatched &&
+            !showSpoilers
         CommentReplyBody(
             text = markdownText,
             blurred = spoilerBlurred,
@@ -274,10 +282,10 @@ private fun CommentReplyBody(
                 modifier = modifier.then(
                     if (blurred) {
                         Modifier
-                            .blur(4.dp)
                             .padding(top = 12.dp)
                             .padding(horizontal = 16.dp)
                             .onClick { onRevealSpoiler() }
+                            .spoilerBlur(4.dp)
                     } else {
                         Modifier
                             .padding(top = 12.dp)
@@ -515,8 +523,9 @@ private fun Preview() {
                 CommentReplyCard(
                     onClick = {},
                     user = null,
-                    reply = PreviewData.comment1.copy(userRating = 7),
+                    reply = PreviewData.comment1.copy(userRating = 7, isSpoiler = true),
                     progressTotal = 10,
+                    mediaWatched = true,
                 )
 
                 CommentReplyCard(

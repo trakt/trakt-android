@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
@@ -64,6 +65,7 @@ import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCas
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlistUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
@@ -94,7 +96,17 @@ internal class HomeWatchlistViewModel(
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = {
+            when (filterState.value.mode) {
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_START_WATCHING
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_START_WATCHING
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_START_WATCHING
+            }
+        },
+    )
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -104,7 +116,6 @@ internal class HomeWatchlistViewModel(
     private var user: User? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -125,13 +136,11 @@ internal class HomeWatchlistViewModel(
         viewModelScope.launch {
             user = sessionManager.getProfile()
             sessionManager.observeProfile()
+                .onEach { user = it }
+                .distinctUntilSessionChanged()
                 .drop(1)
-                .distinctUntilChanged()
                 .debounce(200.milliseconds)
-                .collect {
-                    user = it
-                    loadData()
-                }
+                .collect { loadData() }
         }
     }
 
@@ -140,7 +149,7 @@ internal class HomeWatchlistViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
+                collapse.refresh()
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -500,30 +509,7 @@ internal class HomeWatchlistViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MediaMode.Media -> CollapsingKey.HOME_MEDIA_START_WATCHING
-                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_START_WATCHING
-                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_START_WATCHING
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                MediaMode.Media -> CollapsingKey.HOME_MEDIA_START_WATCHING
-                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_START_WATCHING
-                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_START_WATCHING
-            },
-        )
+        collapse.set(collapsed)
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
@@ -579,7 +565,7 @@ internal class HomeWatchlistViewModel(
     val state = combine(
         itemsState,
         filterState,
-        collapseState,
+        collapse.state,
         loadingState,
         infoState,
         errorState,

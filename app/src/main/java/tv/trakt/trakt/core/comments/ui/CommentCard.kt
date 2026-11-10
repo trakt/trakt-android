@@ -39,7 +39,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -77,6 +76,7 @@ import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
@@ -86,6 +86,7 @@ import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.spoilerBlur
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -109,6 +110,7 @@ internal fun CommentCard(
     repliesCountEnabled: Boolean = true,
     repliesLoading: Boolean = false,
     progressTotal: Int? = null,
+    mediaWatched: Boolean = false,
     gifLayout: CommentGifLayout = CommentGifLayout.Bottom,
     gifPaused: Boolean = false,
     onClick: (() -> Unit)? = null,
@@ -145,6 +147,7 @@ internal fun CommentCard(
             repliesCountEnabled = repliesCountEnabled,
             repliesLoading = repliesLoading,
             progressTotal = progressTotal,
+            mediaWatched = mediaWatched,
             gifLayout = gifLayout,
             gifPaused = gifPaused,
             onRequestReactions = onRequestReactions,
@@ -221,6 +224,7 @@ private fun CommentCardContent(
     repliesCountEnabled: Boolean,
     repliesLoading: Boolean,
     progressTotal: Int?,
+    mediaWatched: Boolean,
     gifLayout: CommentGifLayout,
     gifPaused: Boolean,
     modifier: Modifier = Modifier,
@@ -264,7 +268,11 @@ private fun CommentCardContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        val spoilerBlurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed
+        val spoilersHidden = LocalSpoilerState.current.enabled
+        val spoilerBlurred = (comment.hasSpoilers || spoilersHidden) &&
+            !isUserComment &&
+            !mediaWatched &&
+            !isSpoilerRevealed
         val body = @Composable {
             CommentBody(
                 text = translations.displayText(comment),
@@ -371,6 +379,7 @@ private fun CommentCardContent(
                 userReactions = userReactions,
                 translations = translations,
                 progressTotal = progressTotal,
+                mediaWatched = mediaWatched,
                 onReactionClick = onReactionClick,
                 onUserClick = onUserClick,
                 onTranslateClick = onTranslateClick,
@@ -405,10 +414,10 @@ private fun CommentBody(
                 modifier = modifier.then(
                     if (blurred) {
                         Modifier
-                            .blur(4.dp)
                             .padding(horizontal = 16.dp)
                             .padding(top = 14.dp, bottom = 20.dp)
                             .onClick { onRevealSpoiler() }
+                            .spoilerBlur(4.dp)
                     } else {
                         Modifier
                             .padding(horizontal = 16.dp)
@@ -434,6 +443,7 @@ private fun CommentRepliesContent(
     userReactions: ImmutableMap<Int, Reaction?>,
     translations: CommentTranslations,
     progressTotal: Int?,
+    mediaWatched: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -457,6 +467,7 @@ private fun CommentRepliesContent(
                 userReaction = userReactions[reply.id],
                 translations = translations,
                 progressTotal = progressTotal,
+                mediaWatched = mediaWatched,
                 onUserClick = onUserClick,
                 onTranslateClick = onTranslateClick,
                 onRevealSpoiler = onRevealSpoiler,
@@ -786,7 +797,8 @@ fun CommentPreview() {
                 CommentCard(
                     onClick = {},
                     user = null,
-                    comment = PreviewData.comment1.copy(userRating = 8),
+                    comment = PreviewData.comment1.copy(userRating = 8, isSpoiler = true),
+                    mediaWatched = true,
                     replies = listOf(PreviewData.comment1).toImmutableList(),
                     progressTotal = 10,
                     modifier = Modifier

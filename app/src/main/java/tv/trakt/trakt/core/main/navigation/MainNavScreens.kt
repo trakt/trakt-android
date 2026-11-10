@@ -79,6 +79,7 @@ import tv.trakt.trakt.core.settings.navigation.navigateToBlockedUsers
 import tv.trakt.trakt.core.settings.navigation.navigateToHistoryAnalysis
 import tv.trakt.trakt.core.settings.navigation.navigateToSettings
 import tv.trakt.trakt.core.settings.navigation.navigateToSettingsCategory
+import tv.trakt.trakt.core.settings.navigation.navigateToUsage
 import tv.trakt.trakt.core.settings.navigation.settingsScreen
 import tv.trakt.trakt.core.streamings.navigation.allStreamingsScreen
 import tv.trakt.trakt.core.streamings.navigation.navigateToEpisodeStreamings
@@ -904,6 +905,7 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
             onNavigateYounify = { navigateToYounify() },
             onNavigateBlockedUsers = { navigateToBlockedUsers() },
             onNavigateHistoryAnalysis = { navigateToHistoryAnalysis() },
+            onNavigateUsage = { navigateToUsage() },
             onNavigateBack = { popBackStack() },
         )
 

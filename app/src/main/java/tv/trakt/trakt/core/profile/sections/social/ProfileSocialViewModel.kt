@@ -40,6 +40,7 @@ import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCa
 import tv.trakt.trakt.core.user.model.UserFollowRequest
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialRequestsUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -60,10 +61,13 @@ internal class ProfileSocialViewModel(
     private val requestsState = MutableStateFlow(initialState.requests)
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.PROFILE_SOCIAL,
+    )
     private val errorState = MutableStateFlow(initialState.error)
     private var loadDataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -185,19 +189,7 @@ internal class ProfileSocialViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_SOCIAL)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_SOCIAL)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_SOCIAL)
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -205,7 +197,7 @@ internal class ProfileSocialViewModel(
         loadingState,
         itemsState,
         filterState,
-        collapseState,
+        collapse.state,
         errorState,
         userState,
         requestsState,

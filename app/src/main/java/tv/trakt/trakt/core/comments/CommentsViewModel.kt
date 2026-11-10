@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -60,12 +61,11 @@ import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.navigation.CommentsDestination
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
+import tv.trakt.trakt.core.comments.usecases.GetCommentsUseCase
+import tv.trakt.trakt.core.reactions.CommentReactionsDelegate
 import tv.trakt.trakt.core.reactions.data.ReactionSource
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
-import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisodeCommentsUseCase
-import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
-import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -73,19 +73,16 @@ import kotlin.time.Duration.Companion.seconds
 @OptIn(FlowPreview::class)
 internal class CommentsViewModel(
     savedStateHandle: SavedStateHandle,
-    private val appContext: Context,
     private val sessionManager: SessionManager,
     private val getFilterUseCase: GetCommentsFilterUseCase,
     private val getLanguageUseCase: GetCommentsLanguageUseCase,
-    private val getShowCommentsUseCase: GetShowCommentsUseCase,
-    private val getMovieCommentsUseCase: GetMovieCommentsUseCase,
-    private val getEpisodeCommentsUseCase: GetEpisodeCommentsUseCase,
-    private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
+    private val getCommentsUseCase: GetCommentsUseCase,
     private val getCommentRepliesUseCase: GetCommentRepliesUseCase,
-    private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+    private val loadProgressUseCase: LoadUserProgressUseCase,
     private val dataChanges: DataChanges,
     private val translationsStore: CommentTranslationsStore,
     private val analytics: Analytics,
+    reactionsFactory: CommentReactionsDelegate.Factory,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<CommentsDestination>()
     private val initialState = CommentsState()
@@ -107,17 +104,21 @@ internal class CommentsViewModel(
     private val repliesLoadingState = MutableStateFlow(initialState.loadingReplies)
     private val filterState = MutableStateFlow(destination.initialFilter)
     private val languageState = MutableStateFlow(initialState.language)
-    private val reactionsState = MutableStateFlow(initialState.reactions)
-    private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val reactions = reactionsFactory.create(
+        scope = viewModelScope,
+        source = ReactionSource.AllComments,
+        origin = origin,
+    )
 
-    private var reactionJob: Job? = null
     private var repliesJob: Job? = null
+    private var mediaWatchedJob: Job? = null
 
     init {
         loadBackground()
+        loadMediaWatched()
         loadData()
         observeData()
     }
@@ -126,7 +127,12 @@ internal class CommentsViewModel(
         dataChanges.observe(Kind.Reactions, exclude = origin)
             .debounce(200.milliseconds)
             .mapNotNull { it.targetId }
-            .onEach(::updateReactions)
+            .onEach(reactions::refresh)
+            .launchIn(viewModelScope)
+
+        dataChanges.observe(Kind.Progress, Kind.History)
+            .debounce(200.milliseconds)
+            .onEach { loadMediaWatched() }
             .launchIn(viewModelScope)
     }
 
@@ -157,22 +163,12 @@ internal class CommentsViewModel(
                 coroutineScope {
                     val commentsAsync = async { fetchComments() }
 
-                    val userReactionsAsync = async {
-                        if (!sessionManager.isAuthenticated()) {
-                            return@async null
-                        }
-                        if (loadUserReactionsUseCase.isLoaded()) {
-                            loadUserReactionsUseCase.loadLocalReactions()
-                        } else {
-                            loadUserReactionsUseCase.loadReactions()
-                        }
-                    }
+                    val userReactionsAsync = async { reactions.loadUserReactions() }
 
                     val comments = commentsAsync.await()
-                    val userReactions = userReactionsAsync.await()
+                    userReactionsAsync.await()
 
                     commentsState.update { comments }
-                    userReactionsState.update { userReactions }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -197,11 +193,58 @@ internal class CommentsViewModel(
         }
     }
 
+    private fun loadMediaWatched() {
+        mediaWatchedJob?.cancel()
+        mediaWatchedJob = viewModelScope.launch {
+            try {
+                if (!sessionManager.isAuthenticated()) {
+                    return@launch
+                }
+                val watched = isMediaWatched()
+                mediaState.update { it.copy(watched = watched) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private suspend fun isMediaWatched(): Boolean {
+        val mediaId = destination.mediaId.toTraktId()
+        return when (destination.mediaType) {
+            MediaType.Movie -> {
+                loadProgressUseCase.loadLocalMovies()
+                    .firstOrNull { it.movie.ids.trakt == mediaId }
+                    ?.plays
+                    ?.isNotEmpty() == true
+            }
+            MediaType.Show -> {
+                val aired = destination.mediaEpisodes?.takeIf { it > 0 } ?: return false
+                val plays = loadProgressUseCase.loadLocalShows()
+                    .firstOrNull { it.showId == mediaId }
+                    ?.playsDistinctWithoutSpecials
+                    ?: return false
+                plays > 0 && plays >= aired
+            }
+            MediaType.Episode -> {
+                val showId = destination.mediaShowId?.toTraktId() ?: return false
+                val season = destination.mediaSeason ?: return false
+                loadProgressUseCase.loadLocalShows()
+                    .firstOrNull { it.showId == showId }
+                    ?.isEpisodeWatched(season, mediaId) == true
+            }
+            MediaType.Season -> {
+                false
+            }
+        }
+    }
+
     private suspend fun fetchComments(): ImmutableList<Comment> {
         val filter = loadFilter()
         val language = loadLanguage()
         return when (destination.mediaType) {
-            MediaType.Movie -> getMovieCommentsUseCase.getComments(
+            MediaType.Movie -> getCommentsUseCase.getMovieComments(
                 movieId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
@@ -209,7 +252,7 @@ internal class CommentsViewModel(
                 limit = 250,
             )
 
-            MediaType.Show -> getShowCommentsUseCase.getComments(
+            MediaType.Show -> getCommentsUseCase.getShowComments(
                 showId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
@@ -217,7 +260,7 @@ internal class CommentsViewModel(
                 limit = 250,
             )
 
-            MediaType.Episode -> getEpisodeCommentsUseCase.getComments(
+            MediaType.Episode -> getCommentsUseCase.getEpisodeComments(
                 showId = destination.mediaShowId!!.toTraktId(),
                 seasonEpisode = SeasonEpisode(
                     season = destination.mediaSeason ?: -1,
@@ -301,92 +344,14 @@ internal class CommentsViewModel(
     }
 
     fun loadReactions(commentId: Int) {
-        viewModelScope.launch {
-            if (reactionsState.value?.containsKey(commentId) == true) {
-                Timber.d("Reactions already loaded for comment $commentId")
-                return@launch
-            }
-
-            try {
-                val reactions = getCommentReactionsUseCase.getReactions(commentId)
-                reactionsState.update { current ->
-                    val mutable = current?.toMutableMap() ?: mutableMapOf()
-                    mutable[commentId] = reactions
-                    mutable.toImmutableMap()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
+        reactions.load(commentId)
     }
 
     fun setReaction(
         reaction: Reaction,
         commentId: Int,
     ) {
-        reactionJob?.cancel()
-        reactionJob = viewModelScope.launch {
-            try {
-                val userReaction = userReactionsState.value?.get(commentId)
-
-                userReactionsState.update {
-                    val mutable = it?.toMutableMap() ?: mutableMapOf()
-                    mutable[commentId] = when {
-                        userReaction == reaction -> null
-                        else -> reaction
-                    }
-                    mutable.toImmutableMap()
-                }
-
-                reactionsState.update { current ->
-                    val mutable = current?.toMutableMap() ?: mutableMapOf()
-
-                    mutable[commentId]?.let {
-                        val updatedReactions = it.copy(
-                            reactionsCount = when (userReaction) {
-                                reaction -> it.reactionsCount - 1
-                                null -> it.reactionsCount + 1
-                                else -> it.reactionsCount
-                            },
-                            distribution = it.distribution
-                                .toMutableMap()
-                                .apply {
-                                    for ((r, count) in entries) {
-                                        if (r == reaction && userReaction != reaction) {
-                                            this[r] = count + 1
-                                        } else if (r == userReaction) {
-                                            this[r] = (count - 1).coerceAtLeast(0)
-                                        }
-                                    }
-                                }
-                                .toImmutableMap(),
-                        )
-                        mutable[commentId] = updatedReactions
-                    }
-
-                    mutable.toImmutableMap()
-                }
-
-                // Debounce to avoid multiple rapid calls.
-                delay(1.seconds)
-                if (reaction == userReaction) {
-                    deleteReactionWork(
-                        commentId = commentId,
-                    )
-                } else {
-                    postReactionWork(
-                        commentId = commentId,
-                        reaction = reaction,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
+        reactions.set(reaction, commentId)
     }
 
     fun logSpoilerReveal() {
@@ -474,68 +439,6 @@ internal class CommentsViewModel(
         dataChanges.notify(Kind.Comments, origin = origin)
     }
 
-    private fun updateReactions(commentId: Int) {
-        viewModelScope.launch {
-            try {
-                if (!sessionManager.isAuthenticated()) {
-                    return@launch
-                }
-
-                val reactions = getCommentReactionsUseCase.getReactions(commentId)
-                val userReactions = when {
-                    loadUserReactionsUseCase.isLoaded() -> {
-                        loadUserReactionsUseCase.loadLocalReactions()
-                    }
-
-                    else -> {
-                        loadUserReactionsUseCase.loadReactions()
-                    }
-                }
-
-                userReactionsState.update { userReactions }
-                reactionsState.update { current ->
-                    val mutable = current?.toMutableMap() ?: mutableMapOf()
-                    mutable[commentId] = reactions
-                    mutable.toImmutableMap()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    private suspend fun postReactionWork(
-        commentId: Int,
-        reaction: Reaction,
-    ) {
-        if (!sessionManager.isAuthenticated()) {
-            return
-        }
-
-        PostReactionWorker.scheduleOneTime(
-            appContext = appContext,
-            commentId = commentId,
-            reaction = reaction,
-            source = ReactionSource.AllComments,
-            origin = origin,
-        )
-    }
-
-    private suspend fun deleteReactionWork(commentId: Int) {
-        if (!sessionManager.isAuthenticated()) {
-            return
-        }
-
-        DeleteReactionWorker.scheduleOneTime(
-            appContext = appContext,
-            commentId = commentId,
-            source = ReactionSource.AllComments,
-            origin = origin,
-        )
-    }
-
     val events: Flow<CommentTranslationEvent>
         field = MutableSharedFlow<CommentTranslationEvent>(replay = 0)
 
@@ -547,8 +450,8 @@ internal class CommentsViewModel(
         repliesLoadingState,
         filterState,
         languageState,
-        reactionsState,
-        userReactionsState,
+        reactions.summaries,
+        reactions.userReactions,
         userState,
         loadingState,
         errorState,

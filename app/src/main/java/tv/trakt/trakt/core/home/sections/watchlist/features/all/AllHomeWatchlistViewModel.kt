@@ -18,15 +18,15 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
+import tv.trakt.trakt.common.auth.session.helpers.observeSessionChanges
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
@@ -93,7 +93,6 @@ internal class AllHomeWatchlistViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val userState = MutableStateFlow(initialState.user)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -109,18 +108,9 @@ internal class AllHomeWatchlistViewModel(
     }
 
     private fun observeUser() {
-        viewModelScope.launch {
-            userState.update { sessionManager.getProfile() }
-            sessionManager.observeProfile()
-                .drop(1)
-                .distinctUntilChanged()
-                .debounce(200)
-                .onStart { }
-                .collect { user ->
-                    userState.update { user }
-                    loadData()
-                }
-        }
+        sessionManager.observeSessionChanges()
+            .onEach { loadData() }
+            .launchIn(viewModelScope)
     }
 
     private fun observeFilter() {
@@ -602,7 +592,7 @@ internal class AllHomeWatchlistViewModel(
         itemsState,
         filterState,
         loadingState,
-        userState,
+        sessionManager.observeProfile(),
         infoState,
         errorState,
         navigateMovie,

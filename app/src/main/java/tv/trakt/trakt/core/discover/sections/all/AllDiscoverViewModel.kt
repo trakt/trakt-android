@@ -66,7 +66,6 @@ internal class AllDiscoverViewModel(
     private val destination = savedStateHandle.toRoute<DiscoverDestination>()
     private val initialState = AllDiscoverState()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val filterState = MutableStateFlow(filterManager.getFilter())
     private val typeState = MutableStateFlow(destination.source)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -78,7 +77,6 @@ internal class AllDiscoverViewModel(
     private var hasMoreData = false
 
     init {
-        loadUser()
         loadInitialData()
 
         observeFilters()
@@ -110,20 +108,6 @@ internal class AllDiscoverViewModel(
     private fun observeData() {
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadInitialData() {
@@ -306,7 +290,7 @@ internal class AllDiscoverViewModel(
         itemsState,
         loadingState,
         loadingMoreState,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
     ) { state ->
         AllDiscoverState(

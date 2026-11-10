@@ -75,7 +75,11 @@ internal fun LazyListScope.SeasonInfoSection(
     onModeClick: ((SeasonsPeopleMode) -> Unit),
     onRatingClick: (Int) -> Unit = {},
     onRatingRemoveClick: () -> Unit = {},
+    onSpoilerReveal: () -> Unit = {},
 ) {
+    val spoilerHidden = state.user?.settings?.hideSpoilers == true &&
+        !state.items.isSelectedSeasonWatched
+
     item(
         key = "season_info",
     ) {
@@ -88,7 +92,7 @@ internal fun LazyListScope.SeasonInfoSection(
                 },
         ) {
             val userRatingVisible = state.seasonUserRating.loading == Done &&
-                (state.items.isSelectedSeasonWatched || state.seasonUserRating.rating != null)
+                (state.items.isSelectedSeasonStarted || state.seasonUserRating.rating != null)
 
             if (userRatingVisible) {
                 UserRatingBar(
@@ -251,6 +255,8 @@ internal fun LazyListScope.SeasonInfoSection(
                     ) { item ->
                         CastPersonListItem(
                             person = item,
+                            spoilerHidden = spoilerHidden,
+                            onSpoilerReveal = onSpoilerReveal,
                             onClick = { onPersonClick(it.person, PersonCreditsRole.Acting) },
                             modifier = Modifier
                                 .padding(contentPadding)
@@ -282,6 +288,8 @@ internal fun LazyListScope.SeasonInfoSection(
                     ) { item ->
                         CrewPersonListItem(
                             person = item,
+                            spoilerHidden = spoilerHidden,
+                            onSpoilerReveal = onSpoilerReveal,
                             onClick = { onPersonClick(it.person, null) },
                             modifier = Modifier
                                 .padding(contentPadding)

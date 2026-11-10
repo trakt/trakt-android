@@ -77,7 +77,9 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
@@ -105,6 +107,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
@@ -630,15 +633,20 @@ internal fun MovieDetailsContent(
                 }
 
                 item {
-                    DetailsOverview(
-                        overview = movie.overview,
-                        overviewTranslation = state.movieTranslation?.overview,
-                        modifier = Modifier
-                            .alpha(ratingAlphaMask)
-                            .fillMaxWidth()
-                            .padding(top = 18.dp)
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                    )
+                    SpoilerBlur(
+                        hidden = LocalSpoilerState.current.enabled && (state.movieProgress?.plays ?: 0) == 0,
+                        type = MediaType.Movie,
+                    ) {
+                        DetailsOverview(
+                            overview = movie.overview,
+                            overviewTranslation = state.movieTranslation?.overview,
+                            modifier = Modifier
+                                .alpha(ratingAlphaMask)
+                                .fillMaxWidth()
+                                .padding(top = 18.dp)
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                        )
+                    }
                 }
 
                 if (state.user != null && !state.user.isVip) {
@@ -715,11 +723,12 @@ internal fun MovieDetailsContent(
                     item {
                         MovieCommentsView(
                             viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
+                                parameters = { parametersOf(CommentsMedia.ForMovie(movie)) },
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             gifPaused = listState.isScrollInProgress,
+                            mediaWatched = (state.movieProgress?.plays ?: 0) > 0,
                             onMoreClick = onMoreCommentsClick,
                             onUserClick = onNavigateToUser,
                             modifier = Modifier

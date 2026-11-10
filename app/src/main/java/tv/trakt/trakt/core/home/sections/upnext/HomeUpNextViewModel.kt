@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
 import tv.trakt.trakt.common.core.home.model.UpNextMovie
 import tv.trakt.trakt.common.core.home.model.UpNextShow
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
@@ -55,6 +56,7 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -80,7 +82,17 @@ internal class HomeUpNextViewModel(
     private val origin = ChangeOrigin.unique()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = {
+            when (filterState.value.mode) {
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_UP_NEXT
+                Shows -> CollapsingKey.HOME_SHOWS_UP_NEXT
+                Movies -> CollapsingKey.HOME_MOVIES_UP_NEXT
+            }
+        },
+    )
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -89,7 +101,6 @@ internal class HomeUpNextViewModel(
     private var itemsOrder: List<String>? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -116,7 +127,7 @@ internal class HomeUpNextViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
+                collapse.refresh()
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -126,13 +137,11 @@ internal class HomeUpNextViewModel(
         viewModelScope.launch {
             user = sessionManager.getProfile()
             sessionManager.observeProfile()
+                .onEach { user = it }
+                .distinctUntilSessionChanged()
                 .drop(1)
-                .distinctUntilChanged()
                 .debounce(200.milliseconds)
-                .collect {
-                    user = it
-                    loadData()
-                }
+                .collect { loadData() }
         }
     }
 
@@ -392,35 +401,12 @@ internal class HomeUpNextViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MediaMode.Media -> CollapsingKey.HOME_MEDIA_UP_NEXT
-                Shows -> CollapsingKey.HOME_SHOWS_UP_NEXT
-                Movies -> CollapsingKey.HOME_MOVIES_UP_NEXT
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                MediaMode.Media -> CollapsingKey.HOME_MEDIA_UP_NEXT
-                Shows -> CollapsingKey.HOME_SHOWS_UP_NEXT
-                Movies -> CollapsingKey.HOME_MOVIES_UP_NEXT
-            },
-        )
+        collapse.set(collapsed)
     }
 
     val state = combine(
         loadingState,
-        collapseState,
+        collapse.state,
         itemsState,
         errorState,
         filterState,

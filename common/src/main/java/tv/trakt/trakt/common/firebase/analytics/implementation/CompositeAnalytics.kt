@@ -138,6 +138,10 @@ internal class CompositeAnalytics(
         targets.forEach { it.logReportOpen(type) }
     }
 
+    override fun logSpoilerReveal(type: String) {
+        targets.forEach { it.logSpoilerReveal(type) }
+    }
+
     override fun logReport(
         type: String,
         reason: String,

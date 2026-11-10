@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,9 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
@@ -48,6 +49,7 @@ import tv.trakt.trakt.core.summary.people.ListLoadingView
 import tv.trakt.trakt.core.summary.people.helpers.resolveSelectedCreditsFilter
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -59,12 +61,14 @@ internal fun ShowsCreditsList(
     userCollection: UserCollectionState,
     person: Person,
     modifier: Modifier = Modifier,
+    spoilersHidden: Boolean = false,
     preferredFilter: String? = null,
     sectionPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((Show) -> Unit)? = null,
     onLongClick: ((Show) -> Unit)? = null,
     onMoreClick: ((String?) -> Unit)? = null,
+    onEpisodeCountReveal: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState(
@@ -156,32 +160,46 @@ internal fun ShowsCreditsList(
                                                 item.episodesCount,
                                             )
 
-                                            val footerText = remember {
-                                                buildString {
-                                                    item.released?.let {
-                                                        append(it.toLocal().year.toString())
-                                                    } ?: append("TBA")
-
-                                                    if (item.episodesCount > 0) {
-                                                        append(" • ")
-                                                        append(episodesCount)
-                                                    }
-                                                }
+                                            val year = remember {
+                                                item.released?.toLocal()?.year?.toString() ?: "TBA"
                                             }
+                                            val isSpoilerHidden = spoilersHidden &&
+                                                !userCollection.isWatched(item.id, Show, item.airedEpisodes)
 
                                             Column(
                                                 verticalArrangement = Arrangement.spacedBy(0.dp),
                                                 modifier = modifier,
                                             ) {
-                                                Text(
-                                                    text = footerText,
-                                                    style = TraktTheme.typography.cardTitle,
-                                                    color = TraktTheme.colors.textPrimary,
-                                                    textAlign = TextAlign.Center,
-                                                    maxLines = 1,
-                                                    overflow = TextOverflow.Ellipsis,
+                                                Row(
+                                                    horizontalArrangement = Arrangement.Center,
+                                                    verticalAlignment = Alignment.CenterVertically,
                                                     modifier = modifier,
-                                                )
+                                                ) {
+                                                    Text(
+                                                        text = when {
+                                                            item.episodesCount > 0 -> "$year • "
+                                                            else -> year
+                                                        },
+                                                        style = TraktTheme.typography.cardTitle,
+                                                        color = TraktTheme.colors.textPrimary,
+                                                        maxLines = 1,
+                                                    )
+
+                                                    if (item.episodesCount > 0) {
+                                                        SpoilerBlur(
+                                                            hidden = isSpoilerHidden,
+                                                            onReveal = onEpisodeCountReveal,
+                                                        ) {
+                                                            Text(
+                                                                text = episodesCount,
+                                                                style = TraktTheme.typography.cardTitle,
+                                                                color = TraktTheme.colors.textPrimary,
+                                                                maxLines = 1,
+                                                                overflow = TextOverflow.Ellipsis,
+                                                            )
+                                                        }
+                                                    }
+                                                }
 
                                                 Text(
                                                     text = (item.credit ?: "")

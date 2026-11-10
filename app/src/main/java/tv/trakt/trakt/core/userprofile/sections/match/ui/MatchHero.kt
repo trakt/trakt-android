@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.userprofile.sections.match.ui
 
-import android.os.Build
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -145,18 +144,16 @@ private fun HeroCover(
     Box(modifier = Modifier.fillMaxSize()) {
         if (backdropUrl != null) {
             HalftoneImage(url = backdropUrl)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                AsyncImage(
-                    model = backdropUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    colorFilter = SaturateFilter,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer { blendMode = BlendMode.Color }
-                        .blur(32.dp, BlurredEdgeTreatment.Rectangle),
-                )
-            }
+            AsyncImage(
+                model = backdropUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                colorFilter = SaturateFilter,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer { blendMode = BlendMode.Color }
+                    .blur(32.dp, BlurredEdgeTreatment.Rectangle),
+            )
         }
 
         Box(

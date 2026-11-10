@@ -234,6 +234,7 @@ private fun YounifyScreenContent(
             .nestedScroll(scrollConnection),
     ) {
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = scrollConnection.resultOffset,
         )
 

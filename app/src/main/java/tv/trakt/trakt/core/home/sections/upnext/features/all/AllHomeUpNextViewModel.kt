@@ -70,7 +70,6 @@ internal class AllHomeUpNextViewModel(
     private val loadingMoreState = MutableStateFlow(Idle)
     private val filterState = MutableStateFlow(filterManager.getFilter())
     private val sortingState = MutableStateFlow(initialState.sorting)
-    private val userState = MutableStateFlow(initialState.user)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -83,7 +82,6 @@ internal class AllHomeUpNextViewModel(
     private var loadMoreJob: Job? = null
 
     init {
-        loadUser()
         loadInitialData()
 
         observeData()
@@ -113,20 +111,6 @@ internal class AllHomeUpNextViewModel(
             .debounce(200.milliseconds)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadInitialData() {
@@ -480,7 +464,7 @@ internal class AllHomeUpNextViewModel(
         loadingState,
         loadingMoreState,
         filterState,
-        userState,
+        sessionManager.observeProfile(),
         infoState,
         errorState,
         sortingState,

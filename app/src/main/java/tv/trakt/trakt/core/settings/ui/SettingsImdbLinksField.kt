@@ -2,9 +2,7 @@ package tv.trakt.trakt.core.settings.ui
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.provider.Settings
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -13,7 +11,6 @@ import androidx.core.net.toUri
 import timber.log.Timber
 import tv.trakt.trakt.resources.R
 
-@RequiresApi(Build.VERSION_CODES.S)
 private fun openLinkHandlingSettings(context: Context) {
     val intent = Intent(
         Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS,
@@ -32,10 +29,6 @@ internal fun SettingsImdbLinksField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-        return
-    }
-
     val context = LocalContext.current
 
     SettingsTextField(

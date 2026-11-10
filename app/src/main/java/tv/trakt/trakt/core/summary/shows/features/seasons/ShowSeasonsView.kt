@@ -477,6 +477,7 @@ private fun ShowSeasonsContent(
                             ContentList(
                                 show = state.show,
                                 seasons = state.items,
+                                spoilersHidden = state.spoilersHidden,
                                 contentPadding = contentPadding,
                                 onEpisodeClick = onEpisodeClick,
                                 onSeasonClick = onSeasonClick,
@@ -577,6 +578,7 @@ private fun AllSeasonsDropdown(
 private fun ContentList(
     show: Show?,
     seasons: ShowSeasons,
+    spoilersHidden: Boolean,
     contentPadding: PaddingValues,
     onSeasonClick: ((SeasonItem) -> Unit)? = null,
     onSeasonLongClick: ((SeasonItem) -> Unit)? = null,
@@ -605,6 +607,7 @@ private fun ContentList(
             season = seasons.selectedSeason?.number,
             episodes = seasons.selectedSeasonEpisodes,
             highlightedEpisode = seasons.nextEpisodeToWatch,
+            spoilersHidden = spoilersHidden,
             onEpisodeClick = onEpisodeClick ?: {},
             onCheckClick = onCheckEpisodeClick ?: {},
             onCheckLongClick = onCheckEpisodeLongClick ?: {},

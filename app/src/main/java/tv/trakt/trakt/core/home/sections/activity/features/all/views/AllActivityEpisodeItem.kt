@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityItemRating
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityRateButton
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -69,8 +70,11 @@ internal fun AllActivityEpisodeItem(
         titleOriginal = null,
         subtitle = item.episode.seasonEpisodeString(),
         contentImageUrl = item.show.images?.getPosterUrl(),
-        containerImageUrl = item.episode.images?.getScreenshotUrl(THUMB)
-            .withFallback(item.episode.images?.getFanartUrl(THUMB)),
+        containerImageUrl = when {
+            item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl(THUMB)
+            else -> item.episode.images?.getScreenshotUrl(THUMB)
+                .withFallback(item.episode.images?.getFanartUrl(THUMB))
+        },
         onClick = onClick,
         onImageClick = onShowClick,
         onLongClick = onLongClick,

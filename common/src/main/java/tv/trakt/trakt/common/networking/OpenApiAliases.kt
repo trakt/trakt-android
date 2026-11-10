@@ -22,6 +22,7 @@ import org.openapitools.client.models.GetMediaTrending200ResponseInner
 import org.openapitools.client.models.GetMoviesPeople200Response
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInner
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
+import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPersonSocialIds
 import org.openapitools.client.models.GetMoviesPeople200ResponseCrewValueInner
 import org.openapitools.client.models.GetMoviesRatings200Response
 import org.openapitools.client.models.GetMoviesRatings200ResponseTrakt
@@ -144,6 +145,7 @@ typealias SmartListFiltersDto = GetUsersListsListSmartListDraft200ResponseFilter
 typealias SmartListItemDto = GetSmartListsItems200ResponseInner
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
 typealias SocialIdsDto = GetCalendarsShows200ResponseInnerShowSocialIds
+typealias PersonSocialIdsDto = GetMoviesPeople200ResponseCastInnerPersonSocialIds
 typealias StreamingDto = GetMoviesWatchnow200ResponseValue
 typealias StreamingServiceDto = GetMoviesWatchnow200ResponseValueCableInner
 typealias StreamingSourceDto = GetWatchnowSourcesAll200ResponseInnerValueInner

@@ -484,6 +484,155 @@
         "operationId": "postOauthRevoke"
       }
     },
+    "/awards": {
+      "get": {
+        "description": "#### 🫣 Limited Access\nThis endpoint is limited to official apps and may not be available to all API consumers.\n\nReturns every award grouped by ceremony, with each ceremony's `media_types` and each award's `slug`, `name` and `kind` (`title` or `person`). Use the slugs for the `awards` smart list filter.",
+        "summary": "Get the award catalog",
+        "tags": [
+          "awards"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "slug": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "media_types": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "movie",
+                            "show"
+                          ]
+                        }
+                      },
+                      "awards": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "slug": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "title",
+                                "person"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "slug",
+                            "name",
+                            "kind"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "slug",
+                      "name",
+                      "media_types",
+                      "awards"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getAwardsCatalog"
+      }
+    },
+    "/awards/ceremonies": {
+      "get": {
+        "description": "#### 🫣 Limited Access\nThis endpoint is limited to official apps and may not be available to all API consumers.\n\nReturns the next ceremony of each award, with its edition, `year`, `nominations_at` and `held_at` dates.",
+        "summary": "Get upcoming award ceremonies",
+        "tags": [
+          "awards"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "slug": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "edition": {
+                        "type": "integer"
+                      },
+                      "year": {
+                        "type": "integer"
+                      },
+                      "nominations_at": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "held_at": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "slug",
+                      "name",
+                      "edition",
+                      "year",
+                      "nominations_at",
+                      "held_at"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getAwardsCeremonies"
+      }
+    },
     "/calendars/{target}/shows/{start_date}/{days}": {
       "get": {
         "description": "#### ✨ Extended Info 🎚 Filters\nReturns shows airing during the requested UTC date range. Use `target` to choose the authenticated user calendar (`my`) or the global calendar (`all`), and send `start_date` and `days` to define the window.\n\nWhen `target` is `all`, the global calendar uses automatic quality filters to reduce incorrect or low-quality entries. As a result, it may not include every matching item in the database, even when that item has complete information. An omitted item may appear later after it meets the filter requirements.",
@@ -69967,6 +70116,22 @@
                             "producing"
                           ]
                         },
+                        "awards": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "award_years": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "award_won": {
+                          "type": "boolean"
+                        },
                         "watchnow": {
                           "type": "array",
                           "items": {
@@ -70365,6 +70530,22 @@
                           "writing",
                           "producing"
                         ]
+                      },
+                      "awards": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "award_years": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "award_won": {
+                        "type": "boolean"
                       },
                       "watchnow": {
                         "type": "array",
@@ -70955,6 +71136,22 @@
                               "producing"
                             ]
                           },
+                          "awards": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "award_years": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "award_won": {
+                            "type": "boolean"
+                          },
                           "watchnow": {
                             "type": "array",
                             "items": {
@@ -71302,6 +71499,22 @@
                           "writing",
                           "producing"
                         ]
+                      },
+                      "awards": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "award_years": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "award_won": {
+                        "type": "boolean"
                       },
                       "watchnow": {
                         "type": "array",
@@ -71719,6 +71932,22 @@
                             "producing"
                           ]
                         },
+                        "awards": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "award_years": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "award_won": {
+                          "type": "boolean"
+                        },
                         "watchnow": {
                           "type": "array",
                           "items": {
@@ -72084,6 +72313,22 @@
                           "producing"
                         ]
                       },
+                      "awards": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "award_years": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        },
+                        "maxItems": 2
+                      },
+                      "award_won": {
+                        "type": "boolean"
+                      },
                       "watchnow": {
                         "type": "array",
                         "items": {
@@ -72422,6 +72667,22 @@
                             "writing",
                             "producing"
                           ]
+                        },
+                        "awards": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "award_years": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "award_won": {
+                          "type": "boolean"
                         },
                         "watchnow": {
                           "type": "array",
@@ -104696,6 +104957,595 @@
         "operationId": "getMediaAnticipated"
       }
     },
+    "/media/recommendations/anticipated": {
+      "get": {
+        "description": "#### 🔒 OAuth Required 📄 Pagination\nUpcoming movies and shows that have not been released yet, ranked for the taste of the user. Returns at most `100` results in total. Each result carries a `score` and the `released` date (`YYYY-MM-DD`, or `null` when unknown).",
+        "summary": "Get anticipated media recommendations",
+        "tags": [
+          "media"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "score": {
+                        "type": "number"
+                      },
+                      "released": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "movie": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ],
+                        "nullable": true
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "aired_episodes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "last_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "airs": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "time": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Total runtime in minutes. When exact runtime data is unavailable, this value may include estimated fallback runtimes and should be treated as an approximation."
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "network": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ],
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "score",
+                      "released"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          }
+        ],
+        "operationId": "getMediaAnticipatedRecommendations"
+      }
+    },
     "/media/popular": {
       "get": {
         "description": "#### 📄 Pagination ✨ Extended Info 🎚 Filters\nReturns popular movies and shows. Results can be filtered by media fields or ignored user state.",
@@ -107553,6 +108403,158 @@
         "operationId": "postMoviesJustwatchRefresh"
       }
     },
+    "/movies/{id}/awards": {
+      "get": {
+        "description": "#### 🫣 Limited Access\nThis endpoint is limited to official apps and may not be available to all API consumers.\n\nReturns the award nominations and wins for a movie, wins first, then the most recent year. `won` is `null` while the ceremony results are pending. Awards given to a person credited on the title include that `person`.",
+        "summary": "Get movie awards",
+        "tags": [
+          "movies"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The id/slug of the resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "award": {
+                        "type": "object",
+                        "properties": {
+                          "slug": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "slug",
+                          "name"
+                        ]
+                      },
+                      "ceremony": {
+                        "type": "object",
+                        "properties": {
+                          "slug": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "edition": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "nominations_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "held_at": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "slug",
+                          "name",
+                          "edition",
+                          "nominations_at",
+                          "held_at"
+                        ]
+                      },
+                      "year": {
+                        "type": "integer"
+                      },
+                      "won": {
+                        "type": "boolean",
+                        "nullable": true
+                      },
+                      "person": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "slug": {
+                                "type": "string"
+                              },
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "slug",
+                              "trakt"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "award",
+                      "ceremony",
+                      "year",
+                      "won"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getMoviesAwards"
+      }
+    },
     "/movies/{id}/people": {
       "get": {
         "description": "#### ✨ Extended Info\nReturns all `cast` and `crew` for a movie. Each `cast` member will have a `characters` array and a standard `person` object.\n\nThe `crew` object will be broken up by department into `production`, `art`, `crew`, `costume & make-up`, `directing`, `writing`, `sound`, `camera`, `visual effects`, `lighting`, and `editing` (if there are people for those crew positions). Each of those members will have a `jobs` array and a standard `person` object.\n\n#### Markdown\nIf you add `?extended=markdown` to the URL, person biographies include links to the movies and shows they mention. Without it the biography is plain text.",
@@ -109094,6 +110096,324 @@
           }
         ],
         "operationId": "postMoviesReport"
+      }
+    },
+    "/movies/recommendations/anticipated": {
+      "get": {
+        "description": "#### 🔒 OAuth Required 📄 Pagination\nUpcoming movies that have not been released yet, ranked for the taste of the user. Returns at most `100` results in total. Each result carries a `score` and the `released` date (`YYYY-MM-DD`, or `null` when unknown).",
+        "summary": "Get anticipated movie recommendations",
+        "tags": [
+          "movies"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "score": {
+                        "type": "number"
+                      },
+                      "released": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "movie": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "score",
+                      "released",
+                      "movie"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          }
+        ],
+        "operationId": "getMoviesAnticipatedRecommendations"
       }
     },
     "/movies/trending": {
@@ -117671,6 +118991,158 @@
         "operationId": "postShowsJustwatchRefresh"
       }
     },
+    "/shows/{id}/awards": {
+      "get": {
+        "description": "#### 🫣 Limited Access\nThis endpoint is limited to official apps and may not be available to all API consumers.\n\nReturns the award nominations and wins for a show, wins first, then the most recent year. `won` is `null` while the ceremony results are pending. Awards given to a person credited on the title include that `person`.",
+        "summary": "Get show awards",
+        "tags": [
+          "shows"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The id/slug of the resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "award": {
+                        "type": "object",
+                        "properties": {
+                          "slug": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "slug",
+                          "name"
+                        ]
+                      },
+                      "ceremony": {
+                        "type": "object",
+                        "properties": {
+                          "slug": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "edition": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "nominations_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "held_at": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "slug",
+                          "name",
+                          "edition",
+                          "nominations_at",
+                          "held_at"
+                        ]
+                      },
+                      "year": {
+                        "type": "integer"
+                      },
+                      "won": {
+                        "type": "boolean",
+                        "nullable": true
+                      },
+                      "person": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "slug": {
+                                "type": "string"
+                              },
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "slug",
+                              "trakt"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "award",
+                      "ceremony",
+                      "year",
+                      "won"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getShowsAwards"
+      }
+    },
     "/shows/{id}/people": {
       "get": {
         "description": "#### ✨ Extended Info\nReturns all `cast` and `crew` for a show, including the `episode_count` for which they appears. Each `cast` member will have a `characters` array and a standard `person` object.\n\nThe `crew` object will be broken up by department into `production`, `art`, `crew`, `costume & make-up`, `directing`, `writing`, `sound`, `camera`, `visual effects`, `lighting`, `editing`, and `created  by` (if there are people for those crew positions). Each of those members will have a `jobs` array and a standard `person` object.\n\n#### Guest Stars\nIf you add `?extended=guest_stars` to the URL, it will return all guest stars that appeared in at least 1 episode of the show.\n\n> ### Note\n> _This returns a lot of data, so please only use this extended parameter if you actually need it!_\n\n#### Markdown\nIf you add `?extended=markdown` to the URL, person biographies include links to the movies and shows they mention. Without it the biography is plain text.",
@@ -124983,6 +126455,359 @@
           }
         ],
         "operationId": "postShowsEpisodeReport"
+      }
+    },
+    "/shows/recommendations/anticipated": {
+      "get": {
+        "description": "#### 🔒 OAuth Required 📄 Pagination\nUpcoming shows that have not been released yet, ranked for the taste of the user. Returns at most `100` results in total. Each result carries a `score` and the `released` date (`YYYY-MM-DD`, or `null` when unknown).",
+        "summary": "Get anticipated show recommendations",
+        "tags": [
+          "shows"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "score": {
+                        "type": "number"
+                      },
+                      "released": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "aired_episodes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "last_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "airs": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "time": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Total runtime in minutes. When exact runtime data is unavailable, this value may include estimated fallback runtimes and should be treated as an approximation."
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "network": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ending": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "score",
+                      "released",
+                      "show"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          }
+        ],
+        "operationId": "getShowsAnticipatedRecommendations"
       }
     },
     "/shows/trending": {
@@ -136639,6 +138464,298 @@
         "operationId": "getPeopleLists"
       }
     },
+    "/people/{id}/awards": {
+      "get": {
+        "description": "#### 🫣 Limited Access\nThis endpoint is limited to official apps and may not be available to all API consumers.\n\nReturns the award nominations and wins for a person, wins first, then the most recent year. `won` is `null` while the ceremony results are pending. Each entry holds either a `movie` or a `show`.",
+        "summary": "Get person awards",
+        "tags": [
+          "people"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The id/slug of the resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "award": {
+                            "type": "object",
+                            "properties": {
+                              "slug": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "slug",
+                              "name"
+                            ]
+                          },
+                          "ceremony": {
+                            "type": "object",
+                            "properties": {
+                              "slug": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "edition": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "nominations_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "held_at": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "slug",
+                              "name",
+                              "edition",
+                              "nominations_at",
+                              "held_at"
+                            ]
+                          },
+                          "year": {
+                            "type": "integer"
+                          },
+                          "won": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "movie": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "award",
+                          "ceremony",
+                          "year",
+                          "won",
+                          "movie"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "award": {
+                            "type": "object",
+                            "properties": {
+                              "slug": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "slug",
+                              "name"
+                            ]
+                          },
+                          "ceremony": {
+                            "type": "object",
+                            "properties": {
+                              "slug": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "edition": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "nominations_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "held_at": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "slug",
+                              "name",
+                              "edition",
+                              "nominations_at",
+                              "held_at"
+                            ]
+                          },
+                          "year": {
+                            "type": "integer"
+                          },
+                          "won": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "award",
+                          "ceremony",
+                          "year",
+                          "won",
+                          "show"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getPeopleAwards"
+      }
+    },
     "/people/{id}/report": {
       "post": {
         "description": "#### 🔒 OAuth Required\nReport a person for moderator review. Send a `reason` and optional `message` with additional context. A user can only have one `pending` report per person.\n\n| reason | description |\n|---|---|\n| `duplicate` | Duplicate of another person on Trakt |\n| `remove` | Should be removed from Trakt |\n| `data_refresh` | Request a full metadata refresh |\n| `metadata` | Metadata is wrong (name, biography, etc) |\n| `adult` | Marked as adult when it shouldn't be (or vice versa) |\n| `language` | Not in English |\n| `spam` | Spam or fake person |\n| `tmdb` | Should use TMDB as the datasource |\n| `other` | Anything else (add details in `message`) |",
@@ -146220,6 +148337,22 @@
                             "producing"
                           ]
                         },
+                        "awards": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "award_years": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "maxItems": 2
+                        },
+                        "award_won": {
+                          "type": "boolean"
+                        },
                         "watchnow": {
                           "type": "array",
                           "items": {
@@ -146436,7 +148569,7 @@
     },
     "/smart-lists/{list_id}/items": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to, worked out when you request them. A list can hold movies, shows, or both. Use query filters and pagination to refine the result set.\n\nQuery filters narrow the list: they apply on top of its own filters, never instead of them. A thriller list requested with `genres=crime` returns thrillers that are also crime. `ignore_*` flags add to the list's own, and the list's source and streaming region always stay its own.\n\nStreaming (`watchnow`) filters resolve against the list owner, not the caller: the list region, else the owner's region, else `us`, and `favorites` means the owner's services.\n\nList filters (`genres`, `studios`, `people`, `watchnow`, and similar) accept a `-` prefix on a value to exclude it. New filters: `released_within_days`, `tmdb_ratings`, `metascores`, `votes`, `imdb_votes`, `studios`, `people`, `people_operator` and `people_role`.",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to, worked out when you request them. A list can hold movies, shows, or both. Use query filters and pagination to refine the result set.\n\nQuery filters narrow the list: they apply on top of its own filters, never instead of them. A thriller list requested with `genres=crime` returns thrillers that are also crime. `ignore_*` flags add to the list's own, and the list's source and streaming region always stay its own.\n\nStreaming (`watchnow`) filters resolve against the list owner, not the caller: the list region, else the owner's region, else `us`, and `favorites` means the owner's services.\n\nList filters (`genres`, `studios`, `people`, `watchnow`, and similar) accept a `-` prefix on a value to exclude it. New filters: `released_within_days`, `tmdb_ratings`, `metascores`, `votes`, `imdb_votes`, `studios`, `people`, `people_operator`, `people_role`, `awards`, `award_years` and `award_won`.",
         "summary": "Get smart list items",
         "tags": [
           "smart_lists"
@@ -146698,6 +148831,30 @@
                 "writing",
                 "producing"
               ]
+            }
+          },
+          {
+            "name": "awards",
+            "in": "query",
+            "description": "Comma-separated award slugs, e.g. `oscars-best-picture`. Keeps titles nominated for or winning any of them.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "award_years",
+            "in": "query",
+            "description": "Award ceremony year range `min-max`, either side optional, e.g. `2020-2026`. Needs `awards`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "award_won",
+            "in": "query",
+            "description": "Keep only titles that won the listed `awards` instead of being nominated. Needs `awards`. Defaults to `false`.",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -147384,6 +149541,22 @@
                               "writing",
                               "producing"
                             ]
+                          },
+                          "awards": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "award_years": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            },
+                            "maxItems": 2
+                          },
+                          "award_won": {
+                            "type": "boolean"
                           },
                           "watchnow": {
                             "type": "array",
@@ -148123,7 +150296,7 @@
     },
     "/smart-lists/{list_id}/items/{type}/{sort_by}/{sort_how}": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to, worked out when you request them. A list can hold movies, shows, or both. Use query filters and pagination to refine the result set.\n\nQuery filters narrow the list: they apply on top of its own filters, never instead of them. A thriller list requested with `genres=crime` returns thrillers that are also crime. `ignore_*` flags add to the list's own, and the list's source and streaming region always stay its own.\n\nStreaming (`watchnow`) filters resolve against the list owner, not the caller: the list region, else the owner's region, else `us`, and `favorites` means the owner's services.\n\nList filters (`genres`, `studios`, `people`, `watchnow`, and similar) accept a `-` prefix on a value to exclude it. New filters: `released_within_days`, `tmdb_ratings`, `metascores`, `votes`, `imdb_votes`, `studios`, `people`, `people_operator` and `people_role`.\n\nUse `type` to narrow a list holding both media types, and `sort_by` / `sort_how` to reorder it. A sorted list holding both media types is merged into one order across pages.",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to, worked out when you request them. A list can hold movies, shows, or both. Use query filters and pagination to refine the result set.\n\nQuery filters narrow the list: they apply on top of its own filters, never instead of them. A thriller list requested with `genres=crime` returns thrillers that are also crime. `ignore_*` flags add to the list's own, and the list's source and streaming region always stay its own.\n\nStreaming (`watchnow`) filters resolve against the list owner, not the caller: the list region, else the owner's region, else `us`, and `favorites` means the owner's services.\n\nList filters (`genres`, `studios`, `people`, `watchnow`, and similar) accept a `-` prefix on a value to exclude it. New filters: `released_within_days`, `tmdb_ratings`, `metascores`, `votes`, `imdb_votes`, `studios`, `people`, `people_operator`, `people_role`, `awards`, `award_years` and `award_won`.\n\nUse `type` to narrow a list holding both media types, and `sort_by` / `sort_how` to reorder it. A sorted list holding both media types is merged into one order across pages.",
         "summary": "Get smart list items by type and sort",
         "tags": [
           "smart_lists"
@@ -148412,6 +150585,30 @@
                 "writing",
                 "producing"
               ]
+            }
+          },
+          {
+            "name": "awards",
+            "in": "query",
+            "description": "Comma-separated award slugs, e.g. `oscars-best-picture`. Keeps titles nominated for or winning any of them.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "award_years",
+            "in": "query",
+            "description": "Award ceremony year range `min-max`, either side optional, e.g. `2020-2026`. Needs `awards`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "award_won",
+            "in": "query",
+            "description": "Keep only titles that won the listed `awards` instead of being nominated. Needs `awards`. Defaults to `false`.",
+            "schema": {
+              "type": "boolean"
             }
           },
           {

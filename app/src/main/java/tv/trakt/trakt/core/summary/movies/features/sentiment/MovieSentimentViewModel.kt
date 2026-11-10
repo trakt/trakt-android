@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.summary.movies.features.sentiment.usecases.GetMovieSentimentUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -40,10 +41,12 @@ internal class MovieSentimentViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val sentimentState = MutableStateFlow(initialState.sentiment)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_SENTIMENT))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.MOVIE_SENTIMENT,
+    )
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -99,15 +102,7 @@ internal class MovieSentimentViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_SENTIMENT)
-                else -> collapsingManager.expand(CollapsingKey.MOVIE_SENTIMENT)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -115,7 +110,7 @@ internal class MovieSentimentViewModel(
         userState,
         sentimentState,
         loadingState,
-        collapseState,
+        collapse.state,
         errorState,
     ) { state ->
         MovieSentimentState(

@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -41,10 +42,12 @@ internal class MovieStreamingsViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val youTubeSpecialState = MutableStateFlow(initialState.youTubeSpecial)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_WHERE_TO_WATCH))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.MOVIE_WHERE_TO_WATCH,
+    )
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -102,15 +105,7 @@ internal class MovieStreamingsViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_WHERE_TO_WATCH)
-                else -> collapsingManager.expand(CollapsingKey.MOVIE_WHERE_TO_WATCH)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     fun logStreamOn(service: StreamingService) {
@@ -124,7 +119,7 @@ internal class MovieStreamingsViewModel(
     val state = combine(
         itemsState,
         loadingState,
-        collapseState,
+        collapse.state,
         errorState,
         youTubeSpecialState,
     ) { state ->

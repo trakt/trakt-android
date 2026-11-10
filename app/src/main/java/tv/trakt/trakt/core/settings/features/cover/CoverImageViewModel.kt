@@ -34,27 +34,8 @@ internal class CoverImageViewModel(
         mediaImage = mediaImage,
     )
 
-    private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-
-    init {
-        loadUser()
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
 
     fun setCoverImage() {
         viewModelScope.launch {
@@ -80,7 +61,7 @@ internal class CoverImageViewModel(
     }
 
     val state = combine(
-        userState,
+        sessionManager.observeProfile(),
         loadingState,
         errorState,
     ) { s1, s2, s3 ->

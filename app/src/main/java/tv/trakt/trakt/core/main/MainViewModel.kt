@@ -136,7 +136,7 @@ internal class MainViewModel(
                 val currentUser = userState.value
                 userState.update { user }
                 userVipState.update { currentUser?.isVip to user?.isVip }
-                Timber.d("Observed user change: $user")
+                Timber.d("Observed user change: %s", user?.ids?.trakt)
             }
             .launchIn(viewModelScope)
     }

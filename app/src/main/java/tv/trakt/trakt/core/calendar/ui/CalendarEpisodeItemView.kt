@@ -34,6 +34,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.EpisodeStatusChip
 import tv.trakt.trakt.ui.components.chips.InfoChip
@@ -59,9 +60,11 @@ internal fun CalendarEpisodeItemView(
         more = onLongClick != null,
         onClick = onClick,
         onLongClick = onLongClick,
-        containerImageUrl =
-            item.show.images?.getFanartUrl()
-                .withFallback(item.episode.images?.getScreenshotUrl()),
+        containerImageUrl = when {
+            item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
+            else -> item.show.images?.getFanartUrl()
+                .withFallback(item.episode.images?.getScreenshotUrl())
+        },
         cardContent = {
             val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
             Row(

@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.sorting.SortType.UserRating
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.episodes.ui.EpisodeMetaFooter
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 
 @Composable
@@ -30,8 +31,11 @@ internal fun ListDetailsEpisodeView(
         watchlist = false,
         more = onLongClick != null,
         contentImageUrl = item.images?.getPosterUrl(),
-        containerImageUrl = item.episode.images?.getScreenshotUrl(THUMB)
-            .withFallback(item.show.images?.getFanartUrl(THUMB)),
+        containerImageUrl = when {
+            item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl(THUMB)
+            else -> item.episode.images?.getScreenshotUrl(THUMB)
+                .withFallback(item.show.images?.getFanartUrl(THUMB))
+        },
         onClick = { onClick(item) },
         onImageClick = { onClick(item) },
         onLongClick = onLongClick,

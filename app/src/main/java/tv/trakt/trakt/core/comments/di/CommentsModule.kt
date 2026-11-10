@@ -29,20 +29,24 @@ import tv.trakt.trakt.core.comments.CommentsViewModel
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentViewModel
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsViewModel
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentViewModel
+import tv.trakt.trakt.core.comments.features.media.MediaCommentsViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
 import tv.trakt.trakt.core.comments.features.postreply.PostReplyViewModel
 import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
 import tv.trakt.trakt.core.comments.features.translation.data.GeminiNanoCommentTranslator
 import tv.trakt.trakt.core.comments.features.translation.data.MlKitCommentTranslator
 import tv.trakt.trakt.core.comments.features.translation.download.CommentTranslationDownloadViewModel
+import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.EditCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentMentionsUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
+import tv.trakt.trakt.core.comments.usecases.GetCommentsUseCase
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.PostReplyUseCase
+import tv.trakt.trakt.core.reactions.CommentReactionsDelegate
 
 internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
 
@@ -89,36 +93,57 @@ internal val commentsModule = module {
         )
     }
 
+    factoryOf(::GetCommentsUseCase)
+
+    factory {
+        CommentReactionsDelegate.Factory(
+            appContext = androidApplication(),
+            sessionManager = get(),
+            getCommentReactionsUseCase = get(),
+            loadUserReactionsUseCase = get(),
+        )
+    }
+
     viewModel {
         CommentsViewModel(
-            appContext = androidApplication(),
             savedStateHandle = get(),
             getFilterUseCase = get(),
             getLanguageUseCase = get(),
-            getShowCommentsUseCase = get(),
-            getMovieCommentsUseCase = get(),
-            getEpisodeCommentsUseCase = get(),
-            getCommentReactionsUseCase = get(),
+            getCommentsUseCase = get(),
             getCommentRepliesUseCase = get(),
             sessionManager = get(),
-            loadUserReactionsUseCase = get(),
+            loadProgressUseCase = get(),
             dataChanges = get(),
             translationsStore = get(),
             analytics = get(),
+            reactionsFactory = get(),
+        )
+    }
+
+    viewModel { (media: CommentsMedia) ->
+        MediaCommentsViewModel(
+            media = media,
+            sessionManager = get(),
+            getFilterUseCase = get(),
+            getLanguageUseCase = get(),
+            getCommentsUseCase = get(),
+            dataChanges = get(),
+            translationsStore = get(),
+            analytics = get(),
+            collapsingManager = get(),
+            reactionsFactory = get(),
         )
     }
 
     viewModel { (comment: Comment) ->
         CommentDetailsViewModel(
-            appContext = androidApplication(),
             comment = comment,
             sessionManager = get(),
             getRepliesUseCase = get(),
-            getCommentReactionsUseCase = get(),
-            loadUserReactionsUseCase = get(),
             dataChanges = get(),
             translationsStore = get(),
             analytics = get(),
+            reactionsFactory = get(),
         )
     }
 

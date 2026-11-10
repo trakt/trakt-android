@@ -11,8 +11,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,6 +31,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -43,6 +46,7 @@ import tv.trakt.trakt.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
+import tv.trakt.trakt.core.summary.people.model.PersonLinkType
 import tv.trakt.trakt.core.summary.people.navigation.PersonDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
@@ -66,7 +70,6 @@ internal class PersonDetailsViewModel(
     private val loadingDetailsState = MutableStateFlow(initialState.loadingDetails)
     private val loadingCreditsState = MutableStateFlow(initialState.loadingCredits)
 
-    private val userState = MutableStateFlow(initialState.user)
     private val personDetailsState = MutableStateFlow(initialState.personDetails)
     private val personBackdropState = MutableStateFlow(destination.backdropUrl)
     private val preferredCreditsFilterState = MutableStateFlow(destination.creditsFilter)
@@ -77,13 +80,14 @@ internal class PersonDetailsViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val errorState = MutableStateFlow(initialState.error)
+    private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
 
     private var mediaLinkJob: Job? = null
     private var creditsJob: Job? = null
 
     init {
-        loadUser()
         loadData()
+        observeSpoilers()
         observeCollection()
         observeFilter()
 
@@ -109,18 +113,12 @@ internal class PersonDetailsViewModel(
         personDetailsState.value?.let { loadPersonCredits(it.ids.trakt) }
     }
 
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
+    private fun observeSpoilers() {
+        sessionManager.observeProfile()
+            .map { it?.settings?.hideSpoilers == true }
+            .distinctUntilChanged()
+            .onEach { enabled -> spoilersHiddenState.update { enabled } }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -280,9 +278,17 @@ internal class PersonDetailsViewModel(
         analytics.logShare(source = "person", type = null)
     }
 
+    fun logLink(type: PersonLinkType) {
+        analytics.logLink(source = "person-summary", target = type.target)
+    }
+
+    fun logEpisodeCountReveal() {
+        analytics.logSpoilerReveal(MediaType.Show.value)
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
-        userState,
+        sessionManager.observeProfile(),
         loadingDetailsState,
         loadingCreditsState,
         personDetailsState,
@@ -295,6 +301,7 @@ internal class PersonDetailsViewModel(
         errorState,
         preferredCreditsFilterState,
         filterState,
+        spoilersHiddenState,
     ) { state ->
         PersonDetailsState(
             user = state[0] as User?,
@@ -310,6 +317,7 @@ internal class PersonDetailsViewModel(
             error = state[10] as Exception?,
             preferredCreditsFilter = state[11] as String?,
             filter = state[12] as GlobalFilter,
+            spoilersHidden = state[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -443,6 +444,10 @@ internal class AllShowSeasonsViewModel(
 
     fun logSpoilerReveal() {
         analytics.comments.logSpoilerReveal()
+    }
+
+    fun logEpisodeCountReveal() {
+        analytics.logSpoilerReveal(MediaType.Show.value)
     }
 
     fun toggleCommentTranslation(comment: Comment) {

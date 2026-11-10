@@ -78,7 +78,6 @@ internal class AllListsViewModel(
 
     private val initialState = AllListsState()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(destination.initialFilter)
     private val sortingState = MutableStateFlow(initialState.sorting)
@@ -94,7 +93,6 @@ internal class AllListsViewModel(
     private var reorderJob: Job? = null
 
     init {
-        loadUser()
         loadData()
 
         observeLists()
@@ -125,20 +123,6 @@ internal class AllListsViewModel(
             .debounce(200.milliseconds)
             .onEach { loadData(reload = true) }
             .launchIn(viewModelScope)
-    }
-
-    fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     fun loadData(reload: Boolean = false) {
@@ -351,7 +335,7 @@ internal class AllListsViewModel(
         filterState,
         loadingState,
         loadingMoreState,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
         infoState,
         sortingState,

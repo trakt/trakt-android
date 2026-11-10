@@ -30,6 +30,7 @@ data class User(
     data class Settings(
         val watchOnlyOnce: Boolean,
         val ratingPrompts: Boolean,
+        val hideSpoilers: Boolean,
         val coverImage: String?,
         val shareCode: String?,
         val slurm: String?,
@@ -102,6 +103,10 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
         settings = User.Settings(
             watchOnlyOnce = dto.browsing?.watchOnlyOnce ?: false,
             ratingPrompts = dto.browsing?.showRatingPrompt ?: false,
+            hideSpoilers = dto.browsing?.spoilers
+                ?.let { listOf(it.episodes, it.movies, it.shows) }
+                .orEmpty()
+                .any { it?.contains("hide") == true },
             coverImage = dto.user.vipCoverImage,
             shareCode = dto.account.shareCode,
             slurm = dto.account.token,
@@ -130,6 +135,7 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
         settings = User.Settings(
             watchOnlyOnce = false,
             ratingPrompts = false,
+            hideSpoilers = false,
             coverImage = dto.vipCoverImage,
             shareCode = null,
             slurm = null,

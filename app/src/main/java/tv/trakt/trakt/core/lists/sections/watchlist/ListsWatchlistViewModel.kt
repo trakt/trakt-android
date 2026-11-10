@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -21,6 +20,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
+import tv.trakt.trakt.common.auth.session.helpers.observeSessionChanges
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
@@ -49,6 +50,7 @@ import tv.trakt.trakt.core.lists.ListsConfig.WATCHLIST_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -67,10 +69,19 @@ internal class ListsWatchlistViewModel(
 ) : ViewModel() {
     private val initialState = ListsWatchlistState()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = {
+            when (filterState.value.mode) {
+                Media -> CollapsingKey.LISTS_MEDIA_WATCHLIST
+                Shows -> CollapsingKey.LISTS_SHOWS_WATCHLIST
+                Movies -> CollapsingKey.LISTS_MOVIES_WATCHLIST
+            }
+        },
+    )
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -78,7 +89,6 @@ internal class ListsWatchlistViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -100,24 +110,16 @@ internal class ListsWatchlistViewModel(
         filterManager.observeFilter()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
+                collapse.refresh()
                 loadData()
             }
             .launchIn(viewModelScope)
     }
 
     private fun observeUser() {
-        viewModelScope.launch {
-            userState.update { sessionManager.getProfile() }
-            sessionManager.observeProfile()
-                .drop(1)
-                .distinctUntilChanged()
-                .debounce(200)
-                .collect { user ->
-                    userState.update { user }
-                    loadData()
-                }
-        }
+        sessionManager.observeSessionChanges()
+            .onEach { loadData() }
+            .launchIn(viewModelScope)
     }
 
     @OptIn(FlowPreview::class)
@@ -238,30 +240,7 @@ internal class ListsWatchlistViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                Media -> CollapsingKey.LISTS_MEDIA_WATCHLIST
-                Shows -> CollapsingKey.LISTS_SHOWS_WATCHLIST
-                Movies -> CollapsingKey.LISTS_MOVIES_WATCHLIST
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                Media -> CollapsingKey.LISTS_MEDIA_WATCHLIST
-                Shows -> CollapsingKey.LISTS_SHOWS_WATCHLIST
-                Movies -> CollapsingKey.LISTS_MOVIES_WATCHLIST
-            },
-        )
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -269,12 +248,12 @@ internal class ListsWatchlistViewModel(
         loadingState,
         itemsState,
         filterState,
-        collapseState,
+        collapse.state,
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
         errorState,
-        userState,
+        sessionManager.observeProfile(),
     ) { states ->
         ListsWatchlistState(
             loading = states[0] as LoadingState,

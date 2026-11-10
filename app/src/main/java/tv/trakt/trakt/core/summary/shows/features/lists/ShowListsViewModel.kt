@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.summary.shows.features.lists.usecases.GetShowListsUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -40,9 +41,11 @@ internal class ShowListsViewModel(
     private val likedItemsState = MutableStateFlow(initialState.likedItems)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_LISTS))
-
-    private var collapseJob: Job? = null
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.SHOW_LISTS,
+    )
 
     init {
         loadData()
@@ -90,14 +93,7 @@ internal class ShowListsViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_LISTS)
-                else -> collapsingManager.expand(CollapsingKey.SHOW_LISTS)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -106,7 +102,7 @@ internal class ShowListsViewModel(
         likedItemsState,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
     ) { state ->
         ShowListsState(
             items = state[0] as ImmutableList<CustomList>?,

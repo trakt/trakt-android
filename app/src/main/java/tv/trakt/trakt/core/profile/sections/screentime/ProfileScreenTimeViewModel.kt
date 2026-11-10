@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.profile.ScreenTimeData
 import tv.trakt.trakt.core.profile.sections.screentime.usecase.GetScreenTimeUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -44,9 +45,11 @@ internal class ProfileScreenTimeViewModel(
 
     private val dataState = MutableStateFlow(initialState.data)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
-
-    private var collapseJob: Job? = null
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.PROFILE_SCREEN_TIME,
+    )
 
     init {
         loadData()
@@ -96,25 +99,13 @@ internal class ProfileScreenTimeViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_SCREEN_TIME)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_SCREEN_TIME)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_SCREEN_TIME)
+        collapse.set(collapsed)
     }
 
     val state = combine(
         dataState,
         loadingState,
-        collapseState,
+        collapse.state,
     ) { state ->
         ProfileScreenTimeState(
             rangeStart = initialState.rangeStart,

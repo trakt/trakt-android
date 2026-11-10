@@ -69,6 +69,8 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
+import tv.trakt.trakt.core.comments.features.media.MediaCommentsState
+import tv.trakt.trakt.core.comments.features.media.MediaCommentsViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
@@ -90,11 +92,12 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MovieCommentsView(
-    viewModel: MovieCommentsViewModel,
+    viewModel: MediaCommentsViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     gifPaused: Boolean = false,
+    mediaWatched: Boolean = false,
     onMoreClick: ((CommentsFilter) -> Unit)?,
     onUserClick: ((User) -> Unit)?,
 ) {
@@ -122,6 +125,7 @@ internal fun MovieCommentsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         gifPaused = gifPaused,
+        mediaWatched = mediaWatched,
         onMoreClick = {
             if (!state.items.isNullOrEmpty()) {
                 onMoreClick?.invoke(state.filter)
@@ -161,6 +165,7 @@ internal fun MovieCommentsView(
 
     CommentDetailsSheet(
         comment = commentSheet,
+        mediaWatched = mediaWatched,
         gifQuery = MediaType.Movie.toGifQuery(state.movie?.title),
         mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
@@ -204,11 +209,12 @@ internal fun MovieCommentsView(
 
 @Composable
 private fun MovieCommentsContent(
-    state: MovieCommentsState,
+    state: MediaCommentsState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     gifPaused: Boolean = false,
+    mediaWatched: Boolean = false,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -334,6 +340,7 @@ private fun MovieCommentsContent(
                                     listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
                                     user = state.user,
                                     gifPaused = gifPaused,
+                                    mediaWatched = mediaWatched,
                                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
                                     translations = state.translations,
                                     contentPadding = contentPadding,
@@ -365,6 +372,7 @@ private fun ContentList(
     translations: CommentTranslations,
     contentPadding: PaddingValues,
     gifPaused: Boolean,
+    mediaWatched: Boolean,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onEditCommentClick: ((Comment) -> Unit)? = null,
@@ -401,6 +409,7 @@ private fun ContentList(
                 userReactions = userReactions,
                 gifLayout = CommentGifLayout.Side,
                 gifPaused = gifPaused,
+                mediaWatched = mediaWatched,
                 onClick = { onCommentClick?.invoke(comment) },
                 onRepliesClick = { onCommentClick?.invoke(comment) },
                 onEditClick = { onEditCommentClick?.invoke(comment) },
@@ -495,7 +504,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieCommentsContent(
-                state = MovieCommentsState(),
+                state = MediaCommentsState(),
             )
         }
     }
@@ -515,7 +524,7 @@ private fun Preview2() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieCommentsContent(
-                state = MovieCommentsState(
+                state = MediaCommentsState(
                     user = PreviewData.user1,
                     items = emptyList<Comment>().toImmutableList(),
                     loading = Loading,
@@ -539,7 +548,7 @@ private fun Preview3() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieCommentsContent(
-                state = MovieCommentsState(
+                state = MediaCommentsState(
                     items = emptyList<Comment>().toImmutableList(),
                     loading = Done,
                 ),

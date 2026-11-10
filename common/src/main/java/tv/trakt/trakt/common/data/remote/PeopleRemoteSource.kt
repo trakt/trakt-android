@@ -20,24 +20,28 @@ class PeopleRemoteSource(
     suspend fun getPersonDetails(
         personId: TraktId,
         extended: String = "full,markdown",
+        language: String? = null,
     ): PersonDto {
-        return getPersonSummary(personId.value.toString(), extended)
+        return getPersonSummary(personId.value.toString(), extended, language)
     }
 
     suspend fun getPersonDetails(
         personSlug: SlugId,
         extended: String = "full,markdown",
+        language: String? = null,
     ): PersonDto {
-        return getPersonSummary(personSlug.value, extended)
+        return getPersonSummary(personSlug.value, extended, language)
     }
 
     private suspend fun getPersonSummary(
         id: String,
         extended: String,
+        language: String?,
     ): PersonDto {
         val response = peopleApi.getPeopleSummary(
             id = id,
             extended = extended,
+            language = language,
         )
         return response.body()
     }

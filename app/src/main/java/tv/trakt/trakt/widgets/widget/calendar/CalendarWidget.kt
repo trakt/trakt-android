@@ -1,7 +1,6 @@
 package tv.trakt.trakt.widgets.widget.calendar
 
 import android.content.Context
-import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -118,13 +117,7 @@ private fun WidgetBody(
                         WidgetBackground.None -> WidgetTheme.colors.backgroundNone
                     },
                 )
-                .cornerRadius(
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        android.R.dimen.system_app_widget_background_radius
-                    } else {
-                        R.dimen.default_widget_corner_radius
-                    },
-                )
+                .cornerRadius(android.R.dimen.system_app_widget_background_radius)
                 .padding(horizontal = WidgetDimensions.spacingLarge),
         ) {
             if (appearance.titleVisible) {

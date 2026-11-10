@@ -82,7 +82,9 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
@@ -113,6 +115,7 @@ import tv.trakt.trakt.core.summary.ui.DetailsSocialRow
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
@@ -726,15 +729,20 @@ internal fun ShowDetailsContent(
                 }
 
                 item {
-                    DetailsOverview(
-                        overview = show.overview,
-                        overviewTranslation = state.showTranslation?.overview,
-                        modifier = Modifier
-                            .alpha(ratingAlphaMask)
-                            .fillMaxWidth()
-                            .padding(top = 18.dp)
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                    )
+                    SpoilerBlur(
+                        hidden = LocalSpoilerState.current.enabled && state.showProgress?.isEveryEpisodeWatched != true,
+                        type = MediaType.Show,
+                    ) {
+                        DetailsOverview(
+                            overview = show.overview,
+                            overviewTranslation = state.showTranslation?.overview,
+                            modifier = Modifier
+                                .alpha(ratingAlphaMask)
+                                .fillMaxWidth()
+                                .padding(top = 18.dp)
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                        )
+                    }
                 }
 
                 if (state.user != null && !state.user.isVip) {
@@ -827,11 +835,12 @@ internal fun ShowDetailsContent(
                     item {
                         ShowCommentsView(
                             viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
+                                parameters = { parametersOf(CommentsMedia.ForShow(show)) },
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             gifPaused = listState.isScrollInProgress,
+                            mediaWatched = state.showProgress?.isEveryEpisodeWatched == true,
                             onMoreClick = onMoreCommentsClick,
                             onUserClick = onNavigateToUser,
                             modifier = Modifier

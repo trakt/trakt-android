@@ -81,7 +81,6 @@ internal class AllActivityPersonalViewModel(
         },
     )
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -100,7 +99,6 @@ internal class AllActivityPersonalViewModel(
     private var ratingJob: Job? = null
 
     init {
-        loadUser()
         loadInitialData()
         loadUserRatingData()
 
@@ -125,20 +123,6 @@ internal class AllActivityPersonalViewModel(
             .onEach {
                 loadUserRatingData(ignoreErrors = true)
             }.launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadInitialData() {
@@ -428,7 +412,7 @@ internal class AllActivityPersonalViewModel(
         navigateMovie,
         loadingState,
         loadingMoreState,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
     ) { state ->
         AllActivityState(

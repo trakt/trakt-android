@@ -67,7 +67,7 @@ private val BarGap = 4.dp
 private val StopIndicatorSize = 4.dp
 private val TouchTargetSize = 48.dp
 private val LoadingIndicatorSize = 32.dp
-private val SkeletonValueWidth = 72.dp
+private val SkeletonValueWidth = 56.dp
 private val SkeletonValueHeight = 12.dp
 
 private val PlaceholderLimits = persistentListOf(
@@ -155,11 +155,13 @@ internal fun VipUsageLimitItem(
     limit: VipUsageLimit,
     modifier: Modifier = Modifier,
     compact: Boolean = false,
+    vip: Boolean = false,
 ) {
-    val isOverLimit = limit.current > limit.free
-    val hasVipZone = !compact && limit.vip != limit.free
+    val max = if (vip) limit.vip else limit.free
+    val isOverLimit = limit.current > max
+    val hasVipZone = !compact && !vip && limit.vip != limit.free
     val current = if (compact) rememberThousandsFormat(limit.current) else rememberNumberFormat(limit.current)
-    val free = if (compact) rememberThousandsFormat(limit.free) else rememberNumberFormat(limit.free)
+    val maxText = if (compact) rememberThousandsFormat(max) else rememberNumberFormat(max)
 
     Column(
         verticalArrangement = spacedBy(8.dp),
@@ -176,7 +178,7 @@ internal fun VipUsageLimitItem(
                 modifier = Modifier.weight(1F),
             )
             Text(
-                text = "$current / $free",
+                text = "$current / $maxText",
                 style = TraktTheme.typography.paragraphSmall,
                 color = if (isOverLimit) Red400 else TraktTheme.colors.textSecondary,
             )
@@ -211,7 +213,8 @@ internal fun VipUsageLimitItem(
         }
 
         VipUsageBar(
-            limit = limit,
+            current = limit.current,
+            max = max,
             hasVipZone = hasVipZone,
             isOverLimit = isOverLimit,
         )
@@ -222,9 +225,10 @@ internal fun VipUsageLimitItem(
 internal fun VipUsageLimitSkeleton(
     @StringRes title: Int,
     modifier: Modifier = Modifier,
+    onPanel: Boolean = false,
 ) {
-    val containerColor = TraktTheme.colors.skeletonContainer
-    val shimmerColor = TraktTheme.colors.skeletonShimmer
+    val containerColor = with(TraktTheme.colors) { if (onPanel) skeletonPanelContainer else skeletonContainer }
+    val shimmerColor = with(TraktTheme.colors) { if (onPanel) skeletonPanelShimmer else skeletonShimmer }
     val shimmer by rememberInfiniteTransition(label = "infiniteTransition")
         .animateColor(
             initialValue = containerColor,
@@ -268,7 +272,8 @@ internal fun VipUsageLimitSkeleton(
 
 @Composable
 private fun VipUsageBar(
-    limit: VipUsageLimit,
+    current: Int,
+    max: Int,
     hasVipZone: Boolean,
     isOverLimit: Boolean,
 ) {
@@ -282,8 +287,8 @@ private fun VipUsageBar(
 
     val zoneFraction = if (hasVipZone) FREE_ZONE_FRACTION else 1F
     val progress = when {
-        limit.free <= 0 -> 0F
-        else -> (limit.current.toFloat() / limit.free).coerceIn(0F, 1F)
+        max <= 0 -> 0F
+        else -> (current.toFloat() / max).coerceIn(0F, 1F)
     }
 
     Spacer(
@@ -400,12 +405,39 @@ private fun CompactPreview() {
     backgroundColor = 0xFF131517,
 )
 @Composable
-private fun SkeletonPreview() {
+private fun VipPreview() {
     TraktThemeLightDark {
-        VipUsageLimitSkeleton(
-            title = R.string.limit_title_watch_history,
+        VipUsageLimitItem(
+            limit = VipUsageLimit(R.string.limit_title_watchlist_items, current = 1200, free = 100, vip = 5000),
+            vip = true,
             modifier = Modifier.padding(16.dp),
         )
+    }
+}
+
+@Preview(
+    widthDp = 380,
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun SkeletonPreview() {
+    TraktThemeLightDark {
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp),
+        ) {
+            VipUsageLimitSkeleton(
+                title = R.string.limit_title_watch_history,
+            )
+            VipUsageLimitSkeleton(
+                title = R.string.limit_title_watch_history,
+                onPanel = true,
+                modifier = Modifier
+                    .background(TraktTheme.colors.panelCardContainer)
+                    .padding(16.dp),
+            )
+        }
     }
 }
 

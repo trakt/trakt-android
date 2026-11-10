@@ -37,6 +37,7 @@ import tv.trakt.trakt.core.discover.sections.releases.usecases.GetReleasesTypeUs
 import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.GetReleasesMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.GetReleasesShowsUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import java.time.LocalDate
@@ -54,13 +55,22 @@ internal class DiscoverReleasesViewModel(
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
     private val typeState = MutableStateFlow(ReleaseType.All)
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = {
+            when (filterState.value.mode) {
+                Media -> CollapsingKey.DISCOVER_MEDIA_RELEASES
+                Shows -> CollapsingKey.DISCOVER_SHOWS_RELEASES
+                Movies -> CollapsingKey.DISCOVER_MOVIES_RELEASES
+            }
+        },
+    )
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -78,7 +88,7 @@ internal class DiscoverReleasesViewModel(
         filterManager.observeFilter()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
+                collapse.refresh()
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -196,37 +206,14 @@ internal class DiscoverReleasesViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                Media -> CollapsingKey.DISCOVER_MEDIA_RELEASES
-                Shows -> CollapsingKey.DISCOVER_SHOWS_RELEASES
-                Movies -> CollapsingKey.DISCOVER_MOVIES_RELEASES
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                Media -> CollapsingKey.DISCOVER_MEDIA_RELEASES
-                Shows -> CollapsingKey.DISCOVER_SHOWS_RELEASES
-                Movies -> CollapsingKey.DISCOVER_MOVIES_RELEASES
-            },
-        )
+        collapse.set(collapsed)
     }
 
     val state = combine(
         itemsState,
         filterState,
         typeState,
-        collapseState,
+        collapse.state,
         loadingState,
         errorState,
     ) { state ->

@@ -2,7 +2,7 @@ package tv.trakt.trakt.common.data.remote
 
 import org.openapitools.client.apis.CheckinApi
 import org.openapitools.client.infrastructure.HttpResponse
-import org.openapitools.client.models.PostCheckinStart200Response
+import org.openapitools.client.models.PostCheckinStart201Response
 import org.openapitools.client.models.PostCheckinStartRequest
 import org.openapitools.client.models.PostCheckinStartRequestOneOf1Movie
 import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
@@ -16,7 +16,7 @@ import tv.trakt.trakt.common.model.TraktId
 class CheckInRemoteSource(
     private val api: CheckinApi,
 ) {
-    suspend fun postMovieCheckIn(movieId: TraktId): PostCheckinStart200Response? {
+    suspend fun postMovieCheckIn(movieId: TraktId): PostCheckinStart201Response? {
         val response = api.postCheckinStart(
             postCheckinStartRequest = PostCheckinStartRequest(
                 movie = PostCheckinStartRequestOneOf1Movie(
@@ -36,7 +36,7 @@ class CheckInRemoteSource(
         showId: TraktId,
         season: Int,
         episode: Int,
-    ): PostCheckinStart200Response? {
+    ): PostCheckinStart201Response? {
         val response = api.postCheckinStart(
             postCheckinStartRequest = PostCheckinStartRequest(
                 show = PostCheckinStartRequestOneOfOneOf1Show(
@@ -62,7 +62,7 @@ class CheckInRemoteSource(
     }
 
     // The body is only used for diagnostics, so a parsing failure must not fail the check-in.
-    private suspend fun HttpResponse<PostCheckinStart200Response>.bodyOrNull(): PostCheckinStart200Response? {
+    private suspend fun HttpResponse<PostCheckinStart201Response>.bodyOrNull(): PostCheckinStart201Response? {
         return try {
             body()
         } catch (error: Exception) {

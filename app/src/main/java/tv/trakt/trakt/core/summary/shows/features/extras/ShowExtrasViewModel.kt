@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -36,9 +37,11 @@ internal class ShowExtrasViewModel(
     private val filtersState = MutableStateFlow(initialState.filters)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_EXTRAS))
-
-    private var collapseJob: Job? = null
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.SHOW_EXTRAS,
+    )
 
     init {
         loadData()
@@ -106,14 +109,7 @@ internal class ShowExtrasViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_EXTRAS)
-                else -> collapsingManager.expand(CollapsingKey.SHOW_EXTRAS)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -122,7 +118,7 @@ internal class ShowExtrasViewModel(
         filtersState,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
     ) { state ->
         ShowExtrasState(
             items = state[0] as ImmutableList<ExtraVideo>?,

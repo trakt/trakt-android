@@ -339,6 +339,7 @@ private fun Preview() {
                     aired = 10,
                     plays = 5,
                     playsWithoutSpecials = 5,
+                    playsDistinctWithoutSpecials = 5,
                     inWatchlist = true,
                     inLists = true,
                 ),

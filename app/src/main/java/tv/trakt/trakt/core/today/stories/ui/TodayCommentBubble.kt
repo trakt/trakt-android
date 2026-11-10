@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.today.stories.ui
 
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -72,9 +71,6 @@ private fun TodayCommentBubbleContent(
     val hasText = comment.text.isNotBlank()
     val isGifOnly = !hasText && comment.gifUrl != null && !isSpoilerHidden
 
-    // Blur needs Android 12. Older versions keep the content out until revealed.
-    val isBlurSupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val showContent = !isSpoilerHidden || isBlurSupported
     // Unbounded so the blur spreads past the text bounds instead of ending in a hard edge.
     val textBlur = if (isSpoilerHidden) Modifier.blur(SpoilerBlur, BlurredEdgeTreatment.Unbounded) else Modifier
     val gifBlur = if (isSpoilerHidden) Modifier.blur(SpoilerBlur) else Modifier
@@ -107,8 +103,6 @@ private fun TodayCommentBubbleContent(
                 color = Red500,
             )
         }
-
-        if (!showContent) return@Column
 
         if (hasText) {
             Text(

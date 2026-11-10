@@ -141,7 +141,7 @@ State not needing process survival but shared across ViewModels (login session, 
 ## Cached user profile
 
 `DefaultSessionManager` stores the signed-in `User` as JSON under a key suffixed with
-`KEY_VERSION`. A cached profile that fails to decode clears the whole session and signs the user out.
+`KEY_VERSION`. A cached profile that fails to decode is dropped and refetched; auth tokens stay.
 
 - **Any change to `User` or its nested types** (added, removed, renamed or retyped field) **bumps
   `KEY_VERSION`** in `common/.../auth/session/DefaultSessionManager.kt` in the same commit.

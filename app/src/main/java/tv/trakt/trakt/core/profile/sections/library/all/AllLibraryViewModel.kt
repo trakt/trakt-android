@@ -43,7 +43,6 @@ internal class AllLibraryViewModel(
 ) : ViewModel() {
     private val initialState = AllLibraryState()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -58,26 +57,11 @@ internal class AllLibraryViewModel(
     private var hasMoreData: Boolean = false
 
     init {
-        loadUser()
         loadData()
 
         analytics.logScreenView(
             screenName = "all_library",
         )
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
@@ -208,7 +192,7 @@ internal class AllLibraryViewModel(
         filterState,
         navigateShow,
         navigateMovie,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
     ) { state ->
         AllLibraryState(

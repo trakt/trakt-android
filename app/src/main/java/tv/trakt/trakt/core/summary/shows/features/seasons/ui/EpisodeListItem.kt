@@ -32,6 +32,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun EpisodeListItem(
     show: Show,
     episode: EpisodeItem,
+    spoilersHidden: Boolean,
     onClick: ((EpisodeItem) -> Unit)?,
     onCheckClick: ((EpisodeItem) -> Unit)?,
     onCheckLongClick: ((EpisodeItem) -> Unit)?,
@@ -48,13 +49,15 @@ internal fun EpisodeListItem(
             episode.episode.number,
         ),
         contentImageUrl = when {
-            isReleased -> episode.episode.images?.getScreenshotUrl(Images.Size.THUMB)
+            !isReleased -> show.images?.getFanartUrl(Images.Size.THUMB)
+            spoilersHidden && !episode.isWatched -> show.images?.getFanartUrl(Images.Size.THUMB)
+            else -> episode.episode.images?.getScreenshotUrl(Images.Size.THUMB)
                 .withFallback(show.images?.getFanartUrl(Images.Size.THUMB))
-            else -> show.images?.getFanartUrl(Images.Size.THUMB)
         },
         containerImageUrl = null,
         more = (episode.isWatched || isReleased) && !episode.isLoading,
         watched = episode.isWatched,
+        titleSpoilerHidden = spoilersHidden && !episode.isWatched,
         footerContent = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

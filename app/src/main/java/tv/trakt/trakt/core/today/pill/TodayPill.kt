@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.today.pill
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.tween
@@ -56,9 +55,9 @@ private val PosterOffset = 2.5.dp
 private val PosterCorner = 2.dp
 private const val POSTER_TILT = 10F
 
-private val BadgeSize = 13.dp
-private val BadgeOffset = 1.5.dp
-private val BadgePadding = 3.5.dp
+private val BadgeSize = 14.dp
+private val BadgeOffset = 1.dp
+private val BadgePadding = 4.dp
 
 private const val POP_CYCLE_MS = 8_000
 private const val POP_DELAY_MS = 3000L
@@ -103,15 +102,6 @@ internal fun TodayPillContent(
     val unseen = unseenCount > 0
     val animate = unseen && !rememberAnimationsDisabled()
 
-    val ringColor by animateColorAsState(
-        targetValue = when {
-            unseen -> TraktTheme.colors.accent
-            else -> TraktTheme.colors.chipContainer
-        },
-        animationSpec = tween(durationMillis = 200),
-        label = "todayPillRing",
-    )
-
     // Keeps the last count on screen while the badge fades out after everything is seen.
     val lastCount = remember { mutableIntStateOf(unseenCount) }
     SideEffect {
@@ -134,7 +124,7 @@ internal fun TodayPillContent(
                 .fillMaxSize()
                 .border(
                     width = RingWidth,
-                    color = ringColor,
+                    color = TraktTheme.colors.chipContainer,
                     shape = CircleShape,
                 ),
         )
@@ -223,7 +213,10 @@ private fun TodayPillBadge(
         }
     }
 
-    val shape = RoundedCornerShape(50)
+    val label = when {
+        count > 99 -> "99+"
+        else -> count.toString()
+    }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -232,13 +225,22 @@ private fun TodayPillBadge(
                 scaleX = scale.value
                 scaleY = scale.value
             }
-            .heightIn(min = BadgeSize)
-            .widthIn(min = BadgeSize)
-            .background(TraktTheme.colors.accent, shape)
-            .padding(horizontal = BadgePadding),
+            .then(
+                if (label.length == 1) {
+                    Modifier
+                        .size(BadgeSize)
+                        .background(TraktTheme.colors.accent, CircleShape)
+                } else {
+                    Modifier
+                        .heightIn(min = BadgeSize)
+                        .widthIn(min = BadgeSize)
+                        .background(TraktTheme.colors.accent, RoundedCornerShape(50))
+                        .padding(horizontal = BadgePadding)
+                },
+            ),
     ) {
         Text(
-            text = count.toString(),
+            text = label,
             style = TraktTheme.typography.meta.copy(
                 fontSize = 10.sp,
             ),
@@ -258,12 +260,12 @@ private fun Preview() {
         ) {
             TodayPillContent(
                 posters = persistentListOf("a", "b"),
-                unseenCount = 7,
+                unseenCount = 12,
                 onClick = {},
             )
             TodayPillContent(
                 posters = persistentListOf("a"),
-                unseenCount = 12,
+                unseenCount = 7,
                 modifier = Modifier.padding(start = 24.dp),
                 onClick = {},
             )

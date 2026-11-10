@@ -126,13 +126,11 @@ internal class MovieDetailsViewModel(
     private val loadingFavorite = MutableStateFlow(initialState.loadingFavorite)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
-    private val userState = MutableStateFlow(initialState.user)
     private val lightsaberState = MutableStateFlow(initialState.lightsaber)
 
     private var ratingJob: Job? = null
 
     init {
-        loadUser()
         loadData()
 
         loadUserProgressData()
@@ -182,20 +180,6 @@ internal class MovieDetailsViewModel(
                 refreshLists()
             }
             .launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadData() {
@@ -970,7 +954,7 @@ internal class MovieDetailsViewModel(
         loadingFavorite,
         infoState,
         errorState,
-        userState,
+        sessionManager.observeProfile(),
         lightsaberState,
     ) { state ->
         MovieDetailsState(

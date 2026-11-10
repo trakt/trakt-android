@@ -258,6 +258,7 @@
   <string name="button_label_remove_from_list">\"%s\" eltávolítása a listáról</string>
   <string name="button_label_remove_from_personal_list">\"%1$s\" eltávolítása ebből: %2$s</string>
   <string name="button_label_remove_from_watched">\"Eltávolítás a(z) \"%s\" az előzményekből\"</string>
+  <string name="button_label_remove_from_watchlist">\"%s\" eltávolítása a Megnézendőkből</string>
   <string name="button_label_remove_gif">GIF eltávolítása</string>
   <string name="button_label_remove_photo">Profilképed eltávolítása</string>
   <string name="button_label_remove_reaction">%s eltávolítása</string>
@@ -354,6 +355,7 @@
   <string name="button_label_view_all_today">Tekintsd meg mindazt, ami ma történt</string>
   <string name="button_label_view_all_trending_movies">Összes felkapott film megtekintése</string>
   <string name="button_label_view_all_trending_shows">Összes felkapott sorozat megtekintése</string>
+  <string name="button_label_view_all_watchlist_items">A Megnézendők listán lévő elem megtekintése</string>
   <string name="button_label_view_all_where_to_watch">Összes streaming szolgáltatás megtekintése</string>
   <string name="button_label_view_import_guidelines">Irányelvek megtekintése</string>
   <string name="button_label_view_match">Egyezés megtekintése</string>
@@ -1152,6 +1154,7 @@
   <string name="image_alt_hype_score">%d%% hype számodra</string>
   <string name="image_alt_hype_unknown">Még nincs hype-pontszámod</string>
   <string name="image_alt_list_preview_poster">Poszter egy bejegyzéshez: „%s”</string>
+  <string name="image_alt_match_score">%d%% egyezés neked</string>
   <string name="image_alt_match_unknown">Még nincs egyezési pontszámod</string>
   <string name="image_alt_media_poster">„%s” posztere</string>
   <string name="image_alt_person_headshot">%s portréja</string>
@@ -1220,6 +1223,7 @@
   <string name="import_summary_history">%d elem az Előzményekhez</string>
   <string name="import_summary_list">%d lista elem</string>
   <string name="import_summary_ratings">%d értékelés</string>
+  <string name="import_summary_watchlist">%d elem a Megnézendőkhöz</string>
   <string name="import_tab_ambiguous">Több találat</string>
   <string name="import_tab_unresolved">Kihagyott</string>
   <string name="import_vip_limit_exceeded">Az importálásod túllépi az ingyenes szint korlátját. Frissíts VIP-re mind a(z) %d elem importálásához.</string>
@@ -1905,6 +1909,7 @@
   <string name="text_calendar_nothing_scheduled">Nincs semmi beütemezve</string>
   <string name="text_calendar_placeholder_1">Mára nincs semmi dolgod. Tarts egy szabadnapot, élvezd a jó időt!</string>
   <string name="text_calendar_placeholder_10">Minden tiszta. Itt az idő, hogy felfedezz valami újat!</string>
+  <string name="text_calendar_placeholder_2">Nincs műsor ezen a napon. Esetleg próbálj meg egy másik napot.</string>
   <string name="text_calendar_placeholder_3">Úgy tűnik, mára nincs semmi betervezve. Pihenj és dőlj hátra!</string>
   <string name="text_calendar_placeholder_4">Erre a napra üres a naptárad. Tökéletes alkalom egy kis pihenésre!</string>
   <string name="text_calendar_placeholder_5">Ez a nap teljesen szabad. Mit szólnál valami újhoz?</string>
@@ -2895,6 +2900,7 @@
   <string name="warning_prompt_remove_from_liked_lists">Biztosan eltávolítod a(z) „%s” nevű listát a kedvelt listáid közül?</string>
   <string name="warning_prompt_remove_from_personal_list">Biztosan eltávolítod a(z) \"%1$s\" címet a(z) \"%2$s\" listáról?</string>
   <string name="warning_prompt_remove_from_watched">A(z) \"%s\" összes lejátszása eltávolításra kerül. Ez nem vonható vissza.</string>
+  <string name="warning_prompt_remove_from_watchlist">Biztosan eltávolítod a(z) \"%s\" címet a Megnézendőkből?</string>
   <string name="warning_prompt_remove_single_watched">A(z) \"%s\" ezen lejátszása eltávolításra kerül. A többi lejátszás megmarad.</string>
   <string name="warning_prompt_restore_show">Biztosan visszaállítod a(z) \"%s\" címet? Ezzel visszaállítod az előrehaladásodban és a naptáradban.</string>
   <string name="warning_prompt_set_cover_image">Használod a(z) „%s” címet profil háttérképedként?</string>

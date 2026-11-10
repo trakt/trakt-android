@@ -10,8 +10,6 @@ import tv.trakt.trakt.core.summary.shows.ShowDetailsViewModel
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsViewModel
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowActorsUseCase
 import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowCreatorUseCase
-import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsViewModel
-import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
@@ -59,7 +57,6 @@ internal val showDetailsModule = module {
     factoryOf(::GetSeasonCommentsUseCase)
     factoryOf(::GetShowRelatedUseCase)
     factoryOf(::GetShowSentimentUseCase)
-    factoryOf(::GetShowCommentsUseCase)
     factoryOf(::GetShowListsUseCase)
     factoryOf(::GetShowHistoryUseCase)
     factoryOf(::GetShowTriviaUseCase)
@@ -128,23 +125,6 @@ internal val showDetailsModule = module {
             dataChanges = get(),
             sessionManager = get(),
             errorsManager = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowCommentsViewModel(
-            appContext = androidApplication(),
-            show = show,
-            getFilterUseCase = get(),
-            getLanguageUseCase = get(),
-            getCommentsUseCase = get(),
-            getCommentReactionsUseCase = get(),
-            loadUserReactionsUseCase = get(),
-            dataChanges = get(),
-            sessionManager = get(),
-            collapsingManager = get(),
-            translationsStore = get(),
             analytics = get(),
         )
     }

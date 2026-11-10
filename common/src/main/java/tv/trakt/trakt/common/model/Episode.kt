@@ -16,6 +16,7 @@ import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeLikesDto
 import tv.trakt.trakt.common.networking.LastEpisodeDto
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
 import tv.trakt.trakt.resources.R
 import java.time.Instant
 import kotlin.time.Duration
@@ -80,9 +81,10 @@ data class Episode(
             this.season,
             this.number,
         )
+        val isSpoilerHidden = LocalSpoilerState.current.isEpisodeHidden(ids.trakt)
         return when {
-            title.isNotBlank() -> "$string - $title"
-            else -> string
+            title.isBlank() || isSpoilerHidden -> string
+            else -> "$string - $title"
         }
     }
 }

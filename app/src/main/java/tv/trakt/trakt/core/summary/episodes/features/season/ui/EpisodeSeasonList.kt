@@ -36,10 +36,12 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.extensions.scrollToItemIfHidden
@@ -50,6 +52,7 @@ internal fun EpisodeSeasonList(
     show: Show?,
     episodes: ImmutableList<EpisodeItem>,
     currentEpisode: Int?,
+    spoilersHidden: Boolean,
     onEpisodeClick: (episode: EpisodeItem) -> Unit,
     onCheckClick: (episode: EpisodeItem) -> Unit,
     onCheckLongClick: (episode: EpisodeItem) -> Unit,
@@ -93,8 +96,11 @@ internal fun EpisodeSeasonList(
                 more = hasMore,
                 watched = item.isWatched,
                 highlighted = isCurrent,
-                containerImageUrl = item.episode.images?.getScreenshotUrl()
-                    .withFallback(show?.images?.getFanartUrl()),
+                containerImageUrl = when {
+                    spoilersHidden && !item.isWatched -> show?.images?.getFanartUrl()
+                    else -> item.episode.images?.getScreenshotUrl()
+                        .withFallback(show?.images?.getFanartUrl())
+                },
                 onClick = { onEpisodeClick(item) },
                 onLongClick = {
                     if (hasMore) {
@@ -128,13 +134,18 @@ internal fun EpisodeSeasonList(
                             verticalArrangement = Arrangement.spacedBy(1.dp),
                             modifier = Modifier.weight(1F, fill = false),
                         ) {
-                            Text(
-                                text = item.episode.title,
-                                style = TraktTheme.typography.cardTitle,
-                                color = TraktTheme.colors.textPrimary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
+                            SpoilerBlur(
+                                hidden = spoilersHidden && !item.isWatched,
+                                type = MediaType.Episode,
+                            ) {
+                                Text(
+                                    text = item.episode.title,
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
 
                             Text(
                                 text = item.episode.seasonEpisode.toDisplayString(),

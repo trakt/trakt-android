@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
+import tv.trakt.trakt.common.auth.session.helpers.observeSessionChanges
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
@@ -40,8 +42,10 @@ import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class HomeSocialViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
@@ -55,10 +59,19 @@ internal class HomeSocialViewModel(
     private val initialState = HomeSocialState()
     private val initialMode = filterManager.getFilter()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = {
+            when (filterState.value.mode) {
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_SOCIAL
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_SOCIAL
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_SOCIAL
+            }
+        },
+    )
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -67,7 +80,6 @@ internal class HomeSocialViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -76,17 +88,9 @@ internal class HomeSocialViewModel(
     }
 
     private fun observeUser() {
-        viewModelScope.launch {
-            userState.update { sessionManager.getProfile() }
-            sessionManager.observeProfile()
-                .drop(1)
-                .distinctUntilChanged()
-                .debounce(200)
-                .collect { user ->
-                    userState.update { user }
-                    loadData()
-                }
-        }
+        sessionManager.observeSessionChanges()
+            .onEach { loadData() }
+            .launchIn(viewModelScope)
     }
 
     private fun observeMode() {
@@ -94,7 +98,7 @@ internal class HomeSocialViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
+                collapse.refresh()
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -195,42 +199,19 @@ internal class HomeSocialViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MediaMode.Media -> CollapsingKey.HOME_MEDIA_SOCIAL
-                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_SOCIAL
-                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_SOCIAL
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                MediaMode.Media -> CollapsingKey.HOME_MEDIA_SOCIAL
-                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_SOCIAL
-                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_SOCIAL
-            },
-        )
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<HomeSocialState> = combine(
         loadingState,
         itemsState,
-        collapseState,
+        collapse.state,
         navigateShow,
         navigateEpisode,
         navigateMovie,
         errorState,
-        userState,
+        sessionManager.observeProfile(),
     ) { states ->
         HomeSocialState(
             loading = states[0] as LoadingState,

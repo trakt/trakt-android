@@ -2,7 +2,7 @@
 versionCode = "452"
 versionName = "3.28.0"
 
-minSdk = "28"
+minSdk = "31"
 compileSdk = "37"
 targetSdk = "37"
 

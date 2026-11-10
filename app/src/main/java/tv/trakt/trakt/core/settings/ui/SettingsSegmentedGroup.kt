@@ -61,7 +61,7 @@ internal fun SettingsSegmentedGroup(
                             clip = true,
                         )
                         .background(TraktTheme.colors.panelCardContainer)
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                        .padding(horizontal = 16.dp, vertical = 13.dp),
                 ) {
                     item()
                 }

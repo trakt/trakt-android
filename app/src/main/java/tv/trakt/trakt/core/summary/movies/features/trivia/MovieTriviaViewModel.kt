@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -46,10 +47,14 @@ internal class MovieTriviaViewModel(
     private val summaryState = MutableStateFlow(initialState.summary)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(collapsingKey))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = collapsingKey,
+    )
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var collapseJob: kotlinx.coroutines.Job? = null
+    private var loadJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -73,7 +78,8 @@ internal class MovieTriviaViewModel(
     }
 
     private fun loadData() {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             try {
                 loadingState.update { Loading }
 
@@ -109,15 +115,7 @@ internal class MovieTriviaViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(collapsingKey)
-                else -> collapsingManager.expand(collapsingKey)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     val state = combine(
@@ -125,7 +123,7 @@ internal class MovieTriviaViewModel(
         itemsState,
         summaryState,
         loadingState,
-        collapseState,
+        collapse.state,
         errorState,
     ) { state ->
         @Suppress("UNCHECKED_CAST")

@@ -115,6 +115,7 @@ private fun BlockedUsersContent(
             .nestedScroll(scrollConnection),
     ) {
         ScrollableBackdropImage(
+            showProfileImage = true,
             translation = scrollConnection.resultOffset,
         )
 

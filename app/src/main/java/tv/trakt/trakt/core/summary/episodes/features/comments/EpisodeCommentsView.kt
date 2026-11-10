@@ -68,11 +68,14 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
+import tv.trakt.trakt.core.comments.features.media.MediaCommentsState
+import tv.trakt.trakt.core.comments.features.media.MediaCommentsViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.features.translation.ui.rememberExternalTranslation
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
@@ -89,11 +92,12 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun EpisodeCommentsView(
-    viewModel: EpisodeCommentsViewModel,
+    viewModel: MediaCommentsViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     gifPaused: Boolean = false,
+    mediaWatched: Boolean = false,
     onMoreClick: ((CommentsFilter) -> Unit)?,
     onUserClick: ((User) -> Unit)?,
 ) {
@@ -121,6 +125,7 @@ internal fun EpisodeCommentsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         gifPaused = gifPaused,
+        mediaWatched = mediaWatched,
         onMoreClick = {
             if (!state.items.isNullOrEmpty()) {
                 onMoreClick?.invoke(state.filter)
@@ -152,17 +157,18 @@ internal fun EpisodeCommentsView(
         onRevealSpoiler = viewModel::logSpoilerReveal,
     )
 
-    val mentionSource = state.media?.let { (show, episode) ->
+    val mentionSource = (state.media as? CommentsMedia.ForEpisode)?.let {
         MentionSource.Episode(
-            showId = show.ids.trakt,
-            season = episode.season,
-            episode = episode.number,
+            showId = it.show.ids.trakt,
+            season = it.episode.season,
+            episode = it.episode.number,
         )
     }
 
     CommentDetailsSheet(
         comment = commentSheet,
-        gifQuery = MediaType.Episode.toGifQuery(state.media?.first?.title),
+        mediaWatched = mediaWatched,
+        gifQuery = MediaType.Episode.toGifQuery(state.show?.title),
         mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
         onUserClick = onUserClick,
@@ -173,9 +179,9 @@ internal fun EpisodeCommentsView(
 
     PostCommentSheet(
         active = postCommentSheet,
-        mediaId = state.media?.second?.ids?.trakt,
+        mediaId = state.episode?.ids?.trakt,
         mediaType = MediaType.Episode,
-        mediaTitle = state.media?.first?.title,
+        mediaTitle = state.show?.title,
         mentionSource = mentionSource,
         onCommentPost = viewModel::addComment,
         onDismiss = {
@@ -185,7 +191,7 @@ internal fun EpisodeCommentsView(
 
     EditCommentSheet(
         comment = editCommentSheet,
-        gifQuery = MediaType.Episode.toGifQuery(state.media?.first?.title),
+        gifQuery = MediaType.Episode.toGifQuery(state.show?.title),
         mentionSource = mentionSource,
         onCommentEdit = viewModel::updateComment,
         onDismiss = {
@@ -205,11 +211,12 @@ internal fun EpisodeCommentsView(
 
 @Composable
 private fun EpisodeCommentsContent(
-    state: EpisodeCommentsState,
+    state: MediaCommentsState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     gifPaused: Boolean = false,
+    mediaWatched: Boolean = false,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -336,6 +343,7 @@ private fun EpisodeCommentsContent(
                                     listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
                                     user = state.user,
                                     gifPaused = gifPaused,
+                                    mediaWatched = mediaWatched,
                                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
                                     translations = state.translations,
                                     contentPadding = contentPadding,
@@ -367,6 +375,7 @@ private fun ContentList(
     translations: CommentTranslations,
     contentPadding: PaddingValues,
     gifPaused: Boolean,
+    mediaWatched: Boolean,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onEditCommentClick: ((Comment) -> Unit)? = null,
@@ -403,6 +412,7 @@ private fun ContentList(
                 userReactions = userReactions,
                 gifLayout = CommentGifLayout.Side,
                 gifPaused = gifPaused,
+                mediaWatched = mediaWatched,
                 onClick = { onCommentClick?.invoke(comment) },
                 onRepliesClick = { onCommentClick?.invoke(comment) },
                 onEditClick = { onEditCommentClick?.invoke(comment) },
@@ -497,7 +507,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             EpisodeCommentsContent(
-                state = EpisodeCommentsState(),
+                state = MediaCommentsState(),
             )
         }
     }
@@ -517,7 +527,7 @@ private fun Preview2() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             EpisodeCommentsContent(
-                state = EpisodeCommentsState(
+                state = MediaCommentsState(
                     items = emptyList<Comment>().toImmutableList(),
                     loading = Loading,
                 ),
@@ -540,7 +550,7 @@ private fun Preview3() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             EpisodeCommentsContent(
-                state = EpisodeCommentsState(
+                state = MediaCommentsState(
                     items = emptyList<Comment>().toImmutableList(),
                     loading = Done,
                 ),

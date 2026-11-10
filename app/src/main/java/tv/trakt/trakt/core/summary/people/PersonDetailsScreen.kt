@@ -73,6 +73,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.SocialIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
@@ -84,6 +85,7 @@ import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.summary.people.all.AllPersonCreditsDestination
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsSection
+import tv.trakt.trakt.core.summary.people.model.PersonLinkType
 import tv.trakt.trakt.core.summary.people.ui.HistoryCreditsList
 import tv.trakt.trakt.core.summary.people.ui.MoviesCreditsList
 import tv.trakt.trakt.core.summary.people.ui.ShowsCreditsList
@@ -157,6 +159,8 @@ internal fun PersonDetailsScreen(
         onMovieLinkClick = viewModel::navigateToMovie,
         onBackClick = onNavigateBack,
         onShareClick = viewModel::logShare,
+        onLinkClick = viewModel::logLink,
+        onEpisodeCountReveal = viewModel::logEpisodeCountReveal,
         onReportClick = {
             reportSheet = state.personDetails?.let { ReportTarget.Person(it.ids.trakt) }
         },
@@ -223,6 +227,8 @@ internal fun PersonDetailsContent(
     onMovieLinkClick: ((SlugId) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onLinkClick: ((PersonLinkType) -> Unit)? = null,
+    onEpisodeCountReveal: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onFiltersClick: (() -> Unit)? = null,
     onMoreClick: ((PersonCreditsSection, String?) -> Unit)? = null,
@@ -284,6 +290,7 @@ internal fun PersonDetailsContent(
                             sharePerson(person, state.user?.settings?.shareCode, context)
                         },
                         onReportClick = onReportClick.takeIf { state.user != null },
+                        onLinkClick = onLinkClick,
                         topRightContent = onFiltersClick?.let { onClick ->
                             {
                                 MediaFilterIcon(
@@ -339,8 +346,10 @@ internal fun PersonDetailsContent(
                             preferredFilter = state.preferredCreditsFilter,
                             listItems = (state.personShowCredits ?: emptyMap()).toImmutableMap(),
                             userCollection = state.collection,
+                            spoilersHidden = state.spoilersHidden,
                             sectionPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onEpisodeCountReveal = { onEpisodeCountReveal?.invoke() },
                             onClick = onShowClick,
                             onLongClick = onShowLongClick,
                             onMoreClick = { onMoreClick?.invoke(PersonCreditsSection.Shows, it) },
@@ -618,6 +627,16 @@ private fun Preview() {
             state = PersonDetailsState(
                 personDetails = PreviewData.person1.copy(
                     biography = "Known for **The Matrix** and [John Wick](https://app.trakt.tv/movies/john-wick-2014).",
+                    socialIds = SocialIds(
+                        twitter = "johndoe",
+                        facebook = "johndoe",
+                        instagram = "johndoe",
+                        wikipedia = "John_Doe",
+                        tiktok = "johndoe",
+                        youtube = "UC1234567890",
+                        wikidata = "Q1234567",
+                        wikipediaLanguage = "de",
+                    ),
                 ),
                 loadingDetails = Done,
             ),
