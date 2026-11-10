@@ -16,11 +16,11 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.remote.ReactionsRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.core.reactions.data.ReactionSource
-import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
 
@@ -30,7 +30,7 @@ internal class PostReactionWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     val sessionManager: SessionManager,
-    val postReactionUseCase: PostCommentReactionUseCase,
+    val reactionsRemoteSource: ReactionsRemoteSource,
     val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     val dataChanges: DataChanges,
     val analytics: Analytics,
@@ -93,11 +93,9 @@ internal class PostReactionWorker(
             }
 
             withContext(Dispatchers.IO) {
-                postReactionUseCase.postReaction(
+                reactionsRemoteSource.postUserReaction(
                     commentId = commentId,
-                    reaction = Reaction.valueOf(
-                        reactionValue,
-                    ),
+                    reaction = Reaction.valueOf(reactionValue).value,
                 )
 
                 analytics.reactions.logReactionAdd(

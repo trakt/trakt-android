@@ -1,16 +1,59 @@
 package tv.trakt.trakt.core.home.sections.recommended.usecase
 
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.data.local.MovieLocalSource
+import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
+import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
+import tv.trakt.trakt.common.helpers.extensions.asyncMap
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
+import tv.trakt.trakt.common.model.recommended.RecommendedSource
 import tv.trakt.trakt.core.discover.DiscoverConfig
+import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 
-internal interface GetRecommendedMoviesUseCase {
-    suspend fun getLocalMovies(): ImmutableList<RecommendedItem.MovieItem>
+internal class GetRecommendedMoviesUseCase(
+    private val remoteSource: MoviesRemoteSource,
+    private val localRecommendedSource: RecommendedMoviesLocalSource,
+    private val localMovieSource: MovieLocalSource,
+) {
+    suspend fun getLocalMovies(): ImmutableList<RecommendedItem.MovieItem> {
+        return localRecommendedSource.getMovies()
+            .toImmutableList()
+            .also {
+                localMovieSource.upsertMovies(
+                    it.asyncMap { item -> item.movie },
+                )
+            }
+    }
 
     suspend fun getMovies(
         limit: Int = DiscoverConfig.DEFAULT_SECTION_LIMIT,
         skipLocal: Boolean = false,
         filters: GlobalFilter,
-    ): ImmutableList<RecommendedItem.MovieItem>
+    ): ImmutableList<RecommendedItem.MovieItem> {
+        return remoteSource.getRecommended(limit = limit, filters = filters)
+            .asyncMap { entry ->
+                RecommendedItem.MovieItem(
+                    movie = Movie.fromDto(entry.movie),
+                    sources = entry.sources.orEmpty()
+                        .map { RecommendedSource.fromDto(it) }
+                        .toImmutableList(),
+                )
+            }
+            .toImmutableList()
+            .also { movies ->
+                if (!skipLocal) {
+                    localRecommendedSource.setMovies(
+                        movies = movies.take(DEFAULT_SECTION_LIMIT),
+                    )
+                }
+
+                localMovieSource.upsertMovies(
+                    movies.asyncMap { item -> item.movie },
+                )
+            }
+    }
 }

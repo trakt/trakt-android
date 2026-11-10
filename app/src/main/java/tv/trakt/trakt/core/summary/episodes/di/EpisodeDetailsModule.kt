@@ -16,7 +16,6 @@ import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryViewM
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.info.EpisodeInfoViewModel
 import tv.trakt.trakt.core.summary.episodes.features.info.usecase.GetEpisodeCrewUseCase
-import tv.trakt.trakt.core.summary.episodes.features.info.usecase.GetEpisodeStatsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedViewModel
 import tv.trakt.trakt.core.summary.episodes.features.related.usecases.GetEpisodeRelatedUseCase
 import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonViewModel
@@ -36,7 +35,6 @@ internal val episodeDetailsModule = module {
     factoryOf(::GetEpisodeSeasonUseCase)
     factoryOf(::HasSkippedEpisodesUseCase)
     factoryOf(::GetEpisodeRelatedUseCase)
-    factoryOf(::GetEpisodeStatsUseCase)
     factoryOf(::GetEpisodeCrewUseCase)
     factoryOf(::GetEpisodeSocialsUseCase)
 
@@ -65,7 +63,7 @@ internal val episodeDetailsModule = module {
         EpisodeInfoViewModel(
             show = show,
             episode = episode,
-            getStatsUseCase = get(),
+            episodesRemoteSource = get(),
             getCrewUseCase = get(),
         )
     }

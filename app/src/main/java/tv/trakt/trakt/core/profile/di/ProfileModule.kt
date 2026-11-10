@@ -18,6 +18,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLibraryUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
@@ -66,7 +67,6 @@ import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.all.AllProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
-import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase

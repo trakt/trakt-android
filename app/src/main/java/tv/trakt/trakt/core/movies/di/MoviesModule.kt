@@ -7,23 +7,18 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.anticipated.usecases.movies.DefaultGetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.DefaultGetPopularMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.DefaultGetReleasesMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.GetReleasesMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
-import tv.trakt.trakt.core.home.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 
 internal val moviesModule = module {
-    factory<GetTrendingMoviesUseCase>(
+    factory(
         qualifier = named("defaultTrendingMoviesUseCase"),
     ) {
-        DefaultGetTrendingMoviesUseCase(
+        GetTrendingMoviesUseCase(
             remoteSource = get(),
             localTrendingSource = get(),
             localMovieSource = get(),
@@ -31,10 +26,10 @@ internal val moviesModule = module {
         )
     }
 
-    factory<GetPopularMoviesUseCase>(
+    factory(
         qualifier = named("defaultPopularMoviesUseCase"),
     ) {
-        DefaultGetPopularMoviesUseCase(
+        GetPopularMoviesUseCase(
             remoteSource = get(),
             localPopularSource = get(),
             localMovieSource = get(),
@@ -42,10 +37,10 @@ internal val moviesModule = module {
         )
     }
 
-    factory<GetAnticipatedMoviesUseCase>(
+    factory(
         qualifier = named("defaultAnticipatedMoviesUseCase"),
     ) {
-        DefaultGetAnticipatedMoviesUseCase(
+        GetAnticipatedMoviesUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
             localMovieSource = get(),
@@ -53,20 +48,20 @@ internal val moviesModule = module {
         )
     }
 
-    factory<GetReleasesMoviesUseCase>(
+    factory(
         qualifier = named("defaultReleasesMoviesUseCase"),
     ) {
-        DefaultGetReleasesMoviesUseCase(
+        GetReleasesMoviesUseCase(
             remoteSource = get(),
             localSource = get(),
             localMovieSource = get(),
         )
     }
 
-    factory<GetRecommendedMoviesUseCase>(
+    factory(
         qualifier = named("defaultRecommendedMoviesUseCase"),
     ) {
-        DefaultGetRecommendedMoviesUseCase(
+        GetRecommendedMoviesUseCase(
             remoteSource = get(),
             localRecommendedSource = get(),
             localMovieSource = get(),

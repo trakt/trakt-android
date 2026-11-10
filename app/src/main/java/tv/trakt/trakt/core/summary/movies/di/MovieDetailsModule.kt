@@ -17,8 +17,6 @@ import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryViewModel
 import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.MovieInfoViewModel
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieCrewUseCase
-import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUseCase
-import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStudiosUseCase
 import tv.trakt.trakt.core.summary.movies.features.lists.MovieListsViewModel
 import tv.trakt.trakt.core.summary.movies.features.lists.usecases.GetMovieListsUseCase
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedViewModel
@@ -31,8 +29,6 @@ import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 internal val movieDetailsModule = module {
     factoryOf(::GetMovieDetailsUseCase)
     factoryOf(::GetMovieRatingsUseCase)
-    factoryOf(::GetMovieStudiosUseCase)
-    factoryOf(::GetMovieStatsUseCase)
     factoryOf(::GetMovieExtrasUseCase)
     factoryOf(::GetMovieActorsUseCase)
     factoryOf(::GetMovieDirectorUseCase)
@@ -74,8 +70,7 @@ internal val movieDetailsModule = module {
     viewModel { (movie: Movie) ->
         MovieInfoViewModel(
             movie = movie,
-            getStatsUseCase = get(),
-            getStudiosUseCase = get(),
+            moviesRemoteSource = get(),
             getCrewUseCase = get(),
             parentalGuideSource = get(),
         )

@@ -16,10 +16,10 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.remote.ReactionsRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.core.reactions.data.ReactionSource
-import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
 
@@ -29,7 +29,7 @@ internal class DeleteReactionWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     val sessionManager: SessionManager,
-    val deleteReactionsUseCase: DeleteCommentReactionUseCase,
+    val reactionsRemoteSource: ReactionsRemoteSource,
     val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     val dataChanges: DataChanges,
     val analytics: Analytics,
@@ -83,7 +83,7 @@ internal class DeleteReactionWorker(
             }
 
             withContext(Dispatchers.IO) {
-                deleteReactionsUseCase.deleteReactions(
+                reactionsRemoteSource.deleteUserReactions(
                     commentId = inputData.getInt("commentId", -1),
                 )
 

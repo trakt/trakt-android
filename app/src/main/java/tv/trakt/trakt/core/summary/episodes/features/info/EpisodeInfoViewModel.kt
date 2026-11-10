@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -23,12 +24,11 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.networking.EpisodeStatsDto
 import tv.trakt.trakt.core.summary.episodes.features.info.usecase.GetEpisodeCrewUseCase
-import tv.trakt.trakt.core.summary.episodes.features.info.usecase.GetEpisodeStatsUseCase
 
 internal class EpisodeInfoViewModel(
     private val show: Show,
     private val episode: Episode,
-    private val getStatsUseCase: GetEpisodeStatsUseCase,
+    private val episodesRemoteSource: EpisodesRemoteSource,
     private val getCrewUseCase: GetEpisodeCrewUseCase,
 ) : ViewModel() {
     private val initialState = EpisodeInfoState()
@@ -66,7 +66,7 @@ internal class EpisodeInfoViewModel(
     private suspend fun loadStats() {
         try {
             episodeStatsState.update {
-                getStatsUseCase.getStats(
+                episodesRemoteSource.getStats(
                     showId = show.ids.trakt,
                     season = episode.season,
                     episode = episode.number,

@@ -1,10 +1,10 @@
-package tv.trakt.trakt.app.core.auth.usecases
+package tv.trakt.trakt.common.core.user.usecases
 
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.model.User
 
-internal class LoadUserProfileUseCase(
+class LoadUserProfileUseCase(
     private val remoteSource: UserRemoteSource,
     private val sessionManager: SessionManager,
 ) {
