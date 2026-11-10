@@ -54,20 +54,10 @@ internal class FavoriteMovieContextViewModel(
     private val isWatchedState = MutableStateFlow(initialState.isWatched)
     private val loadingFavoriteState = MutableStateFlow(initialState.loadingFavorite)
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
-    private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
-        loadUser()
         loadData()
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            userState.update {
-                sessionManager.getProfile()
-            }
-        }
     }
 
     private fun loadData() {
@@ -199,7 +189,7 @@ internal class FavoriteMovieContextViewModel(
         isWatchedState,
         loadingFavoriteState,
         loadingWatchedState,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
     ) { state ->
         FavoriteMovieContextState(

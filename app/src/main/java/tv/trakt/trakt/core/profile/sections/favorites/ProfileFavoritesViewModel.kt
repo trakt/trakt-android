@@ -46,6 +46,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting.Companion.RecentlyAdded
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.core.profile.helpers.matches
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -69,12 +70,15 @@ internal class ProfileFavoritesViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.PROFILE_FAVORITES,
+    )
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -211,19 +215,7 @@ internal class ProfileFavoritesViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_FAVORITES)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_FAVORITES)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_FAVORITES)
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -232,7 +224,7 @@ internal class ProfileFavoritesViewModel(
         itemsState,
         navigateShow,
         navigateMovie,
-        collapseState,
+        collapse.state,
         errorState,
         userState,
         collectionStateProvider.stateFlow,

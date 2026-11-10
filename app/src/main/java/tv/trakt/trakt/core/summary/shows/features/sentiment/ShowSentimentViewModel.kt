@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -42,9 +43,11 @@ internal class ShowSentimentViewModel(
     private val sentimentState = MutableStateFlow(initialState.sentiment)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_SENTIMENT))
-
-    private var collapseJob: Job? = null
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.SHOW_SENTIMENT,
+    )
 
     init {
         loadData()
@@ -100,14 +103,7 @@ internal class ShowSentimentViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_SENTIMENT)
-                else -> collapsingManager.expand(CollapsingKey.SHOW_SENTIMENT)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -116,7 +112,7 @@ internal class ShowSentimentViewModel(
         sentimentState,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
     ) { state ->
         ShowSentimentState(
             user = state[0] as User?,

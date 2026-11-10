@@ -62,7 +62,6 @@ internal class AllFavoritesViewModel(
 ) : ViewModel() {
     private val initialState = AllFavoritesState()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow<MediaMode?>(filterManager.getFilter().mode)
     private val sortingState = MutableStateFlow(initialState.sorting)
@@ -75,7 +74,6 @@ internal class AllFavoritesViewModel(
     private var processingJob: Job? = null
 
     init {
-        loadUser()
         loadData()
         observeData()
 
@@ -97,20 +95,6 @@ internal class AllFavoritesViewModel(
 
         collectionStateProvider
             .launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     fun loadData(
@@ -255,7 +239,7 @@ internal class AllFavoritesViewModel(
         sortingState,
         navigateShow,
         navigateMovie,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
         collectionStateProvider.stateFlow,
     ) { state ->

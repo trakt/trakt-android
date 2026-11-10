@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtrasUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -34,10 +35,12 @@ internal class MovieExtrasViewModel(
     private val filterItemsState = MutableStateFlow(initialState.items)
     private val filtersState = MutableStateFlow(initialState.filters)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_EXTRAS))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.MOVIE_EXTRAS,
+    )
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -105,15 +108,7 @@ internal class MovieExtrasViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_EXTRAS)
-                else -> collapsingManager.expand(CollapsingKey.MOVIE_EXTRAS)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -121,7 +116,7 @@ internal class MovieExtrasViewModel(
         filterItemsState,
         filtersState,
         loadingState,
-        collapseState,
+        collapse.state,
         errorState,
     ) { state ->
         MovieExtrasState(

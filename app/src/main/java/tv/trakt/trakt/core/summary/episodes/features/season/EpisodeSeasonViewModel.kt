@@ -42,6 +42,7 @@ import tv.trakt.trakt.core.summary.episodes.features.season.usecases.GetEpisodeS
 import tv.trakt.trakt.core.summary.episodes.features.season.usecases.HasSkippedEpisodesUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
@@ -70,11 +71,13 @@ internal class EpisodeSeasonViewModel(
     private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.EPISODE_SEASON))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.EPISODE_SEASON,
+    )
     private val watchedUntilPromptState = MutableStateFlow(initialState.watchedUntilPrompt)
     private val spoilersHiddenState = MutableStateFlow(initialState.spoilersHidden)
-
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -339,14 +342,7 @@ internal class EpisodeSeasonViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.EPISODE_SEASON)
-                else -> collapsingManager.expand(CollapsingKey.EPISODE_SEASON)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -358,7 +354,7 @@ internal class EpisodeSeasonViewModel(
         loadingEpisodeState,
         infoState,
         errorState,
-        collapseState,
+        collapse.state,
         watchedUntilPromptState,
         spoilersHiddenState,
     ) { state ->

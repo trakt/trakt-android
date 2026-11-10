@@ -52,7 +52,6 @@ internal class AllActivitySocialViewModel(
 ) : ViewModel() {
     private val initialState = AllActivityState()
 
-    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsFilterState = MutableStateFlow(filterManager.getFilter())
     private val usersFilterState = MutableStateFlow(initialState.usersFilter)
@@ -67,26 +66,11 @@ internal class AllActivitySocialViewModel(
     private var processingJob: Job? = null
 
     init {
-        loadUser()
         loadInitialData()
 
         analytics.logScreenView(
             screenName = "all_activity_social",
         )
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadInitialData() {
@@ -296,7 +280,7 @@ internal class AllActivitySocialViewModel(
         navigateMovie,
         loadingState,
         loadingMoreState,
-        userState,
+        sessionManager.observeProfile(),
         errorState,
     ) { state ->
         AllActivityState(

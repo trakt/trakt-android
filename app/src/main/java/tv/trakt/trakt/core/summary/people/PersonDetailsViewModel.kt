@@ -70,7 +70,6 @@ internal class PersonDetailsViewModel(
     private val loadingDetailsState = MutableStateFlow(initialState.loadingDetails)
     private val loadingCreditsState = MutableStateFlow(initialState.loadingCredits)
 
-    private val userState = MutableStateFlow(initialState.user)
     private val personDetailsState = MutableStateFlow(initialState.personDetails)
     private val personBackdropState = MutableStateFlow(destination.backdropUrl)
     private val preferredCreditsFilterState = MutableStateFlow(destination.creditsFilter)
@@ -87,7 +86,6 @@ internal class PersonDetailsViewModel(
     private var creditsJob: Job? = null
 
     init {
-        loadUser()
         loadData()
         observeSpoilers()
         observeCollection()
@@ -121,20 +119,6 @@ internal class PersonDetailsViewModel(
             .distinctUntilChanged()
             .onEach { enabled -> spoilersHiddenState.update { enabled } }
             .launchIn(viewModelScope)
-    }
-
-    private fun loadUser() {
-        viewModelScope.launch {
-            try {
-                userState.update {
-                    sessionManager.getProfile()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
     }
 
     private fun loadData() {
@@ -304,7 +288,7 @@ internal class PersonDetailsViewModel(
 
     @Suppress("UNCHECKED_CAST")
     val state = combine(
-        userState,
+        sessionManager.observeProfile(),
         loadingDetailsState,
         loadingCreditsState,
         personDetailsState,

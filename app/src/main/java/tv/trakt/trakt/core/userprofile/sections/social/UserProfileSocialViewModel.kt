@@ -24,6 +24,7 @@ import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Followers
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Following
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Requests
 import tv.trakt.trakt.core.userprofile.sections.social.usecases.GetUserProfileSocialUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -38,10 +39,13 @@ internal class UserProfileSocialViewModel(
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.USER_PROFILE_SOCIAL))
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.USER_PROFILE_SOCIAL,
+    )
 
     private var loadDataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -80,14 +84,7 @@ internal class UserProfileSocialViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.USER_PROFILE_SOCIAL)
-                else -> collapsingManager.expand(CollapsingKey.USER_PROFILE_SOCIAL)
-            }
-        }
+        collapse.set(collapsed)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -96,7 +93,7 @@ internal class UserProfileSocialViewModel(
         filterState,
         loadingState,
         errorState,
-        collapseState,
+        collapse.state,
     ) { state ->
         UserProfileSocialState(
             items = state[0] as ImmutableList<User>?,

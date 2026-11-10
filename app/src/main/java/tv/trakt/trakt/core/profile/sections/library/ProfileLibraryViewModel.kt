@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_SECTION_LIMIT
 import tv.trakt.trakt.core.profile.helpers.matches
 import tv.trakt.trakt.core.profile.sections.library.model.LibraryFilter
 import tv.trakt.trakt.core.profile.sections.library.usecases.GetCollectionLimitServersUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -65,12 +66,15 @@ internal class ProfileLibraryViewModel(
 
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.PROFILE_LIBRARY,
+    )
     private val errorState = MutableStateFlow(initialState.error)
     private val collectionLimitState = MutableStateFlow(initialState.collectionLimitServers)
 
     private var loadDataJob: Job? = null
-    private var collapseJob: Job? = null
     private var collectionLimitJob: Job? = null
     private var isVipUpsellSeenLogged = false
 
@@ -236,26 +240,14 @@ internal class ProfileLibraryViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_LIBRARY)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_LIBRARY)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_LIBRARY)
+        collapse.set(collapsed)
     }
 
     val state = combine(
         loadingState,
         itemsState,
         filterState,
-        collapseState,
+        collapse.state,
         errorState,
         userState,
         collectionLimitState,

@@ -35,6 +35,7 @@ import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUse
 import tv.trakt.trakt.core.discover.usecases.GetDiscoverMediaUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -50,13 +51,22 @@ internal class DiscoverPopularViewModel(
     private val initialState = DiscoverPopularState()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = {
+            when (filterState.value.mode) {
+                Media -> CollapsingKey.DISCOVER_MEDIA_POPULAR
+                Shows -> CollapsingKey.DISCOVER_SHOWS_POPULAR
+                Movies -> CollapsingKey.DISCOVER_MOVIES_POPULAR
+            }
+        },
+    )
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -75,7 +85,7 @@ internal class DiscoverPopularViewModel(
         filterManager.observeFilter()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
+                collapse.refresh()
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -139,36 +149,13 @@ internal class DiscoverPopularViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                Media -> CollapsingKey.DISCOVER_MEDIA_POPULAR
-                Shows -> CollapsingKey.DISCOVER_SHOWS_POPULAR
-                Movies -> CollapsingKey.DISCOVER_MOVIES_POPULAR
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                Media -> CollapsingKey.DISCOVER_MEDIA_POPULAR
-                Shows -> CollapsingKey.DISCOVER_SHOWS_POPULAR
-                Movies -> CollapsingKey.DISCOVER_MOVIES_POPULAR
-            },
-        )
+        collapse.set(collapsed)
     }
 
     val state = combine(
         itemsState,
         filterState,
-        collapseState,
+        collapse.state,
         loadingState,
         errorState,
     ) { state ->

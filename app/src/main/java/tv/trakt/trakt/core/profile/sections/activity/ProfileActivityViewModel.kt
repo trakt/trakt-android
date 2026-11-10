@@ -59,6 +59,7 @@ import tv.trakt.trakt.core.profile.sections.activity.usecases.RateProfileRatingU
 import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
 import tv.trakt.trakt.core.profile.sections.activity.usecases.reconciledWith
 import tv.trakt.trakt.core.profile.sections.activity.usecases.withItemRating
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -88,7 +89,11 @@ internal class ProfileActivityViewModel(
     private val commentItemsState = MutableStateFlow(initialState.commentItems)
     private val reactionsState = MutableStateFlow(initialState.reactions)
     private val filterState = MutableStateFlow(initialState.filter)
-    private val collapseState = MutableStateFlow(isCollapsed())
+    private val collapse = CollapseDelegate(
+        manager = collapsingManager,
+        scope = viewModelScope,
+        key = CollapsingKey.PROFILE_ACTIVITY,
+    )
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -97,7 +102,6 @@ internal class ProfileActivityViewModel(
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
 
     private var dataJob: Job? = null
-    private var collapseJob: Job? = null
     private var processingJob: Job? = null
 
     init {
@@ -331,19 +335,7 @@ internal class ProfileActivityViewModel(
     }
 
     fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_ACTIVITY)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_ACTIVITY)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_ACTIVITY)
+        collapse.set(collapsed)
     }
 
     fun navigateToShow(show: Show) {
@@ -407,7 +399,7 @@ internal class ProfileActivityViewModel(
         navigateEpisode,
         navigateMovie,
         filterState,
-        collapseState,
+        collapse.state,
         errorState,
     ) { state ->
         ProfileActivityState(
