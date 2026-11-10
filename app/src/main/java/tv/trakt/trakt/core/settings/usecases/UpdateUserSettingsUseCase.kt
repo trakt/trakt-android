@@ -51,6 +51,13 @@ internal class UpdateUserSettingsUseCase(
         }
     }
 
+    suspend fun updateHideSpoilers(hidden: Boolean) {
+        remoteSource.updateHideSpoilers(hidden)
+        remoteSource.getProfile().let {
+            sessionManager.saveProfile(it)
+        }
+    }
+
     suspend fun updatePrivateAccount(enabled: Boolean) {
         remoteSource.updatePrivateAccount(enabled)
         remoteSource.getProfile().let {

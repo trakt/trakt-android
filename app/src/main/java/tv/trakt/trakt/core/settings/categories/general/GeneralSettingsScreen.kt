@@ -50,6 +50,7 @@ internal fun GeneralSettingsScreen(
 
     GeneralSettingsContent(
         state = state,
+        onEnableSpoilers = viewModel::enableSpoilers,
         onEnableMultiplePlays = viewModel::enableMultiplePlays,
         onEnableRatePrompts = viewModel::enableRatePrompts,
         onBlockedUsersClick = onNavigateBlockedUsers,
@@ -84,6 +85,7 @@ internal fun GeneralSettingsScreen(
 private fun GeneralSettingsContent(
     state: GeneralSettingsState,
     modifier: Modifier = Modifier,
+    onEnableSpoilers: (Boolean) -> Unit = { },
     onEnableMultiplePlays: (Boolean) -> Unit = { },
     onEnableRatePrompts: (Boolean) -> Unit = { },
     onBlockedUsersClick: () -> Unit = { },
@@ -92,6 +94,10 @@ private fun GeneralSettingsContent(
     onLogoutClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
+    val spoilers = remember(state.user?.settings) {
+        state.user?.settings?.hideSpoilers != true
+    }
+
     val multiplePlays = remember(state.user?.settings) {
         state.user?.settings?.watchOnlyOnce != true
     }
@@ -111,6 +117,18 @@ private fun GeneralSettingsContent(
         SettingsSegmentedGroup(
             title = stringResource(R.string.header_behavior),
         ) {
+            item {
+                SettingsSwitchField(
+                    text = stringResource(R.string.text_show_spoilers),
+                    description = stringResource(R.string.description_behavior),
+                    checked = spoilers,
+                    enabled = enabled,
+                    onClick = {
+                        onEnableSpoilers(!spoilers)
+                    },
+                )
+            }
+
             item {
                 SettingsSwitchField(
                     text = stringResource(R.string.text_settings_enable_multiple_plays),

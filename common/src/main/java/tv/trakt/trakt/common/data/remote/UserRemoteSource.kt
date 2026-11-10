@@ -6,6 +6,10 @@ import org.openapitools.client.models.PostUsersReportRequest
 import org.openapitools.client.models.PutUsersCoverRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsing
+import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsingSpoilers
+import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsingSpoilers.Episodes
+import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsingSpoilers.Movies
+import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsingSpoilers.Shows
 import org.openapitools.client.models.PutUsersSaveSettingsRequestUser
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SlugId
@@ -154,6 +158,22 @@ class UserRemoteSource(
             putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
                 browsing = PutUsersSaveSettingsRequestBrowsing(
                     showRatingPrompt = enabled,
+                ),
+            ),
+        )
+
+        cacheMarkerProvider.invalidate()
+    }
+
+    suspend fun updateHideSpoilers(hidden: Boolean) {
+        usersApi.putUsersSaveSettings(
+            putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
+                browsing = PutUsersSaveSettingsRequestBrowsing(
+                    spoilers = PutUsersSaveSettingsRequestBrowsingSpoilers(
+                        episodes = if (hidden) Episodes.HIDE else Episodes.SHOW,
+                        shows = if (hidden) Shows.HIDE else Shows.SHOW,
+                        movies = if (hidden) Movies.HIDE else Movies.SHOW,
+                    ),
                 ),
             ),
         )
