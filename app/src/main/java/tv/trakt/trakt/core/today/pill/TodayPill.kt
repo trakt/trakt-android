@@ -213,7 +213,10 @@ private fun TodayPillBadge(
         }
     }
 
-    val shape = RoundedCornerShape(50)
+    val label = when {
+        count > 99 -> "99+"
+        else -> count.toString()
+    }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -222,16 +225,22 @@ private fun TodayPillBadge(
                 scaleX = scale.value
                 scaleY = scale.value
             }
-            .heightIn(min = BadgeSize)
-            .widthIn(min = BadgeSize)
-            .background(TraktTheme.colors.accent, shape)
-            .padding(horizontal = BadgePadding),
+            .then(
+                if (label.length == 1) {
+                    Modifier
+                        .size(BadgeSize)
+                        .background(TraktTheme.colors.accent, CircleShape)
+                } else {
+                    Modifier
+                        .heightIn(min = BadgeSize)
+                        .widthIn(min = BadgeSize)
+                        .background(TraktTheme.colors.accent, RoundedCornerShape(50))
+                        .padding(horizontal = BadgePadding)
+                },
+            ),
     ) {
         Text(
-            text = when {
-                count > 99 -> "99+"
-                else -> count.toString()
-            },
+            text = label,
             style = TraktTheme.typography.meta.copy(
                 fontSize = 10.sp,
             ),
@@ -256,7 +265,7 @@ private fun Preview() {
             )
             TodayPillContent(
                 posters = persistentListOf("a"),
-                unseenCount = 12,
+                unseenCount = 7,
                 modifier = Modifier.padding(start = 24.dp),
                 onClick = {},
             )
