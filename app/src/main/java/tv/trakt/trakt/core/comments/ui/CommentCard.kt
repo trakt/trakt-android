@@ -109,6 +109,7 @@ internal fun CommentCard(
     repliesCountEnabled: Boolean = true,
     repliesLoading: Boolean = false,
     progressTotal: Int? = null,
+    mediaWatched: Boolean = false,
     gifLayout: CommentGifLayout = CommentGifLayout.Bottom,
     gifPaused: Boolean = false,
     onClick: (() -> Unit)? = null,
@@ -145,6 +146,7 @@ internal fun CommentCard(
             repliesCountEnabled = repliesCountEnabled,
             repliesLoading = repliesLoading,
             progressTotal = progressTotal,
+            mediaWatched = mediaWatched,
             gifLayout = gifLayout,
             gifPaused = gifPaused,
             onRequestReactions = onRequestReactions,
@@ -221,6 +223,7 @@ private fun CommentCardContent(
     repliesCountEnabled: Boolean,
     repliesLoading: Boolean,
     progressTotal: Int?,
+    mediaWatched: Boolean,
     gifLayout: CommentGifLayout,
     gifPaused: Boolean,
     modifier: Modifier = Modifier,
@@ -264,7 +267,7 @@ private fun CommentCardContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        val spoilerBlurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed
+        val spoilerBlurred = comment.hasSpoilers && !isUserComment && !mediaWatched && !isSpoilerRevealed
         val body = @Composable {
             CommentBody(
                 text = translations.displayText(comment),
@@ -371,6 +374,7 @@ private fun CommentCardContent(
                 userReactions = userReactions,
                 translations = translations,
                 progressTotal = progressTotal,
+                mediaWatched = mediaWatched,
                 onReactionClick = onReactionClick,
                 onUserClick = onUserClick,
                 onTranslateClick = onTranslateClick,
@@ -434,6 +438,7 @@ private fun CommentRepliesContent(
     userReactions: ImmutableMap<Int, Reaction?>,
     translations: CommentTranslations,
     progressTotal: Int?,
+    mediaWatched: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -457,6 +462,7 @@ private fun CommentRepliesContent(
                 userReaction = userReactions[reply.id],
                 translations = translations,
                 progressTotal = progressTotal,
+                mediaWatched = mediaWatched,
                 onUserClick = onUserClick,
                 onTranslateClick = onTranslateClick,
                 onRevealSpoiler = onRevealSpoiler,
@@ -786,7 +792,8 @@ fun CommentPreview() {
                 CommentCard(
                     onClick = {},
                     user = null,
-                    comment = PreviewData.comment1.copy(userRating = 8),
+                    comment = PreviewData.comment1.copy(userRating = 8, isSpoiler = true),
+                    mediaWatched = true,
                     replies = listOf(PreviewData.comment1).toImmutableList(),
                     progressTotal = 10,
                     modifier = Modifier

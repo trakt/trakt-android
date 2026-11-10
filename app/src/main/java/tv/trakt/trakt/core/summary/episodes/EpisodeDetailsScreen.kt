@@ -655,6 +655,7 @@ internal fun EpisodeDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             gifPaused = listState.isScrollInProgress,
+                            mediaWatched = state.episodeProgress?.watched == true,
                             onMoreClick = onMoreCommentsClick,
                             onUserClick = onNavigateToUser,
                             modifier = Modifier

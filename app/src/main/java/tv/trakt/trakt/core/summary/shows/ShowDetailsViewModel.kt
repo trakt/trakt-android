@@ -272,6 +272,7 @@ internal class ShowDetailsViewModel(
                             aired = showState.value?.airedEpisodes ?: 0,
                             plays = progress?.plays,
                             playsWithoutSpecials = progress?.playsWithoutSpecials,
+                            playsDistinctWithoutSpecials = progress?.playsDistinctWithoutSpecials,
                             inWatchlist = watchlist.contains(showId),
                             inLists = lists.isNotEmpty(),
                             watchedEpisodes = progress?.watchedEpisodesWithoutSpecials ?: 0,
@@ -479,6 +480,7 @@ internal class ShowDetailsViewModel(
                         aired = showState.value?.airedEpisodes ?: 0,
                         plays = progress?.plays,
                         playsWithoutSpecials = progress?.playsWithoutSpecials,
+                        playsDistinctWithoutSpecials = progress?.playsDistinctWithoutSpecials,
                         inWatchlist = false,
                         watchedEpisodes = progress?.watchedEpisodesWithoutSpecials ?: 0,
                     )
