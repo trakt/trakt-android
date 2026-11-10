@@ -16,6 +16,7 @@ import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsScreen
 import tv.trakt.trakt.core.settings.categories.streaming.StreamingSettingsViewModel
 import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersScreen
 import tv.trakt.trakt.core.settings.features.history.HistoryAnalysisScreen
+import tv.trakt.trakt.core.settings.features.usage.UsageScreen
 import tv.trakt.trakt.core.settings.model.SettingsCategory
 
 @Serializable
@@ -48,18 +49,23 @@ internal data object BlockedUsersDestination
 @Serializable
 internal data object HistoryAnalysisDestination
 
+@Serializable
+internal data object UsageDestination
+
 internal fun NavGraphBuilder.settingsScreen(
     onNavigateHome: () -> Unit,
     onNavigateCategory: (SettingsCategory) -> Unit,
     onNavigateYounify: () -> Unit,
     onNavigateBlockedUsers: () -> Unit,
     onNavigateHistoryAnalysis: () -> Unit,
+    onNavigateUsage: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<SettingsDestination> {
         SettingsScreen(
             viewModel = koinViewModel(),
             onNavigateCategory = onNavigateCategory,
+            onNavigateUsage = onNavigateUsage,
             onNavigateBack = onNavigateBack,
         )
     }
@@ -129,6 +135,13 @@ internal fun NavGraphBuilder.settingsScreen(
             onNavigateBack = onNavigateBack,
         )
     }
+
+    composable<UsageDestination> {
+        UsageScreen(
+            viewModel = koinViewModel(),
+            onNavigateBack = onNavigateBack,
+        )
+    }
 }
 
 internal fun NavController.navigateToSettings() {
@@ -154,4 +167,8 @@ internal fun NavController.navigateToBlockedUsers() {
 
 internal fun NavController.navigateToHistoryAnalysis() {
     navigate(route = HistoryAnalysisDestination)
+}
+
+internal fun NavController.navigateToUsage() {
+    navigate(route = UsageDestination)
 }

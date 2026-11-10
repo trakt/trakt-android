@@ -17,6 +17,8 @@ data class TraktColors(
     val textSecondary: Color = Color.Unspecified,
     val skeletonContainer: Color = Color.Unspecified,
     val skeletonShimmer: Color = Color.Unspecified,
+    val skeletonPanelContainer: Color = Color.Unspecified,
+    val skeletonPanelShimmer: Color = Color.Unspecified,
     val tagChipContainer: Color = Color.Unspecified,
     val tagChipContainerLight: Color = Color.Unspecified,
     val tagChipContent: Color = Color.Unspecified,
