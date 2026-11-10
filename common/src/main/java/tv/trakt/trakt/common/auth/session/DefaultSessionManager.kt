@@ -15,7 +15,7 @@ import tv.trakt.trakt.common.model.User
 
 // Token storage versioning.
 // Can be used to force clearing old data when the structure changes.
-private const val KEY_VERSION = 9
+private const val KEY_VERSION = 10
 
 private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile_$KEY_VERSION")
 private val KEY_USER_PROFILE_IMAGE = stringPreferencesKey("key_user_profile_image_$KEY_VERSION")
@@ -31,6 +31,10 @@ internal class DefaultSessionManager(
     override suspend fun clear() {
         tokenProvider.clear()
         dataStore.edit { it.clear() }
+    }
+
+    private suspend fun clearProfile() {
+        dataStore.edit { it.remove(KEY_USER_PROFILE) }
     }
 
     override suspend fun saveProfile(user: User) {
@@ -49,7 +53,7 @@ internal class DefaultSessionManager(
             Timber.e(it, "Failed to decode user profile")
         }
         return decodedUserData.getOrElse {
-            clear()
+            clearProfile()
             null
         }
     }
@@ -73,7 +77,7 @@ internal class DefaultSessionManager(
             }.onFailure {
                 Timber.e(it, "Failed to decode user profile")
             }.getOrElse {
-                clear()
+                clearProfile()
                 null
             }
         }.distinctUntilChanged()

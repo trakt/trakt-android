@@ -35,6 +35,10 @@ internal class FreeSessionManager(
         dataStore.edit { it.clear() }
     }
 
+    private suspend fun clearProfile() {
+        dataStore.edit { it.remove(KEY_USER_PROFILE) }
+    }
+
     override suspend fun saveProfile(user: User) {
         val userData = Json.encodeToString(
             user.copy(
@@ -61,7 +65,7 @@ internal class FreeSessionManager(
             Timber.e(it, "Failed to decode user profile")
         }
         return decodedUserData.getOrElse {
-            clear()
+            clearProfile()
             null
         }
     }
@@ -85,7 +89,7 @@ internal class FreeSessionManager(
             }.onFailure {
                 Timber.e(it, "Failed to decode user profile")
             }.getOrElse {
-                clear()
+                clearProfile()
                 null
             }
         }.distinctUntilChanged()
