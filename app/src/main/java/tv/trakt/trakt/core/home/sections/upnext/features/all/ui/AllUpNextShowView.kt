@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.chips.EpisodeStatusChip
@@ -56,8 +57,11 @@ internal fun AllUpNextShowView(
         },
         subtitle = item.progress.nextEpisode?.seasonEpisodeString() ?: "N/A",
         contentImageUrl = item.show.images?.getPosterUrl(),
-        containerImageUrl = item.progress.nextEpisode?.images?.getScreenshotUrl(Images.Size.THUMB)
-            ?: item.show.images?.getFanartUrl(Images.Size.THUMB),
+        containerImageUrl = when {
+            item.progress.nextEpisode?.isSpoilerHidden() == true -> item.show.images?.getFanartUrl(Images.Size.THUMB)
+            else -> item.progress.nextEpisode?.images?.getScreenshotUrl(Images.Size.THUMB)
+                ?: item.show.images?.getFanartUrl(Images.Size.THUMB)
+        },
         onClick = onClick,
         onLongClick = onLongClick,
         onImageClick = onShowClick,

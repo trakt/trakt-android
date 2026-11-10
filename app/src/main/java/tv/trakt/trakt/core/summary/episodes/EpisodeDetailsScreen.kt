@@ -96,7 +96,9 @@ import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.extensions.spoilerFreeTitle
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
@@ -321,7 +323,7 @@ internal fun EpisodeDetailsScreen(
     DateSelectionSheet(
         active = dateSheet,
         title = state.show?.title ?: "",
-        subtitle = state.episode?.title ?: "",
+        subtitle = state.episode?.spoilerFreeTitle() ?: "",
         nowWatchingVisible = true,
         onCheckIn = viewModel::addToCheckIn,
         onResult = viewModel::addToWatched,
@@ -346,7 +348,7 @@ internal fun EpisodeDetailsScreen(
     MediaSocialActivitySheet(
         activity = socialActivitySheet,
         recommendedByPath = episodePath(state.show, state.episode),
-        mediaTitle = state.episode?.title ?: "",
+        mediaTitle = state.episode?.spoilerFreeTitle() ?: "",
         onUserClick = {
             onNavigateToUser(it)
         },
@@ -577,15 +579,20 @@ internal fun EpisodeDetailsContent(
                 }
 
                 item {
-                    DetailsOverview(
-                        overview = state.episode.overview,
-                        overviewTranslation = state.episodeTranslation?.overview,
-                        modifier = Modifier
-                            .alpha(ratingAlphaMask)
-                            .fillMaxWidth()
-                            .padding(top = 18.dp)
-                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                    )
+                    SpoilerBlur(
+                        hidden = state.spoilersHidden,
+                        type = MediaType.Episode,
+                    ) {
+                        DetailsOverview(
+                            overview = state.episode.overview,
+                            overviewTranslation = state.episodeTranslation?.overview,
+                            modifier = Modifier
+                                .alpha(ratingAlphaMask)
+                                .fillMaxWidth()
+                                .padding(top = 18.dp)
+                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                        )
+                    }
                 }
 
                 if (state.user != null && !state.user.isVip) {

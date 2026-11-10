@@ -8,7 +8,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -46,6 +49,14 @@ internal class ShowActorsViewModel(
 
     init {
         loadData()
+        observeSpoilers()
+    }
+
+    private fun observeSpoilers() {
+        getSpoilerStateUseCase.observeShowHidden(show.ids.trakt)
+            .onEach { hidden -> spoilersHiddenState.update { hidden } }
+            .catch { error -> Timber.recordError(error) }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {

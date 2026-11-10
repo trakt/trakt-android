@@ -11,8 +11,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -86,6 +88,7 @@ internal class PersonDetailsViewModel(
     init {
         loadUser()
         loadData()
+        observeSpoilers()
         observeCollection()
         observeFilter()
 
@@ -111,12 +114,20 @@ internal class PersonDetailsViewModel(
         personDetailsState.value?.let { loadPersonCredits(it.ids.trakt) }
     }
 
+    private fun observeSpoilers() {
+        sessionManager.observeProfile()
+            .map { it?.settings?.hideSpoilers == true }
+            .distinctUntilChanged()
+            .onEach { enabled -> spoilersHiddenState.update { enabled } }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadUser() {
         viewModelScope.launch {
             try {
-                val user = sessionManager.getProfile()
-                userState.update { user }
-                spoilersHiddenState.update { user?.settings?.hideSpoilers == true }
+                userState.update {
+                    sessionManager.getProfile()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

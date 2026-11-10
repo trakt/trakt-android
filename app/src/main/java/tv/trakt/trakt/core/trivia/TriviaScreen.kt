@@ -42,6 +42,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerReveal
 import tv.trakt.trakt.core.trivia.model.TriviaCategory
 import tv.trakt.trakt.core.trivia.model.TriviaFilter
 import tv.trakt.trakt.core.trivia.ui.TriviaCategoryDropdown
@@ -145,9 +146,13 @@ private fun TriviaContent(
                     items = triviaItems,
                     key = { it.id },
                 ) { fact ->
+                    val revealSpoiler = LocalSpoilerReveal.current
+
                     TriviaFactCard(
                         fact = fact,
                         spoilerVisible = (state.filter == null),
+                        spoilerHidden = state.spoilersHidden,
+                        onSpoilerReveal = { state.mediaType?.let(revealSpoiler) },
                         onPersonLinkClick = onPersonLinkClick,
                         modifier = Modifier
                             .padding(bottom = 16.dp)

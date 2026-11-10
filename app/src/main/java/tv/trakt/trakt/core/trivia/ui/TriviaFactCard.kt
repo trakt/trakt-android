@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -32,6 +33,8 @@ internal fun TriviaFactCard(
     fact: TriviaFact,
     modifier: Modifier = Modifier,
     spoilerVisible: Boolean = false,
+    spoilerHidden: Boolean = false,
+    onSpoilerReveal: () -> Unit = {},
     onPersonLinkClick: (SlugId) -> Unit = {},
 ) {
     val personLinkUriHandler = rememberAppLinkUriHandler(onPersonClick = onPersonLinkClick)
@@ -63,12 +66,17 @@ internal fun TriviaFactCard(
             }
 
             val linkColor = TraktTheme.colors.textPrimary
-            CompositionLocalProvider(LocalUriHandler provides personLinkUriHandler) {
-                Text(
-                    text = remember(fact.text, linkColor) { fact.text.toMarkdownText(linkColor) },
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.35.em),
-                )
+            SpoilerBlur(
+                hidden = spoilerHidden && fact.spoiler,
+                onReveal = onSpoilerReveal,
+            ) {
+                CompositionLocalProvider(LocalUriHandler provides personLinkUriHandler) {
+                    Text(
+                        text = remember(fact.text, linkColor) { fact.text.toMarkdownText(linkColor) },
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.35.em),
+                    )
+                }
             }
         }
     }

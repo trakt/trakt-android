@@ -65,6 +65,7 @@ import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
 import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.features.translation.model.OnDeviceLanguages
@@ -222,7 +223,11 @@ private fun CommentReplyCardContent(
             )
         }
 
-        val spoilerBlurred = comment.hasSpoilers && !isUserReply && !mediaWatched && !showSpoilers
+        val spoilersHidden = LocalSpoilerState.current.enabled
+        val spoilerBlurred = (comment.hasSpoilers || spoilersHidden) &&
+            !isUserReply &&
+            !mediaWatched &&
+            !showSpoilers
         CommentReplyBody(
             text = markdownText,
             blurred = spoilerBlurred,

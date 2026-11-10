@@ -45,6 +45,7 @@ import tv.trakt.trakt.core.summary.episodes.features.season.ui.EpisodeSeasonList
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilSheet
+import tv.trakt.trakt.helpers.extensions.spoilerFreeTitle
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
@@ -170,7 +171,7 @@ internal fun EpisodeSeasonView(
     DateSelectionSheet(
         active = dateSheet != null,
         title = state.show?.title ?: "",
-        subtitle = dateSheet?.episode?.title ?: "",
+        subtitle = dateSheet?.episode?.spoilerFreeTitle() ?: "",
         onResult = { result ->
             dateSheet?.let {
                 viewModel.addToWatched(

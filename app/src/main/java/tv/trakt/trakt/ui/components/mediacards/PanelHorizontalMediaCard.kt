@@ -59,8 +59,10 @@ import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.SpoilerBlur
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.HorizontalEpisodeImageAspectRatio
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
@@ -78,6 +80,7 @@ internal fun PanelHorizontalMediaCard(
     watched: Boolean = false,
     watchlist: Boolean = false,
     enabled: Boolean = true,
+    titleSpoilerHidden: Boolean = false,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
@@ -280,13 +283,18 @@ internal fun PanelHorizontalMediaCard(
                         verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.weight(1F),
                     ) {
-                        Text(
-                            text = title,
-                            style = TraktTheme.typography.cardTitle.copy(fontSize = 14.sp),
-                            color = TraktTheme.colors.textPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
+                        SpoilerBlur(
+                            hidden = titleSpoilerHidden,
+                            type = MediaType.Episode,
+                        ) {
+                            Text(
+                                text = title,
+                                style = TraktTheme.typography.cardTitle.copy(fontSize = 14.sp),
+                                color = TraktTheme.colors.textPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
 
                         Text(
                             text = subtitle,

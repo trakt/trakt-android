@@ -56,6 +56,7 @@ internal fun EpisodeListItem(
         containerImageUrl = null,
         more = (episode.isWatched || isReleased) && !episode.isLoading,
         watched = episode.isWatched,
+        titleSpoilerHidden = spoilersHidden && !episode.isWatched,
         footerContent = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

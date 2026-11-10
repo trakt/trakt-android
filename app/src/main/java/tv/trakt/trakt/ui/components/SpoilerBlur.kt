@@ -17,6 +17,8 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.ui.composables.LocalSpoilerReveal
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -37,10 +39,6 @@ internal fun SpoilerBlur(
 
     Box(
         modifier = modifier
-            .onClick(enabled = isHidden) {
-                revealed = true
-                onReveal()
-            }
             .then(
                 when {
                     !isHidden -> Modifier
@@ -50,7 +48,36 @@ internal fun SpoilerBlur(
             ),
     ) {
         content()
+
+        // Sits above the content so its own click handlers cannot swallow the reveal tap.
+        if (isHidden) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .onClick {
+                        revealed = true
+                        onReveal()
+                    },
+            )
+        }
     }
+}
+
+@Composable
+internal fun SpoilerBlur(
+    hidden: Boolean,
+    type: MediaType,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    val onReveal = LocalSpoilerReveal.current
+
+    SpoilerBlur(
+        hidden = hidden,
+        onReveal = { onReveal(type) },
+        modifier = modifier,
+        content = content,
+    )
 }
 
 @PreviewTraktLightDark

@@ -55,8 +55,11 @@ internal fun DetailsHeader(
     val isReleased = episode.rememberReleased()
 
     DetailsHeader(
-        title = episode.title,
-        titleTranslation = episodeTranslation?.title,
+        title = when {
+            spoilersHidden -> episode.seasonEpisodeString()
+            else -> episode.title
+        },
+        titleTranslation = episodeTranslation?.title.takeUnless { spoilersHidden },
         titleHeader = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

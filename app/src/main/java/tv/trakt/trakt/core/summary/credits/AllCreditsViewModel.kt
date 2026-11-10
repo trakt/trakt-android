@@ -7,7 +7,10 @@ import androidx.navigation.toRoute
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -48,6 +51,18 @@ internal class AllCreditsViewModel(
 
     init {
         loadData()
+        observeSpoilers()
+    }
+
+    private fun observeSpoilers() {
+        if (destination.mediaType != MediaType.Show) {
+            return
+        }
+
+        getSpoilerStateUseCase.observeShowHidden(destination.mediaId.toTraktId())
+            .onEach { hidden -> spoilersHiddenState.update { hidden } }
+            .catch { error -> Timber.recordError(error) }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {

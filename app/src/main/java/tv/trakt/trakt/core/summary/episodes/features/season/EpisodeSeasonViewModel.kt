@@ -79,6 +79,13 @@ internal class EpisodeSeasonViewModel(
     init {
         loadData()
         observeData()
+        observeSpoilers()
+    }
+
+    private fun observeSpoilers() {
+        getSpoilerStateUseCase.observeEnabled()
+            .onEach { enabled -> spoilersHiddenState.update { enabled } }
+            .launchIn(viewModelScope)
     }
 
     private fun observeData() {
@@ -95,7 +102,6 @@ internal class EpisodeSeasonViewModel(
             try {
                 loadingState.update { Loading }
                 val authenticated = sessionManager.isAuthenticated()
-                spoilersHiddenState.update { getSpoilerStateUseCase.isEnabled() }
 
                 val episodesAsync = async {
                     try {

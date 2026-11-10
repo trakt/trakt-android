@@ -18,6 +18,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.profile.ProfileRatingItem
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityRateButton
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -35,8 +36,11 @@ internal fun ProfileRatingEpisodeItemView(
         title = "",
         more = false,
         onClick = { onClick(item.episode.ids.trakt) },
-        containerImageUrl = item.episode.images?.getScreenshotUrl()
-            ?: item.show.images?.getFanartUrl(),
+        containerImageUrl = when {
+            item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
+            else -> item.episode.images?.getScreenshotUrl()
+                ?: item.show.images?.getFanartUrl()
+        },
         cardContent = {
             InfoChip(
                 text = item.ratedAt.toLocal().relativePastDateString(),

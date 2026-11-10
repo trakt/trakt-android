@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.helpers.extensions.isSpoilerHidden
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
@@ -61,9 +62,11 @@ internal fun ActivityEpisodeItemView(
         more = moreButton,
         onClick = onClick,
         onLongClick = onLongClick,
-        containerImageUrl =
-            item.episode.images?.getScreenshotUrl()
-                ?: item.show.images?.getFanartUrl(),
+        containerImageUrl = when {
+            item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
+            else -> item.episode.images?.getScreenshotUrl()
+                ?: item.show.images?.getFanartUrl()
+        },
         cardContent = {
             val isPast = remember(item.activityAt) {
                 !item.activityAt.isAfter(nowUtcInstant())
