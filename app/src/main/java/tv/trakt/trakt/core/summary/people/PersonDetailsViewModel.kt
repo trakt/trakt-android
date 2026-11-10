@@ -46,6 +46,7 @@ import tv.trakt.trakt.core.people.usecases.GetPersonCreditsUseCase
 import tv.trakt.trakt.core.people.usecases.GetPersonUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
+import tv.trakt.trakt.core.summary.people.model.PersonLinkType
 import tv.trakt.trakt.core.summary.people.navigation.PersonDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
@@ -291,6 +292,10 @@ internal class PersonDetailsViewModel(
 
     fun logShare() {
         analytics.logShare(source = "person", type = null)
+    }
+
+    fun logLink(type: PersonLinkType) {
+        analytics.logLink(source = "person-summary", target = type.target)
     }
 
     fun logEpisodeCountReveal() {

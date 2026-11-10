@@ -79,8 +79,24 @@ object Config {
         return "https://x.com/$id"
     }
 
-    fun webWikipediaMediaUrl(title: String): String {
-        return "https://en.wikipedia.org/wiki/$title"
+    fun webTikTokPersonUrl(handle: String): String {
+        return "https://www.tiktok.com/@$handle"
+    }
+
+    fun webYouTubeChannelUrl(channelId: String): String {
+        return "https://www.youtube.com/channel/$channelId"
+    }
+
+    fun webWikidataUrl(id: String): String {
+        return "https://www.wikidata.org/wiki/$id"
+    }
+
+    fun webWikipediaMediaUrl(
+        title: String,
+        language: String? = null,
+    ): String {
+        val subdomain = language?.takeIf { it.isNotBlank() } ?: "en"
+        return "https://$subdomain.wikipedia.org/wiki/$title"
     }
 
     fun webDataImportUrl(source: String?): String {

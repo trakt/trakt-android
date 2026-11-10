@@ -8,4 +8,10 @@
     <item quantity="one">%s comment</item>
     <item quantity="other">%s comments</item>
   </plurals>
+  <string name="link_label_facebook">Facebook</string>
+  <string name="link_label_instagram">Instagram</string>
+  <string name="link_label_tiktok">TikTok</string>
+  <string name="link_label_wikidata">Wikidata</string>
+  <string name="link_label_wikipedia">Wikipedia</string>
+  <string name="link_label_x">X</string>
 </resources>
