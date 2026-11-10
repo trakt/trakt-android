@@ -13,6 +13,10 @@ data class SocialIds(
     val facebook: String?,
     val instagram: String?,
     val wikipedia: String?,
+    val tiktok: String? = null,
+    val youtube: String? = null,
+    val wikidata: String? = null,
+    val wikipediaLanguage: String? = null,
 ) {
     companion object
 }
@@ -32,5 +36,9 @@ fun Companion.fromDto(dto: PersonSocialIdsDto): SocialIds {
         facebook = dto.facebook,
         instagram = dto.instagram,
         wikipedia = dto.wikipedia,
+        tiktok = dto.tiktok,
+        youtube = dto.youtube,
+        wikidata = dto.wikidata,
+        wikipediaLanguage = dto.wikipediaLanguage,
     )
 }

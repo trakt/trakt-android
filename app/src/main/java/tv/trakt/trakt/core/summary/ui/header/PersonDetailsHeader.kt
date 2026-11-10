@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.ui.header
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +24,15 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.Config
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
+import tv.trakt.trakt.core.summary.people.model.PersonLink
+import tv.trakt.trakt.core.summary.people.model.PersonLinkType
+import tv.trakt.trakt.core.summary.people.model.toPersonLinks
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -40,17 +44,17 @@ internal fun DetailsHeader(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     onReportClick: (() -> Unit)? = null,
+    onLinkClick: ((PersonLinkType) -> Unit)? = null,
     topRightContent: (@Composable () -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
+    val links = remember(person.socialIds) {
+        person.socialIds.toPersonLinks()
+    }
 
-    val socialIds = remember(person.socialIds) {
-        buildList {
-            if (!person.socialIds?.facebook.isNullOrBlank()) add("facebook" to person.socialIds?.facebook)
-            if (!person.socialIds?.instagram.isNullOrBlank()) add("instagram" to person.socialIds?.instagram)
-            if (!person.socialIds?.twitter.isNullOrBlank()) add("twitter" to person.socialIds?.twitter)
-            if (!person.socialIds?.wikipedia.isNullOrBlank()) add("wikipedia" to person.socialIds?.wikipedia)
-        }
+    val openLink: (PersonLink) -> Unit = { link ->
+        uriHandler.openUri(link.url)
+        onLinkClick?.invoke(link.type)
     }
 
     DetailsHeader(
@@ -75,41 +79,23 @@ internal fun DetailsHeader(
                     .padding(top = 17.dp)
                     .fillMaxWidth(),
             ) {
-                socialIds.forEach { (social, id) ->
-                    if (id != null) {
-                        Icon(
-                            painter = painterResource(
-                                when (social) {
-                                    "facebook" -> R.drawable.ic_facebook
-                                    "instagram" -> R.drawable.ic_instagram
-                                    "twitter" -> R.drawable.ic_x_twitter
-                                    "wikipedia" -> R.drawable.ic_wikipedia
-                                    else -> R.drawable.ic_share
-                                },
-                            ),
-                            tint = TraktTheme.colors.textPrimary,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(
-                                    when {
-                                        social == "wikipedia" -> 24.dp
-                                        else -> 26.dp
-                                    },
-                                )
-                                .onClick {
-                                    when (social) {
-                                        "facebook" -> uriHandler.openUri(Config.webFacebookPersonUrl(id))
-                                        "instagram" -> uriHandler.openUri(Config.webInstagramPersonUrl(id))
-                                        "twitter" -> uriHandler.openUri(Config.webTwitterPersonUrl(id))
-                                        "wikipedia" -> uriHandler.openUri(Config.webWikipediaMediaUrl(id))
-                                    }
-                                },
-                        )
-                    }
+                links.inline.forEach { link ->
+                    Icon(
+                        painter = painterResource(link.type.iconRes),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(link.type.iconSize)
+                            .onClick { openLink(link) },
+                    )
                 }
 
-                if (onReportClick != null) {
-                    ReportMenuButton(onReportClick = onReportClick)
+                if (links.overflow.isNotEmpty() || onReportClick != null) {
+                    MoreMenuButton(
+                        overflowLinks = links.overflow,
+                        onLinkClick = openLink,
+                        onReportClick = onReportClick,
+                    )
                 }
             }
         },
@@ -145,7 +131,11 @@ internal fun DetailsHeader(
 }
 
 @Composable
-private fun ReportMenuButton(onReportClick: () -> Unit) {
+private fun MoreMenuButton(
+    overflowLinks: ImmutableList<PersonLink>,
+    onLinkClick: (PersonLink) -> Unit,
+    onReportClick: (() -> Unit)?,
+) {
     var showMenu by remember { mutableStateOf(false) }
 
     Box(
@@ -167,27 +157,53 @@ private fun ReportMenuButton(onReportClick: () -> Unit) {
             shape = RoundedCornerShape(16.dp),
             onDismissRequest = { showMenu = false },
         ) {
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = stringResource(R.string.button_text_report),
-                        style = TraktTheme.typography.buttonTertiary,
-                        color = TraktTheme.colors.textPrimary,
-                    )
-                },
-                onClick = {
-                    showMenu = false
-                    onReportClick()
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_flag),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(21.dp),
-                    )
-                },
-            )
+            overflowLinks.forEach { link ->
+                MenuItem(
+                    text = stringResource(link.type.labelRes),
+                    iconRes = link.type.iconRes,
+                    onClick = {
+                        showMenu = false
+                        onLinkClick(link)
+                    },
+                )
+            }
+
+            if (onReportClick != null) {
+                MenuItem(
+                    text = stringResource(R.string.button_text_report),
+                    iconRes = R.drawable.ic_flag,
+                    onClick = {
+                        showMenu = false
+                        onReportClick()
+                    },
+                )
+            }
         }
     }
+}
+
+@Composable
+private fun MenuItem(
+    text: String,
+    @DrawableRes iconRes: Int,
+    onClick: () -> Unit,
+) {
+    DropdownMenuItem(
+        text = {
+            Text(
+                text = text,
+                style = TraktTheme.typography.buttonTertiary,
+                color = TraktTheme.colors.textPrimary,
+            )
+        },
+        onClick = onClick,
+        leadingIcon = {
+            Icon(
+                painter = painterResource(iconRes),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier.size(21.dp),
+            )
+        },
+    )
 }
