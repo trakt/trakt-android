@@ -1157,10 +1157,10 @@
   <string name="hype_tier_cant_wait">بی‌صبرانه منتظر</string>
   <string name="hype_tier_looking_good">امیدوارکننده</string>
   <string name="image_alt_comment_gif">گیف پیوست‌شده به نظر</string>
-  <string name="image_alt_hype_score">%d% هایپ برای شما</string>
+  <string name="image_alt_hype_score">%d%% هایپ برای شما</string>
   <string name="image_alt_hype_unknown">هنوز امتیاز هایپی برای شما وجود ندارد</string>
   <string name="image_alt_list_preview_poster">پوستر برای یک ورودی در %s</string>
-  <string name="image_alt_match_score">%d% تطابق با شما</string>
+  <string name="image_alt_match_score">%d%% تطابق با شما</string>
   <string name="image_alt_match_unknown">هنوز امتیاز تطابقی برای شما وجود ندارد</string>
   <string name="image_alt_media_poster">پوستر \"%s\"</string>
   <string name="image_alt_person_headshot">عکس سر %s</string>
@@ -1553,7 +1553,7 @@
   <string name="match_label_soulmates">هم‌روح‌ها</string>
   <string name="match_label_spin_off">اسپین‌آف</string>
   <string name="match_pill_anchor">همخوانی:</string>
-  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
+  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
   <string name="match_pill_loading_aria_label">در حال محاسبه امتیاز تطابق</string>
   <string name="match_tier_good_fit">همخوانی خوب</string>
   <string name="match_tier_maybe">شاید</string>
@@ -1803,7 +1803,7 @@
   <string name="tag_media_sync_webhook_only">فقط وب‌هوک</string>
   <string name="tag_mixtape_different_mood">حس و حال متفاوت</string>
   <string name="tag_mixtape_kept">نگه داشته شده</string>
-  <string name="tag_mixtape_match">%s% تطابق</string>
+  <string name="tag_mixtape_match">%s%% تطابق</string>
   <string name="tag_mixtape_tap_details">برای جزئیات ضربه بزنید</string>
   <string name="tag_text_award_nominee">نامزد</string>
   <string name="tag_text_award_pending">نامزدشده</string>
@@ -2187,7 +2187,7 @@
   <string name="text_match_basis_free">امتیاز شما رایگان است. دلایل پشت آن یکی از قابلیت‌های VIP است.</string>
   <string name="text_match_basis_history">بر اساس آنچه تماشا کرده‌اید، امتیاز داده‌اید و به علاقه‌مندی‌ها افزوده‌اید.</string>
   <string name="text_match_because_liked">چون دوست داشتید</string>
-  <string name="text_match_better_than">تطابق بیشتر با شما نسبت به %d% از عناوین</string>
+  <string name="text_match_better_than">تطابق بیشتر با شما نسبت به %d%% از عناوین</string>
   <string name="text_match_not_enough_data">هنوز داده‌های کافی برای سنجش تطابق با شما وجود ندارد.</string>
   <string name="text_match_rating_liked">پسندیده‌شده در Trakt</string>
   <string name="text_match_rating_loved">بسیار محبوب در Trakt</string>
@@ -3134,7 +3134,7 @@
   <string name="yir_2026_preview_runner_none">هیچ‌کدام (بدون ترکیب)</string>
   <string name="yir_2026_preview_runner_up">رتبه‌دوم</string>
   <string name="yir_2026_preview_title">پیش‌نمایش پرسونا</string>
-  <string name="yir_2026_rarity">فقط %1$d% %2$s هستند</string>
+  <string name="yir_2026_rarity">فقط %1$d%% %2$s هستند</string>
   <string name="yir_2026_reel_a_little_bit">کمی %s</string>
   <string name="yir_2026_reel_and_you_are">و شما هستید</string>
   <string name="yir_2026_reel_but_mostly">اما بیشتر</string>
