@@ -307,6 +307,7 @@ internal class AllHomeWatchlistViewModel(
                     showId = showId,
                     seasonEpisode = SeasonEpisode(1, 1),
                     customDate = customDate,
+                    origin = origin,
                 )
 
                 analytics.progress.logAddWatchedMedia(
@@ -317,7 +318,7 @@ internal class AllHomeWatchlistViewModel(
 
                 removeItem(
                     item = currentItems[itemIndex],
-                    notify = true,
+                    notify = false,
                 )
 
                 infoState.update {

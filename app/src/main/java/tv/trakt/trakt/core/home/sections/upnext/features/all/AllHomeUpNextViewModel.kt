@@ -300,6 +300,8 @@ internal class AllHomeUpNextViewModel(
                 updateHistoryUseCase.addToHistory(
                     episodeId = episodeId,
                     customDate = customDate,
+                    origin = origin,
+                    refreshProgress = false,
                 )
 
                 analytics.progress.logAddWatchedMedia(
@@ -323,7 +325,6 @@ internal class AllHomeUpNextViewModel(
                     } ?: items
                 }
 
-                dataChanges.notify(Kind.History, origin = origin)
                 loadUserProgress()
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }

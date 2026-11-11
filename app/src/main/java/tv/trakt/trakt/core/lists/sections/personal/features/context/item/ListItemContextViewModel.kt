@@ -42,7 +42,6 @@ internal class ListItemContextViewModel(
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val userProgressLocalSource: UserProgressLocalSource,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListItemContextState()
@@ -107,8 +106,6 @@ internal class ListItemContextViewModel(
                     episodeId = item.episode.ids.trakt,
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
@@ -134,8 +131,6 @@ internal class ListItemContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(item.episode.ids.trakt.value)
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "episode",

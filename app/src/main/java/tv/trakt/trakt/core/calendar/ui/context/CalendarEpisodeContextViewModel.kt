@@ -46,7 +46,6 @@ internal class CalendarEpisodeContextViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
-    private val dataChanges: DataChanges,
     private val userProgressLocalSource: UserProgressLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
@@ -136,8 +135,6 @@ internal class CalendarEpisodeContextViewModel(
                     episodeIds = item.episodes.map { it.ids.trakt },
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
@@ -165,11 +162,9 @@ internal class CalendarEpisodeContextViewModel(
             try {
                 loadingWatchedState.update { Loading }
 
-                item.episodes.forEach { episode ->
-                    updateHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
-                }
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History)
+                updateHistoryUseCase.removeEpisodesFromHistory(
+                    episodeIds = item.episodes.map { it.ids.trakt },
+                )
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "episode",

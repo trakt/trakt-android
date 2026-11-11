@@ -15,15 +15,15 @@ internal class UpdateTodayHistoryUseCase(
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
-    private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val dataChanges: DataChanges,
     private val todayLocalSource: TodayLocalSource,
 ) {
     suspend fun addToWatched(item: TodayForYouItem) {
         when (item) {
             is TodayForYouItem.UpNext -> {
-                updateEpisodeHistoryUseCase.addToHistory(episodeId = item.episode.ids.trakt)
-                loadProgressUseCase.loadShowsProgress()
+                updateEpisodeHistoryUseCase.addToHistory(
+                    episodeId = item.episode.ids.trakt,
+                    origin = ChangeOrigin.TodayStories,
+                )
             }
             is TodayForYouItem.StartWatching -> {
                 addMediaToWatched(item.media)
@@ -31,14 +31,15 @@ internal class UpdateTodayHistoryUseCase(
         }
 
         todayLocalSource.setForYouWatched(key = item.key, watched = true)
-        notifyHistoryUpdate(item)
     }
 
     suspend fun removeFromWatched(item: TodayForYouItem) {
         when (item) {
             is TodayForYouItem.UpNext -> {
-                updateEpisodeHistoryUseCase.removeEpisodeFromHistory(item.episode.ids.trakt.value)
-                loadProgressUseCase.loadShowsProgress()
+                updateEpisodeHistoryUseCase.removeEpisodeFromHistory(
+                    episodeId = item.episode.ids.trakt.value,
+                    origin = ChangeOrigin.TodayStories,
+                )
             }
             is TodayForYouItem.StartWatching -> {
                 removeMediaFromWatched(item.media)
@@ -46,15 +47,6 @@ internal class UpdateTodayHistoryUseCase(
         }
 
         todayLocalSource.setForYouWatched(key = item.key, watched = false)
-        notifyHistoryUpdate(item)
-    }
-
-    private fun notifyHistoryUpdate(item: TodayForYouItem) {
-        // The movie and show history use cases already publish the history change.
-        if (item is TodayForYouItem.StartWatching) {
-            return
-        }
-        dataChanges.notify(Kind.History, origin = ChangeOrigin.TodayStories)
     }
 
     private suspend fun addMediaToWatched(media: TodayMedia) {

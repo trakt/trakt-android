@@ -127,7 +127,6 @@ internal val listsModule = module {
             removeListItemUseCase = get(),
             loadProgressUseCase = get(),
             userProgressLocalSource = get(),
-            dataChanges = get(),
             analytics = get(),
         )
     }

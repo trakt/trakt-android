@@ -65,7 +65,6 @@ internal class ShowHistoryViewModel(
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
-    private val loadProgressUseCase: LoadUserProgressUseCase,
     private val showLocalSource: ShowLocalSource,
     private val episodeLocalSource: EpisodeLocalSource,
     private val dataChanges: DataChanges,
@@ -254,9 +253,8 @@ internal class ShowHistoryViewModel(
                 updateHistoryUseCase.removePlayFromHistory(
                     playId = item.id,
                     episodeId = item.episode.ids.trakt,
+                    origin = origin,
                 )
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update { items ->
                     (items ?: emptyMap())

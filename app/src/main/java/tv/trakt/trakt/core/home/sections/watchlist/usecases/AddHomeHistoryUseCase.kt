@@ -12,8 +12,6 @@ import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 internal class AddHomeHistoryUseCase(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
 ) {
     suspend fun addMovieToHistory(
         movieId: TraktId,
@@ -31,14 +29,14 @@ internal class AddHomeHistoryUseCase(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
         customDate: DateSelectionResult? = null,
+        origin: ChangeOrigin? = null,
     ) {
         updateEpisodeHistoryUseCase.addToHistory(
             showId = showId,
             seasonEpisode = seasonEpisode,
             customDate = customDate,
+            origin = origin,
+            refreshProgress = false,
         )
-
-        userWatchlistLocalSource.removeShows(ids = setOf(showId))
-        userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
     }
 }

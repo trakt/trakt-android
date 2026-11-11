@@ -281,8 +281,6 @@ internal class HomeWatchlistViewModel(
                     seasonEpisode = SeasonEpisode(1, 1),
                     customDate = customDate,
                 )
-                dataChanges.notify(Kind.History, Kind.Watchlist)
-
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "home_watchlist",

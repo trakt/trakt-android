@@ -17,15 +17,13 @@ private const val ANALYTICS_EPISODE = "episode"
 private const val ANALYTICS_MOVIE = "movie"
 
 /**
- * Watched-state changes made from a calendar item: history write, progress reload,
- * update broadcast and analytics. Shared by the weekly and monthly calendars.
+ * Watched-state changes made from a calendar item: history write and analytics.
+ * Shared by the weekly and monthly calendars.
  */
 internal class UpdateCalendarHistoryUseCase(
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
-    private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val ratePromptManager: RatePromptManager,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) {
     suspend fun addToHistory(
@@ -37,9 +35,8 @@ internal class UpdateCalendarHistoryUseCase(
         updateEpisodeHistoryUseCase.addToHistory(
             episodeId = episode.ids.trakt,
             customDate = customDate,
+            origin = origin,
         )
-        loadUserProgressUseCase.loadShowsProgress()
-        dataChanges.notify(Kind.History, origin = origin)
 
         analytics.progress.logAddWatchedMedia(
             mediaType = ANALYTICS_EPISODE,
@@ -74,9 +71,10 @@ internal class UpdateCalendarHistoryUseCase(
         source: CalendarSource,
         origin: ChangeOrigin,
     ) {
-        updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
-        loadUserProgressUseCase.loadShowsProgress()
-        dataChanges.notify(Kind.History, origin = origin)
+        updateEpisodeHistoryUseCase.removeEpisodeFromHistory(
+            episodeId = episode.ids.trakt.value,
+            origin = origin,
+        )
 
         analytics.progress.logRemoveWatchedMedia(
             mediaType = ANALYTICS_EPISODE,

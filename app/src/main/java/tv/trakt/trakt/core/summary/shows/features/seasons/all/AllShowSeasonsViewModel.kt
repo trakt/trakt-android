@@ -566,8 +566,9 @@ internal class AllShowSeasonsViewModel(
                 updateEpisodeHistoryUseCase.addToHistory(
                     episodeId = episode.ids.trakt,
                     customDate = customDate,
+                    origin = origin,
                 )
-                val progress = loadUserProgressUseCase.loadShowsProgress()
+                val progress = loadUserProgressUseCase.loadLocalShows()
                     .firstOrNull { it.showId == showId }
 
                 itemsState.update {
@@ -583,8 +584,6 @@ internal class AllShowSeasonsViewModel(
                         ),
                     )
                 }
-
-                dataChanges.notify(Kind.History, origin = origin)
 
                 if (promptWatchedUntil) {
                     watchedUntilPromptState.update { episode }
@@ -631,8 +630,9 @@ internal class AllShowSeasonsViewModel(
                 updateEpisodeHistoryUseCase.addToHistory(
                     episodeIds = episodesToAdd,
                     customDate = customDate,
+                    origin = origin,
                 )
-                val progress = loadUserProgressUseCase.loadShowsProgress()
+                val progress = loadUserProgressUseCase.loadLocalShows()
                     .firstOrNull { it.showId == showId }
 
                 itemsState.update {
@@ -648,8 +648,6 @@ internal class AllShowSeasonsViewModel(
                         ),
                     )
                 }
-
-                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
                 analytics.progress.logAddWatchedMedia(
@@ -683,8 +681,11 @@ internal class AllShowSeasonsViewModel(
                 loadingEpisodeState.update { Loading }
                 setLoadingEpisode(episode)
 
-                updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
-                val progress = loadUserProgressUseCase.loadShowsProgress()
+                updateEpisodeHistoryUseCase.removeEpisodeFromHistory(
+                    episodeId = episode.ids.trakt.value,
+                    origin = origin,
+                )
+                val progress = loadUserProgressUseCase.loadLocalShows()
                     .firstOrNull { it.showId == showId }
 
                 itemsState.update {
@@ -700,8 +701,6 @@ internal class AllShowSeasonsViewModel(
                         ),
                     )
                 }
-
-                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_removed) }
                 analytics.progress.logRemoveWatchedMedia(
@@ -733,8 +732,11 @@ internal class AllShowSeasonsViewModel(
             try {
                 loadingSeasonState.update { Loading }
 
-                updateEpisodeHistoryUseCase.removeSeasonFromHistory(season.ids.trakt.value)
-                val progress = loadUserProgressUseCase.loadShowsProgress()
+                updateEpisodeHistoryUseCase.removeSeasonFromHistory(
+                    seasonId = season.ids.trakt.value,
+                    origin = origin,
+                )
+                val progress = loadUserProgressUseCase.loadLocalShows()
                     .firstOrNull { it.showId == showId }
 
                 itemsState.update {
@@ -750,8 +752,6 @@ internal class AllShowSeasonsViewModel(
                         ),
                     )
                 }
-
-                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_removed) }
                 analytics.progress.logRemoveWatchedMedia(

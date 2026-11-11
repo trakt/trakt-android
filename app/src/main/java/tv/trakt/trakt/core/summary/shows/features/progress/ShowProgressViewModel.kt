@@ -246,6 +246,8 @@ internal class ShowProgressViewModel(
             updateEpisodeHistoryUseCase.addToHistory(
                 episodeIds = ids,
                 customDate = customDate,
+                origin = origin,
+                refreshProgress = false,
             )
             analytics.progress.logAddWatchedMedia(
                 mediaType = mediaType,
@@ -257,7 +259,11 @@ internal class ShowProgressViewModel(
 
     fun removeFromWatched(episode: Episode) {
         updateHistory(listOf(episode.ids.trakt)) {
-            updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
+            updateEpisodeHistoryUseCase.removeEpisodeFromHistory(
+                episodeId = episode.ids.trakt.value,
+                origin = origin,
+                refreshProgress = false,
+            )
             analytics.progress.logRemoveWatchedMedia(
                 mediaType = "episode",
                 source = HISTORY_SOURCE,
@@ -280,7 +286,6 @@ internal class ShowProgressViewModel(
                 historyMutex.withLock {
                     write()
                     refreshProgress()
-                    dataChanges.notify(Kind.History, origin = origin)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {

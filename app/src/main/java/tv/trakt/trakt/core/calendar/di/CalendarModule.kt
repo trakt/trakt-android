@@ -76,7 +76,6 @@ internal val calendarModule = module {
             updateHistoryUseCase = get(),
             updateWatchlistUseCase = get(),
             updateShowHistoryUseCase = get(),
-            dataChanges = get(),
             userProgressLocalSource = get(),
             userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),

@@ -36,10 +36,8 @@ import kotlin.time.Duration.Companion.milliseconds
 internal class WatchedUntilViewModel(
     private val show: Show,
     private val episode: Episode,
-    private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val getWatchedUntilUseCase: GetWatchedUntilEpisodesUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -119,9 +117,7 @@ internal class WatchedUntilViewModel(
                 updateEpisodeHistoryUseCase.addToHistory(
                     episodes = entries,
                 )
-                loadUserProgressUseCase.loadShowsProgress()
 
-                dataChanges.notify(Kind.History)
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "watched_until",
