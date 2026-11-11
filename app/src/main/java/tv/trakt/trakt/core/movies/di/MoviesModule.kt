@@ -5,7 +5,6 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.GetReleasesMoviesUseCase
@@ -70,11 +69,13 @@ internal val moviesModule = module {
 
     factoryOf(::HideRecommendedMovieUseCase)
 
-    viewModel { (movie: Movie) ->
+    viewModel { params ->
         MovieContextViewModel(
             appContext = androidApplication(),
-            movie = movie,
+            movie = params.get(),
+            list = params.getOrNull(),
             updateMovieHistoryUseCase = get(),
+            removeListItemUseCase = get(),
             updateMovieWatchlistUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistLocalSource = get(),

@@ -4,7 +4,6 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.GetReleasesShowsUseCase
@@ -70,11 +69,13 @@ internal val showsModule = module {
 
     factoryOf(::HideRecommendedShowUseCase)
 
-    viewModel { (show: Show) ->
+    viewModel { params ->
         ShowContextViewModel(
-            show = show,
+            show = params.get(),
+            list = params.getOrNull(),
             updateWatchlistUseCase = get(),
             updateHistoryUseCase = get(),
+            removeListItemUseCase = get(),
             userProgressLocalSource = get(),
             userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),

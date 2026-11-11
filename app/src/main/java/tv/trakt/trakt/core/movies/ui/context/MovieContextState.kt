@@ -12,6 +12,17 @@ internal data class MovieContextState(
     val loadingWatched: LoadingState = Idle,
     val loadingWatchlist: LoadingState = Idle,
     val loadingCheckIn: LoadingState = Idle,
+    val loadingList: LoadingState = Idle,
     val user: User? = null,
     val error: Exception? = null,
-)
+) {
+    val isLoadingOrDone: Boolean
+        get() = loadingWatched.isLoading ||
+            loadingWatchlist.isLoading ||
+            loadingCheckIn.isLoading ||
+            loadingList.isLoading ||
+            loadingWatchlist.isDone ||
+            loadingWatched.isDone ||
+            loadingCheckIn.isDone ||
+            loadingList.isDone
+}

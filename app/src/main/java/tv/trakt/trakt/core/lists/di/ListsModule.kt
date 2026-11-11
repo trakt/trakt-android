@@ -17,7 +17,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
@@ -40,8 +39,6 @@ import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseC
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListViewModel
 import tv.trakt.trakt.core.lists.sections.personal.features.context.item.ListItemContextViewModel
-import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.ListMovieContextViewModel
-import tv.trakt.trakt.core.lists.sections.personal.features.context.show.ListShowContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
@@ -117,7 +114,6 @@ internal val listsModule = module {
     viewModelOf(::AllListsViewModel)
     viewModelOf(::CreateSmartListViewModel)
     viewModelOf(::WatchlistShowContextViewModel)
-    viewModelOf(::ListShowContextViewModel)
     viewModel { (item: CustomListItem, list: CustomList) ->
         ListItemContextViewModel(
             item = item,
@@ -144,28 +140,6 @@ internal val listsModule = module {
             ratePromptManager = get(),
             analytics = get(),
             dataChanges = get(),
-        )
-    }
-
-    viewModel { (movie: Movie, list: CustomList) ->
-        ListMovieContextViewModel(
-            appContext = androidApplication(),
-            movie = movie,
-            list = list,
-            updateMovieWatchlistUseCase = get(),
-            updateMovieHistoryUseCase = get(),
-            removeListItemUseCase = get(),
-            userProgressLocalSource = get(),
-            userWatchlistLocalSource = get(),
-            userWatchlistMinLocalSource = get(),
-            loadProgressUseCase = get(),
-            loadWatchlistMinUseCase = get(),
-            dataChanges = get(),
-            sessionManager = get(),
-            checkInManager = get(),
-            ratePromptManager = get(),
-            errorsManager = get(),
-            analytics = get(),
         )
     }
 }
