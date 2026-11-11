@@ -62,7 +62,6 @@ internal val movieDetailsModule = module {
             appReviewUseCase = get(),
             userWatchlistLocalSource = get(),
             userWatchlistMinLocalSource = get(),
-            userFavoritesLocalSource = get(),
             dataChanges = get(),
             sessionManager = get(),
             checkInManager = get(),

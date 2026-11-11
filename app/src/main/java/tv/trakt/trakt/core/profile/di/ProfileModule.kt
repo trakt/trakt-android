@@ -219,12 +219,8 @@ internal val profileModule = module {
             updateMovieFavoritesUseCase = get(),
             updateMovieHistoryUseCase = get(),
             loadProgressUseCase = get(),
-            userFavoritesLocalSource = get(),
             userProgressLocalSource = get(),
-            userWatchlistLocalSource = get(),
-            userWatchlistMinLocalSource = get(),
             ratePromptManager = get(),
-            dataChanges = get(),
             analytics = get(),
         )
     }

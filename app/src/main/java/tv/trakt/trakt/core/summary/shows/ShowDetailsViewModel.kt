@@ -598,14 +598,9 @@ internal class ShowDetailsViewModel(
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
+                    if (!errorsManager.tryEmitVipLimit(error)) {
+                        errorState.update { error }
+                        Timber.recordError(error)
                     }
                 }
             } finally {

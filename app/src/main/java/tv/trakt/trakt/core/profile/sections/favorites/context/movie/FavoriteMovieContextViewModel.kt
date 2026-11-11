@@ -41,12 +41,8 @@ internal class FavoriteMovieContextViewModel(
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val userProgressLocalSource: UserProgressLocalSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val ratePromptManager: RatePromptManager,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = FavoriteMovieContextState()
@@ -98,8 +94,6 @@ internal class FavoriteMovieContextViewModel(
                 loadingFavoriteState.update { Loading }
 
                 updateMovieFavoritesUseCase.removeFromFavorites(movie.ids.trakt)
-                userFavoritesLocalSource.removeMovies(setOf(movie.ids.trakt))
-                dataChanges.notify(Kind.Favorites)
 
                 analytics.ratings.logFavoriteRemove(
                     mediaType = MediaType.Movie.value,
@@ -129,11 +123,6 @@ internal class FavoriteMovieContextViewModel(
                     movieId = movie.ids.trakt,
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadMoviesProgress()
-                userWatchlistLocalSource.removeMovies(ids = setOf(movie.ids.trakt))
-                userWatchlistMinLocalSource.removeMovies(ids = setOf(movie.ids.trakt))
-
-                dataChanges.notify(Kind.History, Kind.Watchlist)
                 ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
@@ -162,8 +151,6 @@ internal class FavoriteMovieContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
-                userProgressLocalSource.removeMovies(ids = setOf(movie.ids.trakt))
-                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = MediaType.Movie.value,

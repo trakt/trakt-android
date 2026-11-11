@@ -58,7 +58,6 @@ internal class MovieHistoryViewModel(
     private val getHistoryUseCase: GetMovieHistoryUseCase,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val updateHistoryUseCase: UpdateMovieHistoryUseCase,
-    private val loadProgressUseCase: LoadUserProgressUseCase,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
@@ -243,9 +242,8 @@ internal class MovieHistoryViewModel(
                 updateHistoryUseCase.removePlayFromHistory(
                     playId = item.id,
                     movieId = item.movie.ids.trakt,
+                    origin = origin,
                 )
-                loadProgressUseCase.loadMoviesProgress()
-                dataChanges.notify(Kind.History, origin = origin)
 
                 itemsState.update { items ->
                     (items ?: emptyMap())
@@ -282,9 +280,10 @@ internal class MovieHistoryViewModel(
             try {
                 loadingState.update { Loading }
 
-                updateHistoryUseCase.removeAllFromHistory(destination.movieId.toTraktId())
-                loadProgressUseCase.loadMoviesProgress()
-                dataChanges.notify(Kind.History, origin = origin)
+                updateHistoryUseCase.removeAllFromHistory(
+                    movieId = destination.movieId.toTraktId(),
+                    origin = origin,
+                )
 
                 itemsState.update { persistentMapOf() }
                 hasMoreData = false

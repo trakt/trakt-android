@@ -364,6 +364,7 @@ internal class AllHomeWatchlistViewModel(
                 addHistoryUseCase.addMovieToHistory(
                     movieId = movieId,
                     customDate = customDate,
+                    origin = origin,
                 )
 
                 analytics.progress.logAddWatchedMedia(
@@ -374,14 +375,14 @@ internal class AllHomeWatchlistViewModel(
 
                 removeItem(
                     item = currentItems[itemIndex],
-                    notify = true,
+                    notify = false,
                 )
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                loadMoviesProgress()
+                checkRatePrompt()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -534,10 +535,9 @@ internal class AllHomeWatchlistViewModel(
         }
     }
 
-    fun loadMoviesProgress() {
+    private fun checkRatePrompt() {
         viewModelScope.launch {
             try {
-                loadUserProgressUseCase.loadMoviesProgress()
                 ratePromptManager.checkRecentlyWatched()
             } catch (error: Exception) {
                 error.rethrowCancellation {

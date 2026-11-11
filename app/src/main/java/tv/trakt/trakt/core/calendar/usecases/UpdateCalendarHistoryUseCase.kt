@@ -57,9 +57,8 @@ internal class UpdateCalendarHistoryUseCase(
         updateMovieHistoryUseCase.addToWatched(
             movieId = movie.ids.trakt,
             customDate = customDate,
+            origin = origin,
         )
-        loadUserProgressUseCase.loadMoviesProgress()
-        dataChanges.notify(Kind.History, origin = origin)
 
         analytics.progress.logAddWatchedMedia(
             mediaType = ANALYTICS_MOVIE,
@@ -90,9 +89,10 @@ internal class UpdateCalendarHistoryUseCase(
         source: CalendarSource,
         origin: ChangeOrigin,
     ) {
-        updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
-        loadUserProgressUseCase.loadMoviesProgress()
-        dataChanges.notify(Kind.History, origin = origin)
+        updateMovieHistoryUseCase.removeAllFromHistory(
+            movieId = movie.ids.trakt,
+            origin = origin,
+        )
 
         analytics.progress.logRemoveWatchedMedia(
             mediaType = ANALYTICS_MOVIE,

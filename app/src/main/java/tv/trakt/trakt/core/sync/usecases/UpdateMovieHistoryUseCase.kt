@@ -1,6 +1,13 @@
 package tv.trakt.trakt.core.sync.usecases
 
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.UserProgressLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesSyncRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.DateSelectionResult
@@ -10,36 +17,59 @@ import tv.trakt.trakt.core.ratings.RemoveOrphanedRatingUseCase
 internal class UpdateMovieHistoryUseCase(
     private val remoteSource: MoviesSyncRemoteSource,
     private val orphanedRatings: RemoveOrphanedRatingUseCase,
+    private val loadProgressUseCase: LoadUserProgressUseCase,
+    private val userProgressLocalSource: UserProgressLocalSource,
+    private val userWatchlistLocalSource: UserWatchlistLocalSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
+    private val dataChanges: DataChanges,
 ) {
     suspend fun addToWatched(
         movieId: TraktId,
         customDate: DateSelectionResult? = null,
+        origin: ChangeOrigin? = null,
     ): PostSyncHistoryAdd200Response {
         val watchedAt = customDate?.dateString
             ?: nowUtcInstant().toString()
 
-        return remoteSource.addToWatched(
+        val response = remoteSource.addToWatched(
             movieId = movieId,
             watchedAt = watchedAt,
         )
+
+        loadProgressUseCase.loadMoviesProgress()
+        userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
+        userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
+        dataChanges.notify(Kind.History, Kind.Watchlist, origin = origin)
+
+        return response
     }
 
-    suspend fun removeAllFromHistory(movieId: TraktId) {
+    suspend fun removeAllFromHistory(
+        movieId: TraktId,
+        origin: ChangeOrigin? = null,
+    ) {
         val orphanedRating = orphanedRatings.findMovie(movieId)
         remoteSource.removeAllFromHistory(
             movieId = movieId,
         )
         orphanedRatings.remove(orphanedRating)
+
+        userProgressLocalSource.removeMovies(ids = setOf(movieId))
+        dataChanges.notify(Kind.History, Kind.Progress, origin = origin)
     }
 
     suspend fun removePlayFromHistory(
         playId: Long,
         movieId: TraktId,
+        origin: ChangeOrigin? = null,
     ) {
         val orphanedRating = orphanedRatings.findMovie(movieId)
         remoteSource.removeSingleFromHistory(
             playId = playId,
         )
         orphanedRatings.remove(orphanedRating)
+
+        loadProgressUseCase.loadMoviesProgress()
+        dataChanges.notify(Kind.History, origin = origin)
     }
 }

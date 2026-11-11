@@ -112,15 +112,11 @@ internal class UpNextItemContextViewModel(
                     ids = listOf(movieId),
                 )
 
-                dataChanges.notify(Kind.History)
-
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "up_next_context",
                     date = null,
                 )
-
-                loadUserMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

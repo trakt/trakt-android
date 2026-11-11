@@ -100,7 +100,6 @@ internal class MovieDetailsViewModel(
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
-    private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
@@ -498,14 +497,8 @@ internal class MovieDetailsViewModel(
                 val response = updateMovieHistoryUseCase.addToWatched(
                     movieId = movieId,
                     customDate = customDate,
+                    origin = origin,
                 )
-                loadProgressUseCase.loadMoviesProgress()
-
-                userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
-                userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
-
-                dataChanges.notify(Kind.Watchlist)
-                dataChanges.notify(Kind.History, origin = origin)
 
                 if (response.added.movies != 0) {
                     movieProgressState.update {
@@ -551,15 +544,16 @@ internal class MovieDetailsViewModel(
             try {
                 loadingProgress.update { Loading }
 
-                updateMovieHistoryUseCase.removeAllFromHistory(movieId)
-                loadProgressUseCase.loadMoviesProgress()
+                updateMovieHistoryUseCase.removeAllFromHistory(
+                    movieId = movieId,
+                    origin = origin,
+                )
 
                 movieProgressState.update {
                     it?.copy(
                         plays = 0,
                     )
                 }
-                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
@@ -598,6 +592,8 @@ internal class MovieDetailsViewModel(
     }
 
     private fun addToWatchlist() {
+        val movie = movieState.value ?: return
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -605,21 +601,7 @@ internal class MovieDetailsViewModel(
             try {
                 loadingLists.update { Loading }
 
-                updateMovieWatchlistUseCase.addToWatchlist(movieId)
-                userWatchlistLocalSource.addMovies(
-                    movies = listOf(
-                        WatchlistItem.MovieItem(
-                            rank = 0,
-                            movie = movieState.value!!,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addMovies(
-                    movies = setOf(movieId),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
+                updateMovieWatchlistUseCase.addToWatchlist(movie)
 
                 movieProgressState.update {
                     it?.copy(
@@ -638,14 +620,9 @@ internal class MovieDetailsViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
+                    if (!errorsManager.tryEmitVipLimit(error)) {
+                        errorState.update { error }
+                        Timber.recordError(error)
                     }
                 }
             } finally {
@@ -663,10 +640,6 @@ internal class MovieDetailsViewModel(
                 loadingLists.update { Loading }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId)
-                userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
-                userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
-
-                dataChanges.notify(Kind.Watchlist)
 
                 refreshLists()
 
@@ -740,6 +713,8 @@ internal class MovieDetailsViewModel(
     }
 
     private fun addToFavorites() {
+        val movie = movieState.value ?: return
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -749,17 +724,7 @@ internal class MovieDetailsViewModel(
                 loadingFavorite.update { Loading }
 
                 delay(300.milliseconds) // Small delay to allow UI to settle.
-                updateMovieFavoritesUseCase.addToFavorites(movieId)
-                userFavoritesLocalSource.addMovies(
-                    movies = listOf(
-                        FavoriteItem.MovieItem(
-                            rank = 0,
-                            movie = movieState.value!!,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                dataChanges.notify(Kind.Favorites)
+                updateMovieFavoritesUseCase.addToFavorites(movie)
 
                 movieUserRatingsState.update {
                     it?.copy(
@@ -804,8 +769,6 @@ internal class MovieDetailsViewModel(
 
                 delay(300.milliseconds) // Small delay to allow UI to settle.
                 updateMovieFavoritesUseCase.removeFromFavorites(movieId)
-                userFavoritesLocalSource.removeMovies(setOf(movieId))
-                dataChanges.notify(Kind.Favorites)
 
                 movieUserRatingsState.update {
                     it?.copy(

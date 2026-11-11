@@ -69,7 +69,6 @@ internal class AllWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
-    private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val updateMovieHistoryUseCase: AddHomeHistoryUseCase,
     private val collectionStateProvider: CollectionStateProvider,
@@ -114,10 +113,7 @@ internal class AllWatchlistViewModel(
     }
 
     private fun observeData() {
-        merge(
-            dataChanges.observe(Kind.History),
-            dataChanges.observe(Kind.Watchlist, exclude = origin),
-        )
+        dataChanges.observe(Kind.History, Kind.Watchlist, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -379,8 +375,9 @@ internal class AllWatchlistViewModel(
                 updateMovieHistoryUseCase.addMovieToHistory(
                     movieId = movieId,
                     customDate = customDate,
+                    origin = origin,
                 )
-                removeItem(currentItems[itemIndex])
+                removeLocalItem(currentItems[itemIndex])
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -392,7 +389,7 @@ internal class AllWatchlistViewModel(
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                loadUserProgress()
+                checkRatePrompt()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -405,6 +402,11 @@ internal class AllWatchlistViewModel(
     }
 
     fun removeItem(item: WatchlistItem?) {
+        removeLocalItem(item)
+        dataChanges.notify(Kind.Watchlist, origin = origin)
+    }
+
+    private fun removeLocalItem(item: WatchlistItem?) {
         val currentItems = itemsState.value ?: return
 
         itemsState.update {
@@ -415,14 +417,11 @@ internal class AllWatchlistViewModel(
                 }
                 .toImmutableList()
         }
-
-        dataChanges.notify(Kind.Watchlist, origin = origin)
     }
 
-    fun loadUserProgress() {
+    private fun checkRatePrompt() {
         viewModelScope.launch {
             try {
-                loadUserProgressUseCase.loadMoviesProgress()
                 ratePromptManager.checkRecentlyWatched()
             } catch (error: Exception) {
                 error.rethrowCancellation {

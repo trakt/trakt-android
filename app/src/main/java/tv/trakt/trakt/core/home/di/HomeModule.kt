@@ -104,11 +104,9 @@ internal val homeModule = module {
             updateMovieWatchlistUseCase = get(),
             activityLocalSource = get(),
             allActivityLocalSource = get(),
-            userWatchlistLocalSource = get(),
             userWatchlistMinLocalSource = get(),
             loadUserProgressUseCase = get(),
             loadWatchlistUseCase = get(),
-            dataChanges = get(),
             analytics = get(),
         )
     }

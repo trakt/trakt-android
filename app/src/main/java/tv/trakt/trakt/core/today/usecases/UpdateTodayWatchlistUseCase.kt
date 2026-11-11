@@ -33,17 +33,7 @@ internal class UpdateTodayWatchlistUseCase(
     suspend fun addToWatchlist(media: TodayMedia) {
         when (media) {
             is TodayMedia.MovieMedia -> {
-                updateMovieWatchlistUseCase.addToWatchlist(movieId = media.ids.trakt)
-                userWatchlistLocalSource.addMovies(
-                    movies = listOf(
-                        WatchlistItem.MovieItem(
-                            rank = 0,
-                            movie = media.movie,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addMovies(movies = setOf(media.ids.trakt))
+                updateMovieWatchlistUseCase.addToWatchlist(media.movie)
             }
             is TodayMedia.ShowMedia -> {
                 updateShowWatchlistUseCase.addToWatchlist(showId = media.ids.trakt)
@@ -57,26 +47,22 @@ internal class UpdateTodayWatchlistUseCase(
                     ),
                 )
                 userWatchlistMinLocalSource.addShows(shows = setOf(media.ids.trakt))
+                dataChanges.notify(Kind.Watchlist)
             }
         }
-
-        dataChanges.notify(Kind.Watchlist)
     }
 
     suspend fun removeFromWatchlist(media: TodayMedia) {
         when (media) {
             is TodayMedia.MovieMedia -> {
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = media.ids.trakt)
-                userWatchlistLocalSource.removeMovies(ids = setOf(media.ids.trakt))
-                userWatchlistMinLocalSource.removeMovies(ids = setOf(media.ids.trakt))
             }
             is TodayMedia.ShowMedia -> {
                 updateShowWatchlistUseCase.removeFromWatchlist(showId = media.ids.trakt)
                 userWatchlistLocalSource.removeShows(ids = setOf(media.ids.trakt))
                 userWatchlistMinLocalSource.removeShows(ids = setOf(media.ids.trakt))
+                dataChanges.notify(Kind.Watchlist)
             }
         }
-
-        dataChanges.notify(Kind.Watchlist)
     }
 }

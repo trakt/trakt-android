@@ -41,11 +41,9 @@ internal class ActivityItemContextViewModel(
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val activityLocalSource: HomePersonalLocalSource,
     private val allActivityLocalSource: AllActivityLocalSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ActivityItemContextState()
@@ -110,13 +108,12 @@ internal class ActivityItemContextViewModel(
                             mediaType = "episode",
                             source = "activity_context",
                         )
+                        loadUserProgress()
                     }
                 }
 
                 activityLocalSource.removeItems(ids = setOf(item.id), notify = true)
                 allActivityLocalSource.notifyUpdate()
-
-                loadUserProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -135,21 +132,7 @@ internal class ActivityItemContextViewModel(
             try {
                 loadingWatchlistState.update { Loading }
 
-                updateMovieWatchlistUseCase.addToWatchlist(movieId = item.movie.ids.trakt)
-                userWatchlistLocalSource.addMovies(
-                    movies = listOf(
-                        WatchlistItem.MovieItem(
-                            rank = 0,
-                            movie = item.movie,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addMovies(
-                    movies = setOf(item.movie.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
+                updateMovieWatchlistUseCase.addToWatchlist(item.movie)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "movie",
@@ -174,10 +157,6 @@ internal class ActivityItemContextViewModel(
                 loadingWatchlistState.update { Loading }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = item.movie.ids.trakt)
-                userWatchlistLocalSource.removeMovies(ids = setOf(item.movie.ids.trakt))
-                userWatchlistMinLocalSource.removeMovies(ids = setOf(item.movie.ids.trakt))
-
-                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "movie",

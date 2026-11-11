@@ -37,7 +37,6 @@ internal class WatchlistMovieContextViewModel(
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
-    private val loadProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
     private val ratePromptManager: RatePromptManager,
@@ -69,11 +68,6 @@ internal class WatchlistMovieContextViewModel(
                     movieId = movieId,
                     customDate = customDate,
                 )
-                userWatchlistLocalSource.removeMovies(setOf(movieId))
-                userWatchlistMinLocalSource.removeMovies(setOf(movieId))
-
-                loadProgressUseCase.loadMoviesProgress()
-                dataChanges.notify(Kind.History, Kind.Watchlist)
                 ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
@@ -100,10 +94,6 @@ internal class WatchlistMovieContextViewModel(
                 loadingWatchlistState.update { Loading }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movieId)
-                userWatchlistLocalSource.removeMovies(setOf(movieId))
-                userWatchlistMinLocalSource.removeMovies(setOf(movieId))
-
-                dataChanges.notify(Kind.Watchlist)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

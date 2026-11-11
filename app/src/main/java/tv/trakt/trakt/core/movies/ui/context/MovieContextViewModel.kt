@@ -126,21 +126,7 @@ internal class MovieContextViewModel(
             try {
                 loadingWatchlistState.update { Loading }
 
-                updateMovieWatchlistUseCase.addToWatchlist(movieId = movie.ids.trakt)
-                userWatchlistLocalSource.addMovies(
-                    movies = listOf(
-                        WatchlistItem.MovieItem(
-                            rank = 0,
-                            movie = movie,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addMovies(
-                    movies = setOf(movie.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
+                updateMovieWatchlistUseCase.addToWatchlist(movie)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "movie",
@@ -150,14 +136,9 @@ internal class MovieContextViewModel(
                 loadingWatchlistState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
+                    if (!errorsManager.tryEmitVipLimit(error)) {
+                        errorState.update { error }
+                        Timber.recordError(error)
                     }
                     loadingWatchlistState.update { Idle }
                 }
@@ -176,14 +157,6 @@ internal class MovieContextViewModel(
                 loadingWatchlistState.update { Loading }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movie.ids.trakt)
-                userWatchlistLocalSource.removeMovies(
-                    ids = setOf(movie.ids.trakt),
-                )
-                userWatchlistMinLocalSource.removeMovies(
-                    ids = setOf(movie.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "movie",
@@ -214,15 +187,6 @@ internal class MovieContextViewModel(
                     movieId = movie.ids.trakt,
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadMoviesProgress()
-                userWatchlistLocalSource.removeMovies(
-                    ids = setOf(movie.ids.trakt),
-                )
-                userWatchlistMinLocalSource.removeMovies(
-                    ids = setOf(movie.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.History, Kind.Watchlist)
                 ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
@@ -291,8 +255,6 @@ internal class MovieContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
-                userProgressLocalSource.removeMovies(ids = setOf(movie.ids.trakt))
-                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "movie",

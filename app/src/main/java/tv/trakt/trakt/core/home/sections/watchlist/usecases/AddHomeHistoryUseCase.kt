@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.home.sections.watchlist.usecases
 
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
 import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.model.DateSelectionResult
@@ -17,14 +18,13 @@ internal class AddHomeHistoryUseCase(
     suspend fun addMovieToHistory(
         movieId: TraktId,
         customDate: DateSelectionResult? = null,
+        origin: ChangeOrigin? = null,
     ) {
         updateMovieHistoryUseCase.addToWatched(
-            movieId,
-            customDate,
+            movieId = movieId,
+            customDate = customDate,
+            origin = origin,
         )
-
-        userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
-        userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
     }
 
     suspend fun addEpisodeToHistory(

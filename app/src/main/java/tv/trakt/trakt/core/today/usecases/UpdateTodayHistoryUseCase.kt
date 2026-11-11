@@ -37,7 +37,7 @@ internal class UpdateTodayHistoryUseCase(
         }
 
         todayLocalSource.setForYouWatched(key = item.key, watched = true)
-        notifyHistoryUpdate()
+        notifyHistoryUpdate(item)
     }
 
     suspend fun removeFromWatched(item: TodayForYouItem) {
@@ -52,10 +52,14 @@ internal class UpdateTodayHistoryUseCase(
         }
 
         todayLocalSource.setForYouWatched(key = item.key, watched = false)
-        notifyHistoryUpdate()
+        notifyHistoryUpdate(item)
     }
 
-    private fun notifyHistoryUpdate() {
+    private fun notifyHistoryUpdate(item: TodayForYouItem) {
+        // The movie history use case already publishes the history change.
+        if (item is TodayForYouItem.StartWatching && item.media is TodayMedia.MovieMedia) {
+            return
+        }
         dataChanges.notify(Kind.History, origin = ChangeOrigin.TodayStories)
     }
 
@@ -64,20 +68,19 @@ internal class UpdateTodayHistoryUseCase(
 
         when (media) {
             is TodayMedia.MovieMedia -> {
-                updateMovieHistoryUseCase.addToWatched(movieId = id)
-                loadProgressUseCase.loadMoviesProgress()
-                userWatchlistLocalSource.removeMovies(ids = setOf(id))
-                userWatchlistMinLocalSource.removeMovies(ids = setOf(id))
+                updateMovieHistoryUseCase.addToWatched(
+                    movieId = id,
+                    origin = ChangeOrigin.TodayStories,
+                )
             }
             is TodayMedia.ShowMedia -> {
                 updateShowHistoryUseCase.addToWatched(showId = id)
                 loadProgressUseCase.loadShowsProgress()
                 userWatchlistLocalSource.removeShows(ids = setOf(id))
                 userWatchlistMinLocalSource.removeShows(ids = setOf(id))
+                dataChanges.notify(Kind.Watchlist)
             }
         }
-
-        dataChanges.notify(Kind.Watchlist)
     }
 
     private suspend fun removeMediaFromWatched(media: TodayMedia) {
@@ -85,15 +88,16 @@ internal class UpdateTodayHistoryUseCase(
 
         when (media) {
             is TodayMedia.MovieMedia -> {
-                updateMovieHistoryUseCase.removeAllFromHistory(id)
-                userProgressLocalSource.removeMovies(ids = setOf(id))
+                updateMovieHistoryUseCase.removeAllFromHistory(
+                    movieId = id,
+                    origin = ChangeOrigin.TodayStories,
+                )
             }
             is TodayMedia.ShowMedia -> {
                 updateShowHistoryUseCase.removeAllFromHistory(id)
                 userProgressLocalSource.removeShows(ids = setOf(id))
+                dataChanges.notify(Kind.Progress)
             }
         }
-
-        dataChanges.notify(Kind.Progress)
     }
 }

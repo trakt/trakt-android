@@ -46,8 +46,6 @@ internal class RatePromptViewModel(
     private val sessionManager: SessionManager,
     private val ratePromptManager: RatePromptManager,
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
-    private val userFavoritesLocalSource: UserFavoritesLocalSource,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = RatePromptUiState()
@@ -157,17 +155,10 @@ internal class RatePromptViewModel(
                 dismissingState.update { nowUtcInstant() }
 
                 delay(300) // Small delay to allow UI to settle.
-                updateMovieFavoritesUseCase.addToFavorites(movie.ids.trakt)
-                userFavoritesLocalSource.addMovies(
-                    movies = listOf(
-                        FavoriteItem.MovieItem(
-                            rank = 0,
-                            movie = movie,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
+                updateMovieFavoritesUseCase.addToFavorites(
+                    movie = movie,
+                    origin = ChangeOrigin.RatePrompt,
                 )
-                dataChanges.notify(Kind.Favorites, origin = ChangeOrigin.RatePrompt)
 
                 favoriteState.update { true }
 
@@ -199,9 +190,10 @@ internal class RatePromptViewModel(
                 dismissingState.update { nowUtcInstant() }
 
                 delay(300) // Small delay to allow UI to settle.
-                updateMovieFavoritesUseCase.removeFromFavorites(movie.ids.trakt)
-                userFavoritesLocalSource.removeMovies(setOf(movie.ids.trakt))
-                dataChanges.notify(Kind.Favorites, origin = ChangeOrigin.RatePrompt)
+                updateMovieFavoritesUseCase.removeFromFavorites(
+                    movieId = movie.ids.trakt,
+                    origin = ChangeOrigin.RatePrompt,
+                )
 
                 favoriteState.update { false }
             } catch (error: Exception) {

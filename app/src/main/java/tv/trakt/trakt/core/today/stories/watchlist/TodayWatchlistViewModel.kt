@@ -96,9 +96,8 @@ internal class TodayWatchlistViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     isWatchlistedState.update { false }
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> errorsManager.tryEmit(error)
-                        else -> Timber.recordError(error)
+                    if (!errorsManager.tryEmitVipLimit(error)) {
+                        Timber.recordError(error)
                     }
                 }
             } finally {
