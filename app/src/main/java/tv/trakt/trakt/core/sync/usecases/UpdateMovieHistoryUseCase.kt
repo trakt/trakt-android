@@ -14,6 +14,11 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.ratings.RemoveOrphanedRatingUseCase
 
+/**
+ * Adding a play and removing a single play reload the movies progress before publishing the
+ * change. Callers that refresh the progress on their own, without blocking the user, pass
+ * `refreshProgress = false`.
+ */
 internal class UpdateMovieHistoryUseCase(
     private val remoteSource: MoviesSyncRemoteSource,
     private val orphanedRatings: RemoveOrphanedRatingUseCase,
@@ -27,6 +32,7 @@ internal class UpdateMovieHistoryUseCase(
         movieId: TraktId,
         customDate: DateSelectionResult? = null,
         origin: ChangeOrigin? = null,
+        refreshProgress: Boolean = true,
     ): PostSyncHistoryAdd200Response {
         val watchedAt = customDate?.dateString
             ?: nowUtcInstant().toString()
@@ -36,7 +42,9 @@ internal class UpdateMovieHistoryUseCase(
             watchedAt = watchedAt,
         )
 
-        loadProgressUseCase.loadMoviesProgress()
+        if (refreshProgress) {
+            loadProgressUseCase.loadMoviesProgress()
+        }
         userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
         userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
         dataChanges.notify(Kind.History, Kind.Watchlist, origin = origin)
@@ -62,6 +70,7 @@ internal class UpdateMovieHistoryUseCase(
         playId: Long,
         movieId: TraktId,
         origin: ChangeOrigin? = null,
+        refreshProgress: Boolean = true,
     ) {
         val orphanedRating = orphanedRatings.findMovie(movieId)
         remoteSource.removeSingleFromHistory(
@@ -69,7 +78,9 @@ internal class UpdateMovieHistoryUseCase(
         )
         orphanedRatings.remove(orphanedRating)
 
-        loadProgressUseCase.loadMoviesProgress()
+        if (refreshProgress) {
+            loadProgressUseCase.loadMoviesProgress()
+        }
         dataChanges.notify(Kind.History, origin = origin)
     }
 }

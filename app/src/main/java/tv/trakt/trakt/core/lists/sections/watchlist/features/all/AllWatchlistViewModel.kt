@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -67,6 +68,7 @@ internal class AllWatchlistViewModel(
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val updateMovieHistoryUseCase: AddHomeHistoryUseCase,
     private val collectionStateProvider: CollectionStateProvider,
@@ -387,7 +389,7 @@ internal class AllWatchlistViewModel(
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                checkRatePrompt()
+                loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -417,9 +419,10 @@ internal class AllWatchlistViewModel(
         }
     }
 
-    private fun checkRatePrompt() {
+    private fun loadMoviesProgress() {
         viewModelScope.launch {
             try {
+                loadUserProgressUseCase.loadMoviesProgress()
                 ratePromptManager.checkRecentlyWatched()
             } catch (error: Exception) {
                 error.rethrowCancellation {

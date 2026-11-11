@@ -383,7 +383,7 @@ internal class AllHomeWatchlistViewModel(
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                checkRatePrompt()
+                loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -536,9 +536,10 @@ internal class AllHomeWatchlistViewModel(
         }
     }
 
-    private fun checkRatePrompt() {
+    private fun loadMoviesProgress() {
         viewModelScope.launch {
             try {
+                loadUserProgressUseCase.loadMoviesProgress()
                 ratePromptManager.checkRecentlyWatched()
             } catch (error: Exception) {
                 error.rethrowCancellation {

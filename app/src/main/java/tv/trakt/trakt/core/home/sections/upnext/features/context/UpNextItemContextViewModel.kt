@@ -46,7 +46,11 @@ internal class UpNextItemContextViewModel(
             clear()
             try {
                 loadingDropState.update { Loading }
-                updateShowHistoryUseCase.dropShow(showId)
+                updateShowHistoryUseCase.dropShow(
+                    showId = showId,
+                    refreshProgress = false,
+                )
+                loadUserShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -91,11 +95,16 @@ internal class UpNextItemContextViewModel(
             try {
                 loadingWatchedState.update { Loading }
                 dropPlaybackUseCase.dropMoviePlayback(movieId)
-                updateMovieHistoryUseCase.addToWatched(movieId)
+                updateMovieHistoryUseCase.addToWatched(
+                    movieId = movieId,
+                    refreshProgress = false,
+                )
 
                 upNextLocalSource.removeMovieItems(
                     ids = listOf(movieId),
                 )
+
+                loadUserMoviesProgress()
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -109,6 +118,18 @@ internal class UpNextItemContextViewModel(
                 }
             } finally {
                 loadingWatchedState.update { Done }
+            }
+        }
+    }
+
+    private fun loadUserShowsProgress() {
+        viewModelScope.launch {
+            try {
+                loadUserProgressUseCase.loadShowsProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }

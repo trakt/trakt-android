@@ -97,7 +97,10 @@ internal class UpdateShowHistoryUseCase(
         dataChanges.notify(Kind.History, Kind.Progress, origin = origin)
     }
 
-    suspend fun dropShow(showId: TraktId) {
+    suspend fun dropShow(
+        showId: TraktId,
+        refreshProgress: Boolean = true,
+    ) {
         remoteSource.dropShow(showId)
         analytics.progress.logDrop(MediaType.Show.value)
         widgetsUpdater.refreshInBackground()
@@ -108,7 +111,9 @@ internal class UpdateShowHistoryUseCase(
             notify = true,
         )
         dataChanges.notify(Kind.History)
-        loadProgressUseCase.loadShowsProgress()
+        if (refreshProgress) {
+            loadProgressUseCase.loadShowsProgress()
+        }
     }
 
     private suspend fun getUnwatchedEpisodeIds(

@@ -87,11 +87,13 @@ internal class ActivityItemContextViewModel(
                         updateMovieHistoryUseCase.removePlayFromHistory(
                             playId = item.id,
                             movieId = item.movie.ids.trakt,
+                            refreshProgress = false,
                         )
                         analytics.progress.logRemoveWatchedMedia(
                             mediaType = "movie",
                             source = "activity_context",
                         )
+                        loadUserProgress()
                     }
 
                     is EpisodeItem -> {

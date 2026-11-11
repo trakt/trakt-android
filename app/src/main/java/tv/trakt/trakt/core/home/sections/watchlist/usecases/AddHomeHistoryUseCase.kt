@@ -20,6 +20,7 @@ internal class AddHomeHistoryUseCase(
             movieId = movieId,
             customDate = customDate,
             origin = origin,
+            refreshProgress = false,
         )
     }
 
