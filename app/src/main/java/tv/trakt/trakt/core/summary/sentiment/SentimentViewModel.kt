@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -74,14 +75,18 @@ internal class SentimentViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             try {
-                val user = sessionManager.getProfile()
-                userState.update { user }
-
-                if (user?.isAnyVip != true && sentiments != null) {
-                    sentimentState.update {
-                        getMockSentimentUseCase.getMockSentiments()
+                sessionManager.observeProfile()
+                    .distinctUntilChangedBy { it?.isAnyVip }
+                    .collect { user ->
+                        userState.update { user }
+                        sentimentState.update {
+                            when {
+                                sentiments == null -> null
+                                user?.isAnyVip == true -> sentiments
+                                else -> getMockSentimentUseCase.getMockSentiments()
+                            }
+                        }
                     }
-                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
