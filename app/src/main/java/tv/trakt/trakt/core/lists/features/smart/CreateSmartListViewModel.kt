@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,6 +23,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.lists.SmartList
@@ -45,7 +47,7 @@ internal class CreateSmartListViewModel(
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<CreateSmartListDestination>()
     private val editList = destination.listJson?.let { Json.decodeFromString<SmartList>(it) }
-    private val initialFilters = editList?.filters
+    private val initialFilters = editList?.filters?.withGroupedCertifications()
         ?: destination.filtersJson?.let { Json.decodeFromString<SmartListFilters>(it) }
         ?: SmartListFilters.Default
 
@@ -204,4 +206,23 @@ internal class CreateSmartListViewModel(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialState,
     )
+}
+
+// The API stores certification groups as separate tokens, while the editor selects whole groups.
+private fun SmartListFilters.withGroupedCertifications(): SmartListFilters {
+    return copy(
+        certifications = certifications?.toCertificationGroups(),
+        excludedCertifications = excludedCertifications?.toCertificationGroups(),
+    )
+}
+
+private fun List<String>.toCertificationGroups(): ImmutableList<String> {
+    val groups = Certification.entries.filter { group ->
+        group.slug.split(',').all { it in this }
+    }
+    val groupedTokens = groups.flatMap { it.slug.split(',') }.toSet()
+
+    return (groups.map { it.slug } + filterNot { it in groupedTokens })
+        .distinct()
+        .toImmutableList()
 }
