@@ -47,6 +47,8 @@ import tv.trakt.trakt.common.model.discover.DiscoverItem.ShowItem
 import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.discover.DiscoverSection.Recommended
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import tv.trakt.trakt.core.discover.sections.all.AllDiscoverEvent.HideError
 import tv.trakt.trakt.core.discover.ui.AllDiscoverListView
@@ -67,6 +69,7 @@ internal fun AllDiscoverScreen(
     viewModel: AllDiscoverViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToCreateSmartList: (SmartListFilters) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -154,6 +157,19 @@ internal fun AllDiscoverScreen(
             initial = state.filter,
         ),
         onUpdate = viewModel::setFilter,
+        onCreateSmartList = state.type
+            ?.takeIf { state.user != null }
+            ?.let { section ->
+                { filter ->
+                    filtersSheet = false
+                    onNavigateToCreateSmartList(
+                        SmartListFilters.fromGlobalFilter(
+                            filter = filter,
+                            source = SmartListSource.fromDiscoverSection(section),
+                        ),
+                    )
+                }
+            },
         onDismiss = {
             filtersSheet = false
         },

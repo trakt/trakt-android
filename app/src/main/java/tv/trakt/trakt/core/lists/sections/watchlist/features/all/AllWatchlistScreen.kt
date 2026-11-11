@@ -69,6 +69,8 @@ import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.sorting.SortType.Added
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
@@ -100,6 +102,7 @@ internal fun AllWatchlistScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onReorderClick: () -> Unit,
+    onCreateSmartListClick: (SmartListFilters) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
@@ -241,6 +244,15 @@ internal fun AllWatchlistScreen(
             initial = state.filter,
         ),
         onUpdate = viewModel::setFilter,
+        onCreateSmartList = { filter ->
+            filtersSheet = false
+            onCreateSmartListClick(
+                SmartListFilters.fromGlobalFilter(
+                    filter = filter,
+                    source = SmartListSource.Watchlist,
+                ),
+            )
+        },
         onDismiss = {
             filtersSheet = false
         },

@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.capitalize
@@ -22,6 +23,7 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.globalfilter.EXCLUSION_PREFIX
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.toExclusionTokens
@@ -99,6 +101,15 @@ enum class SmartListSource(
             return entries
                 .firstOrNull { it.value == value }
                 ?: Unknown
+        }
+
+        fun fromDiscoverSection(section: DiscoverSection): SmartListSource {
+            return when (section) {
+                DiscoverSection.Trending -> Trending
+                DiscoverSection.Popular -> Popular
+                DiscoverSection.Anticipated -> Anticipated
+                DiscoverSection.Recommended -> Recommendations
+            }
         }
     }
 }
@@ -251,15 +262,16 @@ data class SmartListFilters(
                 excludedGenres = filters.genres.excluded()
                     .mapNotNull { MediaGenre.fromSlug(it) }
                     .toImmutableList(),
-                subgenres = filters.subgenres.orEmpty().toImmutableList(),
+                subgenres = filters.subgenres.orEmpty().distinct().toImmutableList(),
                 certifications = filters.certifications.included().toImmutableList(),
                 excludedCertifications = filters.certifications.excluded().toImmutableList(),
-                languages = filters.languages.orEmpty().toImmutableList(),
+                languages = filters.languages.orEmpty().distinct().toImmutableList(),
                 countries = filters.countries.included().toImmutableList(),
                 excludedCountries = filters.countries.excluded().toImmutableList(),
-                statuses = filters.statuses.orEmpty().toImmutableList(),
-                networks = filters.networks.orEmpty().toImmutableList(),
+                statuses = filters.statuses.orEmpty().distinct().toImmutableList(),
+                networks = filters.networks.orEmpty().distinct().toImmutableList(),
                 availability = filters.watchnow.orEmpty()
+                    .distinct()
                     .mapNotNull { GlobalFilter.Availability.fromSlug(it) }
                     .toImmutableList(),
                 years = filters.years.orEmpty().toImmutableList(),
@@ -277,15 +289,50 @@ data class SmartListFilters(
                 ignoreWatchlisted = filters.ignoreWatchlisted ?: false,
             )
         }
+
+        fun fromGlobalFilter(
+            filter: GlobalFilter,
+            source: SmartListSource,
+        ): SmartListFilters {
+            return SmartListFilters(
+                media = filter.mode,
+                source = source,
+                genres = filter.genre,
+                excludedGenres = filter.excludedGenres,
+                subgenres = filter.subgenre,
+                certifications = filter.certification?.map { it.slug }?.toImmutableList(),
+                excludedCertifications = filter.excludedCertifications?.map { it.slug }?.toImmutableList(),
+                countries = filter.countries ?: filter.region?.slug?.split(',')?.toImmutableList(),
+                excludedCountries = filter.excludedCountries,
+                statuses = filter.statusesParam?.split(',')?.toImmutableList(),
+                availability = filter.availability,
+                years = filter.years?.toRange(),
+                ratings = filter.rating?.takeIf { it != 0 to 100 }?.toRange(),
+                runtimes = filter.runtime?.toRange(),
+                parentalNudity = filter.parentalNudity?.toRange(),
+                parentalViolence = filter.parentalViolence?.toRange(),
+                parentalProfanity = filter.parentalProfanity?.toRange(),
+                parentalAlcohol = filter.parentalAlcohol?.toRange(),
+                parentalFrightening = filter.parentalFrightening?.toRange(),
+                ignoreWatched = filter.hideWatched,
+                ignoreWatchlisted = filter.hideWatchlist,
+            )
+        }
     }
 }
 
-private fun List<String>?.included(): List<String> = orEmpty().filterNot { it.startsWith(EXCLUSION_PREFIX) }
+private fun List<String>?.included(): List<String> =
+    orEmpty()
+        .filterNot { it.startsWith(EXCLUSION_PREFIX) }
+        .distinct()
 
 private fun List<String>?.excluded(): List<String> =
     orEmpty()
         .filter { it.startsWith(EXCLUSION_PREFIX) }
         .map { it.removePrefix(EXCLUSION_PREFIX) }
+        .distinct()
+
+private fun Pair<Int, Int>.toRange(): ImmutableList<Int> = persistentListOf(first, second)
 
 private fun formatParentalRange(
     category: ParentalGuideCategory,

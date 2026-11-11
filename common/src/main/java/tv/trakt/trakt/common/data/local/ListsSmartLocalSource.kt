@@ -35,6 +35,14 @@ class ListsSmartLocalSource {
         }
     }
 
+    suspend fun replaceList(list: SmartList) {
+        mutex.withLock {
+            storage.computeIfPresent(list.ids.trakt) { _, current ->
+                list.copy(images = current.images)
+            }
+        }
+    }
+
     suspend fun removeList(listId: TraktId) {
         mutex.withLock {
             storage.remove(listId)

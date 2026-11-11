@@ -30,10 +30,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
+import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.lists.SmartListSource.Unknown
@@ -47,6 +54,7 @@ import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.ZonedDateTime
 
 @Composable
 internal fun CreateSmartListSheetView(
@@ -63,7 +71,14 @@ internal fun CreateSmartListSheetView(
         }
     }
 
-    var filtersMode by rememberSaveable { mutableStateOf(GlobalFilterMode.Simple) }
+    var filtersMode by rememberSaveable {
+        mutableStateOf(
+            when {
+                state.filters.hasAnyFilter() -> GlobalFilterMode.Advanced
+                else -> GlobalFilterMode.Simple
+            },
+        )
+    }
 
     val backgroundColor = TraktTheme.colors.dialogContainer
     val backgroundGradient = remember(backgroundColor) {
@@ -77,6 +92,8 @@ internal fun CreateSmartListSheetView(
     }
 
     val enabled = !state.creating.isLoading
+    val isEditing = state.editList != null
+    val canSave = inputValid && (!isEditing || state.hasChanges(nameState.text.toString()))
     Box(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -94,8 +111,14 @@ internal fun CreateSmartListSheetView(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 TraktHeader(
-                    title = stringResource(R.string.page_title_create_smart_list),
-                    subtitle = stringResource(R.string.text_cta_smart_lists),
+                    title = when {
+                        isEditing -> stringResource(R.string.header_edit_smart_list)
+                        else -> stringResource(R.string.page_title_create_smart_list)
+                    },
+                    subtitle = when {
+                        isEditing -> null
+                        else -> stringResource(R.string.text_cta_smart_lists)
+                    },
                     maxSubtitleLines = 3,
                     modifier = Modifier.weight(1f),
                 )
@@ -228,8 +251,11 @@ internal fun CreateSmartListSheetView(
         )
 
         PrimaryButton(
-            text = stringResource(R.string.button_text_create),
-            enabled = inputValid && enabled,
+            text = when {
+                isEditing -> stringResource(R.string.button_text_apply)
+                else -> stringResource(R.string.button_text_create)
+            },
+            enabled = canSave && enabled,
             loading = state.creating.isLoading,
             onClick = {
                 onCreateClick(nameState.text.toString())
@@ -276,6 +302,27 @@ private fun TargetFilter(
     )
 }
 
+private fun SmartListFilters.hasAnyFilter(): Boolean {
+    val lists = listOf(
+        genreTokens,
+        certificationTokens,
+        countryTokens,
+        subgenres,
+        languages,
+        statuses,
+        networks,
+        availability,
+        years,
+        ratings,
+        runtimes,
+        imdbRatings,
+        rtMeters,
+        rtUserMeters,
+    ) + ParentalGuideCategory.entries.map(::parentalRange)
+
+    return lists.any { !it.isNullOrEmpty() } || ignoreWatched || ignoreWatchlisted
+}
+
 @DeviceSheetPreview
 @Composable
 private fun Preview() {
@@ -296,6 +343,34 @@ private fun MediaPreview() {
                 filters = SmartListFilters.Default.copy(media = MediaMode.Media),
             ),
             nameState = TextFieldState(),
+        )
+    }
+}
+
+@DeviceSheetPreview
+@Composable
+private fun EditPreview() {
+    val filters = SmartListFilters.Default.copy(
+        genres = persistentListOf(MediaGenre.Action),
+        ignoreWatched = true,
+    )
+
+    TraktTheme {
+        CreateSmartListSheetView(
+            state = CreateSmartListState(
+                editList = SmartList(
+                    ids = Ids(trakt = TraktId(1), slug = SlugId("smart")),
+                    name = "Unwatched action",
+                    privacy = null,
+                    createdAt = ZonedDateTime.now(),
+                    updatedAt = ZonedDateTime.now(),
+                    images = null,
+                    filters = filters,
+                ),
+                initialFilters = filters,
+                filters = filters,
+            ),
+            nameState = TextFieldState("Unwatched action"),
         )
     }
 }

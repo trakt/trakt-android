@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.CreateSmartListRequestDto
 import tv.trakt.trakt.common.networking.SmartListDto
 import tv.trakt.trakt.common.networking.SmartListItemDto
+import tv.trakt.trakt.common.networking.UpdateSmartListRequestDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 
 class UserSmartListsRemoteSource(
@@ -27,6 +28,18 @@ class UserSmartListsRemoteSource(
             id = userId,
             postUsersListsListConvertToSmartListRequest = request,
         )
+    }
+
+    suspend fun updateSmartList(
+        listId: TraktId,
+        request: UpdateSmartListRequestDto,
+        userId: String = "me",
+    ): SmartListDto {
+        return smartListsApi.putUsersSmartListsSmartListUpdate(
+            id = userId,
+            listId = listId.value.toString(),
+            putUsersSmartListsSmartListUpdateRequest = request,
+        ).body()
     }
 
     suspend fun getSmartListDetails(

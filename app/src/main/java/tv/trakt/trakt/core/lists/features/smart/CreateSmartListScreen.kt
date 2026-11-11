@@ -131,15 +131,14 @@ internal fun CreateSmartListScreen(
         ),
     )
 
-    val nameInputState = rememberTextFieldState()
+    val nameInputState = rememberTextFieldState(
+        initialText = state.editList?.name.orEmpty(),
+    )
     var confirmExitSheet by remember { mutableStateOf(false) }
 
     val onExit = {
         if (!state.creating.isLoading) {
-            val hasName = nameInputState.text.isNotBlank()
-            val hasChanges = state.filters != SmartListFilters.Default
-
-            if (hasChanges || hasName) {
+            if (state.hasChanges(nameInputState.text.toString())) {
                 confirmExitSheet = true
             } else {
                 onNavigateBack()
@@ -152,7 +151,7 @@ internal fun CreateSmartListScreen(
         state = state,
         scaffoldState = scaffoldState,
         nameInputState = nameInputState,
-        onCreateClick = { viewModel.createList(nameInputState.text.toString()) },
+        onCreateClick = { viewModel.saveList(nameInputState.text.toString()) },
         onFiltersChange = viewModel::setFilters,
         onParentalGuideExpandedChange = viewModel::setParentalGuideExpanded,
         onExit = onExit,

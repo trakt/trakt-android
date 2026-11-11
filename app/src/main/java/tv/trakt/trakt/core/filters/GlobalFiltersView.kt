@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.filters
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,6 +30,7 @@ import tv.trakt.trakt.core.filters.views.GlobalFiltersAdvancedView
 import tv.trakt.trakt.core.filters.views.GlobalFiltersSimpleView
 import tv.trakt.trakt.helpers.extensions.TraktThemeLight
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
@@ -39,77 +42,94 @@ internal val ColumnsSpacing = 8.dp
 internal fun GlobalFiltersView(
     viewModel: GlobalFiltersViewModel,
     onUpdate: (GlobalFilter) -> Unit = { _ -> },
+    onCreateSmartList: ((GlobalFilter) -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmationSheet by remember { mutableStateOf(false) }
 
-    state.mode?.let {
-        when (it) {
-            Simple -> {
-                GlobalFiltersSimpleView(
-                    state = state,
-                    onToggleMode = viewModel::applyMode,
-                    onUpdateFilter = { filter, delay ->
-                        scope.launch {
-                            delay(if (delay) 100.milliseconds else 0.milliseconds)
-                            viewModel.applyFilter(filter)
-                            onUpdate(filter)
-                        }
-                    },
-                    onResetFilter = {
-                        scope.launch {
-                            viewModel.applyFilter(
-                                GlobalFilter.Default.copy(
-                                    mode = state.filter.mode,
-                                ),
-                            )
-                            onUpdate(GlobalFilter.Default)
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 24.dp)
-                        .padding(bottom = 24.dp),
-                )
+    Column {
+        state.mode?.let {
+            when (it) {
+                Simple -> {
+                    GlobalFiltersSimpleView(
+                        state = state,
+                        onToggleMode = viewModel::applyMode,
+                        onUpdateFilter = { filter, delay ->
+                            scope.launch {
+                                delay(if (delay) 100.milliseconds else 0.milliseconds)
+                                viewModel.applyFilter(filter)
+                                onUpdate(filter)
+                            }
+                        },
+                        onResetFilter = {
+                            scope.launch {
+                                viewModel.applyFilter(
+                                    GlobalFilter.Default.copy(
+                                        mode = state.filter.mode,
+                                    ),
+                                )
+                                onUpdate(GlobalFilter.Default)
+                            }
+                        },
+                        modifier = Modifier
+                            .weight(1f, fill = false)
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                            .padding(horizontal = 24.dp)
+                            .padding(bottom = 24.dp),
+                    )
+                }
+                Advanced -> {
+                    GlobalFiltersAdvancedView(
+                        state = state,
+                        onParentalGuideExpandedChange = viewModel::setParentalGuideExpanded,
+                        onToggleMode = { mode ->
+                            if (state.filter.isAdvancedActive) {
+                                confirmationSheet = true
+                            } else {
+                                viewModel.applyMode(mode)
+                            }
+                        },
+                        onUpdateFilter = { filter, delay ->
+                            scope.launch {
+                                delay(if (delay) 100.milliseconds else 0.milliseconds)
+                                viewModel.applyFilter(filter)
+                                onUpdate(filter)
+                            }
+                        },
+                        onResetFilter = {
+                            scope.launch {
+                                viewModel.applyFilter(
+                                    GlobalFilter.Default.copy(
+                                        mode = state.filter.mode,
+                                    ),
+                                )
+                                onUpdate(GlobalFilter.Default)
+                            }
+                        },
+                        modifier = Modifier
+                            .weight(1f, fill = false)
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                            .padding(horizontal = 24.dp)
+                            .padding(bottom = 24.dp),
+                    )
+                }
             }
-            Advanced -> {
-                GlobalFiltersAdvancedView(
-                    state = state,
-                    onParentalGuideExpandedChange = viewModel::setParentalGuideExpanded,
-                    onToggleMode = { mode ->
-                        if (state.filter.isAdvancedActive) {
-                            confirmationSheet = true
-                        } else {
-                            viewModel.applyMode(mode)
-                        }
-                    },
-                    onUpdateFilter = { filter, delay ->
-                        scope.launch {
-                            delay(if (delay) 100.milliseconds else 0.milliseconds)
-                            viewModel.applyFilter(filter)
-                            onUpdate(filter)
-                        }
-                    },
-                    onResetFilter = {
-                        scope.launch {
-                            viewModel.applyFilter(
-                                GlobalFilter.Default.copy(
-                                    mode = state.filter.mode,
-                                ),
-                            )
-                            onUpdate(GlobalFilter.Default)
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 24.dp)
-                        .padding(bottom = 24.dp),
-                )
-            }
+        }
+
+        if (onCreateSmartList != null) {
+            PrimaryButton(
+                text = stringResource(R.string.button_text_create_smart_list),
+                icon = painterResource(R.drawable.ic_smart),
+                onClick = { onCreateSmartList(state.filter) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(bottom = 24.dp),
+            )
         }
     }
 

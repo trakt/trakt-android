@@ -65,16 +65,16 @@ private fun MediaMode.toMediaType(): PostUsersListsListConvertToSmartListRequest
     }
 }
 
-private fun SmartListFilters.toFiltersDto(): SmartListFiltersDto {
-    return SmartListFiltersDto(
-        genres = genreTokens.orNullIfEmpty(),
-        subgenres = subgenres.orNullIfEmpty(),
-        certifications = certificationTokens.orNullIfEmpty(),
-        languages = languages.orNullIfEmpty(),
-        countries = countryTokens.orNullIfEmpty(),
-        statuses = statuses.orNullIfEmpty(),
-        networks = networks.orNullIfEmpty(),
-        watchnow = availability?.map { it.slug }.orNullIfEmpty(),
+internal fun SmartListFilters.toFiltersDto(base: SmartListFiltersDto = SmartListFiltersDto()): SmartListFiltersDto {
+    return base.copy(
+        genres = genreTokens.distinctOrNull(),
+        subgenres = subgenres.distinctOrNull(),
+        certifications = certificationTokens.distinctOrNull(),
+        languages = languages.distinctOrNull(),
+        countries = countryTokens.distinctOrNull(),
+        statuses = statuses.distinctOrNull(),
+        networks = networks.distinctOrNull(),
+        watchnow = availability?.map { it.slug }.distinctOrNull(),
         years = years.orNullIfEmpty(),
         ratings = ratings.orNullIfEmpty(),
         runtimes = runtimes.orNullIfEmpty(),
@@ -92,3 +92,5 @@ private fun SmartListFilters.toFiltersDto(): SmartListFiltersDto {
 }
 
 private fun <T> Collection<T>?.orNullIfEmpty(): List<T>? = this?.takeIf { it.isNotEmpty() }?.toList()
+
+private fun <T> Collection<T>?.distinctOrNull(): List<T>? = orNullIfEmpty()?.distinct()

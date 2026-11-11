@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.lists.model.SmartListItem
 
@@ -11,10 +12,16 @@ import tv.trakt.trakt.core.lists.model.SmartListItem
 internal data class CreateSmartListState(
     val items: ImmutableList<SmartListItem>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
+    val editList: SmartList? = null,
+    val initialFilters: SmartListFilters = SmartListFilters.Default,
     val filters: SmartListFilters = SmartListFilters.Default,
     val parentalGuideExpanded: Boolean = true,
     val creating: LoadingState = LoadingState.Idle,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
     val success: Boolean = false,
-)
+) {
+    fun hasChanges(name: String): Boolean {
+        return filters != initialFilters || name.trim() != editList?.name.orEmpty()
+    }
+}

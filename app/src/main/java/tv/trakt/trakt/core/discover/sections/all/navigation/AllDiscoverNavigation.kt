@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.discover.DiscoverSection
+import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.discover.sections.all.AllDiscoverScreen
 
 @Serializable
@@ -18,12 +19,14 @@ internal fun NavGraphBuilder.discoverAllScreen(
     onNavigateBack: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToCreateSmartList: (SmartListFilters) -> Unit,
 ) {
     composable<DiscoverDestination> {
         AllDiscoverScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
             onNavigateToMovie = onNavigateToMovie,
+            onNavigateToCreateSmartList = onNavigateToCreateSmartList,
             onNavigateBack = onNavigateBack,
         )
     }

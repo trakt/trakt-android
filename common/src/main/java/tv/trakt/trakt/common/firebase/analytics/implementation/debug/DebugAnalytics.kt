@@ -401,6 +401,10 @@ internal class DebugAnalyticsLists : Analytics.Lists {
         Timber.d("logSmartListCreate")
     }
 
+    override fun logSmartListUpdate() {
+        Timber.d("logSmartListUpdate")
+    }
+
     override fun logSmartListDelete() {
         Timber.d("logSmartListDelete")
     }
