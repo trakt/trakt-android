@@ -13,8 +13,6 @@ import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowCreator
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
-import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryViewModel
-import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.ShowInfoViewModel
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowCrewUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowNetworksUseCase
@@ -53,7 +51,6 @@ internal val showDetailsModule = module {
     factoryOf(::GetSeasonCommentsUseCase)
     factoryOf(::GetShowRelatedUseCase)
     factoryOf(::GetShowListsUseCase)
-    factoryOf(::GetShowHistoryUseCase)
     factoryOf(::GetShowSocialsUseCase)
     factoryOf(::GetWatchedUntilEpisodesUseCase)
     factoryOf(::GetShowProgressUseCase)
@@ -88,7 +85,6 @@ internal val showDetailsModule = module {
     viewModelOf(::ShowRelatedViewModel)
     viewModelOf(::ShowListsViewModel)
     viewModelOf(::ShowDetailsContextViewModel)
-    viewModelOf(::ShowHistoryViewModel)
     viewModelOf(::WatchedUntilViewModel)
     viewModelOf(::ShowProgressViewModel)
 

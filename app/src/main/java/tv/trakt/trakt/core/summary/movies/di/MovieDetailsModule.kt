@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.summary.movies.di
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.MovieDetailsViewModel
@@ -13,8 +12,6 @@ import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirec
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtrasUseCase
-import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryViewModel
-import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.MovieInfoViewModel
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieCrewUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUseCase
@@ -38,7 +35,6 @@ internal val movieDetailsModule = module {
     factoryOf(::GetMovieDirectorUseCase)
     factoryOf(::GetMovieCrewUseCase)
     factoryOf(::GetMovieRelatedUseCase)
-    factoryOf(::GetMovieHistoryUseCase)
     factoryOf(::GetMovieListsUseCase)
     factoryOf(::GetMovieSocialsUseCase)
 
@@ -124,8 +120,6 @@ internal val movieDetailsModule = module {
             collapsingManager = get(),
         )
     }
-
-    viewModelOf(::MovieHistoryViewModel)
 
     viewModel { (movie: Movie) ->
         MovieDetailsContextViewModel(

@@ -44,6 +44,7 @@ internal fun MainNavHost(
         profileScreens(navController, userId)
         commentsScreens(navController, userId)
         allShowSeasonsScreens(navController, userId)
+        mediaHistoryScreens(navController)
         triviaScreens(navController)
         sentimentScreens(navController)
         allCreditsScreens(navController)

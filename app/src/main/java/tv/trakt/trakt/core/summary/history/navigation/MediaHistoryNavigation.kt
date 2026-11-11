@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.shows.features.history.navigation
+package tv.trakt.trakt.core.summary.history.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -7,22 +7,24 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryScreen
+import tv.trakt.trakt.core.summary.history.MediaHistoryScreen
+import tv.trakt.trakt.core.summary.history.model.MediaHistoryType
 
 @Serializable
-internal data class ShowHistoryDestination(
-    val showId: Int,
-    val showTitle: String,
+internal data class MediaHistoryDestination(
+    val mediaType: MediaHistoryType,
+    val mediaId: Int,
+    val mediaTitle: String,
     val watched: Int,
     val backgroundUrl: String? = null,
 )
 
-internal fun NavGraphBuilder.showHistoryScreen(
+internal fun NavGraphBuilder.mediaHistoryScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    composable<ShowHistoryDestination> {
-        ShowHistoryScreen(
+    composable<MediaHistoryDestination> {
+        MediaHistoryScreen(
             viewModel = koinViewModel(),
             onNavigateBack = onNavigateBack,
             onNavigateToEpisode = onNavigateToEpisode,
@@ -30,16 +32,18 @@ internal fun NavGraphBuilder.showHistoryScreen(
     }
 }
 
-internal fun NavController.navigateToShowHistory(
-    showId: TraktId,
-    showTitle: String,
+internal fun NavController.navigateToMediaHistory(
+    mediaType: MediaHistoryType,
+    mediaId: TraktId,
+    mediaTitle: String,
     watched: Int,
     backgroundUrl: String? = null,
 ) {
     navigate(
-        route = ShowHistoryDestination(
-            showId = showId.value,
-            showTitle = showTitle,
+        route = MediaHistoryDestination(
+            mediaType = mediaType,
+            mediaId = mediaId.value,
+            mediaTitle = mediaTitle,
             watched = watched,
             backgroundUrl = backgroundUrl,
         ),
