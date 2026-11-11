@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.lists.SmartListSource.Anticipated
@@ -74,7 +75,7 @@ internal fun SmartListFilters.toFiltersDto(base: SmartListFiltersDto = SmartList
         countries = countryTokens.distinctOrNull(),
         statuses = statuses.distinctOrNull(),
         networks = networks.distinctOrNull(),
-        watchnow = availability?.map { it.slug }.distinctOrNull(),
+        watchnow = (availability?.map { it.slug }.orEmpty() + base.unsupportedWatchNow()).distinctOrNull(),
         years = years.orNullIfEmpty(),
         ratings = ratings.orNullIfEmpty(),
         runtimes = runtimes.orNullIfEmpty(),
@@ -89,6 +90,10 @@ internal fun SmartListFilters.toFiltersDto(base: SmartListFiltersDto = SmartList
         ignoreWatched = ignoreWatched.takeIf { it },
         ignoreWatchlisted = ignoreWatchlisted.takeIf { it },
     )
+}
+
+private fun SmartListFiltersDto.unsupportedWatchNow(): List<String> {
+    return watchnow.orEmpty().filter { GlobalFilter.Availability.fromSlug(it) == null }
 }
 
 private fun <T> Collection<T>?.orNullIfEmpty(): List<T>? = this?.takeIf { it.isNotEmpty() }?.toList()
