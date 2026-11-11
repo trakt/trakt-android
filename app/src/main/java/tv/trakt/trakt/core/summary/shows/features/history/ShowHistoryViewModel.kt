@@ -314,9 +314,10 @@ internal class ShowHistoryViewModel(
             try {
                 loadingState.update { Loading }
 
-                updateShowHistoryUseCase.removeAllFromHistory(destination.showId.toTraktId())
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History, origin = origin)
+                updateShowHistoryUseCase.removeAllFromHistory(
+                    showId = destination.showId.toTraktId(),
+                    origin = origin,
+                )
 
                 itemsState.update { persistentMapOf() }
                 hasMoreData = false

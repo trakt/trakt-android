@@ -1,13 +1,8 @@
 package tv.trakt.trakt.core.today.usecases
 
-import tv.trakt.trakt.common.core.lists.model.WatchlistItem
-import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
-import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
-import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
 import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 
@@ -15,9 +10,7 @@ internal class UpdateTodayWatchlistUseCase(
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
-    private val dataChanges: DataChanges,
 ) {
     suspend fun isWatchlisted(media: TodayMedia): Boolean {
         if (!loadWatchlistUseCase.isLoaded()) {
@@ -36,18 +29,7 @@ internal class UpdateTodayWatchlistUseCase(
                 updateMovieWatchlistUseCase.addToWatchlist(media.movie)
             }
             is TodayMedia.ShowMedia -> {
-                updateShowWatchlistUseCase.addToWatchlist(showId = media.ids.trakt)
-                userWatchlistLocalSource.addShows(
-                    shows = listOf(
-                        WatchlistItem.ShowItem(
-                            rank = 0,
-                            show = media.show,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addShows(shows = setOf(media.ids.trakt))
-                dataChanges.notify(Kind.Watchlist)
+                updateShowWatchlistUseCase.addToWatchlist(media.show)
             }
         }
     }
@@ -59,9 +41,6 @@ internal class UpdateTodayWatchlistUseCase(
             }
             is TodayMedia.ShowMedia -> {
                 updateShowWatchlistUseCase.removeFromWatchlist(showId = media.ids.trakt)
-                userWatchlistLocalSource.removeShows(ids = setOf(media.ids.trakt))
-                userWatchlistMinLocalSource.removeShows(ids = setOf(media.ids.trakt))
-                dataChanges.notify(Kind.Watchlist)
             }
         }
     }

@@ -14,7 +14,6 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
-import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -32,7 +31,6 @@ internal class UpNextItemContextViewModel(
     private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val dataChanges: DataChanges,
     private val upNextLocalSource: HomeUpNextLocalSource,
-    private val upcomingLocalSource: HomeUpcomingLocalSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -49,19 +47,6 @@ internal class UpNextItemContextViewModel(
             try {
                 loadingDropState.update { Loading }
                 updateShowHistoryUseCase.dropShow(showId)
-
-                upNextLocalSource.removeShowItems(
-                    ids = listOf(showId),
-                )
-
-                upcomingLocalSource.removeShowItems(
-                    showIds = listOf(showId),
-                    notify = true,
-                )
-
-                dataChanges.notify(Kind.History)
-
-                loadUserShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -124,18 +109,6 @@ internal class UpNextItemContextViewModel(
                 }
             } finally {
                 loadingWatchedState.update { Done }
-            }
-        }
-    }
-
-    fun loadUserShowsProgress() {
-        viewModelScope.launch {
-            try {
-                loadUserProgressUseCase.loadShowsProgress()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
             }
         }
     }

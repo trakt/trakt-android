@@ -6,9 +6,6 @@ import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.today.model.TodayForYouItem
 import tv.trakt.trakt.common.core.today.model.TodayMedia
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.data.local.UserProgressLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
@@ -19,10 +16,7 @@ internal class UpdateTodayHistoryUseCase(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val userProgressLocalSource: UserProgressLocalSource,
     private val dataChanges: DataChanges,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val todayLocalSource: TodayLocalSource,
 ) {
     suspend fun addToWatched(item: TodayForYouItem) {
@@ -56,8 +50,8 @@ internal class UpdateTodayHistoryUseCase(
     }
 
     private fun notifyHistoryUpdate(item: TodayForYouItem) {
-        // The movie history use case already publishes the history change.
-        if (item is TodayForYouItem.StartWatching && item.media is TodayMedia.MovieMedia) {
+        // The movie and show history use cases already publish the history change.
+        if (item is TodayForYouItem.StartWatching) {
             return
         }
         dataChanges.notify(Kind.History, origin = ChangeOrigin.TodayStories)
@@ -74,11 +68,10 @@ internal class UpdateTodayHistoryUseCase(
                 )
             }
             is TodayMedia.ShowMedia -> {
-                updateShowHistoryUseCase.addToWatched(showId = id)
-                loadProgressUseCase.loadShowsProgress()
-                userWatchlistLocalSource.removeShows(ids = setOf(id))
-                userWatchlistMinLocalSource.removeShows(ids = setOf(id))
-                dataChanges.notify(Kind.Watchlist)
+                updateShowHistoryUseCase.addToWatched(
+                    showId = id,
+                    origin = ChangeOrigin.TodayStories,
+                )
             }
         }
     }
@@ -94,9 +87,10 @@ internal class UpdateTodayHistoryUseCase(
                 )
             }
             is TodayMedia.ShowMedia -> {
-                updateShowHistoryUseCase.removeAllFromHistory(id)
-                userProgressLocalSource.removeShows(ids = setOf(id))
-                dataChanges.notify(Kind.Progress)
+                updateShowHistoryUseCase.removeAllFromHistory(
+                    showId = id,
+                    origin = ChangeOrigin.TodayStories,
+                )
             }
         }
     }

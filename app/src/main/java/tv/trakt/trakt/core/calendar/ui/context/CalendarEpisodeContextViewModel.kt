@@ -46,11 +46,8 @@ internal class CalendarEpisodeContextViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
-    private val upNextLocalSource: HomeUpNextLocalSource,
-    private val upcomingLocalSource: HomeUpcomingLocalSource,
     private val dataChanges: DataChanges,
     private val userProgressLocalSource: UserProgressLocalSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
@@ -199,18 +196,7 @@ internal class CalendarEpisodeContextViewModel(
             try {
                 loadingWatchlistState.update { Loading }
 
-                updateWatchlistUseCase.addToWatchlist(showId = showId)
-                userWatchlistLocalSource.addShows(
-                    listOf(
-                        WatchlistItem.ShowItem(
-                            rank = 0,
-                            show = item.show,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addShows(shows = setOf(showId))
-                dataChanges.notify(Kind.Watchlist)
+                updateWatchlistUseCase.addToWatchlist(item.show)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "show",
@@ -241,9 +227,6 @@ internal class CalendarEpisodeContextViewModel(
                 loadingWatchlistState.update { Loading }
 
                 updateWatchlistUseCase.removeFromWatchlist(showId = showId)
-                userWatchlistLocalSource.removeShows(ids = setOf(showId))
-                userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
-                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "show",
@@ -271,13 +254,6 @@ internal class CalendarEpisodeContextViewModel(
                 loadingDropState.update { Loading }
 
                 updateShowHistoryUseCase.dropShow(showId)
-                upNextLocalSource.removeShowItems(ids = listOf(showId))
-                upcomingLocalSource.removeShowItems(
-                    showIds = listOf(showId),
-                    notify = true,
-                )
-                dataChanges.notify(Kind.History)
-                loadProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

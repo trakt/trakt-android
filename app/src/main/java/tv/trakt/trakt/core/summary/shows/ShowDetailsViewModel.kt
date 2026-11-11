@@ -99,9 +99,6 @@ internal class ShowDetailsViewModel(
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateShowFavoritesUseCase: UpdateShowFavoritesUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
-    private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val episodeLocalSource: EpisodeLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
@@ -448,16 +445,12 @@ internal class ShowDetailsViewModel(
                     showId = showId,
                     customDate = customDate,
                     watchAgain = watchAgain,
+                    origin = origin,
                 )
-                val progress = loadProgressUseCase.loadShowsProgress()
+                val progress = loadProgressUseCase.loadLocalShows()
                     .firstOrNull {
                         it.showId == showId
                     }
-
-                userWatchlistLocalSource.removeShows(ids = setOf(showId))
-                userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
-
-                dataChanges.notify(Kind.Watchlist)
 
                 showProgressState.update {
                     it?.copy(
@@ -469,8 +462,6 @@ internal class ShowDetailsViewModel(
                         watchedEpisodes = progress?.watchedEpisodesWithoutSpecials ?: 0,
                     )
                 }
-
-                dataChanges.notify(Kind.History, origin = origin)
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
@@ -507,11 +498,10 @@ internal class ShowDetailsViewModel(
             try {
                 loadingProgress.update { Loading }
 
-                updateShowHistoryUseCase.removeAllFromHistory(showId)
-                loadProgressUseCase.loadShowsProgress()
-                    .firstOrNull {
-                        it.showId == showId
-                    }
+                updateShowHistoryUseCase.removeAllFromHistory(
+                    showId = showId,
+                    origin = origin,
+                )
 
                 showProgressState.update {
                     it?.copy(
@@ -521,7 +511,6 @@ internal class ShowDetailsViewModel(
                     )
                 }
 
-                dataChanges.notify(Kind.History, origin = origin)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }
@@ -559,6 +548,8 @@ internal class ShowDetailsViewModel(
     }
 
     private fun addToWatchlist() {
+        val show = showState.value ?: return
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -566,21 +557,7 @@ internal class ShowDetailsViewModel(
             try {
                 loadingLists.update { Loading }
 
-                updateShowWatchlistUseCase.addToWatchlist(showId)
-                userWatchlistLocalSource.addShows(
-                    shows = listOf(
-                        WatchlistItem.ShowItem(
-                            rank = 0,
-                            show = showState.value!!,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addShows(
-                    shows = setOf(showId),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
+                updateShowWatchlistUseCase.addToWatchlist(show)
 
                 showProgressState.update {
                     it?.copy(
@@ -618,10 +595,6 @@ internal class ShowDetailsViewModel(
                 loadingLists.update { Loading }
 
                 updateShowWatchlistUseCase.removeFromWatchlist(showId)
-
-                userWatchlistLocalSource.removeShows(ids = setOf(showId))
-                userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
-                dataChanges.notify(Kind.Watchlist)
 
                 refreshLists()
 
@@ -693,6 +666,8 @@ internal class ShowDetailsViewModel(
     }
 
     private fun addToFavorites() {
+        val show = showState.value ?: return
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -701,17 +676,7 @@ internal class ShowDetailsViewModel(
                 loadingFavorite.update { Loading }
 
                 delay(300.milliseconds) // Small delay to allow UI to settle.
-                updateShowFavoritesUseCase.addToFavorites(showId)
-                userFavoritesLocalSource.addShows(
-                    shows = listOf(
-                        FavoriteItem.ShowItem(
-                            rank = 0,
-                            show = showState.value!!,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                dataChanges.notify(Kind.Favorites)
+                updateShowFavoritesUseCase.addToFavorites(show)
 
                 showUserRatingsState.update {
                     it?.copy(
@@ -751,8 +716,6 @@ internal class ShowDetailsViewModel(
 
                 delay(300.milliseconds) // Small delay to allow UI to settle.
                 updateShowFavoritesUseCase.removeFromFavorites(showId)
-                userFavoritesLocalSource.removeShows(setOf(showId))
-                dataChanges.notify(Kind.Favorites)
 
                 showUserRatingsState.update {
                     it?.copy(

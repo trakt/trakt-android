@@ -76,14 +76,12 @@ internal val showsModule = module {
             updateWatchlistUseCase = get(),
             updateHistoryUseCase = get(),
             userProgressLocalSource = get(),
-            userWatchlistLocalSource = get(),
             userWatchlistMinLocalSource = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             sessionManager = get(),
             analytics = get(),
             errorsManager = get(),
-            dataChanges = get(),
         )
     }
 }

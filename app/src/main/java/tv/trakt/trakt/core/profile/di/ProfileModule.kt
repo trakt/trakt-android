@@ -203,11 +203,7 @@ internal val profileModule = module {
             updateShowFavoritesUseCase = get(),
             updateShowHistoryUseCase = get(),
             loadProgressUseCase = get(),
-            userFavoritesLocalSource = get(),
             userProgressLocalSource = get(),
-            userWatchlistLocalSource = get(),
-            userWatchlistMinLocalSource = get(),
-            dataChanges = get(),
             analytics = get(),
         )
     }
@@ -231,12 +227,7 @@ internal val profileModule = module {
             sessionManager = get(),
             updateShowHistoryUseCase = get(),
             loadProgressUseCase = get(),
-            upNextLocalSource = get(),
-            upcomingLocalSource = get(),
             userProgressLocalSource = get(),
-            userWatchlistLocalSource = get(),
-            userWatchlistMinLocalSource = get(),
-            dataChanges = get(),
             analytics = get(),
         )
     }

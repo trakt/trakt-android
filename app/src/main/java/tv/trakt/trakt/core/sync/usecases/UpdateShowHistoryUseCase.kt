@@ -1,6 +1,14 @@
 package tv.trakt.trakt.core.sync.usecases
 
+import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
+import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
+import tv.trakt.trakt.common.data.local.UserProgressLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
+import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.data.remote.EpisodesSyncRemoteSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
@@ -25,11 +33,18 @@ internal class UpdateShowHistoryUseCase(
     private val widgetsUpdater: WidgetsUpdater,
     private val analytics: Analytics,
     private val orphanedRatings: RemoveOrphanedRatingUseCase,
+    private val userProgressLocalSource: UserProgressLocalSource,
+    private val userWatchlistLocalSource: UserWatchlistLocalSource,
+    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
+    private val upNextLocalSource: HomeUpNextLocalSource,
+    private val upcomingLocalSource: HomeUpcomingLocalSource,
+    private val dataChanges: DataChanges,
 ) {
     suspend fun addToWatched(
         showId: TraktId,
         customDate: DateSelectionResult? = null,
         watchAgain: Boolean = false,
+        origin: ChangeOrigin? = null,
     ) {
         val watchedAt = customDate?.dateString
             ?: nowUtcInstant().toString()
@@ -60,21 +75,40 @@ internal class UpdateShowHistoryUseCase(
         }
 
         widgetsUpdater.refreshInBackground()
+
+        loadProgressUseCase.loadShowsProgress()
+        userWatchlistLocalSource.removeShows(ids = setOf(showId))
+        userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
+        dataChanges.notify(Kind.History, Kind.Watchlist, origin = origin)
     }
 
-    suspend fun removeAllFromHistory(showId: TraktId) {
+    suspend fun removeAllFromHistory(
+        showId: TraktId,
+        origin: ChangeOrigin? = null,
+    ) {
         val orphanedRating = orphanedRatings.findShow(showId)
         remoteSource.removeAllFromHistory(
             showId = showId,
         )
         orphanedRatings.remove(orphanedRating)
         widgetsUpdater.refreshInBackground()
+
+        userProgressLocalSource.removeShows(ids = setOf(showId))
+        dataChanges.notify(Kind.History, Kind.Progress, origin = origin)
     }
 
     suspend fun dropShow(showId: TraktId) {
         remoteSource.dropShow(showId)
         analytics.progress.logDrop(MediaType.Show.value)
         widgetsUpdater.refreshInBackground()
+
+        upNextLocalSource.removeShowItems(ids = listOf(showId))
+        upcomingLocalSource.removeShowItems(
+            showIds = listOf(showId),
+            notify = true,
+        )
+        dataChanges.notify(Kind.History)
+        loadProgressUseCase.loadShowsProgress()
     }
 
     private suspend fun getUnwatchedEpisodeIds(

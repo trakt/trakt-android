@@ -40,11 +40,7 @@ internal class FavoriteShowContextViewModel(
     private val updateShowFavoritesUseCase: UpdateShowFavoritesUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val userProgressLocalSource: UserProgressLocalSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = FavoriteShowContextState()
@@ -98,8 +94,6 @@ internal class FavoriteShowContextViewModel(
                 loadingFavoriteState.update { Loading }
 
                 updateShowFavoritesUseCase.removeFromFavorites(show.ids.trakt)
-                userFavoritesLocalSource.removeShows(setOf(show.ids.trakt))
-                dataChanges.notify(Kind.Favorites)
 
                 analytics.ratings.logFavoriteRemove(
                     mediaType = MediaType.Show.value,
@@ -129,11 +123,6 @@ internal class FavoriteShowContextViewModel(
                     showId = show.ids.trakt,
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadShowsProgress()
-                userWatchlistLocalSource.removeShows(ids = setOf(show.ids.trakt))
-                userWatchlistMinLocalSource.removeShows(ids = setOf(show.ids.trakt))
-
-                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = MediaType.Show.value,
@@ -161,8 +150,6 @@ internal class FavoriteShowContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateShowHistoryUseCase.removeAllFromHistory(show.ids.trakt)
-                userProgressLocalSource.removeShows(ids = setOf(show.ids.trakt))
-                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = MediaType.Show.value,
