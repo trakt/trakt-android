@@ -2,6 +2,7 @@ package tv.trakt.trakt.ui.components.buttons
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private val LoadingIndicatorInset = 4.dp
 
 @Composable
 internal fun GhostButton(
@@ -77,12 +81,17 @@ internal fun GhostButton(
         ) {
             when {
                 loading -> {
-                    FilmProgressIndicator(
-                        size = iconSize,
-                        color = if (enabled) contentColor else disabledContentColor,
+                    Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .padding(end = iconSpace),
-                    )
+                            .padding(end = iconSpace)
+                            .requiredSize(iconSize),
+                    ) {
+                        FilmProgressIndicator(
+                            size = iconSize - LoadingIndicatorInset,
+                            color = if (enabled) contentColor else disabledContentColor,
+                        )
+                    }
                 }
 
                 icon != null -> {
