@@ -10,13 +10,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
-import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
 import tv.trakt.trakt.common.data.local.UserProgressLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done

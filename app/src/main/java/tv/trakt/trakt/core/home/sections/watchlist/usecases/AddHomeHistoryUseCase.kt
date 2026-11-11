@@ -1,8 +1,6 @@
 package tv.trakt.trakt.core.home.sections.watchlist.usecases
 
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
-import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId

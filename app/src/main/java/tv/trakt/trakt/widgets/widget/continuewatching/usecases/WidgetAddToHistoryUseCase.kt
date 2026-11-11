@@ -1,8 +1,6 @@
 package tv.trakt.trakt.widgets.widget.continuewatching.usecases
 
 import timber.log.Timber
-import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
-import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
