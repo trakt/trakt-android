@@ -70,6 +70,8 @@ internal object HalContract {
     const val EVENT_LINK = "action.link"
     const val EVENT_BANNER_DISMISS = "banner-action.dismiss"
     const val EVENT_SEASONAL_FILTER = "seasonal-action.filter"
+    const val EVENT_INSIGHTS_OPEN = "insights.open"
+    const val EVENT_INSIGHTS_TAB = "insights.tab"
 
     const val DIM_ROUTE = "route"
     const val DIM_SOURCE = "source"
@@ -91,6 +93,7 @@ internal object HalContract {
     const val DIM_SORT_HOW = "sortHow"
     const val DIM_SERVICE = "service"
     const val DIM_TARGET = "target"
+    const val DIM_TAB = "tab"
     const val DIM_VALUE = "value"
     const val DIM_POSITION = "position"
     const val DIM_MATCHED_ON = "matched_on"

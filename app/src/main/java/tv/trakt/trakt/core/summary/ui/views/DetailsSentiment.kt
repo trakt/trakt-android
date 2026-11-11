@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,18 +46,25 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.stripMarkdownLinks
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Mixed
 import tv.trakt.trakt.common.model.Sentiments.Overall.Negative
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
+import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun DetailsSentiment(
-    sentiments: Sentiments,
+    sentiments: Sentiments?,
+    realityCheck: RealityCheck?,
     vip: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -78,9 +86,10 @@ internal fun DetailsSentiment(
         }
     }
 
-    val sentimentColor = when (sentiments.overall) {
-        Positive, Mixed -> TraktTheme.colors.sentimentsAccent
+    val accentColor = TraktTheme.colors.sentimentsAccent
+    val sentimentColor = when (sentiments?.overall) {
         Negative -> TraktTheme.colors.sentimentsBadAccent
+        Positive, Mixed, null -> accentColor
     }
 
     Column(
@@ -99,6 +108,62 @@ internal fun DetailsSentiment(
             )
             .padding(20.dp),
     ) {
+        if (sentiments != null && !sentiments.isEmpty) {
+            SentimentSummary(
+                sentiments = sentiments,
+                sentimentColor = sentimentColor,
+            )
+        } else if (realityCheck != null) {
+            RealityCheckSummary(
+                realityCheck = realityCheck,
+                color = accentColor,
+            )
+        }
+
+        if (!vip) {
+            realityCheck?.let {
+                RealityTierPill(
+                    tier = it.verdict,
+                    color = accentColor,
+                    modifier = Modifier.padding(top = 16.dp),
+                )
+            }
+            GetVipView()
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            ) {
+                realityCheck?.let {
+                    RealityTierPill(
+                        tier = it.verdict,
+                        color = accentColor,
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(top = 8.dp),
+                    )
+                }
+                Icon(
+                    painter = painterResource(R.drawable.ic_back_arrow),
+                    contentDescription = null,
+                    tint = sentimentColor,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .size(20.dp)
+                        .rotate(180F),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SentimentSummary(
+    sentiments: Sentiments,
+    sentimentColor: Color,
+) {
+    Column {
         Row(
             horizontalArrangement = spacedBy(10.dp, Alignment.Start),
             verticalAlignment = CenterVertically,
@@ -149,21 +214,33 @@ internal fun DetailsSentiment(
                 }
             }
         }
+    }
+}
 
-        if (!vip) {
-            GetVipView()
-        } else {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
-                contentDescription = null,
-                tint = sentimentColor,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(top = 8.dp)
-                    .size(20.dp)
-                    .rotate(180F),
-            )
-        }
+@Composable
+private fun RealityCheckSummary(
+    realityCheck: RealityCheck,
+    color: Color,
+) {
+    Column(
+        verticalArrangement = spacedBy(12.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.header_reality_check),
+            color = color,
+            style = TraktTheme.typography.heading5.copy(
+                fontSize = 15.sp,
+            ),
+        )
+        Text(
+            text = remember(realityCheck.summary) {
+                realityCheck.summary.stripMarkdownLinks().toMarkdownText()
+            },
+            color = color,
+            style = TraktTheme.typography.paragraphSmall,
+            maxLines = 5,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 
@@ -253,6 +330,7 @@ private fun Preview() {
             DetailsSentiment(
                 modifier = Modifier.padding(16.dp),
                 vip = true,
+                realityCheck = PreviewData.realityCheck,
                 sentiments = Sentiments(
                     overall = Positive,
                     pros = listOf(
@@ -297,6 +375,7 @@ private fun Preview2() {
             DetailsSentiment(
                 modifier = Modifier.padding(16.dp),
                 vip = false,
+                realityCheck = PreviewData.realityCheck,
                 sentiments = Sentiments(
                     overall = Mixed,
                     pros = listOf(
@@ -341,6 +420,7 @@ private fun Preview3() {
             DetailsSentiment(
                 modifier = Modifier.padding(16.dp),
                 vip = false,
+                realityCheck = null,
                 sentiments = Sentiments(
                     overall = Negative,
                     pros = listOf(
@@ -366,6 +446,19 @@ private fun Preview3() {
                 ),
             )
         }
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewRealityCheckOnly() {
+    TraktThemePreview {
+        DetailsSentiment(
+            modifier = Modifier.padding(16.dp),
+            vip = true,
+            sentiments = null,
+            realityCheck = PreviewData.realityCheck,
+        )
     }
 }
 

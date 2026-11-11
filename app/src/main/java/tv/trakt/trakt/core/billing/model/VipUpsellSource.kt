@@ -15,6 +15,7 @@ internal enum class VipUpsellSource(
     Soundtrack("soundtrack"),
     Trivia("trivia"),
     Sentiment("sentiment"),
+    RealityCheck("reality-check"),
     ConnectedApps("connected-apps"),
     Onboarding("onboarding"),
     VipLimit("vip-limit"),

@@ -8,7 +8,6 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
-import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -17,6 +16,7 @@ import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.movies.MovieDetailsScreen
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
+import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
 
 @Serializable
 internal data class MovieDetailsDestination(
@@ -30,7 +30,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToList: (Movie, CustomList) -> Unit,
     onNavigateToTrivia: (Movie) -> Unit,
     onNavigateToPersonLink: (Movie, SlugId) -> Unit,
-    onNavigateToSentiment: (Movie, Sentiments) -> Unit,
+    onNavigateToSentiment: (Movie, MediaInsights) -> Unit,
     onNavigateToTrailer: (String) -> Unit,
     onNavigateToExtra: (ExtraVideo) -> Unit,
     onNavigateToHistory: (Movie, watched: Int) -> Unit,
@@ -53,7 +53,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             onPersonClick = { movie, person, role -> onNavigateToPerson(movie, person, role) },
             onTriviaClick = { movie -> onNavigateToTrivia(movie) },
             onPersonLinkClick = { movie, slug -> onNavigateToPersonLink(movie, slug) },
-            onSentimentClick = { movie, sentiments -> onNavigateToSentiment(movie, sentiments) },
+            onSentimentClick = { movie, insights -> onNavigateToSentiment(movie, insights) },
             onTrailerClick = { url -> onNavigateToTrailer(url) },
             onExtraClick = { extra -> onNavigateToExtra(extra) },
             onNavigateToHistory = onNavigateToHistory,

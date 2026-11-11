@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ParentalGuideResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3RealityCheckResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationReasonsResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendedByResponse
@@ -175,6 +176,22 @@ class V3Api(
         mediaId: TraktId,
     ): V3ParentalGuideResponse? {
         val response = client.get("${baseV3Url}media/${type.value}/${mediaId.value}/info/16/version/1")
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
+        }
+        return response.body()
+    }
+
+    // Reality Check
+
+    suspend fun getRealityCheck(
+        type: MediaType,
+        mediaId: TraktId,
+        locale: Locale,
+    ): V3RealityCheckResponse? {
+        val response = client.get("${baseV3Url}media/${type.value}/${mediaId.value}/info/34/version/1") {
+            parameter("locale", locale.toLanguageTag())
+        }
         if (response.status == HttpStatusCode.NoContent) {
             return null
         }

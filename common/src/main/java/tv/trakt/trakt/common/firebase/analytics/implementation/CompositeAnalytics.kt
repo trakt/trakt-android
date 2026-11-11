@@ -178,6 +178,17 @@ internal class CompositeAnalytics(
         targets.forEach { it.logBannerDismiss(id, value) }
     }
 
+    override fun logInsightsOpen(
+        source: String,
+        tab: String,
+    ) {
+        targets.forEach { it.logInsightsOpen(source, tab) }
+    }
+
+    override fun logInsightsTab(tab: String) {
+        targets.forEach { it.logInsightsTab(tab) }
+    }
+
     override fun logSeasonalFilter(
         id: String,
         enabled: Boolean,

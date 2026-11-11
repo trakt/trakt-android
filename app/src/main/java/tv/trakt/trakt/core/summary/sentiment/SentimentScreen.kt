@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -58,6 +59,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
@@ -67,10 +69,15 @@ import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
+import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
+import tv.trakt.trakt.core.summary.sentiment.views.RealityCheckContent
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -79,7 +86,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun SentimentScreen(
     viewModel: SentimentViewModel,
-    onNavigateVip: () -> Unit,
+    onNavigateVip: (source: VipUpsellSource) -> Unit,
     onNavigateToPerson: (SlugId) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -87,7 +94,8 @@ internal fun SentimentScreen(
 
     SentimentContent(
         state = state,
-        onVipClick = onNavigateVip,
+        onTabClick = viewModel::selectTab,
+        onVipClick = { onNavigateVip(state.tab.upsellSource) },
         onVipSeen = viewModel::onVipUpsellSeen,
         onPersonLinkClick = onNavigateToPerson,
         onBackClick = onNavigateBack,
@@ -97,6 +105,7 @@ internal fun SentimentScreen(
 @Composable
 private fun SentimentContent(
     state: SentimentState,
+    onTabClick: (InsightsTab) -> Unit = {},
     onVipClick: () -> Unit = {},
     onVipSeen: () -> Unit = {},
     onPersonLinkClick: (SlugId) -> Unit = {},
@@ -144,78 +153,144 @@ private fun SentimentContent(
                     )
                 }
 
-                if (state.user?.isAnyVip != true) {
+                if (state.tabs.size > 1) {
                     item {
-                        Column {
-                            GetVipView(
-                                modifier = Modifier
-                                    .onUpsellSeen(onVipSeen)
-                                    .onClick(onClick = onVipClick),
-                            )
+                        InsightsTabs(
+                            tabs = state.tabs,
+                            selected = state.tab,
+                            onTabClick = onTabClick,
+                        )
+                    }
+                }
 
-                            Row(
-                                horizontalArrangement = spacedBy(4.dp, CenterHorizontally),
-                                verticalAlignment = CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                    .padding(top = 24.dp, bottom = 8.dp),
-                            ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_info),
-                                    tint = TraktTheme.colors.textSecondary,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(16.dp),
-                                )
-                                Text(
-                                    text = stringResource(R.string.text_sentiment_example, "Star Wars: The Last Jedi"),
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.heading6,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier,
+                when (state.tab) {
+                    InsightsTab.Sentiment -> {
+                        state.sentiments?.let { sentiments ->
+                            sentimentItems(
+                                sentiments = sentiments,
+                                vip = state.user?.isAnyVip == true,
+                                onVipClick = onVipClick,
+                                onVipSeen = onVipSeen,
+                            )
+                        }
+                    }
+
+                    InsightsTab.RealityCheck -> {
+                        state.realityCheck?.let { realityCheck ->
+                            item {
+                                RealityCheckContent(
+                                    realityCheck = realityCheck,
+                                    vip = state.user?.isAnyVip == true,
+                                    upsell = {
+                                        GetVipView(
+                                            modifier = Modifier
+                                                .onUpsellSeen(onVipSeen)
+                                                .onClick(onClick = onVipClick),
+                                        )
+                                    },
                                 )
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+}
 
-                val sentiments = state.sentiments
-                if (sentiments.analysis.isNotBlank()) {
-                    item {
-                        val linkColor = TraktTheme.colors.textPrimary
-                        Text(
-                            text = remember(sentiments.analysis, linkColor) {
-                                sentiments.analysis.toMarkdownText(linkColor)
-                            },
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
-                            modifier = Modifier.padding(top = 16.dp),
-                        )
-                    }
-                }
+private fun LazyListScope.sentimentItems(
+    sentiments: Sentiments,
+    vip: Boolean,
+    onVipClick: () -> Unit,
+    onVipSeen: () -> Unit,
+) {
+    if (!vip) {
+        item {
+            Column {
+                GetVipView(
+                    modifier = Modifier
+                        .onUpsellSeen(onVipSeen)
+                        .onClick(onClick = onVipClick),
+                )
 
-                if (sentiments.highlight.isNotBlank()) {
-                    item {
-                        HighlightsCard(
-                            header = stringResource(R.string.header_sentiment_highlight),
-                            text = sentiments.highlight,
-                            modifier = Modifier.padding(top = 20.dp),
-                        )
-                    }
-                }
-
-                if (sentiments.pros.isNotEmpty() || sentiments.cons.isNotEmpty()) {
-                    item {
-                        ProsConsCard(
-                            header = stringResource(R.string.header_sentiment_aspects),
-                            pros = sentiments.pros,
-                            cons = sentiments.cons,
-                            modifier = Modifier.padding(top = 20.dp),
-                        )
-                    }
+                Row(
+                    horizontalArrangement = spacedBy(4.dp, CenterHorizontally),
+                    verticalAlignment = CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                        .padding(top = 24.dp, bottom = 8.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_info),
+                        tint = TraktTheme.colors.textSecondary,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(16.dp),
+                    )
+                    Text(
+                        text = stringResource(R.string.text_sentiment_example, "Star Wars: The Last Jedi"),
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.heading6,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier,
+                    )
                 }
             }
+        }
+    }
+
+    if (sentiments.analysis.isNotBlank()) {
+        item {
+            val linkColor = TraktTheme.colors.textPrimary
+            Text(
+                text = remember(sentiments.analysis, linkColor) {
+                    sentiments.analysis.toMarkdownText(linkColor)
+                },
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
+                modifier = Modifier.padding(top = 16.dp),
+            )
+        }
+    }
+
+    if (sentiments.highlight.isNotBlank()) {
+        item {
+            HighlightsCard(
+                header = stringResource(R.string.header_sentiment_highlight),
+                text = sentiments.highlight,
+                modifier = Modifier.padding(top = 20.dp),
+            )
+        }
+    }
+
+    if (sentiments.pros.isNotEmpty() || sentiments.cons.isNotEmpty()) {
+        item {
+            ProsConsCard(
+                header = stringResource(R.string.header_sentiment_aspects),
+                pros = sentiments.pros,
+                cons = sentiments.cons,
+                modifier = Modifier.padding(top = 20.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun InsightsTabs(
+    tabs: ImmutableList<InsightsTab>,
+    selected: InsightsTab,
+    onTabClick: (InsightsTab) -> Unit,
+) {
+    FilterChipGroup(
+        paddingVertical = PaddingValues(top = 8.dp),
+    ) {
+        tabs.forEach { tab ->
+            FilterChip(
+                selected = tab == selected,
+                text = stringResource(tab.displayTextRes),
+                onClick = { onTabClick(tab) },
+            )
         }
     }
 }
@@ -243,7 +318,7 @@ private fun TitleBar(
                 contentDescription = null,
             )
             TraktHeader(
-                title = stringResource(R.string.header_community_sentiment),
+                title = stringResource(R.string.header_insights),
                 subtitle = mediaTitle,
             )
         }
@@ -484,6 +559,9 @@ private fun PreviewNonVip() {
                             Sentiments.Theme(value = "Slow start in season 2", confidence = 0.61f),
                         ).toImmutableList(),
                     ),
+                    realityCheck = PreviewData.realityCheck.copy(detail = null),
+                    tabs = persistentListOf(InsightsTab.Sentiment, InsightsTab.RealityCheck),
+                    tab = InsightsTab.Sentiment,
                     mediaTitle = "Breaking Bad",
                     backgroundUrl = null,
                 ),
@@ -524,6 +602,9 @@ private fun PreviewVip() {
                             Sentiments.Theme(value = "Slow start in season 2", confidence = 0.61f),
                         ).toImmutableList(),
                     ),
+                    realityCheck = PreviewData.realityCheck,
+                    tabs = persistentListOf(InsightsTab.Sentiment, InsightsTab.RealityCheck),
+                    tab = InsightsTab.RealityCheck,
                     mediaTitle = "Breaking Bad",
                     backgroundUrl = null,
                 ),

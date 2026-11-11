@@ -36,10 +36,12 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentState
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentViewModel
+import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentiment
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentimentSkeleton
 import tv.trakt.trakt.resources.R
@@ -53,7 +55,7 @@ internal fun ShowSentimentView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
-    onSentimentClick: (Sentiments) -> Unit = {},
+    onSentimentClick: (MediaInsights) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var visible by remember { mutableStateOf(true) }
@@ -77,7 +79,7 @@ private fun ShowSentimentContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onSentimentClick: (Sentiments) -> Unit = {},
+    onSentimentClick: (MediaInsights) -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onNotAvailable: (() -> Unit)? = null,
 ) {
@@ -92,7 +94,7 @@ private fun ShowSentimentContent(
             ),
     ) {
         TraktSectionHeader(
-            title = stringResource(R.string.header_community_sentiment),
+            title = stringResource(R.string.header_insights),
             chevron = false,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
@@ -104,7 +106,9 @@ private fun ShowSentimentContent(
                 .fillMaxWidth()
                 .padding(headerPadding)
                 .onClick {
-                    state.sentiment?.let { onSentimentClick(it) }
+                    if (state.hasInsights) {
+                        onSentimentClick(MediaInsights(state.sentiment, state.realityCheck))
+                    }
                 },
         )
 
@@ -124,14 +128,17 @@ private fun ShowSentimentContent(
                         )
                     }
                     Done -> {
-                        if (state.sentiment != null && !state.sentiment.isEmpty) {
+                        if (state.hasInsights) {
                             DetailsSentiment(
                                 vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,
+                                realityCheck = state.realityCheck,
                                 modifier = Modifier
                                     .fillMaxWidth(maxWidth)
                                     .padding(contentPadding)
-                                    .onClick { onSentimentClick(state.sentiment) },
+                                    .onClick {
+                                        onSentimentClick(MediaInsights(state.sentiment, state.realityCheck))
+                                    },
                             )
                         } else {
                             onNotAvailable?.invoke()
@@ -204,6 +211,7 @@ private fun Preview3() {
             ShowSentimentContent(
                 state = MediaSentimentState(
                     sentiment = Sentiments(Positive),
+                    realityCheck = PreviewData.realityCheck,
                     loading = Done,
                 ),
             )

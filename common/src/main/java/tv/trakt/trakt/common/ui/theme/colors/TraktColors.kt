@@ -61,6 +61,13 @@ data class TraktColors(
     val parentalGuideMild: Color = Color.Unspecified,
     val parentalGuideModerate: Color = Color.Unspecified,
     val parentalGuideSevere: Color = Color.Unspecified,
+    // Reality check
+    val realityAccurateContainer: Color = Color.Unspecified,
+    val realityAccurateContent: Color = Color.Unspecified,
+    val realityAdjustedContainer: Color = Color.Unspecified,
+    val realityAdjustedContent: Color = Color.Unspecified,
+    val realityAlteredContainer: Color = Color.Unspecified,
+    val realityAlteredContent: Color = Color.Unspecified,
     // Streaks
     val streakTileEmpty: Color = Color.Unspecified,
     val streakTileToday: Color = Color.Unspecified,

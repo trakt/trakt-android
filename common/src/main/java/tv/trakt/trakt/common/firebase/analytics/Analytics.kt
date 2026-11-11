@@ -236,6 +236,22 @@ interface Analytics {
     )
 
     /**
+     * Logs opening the Insights screen of a movie or show.
+     * @param source How the screen was opened (card).
+     * @param tab The tab shown on open (sentiment, reality-check).
+     */
+    fun logInsightsOpen(
+        source: String,
+        tab: String,
+    )
+
+    /**
+     * Logs switching tabs on the Insights screen.
+     * @param tab The selected tab (sentiment, reality-check).
+     */
+    fun logInsightsTab(tab: String)
+
+    /**
      * Logs toggling the seasonal theme and its discover filters.
      * @param id The seasonal theme id (halloween, christmas).
      * @param enabled Whether the seasonal theme is now on.

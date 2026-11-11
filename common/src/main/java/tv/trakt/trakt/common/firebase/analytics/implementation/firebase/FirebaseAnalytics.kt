@@ -44,6 +44,7 @@ private const val PARAMETER_SERVICE = "service"
 private const val PARAMETER_OUTCOME = "outcome"
 private const val PARAMETER_TARGET = "target"
 private const val PARAMETER_VALUE = "value"
+private const val PARAMETER_TAB = "tab"
 private const val PARAMETER_POSITION = "position"
 private const val PARAMETER_MATCHED_ON = "matched_on"
 
@@ -103,6 +104,8 @@ internal class FirebaseAnalytics(
         const val BANNER_DISMISS = "banner_dismiss"
         const val EASTER_EGG_LIGHTSABER = "easter_egg_lightsaber"
         const val SEASONAL_FILTER = "seasonal_filter"
+        const val INSIGHTS_OPEN = "insights_open"
+        const val INSIGHTS_TAB = "insights_tab"
     }
 
     init {
@@ -133,6 +136,8 @@ internal class FirebaseAnalytics(
             BANNER_DISMISS,
             EASTER_EGG_LIGHTSABER,
             SEASONAL_FILTER,
+            INSIGHTS_OPEN,
+            INSIGHTS_TAB,
         )
     }
 
@@ -424,6 +429,26 @@ internal class FirebaseAnalytics(
                 PARAMETER_ID to id,
                 PARAMETER_VALUE to value,
             ),
+        )
+    }
+
+    override fun logInsightsOpen(
+        source: String,
+        tab: String,
+    ) {
+        firebaseAnalytics.logEvent(
+            eventName(INSIGHTS_OPEN),
+            bundleOf(
+                PARAMETER_SOURCE to source,
+                PARAMETER_TAB to tab,
+            ),
+        )
+    }
+
+    override fun logInsightsTab(tab: String) {
+        firebaseAnalytics.logEvent(
+            eventName(INSIGHTS_TAB),
+            bundleOf(PARAMETER_TAB to tab),
         )
     }
 
