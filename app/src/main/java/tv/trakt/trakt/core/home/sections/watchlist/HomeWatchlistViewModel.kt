@@ -281,8 +281,6 @@ internal class HomeWatchlistViewModel(
                     seasonEpisode = SeasonEpisode(1, 1),
                     customDate = customDate,
                 )
-                dataChanges.notify(Kind.History, Kind.Watchlist)
-
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "home_watchlist",
@@ -334,7 +332,6 @@ internal class HomeWatchlistViewModel(
                     movieId = movieId,
                     customDate = customDate,
                 )
-                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -468,7 +465,7 @@ internal class HomeWatchlistViewModel(
         }
     }
 
-    fun loadMoviesProgress() {
+    private fun loadMoviesProgress() {
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadMoviesProgress()

@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.summary.episodes.di
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
@@ -12,8 +11,6 @@ import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsViewMod
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeActorsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeDirectorUseCase
 import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextViewModel
-import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryViewModel
-import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.info.EpisodeInfoViewModel
 import tv.trakt.trakt.core.summary.episodes.features.info.usecase.GetEpisodeCrewUseCase
 import tv.trakt.trakt.core.summary.episodes.features.info.usecase.GetEpisodeStatsUseCase
@@ -32,7 +29,6 @@ internal val episodeDetailsModule = module {
     factoryOf(::GetEpisodeRatingsUseCase)
     factoryOf(::GetEpisodeActorsUseCase)
     factoryOf(::GetEpisodeDirectorUseCase)
-    factoryOf(::GetEpisodeHistoryUseCase)
     factoryOf(::GetEpisodeSeasonUseCase)
     factoryOf(::HasSkippedEpisodesUseCase)
     factoryOf(::GetEpisodeRelatedUseCase)
@@ -78,8 +74,6 @@ internal val episodeDetailsModule = module {
             collapsingManager = get(),
         )
     }
-
-    viewModelOf(::EpisodeHistoryViewModel)
 
     viewModel { (show: Show, episode: Episode) ->
         EpisodeSeasonViewModel(

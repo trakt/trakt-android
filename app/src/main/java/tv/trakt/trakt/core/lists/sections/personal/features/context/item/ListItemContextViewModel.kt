@@ -10,8 +10,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
-import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.local.UserProgressLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -42,7 +40,6 @@ internal class ListItemContextViewModel(
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val userProgressLocalSource: UserProgressLocalSource,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListItemContextState()
@@ -107,8 +104,6 @@ internal class ListItemContextViewModel(
                     episodeId = item.episode.ids.trakt,
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
@@ -134,8 +129,6 @@ internal class ListItemContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(item.episode.ids.trakt.value)
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "episode",

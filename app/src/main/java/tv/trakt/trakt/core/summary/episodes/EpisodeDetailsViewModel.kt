@@ -446,9 +446,10 @@ internal class EpisodeDetailsViewModel(
                 val response = updateHistoryUseCase.addToHistory(
                     episodeId = episodeId,
                     customDate = customDate,
+                    origin = origin,
                 )
 
-                val progress = loadProgressUseCase.loadShowsProgress()
+                val progress = loadProgressUseCase.loadLocalShows()
                     .firstOrNull {
                         it.showId == showId
                     }?.seasons?.firstOrNull {
@@ -460,8 +461,6 @@ internal class EpisodeDetailsViewModel(
                 episodeProgressState.update { state ->
                     state?.copy(plays = progress?.plays?.size)
                 }
-
-                dataChanges.notify(Kind.History, origin = origin)
 
                 if (response.added.episodes != 0) {
                     infoState.update { DynamicStringResource(R.string.text_info_history_added) }
@@ -494,21 +493,15 @@ internal class EpisodeDetailsViewModel(
             try {
                 loadingProgress.update { Loading }
 
-                updateHistoryUseCase.removeEpisodeFromHistory(episodeId.value)
-                loadProgressUseCase.loadShowsProgress()
-                    .firstOrNull {
-                        it.showId == showId
-                    }?.seasons?.firstOrNull {
-                        it.number == seasonEpisode.season
-                    }?.episodes?.firstOrNull {
-                        it.id == episodeId
-                    }
+                updateHistoryUseCase.removeEpisodeFromHistory(
+                    episodeId = episodeId.value,
+                    origin = origin,
+                )
 
                 episodeProgressState.update { state ->
                     state?.copy(plays = 0)
                 }
 
-                dataChanges.notify(Kind.History, origin = origin)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

@@ -13,13 +13,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.lists.model.WatchlistItem
-import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
-import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.local.UserProgressLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
 import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -27,38 +23,39 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
-import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
-import tv.trakt.trakt.common.helpers.extensions.getHttpCode
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 
 internal class ShowContextViewModel(
     private val show: Show,
+    private val list: CustomList?,
     private val updateWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateHistoryUseCase: UpdateShowHistoryUseCase,
+    private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userProgressLocalSource: UserProgressLocalSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
-    private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ShowContextState()
+    private val analyticsSource = if (list != null) "list_show_context" else "show_context"
 
     private val isWatchlistState = MutableStateFlow(initialState.isWatchlist)
     private val isWatchedState = MutableStateFlow(initialState.isWatched)
 
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
+    private val loadingListState = MutableStateFlow(initialState.loadingList)
 
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -75,6 +72,7 @@ internal class ShowContextViewModel(
             try {
                 loadingWatchedState.update { Loading }
                 loadingWatchlistState.update { Loading }
+                loadingListState.update { Loading }
 
                 coroutineScope {
                     val watchlistAsync = async {
@@ -111,6 +109,7 @@ internal class ShowContextViewModel(
             } finally {
                 loadingWatchedState.update { Idle }
                 loadingWatchlistState.update { Idle }
+                loadingListState.update { Idle }
             }
         }
     }
@@ -125,38 +124,19 @@ internal class ShowContextViewModel(
             try {
                 loadingWatchlistState.update { Loading }
 
-                updateWatchlistUseCase.addToWatchlist(showId = show.ids.trakt)
-                userWatchlistLocalSource.addShows(
-                    listOf(
-                        WatchlistItem.ShowItem(
-                            rank = 0,
-                            show = show,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addShows(
-                    shows = setOf(show.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
+                updateWatchlistUseCase.addToWatchlist(show)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "show",
-                    source = "show_context",
+                    source = analyticsSource,
                 )
 
                 loadingWatchlistState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
+                    if (!errorsManager.tryEmitVipLimit(error)) {
+                        errorState.update { error }
+                        Timber.recordError(error)
                     }
                     loadingWatchlistState.update { Idle }
                 }
@@ -175,18 +155,10 @@ internal class ShowContextViewModel(
                 loadingWatchlistState.update { Loading }
 
                 updateWatchlistUseCase.removeFromWatchlist(showId = show.ids.trakt)
-                userWatchlistLocalSource.removeShows(
-                    ids = setOf(show.ids.trakt),
-                )
-                userWatchlistMinLocalSource.removeShows(
-                    ids = setOf(show.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "show",
-                    source = "list_show_context",
+                    source = analyticsSource,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -213,19 +185,10 @@ internal class ShowContextViewModel(
                     showId = show.ids.trakt,
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadShowsProgress()
-                userWatchlistLocalSource.removeShows(
-                    ids = setOf(show.ids.trakt),
-                )
-                userWatchlistMinLocalSource.removeShows(
-                    ids = setOf(show.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "show",
-                    source = "show_context",
+                    source = analyticsSource,
                     date = customDate?.analyticsStrings,
                 )
             } catch (error: Exception) {
@@ -250,12 +213,10 @@ internal class ShowContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateHistoryUseCase.removeAllFromHistory(show.ids.trakt)
-                userProgressLocalSource.removeShows(ids = setOf(show.ids.trakt))
-                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "show",
-                    source = "show_context",
+                    source = analyticsSource,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -268,15 +229,46 @@ internal class ShowContextViewModel(
         }
     }
 
+    fun removeFromList() {
+        val list = list ?: return
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingListState.update { Loading }
+
+                removeListItemUseCase.removeShow(
+                    listId = list.ids.trakt,
+                    ownerId = list.user.ids.trakt,
+                    showId = show.ids.trakt,
+                )
+                analytics.lists.logListItemRemove()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingListState.update { Done }
+            }
+        }
+    }
+
     fun clear() {
         loadingWatchedState.update { Idle }
         loadingWatchlistState.update { Idle }
+        loadingListState.update { Idle }
 
         errorState.update { null }
     }
 
     private fun isLoading(): Boolean {
-        return loadingWatchedState.value.isLoading || loadingWatchlistState.value.isLoading
+        return loadingWatchedState.value.isLoading ||
+            loadingWatchlistState.value.isLoading ||
+            loadingListState.value.isLoading
     }
 
     val state: StateFlow<ShowContextState> = combine(
@@ -286,6 +278,7 @@ internal class ShowContextViewModel(
         loadingWatchlistState,
         sessionManager.observeProfile(),
         errorState,
+        loadingListState,
     ) { state ->
         ShowContextState(
             isWatchlist = state[0] as Boolean,
@@ -294,6 +287,7 @@ internal class ShowContextViewModel(
             loadingWatchlist = state[3] as LoadingState,
             user = state[4] as User?,
             error = state[5] as Exception?,
+            loadingList = state[6] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

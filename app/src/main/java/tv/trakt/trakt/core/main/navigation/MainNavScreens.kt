@@ -88,12 +88,11 @@ import tv.trakt.trakt.core.streamings.navigation.navigateToMovieStreamings
 import tv.trakt.trakt.core.streamings.navigation.navigateToShowStreamings
 import tv.trakt.trakt.core.summary.credits.navigation.allCreditsScreen
 import tv.trakt.trakt.core.summary.credits.navigation.navigateToAllCredits
-import tv.trakt.trakt.core.summary.episodes.features.history.navigation.episodeHistoryScreen
-import tv.trakt.trakt.core.summary.episodes.features.history.navigation.navigateToEpisodeHistory
 import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
-import tv.trakt.trakt.core.summary.movies.features.history.navigation.movieHistoryScreen
-import tv.trakt.trakt.core.summary.movies.features.history.navigation.navigateToMovieHistory
+import tv.trakt.trakt.core.summary.history.model.MediaHistoryType
+import tv.trakt.trakt.core.summary.history.navigation.mediaHistoryScreen
+import tv.trakt.trakt.core.summary.history.navigation.navigateToMediaHistory
 import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.summary.people.all.allPersonCreditsScreen
@@ -102,8 +101,6 @@ import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.sentiment.navigation.navigateToSentiment
 import tv.trakt.trakt.core.summary.sentiment.navigation.sentimentScreen
-import tv.trakt.trakt.core.summary.shows.features.history.navigation.navigateToShowHistory
-import tv.trakt.trakt.core.summary.shows.features.history.navigation.showHistoryScreen
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.allShowSeasonsScreen
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.navigateToAllShowSeasons
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
@@ -313,9 +310,10 @@ internal fun NavGraphBuilder.showsScreens(
                 )
             },
             onNavigateToHistory = { show, watched ->
-                navigateToShowHistory(
-                    showId = show.ids.trakt,
-                    showTitle = show.title,
+                navigateToMediaHistory(
+                    mediaType = MediaHistoryType.Show,
+                    mediaId = show.ids.trakt,
+                    mediaTitle = show.title,
                     watched = watched,
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
@@ -353,13 +351,6 @@ internal fun NavGraphBuilder.showsScreens(
             },
             onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateVip = { navigateToBilling(source = "show-details") },
-            onNavigateBack = { popBackStack() },
-        )
-
-        showHistoryScreen(
-            onNavigateToEpisode = { showId, episode ->
-                navigateToEpisode(showId, episode)
-            },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -403,9 +394,10 @@ internal fun NavGraphBuilder.episodesScreens(
                 )
             },
             onNavigateToHistory = { show, episode, watched ->
-                navigateToEpisodeHistory(
-                    episodeId = episode.ids.trakt,
-                    episodeTitle = episode.title,
+                navigateToMediaHistory(
+                    mediaType = MediaHistoryType.Episode,
+                    mediaId = episode.ids.trakt,
+                    mediaTitle = episode.title,
                     watched = watched,
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
@@ -435,10 +427,6 @@ internal fun NavGraphBuilder.episodesScreens(
                 )
             },
             onNavigateVip = { navigateToBilling(source = "episode-details") },
-            onNavigateBack = { popBackStack() },
-        )
-
-        episodeHistoryScreen(
             onNavigateBack = { popBackStack() },
         )
     }
@@ -504,9 +492,10 @@ internal fun NavGraphBuilder.moviesScreens(
             onNavigateToTrailer = { navigateToYouTubePlayer(it) },
             onNavigateToExtra = { navigateToYouTubePlayer(it.url) },
             onNavigateToHistory = { movie, watched ->
-                navigateToMovieHistory(
-                    movieId = movie.ids.trakt,
-                    movieTitle = movie.title,
+                navigateToMediaHistory(
+                    mediaType = MediaHistoryType.Movie,
+                    mediaId = movie.ids.trakt,
+                    mediaTitle = movie.title,
                     watched = watched,
                     backgroundUrl = movie.images?.getFanartUrl(),
                 )
@@ -544,10 +533,6 @@ internal fun NavGraphBuilder.moviesScreens(
             },
             onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateVip = { navigateToBilling(source = "movie-details") },
-            onNavigateBack = { popBackStack() },
-        )
-
-        movieHistoryScreen(
             onNavigateBack = { popBackStack() },
         )
     }
@@ -840,6 +825,17 @@ internal fun NavGraphBuilder.allShowSeasonsScreens(
                     user = it,
                     currentUserId = userId,
                 )
+            },
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.mediaHistoryScreens(controller: NavHostController) {
+    with(controller) {
+        mediaHistoryScreen(
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
             },
             onNavigateBack = { popBackStack() },
         )

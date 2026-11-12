@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.movies.features.history
+package tv.trakt.trakt.core.summary.history
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -27,7 +27,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.data.local.EpisodeLocalSource
+import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -38,14 +39,20 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
-import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.summary.movies.features.history.navigation.MovieHistoryDestination
-import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
-import tv.trakt.trakt.core.summary.movies.features.history.usecases.HISTORY_PAGE_LIMIT
+import tv.trakt.trakt.core.summary.history.model.MediaHistoryType
+import tv.trakt.trakt.core.summary.history.navigation.MediaHistoryDestination
+import tv.trakt.trakt.core.summary.history.usecases.GetMediaHistoryUseCase
+import tv.trakt.trakt.core.summary.history.usecases.HISTORY_PAGE_LIMIT
+import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
+import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
 import java.time.LocalDate
@@ -53,24 +60,30 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("UNCHECKED_CAST")
 @OptIn(FlowPreview::class)
-internal class MovieHistoryViewModel(
+internal class MediaHistoryViewModel(
     savedStateHandle: SavedStateHandle,
-    private val getHistoryUseCase: GetMovieHistoryUseCase,
+    private val getHistoryUseCase: GetMediaHistoryUseCase,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
-    private val updateHistoryUseCase: UpdateMovieHistoryUseCase,
-    private val loadProgressUseCase: LoadUserProgressUseCase,
+    private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
+    private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
+    private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
+    private val showLocalSource: ShowLocalSource,
+    private val episodeLocalSource: EpisodeLocalSource,
     private val dataChanges: DataChanges,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val origin = ChangeOrigin.unique()
 
-    private val destination = savedStateHandle.toRoute<MovieHistoryDestination>()
+    private val destination = savedStateHandle.toRoute<MediaHistoryDestination>()
+    private val mediaType = destination.mediaType
+    private val mediaId = destination.mediaId.toTraktId()
 
-    private val initialState = MovieHistoryState(
-        media = MovieHistoryState.Media(
-            id = destination.movieId.toTraktId(),
-            title = destination.movieTitle,
+    private val initialState = MediaHistoryState(
+        media = MediaHistoryState.Media(
+            id = mediaId,
+            type = mediaType,
+            title = destination.mediaTitle,
             background = destination.backgroundUrl,
             watched = destination.watched,
         ),
@@ -80,6 +93,7 @@ internal class MovieHistoryViewModel(
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
+    private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val errorState = MutableStateFlow(initialState.error)
 
     private val infoFlow = MutableSharedFlow<StringResource>(replay = 0)
@@ -130,7 +144,8 @@ internal class MovieHistoryViewModel(
                 loadingState.update { Loading }
 
                 val remoteItems = getHistoryUseCase.getHistory(
-                    movieId = destination.movieId.toTraktId(),
+                    mediaType = mediaType,
+                    mediaId = mediaId,
                     pagination = Pagination(1, HISTORY_PAGE_LIMIT),
                 )
 
@@ -170,7 +185,8 @@ internal class MovieHistoryViewModel(
                 loadingMoreState.update { Loading }
 
                 val nextData = getHistoryUseCase.getHistory(
-                    movieId = destination.movieId.toTraktId(),
+                    mediaType = mediaType,
+                    mediaId = mediaId,
                     pagination = Pagination(pages + 1, HISTORY_PAGE_LIMIT),
                 )
 
@@ -208,12 +224,8 @@ internal class MovieHistoryViewModel(
             }
 
             try {
-                if (!userRatingsUseCase.isMoviesLoaded()) {
-                    userRatingsUseCase.loadMovies()
-                }
-
                 itemsRatingsState.update {
-                    userRatingsUseCase.loadLocalMovies()
+                    loadUserRatings()
                         .mapKeys { it.value.key }
                         .toImmutableMap()
                 }
@@ -228,7 +240,24 @@ internal class MovieHistoryViewModel(
         }
     }
 
-    fun removeFromWatched(item: MovieItem) {
+    private suspend fun loadUserRatings(): Map<TraktId, UserRating> {
+        return when (mediaType) {
+            MediaHistoryType.Movie -> {
+                if (!userRatingsUseCase.isMoviesLoaded()) {
+                    userRatingsUseCase.loadMovies()
+                }
+                userRatingsUseCase.loadLocalMovies()
+            }
+            MediaHistoryType.Show, MediaHistoryType.Episode -> {
+                if (!userRatingsUseCase.isEpisodesLoaded()) {
+                    userRatingsUseCase.loadEpisodes()
+                }
+                userRatingsUseCase.loadLocalEpisodes()
+            }
+        }
+    }
+
+    fun removeFromWatched(item: HomeActivityItem) {
         if (processingJob?.isActive == true) {
             return
         }
@@ -240,12 +269,18 @@ internal class MovieHistoryViewModel(
             try {
                 loadingState.update { Loading }
 
-                updateHistoryUseCase.removePlayFromHistory(
-                    playId = item.id,
-                    movieId = item.movie.ids.trakt,
-                )
-                loadProgressUseCase.loadMoviesProgress()
-                dataChanges.notify(Kind.History, origin = origin)
+                when (item) {
+                    is HomeActivityItem.MovieItem -> updateMovieHistoryUseCase.removePlayFromHistory(
+                        playId = item.id,
+                        movieId = item.movie.ids.trakt,
+                        origin = origin,
+                    )
+                    is HomeActivityItem.EpisodeItem -> updateEpisodeHistoryUseCase.removePlayFromHistory(
+                        playId = item.id,
+                        episodeId = item.episode.ids.trakt,
+                        origin = origin,
+                    )
+                }
 
                 itemsState.update { items ->
                     (items ?: emptyMap())
@@ -269,6 +304,27 @@ internal class MovieHistoryViewModel(
         }
     }
 
+    fun navigateToEpisode(
+        show: Show,
+        episode: Episode,
+    ) {
+        if (navigateEpisode.value != null || processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            showLocalSource.upsertShows(listOf(show))
+            episodeLocalSource.upsertEpisodes(listOf(episode))
+
+            navigateEpisode.update {
+                Pair(show.ids.trakt, episode)
+            }
+        }
+    }
+
+    fun clearNavigation() {
+        navigateEpisode.update { null }
+    }
+
     fun removeAllFromWatched() {
         if (processingJob?.isActive == true) {
             return
@@ -282,16 +338,27 @@ internal class MovieHistoryViewModel(
             try {
                 loadingState.update { Loading }
 
-                updateHistoryUseCase.removeAllFromHistory(destination.movieId.toTraktId())
-                loadProgressUseCase.loadMoviesProgress()
-                dataChanges.notify(Kind.History, origin = origin)
+                when (mediaType) {
+                    MediaHistoryType.Movie -> updateMovieHistoryUseCase.removeAllFromHistory(
+                        movieId = mediaId,
+                        origin = origin,
+                    )
+                    MediaHistoryType.Show -> updateShowHistoryUseCase.removeAllFromHistory(
+                        showId = mediaId,
+                        origin = origin,
+                    )
+                    MediaHistoryType.Episode -> updateEpisodeHistoryUseCase.removeEpisodeFromHistory(
+                        episodeId = mediaId.value,
+                        origin = origin,
+                    )
+                }
 
                 itemsState.update { persistentMapOf() }
                 hasMoreData = false
 
                 analytics.progress.logRemoveWatchedMedia(
-                    mediaType = "movie",
-                    source = "movie_history",
+                    mediaType = mediaType.value,
+                    source = "${mediaType.value}_history",
                 )
 
                 infoFlow.emit(DynamicStringResource(R.string.text_info_history_removed))
@@ -312,15 +379,17 @@ internal class MovieHistoryViewModel(
         itemsRatingsState,
         loadingState,
         loadingMoreState,
+        navigateEpisode,
         errorState,
     ) { state ->
-        MovieHistoryState(
+        MediaHistoryState(
             media = initialState.media,
-            items = state[0] as ImmutableMap<LocalDate, ImmutableList<MovieItem>>?,
+            items = state[0] as ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>?,
             itemsRatings = state[1] as? ImmutableMap<String, UserRating>,
             loading = state[2] as LoadingState,
             loadingMore = state[3] as LoadingState,
-            error = state[4] as Exception?,
+            navigateEpisode = state[4] as Pair<TraktId, Episode>?,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

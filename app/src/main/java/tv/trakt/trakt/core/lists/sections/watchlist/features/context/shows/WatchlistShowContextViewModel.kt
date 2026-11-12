@@ -10,12 +10,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
-import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.data.local.UserProgressLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -33,12 +27,7 @@ internal class WatchlistShowContextViewModel(
     private val show: Show,
     private val updateWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateHistoryUseCase: UpdateShowHistoryUseCase,
-    private val userProgressLocalSource: UserProgressLocalSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
-    private val loadProgressUseCase: LoadUserProgressUseCase,
     private val sessionManager: SessionManager,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = WatchlistShowContextState()
@@ -59,10 +48,6 @@ internal class WatchlistShowContextViewModel(
                 loadingWatchlistState.update { Loading }
 
                 updateWatchlistUseCase.removeFromWatchlist(showId = show.ids.trakt)
-                userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
-                userWatchlistMinLocalSource.removeShows(setOf(show.ids.trakt))
-
-                dataChanges.notify(Kind.Watchlist)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -88,11 +73,6 @@ internal class WatchlistShowContextViewModel(
                     showId = show.ids.trakt,
                     customDate = customDate,
                 )
-                userWatchlistLocalSource.removeShows(setOf(show.ids.trakt))
-                userWatchlistMinLocalSource.removeShows(setOf(show.ids.trakt))
-
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "show",
@@ -121,8 +101,6 @@ internal class WatchlistShowContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateHistoryUseCase.removeAllFromHistory(show.ids.trakt)
-                userProgressLocalSource.removeShows(setOf(show.ids.trakt))
-                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "show",

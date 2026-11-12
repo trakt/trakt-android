@@ -39,6 +39,8 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
+import tv.trakt.trakt.core.movies.ui.context.MovieContextState
+import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
@@ -49,7 +51,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ListMovieContextView(
     movie: Movie,
     list: CustomList,
-    viewModel: ListMovieContextViewModel,
+    viewModel: MovieContextViewModel,
     modifier: Modifier = Modifier,
     onAddWatched: (Movie) -> Unit,
     onAddWatchlist: (Movie) -> Unit,
@@ -184,7 +186,7 @@ internal fun ListMovieContextView(
 @Composable
 private fun ListMovieContextViewContent(
     movie: Movie,
-    state: ListMovieContextState,
+    state: MovieContextState,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
@@ -238,7 +240,7 @@ private fun ListMovieContextViewContent(
 @Composable
 private fun ActionButtons(
     movie: Movie,
-    state: ListMovieContextState,
+    state: MovieContextState,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onRemoveListClick: () -> Unit,
@@ -336,7 +338,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ListMovieContextViewContent(
-                state = ListMovieContextState(),
+                state = MovieContextState(),
                 movie = PreviewData.movie1,
             )
         }

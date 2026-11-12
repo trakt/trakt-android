@@ -12,15 +12,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.lists.model.WatchlistItem
-import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
-import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
-import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.common.data.local.UserProgressLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
 import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -28,9 +22,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
-import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
-import tv.trakt.trakt.common.helpers.extensions.getHttpCode
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
@@ -46,11 +37,7 @@ internal class CalendarEpisodeContextViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
-    private val upNextLocalSource: HomeUpNextLocalSource,
-    private val upcomingLocalSource: HomeUpcomingLocalSource,
-    private val dataChanges: DataChanges,
     private val userProgressLocalSource: UserProgressLocalSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
@@ -139,8 +126,6 @@ internal class CalendarEpisodeContextViewModel(
                     episodeIds = item.episodes.map { it.ids.trakt },
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
@@ -168,11 +153,9 @@ internal class CalendarEpisodeContextViewModel(
             try {
                 loadingWatchedState.update { Loading }
 
-                item.episodes.forEach { episode ->
-                    updateHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
-                }
-                loadProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History)
+                updateHistoryUseCase.removeEpisodesFromHistory(
+                    episodeIds = item.episodes.map { it.ids.trakt },
+                )
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "episode",
@@ -199,18 +182,7 @@ internal class CalendarEpisodeContextViewModel(
             try {
                 loadingWatchlistState.update { Loading }
 
-                updateWatchlistUseCase.addToWatchlist(showId = showId)
-                userWatchlistLocalSource.addShows(
-                    listOf(
-                        WatchlistItem.ShowItem(
-                            rank = 0,
-                            show = item.show,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addShows(shows = setOf(showId))
-                dataChanges.notify(Kind.Watchlist)
+                updateWatchlistUseCase.addToWatchlist(item.show)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "show",
@@ -220,14 +192,9 @@ internal class CalendarEpisodeContextViewModel(
                 loadingWatchlistState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
+                    if (!errorsManager.tryEmitVipLimit(error)) {
+                        errorState.update { error }
+                        Timber.recordError(error)
                     }
                     loadingWatchlistState.update { Idle }
                 }
@@ -246,9 +213,6 @@ internal class CalendarEpisodeContextViewModel(
                 loadingWatchlistState.update { Loading }
 
                 updateWatchlistUseCase.removeFromWatchlist(showId = showId)
-                userWatchlistLocalSource.removeShows(ids = setOf(showId))
-                userWatchlistMinLocalSource.removeShows(ids = setOf(showId))
-                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "show",
@@ -276,13 +240,6 @@ internal class CalendarEpisodeContextViewModel(
                 loadingDropState.update { Loading }
 
                 updateShowHistoryUseCase.dropShow(showId)
-                upNextLocalSource.removeShowItems(ids = listOf(showId))
-                upcomingLocalSource.removeShowItems(
-                    showIds = listOf(showId),
-                    notify = true,
-                )
-                dataChanges.notify(Kind.History)
-                loadProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

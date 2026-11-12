@@ -23,8 +23,6 @@ import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
-import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
-import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
@@ -133,14 +131,9 @@ internal class ManageListsViewModel(
                 if (listed) analytics.lists.logListItemRemove() else analytics.lists.logListItemAdd()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
+                    if (!errorsManager.tryEmitVipLimit(error)) {
+                        errorState.update { error }
+                        Timber.recordError(error)
                     }
                 }
             } finally {

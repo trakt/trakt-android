@@ -42,6 +42,8 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
+import tv.trakt.trakt.core.shows.ui.context.ShowContextState
+import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
@@ -54,7 +56,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ListShowContextView(
     show: Show,
     list: CustomList,
-    viewModel: ListShowContextViewModel,
+    viewModel: ShowContextViewModel,
     modifier: Modifier = Modifier,
     onAddWatched: (Show) -> Unit,
     onAddWatchlist: (Show) -> Unit,
@@ -204,7 +206,7 @@ internal fun ListShowContextView(
 @Composable
 private fun ListShowContextViewContent(
     show: Show,
-    state: ListShowContextState,
+    state: ShowContextState,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
@@ -258,7 +260,7 @@ private fun ListShowContextViewContent(
 @Composable
 private fun ActionButtons(
     show: Show,
-    state: ListShowContextState,
+    state: ShowContextState,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onRemoveListClick: () -> Unit,
@@ -357,7 +359,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ListShowContextViewContent(
-                state = ListShowContextState(),
+                state = ShowContextState(),
                 show = PreviewData.show1,
             )
         }

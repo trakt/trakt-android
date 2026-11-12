@@ -194,8 +194,9 @@ internal class EpisodeSeasonViewModel(
                 updateEpisodeHistoryUseCase.addToHistory(
                     episodeId = episodeToAdd.ids.trakt,
                     customDate = customDate,
+                    origin = origin,
                 )
-                val progress = loadUserProgressUseCase.loadShowsProgress()
+                val progress = loadUserProgressUseCase.loadLocalShows()
                     .firstOrNull {
                         it.showId == show.ids.trakt
                     }
@@ -209,8 +210,6 @@ internal class EpisodeSeasonViewModel(
                         checkable = true,
                     )
                 }
-
-                dataChanges.notify(Kind.History, origin = origin)
 
                 if (!wasWatched) {
                     promptWatchedUntil(episodeToAdd, seasonEpisodes, progress)
@@ -250,8 +249,11 @@ internal class EpisodeSeasonViewModel(
                 loadingEpisodeState.update { Loading }
                 setLoadingEpisode(episodeToRemove)
 
-                updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episodeToRemove.ids.trakt.value)
-                val progress = loadUserProgressUseCase.loadShowsProgress()
+                updateEpisodeHistoryUseCase.removeEpisodeFromHistory(
+                    episodeId = episodeToRemove.ids.trakt.value,
+                    origin = origin,
+                )
+                val progress = loadUserProgressUseCase.loadLocalShows()
                     .firstOrNull {
                         it.showId == show.ids.trakt
                     }
@@ -266,7 +268,6 @@ internal class EpisodeSeasonViewModel(
                     )
                 }
 
-                dataChanges.notify(Kind.History, origin = origin)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

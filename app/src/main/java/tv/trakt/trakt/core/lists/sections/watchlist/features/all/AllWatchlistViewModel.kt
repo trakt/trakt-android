@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -114,10 +113,7 @@ internal class AllWatchlistViewModel(
     }
 
     private fun observeData() {
-        merge(
-            dataChanges.observe(Kind.History),
-            dataChanges.observe(Kind.Watchlist, exclude = origin),
-        )
+        dataChanges.observe(Kind.History, Kind.Watchlist, exclude = origin)
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
@@ -379,8 +375,9 @@ internal class AllWatchlistViewModel(
                 updateMovieHistoryUseCase.addMovieToHistory(
                     movieId = movieId,
                     customDate = customDate,
+                    origin = origin,
                 )
-                removeItem(currentItems[itemIndex])
+                removeLocalItem(currentItems[itemIndex])
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -392,7 +389,7 @@ internal class AllWatchlistViewModel(
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                loadUserProgress()
+                loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -405,6 +402,11 @@ internal class AllWatchlistViewModel(
     }
 
     fun removeItem(item: WatchlistItem?) {
+        removeLocalItem(item)
+        dataChanges.notify(Kind.Watchlist, origin = origin)
+    }
+
+    private fun removeLocalItem(item: WatchlistItem?) {
         val currentItems = itemsState.value ?: return
 
         itemsState.update {
@@ -415,11 +417,9 @@ internal class AllWatchlistViewModel(
                 }
                 .toImmutableList()
         }
-
-        dataChanges.notify(Kind.Watchlist, origin = origin)
     }
 
-    fun loadUserProgress() {
+    private fun loadMoviesProgress() {
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadMoviesProgress()

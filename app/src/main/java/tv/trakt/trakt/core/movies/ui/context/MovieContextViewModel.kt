@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
@@ -28,15 +27,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
-import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
-import tv.trakt.trakt.common.helpers.extensions.getHttpCode
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.checkin.data.CheckInManager
+import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
@@ -44,8 +42,10 @@ import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 internal class MovieContextViewModel(
     private val appContext: Context,
     private val movie: Movie,
+    private val list: CustomList?,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
+    private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val userProgressLocalSource: UserProgressLocalSource,
     private val userWatchlistLocalSource: UserWatchlistLocalSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
@@ -59,6 +59,7 @@ internal class MovieContextViewModel(
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MovieContextState()
+    private val analyticsSource = if (list != null) "list_movie_context" else "movie_context"
 
     private val isWatchlistState = MutableStateFlow(initialState.isWatchlist)
     private val isWatchedState = MutableStateFlow(initialState.isWatched)
@@ -66,6 +67,7 @@ internal class MovieContextViewModel(
     private val loadingWatchedState = MutableStateFlow(initialState.loadingWatched)
     private val loadingWatchlistState = MutableStateFlow(initialState.loadingWatchlist)
     private val loadingCheckInState = MutableStateFlow(initialState.loadingCheckIn)
+    private val loadingListState = MutableStateFlow(initialState.loadingList)
 
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -81,6 +83,7 @@ internal class MovieContextViewModel(
             try {
                 loadingWatchedState.update { Loading }
                 loadingWatchlistState.update { Loading }
+                loadingListState.update { Loading }
 
                 coroutineScope {
                     val watchlistAsync = async {
@@ -112,6 +115,7 @@ internal class MovieContextViewModel(
             } finally {
                 loadingWatchedState.update { Idle }
                 loadingWatchlistState.update { Idle }
+                loadingListState.update { Idle }
             }
         }
     }
@@ -126,38 +130,19 @@ internal class MovieContextViewModel(
             try {
                 loadingWatchlistState.update { Loading }
 
-                updateMovieWatchlistUseCase.addToWatchlist(movieId = movie.ids.trakt)
-                userWatchlistLocalSource.addMovies(
-                    movies = listOf(
-                        WatchlistItem.MovieItem(
-                            rank = 0,
-                            movie = movie,
-                            listedAt = nowUtcInstant(),
-                        ),
-                    ),
-                )
-                userWatchlistMinLocalSource.addMovies(
-                    movies = setOf(movie.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
+                updateMovieWatchlistUseCase.addToWatchlist(movie)
 
                 analytics.progress.logAddWatchlistMedia(
                     mediaType = "movie",
-                    source = "movie_context",
+                    source = analyticsSource,
                 )
 
                 loadingWatchlistState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
+                    if (!errorsManager.tryEmitVipLimit(error)) {
+                        errorState.update { error }
+                        Timber.recordError(error)
                     }
                     loadingWatchlistState.update { Idle }
                 }
@@ -176,18 +161,10 @@ internal class MovieContextViewModel(
                 loadingWatchlistState.update { Loading }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movie.ids.trakt)
-                userWatchlistLocalSource.removeMovies(
-                    ids = setOf(movie.ids.trakt),
-                )
-                userWatchlistMinLocalSource.removeMovies(
-                    ids = setOf(movie.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.Watchlist)
 
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "movie",
-                    source = "list_movie_context",
+                    source = analyticsSource,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -214,20 +191,11 @@ internal class MovieContextViewModel(
                     movieId = movie.ids.trakt,
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadMoviesProgress()
-                userWatchlistLocalSource.removeMovies(
-                    ids = setOf(movie.ids.trakt),
-                )
-                userWatchlistMinLocalSource.removeMovies(
-                    ids = setOf(movie.ids.trakt),
-                )
-
-                dataChanges.notify(Kind.History, Kind.Watchlist)
                 ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
-                    source = "movie_context",
+                    source = analyticsSource,
                     date = customDate?.analyticsStrings,
                 )
             } catch (error: Exception) {
@@ -266,7 +234,7 @@ internal class MovieContextViewModel(
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
-                    source = "movie_context",
+                    source = analyticsSource,
                     date = "checkin",
                 )
             } catch (error: Exception) {
@@ -291,12 +259,10 @@ internal class MovieContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
-                userProgressLocalSource.removeMovies(ids = setOf(movie.ids.trakt))
-                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "movie",
-                    source = "movie_context",
+                    source = analyticsSource,
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -309,9 +275,39 @@ internal class MovieContextViewModel(
         }
     }
 
+    fun removeFromList() {
+        val list = list ?: return
+        if (isLoading()) {
+            return
+        }
+
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingListState.update { Loading }
+
+                removeListItemUseCase.removeMovie(
+                    listId = list.ids.trakt,
+                    ownerId = list.user.ids.trakt,
+                    movieId = movie.ids.trakt,
+                )
+                analytics.lists.logListItemRemove()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingListState.update { Done }
+            }
+        }
+    }
+
     fun clear() {
         loadingWatchedState.update { Idle }
         loadingWatchlistState.update { Idle }
+        loadingCheckInState.update { Idle }
+        loadingListState.update { Idle }
 
         errorState.update { null }
     }
@@ -319,7 +315,8 @@ internal class MovieContextViewModel(
     private fun isLoading(): Boolean {
         return loadingWatchedState.value.isLoading ||
             loadingWatchlistState.value.isLoading ||
-            loadingCheckInState.value.isLoading
+            loadingCheckInState.value.isLoading ||
+            loadingListState.value.isLoading
     }
 
     val state: StateFlow<MovieContextState> = combine(
@@ -330,6 +327,7 @@ internal class MovieContextViewModel(
         loadingCheckInState,
         sessionManager.observeProfile(),
         errorState,
+        loadingListState,
     ) { state ->
         MovieContextState(
             isWatchlist = state[0] as Boolean,
@@ -339,6 +337,7 @@ internal class MovieContextViewModel(
             loadingCheckIn = state[4] as LoadingState,
             user = state[5] as User?,
             error = state[6] as Exception?,
+            loadingList = state[7] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

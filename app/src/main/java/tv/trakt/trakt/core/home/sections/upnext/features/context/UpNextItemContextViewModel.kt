@@ -14,7 +14,6 @@ import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
-import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -32,7 +31,6 @@ internal class UpNextItemContextViewModel(
     private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val dataChanges: DataChanges,
     private val upNextLocalSource: HomeUpNextLocalSource,
-    private val upcomingLocalSource: HomeUpcomingLocalSource,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -48,19 +46,10 @@ internal class UpNextItemContextViewModel(
             clear()
             try {
                 loadingDropState.update { Loading }
-                updateShowHistoryUseCase.dropShow(showId)
-
-                upNextLocalSource.removeShowItems(
-                    ids = listOf(showId),
+                updateShowHistoryUseCase.dropShow(
+                    showId = showId,
+                    refreshProgress = false,
                 )
-
-                upcomingLocalSource.removeShowItems(
-                    showIds = listOf(showId),
-                    notify = true,
-                )
-
-                dataChanges.notify(Kind.History)
-
                 loadUserShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -106,21 +95,22 @@ internal class UpNextItemContextViewModel(
             try {
                 loadingWatchedState.update { Loading }
                 dropPlaybackUseCase.dropMoviePlayback(movieId)
-                updateMovieHistoryUseCase.addToWatched(movieId)
+                updateMovieHistoryUseCase.addToWatched(
+                    movieId = movieId,
+                    refreshProgress = false,
+                )
 
                 upNextLocalSource.removeMovieItems(
                     ids = listOf(movieId),
                 )
 
-                dataChanges.notify(Kind.History)
+                loadUserMoviesProgress()
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "up_next_context",
                     date = null,
                 )
-
-                loadUserMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -132,7 +122,7 @@ internal class UpNextItemContextViewModel(
         }
     }
 
-    fun loadUserShowsProgress() {
+    private fun loadUserShowsProgress() {
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadShowsProgress()

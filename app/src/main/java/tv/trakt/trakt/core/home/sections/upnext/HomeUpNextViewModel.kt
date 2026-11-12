@@ -271,6 +271,8 @@ internal class HomeUpNextViewModel(
                 updateHistoryUseCase.addToHistory(
                     episodeId = episodeId,
                     customDate = customDate,
+                    origin = origin,
+                    refreshProgress = false,
                 )
 
                 analytics.progress.logAddWatchedMedia(
@@ -300,7 +302,6 @@ internal class HomeUpNextViewModel(
                     )
                 }
 
-                dataChanges.notify(Kind.History, origin = origin)
                 loadUserProgress()
 
                 itemsOrder = itemsState.value.items?.map { "${it.mediaId}-${it.type}" }

@@ -10,14 +10,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
-import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.data.local.HomeUpNextLocalSource
-import tv.trakt.trakt.common.data.local.HomeUpcomingLocalSource
 import tv.trakt.trakt.common.data.local.UserProgressLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
-import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -39,12 +33,7 @@ internal class ProgressShowContextViewModel(
     private val sessionManager: SessionManager,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
-    private val upNextLocalSource: HomeUpNextLocalSource,
-    private val upcomingLocalSource: HomeUpcomingLocalSource,
     private val userProgressLocalSource: UserProgressLocalSource,
-    private val userWatchlistLocalSource: UserWatchlistLocalSource,
-    private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalSource,
-    private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProgressShowContextState()
@@ -95,13 +84,6 @@ internal class ProgressShowContextViewModel(
                 loadingDropState.update { Loading }
 
                 updateShowHistoryUseCase.dropShow(show.ids.trakt)
-                upNextLocalSource.removeShowItems(ids = listOf(show.ids.trakt))
-                upcomingLocalSource.removeShowItems(
-                    showIds = listOf(show.ids.trakt),
-                    notify = true,
-                )
-                dataChanges.notify(Kind.History)
-                loadProgressUseCase.loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -126,11 +108,6 @@ internal class ProgressShowContextViewModel(
                     showId = show.ids.trakt,
                     customDate = customDate,
                 )
-                loadProgressUseCase.loadShowsProgress()
-                userWatchlistLocalSource.removeShows(ids = setOf(show.ids.trakt))
-                userWatchlistMinLocalSource.removeShows(ids = setOf(show.ids.trakt))
-
-                dataChanges.notify(Kind.History, Kind.Watchlist)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = MediaType.Show.value,
@@ -158,8 +135,6 @@ internal class ProgressShowContextViewModel(
                 loadingWatchedState.update { Loading }
 
                 updateShowHistoryUseCase.removeAllFromHistory(show.ids.trakt)
-                userProgressLocalSource.removeShows(ids = setOf(show.ids.trakt))
-                dataChanges.notify(Kind.History, Kind.Progress)
 
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = MediaType.Show.value,

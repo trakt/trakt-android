@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
-package tv.trakt.trakt.core.summary.movies.features.history
+package tv.trakt.trakt.core.summary.history
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -75,11 +75,17 @@ import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.activity.HomeActivityItem
+import tv.trakt.trakt.common.model.activity.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.common.model.activity.HomeActivityItem.MovieItem
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityEpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityMovieItem
+import tv.trakt.trakt.core.summary.history.model.MediaHistoryType
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -92,10 +98,11 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 @Composable
-internal fun MovieHistoryScreen(
+internal fun MediaHistoryScreen(
     modifier: Modifier = Modifier,
-    viewModel: MovieHistoryViewModel = koinViewModel(),
+    viewModel: MediaHistoryViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -103,7 +110,7 @@ internal fun MovieHistoryScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var confirmRemoveSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var confirmRemoveSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
     var confirmRemoveAllSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -117,12 +124,26 @@ internal fun MovieHistoryScreen(
         }
     }
 
-    MovieHistoryContent(
+    LaunchedEffect(
+        state.navigateEpisode,
+    ) {
+        state.navigateEpisode?.let {
+            onNavigateToEpisode(it.first, it.second)
+            viewModel.clearNavigation()
+        }
+    }
+
+    MediaHistoryContent(
         state = state,
         modifier = modifier,
         backgroundUrl = state.media.background,
         onLoadMore = viewModel::loadMoreData,
         onBackClick = onNavigateBack,
+        onEpisodeClick = {
+            if (state.media.type == MediaHistoryType.Show) {
+                viewModel.navigateToEpisode(it.show, it.episode)
+            }
+        },
         onRemoveClick = {
             confirmRemoveSheet = it
         },
@@ -145,7 +166,7 @@ internal fun MovieHistoryScreen(
         title = stringResource(R.string.button_text_remove_from_history),
         message = stringResource(
             R.string.warning_prompt_remove_single_watched,
-            state.media.title,
+            removeItemTitle(state.media, confirmRemoveSheet),
         ),
     )
 
@@ -164,6 +185,17 @@ internal fun MovieHistoryScreen(
             state.media.title,
         ),
     )
+}
+
+@Composable
+private fun removeItemTitle(
+    media: MediaHistoryState.Media,
+    item: HomeActivityItem?,
+): String {
+    return when (media.type) {
+        MediaHistoryType.Show -> "${media.title} ${(item as? EpisodeItem)?.episode?.seasonEpisodeString()}"
+        MediaHistoryType.Movie, MediaHistoryType.Episode -> media.title
+    }
 }
 
 @Composable
@@ -229,13 +261,14 @@ private fun TitleBar(
 }
 
 @Composable
-internal fun MovieHistoryContent(
-    state: MovieHistoryState,
+internal fun MediaHistoryContent(
+    state: MediaHistoryState,
     modifier: Modifier = Modifier,
     backgroundUrl: String? = null,
     onLoadMore: () -> Unit = {},
     onBackClick: () -> Unit = {},
-    onRemoveClick: (MovieItem) -> Unit = {},
+    onEpisodeClick: (EpisodeItem) -> Unit = {},
+    onRemoveClick: (HomeActivityItem) -> Unit = {},
     onRemoveAllClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -281,9 +314,10 @@ internal fun MovieHistoryContent(
             },
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
-            watchedCount = state.media.watched,
+            watched = state.media.watched,
             onEndOfList = onLoadMore,
             onBackClick = onBackClick,
+            onEpisodeClick = onEpisodeClick,
             onRemoveClick = onRemoveClick,
             onRemoveAllClick = onRemoveAllClick,
         )
@@ -294,15 +328,16 @@ internal fun MovieHistoryContent(
 private fun ContentList(
     modifier: Modifier = Modifier,
     listTitle: String,
-    listItems: ImmutableMap<LocalDate, ImmutableList<MovieItem>>,
+    listItems: ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>,
     listRatings: ImmutableMap<String, UserRating>,
     listState: LazyListState,
     contentPadding: PaddingValues,
     loading: Boolean,
-    watchedCount: Int,
+    watched: Int,
     onEndOfList: () -> Unit,
     onBackClick: () -> Unit,
-    onRemoveClick: (MovieItem) -> Unit,
+    onEpisodeClick: (EpisodeItem) -> Unit,
+    onRemoveClick: (HomeActivityItem) -> Unit,
     onRemoveAllClick: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -371,25 +406,33 @@ private fun ContentList(
                     item = item,
                     itemRating = listRatings[item.key],
                     enabled = !loading,
+                    onEpisodeClick = onEpisodeClick,
                     onRemoveClick = onRemoveClick,
                 )
             }
         }
 
         if (loading && listItems.isEmpty()) {
-            items(watchedCount.coerceAtLeast(1)) {
+            items(watched.coerceIn(1, 12)) {
                 PanelMediaSkeletonCard(
                     modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
 
-        if (!loading && listItems.isEmpty()) {
+        if (listItems.isEmpty() && !loading) {
             item {
                 ContentEmptyView(
                     modifier = Modifier
-                        .animateItem(),
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
@@ -398,26 +441,42 @@ private fun ContentList(
 
 @Composable
 private fun LazyItemScope.ContentListItem(
-    item: MovieItem,
+    item: HomeActivityItem,
     itemRating: UserRating?,
     enabled: Boolean,
-    onRemoveClick: (MovieItem) -> Unit,
+    onEpisodeClick: (EpisodeItem) -> Unit,
+    onRemoveClick: (HomeActivityItem) -> Unit,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
-            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
+            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+            .animateItem(
+                fadeInSpec = null,
+                fadeOutSpec = null,
+            ),
     ) {
-        AllActivityMovieItem(
-            item = item,
-            itemRating = itemRating,
-            moreButton = true,
-            enabled = enabled,
-            dateFormat = longDateTimeFormat(),
-            onClick = {},
-            onLongClick = { showMenu = true },
-        )
+        when (item) {
+            is MovieItem -> AllActivityMovieItem(
+                item = item,
+                itemRating = itemRating,
+                moreButton = true,
+                enabled = enabled,
+                dateFormat = longDateTimeFormat(),
+                onClick = {},
+                onLongClick = { showMenu = true },
+            )
+            is EpisodeItem -> AllActivityEpisodeItem(
+                item = item,
+                itemRating = itemRating,
+                moreButton = true,
+                enabled = enabled,
+                dateFormat = longDateTimeFormat(),
+                onClick = { onEpisodeClick(item) },
+                onLongClick = { showMenu = true },
+            )
+        }
 
         Box(modifier = Modifier.align(Alignment.TopEnd)) {
             DropdownMenu(
@@ -479,14 +538,15 @@ private fun Preview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            MovieHistoryContent(
-                state = MovieHistoryState(
+            MediaHistoryContent(
+                state = MediaHistoryState(
                     loading = Loading,
-                    media = MovieHistoryState.Media(
+                    media = MediaHistoryState.Media(
                         id = 1.toTraktId(),
+                        type = MediaHistoryType.Show,
                         title = "Test",
                         background = null,
-                        watched = 2,
+                        watched = 3,
                     ),
                 ),
             )
@@ -507,14 +567,15 @@ private fun Preview2() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            MovieHistoryContent(
-                state = MovieHistoryState(
+            MediaHistoryContent(
+                state = MediaHistoryState(
                     loading = LoadingState.Done,
-                    media = MovieHistoryState.Media(
+                    media = MediaHistoryState.Media(
                         id = 1.toTraktId(),
+                        type = MediaHistoryType.Show,
                         title = "Test",
                         background = null,
-                        watched = 3,
+                        watched = 2,
                     ),
                 ),
             )
