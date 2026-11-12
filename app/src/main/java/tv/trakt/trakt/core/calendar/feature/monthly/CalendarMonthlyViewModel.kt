@@ -48,7 +48,6 @@ import tv.trakt.trakt.core.calendar.model.CalendarItems
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.model.withEpisodeWatched
 import tv.trakt.trakt.core.calendar.model.withMovieWatched
-import tv.trakt.trakt.core.calendar.model.withoutMovie
 import tv.trakt.trakt.core.calendar.navigation.CalendarMonthlyDestination
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
@@ -275,34 +274,6 @@ internal class CalendarMonthlyViewModel(
                 customDate = customDate,
             )
             patchItems { it.withMovieWatched(id = movie.ids.trakt, watched = true) }
-        }
-    }
-
-    fun removeFromWatched(episode: Episode) {
-        updateHistory(
-            id = episode.ids.trakt,
-            info = R.string.text_info_history_removed,
-        ) {
-            updateCalendarHistoryUseCase.removeFromWatched(
-                episode = episode,
-                source = source,
-                origin = origin,
-            )
-            patchItems { it.withEpisodeWatched(id = episode.ids.trakt, watched = false) }
-        }
-    }
-
-    fun removeFromWatched(movie: Movie) {
-        updateHistory(
-            id = movie.ids.trakt,
-            info = R.string.text_info_history_removed,
-        ) {
-            updateCalendarHistoryUseCase.removeFromWatched(
-                movie = movie,
-                source = source,
-                origin = origin,
-            )
-            patchItems { it.withoutMovie(movie.ids.trakt) }
         }
     }
 

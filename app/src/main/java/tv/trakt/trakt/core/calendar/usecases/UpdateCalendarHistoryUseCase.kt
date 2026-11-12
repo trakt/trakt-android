@@ -62,36 +62,4 @@ internal class UpdateCalendarHistoryUseCase(
 
         ratePromptManager.checkRecentlyWatched()
     }
-
-    suspend fun removeFromWatched(
-        episode: Episode,
-        source: CalendarSource,
-        origin: ChangeOrigin,
-    ) {
-        updateEpisodeHistoryUseCase.removeEpisodeFromHistory(
-            episodeId = episode.ids.trakt.value,
-            origin = origin,
-        )
-
-        analytics.progress.logRemoveWatchedMedia(
-            mediaType = ANALYTICS_EPISODE,
-            source = source.analyticsSource,
-        )
-    }
-
-    suspend fun removeFromWatched(
-        movie: Movie,
-        source: CalendarSource,
-        origin: ChangeOrigin,
-    ) {
-        updateMovieHistoryUseCase.removeAllFromHistory(
-            movieId = movie.ids.trakt,
-            origin = origin,
-        )
-
-        analytics.progress.logRemoveWatchedMedia(
-            mediaType = ANALYTICS_MOVIE,
-            source = source.analyticsSource,
-        )
-    }
 }

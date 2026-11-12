@@ -36,14 +36,6 @@ internal fun CalendarItems.withMovieWatched(
     }
 }
 
-internal fun CalendarItems.withoutMovie(id: TraktId): CalendarItems {
-    return mapValues { entry ->
-        entry.value.filterNot { item ->
-            item is CalendarItem.MovieItem && item.id == id
-        }.toImmutableList()
-    }.toImmutableMap()
-}
-
 private fun CalendarItems.mapItems(transform: (CalendarItem) -> CalendarItem): CalendarItems {
     return mapValues { entry ->
         entry.value.map(transform).toImmutableList()

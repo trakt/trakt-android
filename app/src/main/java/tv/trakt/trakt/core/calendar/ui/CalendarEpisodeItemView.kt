@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.coil.withFallback
@@ -52,14 +53,15 @@ internal fun CalendarEpisodeItemView(
     onLongClick: (() -> Unit)? = null,
     onCheckClick: () -> Unit = {},
     onCheckLongClick: () -> Unit = {},
-    onRemoveClick: () -> Unit = {},
 ) {
     HorizontalMediaCard(
         modifier = modifier,
         title = "",
         more = onLongClick != null,
+        watched = item.watched,
         onClick = onClick,
         onLongClick = onLongClick,
+        chipOffset = DpOffset(x = 0.dp, y = 8.dp),
         containerImageUrl = when {
             item.episode.isSpoilerHidden() -> item.show.images?.getFanartUrl()
             else -> item.show.images?.getFanartUrl()
@@ -166,16 +168,6 @@ internal fun CalendarEpisodeItemView(
                                         .graphicsLayer {
                                             translationX = 2.dp.toPx()
                                         },
-                                )
-                            }
-                            item.watched -> {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_check_double),
-                                    contentDescription = null,
-                                    tint = TraktTheme.colors.textPrimary,
-                                    modifier = Modifier
-                                        .size(20.dp)
-                                        .onClick(onClick = onRemoveClick),
                                 )
                             }
                             !item.watched -> {

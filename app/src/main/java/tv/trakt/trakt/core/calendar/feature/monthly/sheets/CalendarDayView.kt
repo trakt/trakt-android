@@ -57,7 +57,6 @@ internal fun CalendarDayView(
     onMovieClick: (MovieItem) -> Unit = {},
     onCheckClick: (CalendarItem) -> Unit = {},
     onCheckLongClick: (CalendarItem) -> Unit = {},
-    onRemoveClick: (CalendarItem) -> Unit = {},
     onLongClick: (CalendarItem) -> Unit = {},
 ) {
     val dayFormat = fullDayFormat()
@@ -113,7 +112,6 @@ internal fun CalendarDayView(
                         onShowClick = { onShowClick(item) },
                         onCheckClick = { onCheckClick(item) },
                         onCheckLongClick = { onCheckLongClick(item) },
-                        onRemoveClick = { onRemoveClick(item) },
                         onLongClick = { onLongClick(item) },
                     )
 
@@ -123,7 +121,6 @@ internal fun CalendarDayView(
                         onClick = { onMovieClick(item) },
                         onCheckClick = { onCheckClick(item) },
                         onCheckLongClick = { onCheckLongClick(item) },
-                        onRemoveClick = { onRemoveClick(item) },
                         onLongClick = { onLongClick(item) },
                     )
                 }

@@ -99,7 +99,6 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
@@ -135,7 +134,6 @@ internal fun CalendarScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var dateSelectionSheet by remember { mutableStateOf<CalendarItem?>(null) }
-    var confirmRemoveSheet by remember { mutableStateOf<CalendarItem?>(null) }
     var contextEpisodeSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
@@ -211,10 +209,6 @@ internal fun CalendarScreen(
                 is MovieItem -> contextMovieSheet = item.movie
             }
         },
-        onRemoveClick = { item ->
-            if (state.loading.isLoading) return@CalendarScreen
-            confirmRemoveSheet = item
-        },
         onFiltersClick = {
             filtersSheet = true
         },
@@ -253,25 +247,6 @@ internal fun CalendarScreen(
         onDismiss = {
             dateSelectionSheet = null
         },
-    )
-
-    RemoveConfirmationSheet(
-        active = confirmRemoveSheet != null,
-        onYes = {
-            (confirmRemoveSheet as? EpisodeItem)?.let {
-                viewModel.removeFromWatched(it.episode)
-            }
-            (confirmRemoveSheet as? MovieItem)?.let {
-                viewModel.removeFromWatched(it.movie)
-            }
-            confirmRemoveSheet = null
-        },
-        onNo = { confirmRemoveSheet = null },
-        title = stringResource(R.string.button_text_remove_from_history),
-        message = stringResource(
-            R.string.warning_prompt_remove_from_watched,
-            confirmRemoveSheet?.title.orEmpty(),
-        ),
     )
 
     CalendarEpisodeContextSheet(
@@ -316,7 +291,6 @@ private fun CalendarScreen(
     onCheckClick: (CalendarItem) -> Unit = {},
     onCheckLongClick: (CalendarItem) -> Unit = {},
     onLongClick: (CalendarItem) -> Unit = {},
-    onRemoveClick: (CalendarItem) -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onTypeClick: (ReleaseType) -> Unit = {},
     onViewClick: (CalendarView) -> Unit = {},
@@ -526,7 +500,6 @@ private fun CalendarScreen(
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onLongClick = onLongClick,
-            onRemoveClick = onRemoveClick,
         )
 
         Column(
@@ -668,7 +641,6 @@ private fun CalendarContent(
     onCheckClick: (CalendarItem) -> Unit,
     onCheckLongClick: (CalendarItem) -> Unit,
     onLongClick: (CalendarItem) -> Unit,
-    onRemoveClick: (CalendarItem) -> Unit,
 ) {
     var animateIn by rememberSaveable { mutableStateOf(false) }
 
@@ -715,7 +687,6 @@ private fun CalendarContent(
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onLongClick = onLongClick,
-            onRemoveClick = onRemoveClick,
             modifier = modifier
                 .alpha(
                     when {
@@ -748,7 +719,6 @@ private fun ContentItemsGrid(
     onCheckClick: (CalendarItem) -> Unit,
     onCheckLongClick: (CalendarItem) -> Unit,
     onLongClick: (CalendarItem) -> Unit,
-    onRemoveClick: (CalendarItem) -> Unit,
 ) {
     LazyVerticalGrid(
         state = gridState,
@@ -809,7 +779,6 @@ private fun ContentItemsGrid(
                             onLongClick = { onLongClick(item) },
                             onCheckClick = { onCheckClick(item) },
                             onCheckLongClick = { onCheckLongClick(item) },
-                            onRemoveClick = { onRemoveClick(item) },
                             modifier = Modifier.padding(top = 14.dp),
                         )
                     }
@@ -822,7 +791,6 @@ private fun ContentItemsGrid(
                             onLongClick = { onLongClick(item) },
                             onCheckClick = { onCheckClick(item) },
                             onCheckLongClick = { onCheckLongClick(item) },
-                            onRemoveClick = { onRemoveClick(item) },
                             modifier = Modifier.padding(top = 14.dp),
                         )
                     }

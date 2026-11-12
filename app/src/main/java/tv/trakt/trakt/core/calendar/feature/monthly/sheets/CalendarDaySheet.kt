@@ -37,7 +37,6 @@ internal fun CalendarDaySheet(
     onMovieClick: (MovieItem) -> Unit = {},
     onCheckClick: (CalendarItem) -> Unit = {},
     onCheckLongClick: (CalendarItem) -> Unit = {},
-    onRemoveClick: (CalendarItem) -> Unit = {},
     onLongClick: (CalendarItem) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
@@ -70,7 +69,6 @@ internal fun CalendarDaySheet(
             onMovieClick = { item -> dismissThen { onMovieClick(item) } },
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
-            onRemoveClick = onRemoveClick,
             onLongClick = onLongClick,
             modifier = Modifier
                 .padding(horizontal = 24.dp)

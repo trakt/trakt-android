@@ -81,7 +81,6 @@ import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -110,7 +109,6 @@ internal fun CalendarMonthlyScreen(
     var filtersSheet by remember { mutableStateOf(false) }
     var daySheet by remember { mutableStateOf<LocalDate?>(null) }
     var dateSelectionSheet by remember { mutableStateOf<CalendarItem?>(null) }
-    var confirmRemoveSheet by remember { mutableStateOf<CalendarItem?>(null) }
     var contextEpisodeSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
 
@@ -186,7 +184,6 @@ internal fun CalendarMonthlyScreen(
             }
         },
         onCheckLongClick = { dateSelectionSheet = it },
-        onRemoveClick = { confirmRemoveSheet = it },
         onLongClick = { item ->
             when (item) {
                 is EpisodeItem -> contextEpisodeSheet = item
@@ -213,24 +210,6 @@ internal fun CalendarMonthlyScreen(
         onDismiss = {
             dateSelectionSheet = null
         },
-    )
-
-    RemoveConfirmationSheet(
-        active = confirmRemoveSheet != null,
-        onYes = {
-            when (val item = confirmRemoveSheet) {
-                is EpisodeItem -> viewModel.removeFromWatched(item.episode)
-                is MovieItem -> viewModel.removeFromWatched(item.movie)
-                null -> Unit
-            }
-            confirmRemoveSheet = null
-        },
-        onNo = { confirmRemoveSheet = null },
-        title = stringResource(R.string.button_text_remove_from_history),
-        message = stringResource(
-            R.string.warning_prompt_remove_from_watched,
-            confirmRemoveSheet?.title.orEmpty(),
-        ),
     )
 
     CalendarEpisodeContextSheet(

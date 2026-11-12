@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -78,6 +79,7 @@ internal fun HorizontalMediaCard(
     more: Boolean = true,
     watched: Boolean = false,
     highlighted: Boolean = false,
+    chipOffset: DpOffset = DpOffset(x = 0.dp, y = 6.dp),
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
@@ -249,7 +251,7 @@ internal fun HorizontalMediaCard(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 6.dp.toPx()
+                            translationY = chipOffset.y.toPx()
                         },
                 ) {
                     CollectionChip(
