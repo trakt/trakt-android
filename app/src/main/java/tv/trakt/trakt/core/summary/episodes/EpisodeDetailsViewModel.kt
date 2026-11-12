@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
@@ -627,7 +628,7 @@ internal class EpisodeDetailsViewModel(
     }
 
     fun onVipUpsellSeen() {
-        analytics.vip.logUpsellImpression("episode-details")
+        analytics.vip.logUpsellImpression(VipUpsellSource.EpisodeDetails.value)
     }
 
     @Suppress("UNCHECKED_CAST")

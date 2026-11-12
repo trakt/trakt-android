@@ -83,6 +83,7 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
@@ -146,7 +147,7 @@ internal fun ShowDetailsScreen(
     onNavigateToAllSoundtrack: (Show, currentSeason: Int?) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateToWatchlist: () -> Unit,
-    onNavigateVip: () -> Unit,
+    onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -559,7 +560,7 @@ internal fun ShowDetailsContent(
     onAllCreditsClick: (() -> Unit)? = null,
     onAllSoundtrackClick: ((currentSeason: Int?) -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
-    onVipClick: (() -> Unit)? = null,
+    onVipClick: ((VipUpsellSource) -> Unit)? = null,
     onVipSeen: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
@@ -748,7 +749,7 @@ internal fun ShowDetailsContent(
                 if (state.user != null && !state.user.isVip) {
                     item {
                         VipBanner(
-                            onClick = onVipClick ?: {},
+                            onClick = { onVipClick?.invoke(VipUpsellSource.ShowDetails) },
                             modifier = Modifier
                                 .onUpsellSeen { onVipSeen?.invoke() }
                                 .alpha(ratingAlphaMask)
@@ -877,7 +878,7 @@ internal fun ShowDetailsContent(
                             posterUrl = show.images?.getPosterUrl(),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onVipClick = onVipClick ?: {},
+                            onVipClick = { onVipClick?.invoke(VipUpsellSource.Soundtrack) },
                             onMoreClick = {
                                 onAllSoundtrackClick?.invoke(seasonsState.items.selectedSeason?.number)
                             },
@@ -923,7 +924,7 @@ internal fun ShowDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onVipClick = onVipClick ?: {},
+                            onVipClick = { onVipClick?.invoke(VipUpsellSource.Trivia) },
                             onTriviaClick = onTriviaClick ?: {},
                             onPersonLinkClick = onPersonLinkClick ?: {},
                             modifier = Modifier

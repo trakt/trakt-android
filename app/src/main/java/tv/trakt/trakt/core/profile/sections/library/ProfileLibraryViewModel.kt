@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_SECTION_LIMIT
@@ -217,7 +218,7 @@ internal class ProfileLibraryViewModel(
     fun onVipUpsellSeen() {
         if (isVipUpsellSeenLogged) return
         isVipUpsellSeenLogged = true
-        analytics.vip.logUpsellImpression("library-collection-limit")
+        analytics.vip.logUpsellImpression(VipUpsellSource.LibraryCollectionLimit.value)
     }
 
     fun setFilter(newFilter: LibraryFilter) {

@@ -31,13 +31,13 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.soundtrack.SoundtrackTrack
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.summary.soundtrack.usecases.GetSoundtrackUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val UPSELL_SOURCE = "soundtrack"
 private const val UNKNOWN_MATCH = "unknown"
 
 @Suppress("UNCHECKED_CAST")
@@ -144,7 +144,7 @@ internal class SoundtrackViewModel(
     }
 
     fun logUpsellSeen() {
-        analytics.vip.logUpsellImpression(UPSELL_SOURCE)
+        analytics.vip.logUpsellImpression(VipUpsellSource.Soundtrack.value)
     }
 
     val state = combine(

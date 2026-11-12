@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -29,6 +30,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.trivia.TriviaFact
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.trivia.usecases.GetTriviaUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -41,6 +43,7 @@ internal class MediaTriviaViewModel(
     private val mediaType: MediaType,
     private val getTriviaUseCase: GetTriviaUseCase,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
     collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = MediaTriviaState()
@@ -121,6 +124,10 @@ internal class MediaTriviaViewModel(
                 Timber.recordError(error)
             }
         }
+    }
+
+    fun logUpsellSeen() {
+        analytics.vip.logUpsellImpression(VipUpsellSource.Trivia.value)
     }
 
     fun setCollapsed(collapsed: Boolean) {

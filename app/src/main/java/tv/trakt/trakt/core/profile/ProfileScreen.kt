@@ -66,6 +66,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.profile.sections.activity.ProfileActivityView
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
@@ -103,7 +104,7 @@ internal fun ProfileScreen(
     onNavigateToUser: (User) -> Unit,
     onNavigateToSocial: () -> Unit,
     onNavigateToLeaderboard: (followingCount: Int?) -> Unit,
-    onNavigateToVip: () -> Unit,
+    onNavigateToVip: (VipUpsellSource) -> Unit,
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -154,8 +155,9 @@ internal fun ProfileScreen(
         },
         onVipClick = {
             allTimeStatsSheet = false
-            onNavigateToVip()
+            onNavigateToVip(VipUpsellSource.AllTimeStats)
         },
+        onVipSeen = { viewModel.onVipUpsellSeen(VipUpsellSource.AllTimeStats) },
         onDismiss = { allTimeStatsSheet = false },
     )
 }
@@ -176,8 +178,8 @@ private fun ProfileScreen(
     onNavigateToUser: (User) -> Unit = {},
     onNavigateToSocial: () -> Unit = {},
     onLeaderboardClick: () -> Unit = {},
-    onVipClick: () -> Unit = {},
-    onVipSeen: () -> Unit = {},
+    onVipClick: (VipUpsellSource) -> Unit = {},
+    onVipSeen: (VipUpsellSource) -> Unit = {},
     onAllTimeStatsClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
@@ -399,7 +401,7 @@ private fun ProfileScreen(
                             onShowClick = onNavigateToShow,
                             onMovieClick = onNavigateToMovie,
                             onMoreClick = onNavigateToLibrary,
-                            onVipClick = onVipClick,
+                            onVipClick = { onVipClick(VipUpsellSource.LibraryCollectionLimit) },
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                         )
@@ -423,8 +425,8 @@ private fun ProfileScreen(
             state = state,
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
-            onVipClick = onVipClick,
-            onVipSeen = onVipSeen,
+            onVipClick = { onVipClick(VipUpsellSource.NavbarMobile) },
+            onVipSeen = { onVipSeen(VipUpsellSource.NavbarMobile) },
             onShareClick = onShareClick,
             onSettingsClick = onSettingsClick,
         )

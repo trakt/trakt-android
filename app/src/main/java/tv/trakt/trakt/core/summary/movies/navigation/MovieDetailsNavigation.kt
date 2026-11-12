@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.movies.MovieDetailsScreen
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -38,7 +39,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToAllSoundtrack: (Movie) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToWatchlist: () -> Unit,
-    onNavigateVip: () -> Unit,
+    onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<MovieDetailsDestination> {

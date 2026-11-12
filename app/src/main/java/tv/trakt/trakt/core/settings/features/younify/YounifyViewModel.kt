@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.settings.features.younify.model.LinkStatus
 import tv.trakt.trakt.core.settings.features.younify.model.YounifyDetails
 import tv.trakt.trakt.core.settings.features.younify.model.YounifyServices
@@ -405,7 +406,7 @@ internal class YounifyViewModel(
     fun onVipUpsellSeen() {
         if (isVipUpsellSeenLogged) return
         isVipUpsellSeenLogged = true
-        analytics.vip.logUpsellImpression("connected-apps")
+        analytics.vip.logUpsellImpression(VipUpsellSource.ConnectedApps.value)
     }
 
     val state = combine(

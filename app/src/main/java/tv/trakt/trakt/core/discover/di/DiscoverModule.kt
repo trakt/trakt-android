@@ -77,6 +77,7 @@ internal val discoverModule = module {
         DiscoverViewModel(
             sessionManager = get(),
             analytics = get(),
+            upsellImpressions = get(),
             collectionStateProvider = get(),
             getCalendarViewUseCase = get(),
         )

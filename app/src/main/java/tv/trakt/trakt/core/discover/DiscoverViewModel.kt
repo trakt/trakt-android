@@ -16,6 +16,8 @@ import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.core.billing.analytics.VipUpsellImpressions
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
@@ -28,6 +30,7 @@ internal class DiscoverViewModel(
     private val collectionStateProvider: CollectionStateProvider,
     private val getCalendarViewUseCase: GetCalendarViewUseCase,
     private val analytics: Analytics,
+    private val upsellImpressions: VipUpsellImpressions,
 ) : ViewModel() {
     private val initialState = DiscoverState()
 
@@ -70,7 +73,7 @@ internal class DiscoverViewModel(
     }
 
     fun onVipUpsellSeen() {
-        analytics.vip.logUpsellImpression("discover")
+        upsellImpressions.log(VipUpsellSource.NavbarMobile)
     }
 
     val state = combine(

@@ -33,10 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.home.sections.welcome.sheet.WelcomeSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -45,7 +47,8 @@ internal fun HomeWelcomeView(
     modifier: Modifier = Modifier,
     isVip: Boolean,
     onDiscoverClick: () -> Unit = {},
-    onVipClick: () -> Unit = {},
+    onVipClick: (VipUpsellSource) -> Unit = {},
+    onVipSeen: (VipUpsellSource) -> Unit = {},
     onImportClick: () -> Unit = {},
     onDismissClick: () -> Unit = {},
 ) {
@@ -143,7 +146,8 @@ internal fun HomeWelcomeView(
                 horizontalArrangement = spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .onClick(onClick = onVipClick),
+                    .onUpsellSeen { onVipSeen(VipUpsellSource.WelcomeBanner) }
+                    .onClick { onVipClick(VipUpsellSource.WelcomeBanner) },
             ) {
                 Column(
                     verticalArrangement = spacedBy(2.dp),
@@ -183,7 +187,8 @@ internal fun HomeWelcomeView(
     WelcomeSheet(
         visible = welcomeSheet,
         isVip = isVip,
-        onVipClick = onVipClick,
+        onVipClick = { onVipClick(VipUpsellSource.Welcome) },
+        onVipSeen = { onVipSeen(VipUpsellSource.Welcome) },
         onGetStartedClick = onDiscoverClick,
         onDismiss = { welcomeSheet = false },
     )

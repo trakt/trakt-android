@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.billing.navigation.billingScreen
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.calendar.model.CalendarSource
@@ -141,7 +142,7 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllSocial = ::navigateToAllActivitySocial,
             onNavigateToAllWatchlist = ::navigateToAllHomeWatchlist,
             onNavigateToAllRecommended = { navigateToDiscoverAll(DiscoverSection.Recommended) },
-            onNavigateToVip = { navigateToBilling(source = "home") },
+            onNavigateToVip = { navigateToBilling(source = it) },
             onNavigateToUser = { user ->
                 navigateToUserProfile(
                     user = user,
@@ -227,7 +228,7 @@ internal fun NavGraphBuilder.discoverScreens(controller: NavHostController) {
                 navigateToCalendar(view, CalendarSource.Releases)
             },
             onNavigateToVip = {
-                navigateToBilling(source = "discover")
+                navigateToBilling(source = VipUpsellSource.NavbarMobile)
             },
         )
         discoverAllScreen(
@@ -350,7 +351,7 @@ internal fun NavGraphBuilder.showsScreens(
                 )
             },
             onNavigateToWatchlist = { navigateToWatchlist() },
-            onNavigateVip = { navigateToBilling(source = "show-details") },
+            onNavigateVip = { navigateToBilling(source = it) },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -426,7 +427,7 @@ internal fun NavGraphBuilder.episodesScreens(
                     currentUserId = userId,
                 )
             },
-            onNavigateVip = { navigateToBilling(source = "episode-details") },
+            onNavigateVip = { navigateToBilling(source = VipUpsellSource.EpisodeDetails) },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -532,7 +533,7 @@ internal fun NavGraphBuilder.moviesScreens(
                 )
             },
             onNavigateToWatchlist = { navigateToWatchlist() },
-            onNavigateVip = { navigateToBilling(source = "movie-details") },
+            onNavigateVip = { navigateToBilling(source = it) },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -569,7 +570,7 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToSmartList = { navigateToSmartListDetails(it) },
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToAllLists = { navigateToAllLists(it) },
-            onNavigateToVip = { navigateToBilling(source = "lists") },
+            onNavigateToVip = { navigateToBilling(source = VipUpsellSource.NavbarMobile) },
             onNavigateToUser = {
                 navigateToUserProfile(
                     user = it,
@@ -718,7 +719,7 @@ internal fun NavGraphBuilder.profileScreens(
             },
             onNavigateToSocial = { navigateToProfileSocial() },
             onNavigateToLeaderboard = { navigateToLeaderboard(it) },
-            onNavigateToVip = { navigateToBilling(source = "library-collection-limit") },
+            onNavigateToVip = { navigateToBilling(source = it) },
         )
 
         allFavoritesScreen(
@@ -755,7 +756,7 @@ internal fun NavGraphBuilder.profileScreens(
                     currentUserId = userId,
                 )
             },
-            onNavigateToVip = { navigateToBilling(source = "leaderboard-viewer") },
+            onNavigateToVip = { navigateToBilling(source = VipUpsellSource.LeaderboardViewer) },
             onNavigateBack = { popBackStack() },
         )
 
@@ -884,7 +885,7 @@ internal fun NavGraphBuilder.allCreditsScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.sentimentScreens(controller: NavHostController) {
     with(controller) {
         sentimentScreen(
-            onNavigateVip = { navigateToBilling(source = "sentiment") },
+            onNavigateVip = { navigateToBilling(source = VipUpsellSource.Sentiment) },
             onNavigateToPerson = { slug, sentiment ->
                 navigateToPerson(
                     personSlug = slug,
@@ -910,7 +911,7 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
         )
 
         younifyScreen(
-            onNavigateToVip = { navigateToBilling(source = "connected-apps") },
+            onNavigateToVip = { navigateToBilling(source = VipUpsellSource.ConnectedApps) },
             onNavigateBack = { popBackStack() },
         )
     }

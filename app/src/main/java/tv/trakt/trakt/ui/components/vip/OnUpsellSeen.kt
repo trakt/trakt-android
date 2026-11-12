@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.boundsInWindow
@@ -26,7 +27,7 @@ private const val FULLY_VISIBLE_RATIO = 0.99F
 @Composable
 internal fun Modifier.onUpsellSeen(onSeen: () -> Unit): Modifier {
     var isFullyVisible by remember { mutableStateOf(false) }
-    var isSeen by remember { mutableStateOf(false) }
+    var isSeen by rememberSaveable { mutableStateOf(false) }
     val currentOnSeen by rememberUpdatedState(onSeen)
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
     val isResumed = lifecycleState.isAtLeast(Lifecycle.State.RESUMED)

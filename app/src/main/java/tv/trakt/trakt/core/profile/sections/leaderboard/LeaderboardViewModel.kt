@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.leaderboard.LeaderboardEntry
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
 import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.weaveLeaderboardViewer
 
@@ -147,7 +148,7 @@ internal class LeaderboardViewModel(
     fun onVipUpsellSeen() {
         if (isVipUpsellSeenLogged) return
         isVipUpsellSeenLogged = true
-        analytics.vip.logUpsellImpression("leaderboard-viewer")
+        analytics.vip.logUpsellImpression(VipUpsellSource.LeaderboardViewer.value)
     }
 
     val state = combine(

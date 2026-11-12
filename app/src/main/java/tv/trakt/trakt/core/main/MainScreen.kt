@@ -84,6 +84,7 @@ import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.applinks.AppLinkViewModel
 import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.auth.model.LoginSource
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
@@ -198,7 +199,7 @@ internal fun MainScreen(
 
     LaunchedEffect(state.paywall) {
         if (state.paywall == true) {
-            navController.navigateToBilling(source = "onboarding")
+            navController.navigateToBilling(source = VipUpsellSource.Onboarding)
             viewModel.clearPaywall()
         }
     }
@@ -237,7 +238,9 @@ internal fun MainScreen(
                 message = localRes.getString(R.string.error_text_rating_not_saved),
                 duration = SnackbarDuration.Long,
             )
-            error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT -> navController.navigateToBilling(source = "vip-limit")
+            error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT -> navController.navigateToBilling(
+                source = VipUpsellSource.VipLimit,
+            )
         }
         viewModel.clearError()
     }
