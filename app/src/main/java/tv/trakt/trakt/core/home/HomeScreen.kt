@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.auth.model.LoginSource
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
@@ -77,7 +78,7 @@ internal fun HomeScreen(
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
     onNavigateToAllRecommended: () -> Unit,
-    onNavigateToVip: () -> Unit,
+    onNavigateToVip: (VipUpsellSource) -> Unit,
     onNavigateToCalendar: (CalendarView) -> Unit,
     onNavigateToToday: (groupKey: String) -> Unit,
 ) {
@@ -178,8 +179,8 @@ private fun HomeScreenContent(
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
-    onVipClick: () -> Unit = {},
-    onVipSeen: () -> Unit = {},
+    onVipClick: (VipUpsellSource) -> Unit = {},
+    onVipSeen: (VipUpsellSource) -> Unit = {},
     onCalendarClick: () -> Unit = {},
     onStreakClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
@@ -262,6 +263,7 @@ private fun HomeScreenContent(
                                 onImportClick = { uriHandler.openUri(WEB_DATA_IMPORT_URL) },
                                 onDismissClick = onDismissWelcomeClick,
                                 onVipClick = onVipClick,
+                                onVipSeen = onVipSeen,
                             )
                         }
                     }
@@ -385,8 +387,8 @@ private fun HomeScreenContent(
             headerState = headerState,
             userLoading = userLoading,
             isScrolledToTop = isScrolledToTop,
-            onVipClick = onVipClick,
-            onVipSeen = onVipSeen,
+            onVipClick = { onVipClick(VipUpsellSource.NavbarMobile) },
+            onVipSeen = { onVipSeen(VipUpsellSource.NavbarMobile) },
             onFiltersClick = onFiltersClick,
             onWhatsNewClick = onWhatsNewClick,
             onTodayClick = onTodayClick,

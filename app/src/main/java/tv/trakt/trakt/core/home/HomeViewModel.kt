@@ -27,6 +27,8 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.core.billing.analytics.VipUpsellImpressions
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.calendar.model.CalendarSource
 import tv.trakt.trakt.core.calendar.model.CalendarView
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
@@ -53,6 +55,7 @@ internal class HomeViewModel(
     private val collectionStateProvider: CollectionStateProvider,
     private val getCalendarViewUseCase: GetCalendarViewUseCase,
     private val analytics: Analytics,
+    private val upsellImpressions: VipUpsellImpressions,
 ) : ViewModel() {
     private val initialState = HomeState()
     private val initialMode = filterManager.getFilter().mode
@@ -213,8 +216,8 @@ internal class HomeViewModel(
         }
     }
 
-    fun onVipUpsellSeen() {
-        analytics.vip.logUpsellImpression("home")
+    fun onVipUpsellSeen(source: VipUpsellSource) {
+        upsellImpressions.log(source)
     }
 
     val state = combine(

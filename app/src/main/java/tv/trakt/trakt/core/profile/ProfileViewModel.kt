@@ -35,6 +35,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.common.model.leaderboard.Leaderboard
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.core.billing.analytics.VipUpsellImpressions
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
@@ -54,6 +56,7 @@ internal class ProfileViewModel(
     private val filterManager: GlobalFilterManager,
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
+    private val upsellImpressions: VipUpsellImpressions,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileState()
@@ -223,8 +226,8 @@ internal class ProfileViewModel(
         analytics.logLink(source = "all-time-stats", target = target)
     }
 
-    fun onVipUpsellSeen() {
-        analytics.vip.logUpsellImpression("profile")
+    fun onVipUpsellSeen(source: VipUpsellSource) {
+        upsellImpressions.log(source)
     }
 
     fun logShare() {

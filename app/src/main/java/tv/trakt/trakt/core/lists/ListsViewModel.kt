@@ -38,6 +38,8 @@ import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.core.billing.analytics.VipUpsellImpressions
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.lists.ListsState.UserState
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
@@ -68,6 +70,7 @@ internal class ListsViewModel(
     private val localSmartListsSource: ListsSmartLocalSource,
     private val getFilterUseCase: GetListsFilterUseCase,
     private val analytics: Analytics,
+    private val upsellImpressions: VipUpsellImpressions,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ListsState()
@@ -288,7 +291,7 @@ internal class ListsViewModel(
     }
 
     fun onVipUpsellSeen() {
-        analytics.vip.logUpsellImpression("lists")
+        upsellImpressions.log(VipUpsellSource.NavbarMobile)
     }
 
     val state = combine(

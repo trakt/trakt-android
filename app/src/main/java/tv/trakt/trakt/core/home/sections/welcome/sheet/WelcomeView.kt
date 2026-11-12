@@ -57,6 +57,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -76,6 +77,7 @@ internal fun WelcomeView(
     name: String? = null,
     isVip: Boolean = false,
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onStartExploringClick: () -> Unit = {},
 ) {
     val preview = LocalInspectionMode.current
@@ -279,7 +281,9 @@ internal fun WelcomeView(
                 )
 
                 BecomeVipCard(
-                    modifier = Modifier.onClick(onClick = onVipClick),
+                    modifier = Modifier
+                        .onUpsellSeen(onVipSeen)
+                        .onClick(onClick = onVipClick),
                 )
             }
 

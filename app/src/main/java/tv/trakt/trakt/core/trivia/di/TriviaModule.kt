@@ -21,6 +21,7 @@ internal val triviaModule = module {
             mediaType = mediaType,
             getTriviaUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
             collapsingManager = get(),
         )
     }

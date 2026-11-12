@@ -78,6 +78,7 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.MediaReactionsTarget
 import tv.trakt.trakt.common.ui.composables.LocalSpoilerState
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
@@ -135,7 +136,7 @@ internal fun MovieDetailsScreen(
     onNavigateToAllSoundtrack: (Movie) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateToWatchlist: () -> Unit,
-    onNavigateVip: () -> Unit,
+    onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -465,7 +466,7 @@ internal fun MovieDetailsContent(
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
-    onVipClick: (() -> Unit)? = null,
+    onVipClick: ((VipUpsellSource) -> Unit)? = null,
     onVipSeen: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onPersonLinkClick: ((SlugId) -> Unit)? = null,
@@ -652,7 +653,7 @@ internal fun MovieDetailsContent(
                 if (state.user != null && !state.user.isVip) {
                     item {
                         VipBanner(
-                            onClick = onVipClick ?: {},
+                            onClick = { onVipClick?.invoke(VipUpsellSource.MovieDetails) },
                             modifier = Modifier
                                 .onUpsellSeen { onVipSeen?.invoke() }
                                 .alpha(ratingAlphaMask)
@@ -760,7 +761,7 @@ internal fun MovieDetailsContent(
                             posterUrl = movie.images?.getPosterUrl(),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onVipClick = onVipClick ?: {},
+                            onVipClick = { onVipClick?.invoke(VipUpsellSource.Soundtrack) },
                             onMoreClick = { onAllSoundtrackClick?.invoke() },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
@@ -804,7 +805,7 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onVipClick = onVipClick ?: {},
+                            onVipClick = { onVipClick?.invoke(VipUpsellSource.Trivia) },
                             onTriviaClick = onTriviaClick ?: {},
                             onPersonLinkClick = onPersonLinkClick ?: {},
                             modifier = Modifier

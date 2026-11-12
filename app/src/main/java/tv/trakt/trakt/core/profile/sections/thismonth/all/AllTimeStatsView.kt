@@ -37,6 +37,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.vip.VipBanner
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Month
 import kotlin.math.roundToInt
@@ -60,6 +61,7 @@ internal fun AllTimeStatsView(
     isVip: Boolean = false,
     onYearClick: (year: Int) -> Unit = {},
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
 ) {
     val sections = remember(stats) { stats.toSections() }
     val currentYear = remember {
@@ -111,7 +113,8 @@ internal fun AllTimeStatsView(
                 description = stringResource(R.string.text_vip_upsell_more_stats),
                 onClick = onVipClick,
                 modifier = Modifier
-                    .padding(top = 4.dp),
+                    .padding(top = 4.dp)
+                    .onUpsellSeen(onVipSeen),
             )
         }
 

@@ -230,18 +230,21 @@ internal class MainViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             try {
+                sessionManager.getProfile()?.let(::identifyUser)
                 delay(500.milliseconds)
-                getUserUseCase.loadUserProfile()?.let {
-                    analytics.setUserId(it.ids.trakt.value.toString())
-                    analytics.setUserProperty("vip", it.isAnyVip.toString().lowercase())
-                    analytics.setUserProperty("director", it.isDirector.toString().lowercase())
-                }
+                getUserUseCase.loadUserProfile()?.let(::identifyUser)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.e(error)
                 }
             }
         }
+    }
+
+    private fun identifyUser(user: User) {
+        analytics.setUserId(user.ids.trakt.value.toString())
+        analytics.setUserProperty("vip", user.isAnyVip.toString().lowercase())
+        analytics.setUserProperty("director", user.isDirector.toString().lowercase())
     }
 
     private fun loadWelcome() {
@@ -401,9 +404,7 @@ internal class MainViewModel(
                     redirectUri = redirectUri,
                 )
                 getUserUseCase.loadUserProfile()?.let {
-                    analytics.setUserId(it.ids.trakt.value.toString())
-                    analytics.setUserProperty("vip", it.isAnyVip.toString().lowercase())
-                    analytics.setUserProperty("director", it.isDirector.toString().lowercase())
+                    identifyUser(it)
                     analytics.logUserLogin(source = ConfigAuth.redirectSource(redirectUri))
                     dismissPaywall(it)
                 }

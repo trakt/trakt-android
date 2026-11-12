@@ -8,6 +8,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.profile.ProfileScreen
 
 @Serializable
@@ -27,7 +28,7 @@ internal fun NavGraphBuilder.profileScreen(
     onNavigateToUser: (User) -> Unit,
     onNavigateToSocial: () -> Unit,
     onNavigateToLeaderboard: (followingCount: Int?) -> Unit,
-    onNavigateToVip: () -> Unit,
+    onNavigateToVip: (VipUpsellSource) -> Unit,
 ) {
     composable<ProfileDestination> {
         ProfileScreen(

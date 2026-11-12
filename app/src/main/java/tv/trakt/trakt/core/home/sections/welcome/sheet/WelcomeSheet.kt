@@ -25,6 +25,7 @@ internal fun WelcomeSheet(
     ),
     onDismiss: () -> Unit = {},
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onGetStartedClick: () -> Unit = {},
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -39,6 +40,7 @@ internal fun WelcomeSheet(
                 modifier = Modifier.fillMaxHeight(0.9F),
                 name = name,
                 isVip = isVip,
+                onVipSeen = onVipSeen,
                 onVipClick = {
                     sheetScope.dismissWithAction(
                         sheet = state,

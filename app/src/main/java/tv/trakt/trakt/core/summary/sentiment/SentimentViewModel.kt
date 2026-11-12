@@ -18,6 +18,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.summary.sentiment.navigation.SentimentDestination
 import tv.trakt.trakt.core.summary.sentiment.usecases.GetMockSentimentUseCase
 
@@ -62,7 +63,7 @@ internal class SentimentViewModel(
     }
 
     fun onVipUpsellSeen() {
-        analytics.vip.logUpsellImpression("sentiment")
+        analytics.vip.logUpsellImpression(VipUpsellSource.Sentiment.value)
     }
 
     @Suppress("UNCHECKED_CAST")

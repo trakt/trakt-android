@@ -67,6 +67,7 @@ internal fun MovieTriviaView(
             onCollapse = viewModel::setCollapsed,
             onNotAvailable = { visible = false },
             onVipClick = onVipClick,
+            onVipSeen = viewModel::logUpsellSeen,
             onTriviaClick = onTriviaClick,
             onPersonLinkClick = onPersonLinkClick,
         )
@@ -81,6 +82,7 @@ private fun MovieTriviaContent(
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onTriviaClick: () -> Unit = {},
     onPersonLinkClick: (SlugId) -> Unit = {},
     onNotAvailable: (() -> Unit)? = null,
@@ -134,6 +136,7 @@ private fun MovieTriviaContent(
                                 items = state.summary,
                                 vip = state.user?.isAnyVip == true,
                                 onVipClick = onVipClick,
+                                onVipSeen = onVipSeen,
                                 onPersonLinkClick = onPersonLinkClick,
                                 modifier = Modifier
                                     .padding(contentPadding)

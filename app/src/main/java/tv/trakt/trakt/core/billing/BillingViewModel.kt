@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.billing.model.VipBillingError
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD
 import tv.trakt.trakt.core.billing.model.VipBillingOffer.MONTHLY_STANDARD_TRIAL
 import tv.trakt.trakt.core.billing.model.VipBillingProduct
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.billing.model.VipUsageLimit
 import tv.trakt.trakt.core.billing.model.toVipFailureCode
 import tv.trakt.trakt.core.billing.navigation.BillingDestination
@@ -67,7 +68,7 @@ private const val VIP_FLOW = "new"
 private const val KEY_OPEN_LOGGED = "vip_open_logged"
 private const val KEY_PENDING_PLAN = "vip_pending_plan"
 
-private val AUTO_OPEN_SOURCES = setOf("onboarding", "vip-limit")
+private val AUTO_OPEN_SOURCES = setOf(VipUpsellSource.Onboarding.value, VipUpsellSource.VipLimit.value)
 
 internal class BillingViewModel(
     private val savedStateHandle: SavedStateHandle,

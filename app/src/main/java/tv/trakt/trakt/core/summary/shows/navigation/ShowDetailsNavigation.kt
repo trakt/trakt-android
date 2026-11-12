@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.shows.ShowDetailsScreen
@@ -41,7 +42,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateToAllSoundtrack: (Show, currentSeason: Int?) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToWatchlist: () -> Unit,
-    onNavigateVip: () -> Unit,
+    onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<ShowDetailsDestination> {

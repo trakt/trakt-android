@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.core.billing.BillingScreen
+import tv.trakt.trakt.core.billing.model.VipUpsellSource
 
 @Serializable
 internal data class BillingDestination(
@@ -21,6 +22,6 @@ internal fun NavGraphBuilder.billingScreen(onNavigateBack: () -> Unit) {
     }
 }
 
-internal fun NavController.navigateToBilling(source: String) {
-    navigate(route = BillingDestination(source = source))
+internal fun NavController.navigateToBilling(source: VipUpsellSource) {
+    navigate(route = BillingDestination(source = source.value))
 }

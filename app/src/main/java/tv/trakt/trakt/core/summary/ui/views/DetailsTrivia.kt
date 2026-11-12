@@ -53,6 +53,7 @@ import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -62,6 +63,7 @@ internal fun DetailsTrivia(
     vip: Boolean,
     modifier: Modifier = Modifier,
     onVipClick: () -> Unit = {},
+    onVipSeen: () -> Unit = {},
     onPersonLinkClick: (SlugId) -> Unit = {},
 ) {
     val personLinkUriHandler = rememberAppLinkUriHandler(onPersonClick = onPersonLinkClick)
@@ -123,6 +125,7 @@ internal fun DetailsTrivia(
         if (!vip) {
             GetVipView(
                 onVipClick = onVipClick,
+                onVipSeen = onVipSeen,
             )
         }
 
@@ -141,7 +144,10 @@ internal fun DetailsTrivia(
 }
 
 @Composable
-private fun GetVipView(onVipClick: () -> Unit) {
+private fun GetVipView(
+    onVipClick: () -> Unit,
+    onVipSeen: () -> Unit,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(16.dp),
@@ -152,6 +158,7 @@ private fun GetVipView(onVipClick: () -> Unit) {
                 color = TraktTheme.colors.triviaText.copy(alpha = 0.1F),
                 shape = RoundedCornerShape(18.dp),
             )
+            .onUpsellSeen(onVipSeen)
             .onClick(onClick = onVipClick)
             .padding(start = 16.dp, end = 14.dp)
             .padding(vertical = 12.dp),
