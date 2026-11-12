@@ -71,7 +71,7 @@ internal fun SeasonalActionBarDecor(
         when (season) {
             SeasonalTheme.Christmas -> ChristmasDecor(shape = shape)
             SeasonalTheme.NewYear -> PartyHat()
-            SeasonalTheme.Halloween, null -> Unit
+            SeasonalTheme.Halloween, SeasonalTheme.Doomsday, null -> Unit
         }
     }
 }

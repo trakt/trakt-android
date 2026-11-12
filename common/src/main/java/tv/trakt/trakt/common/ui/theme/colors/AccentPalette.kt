@@ -48,6 +48,17 @@ val AmberPalette = AccentPalette(
     shade1000 = Amber1000,
 )
 
+val EmeraldPalette = AccentPalette(
+    shade50 = Emerald50,
+    shade100 = Emerald100,
+    shade200 = Emerald200,
+    shade300 = Emerald300,
+    shade400 = Emerald400,
+    shade600 = Emerald600,
+    shade900 = Emerald900,
+    shade1000 = Emerald1000,
+)
+
 val RedPalette = AccentPalette(
     shade50 = Red50,
     shade100 = Red100,

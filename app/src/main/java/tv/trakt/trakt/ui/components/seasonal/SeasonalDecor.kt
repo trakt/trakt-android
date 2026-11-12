@@ -30,7 +30,9 @@ import tv.trakt.trakt.ui.theme.model.SeasonalTheme
 private const val GLOW_ALPHA = 0.22F
 private const val EVERGREEN_ALPHA = 0.14F
 private const val NIGHT_ALPHA = 0.35F
+private const val GLASS_ALPHA = 0.12F
 private val NightColor = Color(0xFF132B5A)
+private val GlassColor = Color(0xFF8EA39A)
 
 @Composable
 internal fun SeasonalDecor(modifier: Modifier = Modifier) {
@@ -72,6 +74,18 @@ internal fun SeasonalDecor(modifier: Modifier = Modifier) {
                             1F to NightColor.copy(alpha = NIGHT_ALPHA),
                         ),
                     )
+                    SeasonalTheme.Doomsday -> listOf(
+                        Brush.radialGradient(
+                            colors = listOf(glow, Color.Transparent),
+                            center = Offset(size.width * 0.82F, -size.height * 0.1F),
+                            radius = (size.width * 0.7F).coerceAtLeast(1F),
+                        ),
+                        Brush.radialGradient(
+                            colors = listOf(GlassColor.copy(alpha = GLASS_ALPHA), Color.Transparent),
+                            center = Offset(size.width * 0.12F, -size.height * 0.06F),
+                            radius = (size.width * 0.55F).coerceAtLeast(1F),
+                        ),
+                    )
                 }
                 onDrawBehind {
                     brushes.forEach { drawRect(brush = it) }
@@ -79,7 +93,7 @@ internal fun SeasonalDecor(modifier: Modifier = Modifier) {
             },
     ) {
         val garland = when (season) {
-            SeasonalTheme.Halloween -> null
+            SeasonalTheme.Halloween, SeasonalTheme.Doomsday -> null
             SeasonalTheme.Christmas -> R.drawable.img_christmas_garland to 24.dp
             SeasonalTheme.NewYear -> R.drawable.img_new_year_sparkles to 40.dp
         }
@@ -126,4 +140,10 @@ private fun ChristmasPreview() {
 @Composable
 private fun NewYearPreview() {
     SeasonalDecorPreview(SeasonalTheme.NewYear)
+}
+
+@Preview(device = "id:pixel_5")
+@Composable
+private fun DoomsdayPreview() {
+    SeasonalDecorPreview(SeasonalTheme.Doomsday)
 }

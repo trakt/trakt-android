@@ -3,6 +3,8 @@ package tv.trakt.trakt.ui.theme.model
 import androidx.annotation.DrawableRes
 import tv.trakt.trakt.common.ui.theme.colors.ChristmasDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.ChristmasLightColors
+import tv.trakt.trakt.common.ui.theme.colors.DoomsdayDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.DoomsdayLightColors
 import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
 import tv.trakt.trakt.common.ui.theme.colors.HalloweenLightColors
 import tv.trakt.trakt.common.ui.theme.colors.NewYearDarkColors
@@ -20,6 +22,7 @@ internal enum class SeasonalTheme(
     val darkColors: TraktColors,
     val lightColors: TraktColors,
     val startMonth: Month,
+    val hasSplash: Boolean = true,
 ) {
     Halloween(
         remoteValue = "halloween",
@@ -47,6 +50,16 @@ internal enum class SeasonalTheme(
         darkColors = NewYearDarkColors,
         lightColors = NewYearLightColors,
         startMonth = Month.DECEMBER,
+    ),
+    Doomsday(
+        remoteValue = "doomsday",
+        icon = R.drawable.ic_avengers,
+        streakFlameMedium = R.drawable.ic_flame_2_doomsday,
+        streakFlameLarge = R.drawable.ic_flame_3_doomsday,
+        darkColors = DoomsdayDarkColors,
+        lightColors = DoomsdayLightColors,
+        startMonth = Month.NOVEMBER,
+        hasSplash = false,
     ),
     ;
 

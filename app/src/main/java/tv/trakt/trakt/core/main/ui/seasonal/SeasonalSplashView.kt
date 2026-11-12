@@ -97,7 +97,7 @@ private fun SeasonalSplashContent(
                 animate = animate,
                 onDismiss = onDismiss,
             )
-            null -> Unit
+            SeasonalTheme.Doomsday, null -> Unit
         }
     }
 }

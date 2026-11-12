@@ -40,7 +40,7 @@ internal class SeasonalThemeUseCase(
             val season = currentSeason() ?: return@map null
             val enabled = prefs[enabledKey(season)] ?: true
             val shown = prefs[splashShownKey(season)] ?: false
-            season.takeIf { enabled && !shown }
+            season.takeIf { season.hasSplash && enabled && !shown }
         }
     }
 

@@ -113,6 +113,21 @@ val Amber900 = Color(0xFF473100)
 val Amber940 = Color(0xFF281A00)
 val Amber1000 = Color(0xFF0F0800)
 
+// Emerald
+val Emerald50 = Color(0xFFEEFBEF)
+val Emerald100 = Color(0xFFCDF5D0)
+val Emerald200 = Color(0xFF9FEBA5)
+val Emerald300 = Color(0xFF6FE078)
+val Emerald400 = Color(0xFF41D54B)
+val Emerald500 = Color(0xFF349F3B)
+val Emerald600 = Color(0xFF338636)
+val Emerald700 = Color(0xFF2D702F)
+val Emerald800 = Color(0xFF325827)
+val Emerald900 = Color(0xFF1F3A19)
+val Emerald920 = Color(0xFF192F15)
+val Emerald940 = Color(0xFF12220F)
+val Emerald1000 = Color(0xFF071006)
+
 // Yellow
 val Yellow90 = Color(0xFFF7DDA7)
 val Yellow200 = Color(0xFFE6C685)
