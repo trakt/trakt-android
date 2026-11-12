@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.sentiment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -25,6 +26,8 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.realitycheck.RealityCheck
+import tv.trakt.trakt.core.summary.sentiment.usecases.GetRealityCheckUseCase
 import tv.trakt.trakt.core.summary.sentiment.usecases.GetSentimentUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -36,6 +39,7 @@ internal class MediaSentimentViewModel(
     private val mediaId: TraktId,
     private val mediaType: MediaType,
     private val getSentimentUseCase: GetSentimentUseCase,
+    private val getRealityCheckUseCase: GetRealityCheckUseCase,
     private val sessionManager: SessionManager,
     collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -43,6 +47,7 @@ internal class MediaSentimentViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val sentimentState = MutableStateFlow(initialState.sentiment)
+    private val realityCheckState = MutableStateFlow(initialState.realityCheck)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
     private val collapse = CollapseDelegate(
@@ -82,20 +87,44 @@ internal class MediaSentimentViewModel(
                 loadingState.update { Loading }
 
                 loadUser()
-                sentimentState.update {
-                    getSentimentUseCase.getSentiments(
-                        mediaId = mediaId,
-                        mediaType = mediaType,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
+
+                val sentiment = async { loadSentiment() }
+                val realityCheck = async { loadRealityCheck() }
+
+                sentimentState.update { sentiment.await() }
+                realityCheckState.update { realityCheck.await() }
             } finally {
                 loadingState.update { Done }
             }
+        }
+    }
+
+    private suspend fun loadSentiment(): Sentiments? {
+        return try {
+            getSentimentUseCase.getSentiments(
+                mediaId = mediaId,
+                mediaType = mediaType,
+            )
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                errorState.update { error }
+                Timber.recordError(error)
+            }
+            null
+        }
+    }
+
+    private suspend fun loadRealityCheck(): RealityCheck? {
+        return try {
+            getRealityCheckUseCase.getRealityCheck(
+                mediaId = mediaId,
+                mediaType = mediaType,
+            )
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            null
         }
     }
 
@@ -121,6 +150,7 @@ internal class MediaSentimentViewModel(
         loadingState,
         collapse.state,
         errorState,
+        realityCheckState,
     ) { state ->
         MediaSentimentState(
             user = state[0] as User?,
@@ -128,6 +158,7 @@ internal class MediaSentimentViewModel(
             loading = state[2] as LoadingState,
             collapsed = state[3] as Boolean,
             error = state[4] as Exception?,
+            realityCheck = state[5] as RealityCheck?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -177,6 +177,17 @@ internal class DebugAnalytics(
         Timber.d("logBannerDismiss: id=%s, value=%s", id, value)
     }
 
+    override fun logInsightsOpen(
+        source: String,
+        tab: String,
+    ) {
+        Timber.d("logInsightsOpen: source=%s, tab=%s", source, tab)
+    }
+
+    override fun logInsightsTab(tab: String) {
+        Timber.d("logInsightsTab: tab=%s", tab)
+    }
+
     override fun logSeasonalFilter(
         id: String,
         enabled: Boolean,

@@ -146,6 +146,14 @@ Modifier.padding(horizontal = TraktTheme.spacing.lg)
 `TraktTheme.size.*` exposes adaptive sizes for icons, avatars, cards, hero artwork. Same rules as
 spacing — use tokens, don't hard-code `64.dp`.
 
+### Filter chips
+
+- `FilterChip` (`ui/components/chips/FilterChip.kt`) defaults to the compact `28.dp` height, meant
+  for inline rows inside cards and summary sections.
+- **Full screens** (`All*Screen`, `CommentsScreen`, `SentimentScreen`, filter sheets) use the full
+  chip height: pass `height = 32.dp` to every `FilterChip` / `FilterChipSkeleton` there.
+- Deviate only when the design specifies another height.
+
 ## Material 3 vs TraktTheme
 
 - Codebase wraps Material 3 at root via `MaterialTheme(...)`. Trakt tokens layer on top.
@@ -197,6 +205,7 @@ spacing — use tokens, don't hard-code `64.dp`.
   decorative, preview, or computed values
 - [ ] Spacing via `TraktTheme.spacing.*` — no `padding(16.dp)`
 - [ ] Sizes via `TraktTheme.size.*` — no `Modifier.size(64.dp)` magic
+- [ ] Filter chips on full screens use `height = 32.dp` unless the design says otherwise
 - [ ] Typography via `TraktTheme.typography.*` — no inline `TextStyle`
 - [ ] Images via Coil 3 + `R.drawable.*`, never Glide/Fresco/Picasso
 - [ ] Light / dark variants exist for every new token

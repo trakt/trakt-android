@@ -76,9 +76,13 @@ val Red940 = Color(0xFF2C0205)
 val Red1000 = Color(0xFF130001)
 
 // Green
+val Green90 = Color(0xFFB7EFD1)
+val Green200 = Color(0xFF97D4B4)
+val Green300 = Color(0xFF64C094)
 val Green400 = Color(0xFF3BB480)
 val Green500 = Color(0xFF0FA972)
 val Green600 = Color(0xFF159464)
+val Green900 = Color(0xFF043D27)
 
 // Orange
 val Orange50 = Color(0xFFFFF3EC)
@@ -110,7 +114,11 @@ val Amber940 = Color(0xFF281A00)
 val Amber1000 = Color(0xFF0F0800)
 
 // Yellow
+val Yellow90 = Color(0xFFF7DDA7)
+val Yellow200 = Color(0xFFE6C685)
+val Yellow300 = Color(0xFFE4B752)
 val Yellow500 = Color(0xFFDCA81D)
+val Yellow900 = Color(0xFF553F05)
 
 // Blue
 val Blue50 = Color(0xFFEAF5FF)

@@ -292,10 +292,10 @@ internal fun NavGraphBuilder.showsScreens(
                     navSource = "show_summary",
                 )
             },
-            onNavigateToSentiment = { show, sentiments ->
+            onNavigateToSentiment = { show, insights ->
                 navigateToSentiment(
                     mediaId = show.ids.trakt,
-                    sentiments = sentiments,
+                    insights = insights,
                     mediaTitle = show.title,
                     mediaImage = show.images?.getFanartUrl(),
                     navSource = "show_summary",
@@ -481,10 +481,10 @@ internal fun NavGraphBuilder.moviesScreens(
                     navSource = "movie_summary",
                 )
             },
-            onNavigateToSentiment = { movie, sentiments ->
+            onNavigateToSentiment = { movie, insights ->
                 navigateToSentiment(
                     mediaId = movie.ids.trakt,
-                    sentiments = sentiments,
+                    insights = insights,
                     mediaTitle = movie.title,
                     mediaImage = movie.images?.getFanartUrl(),
                     navSource = "movie_summary",
@@ -885,7 +885,7 @@ internal fun NavGraphBuilder.allCreditsScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.sentimentScreens(controller: NavHostController) {
     with(controller) {
         sentimentScreen(
-            onNavigateVip = { navigateToBilling(source = VipUpsellSource.Sentiment) },
+            onNavigateVip = { source -> navigateToBilling(source = source) },
             onNavigateToPerson = { slug, sentiment ->
                 navigateToPerson(
                     personSlug = slug,

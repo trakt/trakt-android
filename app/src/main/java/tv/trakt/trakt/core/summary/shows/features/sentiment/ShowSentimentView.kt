@@ -16,32 +16,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.ColorImage
-import coil3.annotation.ExperimentalCoilApi
-import coil3.compose.AsyncImagePreviewHandler
-import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentState
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentViewModel
-import tv.trakt.trakt.core.summary.ui.views.DetailsSentiment
-import tv.trakt.trakt.core.summary.ui.views.DetailsSentimentSkeleton
+import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
+import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
+import tv.trakt.trakt.core.summary.ui.views.insights.DetailsSentiment
+import tv.trakt.trakt.core.summary.ui.views.insights.DetailsSentimentSkeleton
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
@@ -53,7 +52,7 @@ internal fun ShowSentimentView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
-    onSentimentClick: (Sentiments) -> Unit = {},
+    onSentimentClick: (MediaInsights) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var visible by remember { mutableStateOf(true) }
@@ -77,7 +76,7 @@ private fun ShowSentimentContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onSentimentClick: (Sentiments) -> Unit = {},
+    onSentimentClick: (MediaInsights) -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onNotAvailable: (() -> Unit)? = null,
 ) {
@@ -92,7 +91,7 @@ private fun ShowSentimentContent(
             ),
     ) {
         TraktSectionHeader(
-            title = stringResource(R.string.header_community_sentiment),
+            title = stringResource(R.string.header_insights),
             chevron = false,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
@@ -104,7 +103,9 @@ private fun ShowSentimentContent(
                 .fillMaxWidth()
                 .padding(headerPadding)
                 .onClick {
-                    state.sentiment?.let { onSentimentClick(it) }
+                    if (state.hasInsights) {
+                        onSentimentClick(state.insights())
+                    }
                 },
         )
 
@@ -124,14 +125,20 @@ private fun ShowSentimentContent(
                         )
                     }
                     Done -> {
-                        if (state.sentiment != null && !state.sentiment.isEmpty) {
+                        if (state.hasInsights) {
                             DetailsSentiment(
                                 vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,
+                                realityCheck = state.realityCheck,
                                 modifier = Modifier
                                     .fillMaxWidth(maxWidth)
                                     .padding(contentPadding)
-                                    .onClick { onSentimentClick(state.sentiment) },
+                                    .onClick {
+                                        onSentimentClick(state.insights())
+                                    },
+                                onRealityCheckClick = {
+                                    onSentimentClick(state.insights(InsightsTab.RealityCheck))
+                                },
                             )
                         } else {
                             onNotAvailable?.invoke()
@@ -145,68 +152,103 @@ private fun ShowSentimentContent(
 
 // -- Previews --
 
-@OptIn(ExperimentalCoilApi::class)
+private val previewSentiments = Sentiments(
+    overall = Positive,
+    pros = listOf(
+        Sentiments.Theme(value = "Lorem ipsum dolor sit amet consectetur", confidence = 0.9F),
+        Sentiments.Theme(value = "Stylish", confidence = 0.8F),
+    ).toImmutableList(),
+    cons = listOf(
+        Sentiments.Theme(value = "Lorem ipsum dolor sit amet consectetur", confidence = 0.9F),
+        Sentiments.Theme(value = "Slow pacing", confidence = 0.7F),
+    ).toImmutableList(),
+)
+
+private val previewVipUser = PreviewData.user1.copy(isVip = true)
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewLoading() {
+    TraktThemePreview {
+        ShowSentimentContent(
+            state = MediaSentimentState(loading = Loading),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewVip() {
+    TraktThemePreview {
+        ShowSentimentContent(
+            state = MediaSentimentState(
+                user = previewVipUser,
+                sentiment = previewSentiments,
+                realityCheck = PreviewData.realityCheck,
+                loading = Done,
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewNonVip() {
+    TraktThemePreview {
+        ShowSentimentContent(
+            state = MediaSentimentState(
+                user = PreviewData.user1,
+                sentiment = previewSentiments,
+                realityCheck = PreviewData.realityCheck,
+                loading = Done,
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewRealityCheckOnly() {
+    TraktThemePreview {
+        ShowSentimentContent(
+            state = MediaSentimentState(
+                user = previewVipUser,
+                realityCheck = PreviewData.realityCheck,
+                loading = Done,
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewCollapsed() {
+    TraktThemePreview {
+        ShowSentimentContent(
+            state = MediaSentimentState(
+                sentiment = previewSentiments,
+                loading = Done,
+                collapsed = true,
+            ),
+        )
+    }
+}
+
 @Preview(
     device = "id:pixel_tablet",
     showBackground = true,
     backgroundColor = 0xFF131517,
 )
 @Composable
-private fun Preview() {
+private fun PreviewTablet() {
     TraktTheme {
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.Blue.toArgb())
-        }
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ShowSentimentContent(
-                state = MediaSentimentState(),
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.Blue.toArgb())
-        }
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ShowSentimentContent(
-                state = MediaSentimentState(
-                    sentiment = Sentiments(Positive),
-                    loading = Loading,
-                ),
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        val previewHandler = AsyncImagePreviewHandler {
-            ColorImage(Color.Blue.toArgb())
-        }
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            ShowSentimentContent(
-                state = MediaSentimentState(
-                    sentiment = Sentiments(Positive),
-                    loading = Done,
-                ),
-            )
-        }
+        ShowSentimentContent(
+            state = MediaSentimentState(
+                user = previewVipUser,
+                sentiment = previewSentiments,
+                realityCheck = PreviewData.realityCheck,
+                loading = Done,
+            ),
+        )
     }
 }

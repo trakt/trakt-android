@@ -62,6 +62,13 @@ val LightColors: TraktColors = TraktColors(
     parentalGuideMild = Green500,
     parentalGuideModerate = Yellow500,
     parentalGuideSevere = Red500,
+    // Reality check
+    realityAccurateContainer = Green90,
+    realityAccurateContent = Green900,
+    realityAdjustedContainer = Yellow90,
+    realityAdjustedContent = Yellow900,
+    realityAlteredContainer = Red90,
+    realityAlteredContent = Red800,
     // Streaks
     streakTileEmpty = Shade80,
     streakTileToday = Shade920,

@@ -36,12 +36,15 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentState
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentViewModel
-import tv.trakt.trakt.core.summary.ui.views.DetailsSentiment
-import tv.trakt.trakt.core.summary.ui.views.DetailsSentimentSkeleton
+import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
+import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
+import tv.trakt.trakt.core.summary.ui.views.insights.DetailsSentiment
+import tv.trakt.trakt.core.summary.ui.views.insights.DetailsSentimentSkeleton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
@@ -53,7 +56,7 @@ internal fun MovieSentimentView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
-    onSentimentClick: (Sentiments) -> Unit = {},
+    onSentimentClick: (MediaInsights) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var visible by remember { mutableStateOf(true) }
@@ -77,7 +80,7 @@ private fun MovieSentimentContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onSentimentClick: (Sentiments) -> Unit = {},
+    onSentimentClick: (MediaInsights) -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onNotAvailable: (() -> Unit)? = null,
 ) {
@@ -92,7 +95,7 @@ private fun MovieSentimentContent(
             ),
     ) {
         TraktSectionHeader(
-            title = stringResource(R.string.header_community_sentiment),
+            title = stringResource(R.string.header_insights),
             chevron = false,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
@@ -104,7 +107,9 @@ private fun MovieSentimentContent(
                 .fillMaxWidth()
                 .padding(headerPadding)
                 .onClick {
-                    state.sentiment?.let { onSentimentClick(it) }
+                    if (state.hasInsights) {
+                        onSentimentClick(state.insights())
+                    }
                 },
         )
 
@@ -125,14 +130,20 @@ private fun MovieSentimentContent(
                     }
 
                     Done -> {
-                        if (state.sentiment != null && !state.sentiment.isEmpty) {
+                        if (state.hasInsights) {
                             DetailsSentiment(
                                 vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,
+                                realityCheck = state.realityCheck,
                                 modifier = Modifier
                                     .fillMaxWidth(maxWidth)
                                     .padding(contentPadding)
-                                    .onClick { onSentimentClick(state.sentiment) },
+                                    .onClick {
+                                        onSentimentClick(state.insights())
+                                    },
+                                onRealityCheckClick = {
+                                    onSentimentClick(state.insights(InsightsTab.RealityCheck))
+                                },
                             )
                         } else {
                             onNotAvailable?.invoke()
@@ -205,6 +216,7 @@ private fun Preview3() {
             MovieSentimentContent(
                 state = MediaSentimentState(
                     sentiment = Sentiments(Positive),
+                    realityCheck = PreviewData.realityCheck,
                     loading = Done,
                 ),
             )

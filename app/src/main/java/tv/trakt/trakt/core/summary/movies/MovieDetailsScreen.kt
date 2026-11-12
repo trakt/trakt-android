@@ -71,7 +71,6 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
-import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
@@ -99,6 +98,7 @@ import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentView
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
+import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.soundtrack.SoundtrackView
@@ -127,7 +127,7 @@ internal fun MovieDetailsScreen(
     onPersonClick: ((Movie, Person, PersonCreditsRole) -> Unit),
     onTriviaClick: (Movie) -> Unit,
     onPersonLinkClick: ((Movie, SlugId) -> Unit)? = null,
-    onSentimentClick: ((Movie, Sentiments) -> Unit)? = null,
+    onSentimentClick: ((Movie, MediaInsights) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
     onNavigateToHistory: (Movie, watched: Int) -> Unit,
@@ -262,9 +262,9 @@ internal fun MovieDetailsScreen(
                 onPersonLinkClick?.invoke(movie, slug)
             }
         },
-        onSentimentClick = { sentiments ->
+        onSentimentClick = { insights ->
             state.movie?.let { movie ->
-                onSentimentClick?.invoke(movie, sentiments)
+                onSentimentClick?.invoke(movie, insights)
             }
         },
         onAllStreamingsClick = {
@@ -470,7 +470,7 @@ internal fun MovieDetailsContent(
     onVipSeen: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onPersonLinkClick: ((SlugId) -> Unit)? = null,
-    onSentimentClick: ((Sentiments) -> Unit)? = null,
+    onSentimentClick: ((MediaInsights) -> Unit)? = null,
     onAllStreamingsClick: (() -> Unit)? = null,
     onAllCreditsClick: (() -> Unit)? = null,
     onAllSoundtrackClick: (() -> Unit)? = null,
@@ -691,8 +691,8 @@ internal fun MovieDetailsContent(
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
-                                onSentimentClick = { sentiments ->
-                                    onSentimentClick?.invoke(sentiments)
+                                onSentimentClick = { insights ->
+                                    onSentimentClick?.invoke(insights)
                                 },
                                 modifier = Modifier
                                     .alpha(ratingAlphaMask)

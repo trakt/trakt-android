@@ -2338,6 +2338,7 @@
   <string name="text_reality_claim_compressed">Compressed</string>
   <string name="text_reality_claim_invented">Invented</string>
   <string name="text_reality_claim_minor">minor</string>
+  <string name="text_parenthesized">(%1$s)</string>
   <string name="text_reality_early_verdict">Early verdict</string>
   <string name="text_reality_kind_composite">Composite</string>
   <string name="text_reality_kind_invented">Invented</string>

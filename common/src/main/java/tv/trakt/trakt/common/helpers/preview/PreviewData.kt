@@ -26,6 +26,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Type
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
+import tv.trakt.trakt.common.model.realitycheck.RealityCheck
+import tv.trakt.trakt.common.model.realitycheck.RealityTier
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit.DAYS
 import kotlin.time.Duration.Companion.minutes
@@ -302,5 +304,49 @@ object PreviewData {
         name = "Jane Doe",
         birthday = nowLocalDay().minusYears(80),
         death = nowLocalDay().minusYears(5),
+    )
+
+    val realityCheck = RealityCheck(
+        verdict = RealityTier.MostlyTrue,
+        story = RealityTier.MostlyTrue,
+        protagonists = persistentListOf(
+            RealityCheck.Protagonist(name = "Jane Doe", tier = RealityTier.Faithful),
+            RealityCheck.Protagonist(name = "John Doe", tier = RealityTier.Unclear),
+        ),
+        summary = "The film follows the **documented** events closely but merges several people into one.",
+        detail = RealityCheck.Detail(
+            breakdown = "### Background\nThe case was covered widely at the time.\n\n" +
+                "Most of the trial scenes are accurate.",
+            claims = persistentListOf(
+                RealityCheck.Claim(
+                    about = "Jane Doe",
+                    onScreen = "The hero is betrayed by her closest friend.",
+                    documented = "The friend never existed. She was invented for the film.",
+                    label = RealityCheck.ClaimLabel.Invented,
+                    isMinor = false,
+                ),
+                RealityCheck.Claim(
+                    about = null,
+                    onScreen = "Two court cases play out in a single hearing.",
+                    documented = "There were two separate cases, settled months apart.",
+                    label = RealityCheck.ClaimLabel.Compressed,
+                    isMinor = true,
+                ),
+            ),
+            characters = persistentListOf(
+                RealityCheck.Character(
+                    name = "Jane Doe",
+                    kind = RealityCheck.CharacterKind.Real,
+                    note = "Portrayed close to the record.",
+                ),
+                RealityCheck.Character(
+                    name = "Sam Smith",
+                    kind = RealityCheck.CharacterKind.Composite,
+                    note = "Combines three real investigators.",
+                ),
+            ),
+            timeline = "Events spanning four years are compressed into a few months.",
+            leftOut = persistentListOf("The second appeal.", "Her later career."),
+        ),
     )
 }

@@ -74,7 +74,6 @@ import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
-import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
@@ -94,6 +93,7 @@ import tv.trakt.trakt.core.report.model.ReportTarget
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
+import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
@@ -137,7 +137,7 @@ internal fun ShowDetailsScreen(
     onPersonClick: ((Show, Person, PersonCreditsRole) -> Unit),
     onTriviaClick: ((Show) -> Unit)? = null,
     onPersonLinkClick: ((Show, SlugId) -> Unit)? = null,
-    onSentimentClick: ((Show, Sentiments) -> Unit)? = null,
+    onSentimentClick: ((Show, MediaInsights) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
     onAllSeasonsClick: (Show, Int?) -> Unit,
@@ -278,9 +278,9 @@ internal fun ShowDetailsScreen(
                 onPersonLinkClick?.invoke(show, slug)
             }
         },
-        onSentimentClick = { sentiments ->
+        onSentimentClick = { insights ->
             state.show?.let { show ->
-                onSentimentClick?.invoke(show, sentiments)
+                onSentimentClick?.invoke(show, insights)
             }
         },
         onAllSeasonsClick = onAllSeasonsClick,
@@ -554,7 +554,7 @@ internal fun ShowDetailsContent(
     onFavoriteClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onPersonLinkClick: ((SlugId) -> Unit)? = null,
-    onSentimentClick: ((Sentiments) -> Unit)? = null,
+    onSentimentClick: ((MediaInsights) -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
     onAllStreamingsClick: (() -> Unit)? = null,
     onAllCreditsClick: (() -> Unit)? = null,
@@ -787,8 +787,8 @@ internal fun ShowDetailsContent(
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
-                                onSentimentClick = { sentiments ->
-                                    onSentimentClick?.invoke(sentiments)
+                                onSentimentClick = { insights ->
+                                    onSentimentClick?.invoke(insights)
                                 },
                                 modifier = Modifier
                                     .alpha(ratingAlphaMask)
