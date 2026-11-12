@@ -38,7 +38,11 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilterDecade
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilterRuntime
 import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
@@ -74,8 +78,8 @@ internal fun CreateSmartListSheetView(
     var filtersMode by rememberSaveable {
         mutableStateOf(
             when {
-                state.filters.hasAnyFilter() -> GlobalFilterMode.Advanced
-                else -> GlobalFilterMode.Simple
+                state.filters.fitsSimpleView() -> GlobalFilterMode.Simple
+                else -> GlobalFilterMode.Advanced
             },
         )
     }
@@ -302,25 +306,41 @@ private fun TargetFilter(
     )
 }
 
-private fun SmartListFilters.hasAnyFilter(): Boolean {
-    val lists = listOf(
-        genreTokens,
-        certificationTokens,
-        countryTokens,
+private fun SmartListFilters.fitsSimpleView(): Boolean {
+    val unsupported = listOf(
+        excludedGenres,
         subgenres,
+        excludedCertifications,
         languages,
+        excludedCountries,
         statuses,
         networks,
-        availability,
-        years,
-        ratings,
-        runtimes,
         imdbRatings,
         rtMeters,
         rtUserMeters,
     ) + ParentalGuideCategory.entries.map(::parentalRange)
 
-    return lists.any { !it.isNullOrEmpty() } || ignoreWatched || ignoreWatchlisted
+    if (unsupported.any { !it.isNullOrEmpty() }) return false
+    if (genres.orEmpty().size > 1) return false
+    if (availability.orEmpty().size > 1) return false
+    if (ratings.orEmpty().size > 2) return false
+
+    val certification = certifications.orEmpty()
+    if (certification.size > 1) return false
+    if (certification.any { slug -> Certification.entries.none { it.slug == slug } }) return false
+
+    val countryCodes = countries.orEmpty()
+    if (countryCodes.isNotEmpty() && Region.fromCountries(countryCodes) == null) return false
+
+    val yearRange = years.orEmpty()
+    val isDecade = GlobalFilterDecade.entries.any { listOf(it.years.first, it.years.second) == yearRange }
+    if (yearRange.isNotEmpty() && !isDecade) return false
+
+    val runtimeRange = runtimes.orEmpty()
+    val isRuntimeSpan = GlobalFilterRuntime.entries.any { listOf(it.runtime.first, it.runtime.second) == runtimeRange }
+    if (runtimeRange.isNotEmpty() && !isRuntimeSpan) return false
+
+    return true
 }
 
 @DeviceSheetPreview

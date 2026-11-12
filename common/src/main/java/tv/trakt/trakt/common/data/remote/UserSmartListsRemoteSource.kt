@@ -34,12 +34,13 @@ class UserSmartListsRemoteSource(
         listId: TraktId,
         request: UpdateSmartListRequestDto,
         userId: String = "me",
-    ): SmartListDto {
-        return smartListsApi.putUsersSmartListsSmartListUpdate(
+    ) {
+        val response = smartListsApi.putUsersSmartListsSmartListUpdate(
             id = userId,
             listId = listId.value.toString(),
             putUsersSmartListsSmartListUpdateRequest = request,
-        ).body()
+        )
+        check(response.success) { "Smart list update failed with status ${response.status}" }
     }
 
     suspend fun getSmartListDetails(

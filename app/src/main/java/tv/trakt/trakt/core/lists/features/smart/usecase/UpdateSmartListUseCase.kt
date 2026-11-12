@@ -21,7 +21,7 @@ internal class UpdateSmartListUseCase(
         // Keeps saved filters this app cannot edit yet (keywords, people, awards) on the list.
         val savedFilters = remoteSource.getSmartListDetails(listId).filters
 
-        val response = remoteSource.updateSmartList(
+        remoteSource.updateSmartList(
             listId = listId,
             request = UpdateSmartListRequestDto(
                 name = name.trim(),
@@ -32,7 +32,7 @@ internal class UpdateSmartListUseCase(
             ),
         )
 
-        return SmartList.fromDto(response).also {
+        return SmartList.fromDto(remoteSource.getSmartListDetails(listId)).also {
             with(localSource) {
                 replaceList(it)
                 notifyUpdate()

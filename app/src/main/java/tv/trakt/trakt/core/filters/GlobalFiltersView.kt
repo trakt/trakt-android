@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.filters
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,18 @@ internal fun GlobalFiltersView(
 
     Column {
         state.mode?.let {
+            val viewModifier = Modifier
+                .weight(1f, fill = false)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp)
+                .padding(
+                    bottom = when {
+                        onCreateSmartList != null -> 16.dp
+                        else -> 24.dp
+                    },
+                )
+
             when (it) {
                 Simple -> {
                     GlobalFiltersSimpleView(
@@ -73,12 +87,7 @@ internal fun GlobalFiltersView(
                                 onUpdate(GlobalFilter.Default)
                             }
                         },
-                        modifier = Modifier
-                            .weight(1f, fill = false)
-                            .fillMaxWidth()
-                            .verticalScroll(rememberScrollState())
-                            .padding(horizontal = 24.dp)
-                            .padding(bottom = 24.dp),
+                        modifier = viewModifier,
                     )
                 }
                 Advanced -> {
@@ -109,12 +118,7 @@ internal fun GlobalFiltersView(
                                 onUpdate(GlobalFilter.Default)
                             }
                         },
-                        modifier = Modifier
-                            .weight(1f, fill = false)
-                            .fillMaxWidth()
-                            .verticalScroll(rememberScrollState())
-                            .padding(horizontal = 24.dp)
-                            .padding(bottom = 24.dp),
+                        modifier = viewModifier,
                     )
                 }
             }
@@ -124,7 +128,11 @@ internal fun GlobalFiltersView(
             PrimaryButton(
                 text = stringResource(R.string.button_text_create_smart_list),
                 icon = painterResource(R.drawable.ic_smart),
+                iconSize = 20.dp,
                 onClick = { onCreateSmartList(state.filter) },
+                border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
+                containerColor = Color.Transparent,
+                contentColor = TraktTheme.colors.textPrimary,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
