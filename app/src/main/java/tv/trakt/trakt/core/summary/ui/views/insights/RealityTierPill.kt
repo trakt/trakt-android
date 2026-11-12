@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.ui.views
+package tv.trakt.trakt.core.summary.ui.views.insights
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -39,7 +39,7 @@ internal fun RealityTierPill(
         horizontalArrangement = spacedBy(8.dp),
         verticalAlignment = CenterVertically,
         modifier = modifier
-            .height(24.dp)
+            .height(28.dp)
             .background(
                 color = color.copy(alpha = PILL_CONTAINER_ALPHA),
                 shape = CircleShape,
@@ -69,7 +69,7 @@ internal fun SegmentMeter(
 ) {
     val offColor = TraktTheme.colors.textPrimary.copy(alpha = SEGMENT_OFF_ALPHA)
     val height: Dp = if (large) 6.dp else 4.dp
-    val shape = RoundedCornerShape(height / 2)
+    val shape = RoundedCornerShape(100)
 
     Row(
         horizontalArrangement = spacedBy(if (large) 4.dp else 2.dp),

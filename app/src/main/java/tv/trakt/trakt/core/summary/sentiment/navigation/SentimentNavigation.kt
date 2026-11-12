@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.summary.sentiment.SentimentScreen
 import tv.trakt.trakt.core.summary.sentiment.SentimentViewModel
+import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
 
 @Serializable
@@ -19,6 +20,7 @@ internal data class SentimentDestination(
     val mediaId: Int,
     val sentimentsDto: String?,
     val realityCheckDto: String?,
+    val tab: InsightsTab,
     val mediaTitle: String?,
     val mediaImage: String?,
     val navSource: String,
@@ -52,6 +54,7 @@ internal fun NavController.navigateToSentiment(
             mediaId = mediaId.value,
             sentimentsDto = insights.sentiments?.let { Json.encodeToString(it) },
             realityCheckDto = insights.realityCheck?.let { Json.encodeToString(it) },
+            tab = insights.tab,
             mediaTitle = mediaTitle,
             mediaImage = mediaImage,
             navSource = navSource,

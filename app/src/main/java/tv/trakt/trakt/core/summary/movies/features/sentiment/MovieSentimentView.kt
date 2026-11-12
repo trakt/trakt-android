@@ -41,9 +41,10 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentState
 import tv.trakt.trakt.core.summary.sentiment.MediaSentimentViewModel
+import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
-import tv.trakt.trakt.core.summary.ui.views.DetailsSentiment
-import tv.trakt.trakt.core.summary.ui.views.DetailsSentimentSkeleton
+import tv.trakt.trakt.core.summary.ui.views.insights.DetailsSentiment
+import tv.trakt.trakt.core.summary.ui.views.insights.DetailsSentimentSkeleton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
@@ -107,7 +108,7 @@ private fun MovieSentimentContent(
                 .padding(headerPadding)
                 .onClick {
                     if (state.hasInsights) {
-                        onSentimentClick(MediaInsights(state.sentiment, state.realityCheck))
+                        onSentimentClick(state.insights())
                     }
                 },
         )
@@ -138,8 +139,11 @@ private fun MovieSentimentContent(
                                     .fillMaxWidth(maxWidth)
                                     .padding(contentPadding)
                                     .onClick {
-                                        onSentimentClick(MediaInsights(state.sentiment, state.realityCheck))
+                                        onSentimentClick(state.insights())
                                     },
+                                onRealityCheckClick = {
+                                    onSentimentClick(state.insights(InsightsTab.RealityCheck))
+                                },
                             )
                         } else {
                             onNotAvailable?.invoke()

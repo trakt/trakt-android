@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.ui.views
+package tv.trakt.trakt.core.summary.ui.views.insights
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
@@ -47,6 +47,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.stripMarkdownLinks
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -67,6 +68,7 @@ internal fun DetailsSentiment(
     realityCheck: RealityCheck?,
     vip: Boolean,
     modifier: Modifier = Modifier,
+    onRealityCheckClick: () -> Unit = {},
 ) {
     val containerColor = TraktTheme.colors.sentimentsContainer
     val containerColor2 = TraktTheme.colors.dialogContainer
@@ -125,7 +127,9 @@ internal fun DetailsSentiment(
                 RealityTierPill(
                     tier = it.verdict,
                     color = accentColor,
-                    modifier = Modifier.padding(top = 16.dp),
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .onClick(onClick = onRealityCheckClick),
                 )
             }
             GetVipView()
@@ -133,7 +137,12 @@ internal fun DetailsSentiment(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp),
+                    .padding(
+                        top = when {
+                            realityCheck != null -> 12.dp
+                            else -> 8.dp
+                        },
+                    ),
             ) {
                 realityCheck?.let {
                     RealityTierPill(
@@ -141,7 +150,8 @@ internal fun DetailsSentiment(
                         color = accentColor,
                         modifier = Modifier
                             .align(Alignment.CenterStart)
-                            .padding(top = 8.dp),
+                            .padding(top = 8.dp)
+                            .onClick(onClick = onRealityCheckClick),
                     )
                 }
                 Icon(

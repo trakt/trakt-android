@@ -149,7 +149,8 @@ private fun SentimentContent(
                 item {
                     TitleBar(
                         mediaTitle = state.mediaTitle,
-                        modifier = Modifier.onClick { onBackClick() },
+                        modifier = Modifier
+                            .onClick { onBackClick() },
                     )
                 }
 
@@ -210,6 +211,7 @@ private fun LazyListScope.sentimentItems(
                 GetVipView(
                     modifier = Modifier
                         .onUpsellSeen(onVipSeen)
+                        .padding(top = 12.dp)
                         .onClick(onClick = onVipClick),
                 )
 
@@ -283,12 +285,13 @@ private fun InsightsTabs(
     onTabClick: (InsightsTab) -> Unit,
 ) {
     FilterChipGroup(
-        paddingVertical = PaddingValues(top = 8.dp),
+        paddingVertical = PaddingValues(top = 7.dp),
     ) {
         tabs.forEach { tab ->
             FilterChip(
                 selected = tab == selected,
                 text = stringResource(tab.displayTextRes),
+                height = 32.dp,
                 onClick = { onTabClick(tab) },
             )
         }
@@ -301,12 +304,12 @@ private fun TitleBar(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = CenterVertically,
         horizontalArrangement = SpaceBetween,
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier
                 .height(TraktTheme.size.titleBarHeight)
@@ -476,7 +479,7 @@ private fun SentimentThemeRow(
 }
 
 @Composable
-private fun GetVipView(modifier: Modifier = Modifier) {
+internal fun GetVipView(modifier: Modifier = Modifier) {
     val gradientAccent = TraktTheme.colors.accent
     val radialGradient = remember(gradientAccent) {
         object : ShaderBrush() {
@@ -510,14 +513,14 @@ private fun GetVipView(modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = stringResource(R.string.text_vip_upsell_dive_deeper),
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textPrimaryOnAccent,
                 style = TraktTheme.typography.paragraphSmall.copy(
                     fontWeight = W600,
                 ),
             )
             Text(
                 text = stringResource(R.string.text_vip_upsell_sentiment),
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textPrimaryOnAccent,
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     fontSize = 12.sp,
                 ),

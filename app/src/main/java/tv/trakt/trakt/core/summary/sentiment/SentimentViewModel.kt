@@ -50,7 +50,7 @@ internal class SentimentViewModel(
         sentiments = sentiments,
         realityCheck = realityCheck,
         tabs = tabs,
-        tab = if (realityCheck != null) InsightsTab.RealityCheck else InsightsTab.Sentiment,
+        tab = destination.tab.takeIf { it in tabs } ?: tabs.firstOrNull() ?: InsightsTab.Sentiment,
         backgroundUrl = destination.mediaImage,
         mediaTitle = destination.mediaTitle,
     )

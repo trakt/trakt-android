@@ -8,4 +8,5 @@ import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 internal data class MediaInsights(
     val sentiments: Sentiments?,
     val realityCheck: RealityCheck?,
+    val tab: InsightsTab,
 )

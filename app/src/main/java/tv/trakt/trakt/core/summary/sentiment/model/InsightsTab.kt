@@ -1,8 +1,10 @@
 package tv.trakt.trakt.core.summary.sentiment.model
 
+import androidx.annotation.Keep
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.resources.R
 
+@Keep
 internal enum class InsightsTab(
     val value: String,
     val displayTextRes: Int,

@@ -40,8 +40,9 @@ import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck.CharacterKind
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck.ClaimLabel
 import tv.trakt.trakt.common.model.realitycheck.RealityTier
+import tv.trakt.trakt.core.summary.sentiment.GetVipView
 import tv.trakt.trakt.core.summary.sentiment.HighlightsCard
-import tv.trakt.trakt.core.summary.ui.views.SegmentMeter
+import tv.trakt.trakt.core.summary.ui.views.insights.SegmentMeter
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.spoilerBlur
@@ -219,6 +220,7 @@ private fun RealityRow(
         }
 
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier.width(40.dp),
         ) {
             if (tier == RealityTier.Unclear) {
@@ -535,6 +537,7 @@ private fun PreviewFree() {
             realityCheck = PreviewData.realityCheck.copy(detail = null),
             vip = false,
             modifier = Modifier.padding(16.dp),
+            upsell = { GetVipView() },
         )
     }
 }
