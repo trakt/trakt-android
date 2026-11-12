@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue.Expanded
 import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
@@ -35,6 +37,7 @@ internal fun ManageListsSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(target) { nextInt().toString() }
+    val localSnack = LocalSnackbarState.current
 
     if (target != null) {
         TraktBottomSheet(
@@ -73,6 +76,18 @@ internal fun ManageListsSheet(
                             onDismiss()
                             onClick(list)
                         }
+                    }
+                },
+                onItemLimit = { message ->
+                    sheetScope.launch {
+                        state.hide()
+                        onDismiss()
+                    }
+                    sheetScope.launch {
+                        localSnack.showSnackbar(
+                            message = message,
+                            duration = SnackbarDuration.Long,
+                        )
                     }
                 },
                 modifier = Modifier

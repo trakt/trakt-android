@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
 
+import io.ktor.client.plugins.ResponseException
 import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.remote.ListsRemoteSource
@@ -18,11 +19,13 @@ internal class AddPersonalListItemUseCase(
         ownerId: TraktId,
         show: Show,
     ) {
-        remoteSource.addShowToList(
-            userId = ownerId,
-            listId = listId,
-            showId = show.ids.trakt,
-        )
+        withItemLimit {
+            remoteSource.addShowToList(
+                userId = ownerId,
+                listId = listId,
+                showId = show.ids.trakt,
+            )
+        }
 
         listsLocalSource.onUpdatedAt(
             id = listId,
@@ -40,11 +43,13 @@ internal class AddPersonalListItemUseCase(
         ownerId: TraktId,
         movie: Movie,
     ) {
-        remoteSource.addMovieToList(
-            userId = ownerId,
-            listId = listId,
-            movieId = movie.ids.trakt,
-        )
+        withItemLimit {
+            remoteSource.addMovieToList(
+                userId = ownerId,
+                listId = listId,
+                movieId = movie.ids.trakt,
+            )
+        }
 
         listsLocalSource.onUpdatedAt(
             id = listId,
@@ -62,11 +67,13 @@ internal class AddPersonalListItemUseCase(
         ownerId: TraktId,
         seasonId: TraktId,
     ) {
-        remoteSource.addSeasonToList(
-            userId = ownerId,
-            listId = listId,
-            seasonId = seasonId,
-        )
+        withItemLimit {
+            remoteSource.addSeasonToList(
+                userId = ownerId,
+                listId = listId,
+                seasonId = seasonId,
+            )
+        }
 
         listsLocalSource.onUpdatedAt(
             id = listId,
@@ -84,11 +91,13 @@ internal class AddPersonalListItemUseCase(
         ownerId: TraktId,
         episodeId: TraktId,
     ) {
-        remoteSource.addEpisodeToList(
-            userId = ownerId,
-            listId = listId,
-            episodeId = episodeId,
-        )
+        withItemLimit {
+            remoteSource.addEpisodeToList(
+                userId = ownerId,
+                listId = listId,
+                episodeId = episodeId,
+            )
+        }
 
         listsLocalSource.onUpdatedAt(
             id = listId,
@@ -99,5 +108,13 @@ internal class AddPersonalListItemUseCase(
             id = listId,
             updatedAt = nowUtc(),
         )
+    }
+
+    private suspend fun withItemLimit(request: suspend () -> Unit) {
+        try {
+            request()
+        } catch (error: ResponseException) {
+            throw ListItemLimitException.fromResponse(error) ?: error
+        }
     }
 }

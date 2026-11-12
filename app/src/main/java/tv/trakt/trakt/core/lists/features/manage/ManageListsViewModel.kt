@@ -35,6 +35,7 @@ import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.SeasonTarget
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.ShowTarget
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
+import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.ListItemLimitException
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 
 @Suppress("UNCHECKED_CAST")
@@ -129,6 +130,8 @@ internal class ManageListsViewModel(
                 setListed(list.id, listed = !listed)
                 dataChanges.notify(Kind.Lists)
                 if (listed) analytics.lists.logListItemRemove() else analytics.lists.logListItemAdd()
+            } catch (error: ListItemLimitException) {
+                itemLimitFlow.emit(error)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!errorsManager.tryEmitVipLimit(error)) {
@@ -247,6 +250,9 @@ internal class ManageListsViewModel(
 
     private val openListFlow = MutableSharedFlow<CustomList>(replay = 0)
     val openListEvents = openListFlow.asSharedFlow()
+
+    private val itemLimitFlow = MutableSharedFlow<ListItemLimitException>(replay = 0)
+    val itemLimitEvents = itemLimitFlow.asSharedFlow()
 
     val state = combine(
         userState,
