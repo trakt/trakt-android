@@ -25,6 +25,7 @@ private class MarkdownStyle(
     val linkWeight: FontWeight,
     val linksBoldOnly: Boolean,
     val mentionColor: Color?,
+    val headingColor: Color?,
 )
 
 private val HEADING = Regex("^#{1,6}\\s+(.*)$")
@@ -56,18 +57,21 @@ fun String.stripMarkdownLinks(): String {
  * Links are also rendered as plain text when [linkColor] is null.
  * Set [linksBoldOnly] to render links as non-clickable [linkWeight] text in the surrounding colour.
  * Pass [mentionColor] to also highlight @mentions.
+ * Pass [headingColor] to colour `#` headings.
  */
 fun String.toMarkdownText(
     linkColor: Color? = null,
     linkWeight: FontWeight = ExtraBold,
     linksBoldOnly: Boolean = false,
     mentionColor: Color? = null,
+    headingColor: Color? = null,
 ): AnnotatedString {
     val style = MarkdownStyle(
         linkColor = linkColor,
         linkWeight = linkWeight,
         linksBoldOnly = linksBoldOnly,
         mentionColor = mentionColor,
+        headingColor = headingColor,
     )
     return buildAnnotatedString {
         lines().forEachIndexed { index, line ->
@@ -82,7 +86,11 @@ private fun AnnotatedString.Builder.appendBlock(
     style: MarkdownStyle,
 ) {
     HEADING.matchEntire(line)?.let {
-        withStyle(SpanStyle(fontWeight = Bold)) { appendInline(it.groupValues[1], style) }
+        val headingStyle = SpanStyle(
+            color = style.headingColor ?: Color.Unspecified,
+            fontWeight = Bold,
+        )
+        withStyle(headingStyle) { appendInline(it.groupValues[1], style) }
         return
     }
     BULLET.matchEntire(line)?.let {

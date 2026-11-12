@@ -4,35 +4,31 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardDefaults.cardColors
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -42,16 +38,14 @@ import tv.trakt.trakt.common.model.realitycheck.RealityCheck.ClaimLabel
 import tv.trakt.trakt.common.model.realitycheck.RealityTier
 import tv.trakt.trakt.core.summary.sentiment.GetVipView
 import tv.trakt.trakt.core.summary.sentiment.HighlightsCard
+import tv.trakt.trakt.core.summary.sentiment.model.RealityCheckSection
 import tv.trakt.trakt.core.summary.ui.views.insights.SegmentMeter
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.spoilerBlur
-import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val MUTED_CHIP_ALPHA = 0.75F
 private const val UNCLEAR_BADGE_ALPHA = 0.12F
-private val RelaxedLineHeight = 1.6.em
 
 private val MockClaims = persistentListOf(
     RealityCheck.Claim(
@@ -102,17 +96,17 @@ internal fun RealityCheckContent(
     realityCheck: RealityCheck,
     vip: Boolean,
     modifier: Modifier = Modifier,
+    collapsedSections: ImmutableSet<RealityCheckSection> = persistentSetOf(),
+    onSectionCollapse: (RealityCheckSection, Boolean) -> Unit = { _, _ -> },
     upsell: @Composable () -> Unit = {},
 ) {
     Column(
-        verticalArrangement = spacedBy(20.dp),
+        verticalArrangement = spacedBy(28.dp),
         modifier = modifier.padding(top = 16.dp),
     ) {
         RealityCheckHero(realityCheck)
 
-        RealityCard {
-            RealityCheckRows(realityCheck)
-        }
+        RealityCheckRows(realityCheck)
 
         MarkdownText(
             text = realityCheck.summary,
@@ -122,16 +116,18 @@ internal fun RealityCheckContent(
         val detail = realityCheck.detail
         if (vip) {
             if (detail != null) {
-                RealityCheckDetail(detail)
+                RealityCheckDetail(
+                    detail = detail,
+                    collapsedSections = collapsedSections,
+                    onSectionCollapse = onSectionCollapse,
+                )
             }
         } else {
             upsell()
-            RealityCard(
-                header = stringResource(R.string.header_reality_claims),
+            RealityClaims(
+                claims = MockClaims,
                 modifier = Modifier.spoilerBlur(),
-            ) {
-                RealityClaims(MockClaims)
-            }
+            )
         }
     }
 }
@@ -153,9 +149,15 @@ private fun RealityCheckHero(realityCheck: RealityCheck) {
         )
         SegmentMeter(
             filled = realityCheck.verdict.segments,
-            color = TraktTheme.colors.textPrimary,
+            color = when {
+                TraktTheme.colors.isLight -> TraktTheme.colors.accent
+                else -> TraktTheme.colors.accentPalette.shade400
+            },
             large = true,
-            modifier = Modifier.padding(vertical = 4.dp),
+            modifier = Modifier.padding(
+                top = 6.dp,
+                bottom = 4.dp,
+            ),
         )
         if (realityCheck.hasUnclearTier) {
             Text(
@@ -169,37 +171,38 @@ private fun RealityCheckHero(realityCheck: RealityCheck) {
 
 @Composable
 private fun RealityCheckRows(realityCheck: RealityCheck) {
-    Column(
-        verticalArrangement = spacedBy(12.dp),
-    ) {
-        RealityRow(
-            name = stringResource(R.string.label_reality_row_story),
-            caption = null,
-            tier = realityCheck.story,
-        )
-        val protagonistCaption = stringResource(R.string.label_reality_row_protagonist)
-        realityCheck.protagonists.forEach {
-            RealityRow(
-                name = it.name,
-                caption = protagonistCaption,
-                tier = it.tier,
-            )
-        }
+    val storyName = stringResource(R.string.label_reality_row_story)
+    val protagonistCaption = stringResource(R.string.label_reality_row_protagonist)
+    val rows = remember(realityCheck, storyName, protagonistCaption) {
+        listOf(RealityRowItem(storyName, null, realityCheck.story)) +
+            realityCheck.protagonists.map { RealityRowItem(it.name, protagonistCaption, it.tier) }
+    }
+
+    InsightsSegments(
+        count = rows.size,
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
+    ) { index ->
+        RealityRow(rows[index])
     }
 }
 
+private data class RealityRowItem(
+    val name: String,
+    val caption: String?,
+    val tier: RealityTier,
+)
+
 @Composable
-private fun RealityRow(
-    name: String,
-    caption: String?,
-    tier: RealityTier,
-) {
+private fun RealityRow(item: RealityRowItem) {
+    val (name, caption, tier) = item
+
     Row(
         horizontalArrangement = spacedBy(8.dp),
         verticalAlignment = CenterVertically,
         modifier = Modifier.heightIn(min = 32.dp),
     ) {
         Column(
+            verticalArrangement = spacedBy(1.dp),
             modifier = Modifier.weight(1F),
         ) {
             MarkdownText(
@@ -228,7 +231,10 @@ private fun RealityRow(
             } else {
                 SegmentMeter(
                     filled = tier.segments,
-                    color = TraktTheme.colors.textPrimary,
+                    color = when {
+                        TraktTheme.colors.isLight -> TraktTheme.colors.accent
+                        else -> TraktTheme.colors.accentPalette.shade400
+                    },
                 )
             }
         }
@@ -264,80 +270,93 @@ private fun UnclearBadge() {
 }
 
 @Composable
-private fun RealityCheckDetail(detail: RealityCheck.Detail) {
+private fun RealityCheckDetail(
+    detail: RealityCheck.Detail,
+    collapsedSections: ImmutableSet<RealityCheckSection>,
+    onSectionCollapse: (RealityCheckSection, Boolean) -> Unit,
+) {
+    fun isCollapsed(section: RealityCheckSection) = section in collapsedSections
+
+    fun toggle(section: RealityCheckSection) = onSectionCollapse(section, !isCollapsed(section))
+
     Column(
-        verticalArrangement = spacedBy(20.dp),
+        verticalArrangement = spacedBy(24.dp),
     ) {
         if (detail.breakdown.isNotBlank()) {
             HighlightsCard(
                 header = stringResource(R.string.header_reality_real_story),
                 text = detail.breakdown,
+                collapsed = isCollapsed(RealityCheckSection.RealStory),
+                onCollapseClick = { toggle(RealityCheckSection.RealStory) },
             )
         }
 
         if (detail.claims.isNotEmpty()) {
-            RealityCard(header = stringResource(R.string.header_reality_claims)) {
-                RealityClaims(detail.claims)
-            }
+            RealityClaims(
+                claims = detail.claims,
+                collapsed = isCollapsed(RealityCheckSection.Claims),
+                onCollapseClick = { toggle(RealityCheckSection.Claims) },
+            )
         }
 
         if (detail.characters.isNotEmpty()) {
-            RealityCard(header = stringResource(R.string.header_reality_people)) {
-                detail.characters.forEach { character ->
-                    RealityCharacter(character)
-                }
+            InsightsSegments(
+                header = stringResource(R.string.header_reality_people),
+                count = detail.characters.size,
+                collapsed = isCollapsed(RealityCheckSection.People),
+                onCollapseClick = { toggle(RealityCheckSection.People) },
+            ) { index ->
+                RealityCharacter(detail.characters[index])
             }
         }
 
         if (detail.timeline.isNotBlank()) {
-            RealityCard(header = stringResource(R.string.header_reality_timeline)) {
-                MarkdownText(
-                    text = detail.timeline,
-                    color = TraktTheme.colors.textSecondary,
-                )
-            }
+            HighlightsCard(
+                header = stringResource(R.string.header_reality_timeline),
+                text = detail.timeline,
+                collapsed = isCollapsed(RealityCheckSection.Timeline),
+                onCollapseClick = { toggle(RealityCheckSection.Timeline) },
+            )
         }
 
         if (detail.leftOut.isNotEmpty()) {
-            RealityCard(header = stringResource(R.string.header_reality_left_out)) {
-                detail.leftOut.forEach { item ->
-                    Row(
-                        horizontalArrangement = spacedBy(6.dp),
-                    ) {
-                        Text(
-                            text = "•",
-                            color = TraktTheme.colors.textSecondary,
-                            style = TraktTheme.typography.paragraphSmall,
-                        )
-                        MarkdownText(
-                            text = item,
-                            color = TraktTheme.colors.textSecondary,
-                        )
-                    }
-                }
+            InsightsSegments(
+                header = stringResource(R.string.header_reality_left_out),
+                count = detail.leftOut.size,
+                collapsed = isCollapsed(RealityCheckSection.LeftOut),
+                onCollapseClick = { toggle(RealityCheckSection.LeftOut) },
+            ) { index ->
+                MarkdownText(
+                    text = detail.leftOut[index],
+                    color = TraktTheme.colors.textSecondary,
+                )
             }
         }
     }
 }
 
 @Composable
-private fun RealityClaims(claims: ImmutableList<RealityCheck.Claim>) {
-    Column(
-        verticalArrangement = spacedBy(16.dp),
-    ) {
-        claims.forEachIndexed { index, claim ->
-            if (index > 0) {
-                HorizontalDivider(color = TraktTheme.colors.separator)
-            }
-            RealityClaim(claim)
-        }
+private fun RealityClaims(
+    claims: ImmutableList<RealityCheck.Claim>,
+    modifier: Modifier = Modifier,
+    collapsed: Boolean? = null,
+    onCollapseClick: () -> Unit = {},
+) {
+    InsightsSegments(
+        header = stringResource(R.string.header_reality_claims),
+        count = claims.size,
+        modifier = modifier,
+        collapsed = collapsed,
+        onCollapseClick = onCollapseClick,
+    ) { index ->
+        RealityClaim(claims[index])
     }
 }
 
 @Composable
 private fun RealityClaim(claim: RealityCheck.Claim) {
     Column(
-        verticalArrangement = spacedBy(8.dp),
+        verticalArrangement = spacedBy(16.dp),
     ) {
         Row(
             horizontalArrangement = spacedBy(8.dp),
@@ -346,18 +365,25 @@ private fun RealityClaim(claim: RealityCheck.Claim) {
             RealityChip(
                 text = stringResource(claim.label.displayTextRes),
                 tone = claim.label.tone,
-                muted = claim.isMinor,
             )
-            if (claim.isMinor) {
-                Text(
-                    text = stringResource(R.string.text_reality_claim_minor),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.paragraphSmaller,
-                )
-            }
             claim.about?.let {
                 MarkdownText(
                     text = it,
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.paragraphSmall.copy(
+                        fontSize = 15.sp,
+                        fontWeight = W600,
+                    ),
+                    maxLines = 1,
+                    modifier = Modifier.weight(1F, fill = false),
+                )
+            }
+            if (claim.isMinor && claim.about != null) {
+                Text(
+                    text = stringResource(
+                        R.string.text_parenthesized,
+                        stringResource(R.string.text_reality_claim_minor),
+                    ),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.paragraphSmaller,
                     maxLines = 1,
@@ -389,15 +415,16 @@ private fun ClaimText(
     ) {
         Text(
             text = label.uppercase(),
-            color = TraktTheme.colors.textSecondary,
+            color = color,
             style = TraktTheme.typography.meta,
             modifier = Modifier
                 .widthIn(min = 72.dp)
-                .padding(top = 4.dp),
+                .padding(top = 1.dp),
         )
         MarkdownText(
             text = text,
             color = color,
+            style = TraktTheme.typography.paragraphSmall,
         )
     }
 }
@@ -405,29 +432,32 @@ private fun ClaimText(
 @Composable
 private fun RealityCharacter(character: RealityCheck.Character) {
     Column(
-        verticalArrangement = spacedBy(4.dp),
+        verticalArrangement = spacedBy(8.dp),
     ) {
         Row(
             horizontalArrangement = spacedBy(8.dp),
             verticalAlignment = CenterVertically,
         ) {
-            MarkdownText(
-                text = character.name,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W600),
-                maxLines = 1,
-                modifier = Modifier.weight(1F, fill = false),
-            )
             RealityChip(
                 text = stringResource(character.kind.displayTextRes),
                 tone = character.kind.tone,
+            )
+            MarkdownText(
+                text = character.name,
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.paragraphSmall.copy(
+                    fontSize = 15.sp,
+                    fontWeight = W600,
+                ),
+                maxLines = 1,
+                modifier = Modifier.weight(1F),
             )
         }
         if (character.note.isNotBlank()) {
             MarkdownText(
                 text = character.note,
                 color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmaller.copy(lineHeight = RelaxedLineHeight),
+                style = TraktTheme.typography.paragraphSmaller,
             )
         }
     }
@@ -437,7 +467,6 @@ private fun RealityCharacter(character: RealityCheck.Character) {
 private fun RealityChip(
     text: String,
     tone: RealityTone,
-    muted: Boolean = false,
 ) {
     val (containerColor, contentColor) = when (tone) {
         RealityTone.Accurate -> TraktTheme.colors.realityAccurateContainer to TraktTheme.colors.realityAccurateContent
@@ -451,7 +480,6 @@ private fun RealityChip(
         style = TraktTheme.typography.meta,
         maxLines = 1,
         modifier = Modifier
-            .alpha(if (muted) MUTED_CHIP_ALPHA else 1F)
             .background(
                 color = containerColor,
                 shape = CircleShape,
@@ -461,49 +489,11 @@ private fun RealityChip(
 }
 
 @Composable
-private fun RealityCard(
-    modifier: Modifier = Modifier,
-    header: String? = null,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    Card(
-        modifier = modifier,
-        shape = DefaultCardShape,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
-            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
-            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
-        ),
-        colors = cardColors(
-            containerColor = TraktTheme.colors.commentContainer,
-        ),
-    ) {
-        Column(
-            verticalArrangement = spacedBy(12.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-        ) {
-            header?.let {
-                Text(
-                    text = it,
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading5,
-                )
-            }
-            content()
-        }
-    }
-}
-
-@Composable
 private fun MarkdownText(
     text: String,
     color: Color,
     modifier: Modifier = Modifier,
-    style: TextStyle = TraktTheme.typography.paragraphSmall.copy(
-        lineHeight = RelaxedLineHeight,
-    ),
+    style: TextStyle = TraktTheme.typography.paragraphSmall,
     maxLines: Int = Int.MAX_VALUE,
 ) {
     val linkColor = TraktTheme.colors.textPrimary

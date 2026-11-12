@@ -88,6 +88,13 @@ internal enum class CollapsingKey(
     SHOW_TRIVIA("key_show_trivia"),
     SHOW_SOUNDTRACK("key_show_soundtrack"),
 
+    // Reality Check Screen
+    REALITY_CHECK_REAL_STORY("key_reality_check_real_story"),
+    REALITY_CHECK_CLAIMS("key_reality_check_claims"),
+    REALITY_CHECK_PEOPLE("key_reality_check_people"),
+    REALITY_CHECK_TIMELINE("key_reality_check_timeline"),
+    REALITY_CHECK_LEFT_OUT("key_reality_check_left_out"),
+
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),
     PROFILE_ACTIVITY("key_profile_activity"),

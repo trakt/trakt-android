@@ -4,11 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,8 +25,11 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
+import tv.trakt.trakt.core.summary.sentiment.model.RealityCheckSection
 import tv.trakt.trakt.core.summary.sentiment.navigation.SentimentDestination
 import tv.trakt.trakt.core.summary.sentiment.usecases.GetMockSentimentUseCase
+import tv.trakt.trakt.helpers.collapsing.CollapseDelegate
+import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 private const val INSIGHTS_OPEN_SOURCE = "card"
 
@@ -33,6 +39,7 @@ internal class SentimentViewModel(
     private val getMockSentimentUseCase: GetMockSentimentUseCase,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
+    collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<SentimentDestination>()
 
@@ -58,6 +65,20 @@ internal class SentimentViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val sentimentState = MutableStateFlow(initialState.sentiments)
     private val tabState = MutableStateFlow(initialState.tab)
+    private val sectionCollapses = RealityCheckSection.entries.associateWith { section ->
+        CollapseDelegate(
+            manager = collapsingManager,
+            scope = viewModelScope,
+            key = section.collapsingKey,
+        )
+    }
+    private val collapsedSectionsState = combine(
+        sectionCollapses.map { (section, collapse) ->
+            collapse.state.map { collapsed -> section.takeIf { collapsed } }
+        },
+    ) { sections ->
+        sections.filterNotNull().toImmutableSet()
+    }
 
     init {
         loadUser()
@@ -102,6 +123,13 @@ internal class SentimentViewModel(
         analytics.logInsightsTab(tab.value)
     }
 
+    fun setSectionCollapsed(
+        section: RealityCheckSection,
+        collapsed: Boolean,
+    ) {
+        sectionCollapses.getValue(section).set(collapsed)
+    }
+
     fun onVipUpsellSeen() {
         analytics.vip.logUpsellImpression(tabState.value.upsellSource.value)
     }
@@ -110,6 +138,7 @@ internal class SentimentViewModel(
         userState,
         sentimentState,
         tabState,
+        collapsedSectionsState,
     ) { state ->
         SentimentState(
             user = state[0] as? User,
@@ -117,6 +146,7 @@ internal class SentimentViewModel(
             realityCheck = initialState.realityCheck,
             tabs = initialState.tabs,
             tab = state[2] as InsightsTab,
+            collapsedSections = state[3] as ImmutableSet<RealityCheckSection>,
             backgroundUrl = initialState.backgroundUrl,
             mediaTitle = initialState.mediaTitle,
         )

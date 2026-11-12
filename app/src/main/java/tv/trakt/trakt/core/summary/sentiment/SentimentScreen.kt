@@ -20,9 +20,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -71,7 +68,10 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
+import tv.trakt.trakt.core.summary.sentiment.model.RealityCheckSection
+import tv.trakt.trakt.core.summary.sentiment.views.InsightsSegments
 import tv.trakt.trakt.core.summary.sentiment.views.RealityCheckContent
+import tv.trakt.trakt.core.summary.sentiment.views.markdownSections
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -97,6 +97,7 @@ internal fun SentimentScreen(
         onTabClick = viewModel::selectTab,
         onVipClick = { onNavigateVip(state.tab.upsellSource) },
         onVipSeen = viewModel::onVipUpsellSeen,
+        onSectionCollapse = viewModel::setSectionCollapsed,
         onPersonLinkClick = onNavigateToPerson,
         onBackClick = onNavigateBack,
     )
@@ -108,6 +109,7 @@ private fun SentimentContent(
     onTabClick: (InsightsTab) -> Unit = {},
     onVipClick: () -> Unit = {},
     onVipSeen: () -> Unit = {},
+    onSectionCollapse: (RealityCheckSection, Boolean) -> Unit = { _, _ -> },
     onPersonLinkClick: (SlugId) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -182,6 +184,8 @@ private fun SentimentContent(
                                 RealityCheckContent(
                                     realityCheck = realityCheck,
                                     vip = state.user?.isAnyVip == true,
+                                    collapsedSections = state.collapsedSections,
+                                    onSectionCollapse = onSectionCollapse,
                                     upsell = {
                                         GetVipView(
                                             modifier = Modifier
@@ -285,7 +289,7 @@ private fun InsightsTabs(
     onTabClick: (InsightsTab) -> Unit,
 ) {
     FilterChipGroup(
-        paddingVertical = PaddingValues(top = 7.dp),
+        paddingVertical = PaddingValues(top = 6.dp),
     ) {
         tabs.forEach { tab ->
             FilterChip(
@@ -333,37 +337,45 @@ internal fun HighlightsCard(
     header: String,
     text: String,
     modifier: Modifier = Modifier,
+    collapsed: Boolean? = null,
+    onCollapseClick: () -> Unit = {},
 ) {
-    Card(
-        modifier = modifier,
-        shape = DefaultCardShape,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
-            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
-            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
-        ),
-        colors = cardColors(
-            containerColor = TraktTheme.colors.commentContainer,
-        ),
-    ) {
-        Column(
-            verticalArrangement = spacedBy(12.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-        ) {
-            Text(
-                text = header,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
-            )
+    val sections = remember(text) { text.markdownSections() }
+    val linkColor = TraktTheme.colors.textPrimary
 
-            val linkColor = TraktTheme.colors.textPrimary
-            Text(
-                text = remember(text, linkColor) { text.toMarkdownText(linkColor) },
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.35.em),
-            )
+    InsightsSegments(
+        header = header,
+        count = sections.size,
+        modifier = modifier,
+        collapsed = collapsed,
+        onCollapseClick = onCollapseClick,
+    ) { index ->
+        val section = sections[index]
+        val style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.35.em)
+        Column(
+            verticalArrangement = spacedBy(6.dp),
+        ) {
+            section.title?.let { title ->
+                Text(
+                    text = remember(title, linkColor) {
+                        title.toMarkdownText(
+                            linkColor = linkColor,
+                            headingColor = linkColor,
+                        )
+                    },
+                    color = TraktTheme.colors.textPrimary,
+                    style = style,
+                )
+            }
+            if (section.body.isNotEmpty()) {
+                Text(
+                    text = remember(section.body, linkColor) {
+                        section.body.toMarkdownText(linkColor = linkColor)
+                    },
+                    color = TraktTheme.colors.textSecondary,
+                    style = style,
+                )
+            }
         }
     }
 }
@@ -378,76 +390,35 @@ internal fun ProsConsCard(
     val goodColor = TraktTheme.colors.sentimentsGoodAccent
     val badColor = TraktTheme.colors.sentimentsBadAccent
 
-    Card(
+    val groups = listOfNotNull(
+        Triple(R.drawable.ic_thumb_up_fill, goodColor, pros).takeIf { pros.isNotEmpty() },
+        Triple(R.drawable.ic_thumb_down_fill, badColor, cons).takeIf { cons.isNotEmpty() },
+    )
+
+    InsightsSegments(
+        header = header,
+        count = groups.size,
         modifier = modifier,
-        shape = DefaultCardShape,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
-            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
-            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
-        ),
-        colors = cardColors(
-            containerColor = TraktTheme.colors.commentContainer,
-        ),
-    ) {
-        Column(
-            verticalArrangement = spacedBy(16.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
+    ) { index ->
+        val (icon, color, themes) = groups[index]
+        Row(
+            horizontalArrangement = spacedBy(12.dp),
+            verticalAlignment = Alignment.Top,
         ) {
-            Text(
-                text = header,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
+            Icon(
+                painter = painterResource(icon),
+                tint = color,
+                contentDescription = null,
+                modifier = Modifier.size(22.dp),
             )
-
-            if (pros.isNotEmpty()) {
-                Row(
-                    horizontalArrangement = spacedBy(12.dp),
-                    verticalAlignment = Alignment.Top,
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_thumb_up_fill),
-                        tint = goodColor,
-                        contentDescription = null,
-                        modifier = Modifier.size(22.dp),
+            Column(
+                verticalArrangement = spacedBy(12.dp),
+            ) {
+                themes.forEach { theme ->
+                    SentimentThemeRow(
+                        text = theme.value,
+                        color = color,
                     )
-                    Column(
-                        verticalArrangement = spacedBy(12.dp),
-                    ) {
-                        pros.forEach { theme ->
-                            SentimentThemeRow(
-                                text = theme.value,
-                                color = goodColor,
-                            )
-                        }
-                    }
-                }
-            }
-
-            if (cons.isNotEmpty()) {
-                Row(
-                    horizontalArrangement = spacedBy(12.dp),
-                    verticalAlignment = Alignment.Top,
-                    modifier = Modifier.padding(top = 8.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_thumb_down_fill),
-                        tint = badColor,
-                        contentDescription = null,
-                        modifier = Modifier.size(22.dp),
-                    )
-                    Column(
-                        verticalArrangement = spacedBy(12.dp),
-                    ) {
-                        cons.forEach { theme ->
-                            SentimentThemeRow(
-                                text = theme.value,
-                                color = badColor,
-                            )
-                        }
-                    }
                 }
             }
         }
