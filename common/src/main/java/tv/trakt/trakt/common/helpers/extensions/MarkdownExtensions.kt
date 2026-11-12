@@ -174,7 +174,6 @@ private fun AnnotatedString.Builder.appendLink(
     }
 }
 
-/** Rejects hosts such as `trakt.tv.evil.example` and `trakt.tv@evil.example`. */
 private fun isTraktUrl(url: String): Boolean {
     val uri = try {
         URI(url)
