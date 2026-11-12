@@ -15,6 +15,10 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
+import java.net.URI
+import java.net.URISyntaxException
+
+private const val TRAKT_HOST = "trakt.tv"
 
 private class MarkdownStyle(
     val linkColor: Color?,
@@ -48,7 +52,8 @@ fun String.stripMarkdownLinks(): String {
 }
 
 /**
- * Links are limited to http(s) and are rendered as plain text when [linkColor] is null.
+ * Links are limited to http(s) urls on trakt.tv and its subdomains; any other url is plain text.
+ * Links are also rendered as plain text when [linkColor] is null.
  * Set [linksBoldOnly] to render links as non-clickable [linkWeight] text in the surrounding colour.
  * Pass [mentionColor] to also highlight @mentions.
  */
@@ -145,6 +150,10 @@ private fun AnnotatedString.Builder.appendLink(
         append(label)
         return
     }
+    if (!isTraktUrl(url)) {
+        appendInline(label, style, links = false)
+        return
+    }
     if (style.linksBoldOnly) {
         withStyle(SpanStyle(fontWeight = style.linkWeight)) { appendInline(label, style, links = false) }
         return
@@ -163,6 +172,16 @@ private fun AnnotatedString.Builder.appendLink(
     withLink(LinkAnnotation.Url(url, TextLinkStyles(style = linkStyle))) {
         appendInline(label, style, links = false)
     }
+}
+
+private fun isTraktUrl(url: String): Boolean {
+    val uri = try {
+        URI(url)
+    } catch (e: URISyntaxException) {
+        return false
+    }
+    val host = uri.host?.lowercase() ?: return false
+    return host == TRAKT_HOST || host.endsWith(".$TRAKT_HOST")
 }
 
 private fun AnnotatedString.Builder.appendPlain(
