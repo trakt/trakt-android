@@ -482,6 +482,11 @@ interface Analytics {
         fun logSmartListCreate()
 
         /**
+         * Logs updating a smart list.
+         */
+        fun logSmartListUpdate()
+
+        /**
          * Logs deleting a smart list.
          */
         fun logSmartListDelete()

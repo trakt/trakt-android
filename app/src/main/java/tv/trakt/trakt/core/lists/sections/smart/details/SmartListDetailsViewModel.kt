@@ -6,10 +6,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,6 +22,7 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -36,13 +42,16 @@ import tv.trakt.trakt.core.lists.sections.smart.details.navigation.SmartListDeta
 import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListItemsUseCase
 import tv.trakt.trakt.helpers.navigation.MediaNavigationDelegate
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val PAGE_LIMIT = LISTS_ITEMS_ALL_LIMIT
 
+@OptIn(FlowPreview::class)
 internal class SmartListDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getSmartListItemsUseCase: GetSmartListItemsUseCase,
     private val deleteSmartListUseCase: DeleteSmartListUseCase,
+    private val localSource: ListsSmartLocalSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val analytics: Analytics,
     navigationFactory: MediaNavigationDelegate.Factory,
@@ -73,10 +82,33 @@ internal class SmartListDetailsViewModel(
     init {
         loadInitialData()
         observeCollection()
+        observeListUpdates()
     }
 
     private fun observeCollection() {
         collectionStateProvider
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeListUpdates() {
+        localSource.observeUpdates()
+            .filterNotNull()
+            .debounce(200.milliseconds)
+            .onEach {
+                if (deletingState.value.isLoading || deletedState.value) {
+                    return@onEach
+                }
+
+                val current = listState.value
+                val updated = localSource.getLists()
+                    .firstOrNull { it.ids.trakt == destinationList.ids.trakt }
+                    ?: return@onEach
+
+                listState.update { updated }
+                if (updated.filters != current?.filters) {
+                    loadInitialData()
+                }
+            }
             .launchIn(viewModelScope)
     }
 

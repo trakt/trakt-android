@@ -140,8 +140,7 @@ private fun GenreFilter(
     enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val genresValue: DropdownOption<MediaGenre?> = state.filters.genres?.let {
-        val genre = it.first()
+    val genresValue: DropdownOption<MediaGenre?> = state.filters.genres?.firstOrNull()?.let { genre ->
         DropdownOption(
             raw = genre,
             displayString = stringResource(genre.displayStringRes),
@@ -193,8 +192,7 @@ private fun AvailabilityFilter(
     enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val availabilityValue: DropdownOption<Availability?> = state.filters.availability?.let {
-        val availability = it.first()
+    val availabilityValue: DropdownOption<Availability?> = state.filters.availability?.firstOrNull()?.let { availability ->
         DropdownOption(
             raw = availability,
             displayString = stringResource(availability.displayStringRes),

@@ -19,6 +19,7 @@ internal fun NavGraphBuilder.smartListDetailsScreen(
     onNavigateBack: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEdit: (SmartList) -> Unit,
 ) {
     composable<SmartListDetailsDestination> {
         SmartListDetailsScreen(
@@ -26,6 +27,7 @@ internal fun NavGraphBuilder.smartListDetailsScreen(
             onNavigateBack = onNavigateBack,
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
+            onEditClick = onNavigateToEdit,
         )
     }
 }

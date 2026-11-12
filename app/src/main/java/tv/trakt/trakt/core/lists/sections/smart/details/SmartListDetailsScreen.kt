@@ -60,6 +60,7 @@ import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
@@ -83,6 +84,7 @@ internal fun SmartListDetailsScreen(
     viewModel: SmartListDetailsViewModel,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onEditClick: (SmartList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -136,6 +138,9 @@ internal fun SmartListDetailsScreen(
                 is ShowItem -> showContextSheet = it
             }
         },
+        onEditClick = {
+            state.list?.let(onEditClick)
+        },
         onDeleteClick = {
             confirmDeleteSheet = true
         },
@@ -177,6 +182,7 @@ internal fun SmartListDetailsContent(
     modifier: Modifier = Modifier,
     onClick: (SmartListItem) -> Unit = {},
     onLongClick: (SmartListItem) -> Unit = {},
+    onEditClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMoreData: () -> Unit = {},
@@ -224,6 +230,7 @@ internal fun SmartListDetailsContent(
             onEndOfList = onLoadMoreData,
             onClick = onClick,
             onLongClick = onLongClick,
+            onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
             onBackClick = onBackClick,
         )
@@ -236,6 +243,7 @@ private fun TitleBar(
     subtitle: String?,
     subtitleVisible: Boolean,
     modifier: Modifier = Modifier,
+    onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -276,6 +284,7 @@ private fun TitleBar(
         }
 
         SmartListDropdown(
+            onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
             modifier = Modifier
                 .padding(start = 12.dp),
@@ -296,6 +305,7 @@ private fun ContentList(
     loadingMore: Boolean,
     onClick: (SmartListItem) -> Unit,
     onLongClick: (SmartListItem) -> Unit,
+    onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
@@ -326,6 +336,7 @@ private fun ContentList(
                 title = title,
                 subtitle = subtitle,
                 subtitleVisible = false,
+                onEditClick = onEditClick,
                 onDeleteClick = onDeleteClick,
                 onBackClick = onBackClick,
             )

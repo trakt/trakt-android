@@ -30,6 +30,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun SmartListDropdown(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onEditClick: (() -> Unit)? = null,
     containerColor: Color = TraktTheme.colors.dialogContainer,
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -49,6 +50,30 @@ internal fun SmartListDropdown(
             containerColor = containerColor,
             shape = RoundedCornerShape(16.dp),
         ) {
+            if (onEditClick != null) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.button_text_edit_list),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_edit),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                        onEditClick()
+                    },
+                )
+            }
+
             DropdownMenuItem(
                 text = {
                     Text(
@@ -78,6 +103,9 @@ internal fun SmartListDropdown(
 @Composable
 private fun SmartListDropdownPreview() {
     TraktTheme {
-        SmartListDropdown(onDeleteClick = {})
+        SmartListDropdown(
+            onDeleteClick = {},
+            onEditClick = {},
+        )
     }
 }

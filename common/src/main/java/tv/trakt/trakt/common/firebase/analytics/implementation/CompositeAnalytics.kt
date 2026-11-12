@@ -413,6 +413,10 @@ private class CompositeLists(
         targets.forEach { it.logSmartListCreate() }
     }
 
+    override fun logSmartListUpdate() {
+        targets.forEach { it.logSmartListUpdate() }
+    }
+
     override fun logSmartListDelete() {
         targets.forEach { it.logSmartListDelete() }
     }

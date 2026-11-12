@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.filters
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -14,6 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,6 +32,7 @@ import tv.trakt.trakt.core.filters.views.GlobalFiltersAdvancedView
 import tv.trakt.trakt.core.filters.views.GlobalFiltersSimpleView
 import tv.trakt.trakt.helpers.extensions.TraktThemeLight
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.milliseconds
@@ -39,77 +44,100 @@ internal val ColumnsSpacing = 8.dp
 internal fun GlobalFiltersView(
     viewModel: GlobalFiltersViewModel,
     onUpdate: (GlobalFilter) -> Unit = { _ -> },
+    onCreateSmartList: ((GlobalFilter) -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmationSheet by remember { mutableStateOf(false) }
 
-    state.mode?.let {
-        when (it) {
-            Simple -> {
-                GlobalFiltersSimpleView(
-                    state = state,
-                    onToggleMode = viewModel::applyMode,
-                    onUpdateFilter = { filter, delay ->
-                        scope.launch {
-                            delay(if (delay) 100.milliseconds else 0.milliseconds)
-                            viewModel.applyFilter(filter)
-                            onUpdate(filter)
-                        }
+    Column {
+        state.mode?.let {
+            val viewModifier = Modifier
+                .weight(1f, fill = false)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp)
+                .padding(
+                    bottom = when {
+                        onCreateSmartList != null -> 16.dp
+                        else -> 24.dp
                     },
-                    onResetFilter = {
-                        scope.launch {
-                            viewModel.applyFilter(
-                                GlobalFilter.Default.copy(
-                                    mode = state.filter.mode,
-                                ),
-                            )
-                            onUpdate(GlobalFilter.Default)
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 24.dp)
-                        .padding(bottom = 24.dp),
                 )
+
+            when (it) {
+                Simple -> {
+                    GlobalFiltersSimpleView(
+                        state = state,
+                        onToggleMode = viewModel::applyMode,
+                        onUpdateFilter = { filter, delay ->
+                            scope.launch {
+                                delay(if (delay) 100.milliseconds else 0.milliseconds)
+                                viewModel.applyFilter(filter)
+                                onUpdate(filter)
+                            }
+                        },
+                        onResetFilter = {
+                            scope.launch {
+                                viewModel.applyFilter(
+                                    GlobalFilter.Default.copy(
+                                        mode = state.filter.mode,
+                                    ),
+                                )
+                                onUpdate(GlobalFilter.Default)
+                            }
+                        },
+                        modifier = viewModifier,
+                    )
+                }
+                Advanced -> {
+                    GlobalFiltersAdvancedView(
+                        state = state,
+                        onParentalGuideExpandedChange = viewModel::setParentalGuideExpanded,
+                        onToggleMode = { mode ->
+                            if (state.filter.isAdvancedActive) {
+                                confirmationSheet = true
+                            } else {
+                                viewModel.applyMode(mode)
+                            }
+                        },
+                        onUpdateFilter = { filter, delay ->
+                            scope.launch {
+                                delay(if (delay) 100.milliseconds else 0.milliseconds)
+                                viewModel.applyFilter(filter)
+                                onUpdate(filter)
+                            }
+                        },
+                        onResetFilter = {
+                            scope.launch {
+                                viewModel.applyFilter(
+                                    GlobalFilter.Default.copy(
+                                        mode = state.filter.mode,
+                                    ),
+                                )
+                                onUpdate(GlobalFilter.Default)
+                            }
+                        },
+                        modifier = viewModifier,
+                    )
+                }
             }
-            Advanced -> {
-                GlobalFiltersAdvancedView(
-                    state = state,
-                    onParentalGuideExpandedChange = viewModel::setParentalGuideExpanded,
-                    onToggleMode = { mode ->
-                        if (state.filter.isAdvancedActive) {
-                            confirmationSheet = true
-                        } else {
-                            viewModel.applyMode(mode)
-                        }
-                    },
-                    onUpdateFilter = { filter, delay ->
-                        scope.launch {
-                            delay(if (delay) 100.milliseconds else 0.milliseconds)
-                            viewModel.applyFilter(filter)
-                            onUpdate(filter)
-                        }
-                    },
-                    onResetFilter = {
-                        scope.launch {
-                            viewModel.applyFilter(
-                                GlobalFilter.Default.copy(
-                                    mode = state.filter.mode,
-                                ),
-                            )
-                            onUpdate(GlobalFilter.Default)
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 24.dp)
-                        .padding(bottom = 24.dp),
-                )
-            }
+        }
+
+        if (onCreateSmartList != null) {
+            PrimaryButton(
+                text = stringResource(R.string.button_text_create_smart_list),
+                icon = painterResource(R.drawable.ic_smart),
+                iconSize = 20.dp,
+                onClick = { onCreateSmartList(state.filter) },
+                border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
+                containerColor = Color.Transparent,
+                contentColor = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(bottom = 24.dp),
+            )
         }
     }
 

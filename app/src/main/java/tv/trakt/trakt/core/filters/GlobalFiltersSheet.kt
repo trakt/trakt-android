@@ -31,6 +31,7 @@ internal fun GlobalFiltersSheet(
     active: Boolean,
     options: GlobalFiltersOptions = GlobalFiltersOptions.Default,
     onUpdate: (GlobalFilter) -> Unit = { _ -> },
+    onCreateSmartList: ((GlobalFilter) -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetKey = remember(active) { nextInt().toString() }
@@ -50,6 +51,7 @@ internal fun GlobalFiltersSheet(
                         parameters = { parametersOf(options) },
                     ),
                     onUpdate = onUpdate,
+                    onCreateSmartList = onCreateSmartList,
                 )
             }
         }

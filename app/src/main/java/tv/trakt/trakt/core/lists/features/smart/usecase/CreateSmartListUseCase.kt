@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.lists.SmartListSource.Anticipated
@@ -65,16 +66,16 @@ private fun MediaMode.toMediaType(): PostUsersListsListConvertToSmartListRequest
     }
 }
 
-private fun SmartListFilters.toFiltersDto(): SmartListFiltersDto {
-    return SmartListFiltersDto(
-        genres = genreTokens.orNullIfEmpty(),
-        subgenres = subgenres.orNullIfEmpty(),
-        certifications = certificationTokens.orNullIfEmpty(),
-        languages = languages.orNullIfEmpty(),
-        countries = countryTokens.orNullIfEmpty(),
-        statuses = statuses.orNullIfEmpty(),
-        networks = networks.orNullIfEmpty(),
-        watchnow = availability?.map { it.slug }.orNullIfEmpty(),
+internal fun SmartListFilters.toFiltersDto(base: SmartListFiltersDto = SmartListFiltersDto()): SmartListFiltersDto {
+    return base.copy(
+        genres = genreTokens.distinctOrNull(),
+        subgenres = subgenres.distinctOrNull(),
+        certifications = certificationTokens.distinctOrNull(),
+        languages = languages.distinctOrNull(),
+        countries = countryTokens.distinctOrNull(),
+        statuses = statuses.distinctOrNull(),
+        networks = networks.distinctOrNull(),
+        watchnow = (availability?.map { it.slug }.orEmpty() + base.unsupportedWatchNow()).distinctOrNull(),
         years = years.orNullIfEmpty(),
         ratings = ratings.orNullIfEmpty(),
         runtimes = runtimes.orNullIfEmpty(),
@@ -91,4 +92,10 @@ private fun SmartListFilters.toFiltersDto(): SmartListFiltersDto {
     )
 }
 
+private fun SmartListFiltersDto.unsupportedWatchNow(): List<String> {
+    return watchnow.orEmpty().filter { GlobalFilter.Availability.fromSlug(it) == null }
+}
+
 private fun <T> Collection<T>?.orNullIfEmpty(): List<T>? = this?.takeIf { it.isNotEmpty() }?.toList()
+
+private fun <T> Collection<T>?.distinctOrNull(): List<T>? = orNullIfEmpty()?.distinct()

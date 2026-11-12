@@ -30,10 +30,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
+import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilterDecade
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilterRuntime
+import tv.trakt.trakt.common.model.lists.ParentalGuideCategory
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.common.model.lists.SmartListSource.Unknown
@@ -47,6 +58,7 @@ import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.ZonedDateTime
 
 @Composable
 internal fun CreateSmartListSheetView(
@@ -63,7 +75,14 @@ internal fun CreateSmartListSheetView(
         }
     }
 
-    var filtersMode by rememberSaveable { mutableStateOf(GlobalFilterMode.Simple) }
+    var filtersMode by rememberSaveable {
+        mutableStateOf(
+            when {
+                state.filters.fitsSimpleView() -> GlobalFilterMode.Simple
+                else -> GlobalFilterMode.Advanced
+            },
+        )
+    }
 
     val backgroundColor = TraktTheme.colors.dialogContainer
     val backgroundGradient = remember(backgroundColor) {
@@ -77,6 +96,8 @@ internal fun CreateSmartListSheetView(
     }
 
     val enabled = !state.creating.isLoading
+    val isEditing = state.editList != null
+    val canSave = inputValid && (!isEditing || state.hasChanges(nameState.text.toString()))
     Box(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -94,8 +115,14 @@ internal fun CreateSmartListSheetView(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 TraktHeader(
-                    title = stringResource(R.string.page_title_create_smart_list),
-                    subtitle = stringResource(R.string.text_cta_smart_lists),
+                    title = when {
+                        isEditing -> stringResource(R.string.header_edit_smart_list)
+                        else -> stringResource(R.string.page_title_create_smart_list)
+                    },
+                    subtitle = when {
+                        isEditing -> null
+                        else -> stringResource(R.string.text_cta_smart_lists)
+                    },
                     maxSubtitleLines = 3,
                     modifier = Modifier.weight(1f),
                 )
@@ -228,8 +255,11 @@ internal fun CreateSmartListSheetView(
         )
 
         PrimaryButton(
-            text = stringResource(R.string.button_text_create),
-            enabled = inputValid && enabled,
+            text = when {
+                isEditing -> stringResource(R.string.button_text_apply)
+                else -> stringResource(R.string.button_text_create)
+            },
+            enabled = canSave && enabled,
             loading = state.creating.isLoading,
             onClick = {
                 onCreateClick(nameState.text.toString())
@@ -276,6 +306,43 @@ private fun TargetFilter(
     )
 }
 
+private fun SmartListFilters.fitsSimpleView(): Boolean {
+    val unsupported = listOf(
+        excludedGenres,
+        subgenres,
+        excludedCertifications,
+        languages,
+        excludedCountries,
+        statuses,
+        networks,
+        imdbRatings,
+        rtMeters,
+        rtUserMeters,
+    ) + ParentalGuideCategory.entries.map(::parentalRange)
+
+    if (unsupported.any { !it.isNullOrEmpty() }) return false
+    if (genres.orEmpty().size > 1) return false
+    if (availability.orEmpty().size > 1) return false
+    if (ratings.orEmpty().size > 2) return false
+
+    val certification = certifications.orEmpty()
+    if (certification.size > 1) return false
+    if (certification.any { slug -> Certification.entries.none { it.slug == slug } }) return false
+
+    val countryCodes = countries.orEmpty()
+    if (countryCodes.isNotEmpty() && Region.fromCountries(countryCodes) == null) return false
+
+    val yearRange = years.orEmpty()
+    val isDecade = GlobalFilterDecade.entries.any { listOf(it.years.first, it.years.second) == yearRange }
+    if (yearRange.isNotEmpty() && !isDecade) return false
+
+    val runtimeRange = runtimes.orEmpty()
+    val isRuntimeSpan = GlobalFilterRuntime.entries.any { listOf(it.runtime.first, it.runtime.second) == runtimeRange }
+    if (runtimeRange.isNotEmpty() && !isRuntimeSpan) return false
+
+    return true
+}
+
 @DeviceSheetPreview
 @Composable
 private fun Preview() {
@@ -296,6 +363,34 @@ private fun MediaPreview() {
                 filters = SmartListFilters.Default.copy(media = MediaMode.Media),
             ),
             nameState = TextFieldState(),
+        )
+    }
+}
+
+@DeviceSheetPreview
+@Composable
+private fun EditPreview() {
+    val filters = SmartListFilters.Default.copy(
+        genres = persistentListOf(MediaGenre.Action),
+        ignoreWatched = true,
+    )
+
+    TraktTheme {
+        CreateSmartListSheetView(
+            state = CreateSmartListState(
+                editList = SmartList(
+                    ids = Ids(trakt = TraktId(1), slug = SlugId("smart")),
+                    name = "Unwatched action",
+                    privacy = null,
+                    createdAt = ZonedDateTime.now(),
+                    updatedAt = ZonedDateTime.now(),
+                    images = null,
+                    filters = filters,
+                ),
+                initialFilters = filters,
+                filters = filters,
+            ),
+            nameState = TextFieldState("Unwatched action"),
         )
     }
 }

@@ -81,6 +81,7 @@ import org.openapitools.client.models.GetUsersWatchlistShows200ResponseInner
 import org.openapitools.client.models.GetWatchnowSourcesAll200ResponseInnerValueInner
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostUsersListsListConvertToSmartListRequest
+import org.openapitools.client.models.PutUsersSmartListsSmartListUpdateRequest
 
 /**
  * Type aliases for OpenAPI models used in the app.
@@ -160,6 +161,7 @@ typealias TraktRatingsDto = GetMoviesRatings200ResponseTrakt
 typealias TranslationDto = GetMoviesTranslations200ResponseInner
 typealias TrendingMediaDto = GetMediaTrending200ResponseInner
 typealias TrendingSearchDto = GetSearchTrending200ResponseInner
+typealias UpdateSmartListRequestDto = PutUsersSmartListsSmartListUpdateRequest
 typealias UserBlockedDto = GetUsersReactionsComments200ResponseInnerCommentUser
 typealias UserCommentsDto = GetUsersReactionsComments200ResponseInnerCommentUser
 typealias UserFollowRequestDto = GetUsersRequestsFollow200ResponseInner

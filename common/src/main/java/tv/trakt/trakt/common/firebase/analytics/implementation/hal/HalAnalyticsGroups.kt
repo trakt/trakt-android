@@ -34,6 +34,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_REACT
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_CREATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_DELETE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SMART_LIST_UPDATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SOUNDTRACK
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SPOILER_REVEAL
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAM_ON
@@ -250,6 +251,8 @@ internal class HalAnalyticsLists(
     }
 
     override fun logSmartListCreate() = events.track(EVENT_SMART_LIST_CREATE)
+
+    override fun logSmartListUpdate() = events.track(EVENT_SMART_LIST_UPDATE)
 
     override fun logSmartListDelete() = events.track(EVENT_SMART_LIST_DELETE)
 
