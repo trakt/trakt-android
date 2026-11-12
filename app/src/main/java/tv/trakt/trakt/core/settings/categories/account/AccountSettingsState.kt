@@ -8,4 +8,5 @@ import tv.trakt.trakt.common.model.User
 internal data class AccountSettingsState(
     val user: User? = null,
     val loading: LoadingState = LoadingState.Idle,
+    val logoutLoading: LoadingState = LoadingState.Idle,
 )

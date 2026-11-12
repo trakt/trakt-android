@@ -15,10 +15,14 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.settings.ui.SettingsSegmentedGroup
 import tv.trakt.trakt.core.settings.ui.SettingsSubscreen
 import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
@@ -26,11 +30,14 @@ import tv.trakt.trakt.core.settings.ui.SettingsTextField
 import tv.trakt.trakt.core.settings.ui.SettingsValueField
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.input.SingleInputSheet
+import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun AccountSettingsScreen(
     viewModel: AccountSettingsViewModel,
+    onNavigateHome: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val snackbar = LocalSnackbarState.current
@@ -38,6 +45,14 @@ internal fun AccountSettingsScreen(
     val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var confirmLogout by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.user, state.logoutLoading) {
+        if (state.logoutLoading == Done && state.user == null) {
+            onNavigateHome()
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.info.collect { info ->
@@ -57,7 +72,24 @@ internal fun AccountSettingsScreen(
         onSetAbout = viewModel::updateUserAbout,
         onEnablePrivateAccount = viewModel::enablePrivateAccount,
         onClearCoverImage = viewModel::clearCoverImage,
+        onLogoutClick = {
+            confirmLogout = true
+        },
         onBackClick = onNavigateBack,
+    )
+
+    ConfirmationSheet(
+        active = confirmLogout,
+        onYes = {
+            confirmLogout = false
+            viewModel.logout()
+        },
+        onNo = {
+            confirmLogout = false
+        },
+        title = stringResource(R.string.button_text_logout),
+        message = stringResource(R.string.warning_prompt_log_out),
+        yesColor = Red500,
     )
 }
 
@@ -71,6 +103,7 @@ private fun AccountSettingsContent(
     onSetAbout: (String?) -> Unit = { },
     onEnablePrivateAccount: (Boolean) -> Unit = { },
     onClearCoverImage: () -> Unit = { },
+    onLogoutClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
     var displayNameSheet by remember { mutableStateOf<String?>(null) }
@@ -82,7 +115,7 @@ private fun AccountSettingsContent(
         state.user?.isPrivate == true
     }
 
-    val enabled = !state.loading.isLoading
+    val enabled = !state.loading.isLoading && !state.logoutLoading.isLoading
 
     SettingsSubscreen(
         title = stringResource(R.string.link_text_account_settings),
@@ -169,6 +202,22 @@ private fun AccountSettingsContent(
                         onClick = onClearCoverImage,
                     )
                 }
+            }
+        }
+
+        SettingsSegmentedGroup {
+            item {
+                SettingsTextField(
+                    text = stringResource(R.string.button_text_logout),
+                    icon = R.drawable.ic_logout,
+                    iconSize = 17.dp,
+                    color = when (TraktTheme.colors.isLight) {
+                        true -> Red500
+                        false -> Red400
+                    },
+                    enabled = enabled,
+                    onClick = onLogoutClick,
+                )
             }
         }
     }

@@ -25,18 +25,21 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.settings.data.observeSettingsProfile
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
+import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.resources.R
 
 @Suppress("UNCHECKED_CAST")
 internal class AccountSettingsViewModel(
     private val sessionManager: SessionManager,
     private val updateSettingsUseCase: UpdateUserSettingsUseCase,
+    private val logoutUseCase: LogoutUserUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AccountSettingsState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
 
     init {
         loadUser()
@@ -105,6 +108,24 @@ internal class AccountSettingsViewModel(
         }
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            try {
+                logoutLoadingState.update { Loading }
+
+                analytics.logUserLogout()
+                logoutUseCase.logoutUser()
+
+                logoutLoadingState.update { Done }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    logoutLoadingState.update { LoadingState.Idle }
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     private fun updateSettings(update: suspend () -> Unit) {
         viewModelScope.launch {
             try {
@@ -126,10 +147,12 @@ internal class AccountSettingsViewModel(
     val state = combine(
         userState,
         loadingState,
+        logoutLoadingState,
     ) { state ->
         AccountSettingsState(
             user = state[0] as User?,
             loading = state[1] as LoadingState,
+            logoutLoading = state[2] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -82,6 +82,7 @@ internal fun NavGraphBuilder.settingsScreen(
     composable<AccountSettingsDestination> {
         AccountSettingsScreen(
             viewModel = koinViewModel(),
+            onNavigateHome = onNavigateHome,
             onNavigateBack = onNavigateBack,
         )
     }
