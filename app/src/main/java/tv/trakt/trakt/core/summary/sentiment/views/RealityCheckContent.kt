@@ -378,12 +378,9 @@ private fun RealityClaim(claim: RealityCheck.Claim) {
                     modifier = Modifier.weight(1F, fill = false),
                 )
             }
-            if (claim.isMinor && claim.about != null) {
+            if (claim.isMinor && !claim.about.isNullOrBlank()) {
                 Text(
-                    text = stringResource(
-                        R.string.text_parenthesized,
-                        stringResource(R.string.text_reality_claim_minor),
-                    ),
+                    text = "(${stringResource(R.string.text_reality_claim_minor)})",
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.paragraphSmaller,
                     maxLines = 1,

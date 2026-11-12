@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="button_search_selection" translatable="false">Trakt search</string>
+
   <string name="header_whats_new" translatable="false">What\'s New</string>
   <string name="header_rate_us_1" translatable="false">Loving Trakt so far?</string>
   <string name="header_rate_us_2" translatable="false">Tap here to rate us 5 🌟 on the Play Store. Thank you!</string>
+
+  <string name="link_label_facebook">Facebook</string>
+  <string name="link_label_instagram">Instagram</string>
+  <string name="link_label_tiktok">TikTok</string>
+  <string name="link_label_wikidata">Wikidata</string>
+  <string name="link_label_wikipedia">Wikipedia</string>
+  <string name="link_label_x">X</string>
 
   <string name="error_text_vip_only_feature" translatable="false">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
   <string name="error_text_payment_pending" translatable="false">There\'s already a pending payment. Please wait and try again later.</string>

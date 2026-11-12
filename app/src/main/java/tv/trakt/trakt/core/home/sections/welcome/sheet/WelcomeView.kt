@@ -55,7 +55,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.PARALLAX_RATIO
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
-import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -64,12 +63,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val IMPORT_SOURCE_IMDB = "IMDb"
 private const val IMPORT_SOURCE_LETTERBOXD = "Letterboxd"
-
-private const val TV_TIME_LIBERATOR_URL: String =
-    "https://chromewebstore.google.com/detail/tv-time-liberator-extensi/pohobkcjhigehafgnhehkanhjakajhpm?pli=1"
-
-private const val TV_TIME_GDPR_URL: String =
-    "https://gdpr.tvtime.com/gdpr/self-service"
 
 @Composable
 internal fun WelcomeView(
@@ -203,19 +196,6 @@ internal fun WelcomeView(
                     .padding(top = 8.dp),
             )
 
-            ImportTvTimeCard(
-                onImportClick = {
-                    uriHandler.openUri(Config.webDataImportUrl("tvtime"))
-                },
-                onLiberatorClick = {
-                    uriHandler.openUri(TV_TIME_LIBERATOR_URL)
-                },
-                onGdprClick = {
-                    uriHandler.openUri(TV_TIME_GDPR_URL)
-                },
-                modifier = Modifier.padding(top = 30.dp),
-            )
-
             ImportSourceCard(
                 title = IMPORT_SOURCE_IMDB,
                 description = stringResource(R.string.welcome_import_imdb_description),
@@ -291,76 +271,6 @@ internal fun WelcomeView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(32.dp),
-            )
-        }
-    }
-}
-
-@Composable
-private fun ImportTvTimeCard(
-    modifier: Modifier = Modifier,
-    onImportClick: () -> Unit = {},
-    onLiberatorClick: () -> Unit = {},
-    onGdprClick: () -> Unit = {},
-) {
-    val gradientAccent = TraktTheme.colors.accentPalette.shade600
-    val radialGradient = remember(gradientAccent) {
-        object : ShaderBrush() {
-            override fun createShader(size: Size): Shader {
-                return RadialGradientShader(
-                    colors = listOf(
-                        gradientAccent,
-                        Shade910,
-                    ),
-                    center = Offset(size.width * 1.5F, -size.height / 1.5F),
-                    radius = size.width * 1.5F,
-                )
-            }
-        }
-    }
-
-    Column(
-        verticalArrangement = spacedBy(12.dp),
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(elevation = 2.dp, shape = DefaultCardShape)
-            .border(width = 1.dp, color = TraktTheme.colors.accent, shape = DefaultCardShape)
-            .background(radialGradient, DefaultCardShape)
-            .padding(20.dp),
-    ) {
-        InfoChip(
-            text = stringResource(R.string.welcome_tvtime_badge),
-            containerColor = TraktTheme.colors.primaryButtonContainer,
-            modifier = Modifier
-                .shadow(elevation = 1.dp, shape = RoundedCornerShape(100)),
-        )
-
-        Text(
-            text = stringResource(R.string.welcome_tvtime_heading),
-            style = TraktTheme.typography.heading4,
-            color = TraktTheme.colors.textPrimary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 2.dp),
-        )
-
-        Text(
-            text = stringResource(R.string.welcome_tvtime_body),
-            style = TraktTheme.typography.paragraphSmall,
-            color = TraktTheme.colors.textPrimary,
-        )
-
-        Column(
-            verticalArrangement = spacedBy(4.dp),
-            modifier = Modifier
-                .fillMaxWidth(),
-        ) {
-            PrimaryButton(
-                text = stringResource(R.string.welcome_tvtime_import_cta),
-                onClick = onImportClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
             )
         }
     }
