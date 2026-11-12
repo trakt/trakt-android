@@ -192,15 +192,16 @@ private fun AvailabilityFilter(
     enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val availabilityValue: DropdownOption<Availability?> = state.filters.availability?.firstOrNull()?.let { availability ->
-        DropdownOption(
-            raw = availability,
-            displayString = stringResource(availability.displayStringRes),
+    val availabilityValue: DropdownOption<Availability?> =
+        state.filters.availability?.firstOrNull()?.let { availability ->
+            DropdownOption(
+                raw = availability,
+                displayString = stringResource(availability.displayStringRes),
+            )
+        } ?: DropdownOption(
+            raw = null,
+            displayString = stringResource(R.string.option_text_all),
         )
-    } ?: DropdownOption(
-        raw = null,
-        displayString = stringResource(R.string.option_text_all),
-    )
 
     val availabilityOptions = buildList<DropdownOption<Availability?>> {
         add(
