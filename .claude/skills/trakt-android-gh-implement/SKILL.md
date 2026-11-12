@@ -120,8 +120,8 @@ come from the prompt.
 3. **Read the web source.** For each `trakt-web#N` or `trakt-web/pull/N` link, read `gh pr view N -R trakt/trakt-web --json title,body,files` and the relevant part of `gh pr diff`. Then read the current web files, not only the diff, because later PRs may have changed them. Match web logic, ordering and edge cases.
 4. **Assess against Android.** Check every claim in the issue against current Android code. Issues often list items that already exist. Note those for the PR body instead of re-implementing them.
 5. **Load rules.** Read the `.agents/rules/` files that match the touched area, as `CLAUDE.md` lists.
-6. **Branch.** Pick `<type>/<short-slug>` (for example `feat/season-rail-highlight`,
-   `fix/season-progress-aired`). The checkout must be clean (`git status --porcelain
+6. **Branch.** Pick `<type>/<issue>-<short-slug>` per `commits.md` (for example
+   `feat/872-season-rail-highlight`, `fix/901-season-progress-aired`). The checkout must be clean (`git status --porcelain
    --untracked-files=no` prints nothing), else stop and report. Then:
    ```bash
    git switch -q -c <branch> origin/main

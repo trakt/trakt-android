@@ -116,6 +116,24 @@ Avoid:
 - `Co-Authored-By: Claude <noreply@anthropic.com>` trailer — only add when human author explicitly requests.
 - Em-dashes / en-dashes in commit messages, PR titles, or PR bodies. Use plain hyphens (`-`).
 
+## Branch names
+
+Format: `<type>/<issue>-<slug>`, or `<type>/<slug>` when no GitHub issue exists.
+
+- `<type>`: one of the allowed commit types above (`feat`, `fix`, `refactor`, ...). Not `feature`.
+- `<issue>`: number of the GitHub issue in `trakt/trakt-android` the work closes. Skip it when there
+  is no issue. Never invent one.
+- `<slug>`: lowercase, hyphen-separated, 2-5 words, describes the change.
+- No scope, no username prefix, no underscores, no em-dashes.
+
+```
+feat/872-season-rail-highlight
+fix/901-season-progress-aired
+refactor/usecase-cleanup          # no issue
+```
+
+Link the issue in the PR body with `Closes #872` (or `Refs #872` when the PR only partly covers it).
+
 ## PR titles
 
 PR titles follow same Conventional Commits format. Show up on `main` after squash-merge — must be self-contained:
