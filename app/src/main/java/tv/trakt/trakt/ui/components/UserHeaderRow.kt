@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.userprofile.sections.match.ui.UserMatchPill
@@ -55,6 +56,7 @@ internal fun UserHeaderRow(
     user: User,
     modifier: Modifier = Modifier,
     avatarBadge: (@Composable BoxScope.() -> Unit)? = null,
+    onAvatarClick: (() -> Unit)? = null,
     trailing: @Composable () -> Unit = {},
 ) {
     Row(
@@ -72,6 +74,9 @@ internal fun UserHeaderRow(
         ) {
             Box(
                 contentAlignment = Alignment.BottomCenter,
+                modifier = Modifier.onClick(enabled = onAvatarClick != null) {
+                    onAvatarClick?.invoke()
+                },
             ) {
                 UserAvatar(user = user)
                 when {

@@ -1,5 +1,10 @@
 package tv.trakt.trakt.core.settings
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -9,10 +14,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration.Short
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -28,12 +39,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.BuildConfig
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
+import tv.trakt.trakt.core.settings.features.avatar.AvatarCropSheet
 import tv.trakt.trakt.core.settings.model.SettingsCategory
 import tv.trakt.trakt.core.settings.ui.SettingsCategoryField
 import tv.trakt.trakt.core.settings.ui.SettingsScaffold
@@ -48,6 +61,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal const val SECTION_SPACING_DP = 12
 internal const val SECTION_ITEM_HEIGHT_DP = 32
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsScreen(
     viewModel: SettingsViewModel,
@@ -56,13 +70,33 @@ internal fun SettingsScreen(
     onNavigateBack: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
+    val snackbar = LocalSnackbarState.current
+    val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var avatarImage by rememberSaveable { mutableStateOf<Uri?>(null) }
+    val avatarPicker = rememberLauncherForActivityResult(PickVisualMedia()) { uri ->
+        avatarImage = uri
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.info.collect { info ->
+            snackbar.showSnackbar(
+                message = info.get(context),
+                duration = Short,
+            )
+        }
+    }
 
     SettingsScreenContent(
         state = state,
         onCategoryClick = onNavigateCategory,
         onUserClick = onNavigateUsage,
+        onUploadAvatar = {
+            avatarPicker.launch(PickVisualMediaRequest(ImageOnly))
+        },
+        onRemoveAvatar = viewModel::removeAvatar,
         onGithubClick = {
             uriHandler.openUri(Config.WEB_SOCIAL_GITHUB_URL)
         },
@@ -78,6 +112,14 @@ internal fun SettingsScreen(
         },
         onBackClick = onNavigateBack,
     )
+
+    AvatarCropSheet(
+        image = avatarImage,
+        onConfirm = viewModel::uploadAvatar,
+        onDismiss = {
+            avatarImage = null
+        },
+    )
 }
 
 @Composable
@@ -86,6 +128,8 @@ private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     onCategoryClick: (SettingsCategory) -> Unit = { },
     onUserClick: () -> Unit = { },
+    onUploadAvatar: () -> Unit = { },
+    onRemoveAvatar: () -> Unit = { },
     onGithubClick: () -> Unit = { },
     onInstagramClick: () -> Unit = { },
     onTwitterClick: () -> Unit = { },
@@ -112,7 +156,10 @@ private fun SettingsScreenContent(
         state.user?.let { user ->
             SettingsUserPanel(
                 user = user,
+                avatarLoading = state.avatarLoading.isLoading,
                 onClick = onUserClick,
+                onUploadAvatar = onUploadAvatar,
+                onRemoveAvatar = onRemoveAvatar,
             )
         }
 

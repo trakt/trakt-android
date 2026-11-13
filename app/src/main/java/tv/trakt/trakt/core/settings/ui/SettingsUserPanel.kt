@@ -2,14 +2,22 @@ package tv.trakt.trakt.core.settings.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -17,6 +25,8 @@ import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.settings.features.avatar.AvatarMenu
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.UserHeaderRow
@@ -28,11 +38,49 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun SettingsUserPanel(
     user: User,
     modifier: Modifier = Modifier,
+    avatarLoading: Boolean = false,
     onClick: (() -> Unit)? = null,
+    onUploadAvatar: (() -> Unit)? = null,
+    onRemoveAvatar: (() -> Unit)? = null,
 ) {
+    var avatarMenu by remember { mutableStateOf(false) }
+    val avatarEditable = onUploadAvatar != null && onRemoveAvatar != null
+
     UserHeaderRow(
         user = user,
-        avatarBadge = { },
+        avatarBadge = {
+            if (avatarLoading) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .matchParentSize()
+                        .clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.55F)),
+                ) {
+                    FilmProgressIndicator(
+                        size = 24.dp,
+                        color = Color.White,
+                    )
+                }
+            }
+
+            if (onUploadAvatar != null && onRemoveAvatar != null) {
+                AvatarMenu(
+                    expanded = avatarMenu,
+                    onDismiss = { avatarMenu = false },
+                    onUploadClick = onUploadAvatar,
+                    onRemoveClick = onRemoveAvatar,
+                )
+            }
+        },
+        onAvatarClick = when {
+            avatarEditable && !avatarLoading -> {
+                { avatarMenu = true }
+            }
+            else -> {
+                null
+            }
+        },
         trailing = {
             val badge = when {
                 user.isDirector -> R.string.translated_value_job_director
@@ -78,6 +126,9 @@ private fun Preview() {
     TraktThemePreview {
         SettingsUserPanel(
             user = PreviewData.user1,
+            avatarLoading = true,
+            onUploadAvatar = {},
+            onRemoveAvatar = {},
         )
     }
 }

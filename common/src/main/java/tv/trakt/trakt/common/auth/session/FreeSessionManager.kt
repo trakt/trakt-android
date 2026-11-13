@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.auth.session
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -12,6 +13,7 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.withAvatarVersion
 
 // Token storage versioning.
 // Can be used to force clearing old data when the structure changes.
@@ -19,6 +21,7 @@ private const val KEY_VERSION = 5
 
 private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile_$KEY_VERSION")
 private val KEY_USER_PROFILE_IMAGE = stringPreferencesKey("key_user_profile_image_$KEY_VERSION")
+private val KEY_USER_AVATAR_VERSION = longPreferencesKey("key_user_avatar_version_$KEY_VERSION")
 
 // Non VIP session manager that doesn't store any VIP-related information and always returns false for VIP status.
 // Used only for some internal testing.
@@ -53,14 +56,21 @@ internal class FreeSessionManager(
         }
     }
 
+    override suspend fun saveAvatarVersion(version: Long) {
+        dataStore.edit { it[KEY_USER_AVATAR_VERSION] = version }
+    }
+
     override suspend fun getProfile(): User? {
-        val userData = dataStore.data.first()[KEY_USER_PROFILE] ?: return null
+        val preferences = dataStore.data.first()
+        val userData = preferences[KEY_USER_PROFILE] ?: return null
         val decodedUserData = runCatching {
-            Json.decodeFromString<User?>(userData)?.copy(
-                isVip = false,
-                isVipEp = false,
-                isVipOg = false,
-            )
+            Json.decodeFromString<User?>(userData)
+                ?.copy(
+                    isVip = false,
+                    isVipEp = false,
+                    isVipOg = false,
+                )
+                ?.withAvatarVersion(preferences[KEY_USER_AVATAR_VERSION])
         }.onFailure {
             Timber.e(it, "Failed to decode user profile")
         }
@@ -86,6 +96,7 @@ internal class FreeSessionManager(
             }
             return@map runCatching {
                 Json.decodeFromString<User>(data)
+                    .withAvatarVersion(preferences[KEY_USER_AVATAR_VERSION])
             }.onFailure {
                 Timber.e(it, "Failed to decode user profile")
             }.getOrElse {

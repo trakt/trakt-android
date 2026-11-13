@@ -3,6 +3,8 @@ package tv.trakt.trakt.common.data.remote
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostUsersReportRequest
+import org.openapitools.client.models.PutUsersAvatarRequest
+import org.openapitools.client.models.PutUsersAvatarRequestUser
 import org.openapitools.client.models.PutUsersCoverRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsing
@@ -222,6 +224,20 @@ class UserRemoteSource(
         )
 
         cacheMarkerProvider.invalidate()
+    }
+
+    suspend fun updateAvatar(avatar: String) {
+        usersApi.putUsersAvatar(
+            putUsersAvatarRequest = PutUsersAvatarRequest(
+                user = PutUsersAvatarRequestUser(
+                    avatar = avatar,
+                ),
+            ),
+        )
+    }
+
+    suspend fun removeAvatar() {
+        usersApi.deleteUsersRemoveAvatar()
     }
 
     suspend fun getWatchedMovies(pagination: Pagination): Map<String, List<String>> {

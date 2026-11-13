@@ -6,6 +6,8 @@ import tv.trakt.trakt.common.model.User
 interface SessionManager {
     suspend fun saveProfile(user: User)
 
+    suspend fun saveAvatarVersion(version: Long)
+
     suspend fun getProfile(): User?
 
     suspend fun getProfileImage(): String?
