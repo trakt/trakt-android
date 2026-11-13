@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">أقل</string>
   <string name="button_text_game_play">العب</string>
   <string name="button_text_game_play_again">العب مرة أخرى</string>
+  <string name="button_text_get_app_store_version">الحصول على إصدار App Store</string>
   <string name="button_text_get_started">ابدأ</string>
   <string name="button_text_get_vip">احصل على</string>
   <string name="button_text_go_back">الرجوع</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">الهواء</string>
   <string name="header_appearance">المظهر</string>
   <string name="header_behavior">السلوك</string>
+  <string name="header_beta_vip_only">النسخة التجريبية مخصصة لأعضاء VIP</string>
   <string name="header_birthday">تاريخ الميلاد</string>
   <string name="header_calendar">التقويم</string>
   <string name="header_calendar_feed">موجز التقويم</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d فوز</string>
   <string name="text_award_wins_other">%d مرات فوز</string>
   <string name="text_award_year_range">من %1$d إلى %2$d</string>
+  <string name="text_beta_vip_only">عمليات الشراء غير متوفرة في النسخة التجريبية. احصل على إصدار App Store من Trakt للترقية إلى VIP، ثم عد إلى النسخة التجريبية.</string>
   <string name="text_billing_already_vip">لقد أصبحت الآن أحد أعضاء Trakt VIP!\nشكرًا لك على دعمك واستمتاعك.</string>
   <string name="text_billing_disclaimer">يبدأ الدفع في نهاية الفترة التجريبية. يتم تجديد الاشتراك تلقائيًا، ويتم إصدار فاتورة به كل %s حتى يتم إلغاؤه. يمكنك الإلغاء في أي وقت عبر مركز اشتراكات Google Play.</string>
   <string name="text_billing_month_for_free">جرب شهرًا واحدًا مجانًا ثم:</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">دعم أفضل: المساعدة والتعليقات</string>
   <string name="vip_feature_title_unlock">أطلق العنان للإمكانات الكاملة مع</string>
   <string name="vip_feature_title_vip_status">حالة VIP</string>
+  <string name="vip_nudge_action">اكتشف ما تتضمنه باقة VIP</string>
+  <string name="vip_nudge_close">إغلاق وإخفاء لمدة 14 يوماً</string>
+  <string name="vip_nudge_feature_body">جميع خدمات البث، والتسجيل التلقائي من Plex في الوقت الفعلي، وحصاد عامك، ومساحة تكفي لـ %1$s من عناصر قائمة المشاهدة، و%2$s من عناصر القائمة، و%3$s من الملاحظات، وعدد غير محدود من القوائم.</string>
+  <string name="vip_nudge_feature_body_short">جميع خدمات البث، والتسجيل التلقائي من Plex في الوقت الفعلي، وحصاد عامك، ومساحة تكفي لـ %s من عناصر قائمة المشاهدة.</string>
+  <string name="vip_nudge_feature_title">ما تتضمنه باقة Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">لديك %1$s من عناصر القائمة، وهو أكثر من %2$s التي تتضمنها الخطة المجانية.</string>
+  <string name="vip_nudge_over_lists">لديك %1$s من القوائم، وهو أكثر من %2$s التي تتضمنها الخطة المجانية.</string>
+  <string name="vip_nudge_over_notes">لديك %1$s من الملاحظات، وهو أكثر من %2$s التي تتضمنها الخطة المجانية.</string>
+  <string name="vip_nudge_over_watchlist_items">لديك %1$s من عناصر قائمة المشاهدة، وهو أكثر من %2$s التي تتضمنها الخطة المجانية.</string>
+  <string name="vip_nudge_vip_limit_list_items">مع VIP، الحد الأقصى هو %s من عناصر القائمة.</string>
+  <string name="vip_nudge_vip_limit_lists">مع VIP، لا يوجد حد أقصى للقوائم.</string>
+  <string name="vip_nudge_vip_limit_notes">مع VIP، الحد الأقصى هو %s من الملاحظات.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">مع VIP، الحد الأقصى هو %s من عناصر قائمة المشاهدة.</string>
+  <string name="vip_nudge_within_list_items">أنت تستخدم %1$s من أصل %2$s من عناصر القائمة المجانية المتاحة لك.</string>
+  <string name="vip_nudge_within_lists">أنت تستخدم %1$s من أصل %2$s من القوائم المجانية المتاحة لك.</string>
+  <string name="vip_nudge_within_notes">أنت تستخدم %1$s من أصل %2$s من الملاحظات المجانية المتاحة لك.</string>
+  <string name="vip_nudge_within_watchlist_items">أنت تستخدم %1$s من أصل %2$s من عناصر قائمة المشاهدة المجانية المتاحة لك.</string>
   <string name="vip_text_vip_go_beyond_limits">تجاوز حدودك</string>
   <string name="warning_connected_apps_limit">لقد وصلت إلى الحد الأقصى لتطبيقاتك المتصلة. قم بالترقية إلى VIP لتوصيل المزيد.</string>
   <string name="warning_connected_apps_limit_vip">لقد وصلت إلى الحد الأقصى لتطبيقاتك المتصلة</string>

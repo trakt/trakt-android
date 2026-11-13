@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Más bajo</string>
   <string name="button_text_game_play">Jugar</string>
   <string name="button_text_game_play_again">Jugar de nuevo</string>
+  <string name="button_text_get_app_store_version">Obtener la versión de la App Store</string>
   <string name="button_text_get_started">Empezar</string>
   <string name="button_text_get_vip">Conseguir</string>
   <string name="button_text_go_back">Volver</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Emisión</string>
   <string name="header_appearance">Apariencia</string>
   <string name="header_behavior">Comportamiento</string>
+  <string name="header_beta_vip_only">La beta es para miembros VIP</string>
   <string name="header_birthday">Cumpleaños</string>
   <string name="header_calendar">Calendario</string>
   <string name="header_calendar_feed">Fuente del calendario</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d premio</string>
   <string name="text_award_wins_other">%d premios</string>
   <string name="text_award_year_range">de %1$d a %2$d</string>
+  <string name="text_beta_vip_only">Las compras no están disponibles en la beta. Obtén la versión de Trakt de la App Store para hacerte VIP y luego regresa a la beta.</string>
   <string name="text_billing_already_vip">¡Ahora eres un VIP de Trakt!\nGracias por tu apoyo y disfrútalo.</string>
   <string name="text_billing_disclaimer">El pago comienza al final del período de prueba. La suscripción se renueva automáticamente y se factura cada %s hasta que se cancele. Cancela en cualquier momento a través del Centro de Suscripciones de Google Play.</string>
   <string name="text_billing_month_for_free">Prueba 1 mes gratis y luego:</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Mejor soporte: Ayuda y comentarios</string>
   <string name="vip_feature_title_unlock">Desbloquea todo el potencial con</string>
   <string name="vip_feature_title_vip_status">Estado VIP</string>
+  <string name="vip_nudge_action">Ver qué incluye VIP</string>
+  <string name="vip_nudge_close">Cerrar y ocultar durante 14 días</string>
+  <string name="vip_nudge_feature_body">Todos los servicios de streaming, scrobbling de Plex en tiempo real, tu resumen del año y espacio para %1$s elementos en la lista de seguimiento, %2$s elementos de lista, %3$s notas y listas ilimitadas.</string>
+  <string name="vip_nudge_feature_body_short">Todos los servicios de streaming, scrobbling de Plex en tiempo real, tu resumen del año y %s elementos en la lista de seguimiento.</string>
+  <string name="vip_nudge_feature_title">Qué incluye Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">Tienes %1$s elementos de lista, más de los %2$s que incluye el plan gratuito.</string>
+  <string name="vip_nudge_over_lists">Tienes %1$s listas, más de las %2$s que incluye el plan gratuito.</string>
+  <string name="vip_nudge_over_notes">Tienes %1$s notas, más de las %2$s que incluye el plan gratuito.</string>
+  <string name="vip_nudge_over_watchlist_items">Tienes %1$s elementos en la lista de seguimiento, más de los %2$s que incluye el plan gratuito.</string>
+  <string name="vip_nudge_vip_limit_list_items">Con VIP el límite es de %s elementos de lista.</string>
+  <string name="vip_nudge_vip_limit_lists">Con VIP no hay límite de listas.</string>
+  <string name="vip_nudge_vip_limit_notes">Con VIP el límite es de %s notas.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">Con VIP el límite es de %s elementos en la lista de seguimiento.</string>
+  <string name="vip_nudge_within_list_items">Estás usando %1$s de tus %2$s elementos de lista gratuitos.</string>
+  <string name="vip_nudge_within_lists">Estás usando %1$s de tus %2$s listas gratuitas.</string>
+  <string name="vip_nudge_within_notes">Estás usando %1$s de tus %2$s notas gratuitas.</string>
+  <string name="vip_nudge_within_watchlist_items">Estás usando %1$s de tus %2$s elementos gratuitos en la lista de seguimiento.</string>
   <string name="vip_text_vip_go_beyond_limits">Supera tus límites</string>
   <string name="warning_connected_apps_limit">Has alcanzado tu límite de aplicaciones conectadas. Actualiza a VIP para conectar más.</string>
   <string name="warning_connected_apps_limit_vip">Has alcanzado tu límite de aplicaciones conectadas</string>

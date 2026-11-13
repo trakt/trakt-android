@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Lebih Rendah</string>
   <string name="button_text_game_play">Mainkan</string>
   <string name="button_text_game_play_again">Main lagi</string>
+  <string name="button_text_get_app_store_version">Dapatkan versi App Store</string>
   <string name="button_text_get_started">Mulai</string>
   <string name="button_text_get_vip">Dapatkan</string>
   <string name="button_text_go_back">Kembali</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Tayang</string>
   <string name="header_appearance">Penampilan</string>
   <string name="header_behavior">Perilaku</string>
+  <string name="header_beta_vip_only">Versi beta hanya untuk anggota VIP</string>
   <string name="header_birthday">Ulang Tahun</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Umpan Kalender</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d kemenangan</string>
   <string name="text_award_wins_other">%d kemenangan</string>
   <string name="text_award_year_range">%1$d hingga %2$d</string>
+  <string name="text_beta_vip_only">Pembelian tidak tersedia di versi beta. Dapatkan Trakt versi App Store untuk meningkatkan ke VIP, lalu kembali ke versi beta.</string>
   <string name="text_billing_already_vip">Anda sekarang adalah Trakt VIP!\nTerima kasih atas dukungan Anda dan selamat menikmati.</string>
   <string name="text_billing_disclaimer">Pembayaran dimulai di akhir periode percobaan. Langganan diperbarui secara otomatis, dan ditagih setiap %s hingga dibatalkan. Batalkan kapan saja melalui Pusat Langganan Google Play.</string>
   <string name="text_billing_month_for_free">Coba 1 bulan gratis, lalu:</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Dukungan Lebih Baik: Bantuan &amp; Masukan</string>
   <string name="vip_feature_title_unlock">Buka potensi penuh dengan</string>
   <string name="vip_feature_title_vip_status">Status VIP</string>
+  <string name="vip_nudge_action">Lihat keuntungan VIP</string>
+  <string name="vip_nudge_close">Tutup dan sembunyikan selama 14 hari</string>
+  <string name="vip_nudge_feature_body">Semua layanan streaming, scrobble Plex real-time, kilas balik tahunan Anda, serta ruang untuk %1$s item watchlist, %2$s item daftar, %3$s catatan, dan daftar tanpa batas.</string>
+  <string name="vip_nudge_feature_body_short">Semua layanan streaming, scrobble Plex real-time, kilas balik tahunan Anda, dan %s item watchlist.</string>
+  <string name="vip_nudge_feature_title">Keuntungan Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">Anda memiliki %1$s item daftar, melebihi %2$s item yang disertakan dalam paket gratis.</string>
+  <string name="vip_nudge_over_lists">Anda memiliki %1$s daftar, melebihi %2$s daftar yang disertakan dalam paket gratis.</string>
+  <string name="vip_nudge_over_notes">Anda memiliki %1$s catatan, melebihi %2$s catatan yang disertakan dalam paket gratis.</string>
+  <string name="vip_nudge_over_watchlist_items">Anda memiliki %1$s item watchlist, melebihi %2$s item yang disertakan dalam paket gratis.</string>
+  <string name="vip_nudge_vip_limit_list_items">Dengan VIP batasnya adalah %s item daftar.</string>
+  <string name="vip_nudge_vip_limit_lists">Dengan VIP tidak ada batasan jumlah daftar.</string>
+  <string name="vip_nudge_vip_limit_notes">Dengan VIP batasnya adalah %s catatan.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">Dengan VIP batasnya adalah %s item watchlist.</string>
+  <string name="vip_nudge_within_list_items">Anda menggunakan %1$s dari %2$s item daftar gratis Anda.</string>
+  <string name="vip_nudge_within_lists">Anda menggunakan %1$s dari %2$s daftar gratis Anda.</string>
+  <string name="vip_nudge_within_notes">Anda menggunakan %1$s dari %2$s catatan gratis Anda.</string>
+  <string name="vip_nudge_within_watchlist_items">Anda menggunakan %1$s dari %2$s item watchlist gratis Anda.</string>
   <string name="vip_text_vip_go_beyond_limits">Melampaui batas Anda</string>
   <string name="warning_connected_apps_limit">Anda telah mencapai batas aplikasi yang terhubung. Tingkatkan ke VIP untuk menghubungkan lebih banyak.</string>
   <string name="warning_connected_apps_limit_vip">Anda telah mencapai batas aplikasi yang terhubung</string>

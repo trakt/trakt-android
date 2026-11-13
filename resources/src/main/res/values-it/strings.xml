@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Più basso</string>
   <string name="button_text_game_play">Gioca</string>
   <string name="button_text_game_play_again">Gioca di nuovo</string>
+  <string name="button_text_get_app_store_version">Scarica la versione dall\'App Store</string>
   <string name="button_text_get_started">Inizia</string>
   <string name="button_text_get_vip">Ottieni</string>
   <string name="button_text_go_back">Torna indietro</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">In onda</string>
   <string name="header_appearance">Aspetto</string>
   <string name="header_behavior">Comportamento</string>
+  <string name="header_beta_vip_only">La beta è riservata ai membri VIP</string>
   <string name="header_birthday">Data di nascita</string>
   <string name="header_calendar">Calendario</string>
   <string name="header_calendar_feed">Feed del calendario</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d vittoria</string>
   <string name="text_award_wins_other">%d vittorie</string>
   <string name="text_award_year_range">Dal %1$d al %2$d</string>
+  <string name="text_beta_vip_only">Gli acquisti non sono disponibili nella beta. Scarica la versione di Trakt dall\'App Store per passare a VIP, poi torna alla beta.</string>
   <string name="text_billing_already_vip">Ora sei un VIP di Trakt!\nGrazie per il tuo supporto e buon divertimento.</string>
   <string name="text_billing_disclaimer">Il pagamento inizia alla fine del periodo di prova. L\'abbonamento si rinnova automaticamente e viene fatturato ogni %s fino all\'annullamento. Annulla in qualsiasi momento tramite il Centro Abbonamenti di Google Play.</string>
   <string name="text_billing_month_for_free">Prova 1 mese gratis e poi:</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Supporto migliore: Assistenza e feedback</string>
   <string name="vip_feature_title_unlock">Sblocca il pieno potenziale con</string>
   <string name="vip_feature_title_vip_status">Stato VIP</string>
+  <string name="vip_nudge_action">Scopri cosa include VIP</string>
+  <string name="vip_nudge_close">Chiudi e nascondi per 14 giorni</string>
+  <string name="vip_nudge_feature_body">Tutti i servizi di streaming, scrobbling di Plex in tempo reale, il tuo anno in sintesi e spazio per %1$s elementi nella watchlist, %2$s elementi nelle liste, %3$s note e liste illimitate.</string>
+  <string name="vip_nudge_feature_body_short">Tutti i servizi di streaming, scrobbling di Plex in tempo reale, il tuo anno in sintesi e %s elementi nella watchlist.</string>
+  <string name="vip_nudge_feature_title">Cosa include Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">Hai %1$s elementi nelle liste, più dei %2$s inclusi nel piano gratuito.</string>
+  <string name="vip_nudge_over_lists">Hai %1$s liste, più delle %2$s incluse nel piano gratuito.</string>
+  <string name="vip_nudge_over_notes">Hai %1$s note, più delle %2$s incluse nel piano gratuito.</string>
+  <string name="vip_nudge_over_watchlist_items">Hai %1$s elementi nella watchlist, più dei %2$s inclusi nel piano gratuito.</string>
+  <string name="vip_nudge_vip_limit_list_items">Con VIP il limite è di %s elementi nelle liste.</string>
+  <string name="vip_nudge_vip_limit_lists">Con VIP non ci sono limiti per le liste.</string>
+  <string name="vip_nudge_vip_limit_notes">Con VIP il limite è di %s note.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">Con VIP il limite è di %s elementi nella watchlist.</string>
+  <string name="vip_nudge_within_list_items">Stai usando %1$s dei tuoi %2$s elementi gratuiti nelle liste.</string>
+  <string name="vip_nudge_within_lists">Stai usando %1$s delle tue %2$s liste gratuite.</string>
+  <string name="vip_nudge_within_notes">Stai usando %1$s delle tue %2$s note gratuite.</string>
+  <string name="vip_nudge_within_watchlist_items">Stai usando %1$s dei tuoi %2$s elementi gratuiti nella watchlist.</string>
   <string name="vip_text_vip_go_beyond_limits">Supera i tuoi limiti</string>
   <string name="warning_connected_apps_limit">Hai raggiunto il limite di app connesse. Esegui l\'upgrade a VIP per connetterne di più.</string>
   <string name="warning_connected_apps_limit_vip">Hai raggiunto il limite di app connesse</string>
