@@ -14,8 +14,10 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
+import tv.trakt.trakt.common.data.local.PosterLanguagesLocalSource
 import tv.trakt.trakt.common.data.remote.MediaImagesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import java.time.Instant
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
@@ -58,6 +60,7 @@ private fun appPosterLanguage(): String? {
 
 internal class PosterLanguageInterceptor(
     private val remoteSource: MediaImagesRemoteSource,
+    private val localSource: PosterLanguagesLocalSource,
     private val diskCache: () -> DiskCache?,
 ) : Interceptor {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -100,7 +103,7 @@ internal class PosterLanguageInterceptor(
     private suspend fun hasPosterLanguage(poster: LocalizedPoster): Boolean {
         val key = manifestKey(poster)
         val manifest = manifests.computeIfAbsent(key) {
-            scope.async { fetchPosterLanguages(poster.type, poster.id) }
+            scope.async { loadPosterLanguages(key, poster) }
         }
 
         return try {
@@ -113,7 +116,19 @@ internal class PosterLanguageInterceptor(
         }
     }
 
-    // A missing (404) or unreadable manifest means "no localized posters" and stays cached. Other
+    private suspend fun loadPosterLanguages(
+        key: String,
+        poster: LocalizedPoster,
+    ): Set<String> {
+        val now = Instant.now()
+        localSource.getLanguages(key, now)?.let { return it }
+
+        return fetchPosterLanguages(poster.type, poster.id).also {
+            localSource.putLanguages(key, it, now)
+        }
+    }
+
+    // A missing (404) or unreadable manifest means "no localized posters" and is stored. Other
     // failures throw, so the lookup is retried on the next load.
     private suspend fun fetchPosterLanguages(
         type: String,

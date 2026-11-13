@@ -19,6 +19,7 @@ val coilModule = module {
                 add(
                     PosterLanguageInterceptor(
                         remoteSource = get(),
+                        localSource = get(),
                         diskCache = { get<ImageLoader>().diskCache },
                     ),
                 )

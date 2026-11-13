@@ -31,6 +31,7 @@ import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.PeopleLocalSource
 import tv.trakt.trakt.common.data.local.PopularMoviesLocalSource
 import tv.trakt.trakt.common.data.local.PopularShowsLocalSource
+import tv.trakt.trakt.common.data.local.PosterLanguagesLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedShowsLocalSource
 import tv.trakt.trakt.common.data.local.ReleasesMoviesLocalSource
@@ -52,12 +53,14 @@ import tv.trakt.trakt.common.data.local.UserRatingsLocalSource
 import tv.trakt.trakt.common.data.local.UserReactionsLocalSource
 import tv.trakt.trakt.common.data.local.UserWatchlistLocalSource
 import tv.trakt.trakt.common.data.local.UserWatchlistMinimalLocalSource
+import java.io.File
 import tv.trakt.trakt.common.core.tutorials.di.createStore as createMigratedStore
 
 // File names predate the move to :common; renaming them would drop stored data.
 private const val TODAY_PREFERENCES = "today_preferences_mobile"
 private const val MOVIES_PREFERENCES = "movies_preferences"
 private const val SHOWS_PREFERENCES = "shows_preferences"
+private const val POSTER_LANGUAGES_PREFERENCES = "poster_languages"
 
 val localSourcesModule = module {
     singleOf(::AllActivityLocalSource)
@@ -172,6 +175,25 @@ val localSourcesModule = module {
         createStore(
             context = androidApplication(),
             name = TODAY_PREFERENCES,
+        )
+    }
+
+    single {
+        PosterLanguagesLocalSource(
+            dataStore = get(named(POSTER_LANGUAGES_PREFERENCES)),
+        )
+    }
+
+    // Rebuildable from the network, so it lives in the cache dir and the system may clear it.
+    single<DataStore<Preferences>>(named(POSTER_LANGUAGES_PREFERENCES)) {
+        PreferenceDataStoreFactory.create(
+            corruptionHandler = ReplaceFileCorruptionHandler(
+                produceNewData = { emptyPreferences() },
+            ),
+            scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+            produceFile = {
+                File(androidApplication().cacheDir, "$POSTER_LANGUAGES_PREFERENCES.preferences_pb")
+            },
         )
     }
 }
