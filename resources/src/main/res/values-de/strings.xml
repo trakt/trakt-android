@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Niedriger</string>
   <string name="button_text_game_play">Spielen</string>
   <string name="button_text_game_play_again">Nochmal spielen</string>
+  <string name="button_text_get_app_store_version">App-Store-Version holen</string>
   <string name="button_text_get_started">Starten</string>
   <string name="button_text_get_vip">Holen</string>
   <string name="button_text_go_back">Zurück</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Ausstrahlung</string>
   <string name="header_appearance">Erscheinungsbild</string>
   <string name="header_behavior">Verhalten</string>
+  <string name="header_beta_vip_only">Die Beta ist für VIP-Mitglieder</string>
   <string name="header_birthday">Geburtstag</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Kalender-Feed</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Kann es kaum erwarten</string>
   <string name="hype_tier_looking_good">Sieht gut aus</string>
   <string name="image_alt_comment_gif">Dem Kommentar angehängtes GIF</string>
-  <string name="image_alt_hype_score">%d%% Hype für dich</string>
+  <string name="image_alt_hype_score">%d% Hype für dich</string>
   <string name="image_alt_hype_unknown">Noch kein Hype-Score für dich</string>
   <string name="image_alt_list_preview_poster">Poster für einen Eintrag in %s</string>
-  <string name="image_alt_match_score">%d%% Übereinstimmung für dich</string>
+  <string name="image_alt_match_score">%d% Übereinstimmung für dich</string>
   <string name="image_alt_match_unknown">Noch kein Match-Score für dich</string>
   <string name="image_alt_media_poster">Poster von \"%s\"</string>
   <string name="image_alt_person_headshot">Porträt von %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Seelenverwandte</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Übereinstimmung:</string>
-  <string name="match_pill_aria_label">%1$d%% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
+  <string name="match_pill_aria_label">%1$d% Übereinstimmung, %2$s. Übereinstimmungsdetails öffnen.</string>
   <string name="match_pill_loading_aria_label">Übereinstimmungswert wird berechnet</string>
   <string name="match_tier_good_fit">Passt gut</string>
   <string name="match_tier_maybe">Vielleicht</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Nur Webhook</string>
   <string name="tag_mixtape_different_mood">Andere Stimmung</string>
   <string name="tag_mixtape_kept">Behalten</string>
-  <string name="tag_mixtape_match">%s%% Übereinstimmung</string>
+  <string name="tag_mixtape_match">%s% Übereinstimmung</string>
   <string name="tag_mixtape_tap_details">Für Details tippen</string>
   <string name="tag_text_award_nominee">Nominiert</string>
   <string name="tag_text_award_pending">Nominiert</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d Gewinn</string>
   <string name="text_award_wins_other">%d Gewinne</string>
   <string name="text_award_year_range">%1$d bis %2$d</string>
+  <string name="text_beta_vip_only">Käufe sind in der Beta nicht verfügbar. Hol dir die App-Store-Version von Trakt, um auf VIP zu upgraden, und kehre dann zur Beta zurück.</string>
   <string name="text_billing_already_vip">Sie sind jetzt ein Trakt-VIP!\nVielen Dank für Ihre Unterstützung und viel Spaß.</string>
   <string name="text_billing_disclaimer">Die Zahlung beginnt am Ende des Testzeitraums. Das Abonnement verlängert sich automatisch und wird jeden %s abgerechnet, bis es gekündigt wird. Sie können jederzeit über das Google Play Abo-Center kündigen.</string>
   <string name="text_billing_month_for_free">1 Monat kostenlos testen und dann:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">Synchronisierungs-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synchronisierungs-ID %1$d (%2$s)</string>
   <string name="text_hype_lists">Einer der meistgelisteten kommenden Titel</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">Wird laufend zu Listen hinzugefügt</string>
   <string name="text_hype_out_on">Ab %s</string>
   <string name="text_hype_series_about">Etwa wie du sonst bewertest</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">Dein Score ist kostenlos. Die Gründe dahinter sind ein VIP-Feature.</string>
   <string name="text_match_basis_history">Basierend auf dem, was du gesehen, bewertet und favorisiert hast.</string>
   <string name="text_match_because_liked">Weil dir Folgendes gefallen hat</string>
-  <string name="text_match_better_than">Passt besser zu dir als %d%% der Titel</string>
+  <string name="text_match_better_than">Passt besser zu dir als %d% der Titel</string>
   <string name="text_match_not_enough_data">Noch nicht genügend Daten, um dies für dich abzugleichen.</string>
   <string name="text_match_rating_liked">Auf Trakt beliebt</string>
   <string name="text_match_rating_loved">Auf Trakt geliebt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Besserer Support: Hilfe &amp; Feedback</string>
   <string name="vip_feature_title_unlock">Schalten Sie das volle Potenzial frei mit</string>
   <string name="vip_feature_title_vip_status">VIP-Status</string>
+  <string name="vip_nudge_action">Sieh, was VIP beinhaltet</string>
+  <string name="vip_nudge_close">Schließen und für 14 Tage ausblenden</string>
+  <string name="vip_nudge_feature_body">Jeder Streamingdienst, Plex-Scrobbling in Echtzeit, dein Jahresrückblick und Platz für %1$s Watchlist-Einträge, %2$s Listeneinträge, %3$s Notizen und unbegrenzte Listen.</string>
+  <string name="vip_nudge_feature_body_short">Jeder Streamingdienst, Plex-Scrobbling in Echtzeit, dein Jahresrückblick und %s Watchlist-Einträge.</string>
+  <string name="vip_nudge_feature_title">Was Trakt VIP beinhaltet</string>
+  <string name="vip_nudge_over_list_items">Du hast %1$s Listeneinträge, mehr als die %2$s, die im kostenlosen Tarif enthalten sind.</string>
+  <string name="vip_nudge_over_lists">Du hast %1$s Listen, mehr als die %2$s, die im kostenlosen Tarif enthalten sind.</string>
+  <string name="vip_nudge_over_notes">Du hast %1$s Notizen, mehr als die %2$s, die im kostenlosen Tarif enthalten sind.</string>
+  <string name="vip_nudge_over_watchlist_items">Du hast %1$s Watchlist-Einträge, mehr als die %2$s, die im kostenlosen Tarif enthalten sind.</string>
+  <string name="vip_nudge_vip_limit_list_items">Mit VIP liegt das Limit bei %s Listeneinträgen.</string>
+  <string name="vip_nudge_vip_limit_lists">Mit VIP gibt es kein Limit für Listen.</string>
+  <string name="vip_nudge_vip_limit_notes">Mit VIP liegt das Limit bei %s Notizen.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">Mit VIP liegt das Limit bei %s Watchlist-Einträgen.</string>
+  <string name="vip_nudge_within_list_items">Du nutzt %1$s deiner %2$s kostenlosen Listeneinträge.</string>
+  <string name="vip_nudge_within_lists">Du nutzt %1$s deiner %2$s kostenlosen Listen.</string>
+  <string name="vip_nudge_within_notes">Du nutzt %1$s deiner %2$s kostenlosen Notizen.</string>
+  <string name="vip_nudge_within_watchlist_items">Du nutzt %1$s deiner %2$s kostenlosen Watchlist-Einträge.</string>
   <string name="vip_text_vip_go_beyond_limits">Gehe über deine Grenzen hinaus</string>
   <string name="warning_connected_apps_limit">Sie haben Ihr Limit für verbundene Apps erreicht. Upgraden Sie auf VIP, um weitere zu verbinden.</string>
   <string name="warning_connected_apps_limit_vip">Sie haben Ihr Limit für verbundene Apps erreicht</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Keine (kein Hybrid)</string>
   <string name="yir_2026_preview_runner_up">Zweitplatzierter</string>
   <string name="yir_2026_preview_title">Persona-Vorschau</string>
-  <string name="yir_2026_rarity">Nur %1$d%% sind %2$s</string>
+  <string name="yir_2026_rarity">Nur %1$d% sind %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Ein bisschen %s</string>
   <string name="yir_2026_reel_and_you_are">Und du bist</string>
   <string name="yir_2026_reel_but_mostly">Aber hauptsächlich</string>

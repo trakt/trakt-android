@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Daha Düşük</string>
   <string name="button_text_game_play">Oyna</string>
   <string name="button_text_game_play_again">Tekrar oyna</string>
+  <string name="button_text_get_app_store_version">App Store sürümünü edinin</string>
   <string name="button_text_get_started">Başla</string>
   <string name="button_text_get_vip">Al</string>
   <string name="button_text_go_back">Geri dön</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Yayınlanır</string>
   <string name="header_appearance">Görünüm</string>
   <string name="header_behavior">Davranış</string>
+  <string name="header_beta_vip_only">Beta VIP üyelere özeldir</string>
   <string name="header_birthday">Doğum Günü</string>
   <string name="header_calendar">Takvim</string>
   <string name="header_calendar_feed">Takvim akışı</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Sabırsızlıkla bekleniyor</string>
   <string name="hype_tier_looking_good">İyi görünüyor</string>
   <string name="image_alt_comment_gif">Yoruma eklenmiş GIF</string>
-  <string name="image_alt_hype_score">Sizin için %d%% beklenti</string>
+  <string name="image_alt_hype_score">Sizin için %d% beklenti</string>
   <string name="image_alt_hype_unknown">Sizin için henüz beklenti puanı yok</string>
   <string name="image_alt_list_preview_poster">%s listesindeki bir öğenin afişi</string>
-  <string name="image_alt_match_score">Sizin için %d%% eşleşme</string>
+  <string name="image_alt_match_score">Sizin için %d% eşleşme</string>
   <string name="image_alt_match_unknown">Sizin için henüz eşleşme puanı yok</string>
   <string name="image_alt_media_poster">\"%s\" afişi</string>
   <string name="image_alt_person_headshot">%s baş fotoğrafı</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Ruh Eşleri</string>
   <string name="match_label_spin_off">Yan Ürün</string>
   <string name="match_pill_anchor">Uyum:</string>
-  <string name="match_pill_aria_label">%1$d%% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
+  <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
   <string name="match_tier_good_fit">İyi seçim</string>
   <string name="match_tier_maybe">Belki</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Yalnızca Webhook</string>
   <string name="tag_mixtape_different_mood">Farklı Ruh Hali</string>
   <string name="tag_mixtape_kept">Saklandı</string>
-  <string name="tag_mixtape_match">%s%% eşleşme</string>
+  <string name="tag_mixtape_match">%s% eşleşme</string>
   <string name="tag_mixtape_tap_details">Detaylar için dokun</string>
   <string name="tag_text_award_nominee">Aday</string>
   <string name="tag_text_award_pending">Aday gösterildi</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d ödül</string>
   <string name="text_award_wins_other">%d ödül</string>
   <string name="text_award_year_range">%1$d ila %2$d arası</string>
+  <string name="text_beta_vip_only">Beta sürümünde satın alma işlemi yapılamaz. VIP\'ye yükseltmek için Trakt\'ın App Store sürümünü edinin, ardından beta sürümüne geri dönün.</string>
   <string name="text_billing_already_vip">Artık bir Trakt VIP\'siniz!\nDesteğiniz için teşekkür ederiz, keyfini çıkarın.</string>
   <string name="text_billing_disclaimer">Ödeme deneme süresi sonunda başlar. Abonelik otomatik olarak yenilenir ve iptal edilene kadar her %s faturalandırılır. Google Play Abonelik Merkezi üzerinden istediğiniz zaman iptal edebilirsiniz.</string>
   <string name="text_billing_month_for_free">1 ay ücretsiz deneyin ve sonra:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">Senkronizasyon Kimliği %d</string>
   <string name="text_history_sync_filter_with_source">Senkronizasyon Kimliği %1$d (%2$s)</string>
   <string name="text_hype_lists">Listelere en çok eklenen yaklaşan yapımlardan biri</string>
-  <string name="text_hype_lists_badge">İlk %s%%</string>
+  <string name="text_hype_lists_badge">İlk %s%</string>
   <string name="text_hype_lists_detail">İnsanlar listelerine eklemeye devam ediyor</string>
   <string name="text_hype_out_on">Çıkış: %s</string>
   <string name="text_hype_series_about">Genelde verdiğiniz düzeyde</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">Puanınız ücretsizdir. Arkasındaki nedenler bir VIP özelliğidir.</string>
   <string name="text_match_basis_history">İzlediklerinize, puanladıklarınıza ve favorilerinize göre.</string>
   <string name="text_match_because_liked">Beğendiğiniz için</string>
-  <string name="text_match_better_than">Sizin için yapımların %d%%\'inden daha iyi bir eşleşme</string>
+  <string name="text_match_better_than">Sizin için yapımların %d%\'inden daha iyi bir eşleşme</string>
   <string name="text_match_not_enough_data">Bunu sizinle eşleştirmek için henüz yeterli veri yok.</string>
   <string name="text_match_rating_liked">Trakt\'ta beğenildi</string>
   <string name="text_match_rating_loved">Trakt\'ta çok sevildi</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Daha İyi Destek: Yardım &amp; Geri Bildirim</string>
   <string name="vip_feature_title_unlock">Tüm potansiyelinizi şunlarla açın:</string>
   <string name="vip_feature_title_vip_status">VIP Durumu</string>
+  <string name="vip_nudge_action">VIP\'nin neleri içerdiğini görün</string>
+  <string name="vip_nudge_close">Kapat ve 14 gün boyunca gizle</string>
+  <string name="vip_nudge_feature_body">Tüm yayın servisleri, gerçek zamanlı Plex scrobble desteği, yıl özetiniz ve %1$s izleme listesi ögesi, %2$s liste ögesi, %3$s not ve sınırsız liste için alan.</string>
+  <string name="vip_nudge_feature_body_short">Tüm yayın servisleri, gerçek zamanlı Plex scrobble desteği, yıl özetiniz ve %s izleme listesi ögesi.</string>
+  <string name="vip_nudge_feature_title">Trakt VIP neleri içerir</string>
+  <string name="vip_nudge_over_list_items">%1$s liste ögeniz var; bu, ücretsiz planın içerdiği %2$s ögeden daha fazla.</string>
+  <string name="vip_nudge_over_lists">%1$s listeniz var; bu, ücretsiz planın içerdiği %2$s listeden daha fazla.</string>
+  <string name="vip_nudge_over_notes">%1$s notunuz var; bu, ücretsiz planın içerdiği %2$s nottan daha fazla.</string>
+  <string name="vip_nudge_over_watchlist_items">%1$s izleme listesi ögeniz var; bu, ücretsiz planın içerdiği %2$s ögeden daha fazla.</string>
+  <string name="vip_nudge_vip_limit_list_items">VIP ile sınır %s liste ögesidir.</string>
+  <string name="vip_nudge_vip_limit_lists">VIP ile liste sınırı yoktur.</string>
+  <string name="vip_nudge_vip_limit_notes">VIP ile sınır %s nottur.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">VIP ile sınır %s izleme listesi ögesidir.</string>
+  <string name="vip_nudge_within_list_items">%1$s ücretsiz liste ögenizin %2$s tanesini kullanıyorsunuz.</string>
+  <string name="vip_nudge_within_lists">%1$s ücretsiz listenizin %2$s tanesini kullanıyorsunuz.</string>
+  <string name="vip_nudge_within_notes">%1$s ücretsiz notunuzun %2$s tanesini kullanıyorsunuz.</string>
+  <string name="vip_nudge_within_watchlist_items">%1$s ücretsiz izleme listesi ögenizin %2$s tanesini kullanıyorsunuz.</string>
   <string name="vip_text_vip_go_beyond_limits">Sınırlarınızın ötesine geçin</string>
   <string name="warning_connected_apps_limit">Bağlı uygulama limitinize ulaştınız. Daha fazla bağlantı için VIP\'e yükseltin.</string>
   <string name="warning_connected_apps_limit_vip">Bağlı uygulama limitinize ulaştınız</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Yok (hibrit yok)</string>
   <string name="yir_2026_preview_runner_up">İkinci</string>
   <string name="yir_2026_preview_title">Kişilik önizlemesi</string>
-  <string name="yir_2026_rarity">Sadece %1$d%% %2$s.</string>
+  <string name="yir_2026_rarity">Sadece %1$d% %2$s.</string>
   <string name="yir_2026_reel_a_little_bit">Biraz %s</string>
   <string name="yir_2026_reel_and_you_are">Ve siz</string>
   <string name="yir_2026_reel_but_mostly">Ama çoğunlukla</string>

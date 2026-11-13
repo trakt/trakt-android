@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Χαμηλότερο</string>
   <string name="button_text_game_play">Παίξτε</string>
   <string name="button_text_game_play_again">Παίξτε ξανά</string>
+  <string name="button_text_get_app_store_version">Αποκτήστε την έκδοση του App Store</string>
   <string name="button_text_get_started">Έναρξη</string>
   <string name="button_text_get_vip">Αποκτήστε</string>
   <string name="button_text_go_back">Επιστροφή</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Προβάλλεται</string>
   <string name="header_appearance">Εμφάνιση</string>
   <string name="header_behavior">Συμπεριφορά</string>
+  <string name="header_beta_vip_only">Η έκδοση beta είναι για μέλη VIP</string>
   <string name="header_birthday">Γενέθλια</string>
   <string name="header_calendar">Ημερολόγιο</string>
   <string name="header_calendar_feed">Ροή ημερολογίου</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Ανυπομονώ</string>
   <string name="hype_tier_looking_good">Φαίνεται καλό</string>
   <string name="image_alt_comment_gif">GIF συνημμένο στο σχόλιο</string>
-  <string name="image_alt_hype_score">%d%% hype για εσάς</string>
+  <string name="image_alt_hype_score">%d% hype για εσάς</string>
   <string name="image_alt_hype_unknown">Δεν υπάρχει ακόμη βαθμολογία hype για εσάς</string>
   <string name="image_alt_list_preview_poster">Αφίσα για μια καταχώριση στο %s</string>
-  <string name="image_alt_match_score">%d%% αντιστοιχία για εσάς</string>
+  <string name="image_alt_match_score">%d% αντιστοιχία για εσάς</string>
   <string name="image_alt_match_unknown">Δεν υπάρχει ακόμη βαθμολογία αντιστοίχισης για εσάς</string>
   <string name="image_alt_media_poster">Αφίσα του \"%s\"</string>
   <string name="image_alt_person_headshot">Φωτογραφία προσώπου του %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Ψυχές Συγγενείς</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Ταίριασμα:</string>
-  <string name="match_pill_aria_label">%1$d%% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
+  <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
   <string name="match_tier_good_fit">Καλό ταίριασμα</string>
   <string name="match_tier_maybe">Ίσως</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Μόνο Webhook</string>
   <string name="tag_mixtape_different_mood">Διαφορετική διάθεση</string>
   <string name="tag_mixtape_kept">Διατηρήθηκε</string>
-  <string name="tag_mixtape_match">%s%% αντιστοιχία</string>
+  <string name="tag_mixtape_match">%s% αντιστοιχία</string>
   <string name="tag_mixtape_tap_details">Πατήστε για λεπτομέρειες</string>
   <string name="tag_text_award_nominee">Υποψηφιότητα</string>
   <string name="tag_text_award_pending">Υποψήφιο</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d νίκη</string>
   <string name="text_award_wins_other">%d νίκες</string>
   <string name="text_award_year_range">Από %1$d έως %2$d</string>
+  <string name="text_beta_vip_only">Οι αγορές δεν είναι διαθέσιμες στην έκδοση beta. Κατεβάστε την έκδοση του Trakt από το App Store για να αναβαθμίσετε σε VIP και, στη συνέχεια, επιστρέψτε στην έκδοση beta.</string>
   <string name="text_billing_already_vip">Είστε τώρα Trakt VIP!\nΣας ευχαριστούμε για την υποστήριξή σας και απολαύστε.</string>
   <string name="text_billing_disclaimer">Η πληρωμή ξεκινά στο τέλος της δοκιμαστικής περιόδου. Η συνδρομή ανανεώνεται αυτόματα και χρεώνεται κάθε %s μέχρι την ακύρωση. Ακύρωση ανά πάσα στιγμή μέσω του Κέντρου Συνδρομών Google Play.</string>
   <string name="text_billing_month_for_free">Δοκιμάστε 1 μήνα δωρεάν και μετά:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">Αναγνωριστικό συγχρονισμού %d</string>
   <string name="text_history_sync_filter_with_source">Αναγνωριστικό συγχρονισμού %1$d (%2$s)</string>
   <string name="text_hype_lists">Από τους επερχόμενους τίτλους στις περισσότερες λίστες</string>
-  <string name="text_hype_lists_badge">Κορυφαίο %s%%</string>
+  <string name="text_hype_lists_badge">Κορυφαίο %s%</string>
   <string name="text_hype_lists_detail">Ο κόσμος συνεχίζει να το προσθέτει στις λίστες του</string>
   <string name="text_hype_out_on">Κυκλοφορεί %s</string>
   <string name="text_hype_series_about">Περίπου στα συνηθισμένα σας</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">Η βαθμολογία σας είναι δωρεάν. Οι λόγοι πίσω από αυτήν είναι λειτουργία VIP.</string>
   <string name="text_match_basis_history">Από όσα παρακολουθήσατε, βαθμολογήσατε και προσθέσατε στα αγαπημένα.</string>
   <string name="text_match_because_liked">Επειδή σας άρεσε</string>
-  <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d%% των τίτλων</string>
+  <string name="text_match_better_than">Καλύτερη αντιστοιχία για εσάς από το %d% των τίτλων</string>
   <string name="text_match_not_enough_data">Δεν υπάρχουν ακόμη αρκετά δεδομένα για να αντιστοιχιστεί σε εσάς.</string>
   <string name="text_match_rating_liked">Άρεσε στο Trakt</string>
   <string name="text_match_rating_loved">Αγαπήθηκε στο Trakt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Καλύτερη υποστήριξη: Βοήθεια &amp; Σχόλια</string>
   <string name="vip_feature_title_unlock">Ξεκλειδώστε πλήρως τις δυνατότητες με</string>
   <string name="vip_feature_title_vip_status">Κατάσταση VIP</string>
+  <string name="vip_nudge_action">Δείτε τι περιλαμβάνει το VIP</string>
+  <string name="vip_nudge_close">Κλείσιμο και απόκρυψη για 14 ημέρες</string>
+  <string name="vip_nudge_feature_body">Κάθε υπηρεσία streaming, scrobbling Plex σε πραγματικό χρόνο, την ετήσια ανασκόπησή σας και χώρο για %1$s στοιχεία watchlist, %2$s στοιχεία λίστας, %3$s σημειώσεις και απεριόριστες λίστες.</string>
+  <string name="vip_nudge_feature_body_short">Κάθε υπηρεσία streaming, scrobbling Plex σε πραγματικό χρόνο, την ετήσια ανασκόπησή σας και %s στοιχεία watchlist.</string>
+  <string name="vip_nudge_feature_title">Τι περιλαμβάνει το Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">Έχετε %1$s στοιχεία λίστας, περισσότερα από τα %2$s που περιλαμβάνει το δωρεάν πρόγραμμα.</string>
+  <string name="vip_nudge_over_lists">Έχετε %1$s λίστες, περισσότερες από τις %2$s που περιλαμβάνει το δωρεάν πρόγραμμα.</string>
+  <string name="vip_nudge_over_notes">Έχετε %1$s σημειώσεις, περισσότερες από τις %2$s που περιλαμβάνει το δωρεάν πρόγραμμα.</string>
+  <string name="vip_nudge_over_watchlist_items">Έχετε %1$s στοιχεία watchlist, περισσότερα από τα %2$s που περιλαμβάνει το δωρεάν πρόγραμμα.</string>
+  <string name="vip_nudge_vip_limit_list_items">Με το VIP το όριο είναι %s στοιχεία λίστας.</string>
+  <string name="vip_nudge_vip_limit_lists">Με το VIP δεν υπάρχει όριο στις λίστες.</string>
+  <string name="vip_nudge_vip_limit_notes">Με το VIP το όριο είναι %s σημειώσεις.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">Με το VIP το όριο είναι %s στοιχεία watchlist.</string>
+  <string name="vip_nudge_within_list_items">Χρησιμοποιείτε %1$s από τα %2$s δωρεάν στοιχεία λίστας σας.</string>
+  <string name="vip_nudge_within_lists">Χρησιμοποιείτε %1$s από τις %2$s δωρεάν λίστες σας.</string>
+  <string name="vip_nudge_within_notes">Χρησιμοποιείτε %1$s από τις %2$s δωρεάν σημειώσεις σας.</string>
+  <string name="vip_nudge_within_watchlist_items">Χρησιμοποιείτε %1$s από τα %2$s δωρεάν στοιχεία watchlist σας.</string>
   <string name="vip_text_vip_go_beyond_limits">Ξεπεράστε τα όριά σας</string>
   <string name="warning_connected_apps_limit">Έχετε φτάσει το όριο των συνδεδεμένων εφαρμογών σας. Αναβαθμίστε σε VIP για να συνδέσετε περισσότερες.</string>
   <string name="warning_connected_apps_limit_vip">Έχετε φτάσει το όριο των συνδεδεμένων εφαρμογών σας</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Κανένα (όχι υβρίδιο)</string>
   <string name="yir_2026_preview_runner_up">Επιλαχών</string>
   <string name="yir_2026_preview_title">Προεπισκόπηση προφίλ</string>
-  <string name="yir_2026_rarity">Μόνο το %1$d%% είναι %2$s</string>
+  <string name="yir_2026_rarity">Μόνο το %1$d% είναι %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Λίγο %s</string>
   <string name="yir_2026_reel_and_you_are">Και είστε</string>
   <string name="yir_2026_reel_but_mostly">Αλλά κυρίως</string>

@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Нижче</string>
   <string name="button_text_game_play">Грати</string>
   <string name="button_text_game_play_again">Зіграти знову</string>
+  <string name="button_text_get_app_store_version">Завантажити версію з App Store</string>
   <string name="button_text_get_started">Почати</string>
   <string name="button_text_get_vip">Отримати</string>
   <string name="button_text_go_back">Назад</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Виходить</string>
   <string name="header_appearance">Вигляд</string>
   <string name="header_behavior">Поведінка</string>
+  <string name="header_beta_vip_only">Бета-версія лише для VIP-учасників</string>
   <string name="header_birthday">День народження</string>
   <string name="header_calendar">Календар</string>
   <string name="header_calendar_feed">Стрічка календаря</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Не дочекаюся</string>
   <string name="hype_tier_looking_good">Виглядає цікаво</string>
   <string name="image_alt_comment_gif">GIF, прикріплений до коментаря</string>
-  <string name="image_alt_hype_score">%d%% очікування для вас</string>
+  <string name="image_alt_hype_score">%d% очікування для вас</string>
   <string name="image_alt_hype_unknown">Ще немає оцінки очікування для вас</string>
   <string name="image_alt_list_preview_poster">Постер до елемента в %s</string>
-  <string name="image_alt_match_score">%d%% відповідності для вас</string>
+  <string name="image_alt_match_score">%d% відповідності для вас</string>
   <string name="image_alt_match_unknown">Ще немає оцінки відповідності для вас</string>
   <string name="image_alt_media_poster">Постер \"%s\"</string>
   <string name="image_alt_person_headshot">Портрет %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Споріднені душі</string>
   <string name="match_label_spin_off">Спін-офф</string>
   <string name="match_pill_anchor">Збіг:</string>
-  <string name="match_pill_aria_label">%1$d%% відповідності, %2$s. Відкрити деталі відповідності.</string>
+  <string name="match_pill_aria_label">%1$d% відповідності, %2$s. Відкрити деталі відповідності.</string>
   <string name="match_pill_loading_aria_label">Обчислення оцінки сумісності</string>
   <string name="match_tier_good_fit">Добре підходить</string>
   <string name="match_tier_maybe">Можливо</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Вебхук лише</string>
   <string name="tag_mixtape_different_mood">Інший настрій</string>
   <string name="tag_mixtape_kept">Збережено</string>
-  <string name="tag_mixtape_match">%s%% збіг</string>
+  <string name="tag_mixtape_match">%s% збіг</string>
   <string name="tag_mixtape_tap_details">Торкніться, щоб дізнатися деталі</string>
   <string name="tag_text_award_nominee">Номінант</string>
   <string name="tag_text_award_pending">Номіновано</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d перемога</string>
   <string name="text_award_wins_other">%d перемог</string>
   <string name="text_award_year_range">З %1$d до %2$d</string>
+  <string name="text_beta_vip_only">Покупки недоступні в бета-версії. Завантажте версію Trakt з App Store, щоб перейти на VIP, а потім повертайтеся до бета-версії.</string>
   <string name="text_billing_already_vip">Тепер ви Trakt VIP!\nДякуємо за вашу підтримку та насолоджуйтесь.</string>
   <string name="text_billing_disclaimer">Оплата починається після закінчення пробного періоду. Підписка автоматично поновлюється і оплачується кожен %s до скасування. Скасувати можна в будь-який час через Центр підписок Google Play.</string>
   <string name="text_billing_month_for_free">Спробуйте 1 місяць безкоштовно, а потім:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">ID синхронізації %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hype_lists">Один із найпопулярніших майбутніх релізів у списках</string>
-  <string name="text_hype_lists_badge">Топ-%s%%</string>
+  <string name="text_hype_lists_badge">Топ-%s%</string>
   <string name="text_hype_lists_detail">Люди продовжують додавати його до своїх списків</string>
   <string name="text_hype_out_on">Реліз: %s</string>
   <string name="text_hype_series_about">Приблизно як зазвичай</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">Ваша оцінка безкоштовна. Причини її формування — це VIP-функція.</string>
   <string name="text_match_basis_history">На основі переглянутого, оціненого та доданого в обране.</string>
   <string name="text_match_because_liked">Тому що вам сподобалося</string>
-  <string name="text_match_better_than">Підходить вам краще, ніж %d%% тайтлів</string>
+  <string name="text_match_better_than">Підходить вам краще, ніж %d% тайтлів</string>
   <string name="text_match_not_enough_data">Ще недостатньо даних, щоб визначити відповідність для вас.</string>
   <string name="text_match_rating_liked">Подобається на Trakt</string>
   <string name="text_match_rating_loved">Обожнюють на Trakt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Краща підтримка: Допомога та відгуки</string>
   <string name="vip_feature_title_unlock">Розкрийте повний потенціал з</string>
   <string name="vip_feature_title_vip_status">VIP Статус</string>
+  <string name="vip_nudge_action">Дізнатися, що входить до VIP</string>
+  <string name="vip_nudge_close">Закрити та приховати на 14 днів</string>
+  <string name="vip_nudge_feature_body">Усі стрімінгові сервіси, скроблінг Plex у реальному часі, ваші підсумки року, а також місце для %1$s пунктів списку перегляду, %2$s пунктів списків, %3$s нотаток і необмежена кількість списків.</string>
+  <string name="vip_nudge_feature_body_short">Усі стрімінгові сервіси, скроблінг Plex у реальному часі, ваші підсумки року та %s пунктів списку перегляду.</string>
+  <string name="vip_nudge_feature_title">Що входить до Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">У вас %1$s пунктів списків, що більше за %2$s, які входять до безкоштовного плану.</string>
+  <string name="vip_nudge_over_lists">У вас %1$s списків, що більше за %2$s, які входять до безкоштовного плану.</string>
+  <string name="vip_nudge_over_notes">У вас %1$s нотаток, що більше за %2$s, які входять до безкоштовного плану.</string>
+  <string name="vip_nudge_over_watchlist_items">У вас %1$s пунктів списку перегляду, що більше за %2$s, які входять до безкоштовного плану.</string>
+  <string name="vip_nudge_vip_limit_list_items">З VIP ліміт становить %s пунктів списків.</string>
+  <string name="vip_nudge_vip_limit_lists">З VIP немає обмежень на кількість списків.</string>
+  <string name="vip_nudge_vip_limit_notes">З VIP ліміт становить %s нотаток.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">З VIP ліміт становить %s пунктів списку перегляду.</string>
+  <string name="vip_nudge_within_list_items">Ви використовуєте %1$s із %2$s безкоштовних пунктів списків.</string>
+  <string name="vip_nudge_within_lists">Ви використовуєте %1$s із %2$s безкоштовних списків.</string>
+  <string name="vip_nudge_within_notes">Ви використовуєте %1$s із %2$s безкоштовних нотаток.</string>
+  <string name="vip_nudge_within_watchlist_items">Ви використовуєте %1$s із %2$s безкоштовних пунктів списку перегляду.</string>
   <string name="vip_text_vip_go_beyond_limits">Перевершіть свої можливості</string>
   <string name="warning_connected_apps_limit">Ви досягли ліміту підключених застосунків. Оновіть до VIP, щоб підключити більше.</string>
   <string name="warning_connected_apps_limit_vip">Ви досягли ліміту підключених застосунків</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Немає (без гібрида)</string>
   <string name="yir_2026_preview_runner_up">Друге місце</string>
   <string name="yir_2026_preview_title">Попередній перегляд персони</string>
-  <string name="yir_2026_rarity">Лише %1$d%% є %2$s</string>
+  <string name="yir_2026_rarity">Лише %1$d% є %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Трохи %s</string>
   <string name="yir_2026_reel_and_you_are">І ви є</string>
   <string name="yir_2026_reel_but_mostly">Але переважно</string>

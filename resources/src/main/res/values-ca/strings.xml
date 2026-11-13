@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Més baix</string>
   <string name="button_text_game_play">Juga</string>
   <string name="button_text_game_play_again">Torna a jugar</string>
+  <string name="button_text_get_app_store_version">Aconsegueix la versió de l\'App Store</string>
   <string name="button_text_get_started">Comença</string>
   <string name="button_text_get_vip">Obtén</string>
   <string name="button_text_go_back">Torna enrere</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">S\'emet</string>
   <string name="header_appearance">Apariència</string>
   <string name="header_behavior">Comportament</string>
+  <string name="header_beta_vip_only">La versió beta és per a membres VIP</string>
   <string name="header_birthday">Aniversari</string>
   <string name="header_calendar">Calendari</string>
   <string name="header_calendar_feed">Font de calendari</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Quines ganes</string>
   <string name="hype_tier_looking_good">Pinta bé</string>
   <string name="image_alt_comment_gif">GIF adjunt al comentari</string>
-  <string name="image_alt_hype_score">%d%% d\'expectació per a tu</string>
+  <string name="image_alt_hype_score">%d% d\'expectació per a tu</string>
   <string name="image_alt_hype_unknown">Encara no hi ha cap puntuació d\'expectació per a tu</string>
   <string name="image_alt_list_preview_poster">Pòster d\'una entrada a %s</string>
-  <string name="image_alt_match_score">%d%% de coincidència per a tu</string>
+  <string name="image_alt_match_score">%d% de coincidència per a tu</string>
   <string name="image_alt_match_unknown">Encara no hi ha cap puntuació de coincidència per a tu</string>
   <string name="image_alt_media_poster">Pòster de \"%s\"</string>
   <string name="image_alt_person_headshot">Retrat de %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Ànimes bessones</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidència:</string>
-  <string name="match_pill_aria_label">%1$d%% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
+  <string name="match_pill_aria_label">%1$d% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
   <string name="match_tier_good_fit">Bona tria</string>
   <string name="match_tier_maybe">Potser</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Només Webhook</string>
   <string name="tag_mixtape_different_mood">Un altre ambient</string>
   <string name="tag_mixtape_kept">Guardat</string>
-  <string name="tag_mixtape_match">%s%% de coincidència</string>
+  <string name="tag_mixtape_match">%s% de coincidència</string>
   <string name="tag_mixtape_tap_details">Toca per als detalls</string>
   <string name="tag_text_award_nominee">Nominat</string>
   <string name="tag_text_award_pending">Nominat</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d premi</string>
   <string name="text_award_wins_other">%d premis</string>
   <string name="text_award_year_range">de %1$d a %2$d</string>
+  <string name="text_beta_vip_only">Les compres no estan disponibles a la versió beta. Aconsegueix la versió de l\'App Store de Trakt per passar a VIP i després torna a la versió beta.</string>
   <string name="text_billing_already_vip">Ara ets un Trakt VIP! Gràcies pel teu suport i gaudeix-ne.</string>
   <string name="text_billing_disclaimer">El pagament comença al final del període de prova. La subscripció es renova automàticament i es factura cada %s fins que es cancel·li. Pots cancel·lar-la en qualsevol moment a través del Centre de subscripcions de Google Play.</string>
   <string name="text_billing_month_for_free">Prova 1 mes gratis i després:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">ID de sincronització %d</string>
   <string name="text_history_sync_filter_with_source">ID de sincronització %1$d (%2$s)</string>
   <string name="text_hype_lists">Un dels propers títols més afegits a llistes</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">La gent el continua afegint a les seves llistes</string>
   <string name="text_hype_out_on">Estrena el %s</string>
   <string name="text_hype_series_about">Al voltant del que sols valorar</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">La teva puntuació és gratuïta. Els motius que hi ha al darrere són una funció VIP.</string>
   <string name="text_match_basis_history">A partir del que has vist, valorat i afegit a preferits.</string>
   <string name="text_match_because_liked">Perquè t\'ha agradat</string>
-  <string name="text_match_better_than">Encaixa millor amb tu que el %d%% dels títols</string>
+  <string name="text_match_better_than">Encaixa millor amb tu que el %d% dels títols</string>
   <string name="text_match_not_enough_data">Encara no hi ha prou dades per saber si encaixa amb tu.</string>
   <string name="text_match_rating_liked">Agrada a Trakt</string>
   <string name="text_match_rating_loved">Encanta a Trakt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Millor suport: Ajuda i suggeriments</string>
   <string name="vip_feature_title_unlock">Desbloqueja tot el potencial amb</string>
   <string name="vip_feature_title_vip_status">Estat VIP</string>
+  <string name="vip_nudge_action">Consulta què inclou el VIP</string>
+  <string name="vip_nudge_close">Tanca i amaga durant 14 dies</string>
+  <string name="vip_nudge_feature_body">Tots els serveis de streaming, scrobbling de Plex en temps real, el teu resum de l\'any i espai per a %1$s elements a la llista de seguiment, %2$s elements de llista, %3$s notes i llistes il·limitades.</string>
+  <string name="vip_nudge_feature_body_short">Tots els serveis de streaming, scrobbling de Plex en temps real, el teu resum de l\'any i %s elements a la llista de seguiment.</string>
+  <string name="vip_nudge_feature_title">Què inclou Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">Tens %1$s elements de llista, més dels %2$s que inclou el pla gratuït.</string>
+  <string name="vip_nudge_over_lists">Tens %1$s llistes, més de les %2$s que inclou el pla gratuït.</string>
+  <string name="vip_nudge_over_notes">Tens %1$s notes, més de les %2$s que inclou el pla gratuït.</string>
+  <string name="vip_nudge_over_watchlist_items">Tens %1$s elements a la llista de seguiment, més dels %2$s que inclou el pla gratuït.</string>
+  <string name="vip_nudge_vip_limit_list_items">Amb el VIP, el límit és de %s elements de llista.</string>
+  <string name="vip_nudge_vip_limit_lists">Amb el VIP no hi ha cap límit de llistes.</string>
+  <string name="vip_nudge_vip_limit_notes">Amb el VIP, el límit és de %s notes.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">Amb el VIP, el límit és de %s elements a la llista de seguiment.</string>
+  <string name="vip_nudge_within_list_items">Estàs fent servir %1$s dels teus %2$s elements de llista gratuïts.</string>
+  <string name="vip_nudge_within_lists">Estàs fent servir %1$s de les teves %2$s llistes gratuïtes.</string>
+  <string name="vip_nudge_within_notes">Estàs fent servir %1$s de les teves %2$s notes gratuïtes.</string>
+  <string name="vip_nudge_within_watchlist_items">Estàs fent servir %1$s dels teus %2$s elements gratuïts a la llista de seguiment.</string>
   <string name="vip_text_vip_go_beyond_limits">Vés més enllà dels teus límits</string>
   <string name="warning_connected_apps_limit">Has arribat al límit d\'aplicacions connectades. Actualitza a VIP per connectar-ne més.</string>
   <string name="warning_connected_apps_limit_vip">Has arribat al límit d\'aplicacions connectades</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Cap (sense híbrid)</string>
   <string name="yir_2026_preview_runner_up">Subcampió</string>
   <string name="yir_2026_preview_title">Vista prèvia de la personalitat</string>
-  <string name="yir_2026_rarity">Només el %1$d%% són %2$s</string>
+  <string name="yir_2026_rarity">Només el %1$d% són %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Una mica %s</string>
   <string name="yir_2026_reel_and_you_are">I tu ets</string>
   <string name="yir_2026_reel_but_mostly">Però majoritàriament</string>

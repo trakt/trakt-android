@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">下</string>
   <string name="button_text_game_play">プレイ</string>
   <string name="button_text_game_play_again">もう一度プレイ</string>
+  <string name="button_text_get_app_store_version">App Store版を入手</string>
   <string name="button_text_get_started">開始</string>
   <string name="button_text_get_vip">ゲット</string>
   <string name="button_text_go_back">戻る</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">放送</string>
   <string name="header_appearance">外観</string>
   <string name="header_behavior">動作設定</string>
+  <string name="header_beta_vip_only">ベータ版はVIPメンバー限定です</string>
   <string name="header_birthday">誕生日</string>
   <string name="header_calendar">カレンダー</string>
   <string name="header_calendar_feed">カレンダーフィード</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">待ちきれない</string>
   <string name="hype_tier_looking_good">期待大</string>
   <string name="image_alt_comment_gif">コメントに添付されたGIF</string>
-  <string name="image_alt_hype_score">あなたへの期待度: %d%%</string>
+  <string name="image_alt_hype_score">あなたへの期待度: %d%</string>
   <string name="image_alt_hype_unknown">期待度スコアはまだありません</string>
   <string name="image_alt_list_preview_poster">%sのリスト内のエントリのポスター</string>
-  <string name="image_alt_match_score">あなたへのマッチ度: %d%%</string>
+  <string name="image_alt_match_score">あなたへのマッチ度: %d%</string>
   <string name="image_alt_match_unknown">マッチスコアはまだありません</string>
   <string name="image_alt_media_poster">「%s」のポスター</string>
   <string name="image_alt_person_headshot">%sの顔写真</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">ソウルメイト</string>
   <string name="match_label_spin_off">スピンオフ</string>
   <string name="match_pill_anchor">マッチ:</string>
-  <string name="match_pill_aria_label">%1$d%%一致、%2$s。一致の詳細を開く。</string>
+  <string name="match_pill_aria_label">%1$d%一致、%2$s。一致の詳細を開く。</string>
   <string name="match_pill_loading_aria_label">マッチスコアを計算中</string>
   <string name="match_tier_good_fit">好みに合いそう</string>
   <string name="match_tier_maybe">好みに合うかも</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">ウェブフックのみ</string>
   <string name="tag_mixtape_different_mood">別の雰囲気</string>
   <string name="tag_mixtape_kept">キープ済み</string>
-  <string name="tag_mixtape_match">%s%%一致</string>
+  <string name="tag_mixtape_match">%s%一致</string>
   <string name="tag_mixtape_tap_details">タップで詳細</string>
   <string name="tag_text_award_nominee">ノミネート</string>
   <string name="tag_text_award_pending">ノミネート中</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d件の受賞</string>
   <string name="text_award_wins_other">%d件の受賞</string>
   <string name="text_award_year_range">%1$d～%2$d</string>
+  <string name="text_beta_vip_only">ベータ版では購入できません。App Store版のTraktを入手してVIPにアップグレードしてから、ベータ版にお戻りください。</string>
   <string name="text_billing_already_vip">あなたはTrakt VIPになりました！\nご支援ありがとうございます。お楽しみください。</string>
   <string name="text_billing_disclaimer">支払いは試用期間終了後に開始されます。サブスクリプションは自動更新され、キャンセルされるまで毎%s請求されます。Google Playサブスクリプションセンターからいつでもキャンセルできます。</string>
   <string name="text_billing_month_for_free">1ヶ月無料でお試し後:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">同期ID %d</string>
   <string name="text_history_sync_filter_with_source">同期ID %1$d (%2$s)</string>
   <string name="text_hype_lists">最も多くリストに追加されている新作</string>
-  <string name="text_hype_lists_badge">上位%s%%</string>
+  <string name="text_hype_lists_badge">上位%s%</string>
   <string name="text_hype_lists_detail">多くのユーザーがリストに追加しています</string>
   <string name="text_hype_out_on">%s リリース</string>
   <string name="text_hype_series_about">普段どおりの評価</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">スコアの確認は無料です。その理由はVIP限定機能です。</string>
   <string name="text_match_basis_history">視聴、評価、お気に入り登録した作品に基づいています。</string>
   <string name="text_match_because_liked">気に入った作品から</string>
-  <string name="text_match_better_than">%d%%の作品よりもあなたにマッチしています</string>
+  <string name="text_match_better_than">%d%の作品よりもあなたにマッチしています</string>
   <string name="text_match_not_enough_data">あなたとのマッチ度を判定するためのデータがまだ不足しています。</string>
   <string name="text_match_rating_liked">Traktで好評</string>
   <string name="text_match_rating_loved">Traktで大好評</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">より良いサポート: ヘルプ＆フィードバック</string>
   <string name="vip_feature_title_unlock">で最大限の可能性をアンロック</string>
   <string name="vip_feature_title_vip_status">VIPステータス</string>
+  <string name="vip_nudge_action">VIPの特典を見る</string>
+  <string name="vip_nudge_close">閉じて14日間非表示にする</string>
+  <string name="vip_nudge_feature_body">すべての配信サービス、リアルタイムのPlexスクロブル、年間振り返り、そして%1$s件のウォッチリストアイテム、%2$s件のリストアイテム、%3$s件のノート、無制限のリスト。</string>
+  <string name="vip_nudge_feature_body_short">すべての配信サービス、リアルタイムのPlexスクロブル、年間振り返り、そして%s件のウォッチリストアイテム。</string>
+  <string name="vip_nudge_feature_title">Trakt VIPの特典</string>
+  <string name="vip_nudge_over_list_items">リストのアイテムが%1$s件あり、無料プランに含まれる%2$s件を超えています。</string>
+  <string name="vip_nudge_over_lists">リストが%1$s件あり、無料プランに含まれる%2$s件を超えています。</string>
+  <string name="vip_nudge_over_notes">ノートが%1$s件あり、無料プランに含まれる%2$s件を超えています。</string>
+  <string name="vip_nudge_over_watchlist_items">ウォッチリストのアイテムが%1$s件あり、無料プランに含まれる%2$s件を超えています。</string>
+  <string name="vip_nudge_vip_limit_list_items">VIPならリストアイテムの上限は%s件です。</string>
+  <string name="vip_nudge_vip_limit_lists">VIPならリストの上限はありません。</string>
+  <string name="vip_nudge_vip_limit_notes">VIPならノートの上限は%s件です。</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">VIPならウォッチリストアイテムの上限は%s件です。</string>
+  <string name="vip_nudge_within_list_items">無料枠のリストアイテム%1$s件中、%2$s件を使用しています。</string>
+  <string name="vip_nudge_within_lists">無料枠のリスト%1$s件中、%2$s件を使用しています。</string>
+  <string name="vip_nudge_within_notes">無料枠のノート%1$s件中、%2$s件を使用しています。</string>
+  <string name="vip_nudge_within_watchlist_items">無料枠のウォッチリストアイテム%1$s件中、%2$s件を使用しています。</string>
   <string name="vip_text_vip_go_beyond_limits">限界のその先へ</string>
   <string name="warning_connected_apps_limit">接続済みアプリの上限に達しました。VIPにアップグレードすると、さらに接続できます。</string>
   <string name="warning_connected_apps_limit_vip">接続済みアプリの上限に達しました</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">なし（ハイブリッドなし）</string>
   <string name="yir_2026_preview_runner_up">次点</string>
   <string name="yir_2026_preview_title">ペルソナプレビュー</string>
-  <string name="yir_2026_rarity">%1$d%%だけが%2$sです</string>
+  <string name="yir_2026_rarity">%1$d%だけが%2$sです</string>
   <string name="yir_2026_reel_a_little_bit">少し%s</string>
   <string name="yir_2026_reel_and_you_are">そしてあなたは</string>
   <string name="yir_2026_reel_but_mostly">しかし、ほとんどは</string>

@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">پایین‌تر</string>
   <string name="button_text_game_play">بازی</string>
   <string name="button_text_game_play_again">بازی دوباره</string>
+  <string name="button_text_get_app_store_version">دریافت نسخه App Store</string>
   <string name="button_text_get_started">شروع کنید</string>
   <string name="button_text_get_vip">دریافت</string>
   <string name="button_text_go_back">بازگشت</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">پخش می‌شود</string>
   <string name="header_appearance">ظاهر</string>
   <string name="header_behavior">رفتار</string>
+  <string name="header_beta_vip_only">نسخه بتا مخصوص اعضای VIP است</string>
   <string name="header_birthday">تاریخ تولد</string>
   <string name="header_calendar">تقویم</string>
   <string name="header_calendar_feed">فید تقویم</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">بی‌صبرانه منتظر</string>
   <string name="hype_tier_looking_good">امیدوارکننده</string>
   <string name="image_alt_comment_gif">گیف پیوست‌شده به نظر</string>
-  <string name="image_alt_hype_score">%d%% هایپ برای شما</string>
+  <string name="image_alt_hype_score">%d% هایپ برای شما</string>
   <string name="image_alt_hype_unknown">هنوز امتیاز هایپی برای شما وجود ندارد</string>
   <string name="image_alt_list_preview_poster">پوستر برای یک ورودی در %s</string>
-  <string name="image_alt_match_score">%d%% تطابق با شما</string>
+  <string name="image_alt_match_score">%d% تطابق با شما</string>
   <string name="image_alt_match_unknown">هنوز امتیاز تطابقی برای شما وجود ندارد</string>
   <string name="image_alt_media_poster">پوستر \"%s\"</string>
   <string name="image_alt_person_headshot">عکس سر %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">هم‌روح‌ها</string>
   <string name="match_label_spin_off">اسپین‌آف</string>
   <string name="match_pill_anchor">همخوانی:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
   <string name="match_pill_loading_aria_label">در حال محاسبه امتیاز تطابق</string>
   <string name="match_tier_good_fit">همخوانی خوب</string>
   <string name="match_tier_maybe">شاید</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">فقط وب‌هوک</string>
   <string name="tag_mixtape_different_mood">حس و حال متفاوت</string>
   <string name="tag_mixtape_kept">نگه داشته شده</string>
-  <string name="tag_mixtape_match">%s%% تطابق</string>
+  <string name="tag_mixtape_match">%s% تطابق</string>
   <string name="tag_mixtape_tap_details">برای جزئیات ضربه بزنید</string>
   <string name="tag_text_award_nominee">نامزد</string>
   <string name="tag_text_award_pending">نامزدشده</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d برد</string>
   <string name="text_award_wins_other">%d برد</string>
   <string name="text_award_year_range">از %1$d تا %2$d</string>
+  <string name="text_beta_vip_only">خرید در نسخه بتا امکان‌پذیر نیست. برای ارتقا به VIP، نسخه App Store ترکت را دریافت کنید و سپس به نسخه بتا بازگردید.</string>
   <string name="text_billing_already_vip">اکنون شما یک Trakt VIP هستید!\nاز حمایت شما متشکریم و لذت ببرید.</string>
   <string name="text_billing_disclaimer">پرداخت در پایان دوره آزمایشی شروع می‌شود. اشتراک به صورت خودکار تمدید می‌شود و هر %s تا زمان لغو، صورت‌حساب صادر می‌شود. هر زمان می‌توانید از طریق مرکز اشتراک Google Play لغو کنید.</string>
   <string name="text_billing_month_for_free">یک ماه رایگان امتحان کنید و سپس:</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">امتیاز شما رایگان است. دلایل پشت آن یکی از قابلیت‌های VIP است.</string>
   <string name="text_match_basis_history">بر اساس آنچه تماشا کرده‌اید، امتیاز داده‌اید و به علاقه‌مندی‌ها افزوده‌اید.</string>
   <string name="text_match_because_liked">چون دوست داشتید</string>
-  <string name="text_match_better_than">تطابق بیشتر با شما نسبت به %d%% از عناوین</string>
+  <string name="text_match_better_than">تطابق بیشتر با شما نسبت به %d% از عناوین</string>
   <string name="text_match_not_enough_data">هنوز داده‌های کافی برای سنجش تطابق با شما وجود ندارد.</string>
   <string name="text_match_rating_liked">پسندیده‌شده در Trakt</string>
   <string name="text_match_rating_loved">بسیار محبوب در Trakt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">پشتیبانی بهتر: راهنما و بازخورد</string>
   <string name="vip_feature_title_unlock">پتانسیل کامل را با</string>
   <string name="vip_feature_title_vip_status">وضعیت VIP</string>
+  <string name="vip_nudge_action">مشاهده آنچه VIP شامل می‌شود</string>
+  <string name="vip_nudge_close">بستن و پنهان کردن به مدت 14 روز</string>
+  <string name="vip_nudge_feature_body">همه سرویس‌های استریم، اسکرابل بلادرنگ Plex، مرور سالانه شما، و فضا برای %1$s مورد واچ‌لیست، %2$s مورد لیست، %3$s یادداشت و لیست‌های نامحدود.</string>
+  <string name="vip_nudge_feature_body_short">همه سرویس‌های استریم، اسکرابل بلادرنگ Plex، مرور سالانه شما و %s مورد واچ‌لیست.</string>
+  <string name="vip_nudge_feature_title">آنچه Trakt VIP شامل می‌شود</string>
+  <string name="vip_nudge_over_list_items">شما %1$s مورد در لیست دارید که بیشتر از %2$s موردِ طرح رایگان است.</string>
+  <string name="vip_nudge_over_lists">شما %1$s لیست دارید که بیشتر از %2$s لیستِ طرح رایگان است.</string>
+  <string name="vip_nudge_over_notes">شما %1$s یادداشت دارید که بیشتر از %2$s یادداشتِ طرح رایگان است.</string>
+  <string name="vip_nudge_over_watchlist_items">شما %1$s مورد در واچ‌لیست دارید که بیشتر از %2$s موردِ طرح رایگان است.</string>
+  <string name="vip_nudge_vip_limit_list_items">با VIP، این محدودیت %s مورد لیست است.</string>
+  <string name="vip_nudge_vip_limit_lists">با VIP هیچ محدودیتی برای لیست‌ها وجود ندارد.</string>
+  <string name="vip_nudge_vip_limit_notes">با VIP، این محدودیت %s یادداشت است.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">با VIP، این محدودیت %s مورد واچ‌لیست است.</string>
+  <string name="vip_nudge_within_list_items">شما در حال استفاده از %1$s مورد از %2$s موردِ لیست رایگان خود هستید.</string>
+  <string name="vip_nudge_within_lists">شما در حال استفاده از %1$s لیست از %2$s لیست رایگان خود هستید.</string>
+  <string name="vip_nudge_within_notes">شما در حال استفاده از %1$s یادداشت از %2$s یادداشت رایگان خود هستید.</string>
+  <string name="vip_nudge_within_watchlist_items">شما در حال استفاده از %1$s مورد از %2$s موردِ واچ‌لیست رایگان خود هستید.</string>
   <string name="vip_text_vip_go_beyond_limits">فراتر از محدودیت‌های خود بروید</string>
   <string name="warning_connected_apps_limit">به حداکثر برنامه‌های متصل خود رسیده‌اید. برای اتصال بیشتر به VIP ارتقا دهید.</string>
   <string name="warning_connected_apps_limit_vip">به حداکثر برنامه‌های متصل خود رسیده‌اید</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">هیچ‌کدام (بدون ترکیب)</string>
   <string name="yir_2026_preview_runner_up">رتبه‌دوم</string>
   <string name="yir_2026_preview_title">پیش‌نمایش پرسونا</string>
-  <string name="yir_2026_rarity">فقط %1$d%% %2$s هستند</string>
+  <string name="yir_2026_rarity">فقط %1$d% %2$s هستند</string>
   <string name="yir_2026_reel_a_little_bit">کمی %s</string>
   <string name="yir_2026_reel_and_you_are">و شما هستید</string>
   <string name="yir_2026_reel_but_mostly">اما بیشتر</string>

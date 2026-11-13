@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Alacsonyabb</string>
   <string name="button_text_game_play">Lejátszás</string>
   <string name="button_text_game_play_again">Játssz újra</string>
+  <string name="button_text_get_app_store_version">Szerezd be az App Store-verziót</string>
   <string name="button_text_get_started">Kezdés</string>
   <string name="button_text_get_vip">Szerezd be</string>
   <string name="button_text_go_back">Vissza</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Adásban</string>
   <string name="header_appearance">Megjelenés</string>
   <string name="header_behavior">Viselkedés</string>
+  <string name="header_beta_vip_only">A béta VIP-tagoknak szól</string>
   <string name="header_birthday">Születésnap</string>
   <string name="header_calendar">Naptár</string>
   <string name="header_calendar_feed">Naptár hírfolyam</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Alig várom</string>
   <string name="hype_tier_looking_good">Ígéretes</string>
   <string name="image_alt_comment_gif">A hozzászóláshoz csatolt GIF</string>
-  <string name="image_alt_hype_score">%d%% hype számodra</string>
+  <string name="image_alt_hype_score">%d% hype számodra</string>
   <string name="image_alt_hype_unknown">Még nincs hype-pontszámod</string>
   <string name="image_alt_list_preview_poster">Poszter egy bejegyzéshez: „%s”</string>
-  <string name="image_alt_match_score">%d%% egyezés neked</string>
+  <string name="image_alt_match_score">%d% egyezés neked</string>
   <string name="image_alt_match_unknown">Még nincs egyezési pontszámod</string>
   <string name="image_alt_media_poster">„%s” posztere</string>
   <string name="image_alt_person_headshot">%s portréja</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Lelkitársak</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Egyezés:</string>
-  <string name="match_pill_aria_label">%1$d%% egyezés, %2$s. Egyezési részletek megnyitása.</string>
+  <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
   <string name="match_tier_good_fit">Jó választás</string>
   <string name="match_tier_maybe">Talán</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Csak Webhook</string>
   <string name="tag_mixtape_different_mood">Más hangulat</string>
   <string name="tag_mixtape_kept">Megtartva</string>
-  <string name="tag_mixtape_match">%s%% egyezés</string>
+  <string name="tag_mixtape_match">%s% egyezés</string>
   <string name="tag_mixtape_tap_details">Koppints a részletekért</string>
   <string name="tag_text_award_nominee">Jelölt</string>
   <string name="tag_text_award_pending">Jelölve</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d győzelem</string>
   <string name="text_award_wins_other">%d győzelem</string>
   <string name="text_award_year_range">%1$d és %2$d között</string>
+  <string name="text_beta_vip_only">A vásárlások nem érhetők el a bétában. Szerezd be a Trakt App Store-verzióját a VIP-re váltáshoz, majd térj vissza a bétába.</string>
   <string name="text_billing_already_vip">Mostantól Trakt VIP tag vagy!\nKöszönjük a támogatást, és jó szórakozást.</string>
   <string name="text_billing_disclaimer">A fizetés a próbaidőszak végén kezdődik. Az előfizetés automatikusan megújul, és a lemondásig %s számlázásra kerül. Bármikor lemondhatod a Google Play Előfizetési központján keresztül.</string>
   <string name="text_billing_month_for_free">Próbáld ki 1 hónapig ingyen, majd:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">Szinkronizálási azonosító: %d</string>
   <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
   <string name="text_hype_lists">Az egyik legtöbb listára felvett várható cím</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">A felhasználók folyamatosan hozzáadják a listáikhoz</string>
   <string name="text_hype_out_on">Megjelenés: %s</string>
   <string name="text_hype_series_about">Körülbelül a megszokott</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">A pontszámod ingyenes. A mögötte rejlő okok VIP funkciónak számítanak.</string>
   <string name="text_match_basis_history">A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján.</string>
   <string name="text_match_because_liked">Mert tetszett neked</string>
-  <string name="text_match_better_than">Jobban illik hozzád a címek %d%%-ánál</string>
+  <string name="text_match_better_than">Jobban illik hozzád a címek %d%-ánál</string>
   <string name="text_match_not_enough_data">Még nincs elég adat az egyezés megállapításához.</string>
   <string name="text_match_rating_liked">Kedvelik a Trakton</string>
   <string name="text_match_rating_loved">Imádják a Trakton</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Jobb támogatás: Súgó és visszajelzés</string>
   <string name="vip_feature_title_unlock">A teljes potenciál feloldása a következővel:</string>
   <string name="vip_feature_title_vip_status">VIP státusz</string>
+  <string name="vip_nudge_action">Nézd meg, mit tartalmaz a VIP</string>
+  <string name="vip_nudge_close">Bezárás és elrejtés 14 napra</string>
+  <string name="vip_nudge_feature_body">Minden streamingszolgáltató, valós idejű Plex-scrobbling, éves összefoglaló, valamint hely %1$s megnézendő elem, %2$s listaelem, %3$s jegyzet és korlátlan számú lista számára.</string>
+  <string name="vip_nudge_feature_body_short">Minden streamingszolgáltató, valós idejű Plex-scrobbling, éves összefoglaló és %s megnézendő elem.</string>
+  <string name="vip_nudge_feature_title">Mit tartalmaz a Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">%1$s listaelemed van, ami több, mint az ingyenes csomagban foglalt %2$s.</string>
+  <string name="vip_nudge_over_lists">%1$s listád van, ami több, mint az ingyenes csomagban foglalt %2$s.</string>
+  <string name="vip_nudge_over_notes">%1$s jegyzeted van, ami több, mint az ingyenes csomagban foglalt %2$s.</string>
+  <string name="vip_nudge_over_watchlist_items">%1$s megnézendő elemed van, ami több, mint az ingyenes csomagban foglalt %2$s.</string>
+  <string name="vip_nudge_vip_limit_list_items">VIP-tagsággal a limit %s listaelem.</string>
+  <string name="vip_nudge_vip_limit_lists">VIP-tagsággal a listák száma korlátlan.</string>
+  <string name="vip_nudge_vip_limit_notes">VIP-tagsággal a limit %s jegyzet.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">VIP-tagsággal a limit %s megnézendő elem.</string>
+  <string name="vip_nudge_within_list_items">%1$s elemet használsz az ingyenes %2$s listaelemedből.</string>
+  <string name="vip_nudge_within_lists">%1$s listát használsz az ingyenes %2$s listádból.</string>
+  <string name="vip_nudge_within_notes">%1$s jegyzetet használsz az ingyenes %2$s jegyzetedből.</string>
+  <string name="vip_nudge_within_watchlist_items">%1$s elemet használsz az ingyenes %2$s megnézendő elemedből.</string>
   <string name="vip_text_vip_go_beyond_limits">Lépd át a határaidat</string>
   <string name="warning_connected_apps_limit">Elérte a csatlakoztatott alkalmazásokra vonatkozó korlátot. Frissítsen VIP-re, hogy többet csatlakoztathasson.</string>
   <string name="warning_connected_apps_limit_vip">Elérte a csatlakoztatott alkalmazásokra vonatkozó korlátot</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Nincs (nem hibrid)</string>
   <string name="yir_2026_preview_runner_up">Második helyezett</string>
   <string name="yir_2026_preview_title">Személyiség előnézet</string>
-  <string name="yir_2026_rarity">Csak %1$d%% %2$s</string>
+  <string name="yir_2026_rarity">Csak %1$d% %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Kicsit %s</string>
   <string name="yir_2026_reel_and_you_are">És te vagy</string>
   <string name="yir_2026_reel_but_mostly">De leginkább</string>

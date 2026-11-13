@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Lägre</string>
   <string name="button_text_game_play">Spela</string>
   <string name="button_text_game_play_again">Spela igen</string>
+  <string name="button_text_get_app_store_version">Hämta App Store-versionen</string>
   <string name="button_text_get_started">Kom igång</string>
   <string name="button_text_get_vip">Skaffa</string>
   <string name="button_text_go_back">Gå tillbaka</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Sänds</string>
   <string name="header_appearance">Utseende</string>
   <string name="header_behavior">Beteende</string>
+  <string name="header_beta_vip_only">Betaversionen är för VIP-medlemmar</string>
   <string name="header_birthday">Födelsedag</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Kalenderflöde</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Kan inte vänta</string>
   <string name="hype_tier_looking_good">Ser lovande ut</string>
   <string name="image_alt_comment_gif">GIF bifogad till kommentaren</string>
-  <string name="image_alt_hype_score">%d %% hype för dig</string>
+  <string name="image_alt_hype_score">%d % hype för dig</string>
   <string name="image_alt_hype_unknown">Ingen hype-poäng för dig än</string>
   <string name="image_alt_list_preview_poster">Affisch för ett objekt i %s</string>
-  <string name="image_alt_match_score">%d %% matchning för dig</string>
+  <string name="image_alt_match_score">%d % matchning för dig</string>
   <string name="image_alt_match_unknown">Ingen matchningspoäng för dig än</string>
   <string name="image_alt_media_poster">\"%s\" affisch</string>
   <string name="image_alt_person_headshot">Porträtt av %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Själsfränder</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Matchning:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Öppna matchningsdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Öppna matchningsdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beräknar kompatibilitetspoäng</string>
   <string name="match_tier_good_fit">Bra match</string>
   <string name="match_tier_maybe">Kanske</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Endast Webhook</string>
   <string name="tag_mixtape_different_mood">Annan känsla</string>
   <string name="tag_mixtape_kept">Behållen</string>
-  <string name="tag_mixtape_match">%s%% matchning</string>
+  <string name="tag_mixtape_match">%s% matchning</string>
   <string name="tag_mixtape_tap_details">Tryck för detaljer</string>
   <string name="tag_text_award_nominee">Nominerad</string>
   <string name="tag_text_award_pending">Nominerad</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d vinst</string>
   <string name="text_award_wins_other">%d vinster</string>
   <string name="text_award_year_range">%1$d till %2$d</string>
+  <string name="text_beta_vip_only">Köp är inte tillgängliga i betaversionen. Hämta App Store-versionen av Trakt för att uppgradera till VIP och kom sedan tillbaka till betaversionen.</string>
   <string name="text_billing_already_vip">Du är nu en Trakt VIP!\nTack för ditt stöd och njut.</string>
   <string name="text_billing_disclaimer">Betalning startar efter provperioden. Prenumerationen förnyas automatiskt och debiteras varje %s tills den avbryts. Avbryt när som helst via Google Play Prenumerationscenter.</string>
   <string name="text_billing_month_for_free">Prova 1 månad gratis och sedan:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">Synkroniserings-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
   <string name="text_hype_lists">En av de mest listade kommande titlarna</string>
-  <string name="text_hype_lists_badge">Topp %s%%</string>
+  <string name="text_hype_lists_badge">Topp %s%</string>
   <string name="text_hype_lists_detail">Folk fortsätter lägga till den på sina listor</string>
   <string name="text_hype_out_on">Släpps %s</string>
   <string name="text_hype_series_about">Ungefär som du brukar</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">Din poäng är gratis. Skälen bakom är en VIP-funktion.</string>
   <string name="text_match_basis_history">Baserat på vad du sett, betygsatt och favoritmarkerat.</string>
   <string name="text_match_because_liked">Eftersom du gillade</string>
-  <string name="text_match_better_than">Bättre matchning för dig än %d %% av titlarna</string>
+  <string name="text_match_better_than">Bättre matchning för dig än %d % av titlarna</string>
   <string name="text_match_not_enough_data">Inte tillräckligt med data för att matcha detta med dig än.</string>
   <string name="text_match_rating_liked">Gillad på Trakt</string>
   <string name="text_match_rating_loved">Älskad på Trakt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Bättre support: Hjälp &amp; feedback</string>
   <string name="vip_feature_title_unlock">Lås upp full potential med</string>
   <string name="vip_feature_title_vip_status">VIP-status</string>
+  <string name="vip_nudge_action">Se vad som ingår i VIP</string>
+  <string name="vip_nudge_close">Stäng och dölj i 14 dagar</string>
+  <string name="vip_nudge_feature_body">Alla streamingtjänster, Plex-scrobbling i realtid, din årsöversikt och plats för %1$s watchlist-objekt, %2$s listobjekt, %3$s anteckningar och obegränsat med listor.</string>
+  <string name="vip_nudge_feature_body_short">Alla streamingtjänster, Plex-scrobbling i realtid, din årsöversikt och %s watchlist-objekt.</string>
+  <string name="vip_nudge_feature_title">Vad som ingår i Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">Du har %1$s listobjekt, fler än de %2$s som ingår i gratisplanen.</string>
+  <string name="vip_nudge_over_lists">Du har %1$s listor, fler än de %2$s som ingår i gratisplanen.</string>
+  <string name="vip_nudge_over_notes">Du har %1$s anteckningar, fler än de %2$s som ingår i gratisplanen.</string>
+  <string name="vip_nudge_over_watchlist_items">Du har %1$s watchlist-objekt, fler än de %2$s som ingår i gratisplanen.</string>
+  <string name="vip_nudge_vip_limit_list_items">Med VIP är gränsen %s listobjekt.</string>
+  <string name="vip_nudge_vip_limit_lists">Med VIP finns det ingen gräns för listor.</string>
+  <string name="vip_nudge_vip_limit_notes">Med VIP är gränsen %s anteckningar.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">Med VIP är gränsen %s watchlist-objekt.</string>
+  <string name="vip_nudge_within_list_items">Du använder %1$s av dina %2$s gratis listobjekt.</string>
+  <string name="vip_nudge_within_lists">Du använder %1$s av dina %2$s gratis listor.</string>
+  <string name="vip_nudge_within_notes">Du använder %1$s av dina %2$s gratis anteckningar.</string>
+  <string name="vip_nudge_within_watchlist_items">Du använder %1$s av dina %2$s gratis watchlist-objekt.</string>
   <string name="vip_text_vip_go_beyond_limits">Överskrid dina gränser</string>
   <string name="warning_connected_apps_limit">Du har nått din gräns för anslutna appar. Uppgradera till VIP för att ansluta fler.</string>
   <string name="warning_connected_apps_limit_vip">Du har nått din gräns för anslutna appar</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ingen hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andraplats</string>
   <string name="yir_2026_preview_title">Personaförhandsvisning</string>
-  <string name="yir_2026_rarity">Endast %1$d%% är %2$s</string>
+  <string name="yir_2026_rarity">Endast %1$d% är %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Litegrann %s</string>
   <string name="yir_2026_reel_and_you_are">Och du är</string>
   <string name="yir_2026_reel_but_mostly">Men mestadels</string>

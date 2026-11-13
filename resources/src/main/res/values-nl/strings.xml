@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Lager</string>
   <string name="button_text_game_play">Spelen</string>
   <string name="button_text_game_play_again">Opnieuw spelen</string>
+  <string name="button_text_get_app_store_version">Download de App Store-versie</string>
   <string name="button_text_get_started">Aan de slag</string>
   <string name="button_text_get_vip">Word</string>
   <string name="button_text_go_back">Ga terug</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Uitzendingen</string>
   <string name="header_appearance">Uiterlijk</string>
   <string name="header_behavior">Gedrag</string>
+  <string name="header_beta_vip_only">De bèta is voor VIP-leden</string>
   <string name="header_birthday">Geboortedatum</string>
   <string name="header_calendar">Kalender</string>
   <string name="header_calendar_feed">Kalenderfeed</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Kan niet wachten</string>
   <string name="hype_tier_looking_good">Ziet er goed uit</string>
   <string name="image_alt_comment_gif">GIF toegevoegd aan de reactie</string>
-  <string name="image_alt_hype_score">%d%% hype voor jou</string>
+  <string name="image_alt_hype_score">%d% hype voor jou</string>
   <string name="image_alt_hype_unknown">Nog geen hypescore voor jou</string>
   <string name="image_alt_list_preview_poster">Poster voor een item in %s</string>
-  <string name="image_alt_match_score">%d%% match voor jou</string>
+  <string name="image_alt_match_score">%d% match voor jou</string>
   <string name="image_alt_match_unknown">Nog geen matchscore voor jou</string>
   <string name="image_alt_media_poster">Poster van \"%s\"</string>
   <string name="image_alt_person_headshot">Portret van %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Zielsverwanten</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Overeenkomst:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open matchdetails.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open matchdetails.</string>
   <string name="match_pill_loading_aria_label">Matchscore berekenen</string>
   <string name="match_tier_good_fit">Goede match</string>
   <string name="match_tier_maybe">Misschien</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Alleen webhook</string>
   <string name="tag_mixtape_different_mood">Andere sfeer</string>
   <string name="tag_mixtape_kept">Bewaard</string>
-  <string name="tag_mixtape_match">%s%% overeenkomst</string>
+  <string name="tag_mixtape_match">%s% overeenkomst</string>
   <string name="tag_mixtape_tap_details">Tik voor details</string>
   <string name="tag_text_award_nominee">Genomineerde</string>
   <string name="tag_text_award_pending">Genomineerd</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d overwinning</string>
   <string name="text_award_wins_other">%d overwinningen</string>
   <string name="text_award_year_range">%1$d tot %2$d</string>
+  <string name="text_beta_vip_only">Aankopen zijn niet beschikbaar in de bèta. Download de App Store-versie van Trakt om te upgraden naar VIP en keer daarna terug naar de bèta.</string>
   <string name="text_billing_already_vip">Je bent nu een Trakt VIP!\nBedankt voor je steun en veel plezier.</string>
   <string name="text_billing_disclaimer">Betaling start aan het einde van de proefperiode. Abonnement wordt automatisch verlengd en wordt elke %s gefactureerd totdat het wordt geannuleerd. Annuleer op elk moment via het Google Play Abonnementencentrum.</string>
   <string name="text_billing_month_for_free">Probeer 1 maand gratis en daarna:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">Synchronisatie-ID %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hype_lists">Een van de meest aan lijsten toegevoegde aankomende titels</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">Mensen blijven dit aan hun lijsten toevoegen</string>
   <string name="text_hype_out_on">Verschijnt %s</string>
   <string name="text_hype_series_about">Ongeveer zoals gewoonlijk</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">Je score is gratis. De redenen erachter zijn een VIP-functie.</string>
   <string name="text_match_basis_history">Op basis van wat je hebt bekeken, beoordeeld en aan favorieten toegevoegd.</string>
   <string name="text_match_because_liked">Omdat je hield van</string>
-  <string name="text_match_better_than">Betere match voor jou dan %d%% van de titels</string>
+  <string name="text_match_better_than">Betere match voor jou dan %d% van de titels</string>
   <string name="text_match_not_enough_data">Nog niet genoeg gegevens om dit aan jou te matchen.</string>
   <string name="text_match_rating_liked">Gewaardeerd op Trakt</string>
   <string name="text_match_rating_loved">Geliefd op Trakt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Betere ondersteuning: Hulp &amp; feedback</string>
   <string name="vip_feature_title_unlock">Ontgrendel het volledige potentieel met</string>
   <string name="vip_feature_title_vip_status">VIP-status</string>
+  <string name="vip_nudge_action">Bekijk wat VIP inhoudt</string>
+  <string name="vip_nudge_close">Sluiten en 14 dagen verbergen</string>
+  <string name="vip_nudge_feature_body">Elke streamingdienst, realtime Plex-scrobbling, je jaaroverzicht en ruimte voor %1$s watchlist-items, %2$s lijstitems, %3$s notities en onbeperkte lijsten.</string>
+  <string name="vip_nudge_feature_body_short">Elke streamingdienst, realtime Plex-scrobbling, je jaaroverzicht en %s watchlist-items.</string>
+  <string name="vip_nudge_feature_title">Wat Trakt VIP inhoudt</string>
+  <string name="vip_nudge_over_list_items">Je hebt %1$s lijstitems, meer dan de %2$s die het gratis abonnement bevat.</string>
+  <string name="vip_nudge_over_lists">Je hebt %1$s lijsten, meer dan de %2$s die het gratis abonnement bevat.</string>
+  <string name="vip_nudge_over_notes">Je hebt %1$s notities, meer dan de %2$s die het gratis abonnement bevat.</string>
+  <string name="vip_nudge_over_watchlist_items">Je hebt %1$s watchlist-items, meer dan de %2$s die het gratis abonnement bevat.</string>
+  <string name="vip_nudge_vip_limit_list_items">Met VIP is de limiet %s lijstitems.</string>
+  <string name="vip_nudge_vip_limit_lists">Met VIP is er geen limiet op lijsten.</string>
+  <string name="vip_nudge_vip_limit_notes">Met VIP is de limiet %s notities.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">Met VIP is de limiet %s watchlist-items.</string>
+  <string name="vip_nudge_within_list_items">Je gebruikt %1$s van je %2$s gratis lijstitems.</string>
+  <string name="vip_nudge_within_lists">Je gebruikt %1$s van je %2$s gratis lijsten.</string>
+  <string name="vip_nudge_within_notes">Je gebruikt %1$s van je %2$s gratis notities.</string>
+  <string name="vip_nudge_within_watchlist_items">Je gebruikt %1$s van je %2$s gratis watchlist-items.</string>
   <string name="vip_text_vip_go_beyond_limits">Ga verder dan je grenzen</string>
   <string name="warning_connected_apps_limit">U heeft de limiet voor gekoppelde apps bereikt. Upgrade naar VIP om meer te koppelen.</string>
   <string name="warning_connected_apps_limit_vip">U heeft de limiet voor gekoppelde apps bereikt</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Geen (geen hybride)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona voorbeeld</string>
-  <string name="yir_2026_rarity">Slechts %1$d%% is %2$s</string>
+  <string name="yir_2026_rarity">Slechts %1$d% is %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Een beetje %s</string>
   <string name="yir_2026_reel_and_you_are">En jij bent</string>
   <string name="yir_2026_reel_but_mostly">Maar meestal</string>

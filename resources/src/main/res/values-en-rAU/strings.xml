@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">Lower</string>
   <string name="button_text_game_play">Play</string>
   <string name="button_text_game_play_again">Play again</string>
+  <string name="button_text_get_app_store_version">Get the App Store version</string>
   <string name="button_text_get_started">Get started</string>
   <string name="button_text_get_vip">Get</string>
   <string name="button_text_go_back">Go back</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">Airs</string>
   <string name="header_appearance">Appearance</string>
   <string name="header_behavior">Behaviour</string>
+  <string name="header_beta_vip_only">The beta is for VIP members</string>
   <string name="header_birthday">Birthday</string>
   <string name="header_calendar">Calendar</string>
   <string name="header_calendar_feed">Calendar feed</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Can\'t wait</string>
   <string name="hype_tier_looking_good">Looking good</string>
   <string name="image_alt_comment_gif">GIF attached to the comment</string>
-  <string name="image_alt_hype_score">%d%% hype for you</string>
+  <string name="image_alt_hype_score">%d% hype for you</string>
   <string name="image_alt_hype_unknown">No hype score for you yet</string>
   <string name="image_alt_list_preview_poster">Poster for an entry in %s</string>
-  <string name="image_alt_match_score">%d%% match for you</string>
+  <string name="image_alt_match_score">%d% match for you</string>
   <string name="image_alt_match_unknown">No match score for you yet</string>
   <string name="image_alt_media_poster">\"%s\" poster</string>
   <string name="image_alt_person_headshot">Headshot of %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">Soulmates</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open match details.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open match details.</string>
   <string name="match_pill_loading_aria_label">Computing match score</string>
   <string name="match_tier_good_fit">Good fit</string>
   <string name="match_tier_maybe">Maybe</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Webhook only</string>
   <string name="tag_mixtape_different_mood">Different mood</string>
   <string name="tag_mixtape_kept">Kept</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tap for details</string>
   <string name="tag_text_award_nominee">Nominee</string>
   <string name="tag_text_award_pending">Nominated</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d win</string>
   <string name="text_award_wins_other">%d wins</string>
   <string name="text_award_year_range">%1$d to %2$d</string>
+  <string name="text_beta_vip_only">Purchases aren\'t available in the beta. Get the App Store version of Trakt to upgrade to VIP, then come back to the beta.</string>
   <string name="text_billing_already_vip">You are now a Trakt VIP!\nThank you for your support and enjoy.</string>
   <string name="text_billing_disclaimer">Payment starts at end of trial period. Subscription auto-renews, and is billed each %s until cancelled. Cancel any time via Google Play Subscription Centre.</string>
   <string name="text_billing_month_for_free">Try 1 month for free and then:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">Sync ID %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hype_lists">One of the most listed upcoming titles</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">People keep adding it to their lists</string>
   <string name="text_hype_out_on">Out %s</string>
   <string name="text_hype_series_about">About your usual</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">Your score is free. The reasons behind it are a VIP feature.</string>
   <string name="text_match_basis_history">From what you watched, rated and favourited.</string>
   <string name="text_match_because_liked">Because you liked</string>
-  <string name="text_match_better_than">Better match for you than %d%% of titles</string>
+  <string name="text_match_better_than">Better match for you than %d% of titles</string>
   <string name="text_match_not_enough_data">Not enough data to match this to you yet.</string>
   <string name="text_match_rating_liked">Liked on Trakt</string>
   <string name="text_match_rating_loved">Loved on Trakt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">Better Support: Help &amp; Feedback</string>
   <string name="vip_feature_title_unlock">Unlock full potential with</string>
   <string name="vip_feature_title_vip_status">VIP Status</string>
+  <string name="vip_nudge_action">See what VIP includes</string>
+  <string name="vip_nudge_close">Close and hide for 14 days</string>
+  <string name="vip_nudge_feature_body">Every streaming service, real-time Plex scrobbling, your year in review, and room for %1$s watchlist items, %2$s list items, %3$s notes and unlimited lists.</string>
+  <string name="vip_nudge_feature_body_short">Every streaming service, real-time Plex scrobbling, your year in review and %s watchlist items.</string>
+  <string name="vip_nudge_feature_title">What Trakt VIP includes</string>
+  <string name="vip_nudge_over_list_items">You have %1$s list items, more than the %2$s the free plan includes.</string>
+  <string name="vip_nudge_over_lists">You have %1$s lists, more than the %2$s the free plan includes.</string>
+  <string name="vip_nudge_over_notes">You have %1$s notes, more than the %2$s the free plan includes.</string>
+  <string name="vip_nudge_over_watchlist_items">You have %1$s watchlist items, more than the %2$s the free plan includes.</string>
+  <string name="vip_nudge_vip_limit_list_items">With VIP the limit is %s list items.</string>
+  <string name="vip_nudge_vip_limit_lists">With VIP there is no limit on lists.</string>
+  <string name="vip_nudge_vip_limit_notes">With VIP the limit is %s notes.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">With VIP the limit is %s watchlist items.</string>
+  <string name="vip_nudge_within_list_items">You\'re using %1$s of your %2$s free list items.</string>
+  <string name="vip_nudge_within_lists">You\'re using %1$s of your %2$s free lists.</string>
+  <string name="vip_nudge_within_notes">You\'re using %1$s of your %2$s free notes.</string>
+  <string name="vip_nudge_within_watchlist_items">You\'re using %1$s of your %2$s free watchlist items.</string>
   <string name="vip_text_vip_go_beyond_limits">Go beyond your limits</string>
   <string name="warning_connected_apps_limit">You\'ve reached your connected apps limit. Upgrade to VIP to connect more.</string>
   <string name="warning_connected_apps_limit_vip">You\'ve reached your connected apps limit</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">None (no hybrid)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona preview</string>
-  <string name="yir_2026_rarity">Only %1$d%% are %2$s</string>
+  <string name="yir_2026_rarity">Only %1$d% are %2$s</string>
   <string name="yir_2026_reel_a_little_bit">A little bit %s</string>
   <string name="yir_2026_reel_and_you_are">And you are</string>
   <string name="yir_2026_reel_but_mostly">But mostly</string>

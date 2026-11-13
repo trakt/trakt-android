@@ -483,6 +483,7 @@
   <string name="button_text_game_lower">أقل</string>
   <string name="button_text_game_play">العب</string>
   <string name="button_text_game_play_again">العب مرة أخرى</string>
+  <string name="button_text_get_app_store_version">الحصول على إصدار App Store</string>
   <string name="button_text_get_started">ابدأ</string>
   <string name="button_text_get_vip">احصل على</string>
   <string name="button_text_go_back">الرجوع</string>
@@ -941,6 +942,7 @@
   <string name="header_airs">الهواء</string>
   <string name="header_appearance">المظهر</string>
   <string name="header_behavior">السلوك</string>
+  <string name="header_beta_vip_only">النسخة التجريبية مخصصة لأعضاء VIP</string>
   <string name="header_birthday">تاريخ الميلاد</string>
   <string name="header_calendar">التقويم</string>
   <string name="header_calendar_feed">موجز التقويم</string>
@@ -1161,10 +1163,10 @@
   <string name="hype_tier_cant_wait">بفارغ الصبر</string>
   <string name="hype_tier_looking_good">يبدو واعداً</string>
   <string name="image_alt_comment_gif">صورة GIF مرفقة بالتعليق</string>
-  <string name="image_alt_hype_score">ترقب بنسبة %d%% لك</string>
+  <string name="image_alt_hype_score">ترقب بنسبة %d% لك</string>
   <string name="image_alt_hype_unknown">لا توجد درجة ترقب لك بعد</string>
   <string name="image_alt_list_preview_poster">ملصق لإدخال في %s</string>
-  <string name="image_alt_match_score">يناسبك بنسبة %d%%</string>
+  <string name="image_alt_match_score">يناسبك بنسبة %d%</string>
   <string name="image_alt_match_unknown">لا توجد درجة ملاءمة لك بعد</string>
   <string name="image_alt_media_poster">\"%s\" ملصق</string>
   <string name="image_alt_person_headshot">صورة %s</string>
@@ -1570,7 +1572,7 @@
   <string name="match_label_soulmates">رفقاء الروح</string>
   <string name="match_label_spin_off">عرضية</string>
   <string name="match_pill_anchor">تطابق:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. فتح تفاصيل التطابق.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. فتح تفاصيل التطابق.</string>
   <string name="match_pill_loading_aria_label">جارٍ حساب نتيجة التطابق</string>
   <string name="match_tier_good_fit">مناسب لك</string>
   <string name="match_tier_maybe">ربما</string>
@@ -1887,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">ويب هوك فقط</string>
   <string name="tag_mixtape_different_mood">مزاج مختلف</string>
   <string name="tag_mixtape_kept">محفوظ</string>
-  <string name="tag_mixtape_match">مطابقة بنسبة %s%%</string>
+  <string name="tag_mixtape_match">مطابقة بنسبة %s%</string>
   <string name="tag_mixtape_tap_details">انقر للتفاصيل</string>
   <string name="tag_text_award_nominee">مرشح</string>
   <string name="tag_text_award_pending">قيد الترشيح</string>
@@ -2014,6 +2016,7 @@
   <string name="text_award_wins_one">%d فوز</string>
   <string name="text_award_wins_other">%d مرات فوز</string>
   <string name="text_award_year_range">من %1$d إلى %2$d</string>
+  <string name="text_beta_vip_only">عمليات الشراء غير متوفرة في النسخة التجريبية. احصل على إصدار App Store من Trakt للترقية إلى VIP، ثم عد إلى النسخة التجريبية.</string>
   <string name="text_billing_already_vip">لقد أصبحت الآن أحد أعضاء Trakt VIP!\nشكرًا لك على دعمك واستمتاعك.</string>
   <string name="text_billing_disclaimer">يبدأ الدفع في نهاية الفترة التجريبية. يتم تجديد الاشتراك تلقائيًا، ويتم إصدار فاتورة به كل %s حتى يتم إلغاؤه. يمكنك الإلغاء في أي وقت عبر مركز اشتراكات Google Play.</string>
   <string name="text_billing_month_for_free">جرب شهرًا واحدًا مجانًا ثم:</string>
@@ -2179,7 +2182,7 @@
   <string name="text_history_sync_filter">معرف المزامنة %d</string>
   <string name="text_history_sync_filter_with_source">معرف المزامنة %1$d (%2$s)</string>
   <string name="text_hype_lists">من أكثر الأعمال القادمة إضافةً للقوائم</string>
-  <string name="text_hype_lists_badge">أعلى %s%%</string>
+  <string name="text_hype_lists_badge">أعلى %s%</string>
   <string name="text_hype_lists_detail">يواصل المستخدمون إضافته إلى قوائمهم</string>
   <string name="text_hype_out_on">يصدر في %s</string>
   <string name="text_hype_series_about">في حدود تقييمك المعتاد</string>
@@ -2271,7 +2274,7 @@
   <string name="text_match_basis_free">درجتك مجانية، أما الأسباب الكامنة وراءها فهي ميزة VIP.</string>
   <string name="text_match_basis_history">استناداً إلى ما شاهدته وقيّمته وفضّلته.</string>
   <string name="text_match_because_liked">لأنك أحببت</string>
-  <string name="text_match_better_than">يناسبك أكثر من %d%% من الأعمال</string>
+  <string name="text_match_better_than">يناسبك أكثر من %d% من الأعمال</string>
   <string name="text_match_not_enough_data">لا تتوفر بيانات كافية لتحديد مدى ملاءمته لك بعد.</string>
   <string name="text_match_rating_liked">نال الإعجاب على Trakt</string>
   <string name="text_match_rating_loved">محبوب على Trakt</string>
@@ -2993,6 +2996,23 @@
   <string name="vip_feature_title_support">دعم أفضل: المساعدة والتعليقات</string>
   <string name="vip_feature_title_unlock">أطلق العنان للإمكانات الكاملة مع</string>
   <string name="vip_feature_title_vip_status">حالة VIP</string>
+  <string name="vip_nudge_action">اكتشف ما تتضمنه باقة VIP</string>
+  <string name="vip_nudge_close">إغلاق وإخفاء لمدة 14 يوماً</string>
+  <string name="vip_nudge_feature_body">جميع خدمات البث، والتسجيل التلقائي من Plex في الوقت الفعلي، وحصاد عامك، ومساحة تكفي لـ %1$s من عناصر قائمة المشاهدة، و%2$s من عناصر القائمة، و%3$s من الملاحظات، وعدد غير محدود من القوائم.</string>
+  <string name="vip_nudge_feature_body_short">جميع خدمات البث، والتسجيل التلقائي من Plex في الوقت الفعلي، وحصاد عامك، ومساحة تكفي لـ %s من عناصر قائمة المشاهدة.</string>
+  <string name="vip_nudge_feature_title">ما تتضمنه باقة Trakt VIP</string>
+  <string name="vip_nudge_over_list_items">لديك %1$s من عناصر القائمة، وهو أكثر من %2$s التي تتضمنها الخطة المجانية.</string>
+  <string name="vip_nudge_over_lists">لديك %1$s من القوائم، وهو أكثر من %2$s التي تتضمنها الخطة المجانية.</string>
+  <string name="vip_nudge_over_notes">لديك %1$s من الملاحظات، وهو أكثر من %2$s التي تتضمنها الخطة المجانية.</string>
+  <string name="vip_nudge_over_watchlist_items">لديك %1$s من عناصر قائمة المشاهدة، وهو أكثر من %2$s التي تتضمنها الخطة المجانية.</string>
+  <string name="vip_nudge_vip_limit_list_items">مع VIP، الحد الأقصى هو %s من عناصر القائمة.</string>
+  <string name="vip_nudge_vip_limit_lists">مع VIP، لا يوجد حد أقصى للقوائم.</string>
+  <string name="vip_nudge_vip_limit_notes">مع VIP، الحد الأقصى هو %s من الملاحظات.</string>
+  <string name="vip_nudge_vip_limit_watchlist_items">مع VIP، الحد الأقصى هو %s من عناصر قائمة المشاهدة.</string>
+  <string name="vip_nudge_within_list_items">أنت تستخدم %1$s من أصل %2$s من عناصر القائمة المجانية المتاحة لك.</string>
+  <string name="vip_nudge_within_lists">أنت تستخدم %1$s من أصل %2$s من القوائم المجانية المتاحة لك.</string>
+  <string name="vip_nudge_within_notes">أنت تستخدم %1$s من أصل %2$s من الملاحظات المجانية المتاحة لك.</string>
+  <string name="vip_nudge_within_watchlist_items">أنت تستخدم %1$s من أصل %2$s من عناصر قائمة المشاهدة المجانية المتاحة لك.</string>
   <string name="vip_text_vip_go_beyond_limits">تجاوز حدودك</string>
   <string name="warning_connected_apps_limit">لقد وصلت إلى الحد الأقصى لتطبيقاتك المتصلة. قم بالترقية إلى VIP لتوصيل المزيد.</string>
   <string name="warning_connected_apps_limit_vip">لقد وصلت إلى الحد الأقصى لتطبيقاتك المتصلة</string>
@@ -3194,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">لا شيء (لا يوجد هجين)</string>
   <string name="yir_2026_preview_runner_up">الوصيف</string>
   <string name="yir_2026_preview_title">معاينة الشخصية</string>
-  <string name="yir_2026_rarity">فقط %1$d%% هم %2$s</string>
+  <string name="yir_2026_rarity">فقط %1$d% هم %2$s</string>
   <string name="yir_2026_reel_a_little_bit">قليلاً %s</string>
   <string name="yir_2026_reel_and_you_are">وأنت كذلك</string>
   <string name="yir_2026_reel_but_mostly">ولكن غالبًا</string>
