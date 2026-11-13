@@ -49,6 +49,7 @@ import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUS
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.views.ListSortControls
+import tv.trakt.trakt.app.core.lists.views.ListSortSubtitle
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
@@ -248,8 +249,9 @@ private fun CustomListMediaContent(
                             }
                         },
                         chipContent = {
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(1.dp),
+                            ListSortSubtitle(
+                                sorting = state.itemsSorting,
+                                values = item.sortValues,
                             ) {
                                 val iconRes = when (item) {
                                     is ListMediaItem.ShowItem -> R.drawable.ic_shows_off

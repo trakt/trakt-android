@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
@@ -36,6 +37,7 @@ internal class MoviesWatchlistViewModel(
     private val moviesState = MutableStateFlow(initialState.movies)
     private val errorState = MutableStateFlow(initialState.error)
     private val sortingState = MutableStateFlow(initialState.sorting)
+    private val itemsSortingState = MutableStateFlow(initialState.itemsSorting)
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -54,6 +56,7 @@ internal class MoviesWatchlistViewModel(
                     sorting = sortingState.value,
                 )
                 moviesState.update { movies }
+                itemsSortingState.update { sortingState.value }
                 nextDataPage += 1
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -83,7 +86,7 @@ internal class MoviesWatchlistViewModel(
                     current
                         ?.toPersistentList()
                         ?.plus(movies)
-                        ?.distinctBy { it.ids.trakt }
+                        ?.distinctBy { it.id }
                         ?.toImmutableList()
                 }
 
@@ -123,14 +126,16 @@ internal class MoviesWatchlistViewModel(
         },
         errorState,
         sortingState,
+        itemsSortingState,
     ) { state ->
         MoviesWatchlistState(
             isLoading = state[0] as Boolean,
             isLoadingPage = state[1] as Boolean,
-            movies = state[2] as ImmutableList<Movie>?,
+            movies = state[2] as ImmutableList<ListMediaItem.MovieItem>?,
             itemCount = state[3] as Int?,
             error = state[4] as Exception?,
             sorting = state[5] as Sorting,
+            itemsSorting = state[6] as Sorting,
         )
     }.stateIn(
         scope = viewModelScope,

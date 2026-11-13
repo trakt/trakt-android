@@ -10,5 +10,6 @@ internal data class ProfileFavoritesViewAllState(
     val isLoading: Boolean = false,
     val items: ImmutableList<FavoriteItem>? = null,
     val sorting: Sorting = Sorting.RecentlyAdded,
+    val itemsSorting: Sorting = sorting,
     val error: Exception? = null,
 )

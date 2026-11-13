@@ -5,6 +5,7 @@ package tv.trakt.trakt.app.core.lists
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -102,13 +103,13 @@ internal class ListsViewModel(
                         getShowsWatchlistUseCase.getShows(
                             limit = LISTS_SECTION_LIMIT,
                             sorting = Sorting.RecentlyAdded,
-                        )
+                        ).map { it.show }.toImmutableList()
                     }
                     val moviesAsync = async {
                         getMoviesWatchlistUseCase.getMovies(
                             limit = LISTS_SECTION_LIMIT,
                             sorting = Sorting.RecentlyAdded,
-                        )
+                        ).map { it.movie }.toImmutableList()
                     }
 
                     showsState.update { showsAsync.await() }

@@ -35,10 +35,12 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.lists.ListItemCount
+import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.views.ListSortControls
+import tv.trakt.trakt.app.core.lists.views.ListSortSubtitle
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -132,7 +134,7 @@ private fun MoviesWatchlistContent(
                         onSortingChange = onSortingChange,
                         modifier = Modifier.focusProperties {
                             down = state.movies?.firstOrNull()
-                                ?.let { focusRequesters[it.ids.trakt.value] }
+                                ?.let { focusRequesters[it.id.value] }
                                 ?: FocusRequester.Default
                         },
                     )
@@ -148,9 +150,10 @@ private fun MoviesWatchlistContent(
             } else if (!state.movies.isNullOrEmpty()) {
                 items(
                     count = state.movies.size,
-                    key = { index -> state.movies[index].ids.trakt.value },
+                    key = { index -> state.movies[index].id.value },
                 ) { index ->
-                    val movie = state.movies[index]
+                    val item = state.movies[index]
+                    val movie = item.movie
                     val focusRequester = focusRequesters.getOrPut(movie.ids.trakt.value) {
                         FocusRequester()
                     }
@@ -164,8 +167,9 @@ private fun MoviesWatchlistContent(
                             }
                         },
                         chipContent = {
-                            Column(
-                                verticalArrangement = spacedBy(1.dp),
+                            ListSortSubtitle(
+                                sorting = state.itemsSorting,
+                                values = item.sortValues,
                             ) {
                                 Text(
                                     text = buildString {
@@ -245,7 +249,9 @@ private fun Preview() {
         MoviesWatchlistContent(
             state = MoviesWatchlistState(
                 movies = (1..20).map {
-                    PreviewData.movie1.copy(ids = Ids(TraktId(it), SlugId(it.toString())))
+                    ListMediaItem.MovieItem(
+                        PreviewData.movie1.copy(ids = Ids(TraktId(it), SlugId(it.toString()))),
+                    )
                 }.toImmutableList(),
                 itemCount = 42,
             ),

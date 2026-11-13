@@ -55,6 +55,7 @@ internal class CustomListMediaViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val sortingState = MutableStateFlow(initialState.sorting)
+    private val itemsSortingState = MutableStateFlow(initialState.itemsSorting)
 
     private var dataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -94,6 +95,7 @@ internal class CustomListMediaViewModel(
                         )
                     }
                 }
+                itemsSortingState.update { sortingState.value }
 
                 dataPage += 1
             } catch (error: Exception) {
@@ -237,6 +239,7 @@ internal class CustomListMediaViewModel(
         infoState,
         errorState,
         sortingState,
+        itemsSortingState,
     ) { state ->
         CustomListMediaState(
             isLoading = state[0] as Boolean,
@@ -247,6 +250,7 @@ internal class CustomListMediaViewModel(
             info = state[5] as? StringResource,
             error = state[6] as? Exception,
             sorting = state[7] as Sorting,
+            itemsSorting = state[8] as Sorting,
         )
     }.stateIn(
         scope = viewModelScope,

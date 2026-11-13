@@ -43,7 +43,9 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
+import tv.trakt.trakt.app.core.lists.model.ListSortValues
 import tv.trakt.trakt.app.core.lists.views.ListSortControls
+import tv.trakt.trakt.app.core.lists.views.ListSortSubtitle
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -209,8 +211,9 @@ internal fun PersonalListContent(
                                 }
                             },
                             chipContent = {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                                ListSortSubtitle(
+                                    sorting = state.itemsSorting,
+                                    values = ListSortValues.of(show, item.listedAt, item.userRating),
                                 ) {
                                     val episodes = show.airedEpisodes.takeIf { it > 0 }
                                         ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
@@ -274,8 +277,9 @@ internal fun PersonalListContent(
                                 }
                             },
                             chipContent = {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                                ListSortSubtitle(
+                                    sorting = state.itemsSorting,
+                                    values = ListSortValues.of(movie, item.listedAt, item.userRating),
                                 ) {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,

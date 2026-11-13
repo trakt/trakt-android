@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.profile.sections.favorites.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.app.core.lists.model.ListSortValues
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
@@ -43,6 +44,12 @@ internal sealed class FavoriteItem {
         get() = when (this) {
             is ShowItem -> show.airedEpisodes
             is MovieItem -> null
+        }
+
+    val sortValues: ListSortValues
+        get() = when (this) {
+            is ShowItem -> ListSortValues.of(show, listedAt, userRating)
+            is MovieItem -> ListSortValues.of(movie, listedAt, userRating)
         }
 
     val key: String

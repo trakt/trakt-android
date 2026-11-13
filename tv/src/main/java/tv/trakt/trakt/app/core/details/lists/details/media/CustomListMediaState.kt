@@ -13,6 +13,7 @@ internal data class CustomListMediaState(
     val like: LikedState = LikedState(),
     val collection: UserCollectionState = UserCollectionState.Default,
     val sorting: Sorting = Sorting.Default,
+    val itemsSorting: Sorting = sorting,
     val isLoading: Boolean = false,
     val isLoadingPage: Boolean = false,
     val info: StringResource? = null,

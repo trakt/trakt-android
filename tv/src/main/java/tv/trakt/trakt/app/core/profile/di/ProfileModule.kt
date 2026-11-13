@@ -66,7 +66,7 @@ internal val profileModule = module {
         GetFavoriteShowsUseCase(
             remoteUserSource = get(),
             localShowsSource = get(),
-            loadUserRatingsUseCase = get(),
+            getListSortRatingsUseCase = get(),
         )
     }
 
@@ -74,7 +74,7 @@ internal val profileModule = module {
         GetFavoriteMoviesUseCase(
             remoteUserSource = get(),
             localMoviesSource = get(),
-            loadUserRatingsUseCase = get(),
+            getListSortRatingsUseCase = get(),
         )
     }
 

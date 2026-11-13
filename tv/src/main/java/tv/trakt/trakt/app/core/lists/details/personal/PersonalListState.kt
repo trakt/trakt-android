@@ -13,5 +13,6 @@ internal data class PersonalListState(
     val items: ImmutableList<PersonalListItem>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val sorting: Sorting = Sorting.Default,
+    val itemsSorting: Sorting = sorting,
     val error: Exception? = null,
 )

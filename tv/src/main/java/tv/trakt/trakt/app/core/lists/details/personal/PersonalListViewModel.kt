@@ -48,6 +48,7 @@ internal class PersonalListViewModel(
             sortHow = destination.sortHow,
         ) ?: initialState.sorting,
     )
+    private val itemsSortingState = MutableStateFlow(sortingState.value)
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -73,6 +74,7 @@ internal class PersonalListViewModel(
                     page = nextDataPage,
                 )
                 itemsState.update { items }
+                itemsSortingState.update { sortingState.value }
                 nextDataPage += 1
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -138,6 +140,7 @@ internal class PersonalListViewModel(
         collectionStateProvider.stateFlow,
         errorState,
         sortingState,
+        itemsSortingState,
     ) { state ->
         PersonalListState(
             isLoading = state[0] as Boolean,
@@ -146,6 +149,7 @@ internal class PersonalListViewModel(
             collection = state[3] as UserCollectionState,
             error = state[4] as Exception?,
             sorting = state[5] as Sorting,
+            itemsSorting = state[6] as Sorting,
         )
     }.stateIn(
         scope = viewModelScope,

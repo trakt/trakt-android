@@ -161,7 +161,10 @@ private fun ProfileFavoritesViewAllContent(
                         imageUrl = item.posterImage,
                         onClick = { onClick(item) },
                         chipContent = {
-                            FavoriteCardChip(item = item)
+                            FavoriteCardChip(
+                                item = item,
+                                sorting = state.itemsSorting,
+                            )
                         },
                         modifier = Modifier
                             .focusRequester(focusRequester)

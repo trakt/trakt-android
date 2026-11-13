@@ -35,6 +35,7 @@ internal class ProfileFavoritesViewAllViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val errorState = MutableStateFlow(initialState.error)
     private val sortingState = MutableStateFlow(initialState.sorting)
+    private val itemsSortingState = MutableStateFlow(initialState.itemsSorting)
 
     init {
         loadData()
@@ -68,6 +69,7 @@ internal class ProfileFavoritesViewAllViewModel(
                             .toImmutableList()
                     }
                 }
+                itemsSortingState.update { sorting }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -94,12 +96,14 @@ internal class ProfileFavoritesViewAllViewModel(
         itemsState,
         errorState,
         sortingState,
+        itemsSortingState,
     ) { state ->
         ProfileFavoritesViewAllState(
             isLoading = state[0] as Boolean,
             items = state[1] as ImmutableList<FavoriteItem>?,
             error = state[2] as Exception?,
             sorting = state[3] as Sorting,
+            itemsSorting = state[4] as Sorting,
         )
     }.stateIn(
         scope = viewModelScope,

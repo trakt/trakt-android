@@ -26,12 +26,14 @@ import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
+import tv.trakt.trakt.app.core.lists.views.ListSortSubtitle
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.favorites.model.FavoriteItem
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.resources.R
 
 private val sections = listOf(
@@ -204,7 +206,10 @@ private fun ContentListItem(
 }
 
 @Composable
-internal fun FavoriteCardChip(item: FavoriteItem) {
+internal fun FavoriteCardChip(
+    item: FavoriteItem,
+    sorting: Sorting = Sorting.Default,
+) {
     val subtitle = when (item) {
         is FavoriteItem.ShowItem -> {
             val episodes = stringResource(
@@ -230,13 +235,20 @@ internal fun FavoriteCardChip(item: FavoriteItem) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        Text(
-            text = subtitle,
+        ListSortSubtitle(
+            sorting = sorting,
+            values = item.sortValues,
             style = TraktTheme.typography.cardSubtitle,
             color = TraktTheme.colors.textSecondary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+        ) {
+            Text(
+                text = subtitle,
+                style = TraktTheme.typography.cardSubtitle,
+                color = TraktTheme.colors.textSecondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
 

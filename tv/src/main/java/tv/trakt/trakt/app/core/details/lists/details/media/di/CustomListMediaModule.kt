@@ -12,6 +12,7 @@ internal val customListMediaModule = module {
             remoteSource = get(),
             showLocalSource = get(),
             movieLocalSource = get(),
+            getListSortRatingsUseCase = get(),
         )
     }
 
