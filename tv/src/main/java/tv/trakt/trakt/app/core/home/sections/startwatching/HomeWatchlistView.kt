@@ -21,6 +21,7 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.app.common.ui.EmptyListCard
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
@@ -105,13 +106,15 @@ internal fun HomeWatchlistContent(
             }
 
             state.items?.isEmpty() == true -> {
-                Text(
-                    text = stringResource(R.string.list_placeholder_empty),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.heading6,
-                    modifier = Modifier
-                        .padding(headerPadding),
-                )
+                EmptyListCard(
+                    modifier = Modifier.padding(contentPadding),
+                    onFocused = { onFocused(null) },
+                ) {
+                    VerticalMediaSkeletonCard(
+                        width = TraktTheme.size.verticalMediaBigCardSize,
+                        footer2 = true,
+                    )
+                }
             }
 
             else -> {
