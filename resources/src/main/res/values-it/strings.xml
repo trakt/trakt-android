@@ -1163,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Non vedo l\'ora</string>
   <string name="hype_tier_looking_good">Promette bene</string>
   <string name="image_alt_comment_gif">GIF allegata al commento</string>
-  <string name="image_alt_hype_score">%d% di hype per te</string>
+  <string name="image_alt_hype_score">%d%% di hype per te</string>
   <string name="image_alt_hype_unknown">Ancora nessun punteggio di hype per te</string>
   <string name="image_alt_list_preview_poster">Locandina per una voce in %s</string>
-  <string name="image_alt_match_score">%d% di affinità per te</string>
+  <string name="image_alt_match_score">%d%% di affinità per te</string>
   <string name="image_alt_match_unknown">Ancora nessun punteggio di affinità per te</string>
   <string name="image_alt_media_poster">Locandina di \"%s\"</string>
   <string name="image_alt_person_headshot">Primo piano di %s</string>
@@ -1572,7 +1572,7 @@
   <string name="match_label_soulmates">Anime gemelle</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Corrispondenza:</string>
-  <string name="match_pill_aria_label">%1$d% di corrispondenza, %2$s. Apri dettagli corrispondenza.</string>
+  <string name="match_pill_aria_label">%1$d%% di corrispondenza, %2$s. Apri dettagli corrispondenza.</string>
   <string name="match_pill_loading_aria_label">Calcolo del punteggio di corrispondenza</string>
   <string name="match_tier_good_fit">Adatto a te</string>
   <string name="match_tier_maybe">Forse</string>
@@ -1889,7 +1889,7 @@
   <string name="tag_media_sync_webhook_only">Solo Webhook</string>
   <string name="tag_mixtape_different_mood">Atmosfera diversa</string>
   <string name="tag_mixtape_kept">Conservato</string>
-  <string name="tag_mixtape_match">%s% di corrispondenza</string>
+  <string name="tag_mixtape_match">%s%% di corrispondenza</string>
   <string name="tag_mixtape_tap_details">Tocca per i dettagli</string>
   <string name="tag_text_award_nominee">Candidato</string>
   <string name="tag_text_award_pending">In lizza</string>
@@ -2182,7 +2182,7 @@
   <string name="text_history_sync_filter">ID sincronizzazione %d</string>
   <string name="text_history_sync_filter_with_source">ID sincronizzazione %1$d (%2$s)</string>
   <string name="text_hype_lists">Uno dei titoli in uscita più aggiunti alle liste</string>
-  <string name="text_hype_lists_badge">Top %s%</string>
+  <string name="text_hype_lists_badge">Top %s%%</string>
   <string name="text_hype_lists_detail">Gli utenti continuano ad aggiungerlo alle loro liste</string>
   <string name="text_hype_out_on">In uscita il %s</string>
   <string name="text_hype_series_about">In linea con il tuo solito</string>
@@ -2274,7 +2274,7 @@
   <string name="text_match_basis_free">Il tuo punteggio è gratuito. I motivi alla base sono una funzionalità VIP.</string>
   <string name="text_match_basis_history">In base a ciò che hai guardato, valutato e aggiunto ai preferiti.</string>
   <string name="text_match_because_liked">Perché ti è piaciuto</string>
-  <string name="text_match_better_than">Più adatto a te rispetto al %d% dei titoli</string>
+  <string name="text_match_better_than">Più adatto a te rispetto al %d%% dei titoli</string>
   <string name="text_match_not_enough_data">Non ci sono ancora abbastanza dati per calcolare l\'affinità con i tuoi gusti.</string>
   <string name="text_match_rating_liked">Apprezzato su Trakt</string>
   <string name="text_match_rating_loved">Amato su Trakt</string>
@@ -3214,7 +3214,7 @@
   <string name="yir_2026_preview_runner_none">Nessuno (no ibrido)</string>
   <string name="yir_2026_preview_runner_up">Secondo classificato</string>
   <string name="yir_2026_preview_title">Anteprima personalità</string>
-  <string name="yir_2026_rarity">Solo il %1$d% sono %2$s</string>
+  <string name="yir_2026_rarity">Solo il %1$d%% sono %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un po\' %s</string>
   <string name="yir_2026_reel_and_you_are">E tu sei</string>
   <string name="yir_2026_reel_but_mostly">Ma soprattutto</string>
