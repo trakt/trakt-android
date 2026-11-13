@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -107,16 +108,18 @@ private fun MoviesWatchlistContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Column(
-                    verticalArrangement = spacedBy(12.dp),
+                Row(
+                    horizontalArrangement = spacedBy(16.dp),
                 ) {
                     Column(
                         verticalArrangement = spacedBy(4.dp),
+                        modifier = Modifier.weight(1F),
                     ) {
                         Text(
                             text = stringResource(R.string.list_title_watchlist_movies),
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.heading4,
+                            maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
                         state.itemCount?.let {

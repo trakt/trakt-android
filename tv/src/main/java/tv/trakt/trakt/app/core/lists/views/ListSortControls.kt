@@ -3,7 +3,6 @@ package tv.trakt.trakt.app.core.lists.views
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,14 +18,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.app.common.ui.buttons.OutlineButton
-import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
+import tv.trakt.trakt.app.common.ui.buttons.OutlineTextButton
 import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenu
 import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenuItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.Sorting
 
-private val sortTypeButtonWidth = 200.dp
+private val sortOrderIconSize = 16.dp
 
 @Composable
 internal fun ListSortControls(
@@ -43,12 +42,11 @@ internal fun ListSortControls(
         modifier = modifier,
     ) {
         Box {
-            PrimaryButton(
+            OutlineTextButton(
                 text = stringResource(sorting.type.displayStringRes),
                 icon = sorting.type.displayIconRes?.let { painterResource(it) },
                 loading = loading,
                 onClick = { menuVisible = true },
-                modifier = Modifier.width(sortTypeButtonWidth),
             )
 
             SortTypeMenu(
@@ -61,6 +59,7 @@ internal fun ListSortControls(
 
         OutlineButton(
             icon = painterResource(sorting.order.displayIconRes),
+            iconSize = sortOrderIconSize,
             onClick = {
                 onSortingChange(sorting.copy(order = sorting.order.toggle()))
             },
