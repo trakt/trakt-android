@@ -247,7 +247,6 @@ internal class ShowProgressViewModel(
                 episodeIds = ids,
                 customDate = customDate,
                 origin = origin,
-                refreshProgress = false,
             )
             analytics.progress.logAddWatchedMedia(
                 mediaType = mediaType,
@@ -262,7 +261,6 @@ internal class ShowProgressViewModel(
             updateEpisodeHistoryUseCase.removeEpisodeFromHistory(
                 episodeId = episode.ids.trakt.value,
                 origin = origin,
-                refreshProgress = false,
             )
             analytics.progress.logRemoveWatchedMedia(
                 mediaType = "episode",
@@ -300,7 +298,7 @@ internal class ShowProgressViewModel(
 
     private suspend fun refreshProgress() {
         try {
-            applyProgress(getProgressUseCase.getUserProgress(show.ids.trakt, refresh = true))
+            applyProgress(getProgressUseCase.getUserProgress(show.ids.trakt, refresh = false))
             upNextState.update { loadUpNext() }
             loadExpandedEpisodes()
         } catch (error: Exception) {
