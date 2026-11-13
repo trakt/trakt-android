@@ -1,6 +1,21 @@
-package tv.trakt.trakt.common.ui.theme.colors
+package tv.trakt.trakt.common.ui.theme.colors.seasonal
 
 import androidx.compose.ui.graphics.Color
+import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
+import tv.trakt.trakt.common.ui.theme.colors.Red100
+import tv.trakt.trakt.common.ui.theme.colors.Red200
+import tv.trakt.trakt.common.ui.theme.colors.Red300
+import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Red600
+import tv.trakt.trakt.common.ui.theme.colors.Red700
+import tv.trakt.trakt.common.ui.theme.colors.Red800
+import tv.trakt.trakt.common.ui.theme.colors.Red900
+import tv.trakt.trakt.common.ui.theme.colors.Red920
+import tv.trakt.trakt.common.ui.theme.colors.Red940
+import tv.trakt.trakt.common.ui.theme.colors.RedPalette
+import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 
 private val ChristmasBackground = Color(0xFF141719)
 

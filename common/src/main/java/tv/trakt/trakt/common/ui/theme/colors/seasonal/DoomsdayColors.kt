@@ -1,8 +1,23 @@
-package tv.trakt.trakt.common.ui.theme.colors
+package tv.trakt.trakt.common.ui.theme.colors.seasonal
 
 import androidx.compose.ui.graphics.Color
+import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.common.ui.theme.colors.Emerald100
+import tv.trakt.trakt.common.ui.theme.colors.Emerald200
+import tv.trakt.trakt.common.ui.theme.colors.Emerald300
+import tv.trakt.trakt.common.ui.theme.colors.Emerald400
+import tv.trakt.trakt.common.ui.theme.colors.Emerald500
+import tv.trakt.trakt.common.ui.theme.colors.Emerald600
+import tv.trakt.trakt.common.ui.theme.colors.Emerald700
+import tv.trakt.trakt.common.ui.theme.colors.Emerald800
+import tv.trakt.trakt.common.ui.theme.colors.Emerald900
+import tv.trakt.trakt.common.ui.theme.colors.Emerald920
+import tv.trakt.trakt.common.ui.theme.colors.Emerald940
+import tv.trakt.trakt.common.ui.theme.colors.EmeraldPalette
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
+import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 
-private val DoomsdayBackground = Color(0xFF131815)
+private val DoomsdayBackground = Color(0xFF0C0D0C)
 
 val DoomsdayDarkColors: TraktColors = DarkColors.copy(
     backgroundPrimary = DoomsdayBackground,

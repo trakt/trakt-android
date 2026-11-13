@@ -1,15 +1,15 @@
 package tv.trakt.trakt.ui.theme.model
 
 import androidx.annotation.DrawableRes
-import tv.trakt.trakt.common.ui.theme.colors.ChristmasDarkColors
-import tv.trakt.trakt.common.ui.theme.colors.ChristmasLightColors
-import tv.trakt.trakt.common.ui.theme.colors.DoomsdayDarkColors
-import tv.trakt.trakt.common.ui.theme.colors.DoomsdayLightColors
-import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
-import tv.trakt.trakt.common.ui.theme.colors.HalloweenLightColors
-import tv.trakt.trakt.common.ui.theme.colors.NewYearDarkColors
-import tv.trakt.trakt.common.ui.theme.colors.NewYearLightColors
 import tv.trakt.trakt.common.ui.theme.colors.TraktColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.ChristmasDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.ChristmasLightColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.DoomsdayDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.DoomsdayLightColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.HalloweenDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.HalloweenLightColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.NewYearDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.NewYearLightColors
 import tv.trakt.trakt.resources.R
 import java.time.LocalDate
 import java.time.Month

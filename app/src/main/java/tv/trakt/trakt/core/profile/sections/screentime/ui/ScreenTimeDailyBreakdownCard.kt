@@ -45,7 +45,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
-import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.HalloweenDarkColors
 import tv.trakt.trakt.core.profile.sections.screentime.StatWideCardWidth
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme

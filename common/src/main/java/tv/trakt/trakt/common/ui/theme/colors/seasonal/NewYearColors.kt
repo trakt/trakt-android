@@ -1,6 +1,20 @@
-package tv.trakt.trakt.common.ui.theme.colors
+package tv.trakt.trakt.common.ui.theme.colors.seasonal
 
 import androidx.compose.ui.graphics.Color
+import tv.trakt.trakt.common.ui.theme.colors.Amber100
+import tv.trakt.trakt.common.ui.theme.colors.Amber200
+import tv.trakt.trakt.common.ui.theme.colors.Amber300
+import tv.trakt.trakt.common.ui.theme.colors.Amber400
+import tv.trakt.trakt.common.ui.theme.colors.Amber500
+import tv.trakt.trakt.common.ui.theme.colors.Amber600
+import tv.trakt.trakt.common.ui.theme.colors.Amber700
+import tv.trakt.trakt.common.ui.theme.colors.Amber800
+import tv.trakt.trakt.common.ui.theme.colors.Amber900
+import tv.trakt.trakt.common.ui.theme.colors.Amber940
+import tv.trakt.trakt.common.ui.theme.colors.AmberPalette
+import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
+import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 
 private val NewYearBackground = Color(0xFF15161D)
 

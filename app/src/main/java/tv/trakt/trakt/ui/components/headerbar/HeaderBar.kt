@@ -34,7 +34,7 @@ import org.koin.compose.koinInject
 import tv.trakt.trakt.LocalStartAuthorization
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.common.ui.theme.colors.HalloweenDarkColors
+import tv.trakt.trakt.common.ui.theme.colors.seasonal.HalloweenDarkColors
 import tv.trakt.trakt.core.auth.model.LoginSource
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
