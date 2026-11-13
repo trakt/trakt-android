@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -154,13 +155,16 @@ private fun SettingsScreenContent(
         },
     ) {
         state.user?.let { user ->
-            SettingsUserPanel(
-                user = user,
-                avatarLoading = state.avatarLoading.isLoading,
-                onClick = onUserClick,
-                onUploadAvatar = onUploadAvatar,
-                onRemoveAvatar = onRemoveAvatar,
-            )
+            // The avatar URL does not change with the image, so a new key forces a fresh image request.
+            key(state.avatarVersion) {
+                SettingsUserPanel(
+                    user = user,
+                    avatarLoading = state.avatarLoading.isLoading,
+                    onClick = onUserClick,
+                    onUploadAvatar = onUploadAvatar,
+                    onRemoveAvatar = onRemoveAvatar,
+                )
+            }
         }
 
         SettingsSegmentedGroup {
