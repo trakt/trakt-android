@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.settings.usecases
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
@@ -21,12 +22,14 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.core.settings.features.avatar.AvatarCrop
 import java.io.ByteArrayOutputStream
+import kotlin.math.ceil
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
 private const val AVATAR_SIZE = 440
 private const val AVATAR_QUALITY = 90
-private const val AVATAR_DECODE_SIZE = 2048
+private const val AVATAR_MAX_DECODE_SIZE = 4096
 
 internal class UpdateUserAvatarUseCase(
     private val context: Context,
@@ -38,7 +41,7 @@ internal class UpdateUserAvatarUseCase(
         image: Uri,
         crop: AvatarCrop,
     ) {
-        val source = decodeImage(image)
+        val source = decodeImage(image, crop)
         val avatar = withContext(Dispatchers.Default) {
             encodeAvatar(source, crop)
         }
@@ -52,11 +55,14 @@ internal class UpdateUserAvatarUseCase(
         refreshProfile()
     }
 
-    private suspend fun decodeImage(image: Uri): Bitmap {
+    private suspend fun decodeImage(
+        image: Uri,
+        crop: AvatarCrop,
+    ): Bitmap {
         val request = ImageRequest.Builder(context)
             .data(image)
-            .size(AVATAR_DECODE_SIZE)
-            .precision(Precision.INEXACT)
+            .size(decodeSize(image, crop))
+            .precision(Precision.EXACT)
             .allowHardware(false)
             .memoryCachePolicy(CachePolicy.DISABLED)
             .build()
@@ -65,6 +71,30 @@ internal class UpdateUserAvatarUseCase(
             is SuccessResult -> result.image.toBitmap()
             is ErrorResult -> throw result.throwable
         }
+    }
+
+    // Sized so the cropped square still holds AVATAR_SIZE source pixels after downsampling.
+    private suspend fun decodeSize(
+        image: Uri,
+        crop: AvatarCrop,
+    ): Int {
+        val bounds = withContext(Dispatchers.IO) {
+            BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+                context.contentResolver.openInputStream(image)?.use {
+                    BitmapFactory.decodeStream(it, null, this)
+                }
+            }
+        }
+        val shortSide = min(bounds.outWidth, bounds.outHeight)
+        val aspectRatio = when {
+            shortSide > 0 -> max(bounds.outWidth, bounds.outHeight).toFloat() / shortSide
+            else -> 1F
+        }
+
+        return ceil(AVATAR_SIZE / crop.size * aspectRatio)
+            .toInt()
+            .coerceIn(AVATAR_SIZE, AVATAR_MAX_DECODE_SIZE)
     }
 
     private fun encodeAvatar(
