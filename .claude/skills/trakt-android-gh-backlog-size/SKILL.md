@@ -18,7 +18,7 @@ Proposes a Size for every trakt-android issue in the Backlog column of the org P
 | Repo filter | `https://github.com/trakt/trakt-android` |
 | Android code | `/Users/michal/Documents/Dev/Android/trakt/trakt-android-2025` |
 | Web code | `/Users/michal/Documents/Dev/Web/trakt-web` (read only, never modify) |
-| Review artifact | `https://claude.ai/artifact/92H6Mvtjn8s5QP6oA5nPWg` |
+| Review artifact | `https://claude.ai/artifact/F3ETPGkfYGjc7q8SWpnFKR` |
 | Page template | `review-template.html` next to this file |
 
 If a field or option ID stops working, refresh it with `gh project field-list 11 --owner trakt --format json` and update this table.
