@@ -1,4 +1,4 @@
-<title>Trakt Android Releases</title>
+<title>Trakt Android Dev Journal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
 <style>
@@ -48,7 +48,7 @@ body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--font-body)
 h1 { margin: 0; font: 700 34px/1.1 var(--font-display); text-wrap: balance; }
 .sub { margin: 6px 0 0; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 #search {
-  grid-column: 2; grid-row: 2; width: 100%; box-sizing: border-box; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px;
+  grid-column: 1; grid-row: 2; width: 100%; max-width: 320px; box-sizing: border-box; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px;
   background: var(--surface); color: var(--fg); font: inherit;
 }
 .top > div:first-child { grid-column: 1 / -1; }
@@ -117,6 +117,7 @@ h1 { margin: 0; font: 700 34px/1.1 var(--font-display); text-wrap: balance; }
   h1 { font-size: 28px; }
   .top { grid-template-columns: minmax(0, 1fr); }
   #search, .chips { grid-column: 1; grid-row: auto; }
+  #search { max-width: none; }
   .layout { grid-template-columns: minmax(0, 1fr); gap: 16px; padding-top: 16px; }
   .rail { position: static; flex-direction: row; max-height: none; overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; }
   .rail-item { flex: 0 0 auto; grid-template-columns: auto; }
@@ -133,7 +134,7 @@ h1 { margin: 0; font: 700 34px/1.1 var(--font-display); text-wrap: balance; }
       <p class="sub" id="sync">One entry per release tag</p>
     </div>
       <input id="search" type="search" placeholder="Search changes" aria-label="Search changes" autocomplete="off">
-      <div class="chips" id="chips" role="group" aria-label="Filter by change type">
+    <div class="chips" id="chips" hidden role="group" aria-label="Filter by change type">
         <button class="chip" id="chip-all" type="button" data-filter="all" aria-pressed="true">All</button>
         <button class="chip" id="chip-new" type="button" data-filter="new" aria-pressed="false">New</button>
         <button class="chip" id="chip-improved" type="button" data-filter="improved" aria-pressed="false">Improved</button>
@@ -260,7 +261,7 @@ h1 { margin: 0; font: 700 34px/1.1 var(--font-display); text-wrap: balance; }
     const meta = metaParts.filter(Boolean).join(" · ");
     head.append(el("h2", "ver", r.version), el("p", "meta", meta));
     article.append(head);
-    if (r.headline) article.append(el("p", "headline", r.headline));
+    if (r.headline && !r.upNext) article.append(el("p", "headline", r.headline));
 
     if (!filtering) {
       if (r.summary) article.append(el("p", "summary", r.summary));

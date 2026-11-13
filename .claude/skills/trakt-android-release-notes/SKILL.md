@@ -1,6 +1,6 @@
 ---
 name: trakt-android-release-notes
-description: Keep the "Trakt Android Releases" artifact in sync with the repo - one human-readable entry per release tag plus an "Up Next" entry for unreleased commits on main. Summarizes the commits between tags into New / Improved / Fixed / TV / Under the hood and writes them to the artifact database. Runs unattended as a daily scheduled task. Trigger: /trakt-android-release-notes, "sync release notes", "update release history", "backfill release notes".
+description: Keep the "Trakt Android Dev Journal" artifact in sync with the repo - one human-readable entry per release tag plus an "Up Next" entry for unreleased commits on main. Summarizes the commits between tags into New / Improved / Fixed / TV / Under the hood and writes them to the artifact database. Runs unattended as a daily scheduled task. Trigger: /trakt-android-release-notes, "sync release notes", "update release history", "backfill release notes".
 ---
 
 # Release notes sync
@@ -9,16 +9,16 @@ Writes database rows without asking: rows are cheap to fix and the run is unatte
 
 ## Constants
 
-| What | Value |
-| --- | --- |
-| Repo | `trakt/trakt-android` |
-| Artifact title | `Trakt Android Releases` |
-| Page source | `page.html` next to this file |
-| Capabilities | `{"db": {"rules": [{"path": "", "read": "view", "write": "admin"}]}}` |
-| Release rows | collection `releases`, doc id = version (`3.28.0`) |
-| Up Next row | collection `upnext`, doc id `current` |
-| Sync state | collection `meta`, doc id `sync` |
-| What's New source | `remote-config/whats_new_schema.json` |
+| What              | Value                                                                 |
+|-------------------|-----------------------------------------------------------------------|
+| Repo              | `trakt/trakt-android`                                                 |
+| Artifact title    | `Trakt Android Dev Journal`                                           |
+| Page source       | `page.html` next to this file                                         |
+| Capabilities      | `{"db": {"rules": [{"path": "", "read": "view", "write": "admin"}]}}` |
+| Release rows      | collection `releases`, doc id = version (`3.28.0`)                    |
+| Up Next row       | collection `upnext`, doc id `current`                                 |
+| Sync state        | collection `meta`, doc id `sync`                                      |
+| What's New source | `remote-config/whats_new_schema.json`                                 |
 
 The artifact link is not stored here. Use the link given in the request; otherwise find it with the Artifact tool (`action: "list"`, `scope: "all"`) by title. If none exists, go to "First run".
 
@@ -37,7 +37,9 @@ Release (`releases/<version>`):
 }
 ```
 
-Up Next (`upnext/current`): same `commits`, `prs`, `headline`, `summary`, `sections`, with `"highlights": []` and, instead of the date fields, `"since": "X.Y.Z"`, `"sinceDate"`, `"asOf": "<today>"`, `"head": "<short sha of main>"`.
+Up Next (`upnext/current`): same `commits`, `prs`, `summary`, `sections`, no `headline`, with
+`"highlights": []` and, instead of the date fields, `"since": "X.Y.Z"`, `"sinceDate"`,
+`"asOf": "<today>"`, `"head": "<short sha of main>"`.
 
 Sync state (`meta/sync`): `{"checkedAt": "YYYY-MM-DD", "latestTag": "X.Y.Z"}`.
 
