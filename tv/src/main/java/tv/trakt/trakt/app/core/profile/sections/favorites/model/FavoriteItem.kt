@@ -1,22 +1,31 @@
 package tv.trakt.trakt.app.core.profile.sections.favorites.model
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.app.core.lists.model.ListSortValues
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
+import java.time.Instant
 
 @Immutable
 internal sealed class FavoriteItem {
     @Immutable
     internal data class ShowItem(
         val show: Show,
+        val rank: Int,
+        val listedAt: Instant,
+        val userRating: UserRating? = null,
     ) : FavoriteItem()
 
     @Immutable
     internal data class MovieItem(
         val movie: Movie,
+        val rank: Int,
+        val listedAt: Instant,
+        val userRating: UserRating? = null,
     ) : FavoriteItem()
 
     val id: TraktId
@@ -35,6 +44,12 @@ internal sealed class FavoriteItem {
         get() = when (this) {
             is ShowItem -> show.airedEpisodes
             is MovieItem -> null
+        }
+
+    val sortValues: ListSortValues
+        get() = when (this) {
+            is ShowItem -> ListSortValues.of(show, listedAt, userRating)
+            is MovieItem -> ListSortValues.of(movie, listedAt, userRating)
         }
 
     val key: String
@@ -63,12 +78,12 @@ internal sealed class FavoriteItem {
 }
 
 internal fun interleaveFavorites(
-    shows: List<Show>,
-    movies: List<Movie>,
+    shows: List<FavoriteItem.ShowItem>,
+    movies: List<FavoriteItem.MovieItem>,
 ): List<FavoriteItem> =
     (0 until maxOf(shows.size, movies.size)).flatMap { index ->
         listOfNotNull(
-            shows.getOrNull(index)?.let(FavoriteItem::ShowItem),
-            movies.getOrNull(index)?.let(FavoriteItem::MovieItem),
+            shows.getOrNull(index),
+            movies.getOrNull(index),
         )
     }

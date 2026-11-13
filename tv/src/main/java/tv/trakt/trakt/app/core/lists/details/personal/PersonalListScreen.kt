@@ -43,6 +43,9 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
+import tv.trakt.trakt.app.core.lists.model.ListSortValues
+import tv.trakt.trakt.app.core.lists.views.ListSortControls
+import tv.trakt.trakt.app.core.lists.views.ListSortSubtitle
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -50,6 +53,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
@@ -81,6 +85,7 @@ internal fun PersonalListScreen(
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadNextDataPage() },
+        onSortingChange = viewModel::setSorting,
     )
 }
 
@@ -93,6 +98,7 @@ internal fun PersonalListContent(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
+    onSortingChange: ((Sorting) -> Unit)? = null,
 ) {
     var focusedItem by remember { mutableStateOf<PersonalListItem?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -133,21 +139,43 @@ internal fun PersonalListContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier
-                        .focusProperties {
-                            down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                        }
-                        .focusable(),
+                val firstItemFocusRequester = {
+                    state.items?.firstOrNull()
+                        ?.let { focusRequesters[it.id] }
+                        ?: FocusRequester.Default
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    Text(
-                        text = listName,
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading4,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    listSubtitle()
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier
+                            .weight(1F)
+                            .focusProperties {
+                                down = firstItemFocusRequester()
+                            }
+                            .focusable(enabled = onSortingChange == null),
+                    ) {
+                        Text(
+                            text = listName,
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.heading4,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        listSubtitle()
+                    }
+
+                    if (onSortingChange != null) {
+                        ListSortControls(
+                            sorting = state.sorting,
+                            loading = state.isLoading && !state.items.isNullOrEmpty(),
+                            onSortingChange = onSortingChange,
+                            modifier = Modifier.focusProperties {
+                                down = firstItemFocusRequester()
+                            },
+                        )
+                    }
                 }
             }
 
@@ -183,8 +211,9 @@ internal fun PersonalListContent(
                                 }
                             },
                             chipContent = {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                                ListSortSubtitle(
+                                    sorting = state.itemsSorting,
+                                    values = ListSortValues.of(show, item.listedAt, item.userRating),
                                 ) {
                                     val episodes = show.airedEpisodes.takeIf { it > 0 }
                                         ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
@@ -248,8 +277,9 @@ internal fun PersonalListContent(
                                 }
                             },
                             chipContent = {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                                ListSortSubtitle(
+                                    sorting = state.itemsSorting,
+                                    values = ListSortValues.of(movie, item.listedAt, item.userRating),
                                 ) {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
@@ -354,6 +384,7 @@ private fun Preview() {
             onShowClick = {},
             onMovieClick = {},
             onLoadNextPage = {},
+            onSortingChange = {},
         )
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -34,9 +35,12 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.lists.ListItemCount
+import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
+import tv.trakt.trakt.app.core.lists.views.ListSortControls
+import tv.trakt.trakt.app.core.lists.views.ListSortSubtitle
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Ids
@@ -44,6 +48,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -58,6 +63,7 @@ internal fun ShowsWatchlistScreen(
         state = state,
         onShowClick = onNavigateToShow,
         onLoadNextPage = { viewModel.loadNextDataPage() },
+        onSortingChange = viewModel::setSorting,
     )
 }
 
@@ -67,6 +73,7 @@ private fun ShowsWatchlistContent(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
+    onSortingChange: (Sorting) -> Unit,
 ) {
     var focusedShow by remember { mutableStateOf<Show?>(null) }
     var focusedShowId by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -102,23 +109,34 @@ private fun ShowsWatchlistContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Column(
-                    verticalArrangement = spacedBy(4.dp),
-                    modifier = Modifier
-                        .focusProperties {
-                            down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                        }
-                        .focusable(),
+                Row(
+                    horizontalArrangement = spacedBy(16.dp),
                 ) {
-                    Text(
-                        text = stringResource(R.string.list_title_watchlist_shows),
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading4,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    state.itemCount?.let {
-                        ListItemCount(count = it)
+                    Column(
+                        verticalArrangement = spacedBy(4.dp),
+                        modifier = Modifier.weight(1F),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.list_title_watchlist_shows),
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.heading4,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        state.itemCount?.let {
+                            ListItemCount(count = it)
+                        }
                     }
+                    ListSortControls(
+                        sorting = state.sorting,
+                        loading = state.isLoading && !state.shows.isNullOrEmpty(),
+                        onSortingChange = onSortingChange,
+                        modifier = Modifier.focusProperties {
+                            down = state.shows?.firstOrNull()
+                                ?.let { focusRequesters[it.id.value] }
+                                ?: FocusRequester.Default
+                        },
+                    )
                 }
             }
 
@@ -131,9 +149,10 @@ private fun ShowsWatchlistContent(
             } else if (!state.shows.isNullOrEmpty()) {
                 items(
                     count = state.shows.size,
-                    key = { index -> state.shows[index].ids.trakt.value },
+                    key = { index -> state.shows[index].id.value },
                 ) { index ->
-                    val show = state.shows[index]
+                    val item = state.shows[index]
+                    val show = item.show
                     val focusRequester = focusRequesters.getOrPut(show.ids.trakt.value) {
                         FocusRequester()
                     }
@@ -147,8 +166,9 @@ private fun ShowsWatchlistContent(
                             }
                         },
                         chipContent = {
-                            Column(
-                                verticalArrangement = spacedBy(1.dp),
+                            ListSortSubtitle(
+                                sorting = state.itemsSorting,
+                                values = item.sortValues,
                             ) {
                                 val episodes = show.airedEpisodes.takeIf { it > 0 }
                                     ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
@@ -228,12 +248,15 @@ private fun Preview() {
         ShowsWatchlistContent(
             state = ShowsWatchlistState(
                 shows = (1..20).map {
-                    PreviewData.show1.copy(ids = Ids(TraktId(it), SlugId(it.toString())))
+                    ListMediaItem.ShowItem(
+                        PreviewData.show1.copy(ids = Ids(TraktId(it), SlugId(it.toString()))),
+                    )
                 }.toImmutableList(),
                 itemCount = 42,
             ),
             onShowClick = {},
             onLoadNextPage = {},
+            onSortingChange = {},
         )
     }
 }

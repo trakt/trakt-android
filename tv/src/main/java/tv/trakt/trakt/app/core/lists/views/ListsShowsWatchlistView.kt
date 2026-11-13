@@ -18,8 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.common.ui.EmptyListCard
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.lists.ListsContentLoading
@@ -70,12 +72,12 @@ internal fun ListsShowsWatchlistView(
             }
 
             items?.isEmpty() == true -> {
-                Text(
-                    text = stringResource(R.string.list_placeholder_empty),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.heading6,
+                EmptyListCard(
                     modifier = Modifier.padding(contentPadding),
-                )
+                    onFocused = { onFocused(null) },
+                ) {
+                    VerticalMediaSkeletonCard()
+                }
             }
 
             else -> {

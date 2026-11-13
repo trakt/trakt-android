@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -26,7 +27,6 @@ import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsState
-import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 /**

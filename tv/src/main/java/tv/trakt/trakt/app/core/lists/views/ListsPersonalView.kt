@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.common.ui.EmptyListCard
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.CustomListSkeletonCard
 import tv.trakt.trakt.app.core.details.lists.CustomListCard
@@ -87,12 +89,12 @@ internal fun ListsPersonalView(
             }
 
             items?.isEmpty() == true -> {
-                Text(
-                    text = stringResource(R.string.list_placeholder_empty),
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.heading6,
+                EmptyListCard(
                     modifier = Modifier.padding(contentPadding),
-                )
+                    onFocused = { onFocused(null) },
+                ) {
+                    Spacer(modifier = Modifier.height(TraktTheme.size.detailsCustomListSize))
+                }
             }
 
             else -> {

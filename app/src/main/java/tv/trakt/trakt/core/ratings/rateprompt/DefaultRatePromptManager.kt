@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
+import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -47,7 +48,6 @@ import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.Idle
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.UnratedMedia
 import tv.trakt.trakt.core.ratings.rateprompt.usecases.IsShowRatingCandidateUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
-import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.time.Instant
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours

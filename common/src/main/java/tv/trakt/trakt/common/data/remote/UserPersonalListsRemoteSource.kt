@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.ListItemDto
+import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
@@ -74,6 +75,26 @@ class UserPersonalListsRemoteSource(
             ignoreWatched = filters?.hideWatched,
             ignoreWatchlisted = filters?.hideWatchlist,
             ignoreCollected = null,
+        )
+
+        return response.body()
+    }
+
+    suspend fun getPersonalListMediaItems(
+        listId: TraktId,
+        limit: Int,
+        page: Int = 1,
+        extended: String,
+        sorting: Sorting,
+    ): List<ListMediaItemDto> {
+        val response = usersApi.getUsersListsListItemsMedia(
+            id = "me",
+            listId = listId.value.toString(),
+            extended = extended,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
+            page = page,
+            limit = limit.toString(),
         )
 
         return response.body()

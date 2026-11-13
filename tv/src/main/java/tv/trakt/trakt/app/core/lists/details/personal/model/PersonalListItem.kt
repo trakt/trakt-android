@@ -4,6 +4,8 @@ import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.ratings.UserRating
+import java.time.Instant
 
 @Immutable
 internal data class PersonalListItem(
@@ -11,6 +13,8 @@ internal data class PersonalListItem(
     val type: String,
     val show: Show? = null,
     val movie: Movie? = null,
+    val listedAt: Instant? = null,
+    val userRating: UserRating? = null,
 ) {
     val id: String
         get() {
