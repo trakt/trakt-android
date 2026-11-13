@@ -134,7 +134,7 @@ private fun MainSnackbar(
     modifier: Modifier = Modifier,
 ) {
     Snackbar(
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         containerColor = TraktTheme.colors.snackbarContainer,
         contentColor = TraktTheme.colors.snackbarContent,
         action = actionLabel?.let { label ->
@@ -149,7 +149,10 @@ private fun MainSnackbar(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .onClick(onClick = onActionClick)
-                        .padding(horizontal = 8.dp),
+                        .padding(
+                            start = 16.dp,
+                            end = 8.dp,
+                        ),
                 )
             }
         },
