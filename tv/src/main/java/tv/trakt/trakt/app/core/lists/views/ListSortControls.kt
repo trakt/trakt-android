@@ -19,6 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.app.common.ui.buttons.OutlineButton
 import tv.trakt.trakt.app.common.ui.buttons.OutlineTextButton
+import tv.trakt.trakt.app.common.ui.buttons.connectedOutlineContentOffset
+import tv.trakt.trakt.app.common.ui.buttons.connectedOutlineLeadingShape
+import tv.trakt.trakt.app.common.ui.buttons.connectedOutlineSpacing
+import tv.trakt.trakt.app.common.ui.buttons.connectedOutlineTrailingShape
 import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenu
 import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenuItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -37,7 +41,7 @@ internal fun ListSortControls(
     var menuVisible by remember { mutableStateOf(false) }
 
     Row(
-        horizontalArrangement = spacedBy(8.dp),
+        horizontalArrangement = spacedBy(connectedOutlineSpacing),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
@@ -45,6 +49,8 @@ internal fun ListSortControls(
             OutlineTextButton(
                 text = stringResource(sorting.type.displayStringRes),
                 loading = loading,
+                shape = connectedOutlineLeadingShape,
+                contentOffset = connectedOutlineContentOffset,
                 onClick = { menuVisible = true },
             )
 
@@ -59,6 +65,8 @@ internal fun ListSortControls(
         OutlineButton(
             icon = painterResource(sorting.order.displayIconRes),
             iconSize = sortOrderIconSize,
+            shape = connectedOutlineTrailingShape,
+            contentOffset = -connectedOutlineContentOffset,
             onClick = {
                 onSortingChange(sorting.copy(order = sorting.order.toggle()))
             },

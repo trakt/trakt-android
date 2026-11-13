@@ -184,9 +184,19 @@ private fun CustomListMediaContent(
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = Modifier.padding(start = 16.dp),
                     ) {
+                        LikeButton(
+                            text = rememberThousandsFormat(state.like.likesCount),
+                            liked = state.like.isLiked,
+                            loading = state.like.isLoading,
+                            onClick = onLikeClick,
+                            modifier = Modifier.focusProperties {
+                                down = firstItemFocusRequester()
+                            },
+                        )
+
                         ListSortControls(
                             sorting = state.sorting,
                             loading = state.isLoading && !state.items.isNullOrEmpty(),
@@ -194,14 +204,6 @@ private fun CustomListMediaContent(
                             modifier = Modifier.focusProperties {
                                 down = firstItemFocusRequester()
                             },
-                        )
-
-                        LikeButton(
-                            text = rememberThousandsFormat(state.like.likesCount),
-                            liked = state.like.isLiked,
-                            loading = state.like.isLoading,
-                            enabled = !state.like.isLoading,
-                            onClick = onLikeClick,
                         )
                     }
                 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -13,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -32,7 +35,27 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
-private val outlineShape = RoundedCornerShape(12.dp)
+private val outlineCorner = 12.dp
+private val connectedCorner = 6.dp
+private val connectedLeadingCorner = 99.dp
+private val outlineShape = RoundedCornerShape(outlineCorner)
+
+internal val connectedOutlineSpacing = 5.dp
+
+// Shifts content towards the flat inner edge, where the pill corner leaves more visual room.
+internal val connectedOutlineContentOffset = 2.dp
+internal val connectedOutlineLeadingShape = RoundedCornerShape(
+    topStart = connectedLeadingCorner,
+    bottomStart = connectedLeadingCorner,
+    topEnd = connectedCorner,
+    bottomEnd = connectedCorner,
+)
+internal val connectedOutlineTrailingShape = RoundedCornerShape(
+    topStart = connectedCorner,
+    bottomStart = connectedCorner,
+    topEnd = connectedLeadingCorner,
+    bottomEnd = connectedLeadingCorner,
+)
 private val outlineWidth = 1.5.dp
 private val focusedOutlineWidth = (2.75).dp
 private val textButtonHorizontalPadding = 16.dp
@@ -52,6 +75,8 @@ internal fun OutlineButton(
     onClick: () -> Unit = {},
     iconSize: Dp = 22.dp,
     size: Dp = 42.dp,
+    shape: Shape = outlineShape,
+    contentOffset: Dp = 0.dp,
     enabled: Boolean = true,
     loading: Boolean = false,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
@@ -65,8 +90,8 @@ internal fun OutlineButton(
 
     IconButton(
         modifier = modifier.size(size),
-        shape = ButtonDefaults.shape(shape = outlineShape),
-        border = outlineBorder(outlineColor, focusedOutlineColor),
+        shape = ButtonDefaults.shape(shape = shape),
+        border = outlineBorder(shape, outlineColor, focusedOutlineColor),
         colors = outlineColors(activeContentColor),
         scale = ButtonDefaults.scale(
             focusedScale = focusedScale,
@@ -79,20 +104,23 @@ internal fun OutlineButton(
             FilmProgressIndicator(
                 size = 18.dp,
                 color = activeContentColor,
+                modifier = Modifier.offset(x = contentOffset),
             )
         } else {
             Icon(
                 painter = icon,
                 contentDescription = null,
                 tint = activeContentColor,
-                modifier = Modifier.size(iconSize),
+                modifier = Modifier
+                    .offset(x = contentOffset)
+                    .size(iconSize),
             )
         }
     }
 }
 
 /**
- * Outlined button with a label and an optional trailing icon, styled like [OutlineButton].
+ * Outlined button with a label and optional leading and trailing icons, styled like [OutlineButton].
  */
 @Composable
 internal fun OutlineTextButton(
@@ -100,8 +128,11 @@ internal fun OutlineTextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     icon: Painter? = null,
+    leadingIcon: Painter? = null,
     iconSize: Dp = 18.dp,
     height: Dp = 42.dp,
+    shape: Shape = outlineShape,
+    contentOffset: Dp = 0.dp,
     loading: Boolean = false,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     outlineColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,
@@ -109,9 +140,12 @@ internal fun OutlineTextButton(
 ) {
     Button(
         modifier = modifier.height(height),
-        contentPadding = PaddingValues(horizontal = textButtonHorizontalPadding),
-        shape = ButtonDefaults.shape(shape = outlineShape),
-        border = outlineBorder(outlineColor, focusedOutlineColor),
+        contentPadding = PaddingValues(
+            start = textButtonHorizontalPadding + contentOffset,
+            end = textButtonHorizontalPadding - contentOffset,
+        ),
+        shape = ButtonDefaults.shape(shape = shape),
+        border = outlineBorder(shape, outlineColor, focusedOutlineColor),
         colors = outlineColors(contentColor),
         scale = ButtonDefaults.scale(
             focusedScale = 1F,
@@ -124,8 +158,21 @@ internal fun OutlineTextButton(
             Row(
                 horizontalArrangement = spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.alpha(if (loading) 0F else 1F),
+                modifier = Modifier
+                    .alpha(if (loading) 0F else 1F)
+                    .graphicsLayer {
+                        translationY = 1.dp.toPx()
+                    },
             ) {
+                if (leadingIcon != null) {
+                    Icon(
+                        painter = leadingIcon,
+                        contentDescription = null,
+                        tint = contentColor,
+                        modifier = Modifier.size(iconSize),
+                    )
+                }
+
                 Text(
                     text = text.uppercase(),
                     color = contentColor,
@@ -158,16 +205,17 @@ internal fun OutlineTextButton(
 
 @Composable
 private fun outlineBorder(
+    shape: Shape,
     outlineColor: Color,
     focusedOutlineColor: Color,
 ): ButtonBorder {
     val restingBorder = Border(
         border = BorderStroke(width = outlineWidth, color = outlineColor),
-        shape = outlineShape,
+        shape = shape,
     )
     val focusedBorder = Border(
         border = BorderStroke(width = focusedOutlineWidth, color = focusedOutlineColor),
-        shape = outlineShape,
+        shape = shape,
     )
 
     return ButtonDefaults.border(
@@ -200,6 +248,27 @@ private fun Preview1() {
             OutlineButton(icon = painterResource(R.drawable.ic_trailer), enabled = false)
             OutlineButton(icon = painterResource(R.drawable.ic_more_vertical), loading = true)
             OutlineTextButton(text = "Label", icon = painterResource(R.drawable.ic_trailer))
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewConnected() {
+    TraktTheme {
+        Row(
+            horizontalArrangement = spacedBy(connectedOutlineSpacing),
+        ) {
+            OutlineTextButton(
+                text = "Label",
+                shape = connectedOutlineLeadingShape,
+                contentOffset = connectedOutlineContentOffset,
+            )
+            OutlineButton(
+                icon = painterResource(R.drawable.ic_more_vertical),
+                shape = connectedOutlineTrailingShape,
+                contentOffset = -connectedOutlineContentOffset,
+            )
         }
     }
 }
