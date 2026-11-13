@@ -19,10 +19,13 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -113,15 +116,23 @@ internal fun MainSnackbarHost(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             snackbarDataToShow?.let { data ->
-                MainSnackbar(
-                    message = data.visuals.message,
-                    actionLabel = data.visuals.actionLabel,
-                    onActionClick = data::performAction,
-                    modifier = Modifier
-                        .padding(bottom = padding)
-                        .padding(horizontal = 16.dp)
-                        .align(Alignment.BottomCenter),
-                )
+                key(data) {
+                    SwipeToDismissBox(
+                        state = rememberSwipeToDismissBoxState(),
+                        backgroundContent = {},
+                        onDismiss = { data.dismiss() },
+                        modifier = Modifier
+                            .padding(bottom = padding)
+                            .padding(horizontal = 16.dp)
+                            .align(Alignment.BottomCenter),
+                    ) {
+                        MainSnackbar(
+                            message = data.visuals.message,
+                            actionLabel = data.visuals.actionLabel,
+                            onActionClick = data::performAction,
+                        )
+                    }
+                }
             }
         }
     }
