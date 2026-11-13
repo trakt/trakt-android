@@ -105,8 +105,9 @@ private fun AvatarCropContent(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1F)
+                .align(Alignment.CenterHorizontally)
+                .weight(1F, fill = false)
+                .aspectRatio(1F, matchHeightConstraintsFirst = true)
                 .clip(DefaultCardShape)
                 .background(TraktTheme.colors.skeletonContainer)
                 .onSizeChanged { viewport = it.width.toFloat() }
