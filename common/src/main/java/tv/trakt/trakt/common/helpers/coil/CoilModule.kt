@@ -16,6 +16,7 @@ val coilModule = module {
             .components {
                 add(TimeoutInterceptor())
                 add(FallbackInterceptor())
+                add(PosterLanguageInterceptor(get()))
                 add(SvgDecoder.Factory())
                 add(AnimatedImageDecoder.Factory())
             }
