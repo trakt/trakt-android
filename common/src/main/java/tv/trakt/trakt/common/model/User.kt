@@ -76,6 +76,18 @@ data class User(
     companion object
 }
 
+// The CDN keeps serving a cached avatar after a change, so a new version param skips its copy.
+fun User.withAvatarVersion(version: Long?): User {
+    if (version == null) return this
+    val avatar = images?.avatar?.full ?: return this
+
+    return copy(
+        images = images.copy(
+            avatar = User.Image(full = "$avatar?v=$version"),
+        ),
+    )
+}
+
 fun Companion.fromDto(dto: UserSettingsDto): User {
     return User(
         ids = Ids(

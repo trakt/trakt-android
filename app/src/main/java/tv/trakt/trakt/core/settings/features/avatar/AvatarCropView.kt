@@ -20,8 +20,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -43,6 +46,9 @@ import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val PREVIEW_DECODE_SIZE = 1024
+private const val GRID_LINES = 2
+private val GridColor = Color.White.copy(alpha = 0.3F)
+private val GridStroke = 1.dp
 
 @Composable
 internal fun AvatarCropView(
@@ -110,6 +116,10 @@ private fun AvatarCropContent(
                 .aspectRatio(1F, matchHeightConstraintsFirst = true)
                 .clip(DefaultCardShape)
                 .background(TraktTheme.colors.skeletonContainer)
+                .drawWithContent {
+                    drawContent()
+                    if (isReady) drawCropGrid()
+                }
                 .onSizeChanged { viewport = it.width.toFloat() }
                 .pointerInput(imageSize, viewport) {
                     if (imageSize == null || !isReady) return@pointerInput
@@ -175,6 +185,17 @@ private fun AvatarCropContent(
     }
 }
 
+private fun DrawScope.drawCropGrid() {
+    val stroke = GridStroke.toPx()
+    (1..GRID_LINES).forEach { line ->
+        val fraction = line / (GRID_LINES + 1F)
+        val x = size.width * fraction
+        val y = size.height * fraction
+        drawLine(GridColor, Offset(x, 0F), Offset(x, size.height), stroke)
+        drawLine(GridColor, Offset(0F, y), Offset(size.width, y), stroke)
+    }
+}
+
 @PreviewTraktLightDark
 @Composable
 private fun Preview() {
@@ -183,5 +204,18 @@ private fun Preview() {
             imageSize = null,
             modifier = Modifier.padding(24.dp),
         )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewReady() {
+    TraktThemePreview {
+        AvatarCropContent(
+            imageSize = Size(1600F, 1200F),
+            modifier = Modifier.padding(24.dp),
+        ) { layoutModifier ->
+            Box(layoutModifier.background(Color.DarkGray))
+        }
     }
 }

@@ -38,7 +38,6 @@ internal class SettingsViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val avatarLoadingState = MutableStateFlow(initialState.avatarLoading)
-    private val avatarVersionState = MutableStateFlow(initialState.avatarVersion)
 
     init {
         loadUser()
@@ -86,7 +85,6 @@ internal class SettingsViewModel(
             try {
                 avatarLoadingState.update { Loading }
                 update()
-                avatarVersionState.update { it + 1 }
                 analytics.logSettings(action)
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -105,12 +103,10 @@ internal class SettingsViewModel(
     val state = combine(
         userState,
         avatarLoadingState,
-        avatarVersionState,
     ) { state ->
         SettingsState(
             user = state[0] as User?,
             avatarLoading = state[1] as LoadingState,
-            avatarVersion = state[2] as Int,
         )
     }.stateIn(
         scope = viewModelScope,

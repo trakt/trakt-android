@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.net.Uri
 import android.util.Base64
+import androidx.core.graphics.createBitmap
 import coil3.ImageLoader
 import coil3.request.CachePolicy
 import coil3.request.ErrorResult
@@ -20,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.core.settings.features.avatar.AvatarCrop
 import java.io.ByteArrayOutputStream
 import kotlin.math.ceil
@@ -47,12 +49,12 @@ internal class UpdateUserAvatarUseCase(
         }
 
         remoteSource.updateAvatar(avatar)
-        refreshProfile()
+        refreshAvatar()
     }
 
     suspend fun removeAvatar() {
         remoteSource.removeAvatar()
-        refreshProfile()
+        refreshAvatar()
     }
 
     private suspend fun decodeImage(
@@ -107,7 +109,7 @@ internal class UpdateUserAvatarUseCase(
         val left = (crop.left * source.width).roundToInt().coerceIn(0, source.width - side)
         val top = (crop.top * source.height).roundToInt().coerceIn(0, source.height - side)
 
-        val avatar = Bitmap.createBitmap(AVATAR_SIZE, AVATAR_SIZE, Bitmap.Config.ARGB_8888)
+        val avatar = createBitmap(AVATAR_SIZE, AVATAR_SIZE)
         Canvas(avatar).drawBitmap(
             source,
             Rect(left, top, left + side, top + side),
@@ -124,21 +126,7 @@ internal class UpdateUserAvatarUseCase(
         return "data:image/jpeg;base64,${Base64.encodeToString(bytes, Base64.NO_WRAP)}"
     }
 
-    private suspend fun refreshProfile() {
-        val profile = remoteSource.getProfile()
-        profile.images?.avatar?.full?.let { evictCachedImage(it) }
-        sessionManager.saveProfile(profile)
-    }
-
-    // The avatar URL stays the same when the image changes, so cached copies would keep showing.
-    private suspend fun evictCachedImage(url: String) {
-        imageLoader.memoryCache?.let { cache ->
-            cache.keys
-                .filter { it.key == url }
-                .forEach(cache::remove)
-        }
-        withContext(Dispatchers.IO) {
-            imageLoader.diskCache?.remove(url)
-        }
+    private suspend fun refreshAvatar() {
+        sessionManager.saveAvatarVersion(nowUtcInstant().toEpochMilli())
     }
 }
