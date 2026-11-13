@@ -31,6 +31,7 @@ import tv.trakt.trakt.core.movies.ui.context.MovieContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
+import tv.trakt.trakt.ui.snackbar.showWatchlistAdded
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -81,8 +82,15 @@ internal fun MovieContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_watchlist_added),
+                        message = null,
                     )
+                    sheetScope.launch {
+                        localSnack.showWatchlistAdded(
+                            resources = localRes,
+                            title = movie.title,
+                            onChangeList = { listsTarget = ManageListsTarget.MovieTarget(movie) },
+                        )
+                    }
                 },
                 onRemoveWatched = {
                     onWatchedChange()
