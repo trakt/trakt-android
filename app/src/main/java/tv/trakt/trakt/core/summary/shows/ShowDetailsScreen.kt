@@ -321,6 +321,9 @@ internal fun ShowDetailsScreen(
         target = listsSheet?.let(ManageListsTarget::ShowTarget),
         inWatchlist = state.showProgress?.inWatchlist == true,
         onWatchlistClick = {
+            if (state.showProgress?.inWatchlist == true) {
+                haptic.performHapticFeedback(Confirm)
+            }
             viewModel.toggleWatchlist()
         },
         onWatchlistOpenClick = onNavigateToWatchlist,
@@ -424,6 +427,7 @@ internal fun ShowDetailsScreen(
         active = confirmRemoveWatchedSheet,
         onYes = {
             confirmRemoveWatchedSheet = false
+            haptic.performHapticFeedback(Confirm)
             viewModel.removeFromWatched()
         },
         onNo = { confirmRemoveWatchedSheet = false },
@@ -438,6 +442,7 @@ internal fun ShowDetailsScreen(
         active = confirmRemoveWatchlistSheet,
         onYes = {
             confirmRemoveWatchlistSheet = false
+            haptic.performHapticFeedback(Confirm)
             viewModel.toggleWatchlist()
         },
         onNo = { confirmRemoveWatchlistSheet = false },

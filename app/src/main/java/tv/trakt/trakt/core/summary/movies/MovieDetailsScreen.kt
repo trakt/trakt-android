@@ -301,6 +301,7 @@ internal fun MovieDetailsScreen(
         active = confirmRemoveWatchedSheet,
         onYes = {
             confirmRemoveWatchedSheet = false
+            haptic.performHapticFeedback(Confirm)
             viewModel.removeFromWatched()
         },
         onNo = { confirmRemoveWatchedSheet = false },
@@ -315,6 +316,7 @@ internal fun MovieDetailsScreen(
         active = confirmRemoveWatchlistSheet,
         onYes = {
             confirmRemoveWatchlistSheet = false
+            haptic.performHapticFeedback(Confirm)
             viewModel.toggleWatchlist()
         },
         onNo = { confirmRemoveWatchlistSheet = false },
@@ -329,6 +331,9 @@ internal fun MovieDetailsScreen(
         target = listsSheet?.let(ManageListsTarget::MovieTarget),
         inWatchlist = state.movieProgress?.inWatchlist == true,
         onWatchlistClick = {
+            if (state.movieProgress?.inWatchlist == true) {
+                haptic.performHapticFeedback(Confirm)
+            }
             viewModel.toggleWatchlist()
         },
         onWatchlistOpenClick = onNavigateToWatchlist,

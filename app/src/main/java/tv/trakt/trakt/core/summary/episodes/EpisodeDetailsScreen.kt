@@ -311,6 +311,7 @@ internal fun EpisodeDetailsScreen(
         active = confirmRemoveWatchedSheet,
         onYes = {
             confirmRemoveWatchedSheet = false
+            haptic.performHapticFeedback(Confirm)
             viewModel.removeFromWatched()
         },
         onNo = { confirmRemoveWatchedSheet = false },

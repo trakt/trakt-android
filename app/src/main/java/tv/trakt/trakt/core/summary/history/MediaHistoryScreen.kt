@@ -45,7 +45,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -97,6 +99,8 @@ internal fun MediaHistoryScreen(
     onNavigateBack: () -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
+    val haptic = LocalHapticFeedback.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
@@ -134,6 +138,7 @@ internal fun MediaHistoryScreen(
         active = confirmRemoveSheet != null,
         onYes = {
             confirmRemoveSheet?.let {
+                haptic.performHapticFeedback(Confirm)
                 viewModel.removeFromWatched(it)
                 confirmRemoveSheet = null
             }

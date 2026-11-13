@@ -252,6 +252,7 @@ internal fun ShowSeasonsView(
         active = confirmRemoveEpisodeSheet != null,
         onYes = {
             confirmRemoveEpisodeSheet?.let {
+                haptic.performHapticFeedback(Confirm)
                 viewModel.removeFromWatched(it.episode)
                 confirmRemoveEpisodeSheet = null
             }
@@ -269,6 +270,7 @@ internal fun ShowSeasonsView(
         onYes = {
             confirmRemoveSeasonSheet = false
             state.items.selectedSeason?.let {
+                haptic.performHapticFeedback(Confirm)
                 viewModel.removeFromWatched(it)
             }
         },

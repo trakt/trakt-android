@@ -9,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import tv.trakt.trakt.common.helpers.extensions.toGifQuery
 import tv.trakt.trakt.common.model.Comment
@@ -66,6 +68,8 @@ internal fun AllShowSeasonsSheets(
     sheetState: AllShowSeasonsSheetState,
     viewModel: AllShowSeasonsViewModel,
 ) {
+    val haptic = LocalHapticFeedback.current
+
     EpisodeContextSheet(
         episodeItem = sheetState.episodeContext,
         onTrackClick = {
@@ -146,6 +150,7 @@ internal fun AllShowSeasonsSheets(
         active = sheetState.confirmRemoveEpisode != null,
         onYes = {
             sheetState.confirmRemoveEpisode?.let {
+                haptic.performHapticFeedback(Confirm)
                 viewModel.removeFromWatched(it.episode)
                 sheetState.confirmRemoveEpisode = null
             }
@@ -176,7 +181,10 @@ internal fun AllShowSeasonsSheets(
         active = sheetState.confirmRemoveSeason,
         onYes = {
             sheetState.confirmRemoveSeason = false
-            state.items.selectedSeason?.let { viewModel.removeFromWatched(it) }
+            state.items.selectedSeason?.let {
+                haptic.performHapticFeedback(Confirm)
+                viewModel.removeFromWatched(it)
+            }
         },
         onNo = { sheetState.confirmRemoveSeason = false },
         title = stringResource(R.string.button_text_remove_from_history),
