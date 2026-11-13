@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.common.ui.buttons
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -10,12 +11,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.tv.material3.Border
 import androidx.tv.material3.Button
 import androidx.tv.material3.ButtonBorder
@@ -31,6 +35,11 @@ import tv.trakt.trakt.resources.R
 private val outlineShape = RoundedCornerShape(12.dp)
 private val outlineWidth = 1.5.dp
 private val focusedOutlineWidth = (2.75).dp
+private val textButtonHorizontalPadding = 16.dp
+private val centeredTextStyle = LineHeightStyle(
+    alignment = LineHeightStyle.Alignment.Center,
+    trim = LineHeightStyle.Trim.Both,
+)
 
 /**
  * Icon-only outlined button matching [PrimaryButton] height and shape. Transparent container,
@@ -100,7 +109,7 @@ internal fun OutlineTextButton(
 ) {
     Button(
         modifier = modifier.height(height),
-        contentPadding = PaddingValues(horizontal = 12.dp),
+        contentPadding = PaddingValues(horizontal = textButtonHorizontalPadding),
         shape = ButtonDefaults.shape(shape = outlineShape),
         border = outlineBorder(outlineColor, focusedOutlineColor),
         colors = outlineColors(contentColor),
@@ -111,26 +120,23 @@ internal fun OutlineTextButton(
             if (!loading) onClick()
         },
     ) {
-        Row(
-            horizontalArrangement = spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = text.uppercase(),
-                color = contentColor,
-                style = TraktTheme.typography.buttonPrimary,
-                maxLines = 1,
-            )
+        Box(contentAlignment = Alignment.Center) {
+            Row(
+                horizontalArrangement = spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.alpha(if (loading) 0F else 1F),
+            ) {
+                Text(
+                    text = text.uppercase(),
+                    color = contentColor,
+                    style = TraktTheme.typography.buttonPrimary.copy(
+                        lineHeight = 1.em,
+                        lineHeightStyle = centeredTextStyle,
+                    ),
+                    maxLines = 1,
+                )
 
-            when {
-                loading -> {
-                    FilmProgressIndicator(
-                        size = iconSize,
-                        color = contentColor,
-                    )
-                }
-
-                icon != null -> {
+                if (icon != null) {
                     Icon(
                         painter = icon,
                         contentDescription = null,
@@ -138,6 +144,13 @@ internal fun OutlineTextButton(
                         modifier = Modifier.size(iconSize),
                     )
                 }
+            }
+
+            if (loading) {
+                FilmProgressIndicator(
+                    size = iconSize,
+                    color = contentColor,
+                )
             }
         }
     }
