@@ -1,8 +1,10 @@
 package tv.trakt.trakt.common.helpers.coil
 
 import androidx.appcompat.app.AppCompatDelegate
+import coil3.ImageLoader
 import coil3.disk.DiskCache
 import coil3.intercept.Interceptor
+import coil3.memory.MemoryCache
 import coil3.request.ImageResult
 import coil3.request.SuccessResult
 import io.ktor.client.plugins.ClientRequestException
@@ -56,6 +58,19 @@ internal fun toLocalizedPoster(
 private fun appPosterLanguage(): String? {
     val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
     return toPosterLanguage(locale)
+}
+
+/**
+ * Memory cache key for a poster used as a placeholder. Coil reads placeholders before
+ * interceptors run, so the key must already point at the localized poster when one is cached.
+ */
+fun ImageLoader.posterPlaceholderKey(url: String?): String? {
+    if (url == null) return null
+    val language = appPosterLanguage() ?: return url
+    val localizedUrl = toLocalizedPoster(url, language)?.url ?: return url
+    if (memoryCache?.get(MemoryCache.Key(localizedUrl)) == null) return url
+
+    return localizedUrl
 }
 
 internal class PosterLanguageInterceptor(
