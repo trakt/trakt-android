@@ -5,6 +5,7 @@ import coil3.intercept.Interceptor
 import coil3.request.ImageResult
 import coil3.request.SuccessResult
 import io.ktor.client.plugins.ClientRequestException
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -91,7 +92,7 @@ internal class PosterLanguageInterceptor(
         }
     }
 
-    // A missing or unreadable manifest means "no localized posters" and stays cached. Network
+    // A missing (404) or unreadable manifest means "no localized posters" and stays cached. Other
     // failures throw, so the lookup is retried on the next load.
     private suspend fun fetchPosterLanguages(
         type: String,
@@ -104,7 +105,8 @@ internal class PosterLanguageInterceptor(
                 ?.langs
                 .orEmpty()
                 .toSet()
-        } catch (_: ClientRequestException) {
+        } catch (error: ClientRequestException) {
+            if (error.response.status != HttpStatusCode.NotFound) throw error
             emptySet()
         } catch (_: SerializationException) {
             emptySet()
