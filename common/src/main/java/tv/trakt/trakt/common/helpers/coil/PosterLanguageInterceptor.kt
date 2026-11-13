@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.helpers.coil
 
 import androidx.appcompat.app.AppCompatDelegate
+import coil3.disk.DiskCache
 import coil3.intercept.Interceptor
 import coil3.request.ImageResult
 import coil3.request.SuccessResult
@@ -11,6 +12,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import tv.trakt.trakt.common.data.remote.MediaImagesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -56,6 +58,7 @@ private fun appPosterLanguage(): String? {
 
 internal class PosterLanguageInterceptor(
     private val remoteSource: MediaImagesRemoteSource,
+    private val diskCache: () -> DiskCache?,
 ) : Interceptor {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val manifests = ConcurrentHashMap<String, Deferred<Set<String>>>()
@@ -65,19 +68,37 @@ internal class PosterLanguageInterceptor(
         val language = appPosterLanguage() ?: return chain.proceed()
         val poster = toLocalizedPoster(url, language) ?: return chain.proceed()
 
-        if (!hasPosterLanguage(poster)) {
+        if (!isCachedOnDisk(poster) && !hasPosterLanguage(poster)) {
             return chain.proceed()
         }
 
         val request = chain.request.newBuilder().data(poster.url).build()
         val result = chain.withRequest(request).proceed()
-        if (result is SuccessResult) return result
+
+        if (result is SuccessResult) {
+            return result
+        }
 
         return chain.proceed()
     }
 
+    // A localized poster on disk proves the manifest listed it, so a cold start or an offline
+    // session skips the manifest lookup. Once the manifest is known, it answers instead.
+    private suspend fun isCachedOnDisk(poster: LocalizedPoster): Boolean {
+        if (manifests.containsKey(manifestKey(poster))) return false
+        val cache = diskCache() ?: return false
+
+        return withContext(Dispatchers.IO) {
+            cache.openSnapshot(poster.url)?.use { true } ?: false
+        }
+    }
+
+    private fun manifestKey(poster: LocalizedPoster): String {
+        return "${poster.type}/${poster.id}"
+    }
+
     private suspend fun hasPosterLanguage(poster: LocalizedPoster): Boolean {
-        val key = "${poster.type}/${poster.id}"
+        val key = manifestKey(poster)
         val manifest = manifests.computeIfAbsent(key) {
             scope.async { fetchPosterLanguages(poster.type, poster.id) }
         }
