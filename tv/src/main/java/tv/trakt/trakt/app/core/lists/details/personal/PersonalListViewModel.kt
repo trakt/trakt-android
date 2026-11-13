@@ -18,6 +18,7 @@ import tv.trakt.trakt.app.core.lists.details.personal.navigation.PersonalListDes
 import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 
 internal class PersonalListViewModel(
@@ -33,6 +34,11 @@ internal class PersonalListViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     val destination = savedStateHandle.toRoute<PersonalListDestination>()
+
+    private val sorting = Sorting.fromValues(
+        sortBy = destination.sortBy,
+        sortHow = destination.sortHow,
+    ) ?: Sorting.Default
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -54,6 +60,7 @@ internal class PersonalListViewModel(
                 loadingState.update { true }
                 val items = getListItemsUseCase.getListItems(
                     listId = destination.listId.toTraktId(),
+                    sorting = sorting,
                     page = nextDataPage,
                 )
                 itemsState.update { items }
@@ -78,6 +85,7 @@ internal class PersonalListViewModel(
 
                 val shows = getListItemsUseCase.getListItems(
                     listId = destination.listId.toTraktId(),
+                    sorting = sorting,
                     page = nextDataPage,
                 )
 

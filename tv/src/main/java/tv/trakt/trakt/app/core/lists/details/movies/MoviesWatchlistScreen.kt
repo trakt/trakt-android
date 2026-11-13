@@ -37,6 +37,7 @@ import tv.trakt.trakt.app.core.details.lists.ListItemCount
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
+import tv.trakt.trakt.app.core.lists.views.ListSortControls
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -45,6 +46,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -59,6 +61,7 @@ internal fun MoviesWatchlistScreen(
         state = state,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadNextDataPage() },
+        onSortingChange = viewModel::setSorting,
     )
 }
 
@@ -68,6 +71,7 @@ private fun MoviesWatchlistContent(
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
+    onSortingChange: (Sorting) -> Unit,
 ) {
     var focusedMovie by remember { mutableStateOf<Movie?>(null) }
     var focusedMovieId by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -104,22 +108,31 @@ private fun MoviesWatchlistContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Column(
-                    verticalArrangement = spacedBy(4.dp),
-                    modifier = Modifier
-                        .focusProperties {
-                            down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                        }
-                        .focusable(),
+                    verticalArrangement = spacedBy(12.dp),
                 ) {
-                    Text(
-                        text = stringResource(R.string.list_title_watchlist_movies),
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading4,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    state.itemCount?.let {
-                        ListItemCount(count = it)
+                    Column(
+                        verticalArrangement = spacedBy(4.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.list_title_watchlist_movies),
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.heading4,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        state.itemCount?.let {
+                            ListItemCount(count = it)
+                        }
                     }
+                    ListSortControls(
+                        sorting = state.sorting,
+                        loading = state.isLoading && !state.movies.isNullOrEmpty(),
+                        onSortingChange = onSortingChange,
+                        modifier = Modifier.focusProperties {
+                            down = state.movies?.firstOrNull()
+                                ?.let { focusRequesters[it.ids.trakt.value] }
+                                ?: FocusRequester.Default
+                        },
+                    )
                 }
             }
 
@@ -235,6 +248,7 @@ private fun Preview() {
             ),
             onMovieClick = {},
             onLoadNextPage = {},
+            onSortingChange = {},
         )
     }
 }

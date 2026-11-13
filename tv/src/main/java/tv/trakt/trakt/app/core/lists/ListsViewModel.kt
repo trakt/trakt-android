@@ -34,6 +34,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
 
@@ -100,11 +101,13 @@ internal class ListsViewModel(
                     val showsAsync = async {
                         getShowsWatchlistUseCase.getShows(
                             limit = LISTS_SECTION_LIMIT,
+                            sorting = Sorting.RecentlyAdded,
                         )
                     }
                     val moviesAsync = async {
                         getMoviesWatchlistUseCase.getMovies(
                             limit = LISTS_SECTION_LIMIT,
+                            sorting = Sorting.RecentlyAdded,
                         )
                     }
 

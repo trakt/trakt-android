@@ -15,13 +15,14 @@ internal class GetListsMoviesWatchlistUseCase(
 ) {
     suspend fun getMovies(
         limit: Int,
+        sorting: Sorting,
         page: Int? = null,
     ): ImmutableList<Movie> {
         val movies = remoteSyncSource.getWatchlist(
             page = page,
             limit = limit,
             extended = "full,colors,streaming_ids",
-            sorting = Sorting.RecentlyAdded,
+            sorting = sorting,
         ).asyncMap {
             Movie.fromDto(it.movie)
         }

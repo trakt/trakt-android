@@ -37,6 +37,7 @@ import tv.trakt.trakt.app.core.details.lists.ListItemCount
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
+import tv.trakt.trakt.app.core.lists.views.ListSortControls
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Ids
@@ -44,6 +45,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -58,6 +60,7 @@ internal fun ShowsWatchlistScreen(
         state = state,
         onShowClick = onNavigateToShow,
         onLoadNextPage = { viewModel.loadNextDataPage() },
+        onSortingChange = viewModel::setSorting,
     )
 }
 
@@ -67,6 +70,7 @@ private fun ShowsWatchlistContent(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
+    onSortingChange: (Sorting) -> Unit,
 ) {
     var focusedShow by remember { mutableStateOf<Show?>(null) }
     var focusedShowId by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -103,22 +107,31 @@ private fun ShowsWatchlistContent(
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Column(
-                    verticalArrangement = spacedBy(4.dp),
-                    modifier = Modifier
-                        .focusProperties {
-                            down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                        }
-                        .focusable(),
+                    verticalArrangement = spacedBy(12.dp),
                 ) {
-                    Text(
-                        text = stringResource(R.string.list_title_watchlist_shows),
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading4,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    state.itemCount?.let {
-                        ListItemCount(count = it)
+                    Column(
+                        verticalArrangement = spacedBy(4.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.list_title_watchlist_shows),
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.heading4,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        state.itemCount?.let {
+                            ListItemCount(count = it)
+                        }
                     }
+                    ListSortControls(
+                        sorting = state.sorting,
+                        loading = state.isLoading && !state.shows.isNullOrEmpty(),
+                        onSortingChange = onSortingChange,
+                        modifier = Modifier.focusProperties {
+                            down = state.shows?.firstOrNull()
+                                ?.let { focusRequesters[it.ids.trakt.value] }
+                                ?: FocusRequester.Default
+                        },
+                    )
                 }
             }
 
@@ -234,6 +247,7 @@ private fun Preview() {
             ),
             onShowClick = {},
             onLoadNextPage = {},
+            onSortingChange = {},
         )
     }
 }

@@ -16,14 +16,18 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 @Suppress("UNCHECKED_CAST")
 internal class ShowsWatchlistViewModel(
     collectionStateProvider: CollectionStateProvider,
     private val getListItemsUseCase: GetListsShowsWatchlistUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ShowsWatchlistState()
 
@@ -31,6 +35,7 @@ internal class ShowsWatchlistViewModel(
     private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
     private val showsState = MutableStateFlow(initialState.shows)
     private val errorState = MutableStateFlow(initialState.error)
+    private val sortingState = MutableStateFlow(initialState.sorting)
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -44,7 +49,10 @@ internal class ShowsWatchlistViewModel(
         viewModelScope.launch {
             try {
                 loadingState.update { true }
-                val shows = getListItemsUseCase.getShows(LISTS_PAGE_LIMIT)
+                val shows = getListItemsUseCase.getShows(
+                    limit = LISTS_PAGE_LIMIT,
+                    sorting = sortingState.value,
+                )
                 showsState.update { shows }
                 nextDataPage += 1
             } catch (error: Exception) {
@@ -67,6 +75,7 @@ internal class ShowsWatchlistViewModel(
 
                 val shows = getListItemsUseCase.getShows(
                     limit = LISTS_PAGE_LIMIT,
+                    sorting = sortingState.value,
                     page = nextDataPage,
                 )
 
@@ -90,6 +99,19 @@ internal class ShowsWatchlistViewModel(
         }
     }
 
+    fun setSorting(sorting: Sorting) {
+        if (sorting == sortingState.value || loadingState.value || loadingPageState.value) {
+            return
+        }
+
+        sortingState.update { sorting }
+        nextDataPage = 1
+        hasMoreData = true
+        loadData()
+
+        analytics.lists.logListSort(sorting)
+    }
+
     val state = combine(
         loadingState,
         loadingPageState,
@@ -100,6 +122,7 @@ internal class ShowsWatchlistViewModel(
                 .takeIf { it > 0 }
         },
         errorState,
+        sortingState,
     ) { state ->
         ShowsWatchlistState(
             isLoading = state[0] as Boolean,
@@ -107,6 +130,7 @@ internal class ShowsWatchlistViewModel(
             shows = state[2] as ImmutableList<Show>?,
             itemCount = state[3] as Int?,
             error = state[4] as Exception?,
+            sorting = state[5] as Sorting,
         )
     }.stateIn(
         scope = viewModelScope,

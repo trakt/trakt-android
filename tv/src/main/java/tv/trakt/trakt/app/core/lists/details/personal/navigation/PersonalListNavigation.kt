@@ -15,6 +15,8 @@ internal data class PersonalListDestination(
     val listName: String,
     val listPrivacy: String?,
     val listItemCount: Int?,
+    val sortBy: String?,
+    val sortHow: String?,
 )
 
 internal fun NavGraphBuilder.personalListScreen(
@@ -37,6 +39,8 @@ internal fun NavController.navigateToPersonalList(list: CustomList) {
             listName = list.name,
             listPrivacy = list.privacy?.value,
             listItemCount = list.itemCount,
+            sortBy = list.sorting?.type?.value,
+            sortHow = list.sorting?.order?.value,
         ),
     )
 }

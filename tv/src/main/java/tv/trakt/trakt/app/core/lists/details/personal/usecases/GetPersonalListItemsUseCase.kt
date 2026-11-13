@@ -6,9 +6,11 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
+import tv.trakt.trakt.app.core.lists.details.personal.model.getPersonalListSorting
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
+import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -22,6 +24,7 @@ internal class GetPersonalListItemsUseCase(
 ) {
     suspend fun getListItems(
         listId: TraktId,
+        sorting: Sorting,
         page: Int = 1,
     ): ImmutableList<PersonalListItem> {
         return coroutineScope {
@@ -31,11 +34,12 @@ internal class GetPersonalListItemsUseCase(
                     limit = PERSONAL_LIST_PAGE_LIMIT,
                     page = page,
                     extended = "full,streaming_ids",
-                    sorting = Sorting.Default,
+                    sorting = sorting,
                 ).map {
                     PersonalListItem(
                         type = "show",
                         rank = it.rank,
+                        listedAt = it.listedAt.toInstant(),
                         show = Show.fromDto(it.show),
                     )
                 }.toImmutableList()
@@ -47,11 +51,12 @@ internal class GetPersonalListItemsUseCase(
                     limit = PERSONAL_LIST_PAGE_LIMIT,
                     page = page,
                     extended = "full,streaming_ids",
-                    sorting = Sorting.Default,
+                    sorting = sorting,
                 ).map {
                     PersonalListItem(
                         type = "movie",
                         rank = it.rank,
+                        listedAt = it.listedAt.toInstant(),
                         movie = Movie.fromDto(it.movie),
                     )
                 }.toImmutableList()
@@ -77,9 +82,9 @@ internal class GetPersonalListItemsUseCase(
             buildList {
                 addAll(shows)
                 addAll(movies)
-            }.sortedBy {
-                it.rank
-            }.toImmutableList()
+            }.sortedWith(
+                getPersonalListSorting(sorting),
+            ).toImmutableList()
         }
     }
 }
