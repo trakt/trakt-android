@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import java.time.Instant
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.Duration.Companion.days
 import kotlin.time.toJavaDuration
 
@@ -18,6 +19,10 @@ private const val LANGUAGE_SEPARATOR = ","
 class PosterLanguagesLocalSource(
     private val dataStore: DataStore<Preferences>,
 ) {
+    // Expired entries are only dropped on the first write of each session; reads already
+    // ignore them, so later writes skip the full scan.
+    private val isPruneDue = AtomicBoolean(true)
+
     /** Poster languages for a title, or null when unknown or older than the retention window. */
     suspend fun getLanguages(
         key: String,
@@ -40,12 +45,16 @@ class PosterLanguagesLocalSource(
     ) {
         val value = "${now.toEpochMilli()}$TIME_SEPARATOR${languages.joinToString(LANGUAGE_SEPARATOR)}"
 
+        val prune = isPruneDue.compareAndSet(true, false)
+
         dataStore.edit { preferences ->
-            preferences
-                .asMap()
-                .filter { (_, stored) -> isExpired(stored as? String, now) }
-                .keys
-                .forEach { preferences.remove(it) }
+            if (prune) {
+                preferences
+                    .asMap()
+                    .filter { (_, stored) -> isExpired(stored as? String, now) }
+                    .keys
+                    .forEach { preferences.remove(it) }
+            }
 
             preferences[stringPreferencesKey(key)] = value
         }
