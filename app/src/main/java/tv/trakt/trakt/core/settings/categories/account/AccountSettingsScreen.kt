@@ -2,6 +2,11 @@
 
 package tv.trakt.trakt.core.settings.categories.account
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarDuration.Short
 import androidx.compose.runtime.Composable
@@ -9,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
@@ -23,6 +29,7 @@ import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.settings.features.avatar.AvatarCropSheet
 import tv.trakt.trakt.core.settings.ui.SettingsSegmentedGroup
 import tv.trakt.trakt.core.settings.ui.SettingsSubscreen
 import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
@@ -47,6 +54,11 @@ internal fun AccountSettingsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmLogout by remember { mutableStateOf(false) }
+    var avatarImage by rememberSaveable { mutableStateOf<Uri?>(null) }
+
+    val avatarPicker = rememberLauncherForActivityResult(PickVisualMedia()) { uri ->
+        avatarImage = uri
+    }
 
     LaunchedEffect(state.user, state.logoutLoading) {
         if (state.logoutLoading == Done && state.user == null) {
@@ -72,10 +84,22 @@ internal fun AccountSettingsScreen(
         onSetAbout = viewModel::updateUserAbout,
         onEnablePrivateAccount = viewModel::enablePrivateAccount,
         onClearCoverImage = viewModel::clearCoverImage,
+        onUploadAvatar = {
+            avatarPicker.launch(PickVisualMediaRequest(ImageOnly))
+        },
+        onRemoveAvatar = viewModel::removeAvatar,
         onLogoutClick = {
             confirmLogout = true
         },
         onBackClick = onNavigateBack,
+    )
+
+    AvatarCropSheet(
+        image = avatarImage,
+        onConfirm = viewModel::uploadAvatar,
+        onDismiss = {
+            avatarImage = null
+        },
     )
 
     ConfirmationSheet(
@@ -103,6 +127,8 @@ private fun AccountSettingsContent(
     onSetAbout: (String?) -> Unit = { },
     onEnablePrivateAccount: (Boolean) -> Unit = { },
     onClearCoverImage: () -> Unit = { },
+    onUploadAvatar: () -> Unit = { },
+    onRemoveAvatar: () -> Unit = { },
     onLogoutClick: () -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
@@ -176,6 +202,31 @@ private fun AccountSettingsContent(
                     onClick = {
                         aboutSheet = state.user?.about
                     },
+                )
+            }
+        }
+
+        SettingsSegmentedGroup(
+            title = stringResource(R.string.text_avatar),
+        ) {
+            item {
+                SettingsTextField(
+                    text = stringResource(R.string.button_text_upload_photo),
+                    enabled = enabled,
+                    onClick = onUploadAvatar,
+                )
+            }
+
+            item {
+                SettingsTextField(
+                    text = stringResource(R.string.button_text_remove_photo),
+                    icon = null,
+                    color = when (TraktTheme.colors.isLight) {
+                        true -> Red500
+                        false -> Red400
+                    },
+                    enabled = enabled,
+                    onClick = onRemoveAvatar,
                 )
             }
         }

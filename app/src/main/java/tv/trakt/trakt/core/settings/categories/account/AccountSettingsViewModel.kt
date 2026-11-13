@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.settings.categories.account
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +25,8 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.settings.data.observeSettingsProfile
+import tv.trakt.trakt.core.settings.features.avatar.AvatarCrop
+import tv.trakt.trakt.core.settings.usecases.UpdateUserAvatarUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.resources.R
@@ -32,6 +35,7 @@ import tv.trakt.trakt.resources.R
 internal class AccountSettingsViewModel(
     private val sessionManager: SessionManager,
     private val updateSettingsUseCase: UpdateUserSettingsUseCase,
+    private val updateAvatarUseCase: UpdateUserAvatarUseCase,
     private val logoutUseCase: LogoutUserUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -105,6 +109,44 @@ internal class AccountSettingsViewModel(
                 mediaType = null,
             )
             info.emit(DynamicStringResource(R.string.text_info_cover_removed))
+        }
+    }
+
+    fun uploadAvatar(
+        image: Uri,
+        crop: AvatarCrop,
+    ) {
+        updateAvatar(action = "upload-avatar") {
+            updateAvatarUseCase.uploadAvatar(
+                image = image,
+                crop = crop,
+            )
+        }
+    }
+
+    fun removeAvatar() {
+        updateAvatar(action = "remove-avatar") {
+            updateAvatarUseCase.removeAvatar()
+        }
+    }
+
+    private fun updateAvatar(
+        action: String,
+        update: suspend () -> Unit,
+    ) {
+        viewModelScope.launch {
+            try {
+                loadingState.update { Loading }
+                update()
+                analytics.logSettings(action)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.w(error, "Unable to update avatar")
+                }
+                info.emit(DynamicStringResource(R.string.error_text_failed_update))
+            } finally {
+                loadingState.update { Done }
+            }
         }
     }
 

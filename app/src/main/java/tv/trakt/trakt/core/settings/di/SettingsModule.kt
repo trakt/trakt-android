@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServi
 import tv.trakt.trakt.core.settings.usecases.ClearSeasonalDiscoverCachesUseCase
 import tv.trakt.trakt.core.settings.usecases.SeasonalThemeUseCase
 import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
+import tv.trakt.trakt.core.settings.usecases.UpdateUserAvatarUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.younify.sdk.connect.Connect
 
@@ -83,6 +84,7 @@ internal val settingsModule = module {
         )
     }
 
+    factoryOf(::UpdateUserAvatarUseCase)
     factoryOf(::ClearSeasonalDiscoverCachesUseCase)
     factoryOf(::GetWatchedPlaysUseCase)
     factoryOf(::CleanUpHistoryPlaysUseCase)
