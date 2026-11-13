@@ -1,8 +1,13 @@
 package tv.trakt.trakt.core.settings.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
@@ -34,12 +39,25 @@ internal fun SettingsUserPanel(
                 user.isAnyVip -> R.string.tag_text_vip
                 else -> null
             }
-            badge?.let {
-                VipChip(
-                    text = stringResource(it).uppercase(),
-                    icon = painterResource(R.drawable.ic_stars),
-                    onClick = { onClick?.invoke() },
-                )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                badge?.let {
+                    VipChip(
+                        text = stringResource(it).uppercase(),
+                        icon = painterResource(R.drawable.ic_stars),
+                        onClick = { onClick?.invoke() },
+                    )
+                }
+                if (onClick != null) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_chevron_right),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
             }
         },
         modifier = modifier
