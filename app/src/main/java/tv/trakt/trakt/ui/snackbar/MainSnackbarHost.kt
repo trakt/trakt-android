@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -147,11 +148,17 @@ private fun MainSnackbar(
                         letterSpacing = 0.01.em,
                     ),
                     modifier = Modifier
+                        .padding(end = 4.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .onClick(onClick = onActionClick)
+                        .border(
+                            width = 1.dp,
+                            color = TraktTheme.colors.textSecondary,
+                            shape = RoundedCornerShape(100),
+                        )
                         .padding(
-                            start = 16.dp,
-                            end = 8.dp,
+                            horizontal = 12.dp,
+                            vertical = 7.dp,
                         ),
                 )
             }
