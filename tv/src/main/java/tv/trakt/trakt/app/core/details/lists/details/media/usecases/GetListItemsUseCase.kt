@@ -24,13 +24,14 @@ internal class GetListItemsUseCase(
 ) {
     suspend fun getListItems(
         listId: TraktId,
+        sorting: Sorting,
         page: Int = 1,
     ): ImmutableList<ListMediaItem> {
         val dto = remoteSource.getMediaListItems(
             listId = listId,
             extended = "full,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
-            sorting = Sorting.Default,
+            sorting = sorting,
             filters = null,
         )
 
@@ -61,13 +62,14 @@ internal class GetListItemsUseCase(
 
     suspend fun getShowListItems(
         listId: TraktId,
+        sorting: Sorting,
         page: Int = 1,
     ): ImmutableList<ListMediaItem> {
         return remoteSource.getShowListItems(
             listId = listId,
             extended = "full,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
-            sorting = Sorting.Default,
+            sorting = sorting,
             filters = null,
         )
             .map {
@@ -83,13 +85,14 @@ internal class GetListItemsUseCase(
 
     suspend fun getMovieListItems(
         listId: TraktId,
+        sorting: Sorting,
         page: Int = 1,
     ): ImmutableList<ListMediaItem> {
         return remoteSource.getMovieListItems(
             listId = listId,
             extended = "full,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
-            sorting = Sorting.Default,
+            sorting = sorting,
             filters = null,
         )
             .map {

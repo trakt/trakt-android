@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -14,17 +15,23 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
+import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
 import tv.trakt.trakt.app.core.lists.details.personal.navigation.PersonalListDestination
 import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 
+@Suppress("UNCHECKED_CAST")
 internal class PersonalListViewModel(
     savedStateHandle: SavedStateHandle,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val collectionStateProvider: CollectionStateProvider,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = PersonalListState()
 
@@ -35,10 +42,12 @@ internal class PersonalListViewModel(
 
     val destination = savedStateHandle.toRoute<PersonalListDestination>()
 
-    private val sorting = Sorting.fromValues(
-        sortBy = destination.sortBy,
-        sortHow = destination.sortHow,
-    ) ?: Sorting.Default
+    private val sortingState = MutableStateFlow(
+        Sorting.fromValues(
+            sortBy = destination.sortBy,
+            sortHow = destination.sortHow,
+        ) ?: initialState.sorting,
+    )
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -60,7 +69,7 @@ internal class PersonalListViewModel(
                 loadingState.update { true }
                 val items = getListItemsUseCase.getListItems(
                     listId = destination.listId.toTraktId(),
-                    sorting = sorting,
+                    sorting = sortingState.value,
                     page = nextDataPage,
                 )
                 itemsState.update { items }
@@ -85,7 +94,7 @@ internal class PersonalListViewModel(
 
                 val shows = getListItemsUseCase.getListItems(
                     listId = destination.listId.toTraktId(),
-                    sorting = sorting,
+                    sorting = sortingState.value,
                     page = nextDataPage,
                 )
 
@@ -109,19 +118,34 @@ internal class PersonalListViewModel(
         }
     }
 
+    fun setSorting(sorting: Sorting) {
+        if (sorting == sortingState.value || loadingState.value || loadingPageState.value) {
+            return
+        }
+
+        sortingState.update { sorting }
+        nextDataPage = 1
+        hasMoreData = true
+        loadData()
+
+        analytics.lists.logListSort(sorting)
+    }
+
     val state = combine(
         loadingState,
         loadingPageState,
         itemsState,
         collectionStateProvider.stateFlow,
         errorState,
-    ) { s1, s2, s3, s4, s5 ->
+        sortingState,
+    ) { state ->
         PersonalListState(
-            isLoading = s1,
-            isLoadingPage = s2,
-            items = s3,
-            collection = s4,
-            error = s5,
+            isLoading = state[0] as Boolean,
+            isLoadingPage = state[1] as Boolean,
+            items = state[2] as ImmutableList<PersonalListItem>?,
+            collection = state[3] as UserCollectionState,
+            error = state[4] as Exception?,
+            sorting = state[5] as Sorting,
         )
     }.stateIn(
         scope = viewModelScope,

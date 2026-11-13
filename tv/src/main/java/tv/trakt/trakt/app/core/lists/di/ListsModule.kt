@@ -99,6 +99,7 @@ internal val listsModule = module {
             savedStateHandle = get(),
             getListItemsUseCase = get(),
             collectionStateProvider = get(),
+            analytics = get(),
         )
     }
 }

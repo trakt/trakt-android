@@ -23,6 +23,7 @@ internal val customListMediaModule = module {
             addLikedListUseCase = get(),
             removeLikedListUseCase = get(),
             collectionStateProvider = get(),
+            analytics = get(),
         )
     }
 }

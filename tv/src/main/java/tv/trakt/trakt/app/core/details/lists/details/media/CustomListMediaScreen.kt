@@ -48,6 +48,7 @@ import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUS
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.lists.views.ListSortControls
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
@@ -57,6 +58,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -82,6 +84,7 @@ internal fun CustomListMediaScreen(
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadMoreData() },
+        onSortingChange = viewModel::setSorting,
     )
 
     LaunchedEffect(state.info) {
@@ -103,6 +106,7 @@ private fun CustomListMediaContent(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
+    onSortingChange: (Sorting) -> Unit,
 ) {
     var focusedItem by remember { mutableStateOf<ListMediaItem?>(null) }
     var focusedItemKey by rememberSaveable { mutableStateOf<String?>(null) }
@@ -140,6 +144,12 @@ private fun CustomListMediaContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
+                val firstItemFocusRequester = {
+                    state.items?.firstOrNull()
+                        ?.let { focusRequesters[it.key] }
+                        ?: FocusRequester.Default
+                }
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -153,11 +163,7 @@ private fun CustomListMediaContent(
                         modifier = Modifier
                             .weight(1F, false)
                             .focusProperties {
-                                down = focusRequesters
-                                    .entries
-                                    .firstOrNull { it.key != "header" }
-                                    ?.value
-                                    ?: FocusRequester.Default
+                                down = firstItemFocusRequester()
                             }
                             .focusable(),
                     ) {
@@ -176,13 +182,28 @@ private fun CustomListMediaContent(
                         }
                     }
 
-                    LikeButton(
-                        text = rememberThousandsFormat(state.like.likesCount),
-                        liked = state.like.isLiked,
-                        loading = state.like.isLoading,
-                        enabled = !state.like.isLoading,
-                        onClick = onLikeClick,
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(start = 16.dp),
+                    ) {
+                        ListSortControls(
+                            sorting = state.sorting,
+                            loading = state.isLoading && !state.items.isNullOrEmpty(),
+                            onSortingChange = onSortingChange,
+                            modifier = Modifier.focusProperties {
+                                down = firstItemFocusRequester()
+                            },
+                        )
+
+                        LikeButton(
+                            text = rememberThousandsFormat(state.like.likesCount),
+                            liked = state.like.isLiked,
+                            loading = state.like.isLoading,
+                            enabled = !state.like.isLoading,
+                            onClick = onLikeClick,
+                        )
+                    }
                 }
             }
 
@@ -361,6 +382,7 @@ private fun Preview() {
             onMovieClick = {},
             onLikeClick = {},
             onLoadNextPage = {},
+            onSortingChange = {},
         )
     }
 }
