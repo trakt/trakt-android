@@ -121,6 +121,7 @@ internal val profileModule = module {
         ProfileFavoritesViewAllViewModel(
             getFavoriteShowsCase = get(),
             getFavoriteMoviesCase = get(),
+            analytics = get(),
         )
     }
 

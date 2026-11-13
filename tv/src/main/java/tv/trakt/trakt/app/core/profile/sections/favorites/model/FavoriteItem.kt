@@ -6,17 +6,22 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import java.time.Instant
 
 @Immutable
 internal sealed class FavoriteItem {
     @Immutable
     internal data class ShowItem(
         val show: Show,
+        val rank: Int,
+        val listedAt: Instant,
     ) : FavoriteItem()
 
     @Immutable
     internal data class MovieItem(
         val movie: Movie,
+        val rank: Int,
+        val listedAt: Instant,
     ) : FavoriteItem()
 
     val id: TraktId
@@ -63,12 +68,12 @@ internal sealed class FavoriteItem {
 }
 
 internal fun interleaveFavorites(
-    shows: List<Show>,
-    movies: List<Movie>,
+    shows: List<FavoriteItem.ShowItem>,
+    movies: List<FavoriteItem.MovieItem>,
 ): List<FavoriteItem> =
     (0 until maxOf(shows.size, movies.size)).flatMap { index ->
         listOfNotNull(
-            shows.getOrNull(index)?.let(FavoriteItem::ShowItem),
-            movies.getOrNull(index)?.let(FavoriteItem::MovieItem),
+            shows.getOrNull(index),
+            movies.getOrNull(index),
         )
     }
