@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.extensions.isOnline
@@ -27,7 +28,6 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
-import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.io.IOException
 import java.util.concurrent.TimeUnit.SECONDS
 import kotlin.time.Duration.Companion.milliseconds
