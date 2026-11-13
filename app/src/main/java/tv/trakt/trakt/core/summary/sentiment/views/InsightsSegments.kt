@@ -44,7 +44,7 @@ internal fun InsightsSegments(
     segment: @Composable ColumnScope.(index: Int) -> Unit,
 ) {
     Column(
-        verticalArrangement = spacedBy(8.dp),
+        verticalArrangement = spacedBy(10.dp),
         modifier = modifier,
     ) {
         header?.let {
