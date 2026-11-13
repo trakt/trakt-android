@@ -5,7 +5,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.unit.dp
@@ -36,7 +39,10 @@ import kotlinx.coroutines.delay
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalRatePromptVisibility
+import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.helpers.extensions.TraktThemePreview
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.seconds
 
@@ -106,42 +112,84 @@ internal fun MainSnackbarHost(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             snackbarDataToShow?.let { data ->
-                Snackbar(
-                    shape = RoundedCornerShape(12.dp),
-                    containerColor = TraktTheme.colors.snackbarContainer,
-                    contentColor = TraktTheme.colors.snackbarContent,
-                    action = data.visuals.actionLabel?.let { label ->
-                        {
-                            Text(
-                                text = label,
-                                color = TraktTheme.colors.snackbarContent,
-                                style = TraktTheme.typography.buttonTertiary.copy(
-                                    fontWeight = W700,
-                                    letterSpacing = 0.01.em,
-                                ),
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .onClick { data.performAction() }
-                                    .padding(horizontal = 8.dp),
-                            )
-                        }
-                    },
+                MainSnackbar(
+                    message = data.visuals.message,
+                    actionLabel = data.visuals.actionLabel,
+                    onActionClick = data::performAction,
                     modifier = Modifier
                         .padding(bottom = padding)
                         .padding(horizontal = 16.dp)
                         .align(Alignment.BottomCenter),
-                ) {
-                    Text(
-                        text = data.visuals.message,
-                        color = TraktTheme.colors.snackbarContent,
-                        maxLines = 10,
-                        style = TraktTheme.typography.paragraph.copy(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.W500,
-                        ),
-                    )
-                }
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun MainSnackbar(
+    message: String,
+    actionLabel: String?,
+    onActionClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Snackbar(
+        shape = RoundedCornerShape(12.dp),
+        containerColor = TraktTheme.colors.snackbarContainer,
+        contentColor = TraktTheme.colors.snackbarContent,
+        action = actionLabel?.let { label ->
+            {
+                Text(
+                    text = label,
+                    color = TraktTheme.colors.snackbarContent,
+                    style = TraktTheme.typography.buttonTertiary.copy(
+                        fontWeight = W700,
+                        letterSpacing = 0.01.em,
+                    ),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .onClick(onClick = onActionClick)
+                        .padding(horizontal = 8.dp),
+                )
+            }
+        },
+        modifier = modifier,
+    ) {
+        Text(
+            text = message,
+            color = TraktTheme.colors.snackbarContent,
+            maxLines = 10,
+            style = TraktTheme.typography.paragraph.copy(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.W500,
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun Preview() {
+    TraktThemePreview {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainListVerticalSpace),
+            modifier = Modifier.padding(TraktTheme.spacing.mainPageHorizontalSpace),
+        ) {
+            MainSnackbar(
+                message = stringResource(R.string.text_info_history_removed),
+                actionLabel = null,
+                onActionClick = {},
+            )
+            MainSnackbar(
+                message = stringResource(R.string.text_info_update_downloaded),
+                actionLabel = stringResource(R.string.button_text_install),
+                onActionClick = {},
+            )
+            MainSnackbar(
+                message = stringResource(R.string.action_toast_added_to_watchlist, "The Shawshank Redemption"),
+                actionLabel = stringResource(R.string.action_toast_action_change_list),
+                onActionClick = {},
+            )
         }
     }
 }
