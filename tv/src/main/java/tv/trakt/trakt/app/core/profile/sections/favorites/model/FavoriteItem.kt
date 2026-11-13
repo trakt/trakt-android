@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import java.time.Instant
 
 @Immutable
@@ -15,6 +16,7 @@ internal sealed class FavoriteItem {
         val show: Show,
         val rank: Int,
         val listedAt: Instant,
+        val userRating: UserRating? = null,
     ) : FavoriteItem()
 
     @Immutable
@@ -22,6 +24,7 @@ internal sealed class FavoriteItem {
         val movie: Movie,
         val rank: Int,
         val listedAt: Instant,
+        val userRating: UserRating? = null,
     ) : FavoriteItem()
 
     val id: TraktId

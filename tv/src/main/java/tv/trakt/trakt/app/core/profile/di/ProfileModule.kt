@@ -22,6 +22,7 @@ import tv.trakt.trakt.app.core.profile.usecases.LogoutProfileUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal val profileModule = module {
     factory {
@@ -65,6 +66,7 @@ internal val profileModule = module {
         GetFavoriteShowsUseCase(
             remoteUserSource = get(),
             localShowsSource = get(),
+            loadUserRatingsUseCase = get(),
         )
     }
 
@@ -72,6 +74,7 @@ internal val profileModule = module {
         GetFavoriteMoviesUseCase(
             remoteUserSource = get(),
             localMoviesSource = get(),
+            loadUserRatingsUseCase = get(),
         )
     }
 
@@ -85,6 +88,7 @@ internal val profileModule = module {
 
     factoryOf(::LoadUserWatchlistUseCase)
     factoryOf(::LoadUserProgressUseCase)
+    factoryOf(::LoadUserRatingsUseCase)
 
     viewModel { (_: SavedStateHandle) ->
         ProfileViewModel(

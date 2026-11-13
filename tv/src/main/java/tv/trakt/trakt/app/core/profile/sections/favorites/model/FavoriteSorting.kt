@@ -41,8 +41,10 @@ internal fun getFavoritesSorting(sorting: Sorting): Comparator<FavoriteItem> {
             Desc -> compareByDescending { it.rating }
         }
 
-        // User ratings are not loaded here, so shows and movies each keep the order of the response.
-        UserRating -> Comparator { _, _ -> 0 }
+        UserRating -> when (sorting.order) {
+            Asc -> compareBy { it.userRating }
+            Desc -> compareByDescending { it.userRating }
+        }
 
         Title -> when (sorting.order) {
             Asc -> compareBy { it.titleNormalized }
@@ -61,6 +63,12 @@ private val FavoriteItem.listedAt: Instant
     get() = when (this) {
         is FavoriteItem.ShowItem -> listedAt
         is FavoriteItem.MovieItem -> listedAt
+    }
+
+private val FavoriteItem.userRating: Int?
+    get() = when (this) {
+        is FavoriteItem.ShowItem -> userRating?.rating
+        is FavoriteItem.MovieItem -> userRating?.rating
     }
 
 private val FavoriteItem.totalRuntime: Duration?
