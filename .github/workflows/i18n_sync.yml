@@ -1,11 +1,11 @@
 name: CrowdIn Sync
 
-# Schedule the workflow to run every day at 14:00 UTC.
+# Schedule the workflow to run Monday to Friday at 14:00 UTC.
 # The workflow can also be triggered manually if needed too.
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 14 * * *'
+    - cron: '0 14 * * 1-5'
 
 permissions:
   contents: read
