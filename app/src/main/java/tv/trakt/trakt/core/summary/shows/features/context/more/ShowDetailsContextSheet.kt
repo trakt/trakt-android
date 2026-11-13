@@ -5,7 +5,9 @@ package tv.trakt.trakt.core.summary.shows.features.context.more
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -21,8 +23,9 @@ import kotlin.random.Random.Default.nextInt
 
 @Composable
 internal fun ShowDetailsContextSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     show: Show?,
     showProgress: ProgressState?,

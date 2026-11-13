@@ -4,7 +4,9 @@ package tv.trakt.trakt.ui.components.confirmation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
@@ -19,8 +21,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun RemoveConfirmationSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     active: Boolean = false,
     title: String,
@@ -41,8 +44,9 @@ internal fun RemoveConfirmationSheet(
 
 @Composable
 internal fun ConfirmationSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     active: Boolean = false,
     title: String,
@@ -99,8 +103,9 @@ internal fun ConfirmationSheet(
 private fun Preview() {
     TraktTheme {
         ConfirmationSheet(
-            state = rememberModalBottomSheetState(
-                skipPartiallyExpanded = true,
+            state = rememberBottomSheetState(
+                initialValue = Hidden,
+                enabledValues = setOf(Hidden, Expanded),
             ),
             title = "Are you sure?",
             message = "This action cannot be undone.",

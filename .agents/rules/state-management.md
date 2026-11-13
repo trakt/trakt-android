@@ -72,9 +72,7 @@ internal fun FeatureSheet(
 Rules:
 
 - **`rememberBottomSheetState(initialValue = Hidden, enabledValues = setOf(Hidden, Expanded))`**
-  is the standard for new sheets. Do **not** use
-  `rememberModalBottomSheetState(skipPartiallyExpanded = true)` in new code — legacy call sites
-  migrate as they're touched.
+  is the standard for all sheets. Do **not** use `rememberModalBottomSheetState`.
 - Sheet content lives in a separate stateless `<Feature>View` composable (previewable); the sheet
   file only hosts `TraktBottomSheet` wiring.
 - Sheet visibility is transient UI state — `remember { mutableStateOf(false) }` at the caller, not

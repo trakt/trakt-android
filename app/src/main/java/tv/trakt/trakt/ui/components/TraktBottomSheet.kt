@@ -12,8 +12,10 @@ import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -93,8 +95,9 @@ internal fun TraktBottomSheet(
 private fun TraktBottomSheetPreview() {
     TraktTheme {
         TraktBottomSheet(
-            sheetState = rememberModalBottomSheetState(
-                skipPartiallyExpanded = true,
+            sheetState = rememberBottomSheetState(
+                initialValue = Hidden,
+                enabledValues = setOf(Hidden, Expanded),
             ),
         ) {
             Text(text = "Sample bottom sheet")

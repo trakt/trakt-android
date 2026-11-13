@@ -5,7 +5,9 @@ package tv.trakt.trakt.ui.components.notifications
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -17,8 +19,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun NotificationsRationaleSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     active: Boolean = false,
     onOk: () -> Unit = {},
@@ -32,8 +35,9 @@ internal fun NotificationsRationaleSheet(
 
 @Composable
 private fun RationaleSheet(
-    state: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
     ),
     active: Boolean = false,
     onOk: () -> Unit = {},
@@ -64,8 +68,9 @@ private fun RationaleSheet(
 private fun Preview() {
     TraktTheme {
         RationaleSheet(
-            state = rememberModalBottomSheetState(
-                skipPartiallyExpanded = true,
+            state = rememberBottomSheetState(
+                initialValue = Hidden,
+                enabledValues = setOf(Hidden, Expanded),
             ),
         )
     }
