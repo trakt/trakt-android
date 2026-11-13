@@ -2,15 +2,12 @@ package tv.trakt.trakt.app.core.lists.details.personal.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import org.openapitools.client.models.GetUsersWatchlistAll200ResponseInner.Type
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
-import tv.trakt.trakt.app.core.lists.details.personal.model.getPersonalListSorting
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.UserPersonalListsRemoteSource
-import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -27,64 +24,37 @@ internal class GetPersonalListItemsUseCase(
         sorting: Sorting,
         page: Int = 1,
     ): ImmutableList<PersonalListItem> {
-        return coroutineScope {
-            val showsAsync = async {
-                remoteSource.getPersonalListShowItems(
-                    listId = listId,
-                    limit = PERSONAL_LIST_PAGE_LIMIT,
-                    page = page,
-                    extended = "full,streaming_ids",
-                    sorting = sorting,
-                ).map {
+        val items = remoteSource.getPersonalListMediaItems(
+            listId = listId,
+            limit = PERSONAL_LIST_PAGE_LIMIT,
+            page = page,
+            extended = "full,streaming_ids",
+            sorting = sorting,
+        ).mapNotNull { dto ->
+            when (dto.type) {
+                Type.SHOW -> {
+                    val show = dto.show?.let { Show.fromDto(it) } ?: return@mapNotNull null
                     PersonalListItem(
                         type = "show",
-                        rank = it.rank,
-                        listedAt = it.listedAt.toInstant(),
-                        show = Show.fromDto(it.show),
+                        rank = dto.rank,
+                        show = show,
                     )
-                }.toImmutableList()
-            }
+                }
 
-            val moviesAsync = async {
-                remoteSource.getPersonalListMovieItems(
-                    listId = listId,
-                    limit = PERSONAL_LIST_PAGE_LIMIT,
-                    page = page,
-                    extended = "full,streaming_ids",
-                    sorting = sorting,
-                ).map {
+                Type.MOVIE -> {
+                    val movie = dto.movie?.let { Movie.fromDto(it) } ?: return@mapNotNull null
                     PersonalListItem(
                         type = "movie",
-                        rank = it.rank,
-                        listedAt = it.listedAt.toInstant(),
-                        movie = Movie.fromDto(it.movie),
+                        rank = dto.rank,
+                        movie = movie,
                     )
-                }.toImmutableList()
-            }
-
-            val shows = showsAsync.await()
-            val movies = moviesAsync.await()
-
-            val localShowsAsync = async {
-                shows.mapNotNull { it.show }.let {
-                    localShowSource.upsertShows(it)
                 }
             }
-            val localMoviesAsync = async {
-                movies.mapNotNull { it.movie }.let {
-                    localMovieSource.upsertMovies(it)
-                }
-            }
+        }.toImmutableList()
 
-            localShowsAsync.await()
-            localMoviesAsync.await()
-
-            buildList {
-                addAll(shows)
-                addAll(movies)
-            }.sortedWith(
-                getPersonalListSorting(sorting),
-            ).toImmutableList()
+        return items.also {
+            localShowSource.upsertShows(it.mapNotNull { item -> item.show })
+            localMovieSource.upsertMovies(it.mapNotNull { item -> item.movie })
         }
     }
 }
