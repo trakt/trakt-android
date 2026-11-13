@@ -36,8 +36,10 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import coil3.imageLoader
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.common.helpers.coil.posterPlaceholderKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
@@ -55,6 +57,11 @@ internal fun DetailsPoster(
 ) {
     var isError by remember(imageUrl) { mutableStateOf(false) }
 
+    val imageLoader = LocalContext.current.imageLoader
+    val placeholderKey = remember(imagePlaceholderUrl) {
+        imageLoader.posterPlaceholderKey(imagePlaceholderUrl)
+    }
+
     Box(
         modifier = modifier
             .aspectRatio(VerticalImageAspectRatio),
@@ -63,7 +70,7 @@ internal fun DetailsPoster(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(imageUrl)
-                    .placeholderMemoryCacheKey(imagePlaceholderUrl)
+                    .placeholderMemoryCacheKey(placeholderKey)
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
