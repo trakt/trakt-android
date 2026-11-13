@@ -504,9 +504,6 @@ internal class ShowDetailsViewModel(
                     )
                 }
 
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_removed)
-                }
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "show",
                     source = "show_details",
@@ -591,9 +588,6 @@ internal class ShowDetailsViewModel(
 
                 refreshLists()
 
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_watchlist_removed)
-                }
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "show",
                     source = "show_details",

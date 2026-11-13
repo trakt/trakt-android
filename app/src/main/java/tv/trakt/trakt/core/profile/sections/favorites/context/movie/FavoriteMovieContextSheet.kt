@@ -55,7 +55,7 @@ internal fun FavoriteMovieContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_favorites_removed),
+                        message = null,
                     )
                 },
                 onAddWatched = {
@@ -71,7 +71,7 @@ internal fun FavoriteMovieContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_history_removed),
+                        message = null,
                     )
                 },
                 onError = {
@@ -94,7 +94,7 @@ private fun CoroutineScope.dismissWithMessage(
     state: SheetState,
     onDismiss: () -> Unit,
     snackHost: SnackbarHostState,
-    message: String,
+    message: String?,
 ) {
     launch { state.hide() }
         .invokeOnCompletion {
@@ -102,6 +102,9 @@ private fun CoroutineScope.dismissWithMessage(
                 onDismiss()
             }
         }
+
+    if (message == null) return
+
     launch {
         val job = this@dismissWithMessage.launch {
             snackHost.showSnackbar(message)

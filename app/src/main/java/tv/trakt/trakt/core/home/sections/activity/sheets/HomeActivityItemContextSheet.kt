@@ -7,8 +7,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
@@ -19,9 +22,12 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.activity.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextView
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
+import tv.trakt.trakt.ui.snackbar.showWatchlistAdded
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -38,6 +44,7 @@ internal fun HomeActivityItemSheet(
 
     val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(sheetItem) { nextInt().toString() }
+    var listsTarget by remember { mutableStateOf<ManageListsTarget?>(null) }
 
     if (sheetItem != null) {
         TraktBottomSheet(
@@ -59,13 +66,6 @@ internal fun HomeActivityItemSheet(
                                     onDismiss()
                                 }
                             }
-                        launch {
-                            val job = sheetScope.launch {
-                                localSnack.showSnackbar(localRes.getString(R.string.text_info_history_removed))
-                            }
-                            delay(ShortSnackDuration)
-                            job.cancel()
-                        }
                     }
                 },
                 onAddWatchlist = {
@@ -76,12 +76,13 @@ internal fun HomeActivityItemSheet(
                                     onDismiss()
                                 }
                             }
+                        val movie = (sheetItem as? HomeActivityItem.MovieItem)?.movie ?: return@run
                         launch {
-                            val job = sheetScope.launch {
-                                localSnack.showSnackbar(localRes.getString(R.string.text_info_watchlist_added))
-                            }
-                            delay(ShortSnackDuration)
-                            job.cancel()
+                            localSnack.showWatchlistAdded(
+                                resources = localRes,
+                                title = movie.title,
+                                onChangeList = { listsTarget = ManageListsTarget.MovieTarget(movie) },
+                            )
                         }
                     }
                 },
@@ -93,13 +94,6 @@ internal fun HomeActivityItemSheet(
                                     onDismiss()
                                 }
                             }
-                        launch {
-                            val job = sheetScope.launch {
-                                localSnack.showSnackbar(localRes.getString(R.string.text_info_watchlist_removed))
-                            }
-                            delay(ShortSnackDuration)
-                            job.cancel()
-                        }
                     }
                 },
                 onError = {
@@ -127,4 +121,9 @@ internal fun HomeActivityItemSheet(
             )
         }
     }
+
+    ManageListsSheet(
+        target = listsTarget,
+        onDismiss = { listsTarget = null },
+    )
 }

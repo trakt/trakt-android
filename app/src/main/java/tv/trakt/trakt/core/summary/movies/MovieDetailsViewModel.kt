@@ -550,9 +550,6 @@ internal class MovieDetailsViewModel(
                     )
                 }
 
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_removed)
-                }
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "movie",
                     source = "movie_details",
@@ -638,9 +635,6 @@ internal class MovieDetailsViewModel(
 
                 refreshLists()
 
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_watchlist_removed)
-                }
                 analytics.progress.logRemoveWatchlistMedia(
                     mediaType = "movie",
                     source = "movie_details",

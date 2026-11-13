@@ -55,15 +55,12 @@ internal fun TodayWatchlistButton(
     LaunchedEffect(viewModel) {
         viewModel.events.collect { event ->
             haptic.performHapticFeedback(Confirm)
+            val message = when (event) {
+                TodayWatchlistEvent.Added -> R.string.text_info_watchlist_added
+                TodayWatchlistEvent.Removed -> return@collect
+            }
             this@LaunchedEffect.launch {
-                snack.showTodaySnack(
-                    resources.getString(
-                        when (event) {
-                            TodayWatchlistEvent.Added -> R.string.text_info_watchlist_added
-                            TodayWatchlistEvent.Removed -> R.string.text_info_watchlist_removed
-                        },
-                    ),
-                )
+                snack.showTodaySnack(resources.getString(message))
             }
         }
     }

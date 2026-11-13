@@ -31,6 +31,7 @@ import tv.trakt.trakt.core.shows.ui.context.ShowContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
+import tv.trakt.trakt.ui.snackbar.showWatchlistAdded
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -79,15 +80,22 @@ internal fun ShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_watchlist_added),
+                        message = null,
                     )
+                    sheetScope.launch {
+                        localSnack.showWatchlistAdded(
+                            resources = localRes,
+                            title = show.title,
+                            onChangeList = { listsTarget = ManageListsTarget.ShowTarget(show) },
+                        )
+                    }
                 },
                 onRemoveWatched = {
                     sheetScope.dismissWithMessage(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_history_removed),
+                        message = null,
                     )
                 },
                 onRemoveWatchlist = {
@@ -95,7 +103,7 @@ internal fun ShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_watchlist_removed),
+                        message = null,
                     )
                 },
                 onHideRecommendation = {

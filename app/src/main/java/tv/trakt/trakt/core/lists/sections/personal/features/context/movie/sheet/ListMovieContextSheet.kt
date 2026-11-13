@@ -8,8 +8,11 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
@@ -21,10 +24,13 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
+import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.ListMovieContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
+import tv.trakt.trakt.ui.snackbar.showWatchlistAdded
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -39,6 +45,7 @@ internal fun ListMovieContextSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(movie, list) { nextInt().toString() }
+    var listsTarget by remember { mutableStateOf<ManageListsTarget?>(null) }
 
     if (movie != null && list != null) {
         val localSnack = LocalSnackbarState.current
@@ -68,15 +75,22 @@ internal fun ListMovieContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_watchlist_added),
+                        message = null,
                     )
+                    sheetScope.launch {
+                        localSnack.showWatchlistAdded(
+                            resources = localRes,
+                            title = movie.title,
+                            onChangeList = { listsTarget = ManageListsTarget.MovieTarget(movie) },
+                        )
+                    }
                 },
                 onRemoveWatched = {
                     sheetScope.dismissWithMessage(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_history_removed),
+                        message = null,
                     )
                 },
                 onRemoveWatchlist = {
@@ -84,7 +98,7 @@ internal fun ListMovieContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localRes.getString(R.string.text_info_watchlist_removed),
+                        message = null,
                     )
                 },
                 onRemoveList = {
@@ -118,13 +132,18 @@ internal fun ListMovieContextSheet(
             )
         }
     }
+
+    ManageListsSheet(
+        target = listsTarget,
+        onDismiss = { listsTarget = null },
+    )
 }
 
 private fun CoroutineScope.dismissWithMessage(
     state: SheetState,
     onDismiss: () -> Unit,
     snackHost: SnackbarHostState,
-    message: String,
+    message: String?,
 ) {
     launch { state.hide() }
         .invokeOnCompletion {
@@ -132,6 +151,9 @@ private fun CoroutineScope.dismissWithMessage(
                 onDismiss()
             }
         }
+
+    if (message == null) return
+
     launch {
         val job = this@dismissWithMessage.launch {
             snackHost.showSnackbar(message)

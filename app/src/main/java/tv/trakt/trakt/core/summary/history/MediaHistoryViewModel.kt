@@ -11,10 +11,8 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
@@ -30,12 +28,10 @@ import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.EpisodeLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
-import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
@@ -54,7 +50,6 @@ import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
-import tv.trakt.trakt.resources.R
 import java.time.LocalDate
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -95,9 +90,6 @@ internal class MediaHistoryViewModel(
     private val loadingMoreState = MutableStateFlow(Idle)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val errorState = MutableStateFlow(initialState.error)
-
-    private val infoFlow = MutableSharedFlow<StringResource>(replay = 0)
-    val info = infoFlow.asSharedFlow()
 
     private var pages = 1
     private var hasMoreData = false
@@ -360,8 +352,6 @@ internal class MediaHistoryViewModel(
                     mediaType = mediaType.value,
                     source = "${mediaType.value}_history",
                 )
-
-                infoFlow.emit(DynamicStringResource(R.string.text_info_history_removed))
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

@@ -31,6 +31,7 @@ import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
+import tv.trakt.trakt.ui.snackbar.showWatchlistAdded
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -53,7 +54,7 @@ internal fun CalendarEpisodeContextSheet(
         val localSnack = LocalSnackbarState.current
         val localRes = LocalResources.current
 
-        fun dismissWithMessage(message: String) {
+        fun dismissWithMessage(message: String?) {
             sheetScope.dismissWithMessage(
                 state = state,
                 snackHost = localSnack,
@@ -78,13 +79,20 @@ internal fun CalendarEpisodeContextSheet(
                     dismissWithMessage(localRes.getString(R.string.text_info_history_added))
                 },
                 onRemoveWatched = {
-                    dismissWithMessage(localRes.getString(R.string.text_info_history_removed))
+                    dismissWithMessage(null)
                 },
                 onAddWatchlist = {
-                    dismissWithMessage(localRes.getString(R.string.text_info_watchlist_added))
+                    dismissWithMessage(null)
+                    sheetScope.launch {
+                        localSnack.showWatchlistAdded(
+                            resources = localRes,
+                            title = item.show.title,
+                            onChangeList = { listsTarget = ManageListsTarget.ShowTarget(item.show) },
+                        )
+                    }
                 },
                 onRemoveWatchlist = {
-                    dismissWithMessage(localRes.getString(R.string.text_info_watchlist_removed))
+                    dismissWithMessage(null)
                 },
                 onListsClick = {
                     listsTarget = ManageListsTarget.ShowTarget(item.show)
@@ -119,7 +127,7 @@ private fun CoroutineScope.dismissWithMessage(
     state: SheetState,
     onDismiss: () -> Unit,
     snackHost: SnackbarHostState,
-    message: String,
+    message: String?,
 ) {
     launch { state.hide() }
         .invokeOnCompletion {
@@ -127,6 +135,8 @@ private fun CoroutineScope.dismissWithMessage(
                 onDismiss()
             }
         }
+
+    if (message == null) return
 
     launch {
         val job = this@dismissWithMessage.launch {
