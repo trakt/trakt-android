@@ -82,7 +82,7 @@ internal fun ListItemContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = null,
+                        message = localRes.getString(R.string.text_info_history_removed),
                     )
                 },
                 onRemoveList = {
@@ -137,7 +137,7 @@ private fun CoroutineScope.dismissWithMessage(
     state: SheetState,
     onDismiss: () -> Unit,
     snackHost: SnackbarHostState,
-    message: String?,
+    message: String,
 ) {
     launch { state.hide() }
         .invokeOnCompletion {
@@ -145,9 +145,6 @@ private fun CoroutineScope.dismissWithMessage(
                 onDismiss()
             }
         }
-
-    if (message == null) return
-
     launch {
         val job = this@dismissWithMessage.launch {
             snackHost.showSnackbar(message)

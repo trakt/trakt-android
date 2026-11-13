@@ -62,12 +62,15 @@ internal fun TodayWatchedButton(
     LaunchedEffect(viewModel) {
         viewModel.events.collect { event ->
             haptic.performHapticFeedback(Confirm)
-            val message = when (event) {
-                TodayWatchedEvent.Added -> R.string.text_info_history_added
-                TodayWatchedEvent.Removed -> return@collect
-            }
             this@LaunchedEffect.launch {
-                snack.showTodaySnack(resources.getString(message))
+                snack.showTodaySnack(
+                    resources.getString(
+                        when (event) {
+                            TodayWatchedEvent.Added -> R.string.text_info_history_added
+                            TodayWatchedEvent.Removed -> R.string.text_info_history_removed
+                        },
+                    ),
+                )
             }
         }
     }

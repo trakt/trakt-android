@@ -503,6 +503,9 @@ internal class EpisodeDetailsViewModel(
                     state?.copy(plays = 0)
                 }
 
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
+                }
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "episode",
                     source = "episode_details",

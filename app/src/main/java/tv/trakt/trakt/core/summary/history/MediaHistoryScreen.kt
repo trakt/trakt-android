@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,7 +61,10 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
@@ -88,6 +92,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.time.ZoneId
@@ -99,12 +104,25 @@ internal fun MediaHistoryScreen(
     onNavigateBack: () -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
+    val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
+    val snack = LocalSnackbarState.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
     var confirmRemoveAllSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.info.collect { info ->
+            haptic.performHapticFeedback(Confirm)
+            val job = launch {
+                snack.showSnackbar(info.get(context))
+            }
+            delay(ShortSnackDuration)
+            job.cancel()
+        }
+    }
 
     LaunchedEffect(
         state.navigateEpisode,
@@ -156,7 +174,6 @@ internal fun MediaHistoryScreen(
         active = confirmRemoveAllSheet,
         onYes = {
             confirmRemoveAllSheet = false
-            haptic.performHapticFeedback(Confirm)
             viewModel.removeAllFromWatched()
         },
         onNo = {

@@ -394,6 +394,9 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
+                }
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "episode",
                     source = "show_seasons_view",
@@ -449,6 +452,9 @@ internal class ShowSeasonsViewModel(
                     )
                 }
 
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_history_removed)
+                }
                 analytics.progress.logRemoveWatchedMedia(
                     mediaType = "season",
                     source = "show_seasons_view",

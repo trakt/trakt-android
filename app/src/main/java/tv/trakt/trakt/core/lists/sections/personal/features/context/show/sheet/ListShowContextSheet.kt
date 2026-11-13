@@ -90,7 +90,7 @@ internal fun ListShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = null,
+                        message = localRes.getString(R.string.text_info_history_removed),
                     )
                 },
                 onRemoveWatchlist = {
@@ -98,7 +98,7 @@ internal fun ListShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = null,
+                        message = localRes.getString(R.string.text_info_watchlist_removed),
                     )
                 },
                 onRemoveList = {

@@ -79,7 +79,7 @@ internal fun CalendarEpisodeContextSheet(
                     dismissWithMessage(localRes.getString(R.string.text_info_history_added))
                 },
                 onRemoveWatched = {
-                    dismissWithMessage(null)
+                    dismissWithMessage(localRes.getString(R.string.text_info_history_removed))
                 },
                 onAddWatchlist = {
                     dismissWithMessage(null)
@@ -92,7 +92,7 @@ internal fun CalendarEpisodeContextSheet(
                     }
                 },
                 onRemoveWatchlist = {
-                    dismissWithMessage(null)
+                    dismissWithMessage(localRes.getString(R.string.text_info_watchlist_removed))
                 },
                 onListsClick = {
                     listsTarget = ManageListsTarget.ShowTarget(item.show)

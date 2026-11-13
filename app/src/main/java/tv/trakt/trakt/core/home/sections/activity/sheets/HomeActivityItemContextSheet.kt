@@ -66,6 +66,13 @@ internal fun HomeActivityItemSheet(
                                     onDismiss()
                                 }
                             }
+                        launch {
+                            val job = sheetScope.launch {
+                                localSnack.showSnackbar(localRes.getString(R.string.text_info_history_removed))
+                            }
+                            delay(ShortSnackDuration)
+                            job.cancel()
+                        }
                     }
                 },
                 onAddWatchlist = {
@@ -94,6 +101,13 @@ internal fun HomeActivityItemSheet(
                                     onDismiss()
                                 }
                             }
+                        launch {
+                            val job = sheetScope.launch {
+                                localSnack.showSnackbar(localRes.getString(R.string.text_info_watchlist_removed))
+                            }
+                            delay(ShortSnackDuration)
+                            job.cancel()
+                        }
                     }
                 },
                 onError = {
