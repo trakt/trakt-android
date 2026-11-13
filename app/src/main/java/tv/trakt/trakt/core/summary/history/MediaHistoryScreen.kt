@@ -138,7 +138,6 @@ internal fun MediaHistoryScreen(
         active = confirmRemoveSheet != null,
         onYes = {
             confirmRemoveSheet?.let {
-                haptic.performHapticFeedback(Confirm)
                 viewModel.removeFromWatched(it)
                 confirmRemoveSheet = null
             }
@@ -157,6 +156,7 @@ internal fun MediaHistoryScreen(
         active = confirmRemoveAllSheet,
         onYes = {
             confirmRemoveAllSheet = false
+            haptic.performHapticFeedback(Confirm)
             viewModel.removeAllFromWatched()
         },
         onNo = {
