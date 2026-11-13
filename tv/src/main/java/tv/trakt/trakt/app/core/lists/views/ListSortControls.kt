@@ -37,14 +37,13 @@ internal fun ListSortControls(
     var menuVisible by remember { mutableStateOf(false) }
 
     Row(
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
         Box {
             OutlineTextButton(
                 text = stringResource(sorting.type.displayStringRes),
-                icon = sorting.type.displayIconRes?.let { painterResource(it) },
                 loading = loading,
                 onClick = { menuVisible = true },
             )
