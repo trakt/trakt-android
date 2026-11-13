@@ -5,6 +5,7 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -32,10 +33,12 @@ import androidx.tv.material3.Text
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.lists.views.ListSortControls
 import tv.trakt.trakt.app.core.profile.sections.favorites.FavoriteCardChip
 import tv.trakt.trakt.app.core.profile.sections.favorites.model.FavoriteItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -58,6 +61,7 @@ internal fun ProfileFavoritesViewAllScreen(
                 is FavoriteItem.MovieItem -> onNavigateToMovie(it.movie.ids.trakt)
             }
         },
+        onSortingChange = viewModel::setSorting,
     )
 }
 
@@ -66,6 +70,7 @@ private fun ProfileFavoritesViewAllContent(
     state: ProfileFavoritesViewAllState,
     modifier: Modifier = Modifier,
     onClick: (FavoriteItem) -> Unit,
+    onSortingChange: (Sorting) -> Unit,
 ) {
     var focusedItem by remember { mutableStateOf<FavoriteItem?>(null) }
     var focusedItemKey by rememberSaveable { mutableStateOf<String?>(null) }
@@ -110,17 +115,29 @@ private fun ProfileFavoritesViewAllContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = stringResource(R.string.list_title_favorites),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading4,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .focusProperties {
-                            down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                        }
-                        .focusable(),
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.list_title_favorites),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading4,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1F),
+                    )
+                    ListSortControls(
+                        sorting = state.sorting,
+                        loading = state.isLoading && !state.items.isNullOrEmpty(),
+                        onSortingChange = onSortingChange,
+                        modifier = Modifier.focusProperties {
+                            down = state.items?.firstOrNull()
+                                ?.let { focusRequesters[it.key] }
+                                ?: FocusRequester.Default
+                        },
+                    )
+                }
             }
 
             if (state.isLoading && state.items.isNullOrEmpty()) {
@@ -144,7 +161,10 @@ private fun ProfileFavoritesViewAllContent(
                         imageUrl = item.posterImage,
                         onClick = { onClick(item) },
                         chipContent = {
-                            FavoriteCardChip(item = item)
+                            FavoriteCardChip(
+                                item = item,
+                                sorting = state.itemsSorting,
+                            )
                         },
                         modifier = Modifier
                             .focusRequester(focusRequester)
@@ -185,6 +205,7 @@ private fun Preview() {
         ProfileFavoritesViewAllContent(
             state = ProfileFavoritesViewAllState(),
             onClick = {},
+            onSortingChange = {},
         )
     }
 }

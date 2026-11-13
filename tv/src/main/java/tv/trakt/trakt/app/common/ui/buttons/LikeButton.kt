@@ -1,35 +1,18 @@
 package tv.trakt.trakt.app.common.ui.buttons
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.Border
-import androidx.tv.material3.Button
-import androidx.tv.material3.ButtonDefaults
-import androidx.tv.material3.Text
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
+
+private val likeShape = RoundedCornerShape(percent = 50)
+private val likeIconSize = 20.dp
 
 @Composable
 internal fun LikeButton(
@@ -37,99 +20,22 @@ internal fun LikeButton(
     onClick: () -> Unit = {},
     text: String,
     liked: Boolean = false,
-    enabled: Boolean = true,
     loading: Boolean = false,
-    containerColor: Color = TraktTheme.colors.primaryButtonContainer,
-    contentColor: Color = TraktTheme.colors.primaryButtonContent,
-    disabledContainerColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,
-    disabledContentColor: Color = TraktTheme.colors.primaryButtonContentDisabled,
-    borderColor: Color = Color.White,
-    disabledBorderColor: Color = Color.White,
-    focusedScale: Float = 1.04F,
 ) {
-    val focusedBorder = Border(
-        border = BorderStroke(
-            width = (2.75).dp,
-            color = if (enabled) borderColor else disabledBorderColor,
+    OutlineTextButton(
+        text = text,
+        leadingIcon = painterResource(
+            when {
+                liked -> R.drawable.ic_thumb_up_fill
+                else -> R.drawable.ic_thumb_up_like
+            },
         ),
-        shape = RoundedCornerShape(12.dp),
-    )
-
-    Button(
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            end = 12.dp,
-        ),
-        modifier = modifier
-            .wrapContentWidth()
-            .heightIn(max = 42.dp),
-        shape = ButtonDefaults.shape(
-            shape = RoundedCornerShape(12.dp),
-            focusedDisabledShape = RoundedCornerShape(12.dp),
-        ),
-        border = ButtonDefaults.border(
-            focusedBorder = focusedBorder,
-            disabledBorder = Border.None,
-            focusedDisabledBorder = focusedBorder,
-        ),
-        colors = ButtonDefaults.colors(
-            containerColor = containerColor,
-            contentColor = contentColor,
-            focusedContainerColor = containerColor,
-            focusedContentColor = contentColor,
-            pressedContainerColor = containerColor,
-            pressedContentColor = contentColor,
-            disabledContainerColor = disabledContainerColor,
-            disabledContentColor = disabledContentColor,
-        ),
-        scale = ButtonDefaults.scale(
-            focusedScale = focusedScale,
-        ),
+        iconSize = likeIconSize,
+        shape = likeShape,
+        loading = loading,
         onClick = onClick,
-        enabled = enabled,
-    ) {
-        if (loading) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .widthIn(min = 64.dp),
-            ) {
-                FilmProgressIndicator(
-                    size = 18.dp,
-                    color = if (enabled) contentColor else disabledContentColor,
-                )
-            }
-        } else {
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(8.dp, Alignment.CenterHorizontally),
-                modifier = Modifier.widthIn(min = 64.dp),
-            ) {
-                Image(
-                    painter = painterResource(
-                        when {
-                            liked -> R.drawable.ic_thumb_up_fill
-                            else -> R.drawable.ic_thumb_up_like
-                        },
-                    ),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    colorFilter = ColorFilter.tint(if (enabled) contentColor else disabledContentColor),
-                    modifier = Modifier
-                        .requiredSize(20.dp),
-                )
-
-                Text(
-                    text = text.uppercase(),
-                    color = if (enabled) contentColor else disabledContentColor,
-                    style = TraktTheme.typography.buttonPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1F, false),
-                )
-            }
-        }
-    }
+        modifier = modifier,
+    )
 }
 
 @Preview
@@ -143,72 +49,16 @@ private fun Preview1() {
                 text = "12",
             )
             LikeButton(
-                text = "12",
-                loading = true,
-                enabled = false,
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewLiked() {
-    TraktTheme {
-        LikeButton(
-            text = "13",
-            liked = true,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewDisabled() {
-    TraktTheme {
-        Column(
-            verticalArrangement = spacedBy(12.dp),
-        ) {
-            LikeButton(
-                text = "12",
-                enabled = false,
-            )
-            LikeButton(
                 text = "13",
                 liked = true,
-                enabled = false,
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewLoading() {
-    TraktTheme {
-        LikeButton(
-            text = "12",
-            loading = true,
-        )
-    }
-}
-
-@Preview(widthDp = 120)
-@Composable
-private fun PreviewLongText() {
-    TraktTheme {
-        Column(
-            verticalArrangement = spacedBy(12.dp),
-        ) {
             LikeButton(
-                text = "1",
+                text = "12",
+                loading = true,
             )
             LikeButton(
                 text = "12.5K",
                 liked = true,
-            )
-            LikeButton(
-                text = "1234567890",
             )
         }
     }

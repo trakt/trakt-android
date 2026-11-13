@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.user.usecases.ratings
+package tv.trakt.trakt.common.core.user.usecases.ratings
 
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
@@ -12,7 +12,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 
-internal class LoadUserRatingsUseCase(
+class LoadUserRatingsUseCase(
     private val remoteSource: UserRatingsRemoteSource,
     private val localSource: UserRatingsLocalSource,
 ) {

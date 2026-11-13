@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
+import tv.trakt.trakt.common.model.sorting.Sorting
 import java.time.ZonedDateTime
 
 internal class ProfileFavoritesViewModel(
@@ -67,10 +68,16 @@ internal class ProfileFavoritesViewModel(
                 itemsState.update {
                     coroutineScope {
                         val shows = async {
-                            getFavoriteShowsCase.getFavoriteShows(limit = PROFILE_FAVORITES_SECTION_LIMIT)
+                            getFavoriteShowsCase.getFavoriteShows(
+                                sorting = Sorting.RecentlyAdded,
+                                limit = PROFILE_FAVORITES_SECTION_LIMIT,
+                            )
                         }
                         val movies = async {
-                            getFavoriteMoviesCase.getFavoriteMovies(limit = PROFILE_FAVORITES_SECTION_LIMIT)
+                            getFavoriteMoviesCase.getFavoriteMovies(
+                                sorting = Sorting.RecentlyAdded,
+                                limit = PROFILE_FAVORITES_SECTION_LIMIT,
+                            )
                         }
                         interleaveFavorites(shows.await(), movies.await())
                             .take(PROFILE_FAVORITES_SECTION_LIMIT)

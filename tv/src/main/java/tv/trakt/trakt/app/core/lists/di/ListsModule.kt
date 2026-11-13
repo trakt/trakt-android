@@ -13,6 +13,7 @@ import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListIt
 import tv.trakt.trakt.app.core.lists.details.shows.ShowsWatchlistViewModel
 import tv.trakt.trakt.app.core.lists.details.smart.SmartListViewModel
 import tv.trakt.trakt.app.core.lists.details.smart.usecases.GetSmartListItemsUseCase
+import tv.trakt.trakt.app.core.lists.usecases.GetListSortRatingsUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsLikedUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
@@ -27,6 +28,7 @@ internal val listsModule = module {
         GetListsShowsWatchlistUseCase(
             remoteSyncSource = get(),
             localShowSource = get(),
+            getListSortRatingsUseCase = get(),
         )
     }
 
@@ -34,9 +36,11 @@ internal val listsModule = module {
         GetListsMoviesWatchlistUseCase(
             remoteSyncSource = get(),
             localMovieSource = get(),
+            getListSortRatingsUseCase = get(),
         )
     }
 
+    factoryOf(::GetListSortRatingsUseCase)
     factoryOf(::GetListsSmartUseCase)
     factoryOf(::GetSmartListItemsUseCase)
 
@@ -57,6 +61,7 @@ internal val listsModule = module {
             remoteSource = get(),
             localShowSource = get(),
             localMovieSource = get(),
+            getListSortRatingsUseCase = get(),
         )
     }
 
@@ -99,6 +104,7 @@ internal val listsModule = module {
             savedStateHandle = get(),
             getListItemsUseCase = get(),
             collectionStateProvider = get(),
+            analytics = get(),
         )
     }
 }

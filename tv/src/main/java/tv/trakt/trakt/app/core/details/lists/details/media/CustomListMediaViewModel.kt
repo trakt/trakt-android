@@ -24,10 +24,13 @@ import tv.trakt.trakt.app.core.lists.usecases.liked.RemoveLikedListUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
+import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.firebase.analytics.logListSort
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
 
@@ -38,6 +41,7 @@ internal class CustomListMediaViewModel(
     private val addLikedListUseCase: AddLikedListUseCase,
     private val removeLikedListUseCase: RemoveLikedListUseCase,
     private val collectionStateProvider: CollectionStateProvider,
+    private val analytics: Analytics,
 ) : ViewModel() {
     val destination = savedStateHandle.toRoute<CustomListMediaDestination>()
     private val destinationType = MediaType.entries.find { it.value == destination.listType }
@@ -50,6 +54,8 @@ internal class CustomListMediaViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+    private val sortingState = MutableStateFlow(initialState.sorting)
+    private val itemsSortingState = MutableStateFlow(initialState.itemsSorting)
 
     private var dataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -74,18 +80,22 @@ internal class CustomListMediaViewModel(
                     when (destinationType) {
                         MediaType.Show -> getListItemsUseCase.getShowListItems(
                             listId = destination.listId.toTraktId(),
+                            sorting = sortingState.value,
                             page = dataPage,
                         )
                         MediaType.Movie -> getListItemsUseCase.getMovieListItems(
                             listId = destination.listId.toTraktId(),
+                            sorting = sortingState.value,
                             page = dataPage,
                         )
                         else -> getListItemsUseCase.getListItems(
                             listId = destination.listId.toTraktId(),
+                            sorting = sortingState.value,
                             page = dataPage,
                         )
                     }
                 }
+                itemsSortingState.update { sortingState.value }
 
                 dataPage += 1
             } catch (error: Exception) {
@@ -133,14 +143,17 @@ internal class CustomListMediaViewModel(
                 val items = when (destinationType) {
                     MediaType.Show -> getListItemsUseCase.getShowListItems(
                         listId = destination.listId.toTraktId(),
+                        sorting = sortingState.value,
                         page = dataPage,
                     )
                     MediaType.Movie -> getListItemsUseCase.getMovieListItems(
                         listId = destination.listId.toTraktId(),
+                        sorting = sortingState.value,
                         page = dataPage,
                     )
                     else -> getListItemsUseCase.getListItems(
                         listId = destination.listId.toTraktId(),
+                        sorting = sortingState.value,
                         page = dataPage,
                     )
                 }
@@ -200,6 +213,19 @@ internal class CustomListMediaViewModel(
         }
     }
 
+    fun setSorting(sorting: Sorting) {
+        if (sorting == sortingState.value || loadingState.value || loadingPageState.value) {
+            return
+        }
+
+        sortingState.update { sorting }
+        dataPage = 1
+        hasMoreData = true
+        loadData()
+
+        analytics.lists.logListSort(sorting)
+    }
+
     fun clearInfo() {
         infoState.update { null }
     }
@@ -212,6 +238,8 @@ internal class CustomListMediaViewModel(
         collectionStateProvider.stateFlow,
         infoState,
         errorState,
+        sortingState,
+        itemsSortingState,
     ) { state ->
         CustomListMediaState(
             isLoading = state[0] as Boolean,
@@ -221,6 +249,8 @@ internal class CustomListMediaViewModel(
             collection = state[4] as UserCollectionState,
             info = state[5] as? StringResource,
             error = state[6] as? Exception,
+            sorting = state[7] as Sorting,
+            itemsSorting = state[8] as Sorting,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -12,6 +12,7 @@ internal val customListMediaModule = module {
             remoteSource = get(),
             showLocalSource = get(),
             movieLocalSource = get(),
+            getListSortRatingsUseCase = get(),
         )
     }
 
@@ -23,6 +24,7 @@ internal val customListMediaModule = module {
             addLikedListUseCase = get(),
             removeLikedListUseCase = get(),
             collectionStateProvider = get(),
+            analytics = get(),
         )
     }
 }
