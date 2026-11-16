@@ -627,6 +627,13 @@ internal fun NavGraphBuilder.listsScreens(
                     list = list,
                 )
             },
+            onNavigateToPerson = { person ->
+                navigateToPerson(
+                    personId = person.ids.trakt,
+                    sourceMediaId = null,
+                    backdropUrl = null,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
         listDetailsScreen(
@@ -635,6 +642,13 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
+            },
+            onNavigateToPerson = { person ->
+                navigateToPerson(
+                    personId = person.ids.trakt,
+                    sourceMediaId = null,
+                    backdropUrl = null,
+                )
             },
         )
         smartListDetailsScreen(

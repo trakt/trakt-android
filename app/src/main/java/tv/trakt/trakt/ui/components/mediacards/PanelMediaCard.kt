@@ -74,6 +74,7 @@ internal fun PanelMediaCard(
     containerImageUrl: String?,
     corner: Dp = 16.dp,
     imageWidth: Dp = TraktTheme.size.verticalMediumMediaCardSize,
+    containerColor: Color = TraktTheme.colors.panelCardContainer,
     more: Boolean = true,
     watched: Boolean = false,
     watching: Boolean = false,
@@ -84,8 +85,6 @@ internal fun PanelMediaCard(
     onImageClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
 ) {
-    val containerColor = TraktTheme.colors.panelCardContainer
-
     val mirrored = LocalLayoutDirection.current == LayoutDirection.Rtl
 
     // graphicsLayer translations are absolute, so they have to be flipped when the layout mirrors.

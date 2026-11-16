@@ -17,10 +17,13 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
+import tv.trakt.trakt.core.lists.features.details.info.ListInfoViewModel
+import tv.trakt.trakt.core.lists.features.details.info.usecases.GetListFeaturedPeopleUseCase
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.features.manage.ManageListsViewModel
 import tv.trakt.trakt.core.lists.features.reorder.ListReorderViewModel
@@ -86,6 +89,7 @@ internal val listsModule = module {
     factoryOf(::DeleteSmartListUseCase)
     factoryOf(::GetPersonalListItemsUseCase)
     factoryOf(::GetListItemsUseCase)
+    factoryOf(::GetListFeaturedPeopleUseCase)
     factoryOf(::CreateListUseCase)
     factoryOf(::EditListUseCase)
     factoryOf(::RemovePersonalListItemUseCase)
@@ -129,6 +133,13 @@ internal val listsModule = module {
         )
     }
     viewModelOf(::ManageListsViewModel)
+    viewModel { (listId: TraktId) ->
+        ListInfoViewModel(
+            listId = listId,
+            getFeaturedPeopleUseCase = get(),
+            analytics = get(),
+        )
+    }
 
     viewModel {
         WatchlistMovieContextViewModel(

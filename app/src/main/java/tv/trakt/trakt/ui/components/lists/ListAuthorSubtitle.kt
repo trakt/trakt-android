@@ -13,7 +13,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
@@ -24,7 +23,6 @@ internal fun ListAuthorSubtitle(
     user: User,
     itemCount: Int?,
     modifier: Modifier = Modifier,
-    onUserClick: ((User) -> Unit)? = null,
 ) {
     val style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp)
 
@@ -37,8 +35,7 @@ internal fun ListAuthorSubtitle(
             horizontalArrangement = spacedBy(3.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .weight(1F, fill = false)
-                .onClick(enabled = onUserClick != null) { onUserClick?.invoke(user) },
+                .weight(1F, fill = false),
         ) {
             Text(
                 text = stringResource(R.string.text_by),

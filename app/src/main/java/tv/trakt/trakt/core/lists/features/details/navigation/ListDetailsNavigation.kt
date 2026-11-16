@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.MediaType.Show
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.features.details.ListDetailsScreen
@@ -37,6 +38,7 @@ internal fun NavGraphBuilder.listDetailsScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (TraktId, Episode) -> Unit,
+    onNavigateToPerson: (Person) -> Unit,
 ) {
     composable<ListsDetailsDestination> {
         ListDetailsScreen(
@@ -45,6 +47,7 @@ internal fun NavGraphBuilder.listDetailsScreen(
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
             onEpisodeClick = onNavigateToEpisode,
+            onPersonClick = onNavigateToPerson,
         )
     }
 }
