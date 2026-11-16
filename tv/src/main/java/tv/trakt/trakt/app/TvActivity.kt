@@ -30,7 +30,6 @@ import tv.trakt.trakt.app.core.main.di.mainModule
 import tv.trakt.trakt.app.core.movies.di.moviesModule
 import tv.trakt.trakt.app.core.people.di.personDetailsModule
 import tv.trakt.trakt.app.core.profile.di.profileModule
-import tv.trakt.trakt.app.core.search.di.searchDataModule
 import tv.trakt.trakt.app.core.shows.di.showsModule
 import tv.trakt.trakt.app.core.streamings.di.allStreamingsModule
 import tv.trakt.trakt.app.core.streamings.di.plexDataModule
@@ -129,7 +128,6 @@ class TvActivity : ComponentActivity() {
                     personDetailsModule,
                     customListMediaModule,
                     profileModule,
-                    searchDataModule,
                     streamingsModule,
                     streamingsDataModule,
                     allStreamingsModule,

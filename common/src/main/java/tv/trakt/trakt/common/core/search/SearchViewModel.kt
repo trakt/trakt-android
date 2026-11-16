@@ -388,6 +388,10 @@ class SearchViewModel internal constructor(
         val currentQuery = inputState.value.query
         inputState.update { searchInput }
 
+        if (currentFilter != searchInput.filter || currentQuery != searchInput.query) {
+            errorState.update { null }
+        }
+
         if (currentFilter != searchInput.filter) {
             clearJobs()
 
