@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Verberg beschrijving</string>
   <string name="button_text_hide_lists">Verbergen</string>
   <string name="button_text_hide_recommendation">Aanbeveling verbergen</string>
-  <string name="button_text_history">Geschiedenis</string>
   <string name="button_text_history_slot_picker_reset">Resetten</string>
   <string name="button_text_hold_to_confirm">Vasthouden om te bevestigen</string>
   <string name="button_text_import_more">Meer importeren</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Personen</string>
   <string name="button_text_track">Volgen</string>
   <string name="button_text_trailer">Trailer</string>
+  <string name="button_text_transactions">Transacties</string>
   <string name="button_text_trivia_no_spoilers">Geen spoilers</string>
   <string name="button_text_trivia_spoilers">Spoilers</string>
   <string name="button_text_unblock">Deblokkeren</string>
@@ -1163,10 +1163,10 @@
   <string name="hype_tier_cant_wait">Kan niet wachten</string>
   <string name="hype_tier_looking_good">Ziet er goed uit</string>
   <string name="image_alt_comment_gif">GIF toegevoegd aan de reactie</string>
-  <string name="image_alt_hype_score">%d%% hype voor jou</string>
+  <string name="image_alt_hype_score">%d% hype voor jou</string>
   <string name="image_alt_hype_unknown">Nog geen hypescore voor jou</string>
   <string name="image_alt_list_preview_poster">Poster voor een item in %s</string>
-  <string name="image_alt_match_score">%d%% match voor jou</string>
+  <string name="image_alt_match_score">%d% match voor jou</string>
   <string name="image_alt_match_unknown">Nog geen matchscore voor jou</string>
   <string name="image_alt_media_poster">Poster van \"%s\"</string>
   <string name="image_alt_person_headshot">Portret van %s</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">Sociale activiteiten bekijken voor %s</string>
   <string name="link_label_view_social_activities_shared">Bekijk sociale activiteiten voor %s, met jou gedeeld</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Over ons</string>
   <string name="link_text_account_settings">Account</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Apps</string>
   <string name="link_text_back_to_safety">Terug naar het bekende…</string>
   <string name="link_text_branding">Branding</string>
+  <string name="link_text_data">Gegevens</string>
   <string name="link_text_data_settings">Gegevens</string>
-  <string name="link_text_data_sources">Gegevensbronnen</string>
   <string name="link_text_developer">Ontwikkelaar</string>
   <string name="link_text_discover_media">Ontdek media</string>
   <string name="link_text_discover_more">Ontdek meer</string>
@@ -1572,17 +1573,18 @@
   <string name="match_label_soulmates">Zielsverwanten</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Overeenkomst:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open matchdetails.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open matchdetails.</string>
   <string name="match_pill_loading_aria_label">Matchscore berekenen</string>
   <string name="match_tier_good_fit">Goede match</string>
   <string name="match_tier_maybe">Misschien</string>
   <string name="match_tier_not_your_usual">Anders dan gewoonlijk</string>
   <string name="match_tier_top_pick">Topkeuze</string>
-  <string name="mir_banner_body">Je maandelijkse overzicht is klaar. Dit is wat je hebt gekeken in %s.</string>
-  <string name="mir_banner_body_short">Je %s overzicht is klaar.</string>
-  <string name="mir_banner_explore">Ontdek</string>
   <string name="mir_banner_in_review">In overzicht</string>
+  <string name="mir_entry_hide_until">Verbergen tot %s</string>
+  <string name="mir_entry_open">Review openen</string>
+  <string name="mir_entry_tooltip_body">Je %s in Review staat klaar. Elke serie, film en late night, op één plek.</string>
   <string name="mir_share_text">Bekijk mijn %s Maandoverzicht op Trakt</string>
+  <string name="mir_strip_title">Je maand op Trakt</string>
   <string name="mir_title_month_in_review">Maandoverzicht</string>
   <string name="month_review_after_hours">%1$s van je afspelingen begon na %2$s.</string>
   <string name="month_review_busiest_day">Drukste dag: %s</string>
@@ -1889,7 +1891,7 @@
   <string name="tag_media_sync_webhook_only">Alleen webhook</string>
   <string name="tag_mixtape_different_mood">Andere sfeer</string>
   <string name="tag_mixtape_kept">Bewaard</string>
-  <string name="tag_mixtape_match">%s%% overeenkomst</string>
+  <string name="tag_mixtape_match">%s% overeenkomst</string>
   <string name="tag_mixtape_tap_details">Tik voor details</string>
   <string name="tag_text_award_nominee">Genomineerde</string>
   <string name="tag_text_award_pending">Genomineerd</string>
@@ -2182,7 +2184,7 @@
   <string name="text_history_sync_filter">Synchronisatie-ID %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hype_lists">Een van de meest aan lijsten toegevoegde aankomende titels</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">Mensen blijven dit aan hun lijsten toevoegen</string>
   <string name="text_hype_out_on">Verschijnt %s</string>
   <string name="text_hype_series_about">Ongeveer zoals gewoonlijk</string>
@@ -2274,7 +2276,7 @@
   <string name="text_match_basis_free">Je score is gratis. De redenen erachter zijn een VIP-functie.</string>
   <string name="text_match_basis_history">Op basis van wat je hebt bekeken, beoordeeld en aan favorieten toegevoegd.</string>
   <string name="text_match_because_liked">Omdat je hield van</string>
-  <string name="text_match_better_than">Betere match voor jou dan %d%% van de titels</string>
+  <string name="text_match_better_than">Betere match voor jou dan %d% van de titels</string>
   <string name="text_match_not_enough_data">Nog niet genoeg gegevens om dit aan jou te matchen.</string>
   <string name="text_match_rating_liked">Gewaardeerd op Trakt</string>
   <string name="text_match_rating_loved">Geliefd op Trakt</string>
@@ -3214,7 +3216,7 @@
   <string name="yir_2026_preview_runner_none">Geen (geen hybride)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona voorbeeld</string>
-  <string name="yir_2026_rarity">Slechts %1$d%% is %2$s</string>
+  <string name="yir_2026_rarity">Slechts %1$d% is %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Een beetje %s</string>
   <string name="yir_2026_reel_and_you_are">En jij bent</string>
   <string name="yir_2026_reel_but_mostly">Maar meestal</string>

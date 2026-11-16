@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">説明を非表示</string>
   <string name="button_text_hide_lists">非表示</string>
   <string name="button_text_hide_recommendation">おすすめを非表示</string>
-  <string name="button_text_history">歴史</string>
   <string name="button_text_history_slot_picker_reset">リセット</string>
   <string name="button_text_hold_to_confirm">長押しして確定</string>
   <string name="button_text_import_more">さらにインポート</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">人物</string>
   <string name="button_text_track">記録</string>
   <string name="button_text_trailer">予告編</string>
+  <string name="button_text_transactions">取引履歴</string>
   <string name="button_text_trivia_no_spoilers">ネタバレなし</string>
   <string name="button_text_trivia_spoilers">ネタバレあり</string>
   <string name="button_text_unblock">ブロック解除</string>
@@ -1163,10 +1163,10 @@
   <string name="hype_tier_cant_wait">待ちきれない</string>
   <string name="hype_tier_looking_good">期待大</string>
   <string name="image_alt_comment_gif">コメントに添付されたGIF</string>
-  <string name="image_alt_hype_score">あなたへの期待度: %d%%</string>
+  <string name="image_alt_hype_score">あなたへの期待度: %d%</string>
   <string name="image_alt_hype_unknown">期待度スコアはまだありません</string>
   <string name="image_alt_list_preview_poster">%sのリスト内のエントリのポスター</string>
-  <string name="image_alt_match_score">あなたへのマッチ度: %d%%</string>
+  <string name="image_alt_match_score">あなたへのマッチ度: %d%</string>
   <string name="image_alt_match_unknown">マッチスコアはまだありません</string>
   <string name="image_alt_media_poster">「%s」のポスター</string>
   <string name="image_alt_person_headshot">%sの顔写真</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt ステータス</string>
   <string name="link_label_view_social_activities">%sのソーシャルアクティビティを表示</string>
   <string name="link_label_view_social_activities_shared">あなたと共有された%sのソーシャルアクティビティを表示</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Traktについて</string>
   <string name="link_text_account_settings">アカウント</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">アプリ</string>
   <string name="link_text_back_to_safety">安全な場所へ戻る…</string>
   <string name="link_text_branding">ブランドガイドライン</string>
+  <string name="link_text_data">データ</string>
   <string name="link_text_data_settings">データ</string>
-  <string name="link_text_data_sources">データソース</string>
   <string name="link_text_developer">開発者</string>
   <string name="link_text_discover_media">メディアを見つける</string>
   <string name="link_text_discover_more">もっと見つける</string>
@@ -1572,17 +1573,18 @@
   <string name="match_label_soulmates">ソウルメイト</string>
   <string name="match_label_spin_off">スピンオフ</string>
   <string name="match_pill_anchor">マッチ:</string>
-  <string name="match_pill_aria_label">%1$d%%一致、%2$s。一致の詳細を開く。</string>
+  <string name="match_pill_aria_label">%1$d%一致、%2$s。一致の詳細を開く。</string>
   <string name="match_pill_loading_aria_label">マッチスコアを計算中</string>
   <string name="match_tier_good_fit">好みに合いそう</string>
   <string name="match_tier_maybe">好みに合うかも</string>
   <string name="match_tier_not_your_usual">いつもと違う作品</string>
   <string name="match_tier_top_pick">イチオシ</string>
-  <string name="mir_banner_body">あなたの月間まとめができました。%sに視聴したコンテンツはこちらです。</string>
-  <string name="mir_banner_body_short">あなたの%sのまとめができました。</string>
-  <string name="mir_banner_explore">探索</string>
   <string name="mir_banner_in_review">レビュー</string>
+  <string name="mir_entry_hide_until">%sまで非表示</string>
+  <string name="mir_entry_open">振り返りを開く</string>
+  <string name="mir_entry_tooltip_body">%sの振り返りの準備が整いました。すべての番組、映画、深夜の視聴がひとつに。</string>
   <string name="mir_share_text">Traktで私の%s月間レビューをチェックしてください</string>
+  <string name="mir_strip_title">Traktでのあなたの1ヶ月</string>
   <string name="mir_title_month_in_review">月間レビュー</string>
   <string name="month_review_after_hours">再生の%1$sが%2$s以降に開始されました。</string>
   <string name="month_review_busiest_day">最多視聴日: %s</string>
@@ -1889,7 +1891,7 @@
   <string name="tag_media_sync_webhook_only">ウェブフックのみ</string>
   <string name="tag_mixtape_different_mood">別の雰囲気</string>
   <string name="tag_mixtape_kept">キープ済み</string>
-  <string name="tag_mixtape_match">%s%%一致</string>
+  <string name="tag_mixtape_match">%s%一致</string>
   <string name="tag_mixtape_tap_details">タップで詳細</string>
   <string name="tag_text_award_nominee">ノミネート</string>
   <string name="tag_text_award_pending">ノミネート中</string>
@@ -2182,7 +2184,7 @@
   <string name="text_history_sync_filter">同期ID %d</string>
   <string name="text_history_sync_filter_with_source">同期ID %1$d (%2$s)</string>
   <string name="text_hype_lists">最も多くリストに追加されている新作</string>
-  <string name="text_hype_lists_badge">上位%s%%</string>
+  <string name="text_hype_lists_badge">上位%s%</string>
   <string name="text_hype_lists_detail">多くのユーザーがリストに追加しています</string>
   <string name="text_hype_out_on">%s リリース</string>
   <string name="text_hype_series_about">普段どおりの評価</string>
@@ -2274,7 +2276,7 @@
   <string name="text_match_basis_free">スコアの確認は無料です。その理由はVIP限定機能です。</string>
   <string name="text_match_basis_history">視聴、評価、お気に入り登録した作品に基づいています。</string>
   <string name="text_match_because_liked">気に入った作品から</string>
-  <string name="text_match_better_than">%d%%の作品よりもあなたにマッチしています</string>
+  <string name="text_match_better_than">%d%の作品よりもあなたにマッチしています</string>
   <string name="text_match_not_enough_data">あなたとのマッチ度を判定するためのデータがまだ不足しています。</string>
   <string name="text_match_rating_liked">Traktで好評</string>
   <string name="text_match_rating_loved">Traktで大好評</string>
@@ -3214,7 +3216,7 @@
   <string name="yir_2026_preview_runner_none">なし（ハイブリッドなし）</string>
   <string name="yir_2026_preview_runner_up">次点</string>
   <string name="yir_2026_preview_title">ペルソナプレビュー</string>
-  <string name="yir_2026_rarity">%1$d%%だけが%2$sです</string>
+  <string name="yir_2026_rarity">%1$d%だけが%2$sです</string>
   <string name="yir_2026_reel_a_little_bit">少し%s</string>
   <string name="yir_2026_reel_and_you_are">そしてあなたは</string>
   <string name="yir_2026_reel_but_mostly">しかし、ほとんどは</string>

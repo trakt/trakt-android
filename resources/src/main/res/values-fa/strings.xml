@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">پنهان کردن توضیحات</string>
   <string name="button_text_hide_lists">پنهان کردن</string>
   <string name="button_text_hide_recommendation">پنهان کردن توصیه</string>
-  <string name="button_text_history">تاریخی</string>
   <string name="button_text_history_slot_picker_reset">بازنشانی</string>
   <string name="button_text_hold_to_confirm">نگه دارید تا تایید کنید</string>
   <string name="button_text_import_more">وارد کردن بیشتر</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">افراد</string>
   <string name="button_text_track">ردیابی</string>
   <string name="button_text_trailer">تریلر</string>
+  <string name="button_text_transactions">تراکنش‌ها</string>
   <string name="button_text_trivia_no_spoilers">بدون اسپویلر</string>
   <string name="button_text_trivia_spoilers">اسپویلرها</string>
   <string name="button_text_unblock">رفع مسدودیت</string>
@@ -1163,10 +1163,10 @@
   <string name="hype_tier_cant_wait">بی‌صبرانه منتظر</string>
   <string name="hype_tier_looking_good">امیدوارکننده</string>
   <string name="image_alt_comment_gif">گیف پیوست‌شده به نظر</string>
-  <string name="image_alt_hype_score">%d%% هایپ برای شما</string>
+  <string name="image_alt_hype_score">%d% هایپ برای شما</string>
   <string name="image_alt_hype_unknown">هنوز امتیاز هایپی برای شما وجود ندارد</string>
   <string name="image_alt_list_preview_poster">پوستر برای یک ورودی در %s</string>
-  <string name="image_alt_match_score">%d%% تطابق با شما</string>
+  <string name="image_alt_match_score">%d% تطابق با شما</string>
   <string name="image_alt_match_unknown">هنوز امتیاز تطابقی برای شما وجود ندارد</string>
   <string name="image_alt_media_poster">پوستر \"%s\"</string>
   <string name="image_alt_person_headshot">عکس سر %s</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">وضعیت Trakt</string>
   <string name="link_label_view_social_activities">مشاهده فعالیت‌های اجتماعی برای %s</string>
   <string name="link_label_view_social_activities_shared">مشاهده فعالیت‌های اجتماعی برای %s, به اشتراک گذاشته شده با شما</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">یوتیوب</string>
   <string name="link_text_about">درباره ما</string>
   <string name="link_text_account_settings">حساب کاربری</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">برنامه‌ها</string>
   <string name="link_text_back_to_safety">بازگشت به ایمنی…</string>
   <string name="link_text_branding">برندینگ</string>
+  <string name="link_text_data">داده‌ها</string>
   <string name="link_text_data_settings">داده‌ها</string>
-  <string name="link_text_data_sources">منابع داده</string>
   <string name="link_text_developer">توسعه‌دهنده</string>
   <string name="link_text_discover_media">رسانه را کشف کنید</string>
   <string name="link_text_discover_more">بیشتر کشف کنید</string>
@@ -1572,17 +1573,18 @@
   <string name="match_label_soulmates">هم‌روح‌ها</string>
   <string name="match_label_spin_off">اسپین‌آف</string>
   <string name="match_pill_anchor">همخوانی:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
   <string name="match_pill_loading_aria_label">در حال محاسبه امتیاز تطابق</string>
   <string name="match_tier_good_fit">همخوانی خوب</string>
   <string name="match_tier_maybe">شاید</string>
   <string name="match_tier_not_your_usual">متفاوت با معمول</string>
   <string name="match_tier_top_pick">بهترین انتخاب</string>
-  <string name="mir_banner_body">خلاصه ماهانه شما آماده است. در %s اینها را تماشا کرده‌اید.</string>
-  <string name="mir_banner_body_short">خلاصه %s شما آماده است.</string>
-  <string name="mir_banner_explore">کاوش</string>
   <string name="mir_banner_in_review">مرور</string>
+  <string name="mir_entry_hide_until">پنهان کردن تا %s</string>
+  <string name="mir_entry_open">باز کردن مرور</string>
+  <string name="mir_entry_tooltip_body">مرور %s شما آماده است. همه سریال‌ها، فیلم‌ها و تماشا‌های آخر شب، در یک جا.</string>
   <string name="mir_share_text">مرور ماه %s من در Trakt را بررسی کنید</string>
+  <string name="mir_strip_title">ماه شما در Trakt</string>
   <string name="mir_title_month_in_review">مرور ماه</string>
   <string name="month_review_after_hours">%1$s از پخش‌های شما بعد از %2$s شروع شده است.</string>
   <string name="month_review_busiest_day">شلوغ‌ترین روز: %s</string>
@@ -1889,7 +1891,7 @@
   <string name="tag_media_sync_webhook_only">فقط وب‌هوک</string>
   <string name="tag_mixtape_different_mood">حس و حال متفاوت</string>
   <string name="tag_mixtape_kept">نگه داشته شده</string>
-  <string name="tag_mixtape_match">%s%% تطابق</string>
+  <string name="tag_mixtape_match">%s% تطابق</string>
   <string name="tag_mixtape_tap_details">برای جزئیات ضربه بزنید</string>
   <string name="tag_text_award_nominee">نامزد</string>
   <string name="tag_text_award_pending">نامزدشده</string>
@@ -2274,7 +2276,7 @@
   <string name="text_match_basis_free">امتیاز شما رایگان است. دلایل پشت آن یکی از قابلیت‌های VIP است.</string>
   <string name="text_match_basis_history">بر اساس آنچه تماشا کرده‌اید، امتیاز داده‌اید و به علاقه‌مندی‌ها افزوده‌اید.</string>
   <string name="text_match_because_liked">چون دوست داشتید</string>
-  <string name="text_match_better_than">تطابق بیشتر با شما نسبت به %d%% از عناوین</string>
+  <string name="text_match_better_than">تطابق بیشتر با شما نسبت به %d% از عناوین</string>
   <string name="text_match_not_enough_data">هنوز داده‌های کافی برای سنجش تطابق با شما وجود ندارد.</string>
   <string name="text_match_rating_liked">پسندیده‌شده در Trakt</string>
   <string name="text_match_rating_loved">بسیار محبوب در Trakt</string>
@@ -3214,7 +3216,7 @@
   <string name="yir_2026_preview_runner_none">هیچ‌کدام (بدون ترکیب)</string>
   <string name="yir_2026_preview_runner_up">رتبه‌دوم</string>
   <string name="yir_2026_preview_title">پیش‌نمایش پرسونا</string>
-  <string name="yir_2026_rarity">فقط %1$d%% %2$s هستند</string>
+  <string name="yir_2026_rarity">فقط %1$d% %2$s هستند</string>
   <string name="yir_2026_reel_a_little_bit">کمی %s</string>
   <string name="yir_2026_reel_and_you_are">و شما هستید</string>
   <string name="yir_2026_reel_but_mostly">اما بیشتر</string>

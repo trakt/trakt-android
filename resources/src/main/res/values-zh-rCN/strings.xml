@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">隐藏描述</string>
   <string name="button_text_hide_lists">隐藏</string>
   <string name="button_text_hide_recommendation">隐藏推荐</string>
-  <string name="button_text_history">历史</string>
   <string name="button_text_history_slot_picker_reset">重置</string>
   <string name="button_text_hold_to_confirm">按住以确认</string>
   <string name="button_text_import_more">导入更多</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">人物</string>
   <string name="button_text_track">标记为已观看</string>
   <string name="button_text_trailer">预告片</string>
+  <string name="button_text_transactions">交易记录</string>
   <string name="button_text_trivia_no_spoilers">无剧透</string>
   <string name="button_text_trivia_spoilers">剧透</string>
   <string name="button_text_unblock">解除屏蔽</string>
@@ -1163,10 +1163,10 @@
   <string name="hype_tier_cant_wait">迫不及待</string>
   <string name="hype_tier_looking_good">值得期待</string>
   <string name="image_alt_comment_gif">评论附带的GIF</string>
-  <string name="image_alt_hype_score">你的期待度为 %d%%</string>
+  <string name="image_alt_hype_score">你的期待度为 %d%</string>
   <string name="image_alt_hype_unknown">暂无期待度分数</string>
   <string name="image_alt_list_preview_poster">%s 中的条目海报</string>
-  <string name="image_alt_match_score">与你的匹配度为 %d%%</string>
+  <string name="image_alt_match_score">与你的匹配度为 %d%</string>
   <string name="image_alt_match_unknown">暂无匹配分数</string>
   <string name="image_alt_media_poster">“%s”海报</string>
   <string name="image_alt_person_headshot">%s 的大头照</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt 状态</string>
   <string name="link_label_view_social_activities">查看%s的社交动态</string>
   <string name="link_label_view_social_activities_shared">查看%s的社交动态，与你分享</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">优兔</string>
   <string name="link_text_about">关于</string>
   <string name="link_text_account_settings">帐户</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">应用</string>
   <string name="link_text_back_to_safety">返回安全之地…</string>
   <string name="link_text_branding">品牌</string>
+  <string name="link_text_data">数据</string>
   <string name="link_text_data_settings">数据</string>
-  <string name="link_text_data_sources">数据来源</string>
   <string name="link_text_developer">开发者</string>
   <string name="link_text_discover_media">发现媒体</string>
   <string name="link_text_discover_more">发现更多</string>
@@ -1572,17 +1573,18 @@
   <string name="match_label_soulmates">灵魂伴侣</string>
   <string name="match_label_spin_off">衍生作品</string>
   <string name="match_pill_anchor">匹配:</string>
-  <string name="match_pill_aria_label">%1$d%% 匹配，%2$s。打开匹配详情。</string>
+  <string name="match_pill_aria_label">%1$d% 匹配，%2$s。打开匹配详情。</string>
   <string name="match_pill_loading_aria_label">正在计算匹配度</string>
   <string name="match_tier_good_fit">契合喜好</string>
   <string name="match_tier_maybe">或许喜欢</string>
   <string name="match_tier_not_your_usual">非你常看</string>
   <string name="match_tier_top_pick">首选推荐</string>
-  <string name="mir_banner_body">您的月度回顾已就绪。这是您在 %s 中观看的内容。</string>
-  <string name="mir_banner_body_short">您的 %s 回顾已就绪。</string>
-  <string name="mir_banner_explore">探索</string>
   <string name="mir_banner_in_review">月度回顾</string>
+  <string name="mir_entry_hide_until">隐藏至%s</string>
+  <string name="mir_entry_open">查看回顾</string>
+  <string name="mir_entry_tooltip_body">您的%s回顾已就绪。所有剧集、电影与深夜时光，尽在一处。</string>
   <string name="mir_share_text">在 Trakt 上查看我的 %s 月度回顾</string>
+  <string name="mir_strip_title">您在 Trakt 的这一个月</string>
   <string name="mir_title_month_in_review">月度回顾</string>
   <string name="month_review_after_hours">您有 %1$s 的播放开始于 %2$s 之后。</string>
   <string name="month_review_busiest_day">最忙的一天：%s</string>
@@ -1889,7 +1891,7 @@
   <string name="tag_media_sync_webhook_only">仅限 Webhook</string>
   <string name="tag_mixtape_different_mood">风格不符</string>
   <string name="tag_mixtape_kept">已保留</string>
-  <string name="tag_mixtape_match">%s%% 匹配</string>
+  <string name="tag_mixtape_match">%s% 匹配</string>
   <string name="tag_mixtape_tap_details">轻触查看详情</string>
   <string name="tag_text_award_nominee">提名</string>
   <string name="tag_text_award_pending">已提名</string>
@@ -2182,7 +2184,7 @@
   <string name="text_history_sync_filter">同步 ID %d</string>
   <string name="text_history_sync_filter_with_source">同步 ID %1$d (%2$s)</string>
   <string name="text_hype_lists">被加入列表最多的待推出作品之一</string>
-  <string name="text_hype_lists_badge">前 %s%%</string>
+  <string name="text_hype_lists_badge">前 %s%</string>
   <string name="text_hype_lists_detail">大家不断将其加入列表</string>
   <string name="text_hype_out_on">%s 推出</string>
   <string name="text_hype_series_about">与您的平时评分相当</string>
@@ -2274,7 +2276,7 @@
   <string name="text_match_basis_free">匹配分数免费提供，匹配原因为 VIP 专属功能。</string>
   <string name="text_match_basis_history">基于你看过、评分和收藏的内容。</string>
   <string name="text_match_because_liked">因为您喜欢</string>
-  <string name="text_match_better_than">比 %d%% 的影视内容更适合你</string>
+  <string name="text_match_better_than">比 %d% 的影视内容更适合你</string>
   <string name="text_match_not_enough_data">目前数据不足，暂无法为你计算匹配度。</string>
   <string name="text_match_rating_liked">在 Trakt 上颇受欢迎</string>
   <string name="text_match_rating_loved">在 Trakt 上备受喜爱</string>
@@ -3214,7 +3216,7 @@
   <string name="yir_2026_preview_runner_none">无（非混合）</string>
   <string name="yir_2026_preview_runner_up">第二名</string>
   <string name="yir_2026_preview_title">角色预览</string>
-  <string name="yir_2026_rarity">仅有 %1$d%% 是 %2$s</string>
+  <string name="yir_2026_rarity">仅有 %1$d% 是 %2$s</string>
   <string name="yir_2026_reel_a_little_bit">有点 %s</string>
   <string name="yir_2026_reel_and_you_are">而您是</string>
   <string name="yir_2026_reel_but_mostly">但主要是</string>

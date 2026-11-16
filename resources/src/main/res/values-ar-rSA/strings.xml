@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">إخفاء الوصف</string>
   <string name="button_text_hide_lists">إخفاء</string>
   <string name="button_text_hide_recommendation">إخفاء التوصية</string>
-  <string name="button_text_history">التاريخ</string>
   <string name="button_text_history_slot_picker_reset">إعادة تعيين</string>
   <string name="button_text_hold_to_confirm">اضغط للتأكيد</string>
   <string name="button_text_import_more">استيراد المزيد</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">الناس</string>
   <string name="button_text_track">تتبع</string>
   <string name="button_text_trailer">العرض الدعائي</string>
+  <string name="button_text_transactions">المعاملات</string>
   <string name="button_text_trivia_no_spoilers">لا يوجد حرق</string>
   <string name="button_text_trivia_spoilers">المفسدين</string>
   <string name="button_text_unblock">فك الحظر</string>
@@ -1163,10 +1163,10 @@
   <string name="hype_tier_cant_wait">بفارغ الصبر</string>
   <string name="hype_tier_looking_good">يبدو واعداً</string>
   <string name="image_alt_comment_gif">صورة GIF مرفقة بالتعليق</string>
-  <string name="image_alt_hype_score">ترقب بنسبة %d%% لك</string>
+  <string name="image_alt_hype_score">ترقب بنسبة %d% لك</string>
   <string name="image_alt_hype_unknown">لا توجد درجة ترقب لك بعد</string>
   <string name="image_alt_list_preview_poster">ملصق لإدخال في %s</string>
-  <string name="image_alt_match_score">يناسبك بنسبة %d%%</string>
+  <string name="image_alt_match_score">يناسبك بنسبة %d%</string>
   <string name="image_alt_match_unknown">لا توجد درجة ملاءمة لك بعد</string>
   <string name="image_alt_media_poster">\"%s\" ملصق</string>
   <string name="image_alt_person_headshot">صورة %s</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">حالة Trakt</string>
   <string name="link_label_view_social_activities">عرض الأنشطة الاجتماعية لـ %s</string>
   <string name="link_label_view_social_activities_shared">عرض الأنشطة الاجتماعية لـ %s، التي تمت مشاركتها معك</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">يوتيوب</string>
   <string name="link_text_about">حول</string>
   <string name="link_text_account_settings">الحساب</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">التطبيقات</string>
   <string name="link_text_back_to_safety">عُد إلى برّ الأمان…</string>
   <string name="link_text_branding">العلامة التجارية</string>
+  <string name="link_text_data">بيانات</string>
   <string name="link_text_data_settings">بيانات</string>
-  <string name="link_text_data_sources">مصادر البيانات</string>
   <string name="link_text_developer">مطور</string>
   <string name="link_text_discover_media">اكتشف الوسائط</string>
   <string name="link_text_discover_more">اكتشف المزيد</string>
@@ -1572,17 +1573,18 @@
   <string name="match_label_soulmates">رفقاء الروح</string>
   <string name="match_label_spin_off">عرضية</string>
   <string name="match_pill_anchor">تطابق:</string>
-  <string name="match_pill_aria_label">%1$d%% تطابق، %2$s. فتح تفاصيل التطابق.</string>
+  <string name="match_pill_aria_label">%1$d% تطابق، %2$s. فتح تفاصيل التطابق.</string>
   <string name="match_pill_loading_aria_label">جارٍ حساب نتيجة التطابق</string>
   <string name="match_tier_good_fit">مناسب لك</string>
   <string name="match_tier_maybe">ربما</string>
   <string name="match_tier_not_your_usual">غير معتاد لك</string>
   <string name="match_tier_top_pick">أفضل اختيار</string>
-  <string name="mir_banner_body">ملخصك الشهري جاهز. إليك ما شاهدته في %s.</string>
-  <string name="mir_banner_body_short">ملخص %s جاهز.</string>
-  <string name="mir_banner_explore">استكشف</string>
   <string name="mir_banner_in_review">ملخص</string>
+  <string name="mir_entry_hide_until">إخفاء حتى %s</string>
+  <string name="mir_entry_open">فتح الملخص</string>
+  <string name="mir_entry_tooltip_body">ملخص شهر %s الخاص بك جاهز. كل مسلسل وفيلم وسهرة، في مكان واحد.</string>
   <string name="mir_share_text">اطلع على ملخص الشهر %s الخاص بي على Trakt</string>
+  <string name="mir_strip_title">شهرك على Trakt</string>
   <string name="mir_title_month_in_review">شهر في المراجعة</string>
   <string name="month_review_after_hours">%1$s من مشاهداتك بدأت بعد %2$s.</string>
   <string name="month_review_busiest_day">اليوم الأكثر نشاطاً: %s</string>
@@ -1889,7 +1891,7 @@
   <string name="tag_media_sync_webhook_only">ويب هوك فقط</string>
   <string name="tag_mixtape_different_mood">مزاج مختلف</string>
   <string name="tag_mixtape_kept">محفوظ</string>
-  <string name="tag_mixtape_match">مطابقة بنسبة %s%%</string>
+  <string name="tag_mixtape_match">مطابقة بنسبة %s%</string>
   <string name="tag_mixtape_tap_details">انقر للتفاصيل</string>
   <string name="tag_text_award_nominee">مرشح</string>
   <string name="tag_text_award_pending">قيد الترشيح</string>
@@ -2182,7 +2184,7 @@
   <string name="text_history_sync_filter">معرف المزامنة %d</string>
   <string name="text_history_sync_filter_with_source">معرف المزامنة %1$d (%2$s)</string>
   <string name="text_hype_lists">من أكثر الأعمال القادمة إضافةً للقوائم</string>
-  <string name="text_hype_lists_badge">أعلى %s%%</string>
+  <string name="text_hype_lists_badge">أعلى %s%</string>
   <string name="text_hype_lists_detail">يواصل المستخدمون إضافته إلى قوائمهم</string>
   <string name="text_hype_out_on">يصدر في %s</string>
   <string name="text_hype_series_about">في حدود تقييمك المعتاد</string>
@@ -2274,7 +2276,7 @@
   <string name="text_match_basis_free">درجتك مجانية، أما الأسباب الكامنة وراءها فهي ميزة VIP.</string>
   <string name="text_match_basis_history">استناداً إلى ما شاهدته وقيّمته وفضّلته.</string>
   <string name="text_match_because_liked">لأنك أحببت</string>
-  <string name="text_match_better_than">يناسبك أكثر من %d%% من الأعمال</string>
+  <string name="text_match_better_than">يناسبك أكثر من %d% من الأعمال</string>
   <string name="text_match_not_enough_data">لا تتوفر بيانات كافية لتحديد مدى ملاءمته لك بعد.</string>
   <string name="text_match_rating_liked">نال الإعجاب على Trakt</string>
   <string name="text_match_rating_loved">محبوب على Trakt</string>
@@ -3214,7 +3216,7 @@
   <string name="yir_2026_preview_runner_none">لا شيء (لا يوجد هجين)</string>
   <string name="yir_2026_preview_runner_up">الوصيف</string>
   <string name="yir_2026_preview_title">معاينة الشخصية</string>
-  <string name="yir_2026_rarity">فقط %1$d%% هم %2$s</string>
+  <string name="yir_2026_rarity">فقط %1$d% هم %2$s</string>
   <string name="yir_2026_reel_a_little_bit">قليلاً %s</string>
   <string name="yir_2026_reel_and_you_are">وأنت كذلك</string>
   <string name="yir_2026_reel_but_mostly">ولكن غالبًا</string>

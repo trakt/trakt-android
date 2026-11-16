@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Ocultar descripción</string>
   <string name="button_text_hide_lists">Ocultar</string>
   <string name="button_text_hide_recommendation">Ocultar recomendación</string>
-  <string name="button_text_history">Historia</string>
   <string name="button_text_history_slot_picker_reset">Restablecer</string>
   <string name="button_text_hold_to_confirm">Mantén presionado para confirmar</string>
   <string name="button_text_import_more">Importar más</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Personas</string>
   <string name="button_text_track">Registra</string>
   <string name="button_text_trailer">Tráiler</string>
+  <string name="button_text_transactions">Transacciones</string>
   <string name="button_text_trivia_no_spoilers">Sin spoilers</string>
   <string name="button_text_trivia_spoilers">Spoilers</string>
   <string name="button_text_unblock">Desbloquear</string>
@@ -1163,10 +1163,10 @@
   <string name="hype_tier_cant_wait">No puedo esperar</string>
   <string name="hype_tier_looking_good">Pinta bien</string>
   <string name="image_alt_comment_gif">GIF adjunto al comentario</string>
-  <string name="image_alt_hype_score">%d%% de expectativa para ti</string>
+  <string name="image_alt_hype_score">%d% de expectativa para ti</string>
   <string name="image_alt_hype_unknown">Aún no hay puntuación de expectativa para ti</string>
   <string name="image_alt_list_preview_poster">Póster de una entrada en %s</string>
-  <string name="image_alt_match_score">%d%% de coincidencia para ti</string>
+  <string name="image_alt_match_score">%d% de coincidencia para ti</string>
   <string name="image_alt_match_unknown">Aún no hay puntuación de coincidencia para ti</string>
   <string name="image_alt_media_poster">Póster de \"%s\"</string>
   <string name="image_alt_person_headshot">Retrato de %s</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Estado de Trakt</string>
   <string name="link_label_view_social_activities">Ver actividades sociales de %s</string>
   <string name="link_label_view_social_activities_shared">Ver actividades sociales de %s, compartidas contigo</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Acerca de</string>
   <string name="link_text_account_settings">Cuenta</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Aplicaciones</string>
   <string name="link_text_back_to_safety">Volver a la seguridad…</string>
   <string name="link_text_branding">Marca</string>
+  <string name="link_text_data">Datos</string>
   <string name="link_text_data_settings">Datos</string>
-  <string name="link_text_data_sources">Fuentes de datos</string>
   <string name="link_text_developer">Desarrollador</string>
   <string name="link_text_discover_media">Descubre contenido multimedia</string>
   <string name="link_text_discover_more">Descubre más</string>
@@ -1572,17 +1573,18 @@
   <string name="match_label_soulmates">Almas gemelas</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Compatibilidad:</string>
-  <string name="match_pill_aria_label">%1$d%% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
+  <string name="match_pill_aria_label">%1$d% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
   <string name="match_pill_loading_aria_label">Calculando puntuación de coincidencia</string>
   <string name="match_tier_good_fit">Buena opción</string>
   <string name="match_tier_maybe">Tal vez</string>
   <string name="match_tier_not_your_usual">Fuera de lo habitual</string>
   <string name="match_tier_top_pick">Selección ideal</string>
-  <string name="mir_banner_body">Tu resumen mensual está listo. Esto es lo que viste en %s.</string>
-  <string name="mir_banner_body_short">Tu resumen de %s está listo.</string>
-  <string name="mir_banner_explore">Explorar</string>
   <string name="mir_banner_in_review">Tu Resumen</string>
+  <string name="mir_entry_hide_until">Ocultar hasta %s</string>
+  <string name="mir_entry_open">Abrir resumen</string>
+  <string name="mir_entry_tooltip_body">Tu resumen de %s está listo. Cada serie, película y desvelo, en un solo lugar.</string>
   <string name="mir_share_text">Echa un vistazo a mi Resumen Mensual de %s en Trakt</string>
+  <string name="mir_strip_title">Tu mes en Trakt</string>
   <string name="mir_title_month_in_review">Resumen Mensual</string>
   <string name="month_review_after_hours">El %1$s de tus reproducciones empezaron después de %2$s.</string>
   <string name="month_review_busiest_day">Día más activo: %s</string>
@@ -1889,7 +1891,7 @@
   <string name="tag_media_sync_webhook_only">Solo Webhook</string>
   <string name="tag_mixtape_different_mood">Estado de ánimo diferente</string>
   <string name="tag_mixtape_kept">Conservado</string>
-  <string name="tag_mixtape_match">%s%% de coincidencia</string>
+  <string name="tag_mixtape_match">%s% de coincidencia</string>
   <string name="tag_mixtape_tap_details">Toca para ver detalles</string>
   <string name="tag_text_award_nominee">Nominado</string>
   <string name="tag_text_award_pending">Nominado</string>
@@ -2182,7 +2184,7 @@
   <string name="text_history_sync_filter">ID de sincronización %d</string>
   <string name="text_history_sync_filter_with_source">ID de sincronización %1$d (%2$s)</string>
   <string name="text_hype_lists">Uno de los próximos títulos más agregados a listas</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">La gente sigue agregándolo a sus listas</string>
   <string name="text_hype_out_on">Estreno: %s</string>
   <string name="text_hype_series_about">Cerca de tu promedio habitual</string>
@@ -2274,7 +2276,7 @@
   <string name="text_match_basis_free">Tu puntuación es gratis. Las razones detrás de ella son una función VIP.</string>
   <string name="text_match_basis_history">A partir de lo que viste, calificaste y agregaste a favoritos.</string>
   <string name="text_match_because_liked">Porque te gustó</string>
-  <string name="text_match_better_than">Mejor coincidencia para ti que el %d%% de los títulos</string>
+  <string name="text_match_better_than">Mejor coincidencia para ti que el %d% de los títulos</string>
   <string name="text_match_not_enough_data">Aún no hay suficientes datos para saber si coincide contigo.</string>
   <string name="text_match_rating_liked">Gustó en Trakt</string>
   <string name="text_match_rating_loved">Amado en Trakt</string>
@@ -3214,7 +3216,7 @@
   <string name="yir_2026_preview_runner_none">Ninguno (sin híbrido)</string>
   <string name="yir_2026_preview_runner_up">Segundo lugar</string>
   <string name="yir_2026_preview_title">Vista previa de persona</string>
-  <string name="yir_2026_rarity">Solo el %1$d%% son %2$s</string>
+  <string name="yir_2026_rarity">Solo el %1$d% son %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Un poco %s</string>
   <string name="yir_2026_reel_and_you_are">Y tú eres</string>
   <string name="yir_2026_reel_but_mostly">Pero principalmente</string>
