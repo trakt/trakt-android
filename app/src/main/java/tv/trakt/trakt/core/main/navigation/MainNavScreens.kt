@@ -627,6 +627,13 @@ internal fun NavGraphBuilder.listsScreens(
                     list = list,
                 )
             },
+            onNavigateToPerson = { person ->
+                navigateToPerson(
+                    personId = person.ids.trakt,
+                    sourceMediaId = null,
+                    backdropUrl = null,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
         listDetailsScreen(

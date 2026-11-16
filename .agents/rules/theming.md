@@ -88,8 +88,8 @@ When content is hosted in a sheet, check every container colour against `dialogC
 
 - Panels, cards and empty states → `TraktTheme.colors.dialogOnContainer`.
 - Skeletons → `skeletonPanelContainer` / `skeletonPanelShimmer`.
-- Shared components that hard-code a container colour (`PanelMediaCard`,
-  `PanelMediaSkeletonCard`) take a colour parameter. Pass the sheet token, do not fork the
+- Shared components that hard-code a container colour (`PanelMediaCard`)
+  take a colour parameter. Pass the sheet token, do not fork the
   component. Add a parameter with the current value as default if one is missing.
 
 Example: `core/lists/features/details/info/ListInfoView.kt`.

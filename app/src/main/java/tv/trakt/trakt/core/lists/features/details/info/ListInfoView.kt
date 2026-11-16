@@ -46,17 +46,16 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val DESCRIPTION_MAX_LINES = 5
-private const val SKELETON_COUNT = 4
 
 private val CardShape = DefaultCardShape
 
@@ -123,12 +122,15 @@ private fun ListInfoContent(
 
         when {
             people == null || (state.loading.isLoading && people.isEmpty()) -> {
-                items(count = SKELETON_COUNT) {
-                    PanelMediaSkeletonCard(
-                        imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
-                        containerColor = TraktTheme.colors.skeletonPanelContainer,
-                        shimmerColor = TraktTheme.colors.skeletonPanelShimmer,
-                    )
+                item(key = "featured-loading") {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 24.dp),
+                    ) {
+                        FilmProgressIndicator(size = 32.dp)
+                    }
                 }
             }
 

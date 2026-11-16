@@ -430,6 +430,8 @@ private fun TitleBar(
                 painter = painterResource(R.drawable.ic_back_arrow),
                 tint = TraktTheme.colors.textPrimary,
                 contentDescription = null,
+                modifier = Modifier
+                    .onClick(onClick = onBackClick),
             )
 
             TraktHeader(
@@ -439,9 +441,7 @@ private fun TitleBar(
                 },
                 modifier = Modifier
                     .weight(1F, fill = false)
-                    .onClick {
-                        onBackClick()
-                    },
+                    .onClick(onClick = onBackClick),
             )
         }
 

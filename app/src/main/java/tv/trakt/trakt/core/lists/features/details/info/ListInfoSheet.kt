@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.lists.features.details.info
 
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
@@ -23,7 +23,7 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
-private const val SHEET_MAX_HEIGHT_FRACTION = 0.85F
+private const val SHEET_HEIGHT_FRACTION = 0.85F
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +38,7 @@ internal fun ListInfoSheet(
 ) {
     val sheetScope = rememberCoroutineScope()
     val viewModelKey = remember(list) { nextInt().toString() }
-    val maxHeight = LocalWindowInfo.current.containerDpSize.height * SHEET_MAX_HEIGHT_FRACTION
+    val sheetHeight = LocalWindowInfo.current.containerDpSize.height * SHEET_HEIGHT_FRACTION
 
     if (list != null) {
         TraktBottomSheet(
@@ -62,7 +62,7 @@ internal fun ListInfoSheet(
                         }
                 },
                 modifier = Modifier
-                    .heightIn(max = maxHeight)
+                    .height(sheetHeight)
                     .padding(horizontal = 24.dp)
                     .padding(top = 8.dp),
             )
