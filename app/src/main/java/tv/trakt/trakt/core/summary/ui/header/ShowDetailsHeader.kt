@@ -127,9 +127,10 @@ internal fun DetailsHeader(
         onShareClick = onShareClick,
         onShareImageClick = onShareImageClick,
         extraRightColumn = {
-            if (notes) {
-                DetailsHeaderNotesButton(onClick = onNotesClick)
-            }
+            DetailsHeaderNotesButton(
+                visible = notes,
+                onClick = onNotesClick,
+            )
         },
         onInfoClick = onInfoClick,
         onWatchedClick = onWatchedClick,

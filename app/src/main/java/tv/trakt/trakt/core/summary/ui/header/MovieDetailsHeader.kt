@@ -142,9 +142,10 @@ internal fun DetailsHeader(
         onShareClick = onShareClick,
         onShareImageClick = onShareImageClick,
         extraRightColumn = {
-            if (notes) {
-                DetailsHeaderNotesButton(onClick = onNotesClick)
-            }
+            DetailsHeaderNotesButton(
+                visible = notes,
+                onClick = onNotesClick,
+            )
         },
         onImdbClick = {
             movie.ids.imdb?.let {
