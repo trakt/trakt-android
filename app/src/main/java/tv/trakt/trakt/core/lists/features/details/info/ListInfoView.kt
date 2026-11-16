@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.lists.features.details.info
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,11 +16,13 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -133,14 +137,19 @@ private fun ListInfoContent(
                         placeholder = stringResource(R.string.input_placeholder_search_credit_members),
                         endSlot = {
                             if (searchState.text.isNotBlank()) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_close),
-                                    contentDescription = null,
-                                    tint = TraktTheme.colors.textSecondary,
+                                Box(
+                                    contentAlignment = Alignment.Center,
                                     modifier = Modifier
-                                        .size(18.dp)
+                                        .minimumInteractiveComponentSize()
                                         .onClick { searchState.clearText() },
-                                )
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_close),
+                                        contentDescription = null,
+                                        tint = TraktTheme.colors.textSecondary,
+                                        modifier = Modifier.size(18.dp),
+                                    )
+                                }
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -222,7 +231,9 @@ private fun DescriptionSection(
                 Text(
                     text = markdownText,
                     color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.paragraphSmaller,
+                    style = TraktTheme.typography.paragraphSmaller.copy(
+                        lineHeight = 1.3.em,
+                    ),
                     maxLines = if (collapsed) DESCRIPTION_MAX_LINES else Int.MAX_VALUE,
                     overflow = Ellipsis,
                     modifier = Modifier.onClick { collapsed = !collapsed },
