@@ -99,7 +99,7 @@ internal class ShowDetailsViewModel(
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
-    val showId = destination.showId.toTraktId()
+    private val showId = destination.showId.toTraktId()
 
     private val initialState = ShowDetailsState()
     private val origin = ChangeOrigin.unique()

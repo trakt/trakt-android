@@ -3,16 +3,20 @@ package tv.trakt.trakt.core.summary.shows.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExtraVideo
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -45,9 +49,14 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    composable<ShowDetailsDestination> {
+    composable<ShowDetailsDestination> { entry ->
+        val showId = entry.toRoute<ShowDetailsDestination>().showId.toTraktId()
+
         ShowDetailsScreen(
             viewModel = koinViewModel(),
+            notesViewModel = koinViewModel(
+                parameters = { parametersOf(MediaType.Show, showId) },
+            ),
             onShowClick = { onNavigateToShow(it.ids.trakt) },
             onEpisodeClick = { showId, episode -> onNavigateToEpisode(showId, episode) },
             onCommentsClick = { show, filter ->

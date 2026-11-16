@@ -135,6 +135,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ShowDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: ShowDetailsViewModel,
+    notesViewModel: NotesViewModel,
     onShowClick: ((Show) -> Unit),
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onCommentsClick: ((Show, CommentsFilter) -> Unit),
@@ -161,9 +162,6 @@ internal fun ShowDetailsScreen(
     val localRateVisibility = LocalRatePromptVisibility.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val notesViewModel: NotesViewModel = koinViewModel(
-        parameters = { parametersOf(MediaType.Show, viewModel.showId) },
-    )
     val notesState by notesViewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()

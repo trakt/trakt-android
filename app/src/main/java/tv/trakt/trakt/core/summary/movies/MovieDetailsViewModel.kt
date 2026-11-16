@@ -102,7 +102,7 @@ internal class MovieDetailsViewModel(
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
-    val movieId = destination.movieId.toTraktId()
+    private val movieId = destination.movieId.toTraktId()
 
     private val initialState = MovieDetailsState()
     private val origin = ChangeOrigin.unique()

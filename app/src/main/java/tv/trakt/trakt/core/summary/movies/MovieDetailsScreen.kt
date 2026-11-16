@@ -126,6 +126,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel,
+    notesViewModel: NotesViewModel,
     onMovieClick: ((Movie) -> Unit),
     onCommentsClick: ((Movie, CommentsFilter) -> Unit),
     onListClick: ((Movie, CustomList) -> Unit),
@@ -150,9 +151,6 @@ internal fun MovieDetailsScreen(
     val localRateVisibility = LocalRatePromptVisibility.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val notesViewModel: NotesViewModel = koinViewModel(
-        parameters = { parametersOf(MediaType.Movie, viewModel.movieId) },
-    )
     val notesState by notesViewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
