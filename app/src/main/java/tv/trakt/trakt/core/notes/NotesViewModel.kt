@@ -175,7 +175,6 @@ internal class NotesViewModel(
                 refreshNotes()
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
                     Timber.recordError(error)
                 }
             } finally {

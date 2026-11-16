@@ -118,7 +118,10 @@ private fun NotesView(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
             .alpha(if (deleting) 0.5F else 1F)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(
+                state = rememberScrollState(),
+                overscrollEffect = null,
+            ),
     ) {
         TraktHeader(
             title = stringResource(R.string.drawer_title_notes),
