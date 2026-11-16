@@ -76,12 +76,11 @@ internal fun CustomListCard(
     modifier: Modifier = Modifier,
     liked: Boolean = false,
     likesVisible: Boolean = false,
-    moreVisible: Boolean = false,
     userVisible: Boolean = true,
     privacyVisible: Boolean = false,
     onClick: () -> Unit,
-    onMoreClick: () -> Unit = {},
     onUserClick: ((User) -> Unit)? = null,
+    moreContent: (@Composable () -> Unit)? = null,
 ) {
     Card(
         onClick = onClick,
@@ -102,10 +101,9 @@ internal fun CustomListCard(
                 likesVisible = likesVisible,
                 userVisible = userVisible,
                 privacyVisible = privacyVisible,
-                moreVisible = moreVisible,
                 onClick = onClick,
-                onMoreClick = onMoreClick,
                 onUserClick = onUserClick,
+                moreContent = moreContent,
             )
         },
     )
@@ -116,12 +114,11 @@ private fun CustomListContent(
     list: CustomList,
     liked: Boolean,
     likesVisible: Boolean,
-    moreVisible: Boolean,
     userVisible: Boolean,
     privacyVisible: Boolean,
     onClick: () -> Unit,
-    onMoreClick: () -> Unit,
     onUserClick: ((User) -> Unit)?,
+    moreContent: (@Composable () -> Unit)?,
 ) {
     val containerColor = TraktTheme.colors.customListContainer
     val gradientColor = TraktTheme.colors.customListGradient
@@ -164,10 +161,9 @@ private fun CustomListContent(
             likesVisible = likesVisible,
             userVisible = userVisible,
             privacyVisible = privacyVisible,
-            moreVisible = moreVisible,
             onClick = onClick,
-            onMoreClick = onMoreClick,
             onUserClick = onUserClick,
+            moreContent = moreContent,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -250,10 +246,9 @@ private fun CustomListHeader(
     likesVisible: Boolean,
     userVisible: Boolean,
     privacyVisible: Boolean,
-    moreVisible: Boolean,
     onClick: () -> Unit,
-    onMoreClick: () -> Unit,
     onUserClick: ((User) -> Unit)?,
+    moreContent: (@Composable () -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -359,18 +354,12 @@ private fun CustomListHeader(
             }
         }
 
-        if (moreVisible) {
+        if (moreContent != null) {
             Spacer(modifier = Modifier.size(8.dp))
 
-            Icon(
-                painter = painterResource(R.drawable.ic_more_vertical),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .size(16.dp)
-                    .onClick(onClick = onMoreClick),
-            )
+            Box(modifier = Modifier.padding(start = 12.dp)) {
+                moreContent()
+            }
         }
     }
 }
@@ -392,7 +381,6 @@ private fun Preview() {
                     ),
                     liked = true,
                     likesVisible = true,
-                    moreVisible = true,
                     modifier = Modifier
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},
@@ -402,11 +390,18 @@ private fun Preview() {
                     list = PreviewData.customList1.copy(
                         privacy = CustomList.Privacy.Private,
                     ),
-                    moreVisible = true,
                     privacyVisible = true,
                     modifier = Modifier
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},
+                    moreContent = {
+                        PersonalListDropdown(
+                            reorderEnabled = true,
+                            onEditClick = {},
+                            onReorderClick = {},
+                            onShareClick = {},
+                        )
+                    },
                 )
             }
         }
@@ -431,7 +426,6 @@ private fun PreviewRtl() {
                     ),
                     liked = true,
                     likesVisible = true,
-                    moreVisible = true,
                     modifier = Modifier
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},

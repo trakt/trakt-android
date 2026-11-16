@@ -20,6 +20,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.auth.session.helpers.distinctUntilSessionChanged
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
@@ -72,6 +74,7 @@ internal class ListsViewModel(
     private val analytics: Analytics,
     private val upsellImpressions: VipUpsellImpressions,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val dataChanges: DataChanges,
 ) : ViewModel() {
     private val initialState = ListsState()
 
@@ -136,6 +139,11 @@ internal class ListsViewModel(
             .onEach {
                 loadData()
             }
+            .launchIn(viewModelScope)
+
+        dataChanges.observe(Kind.Lists)
+            .debounce(200.milliseconds)
+            .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
     }
 
@@ -228,6 +236,10 @@ internal class ListsViewModel(
                 dataJob = null
             }
         }
+    }
+
+    fun logListShare() {
+        analytics.logShare(source = "user-list", type = null)
     }
 
     fun deleteSmartList(listId: TraktId) {
