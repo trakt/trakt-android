@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">隐藏描述</string>
   <string name="button_text_hide_lists">隐藏</string>
   <string name="button_text_hide_recommendation">隐藏推荐</string>
-  <string name="button_text_history">历史</string>
   <string name="button_text_history_slot_picker_reset">重置</string>
   <string name="button_text_hold_to_confirm">按住以确认</string>
   <string name="button_text_import_more">导入更多</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">人物</string>
   <string name="button_text_track">标记为已观看</string>
   <string name="button_text_trailer">预告片</string>
+  <string name="button_text_transactions">交易记录</string>
   <string name="button_text_trivia_no_spoilers">无剧透</string>
   <string name="button_text_trivia_spoilers">剧透</string>
   <string name="button_text_unblock">解除屏蔽</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt 状态</string>
   <string name="link_label_view_social_activities">查看%s的社交动态</string>
   <string name="link_label_view_social_activities_shared">查看%s的社交动态，与你分享</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">优兔</string>
   <string name="link_text_about">关于</string>
   <string name="link_text_account_settings">帐户</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">应用</string>
   <string name="link_text_back_to_safety">返回安全之地…</string>
   <string name="link_text_branding">品牌</string>
+  <string name="link_text_data">数据</string>
   <string name="link_text_data_settings">数据</string>
-  <string name="link_text_data_sources">数据来源</string>
   <string name="link_text_developer">开发者</string>
   <string name="link_text_discover_media">发现媒体</string>
   <string name="link_text_discover_more">发现更多</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">或许喜欢</string>
   <string name="match_tier_not_your_usual">非你常看</string>
   <string name="match_tier_top_pick">首选推荐</string>
-  <string name="mir_banner_body">您的月度回顾已就绪。这是您在 %s 中观看的内容。</string>
-  <string name="mir_banner_body_short">您的 %s 回顾已就绪。</string>
-  <string name="mir_banner_explore">探索</string>
   <string name="mir_banner_in_review">月度回顾</string>
+  <string name="mir_entry_hide_until">隐藏至%s</string>
+  <string name="mir_entry_open">查看回顾</string>
+  <string name="mir_entry_tooltip_body">您的%s回顾已就绪。所有剧集、电影与深夜时光，尽在一处。</string>
   <string name="mir_share_text">在 Trakt 上查看我的 %s 月度回顾</string>
+  <string name="mir_strip_title">您在 Trakt 的这一个月</string>
   <string name="mir_title_month_in_review">月度回顾</string>
   <string name="month_review_after_hours">您有 %1$s 的播放开始于 %2$s 之后。</string>
   <string name="month_review_busiest_day">最忙的一天：%s</string>

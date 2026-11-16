@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Verberg beschrijving</string>
   <string name="button_text_hide_lists">Verbergen</string>
   <string name="button_text_hide_recommendation">Aanbeveling verbergen</string>
-  <string name="button_text_history">Geschiedenis</string>
   <string name="button_text_history_slot_picker_reset">Resetten</string>
   <string name="button_text_hold_to_confirm">Vasthouden om te bevestigen</string>
   <string name="button_text_import_more">Meer importeren</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Personen</string>
   <string name="button_text_track">Volgen</string>
   <string name="button_text_trailer">Trailer</string>
+  <string name="button_text_transactions">Transacties</string>
   <string name="button_text_trivia_no_spoilers">Geen spoilers</string>
   <string name="button_text_trivia_spoilers">Spoilers</string>
   <string name="button_text_unblock">Deblokkeren</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">Sociale activiteiten bekijken voor %s</string>
   <string name="link_label_view_social_activities_shared">Bekijk sociale activiteiten voor %s, met jou gedeeld</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Over ons</string>
   <string name="link_text_account_settings">Account</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Apps</string>
   <string name="link_text_back_to_safety">Terug naar het bekende…</string>
   <string name="link_text_branding">Branding</string>
+  <string name="link_text_data">Gegevens</string>
   <string name="link_text_data_settings">Gegevens</string>
-  <string name="link_text_data_sources">Gegevensbronnen</string>
   <string name="link_text_developer">Ontwikkelaar</string>
   <string name="link_text_discover_media">Ontdek media</string>
   <string name="link_text_discover_more">Ontdek meer</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Misschien</string>
   <string name="match_tier_not_your_usual">Anders dan gewoonlijk</string>
   <string name="match_tier_top_pick">Topkeuze</string>
-  <string name="mir_banner_body">Je maandelijkse overzicht is klaar. Dit is wat je hebt gekeken in %s.</string>
-  <string name="mir_banner_body_short">Je %s overzicht is klaar.</string>
-  <string name="mir_banner_explore">Ontdek</string>
   <string name="mir_banner_in_review">In overzicht</string>
+  <string name="mir_entry_hide_until">Verbergen tot %s</string>
+  <string name="mir_entry_open">Review openen</string>
+  <string name="mir_entry_tooltip_body">Je %s in Review staat klaar. Elke serie, film en late night, op één plek.</string>
   <string name="mir_share_text">Bekijk mijn %s Maandoverzicht op Trakt</string>
+  <string name="mir_strip_title">Je maand op Trakt</string>
   <string name="mir_title_month_in_review">Maandoverzicht</string>
   <string name="month_review_after_hours">%1$s van je afspelingen begon na %2$s.</string>
   <string name="month_review_busiest_day">Drukste dag: %s</string>

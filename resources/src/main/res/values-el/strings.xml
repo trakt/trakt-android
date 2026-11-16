@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Απόκρυψη Περιγραφής</string>
   <string name="button_text_hide_lists">Απόκρυψη</string>
   <string name="button_text_hide_recommendation">Απόκρυψη πρότασης</string>
-  <string name="button_text_history">Ιστορικά</string>
   <string name="button_text_history_slot_picker_reset">Επαναφορά</string>
   <string name="button_text_hold_to_confirm">Κρατήστε πατημένο για επιβεβαίωση</string>
   <string name="button_text_import_more">Εισαγωγή περισσότερων</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Άτομα</string>
   <string name="button_text_track">Παρακολουθήστε</string>
   <string name="button_text_trailer">Τρέιλερ</string>
+  <string name="button_text_transactions">Συναλλαγές</string>
   <string name="button_text_trivia_no_spoilers">Χωρίς spoilers</string>
   <string name="button_text_trivia_spoilers">Spoilers</string>
   <string name="button_text_unblock">Ξεμπλοκάρισμα</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Κατάσταση Trakt</string>
   <string name="link_label_view_social_activities">Προβολή κοινωνικών δραστηριοτήτων για το/την %s</string>
   <string name="link_label_view_social_activities_shared">Προβολή κοινωνικών δραστηριοτήτων για το/την %s, που κοινοποιήθηκε σε εσάς</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Σχετικά</string>
   <string name="link_text_account_settings">Λογαριασμός</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Εφαρμογές</string>
   <string name="link_text_back_to_safety">Πίσω στην ασφάλεια…</string>
   <string name="link_text_branding">Επωνυμία</string>
+  <string name="link_text_data">Δεδομένα</string>
   <string name="link_text_data_settings">Δεδομένα</string>
-  <string name="link_text_data_sources">Πηγές δεδομένων</string>
   <string name="link_text_developer">Προγραμματιστής</string>
   <string name="link_text_discover_media">Ανακαλύψτε μέσα</string>
   <string name="link_text_discover_more">Ανακαλύψτε περισσότερα</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Ίσως</string>
   <string name="match_tier_not_your_usual">Όχι στα συνηθισμένα σας</string>
   <string name="match_tier_top_pick">Κορυφαία επιλογή</string>
-  <string name="mir_banner_body">Η μηνιαία ανακεφαλαίωσή σου είναι έτοιμη. Δες τι παρακολούθησες τον %s.</string>
-  <string name="mir_banner_body_short">Η ανακεφαλαίωση για τον %s είναι έτοιμη.</string>
-  <string name="mir_banner_explore">Εξερεύνηση</string>
   <string name="mir_banner_in_review">Ανασκόπηση</string>
+  <string name="mir_entry_hide_until">Απόκρυψη μέχρι τον %s</string>
+  <string name="mir_entry_open">Άνοιγμα ανασκόπησης</string>
+  <string name="mir_entry_tooltip_body">Η ανασκόπησή σας για τον %s είναι έτοιμη. Κάθε σειρά, ταινία και ξενύχτι, σε ένα μέρος.</string>
   <string name="mir_share_text">Δείτε τη Μηνιαία Ανασκόπησή μου για το %s στο Trakt</string>
+  <string name="mir_strip_title">Ο μήνας σας στο Trakt</string>
   <string name="mir_title_month_in_review">Μηνιαία Ανασκόπηση</string>
   <string name="month_review_after_hours">Το %1$s των προβολών σας ξεκίνησε μετά τις %2$s.</string>
   <string name="month_review_busiest_day">Πιο δραστήρια ημέρα: %s</string>

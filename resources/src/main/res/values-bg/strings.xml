@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Скрий описанието</string>
   <string name="button_text_hide_lists">Скрий</string>
   <string name="button_text_hide_recommendation">Скрий препоръка</string>
-  <string name="button_text_history">Исторически</string>
   <string name="button_text_history_slot_picker_reset">Нулиране</string>
   <string name="button_text_hold_to_confirm">Задръжте за потвърждение</string>
   <string name="button_text_import_more">Импортирайте още</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Хора</string>
   <string name="button_text_track">Проследявай</string>
   <string name="button_text_trailer">Трейлър</string>
+  <string name="button_text_transactions">Трансакции</string>
   <string name="button_text_trivia_no_spoilers">Без спойлери</string>
   <string name="button_text_trivia_spoilers">Спойлери</string>
   <string name="button_text_unblock">Отблокирай</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt Статус</string>
   <string name="link_label_view_social_activities">Преглед на социалните дейности за %s</string>
   <string name="link_label_view_social_activities_shared">Преглед на социалните дейности за %s, споделени с вас</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">За нас</string>
   <string name="link_text_account_settings">Профил</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Приложения</string>
   <string name="link_text_back_to_safety">Обратно към безопасност…</string>
   <string name="link_text_branding">Брандинг</string>
+  <string name="link_text_data">Данни</string>
   <string name="link_text_data_settings">Данни</string>
-  <string name="link_text_data_sources">Източници на данни</string>
   <string name="link_text_developer">Разработчик</string>
   <string name="link_text_discover_media">Открий медия</string>
   <string name="link_text_discover_more">Открий още</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Може би</string>
   <string name="match_tier_not_your_usual">Необичайно за вас</string>
   <string name="match_tier_top_pick">Топ избор</string>
-  <string name="mir_banner_body">Вашият месечен преглед е готов. Ето какво сте гледали през %s.</string>
-  <string name="mir_banner_body_short">Вашият преглед за %s е готов.</string>
-  <string name="mir_banner_explore">Разгледайте</string>
   <string name="mir_banner_in_review">В преглед</string>
+  <string name="mir_entry_hide_until">Скриване до %s</string>
+  <string name="mir_entry_open">Отваряне на обзора</string>
+  <string name="mir_entry_tooltip_body">Вашият обзор за %s е готов. Всеки сериал, филм и късна вечер на едно място.</string>
   <string name="mir_share_text">Вижте моя %s месечен преглед в Trakt</string>
+  <string name="mir_strip_title">Вашият месец в Trakt</string>
   <string name="mir_title_month_in_review">Месечен преглед</string>
   <string name="month_review_after_hours">%1$s от гледанията ви са започнали след %2$s.</string>
   <string name="month_review_busiest_day">Най-натоварен ден: %s</string>

@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Açıklamayı Gizle</string>
   <string name="button_text_hide_lists">Gizle</string>
   <string name="button_text_hide_recommendation">Öneriyi gizle</string>
-  <string name="button_text_history">Tarih</string>
   <string name="button_text_history_slot_picker_reset">Sıfırla</string>
   <string name="button_text_hold_to_confirm">Onaylamak İçin Basılı Tutun</string>
   <string name="button_text_import_more">Daha fazla içe aktar</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Kişiler</string>
   <string name="button_text_track">Takip Et</string>
   <string name="button_text_trailer">Fragman</string>
+  <string name="button_text_transactions">İşlemler</string>
   <string name="button_text_trivia_no_spoilers">Spoiler yok</string>
   <string name="button_text_trivia_spoilers">Spoilerlar</string>
   <string name="button_text_unblock">Engellemeyi Kaldır</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt Durumu</string>
   <string name="link_label_view_social_activities">%s için sosyal etkinlikleri görüntüle</string>
   <string name="link_label_view_social_activities_shared">%s için sizinle paylaşılan sosyal etkinlikleri görüntüle</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Hakkında</string>
   <string name="link_text_account_settings">Hesap</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Uygulamalar</string>
   <string name="link_text_back_to_safety">Güvenliğe dön…</string>
   <string name="link_text_branding">Markalama</string>
+  <string name="link_text_data">Veri</string>
   <string name="link_text_data_settings">Veri</string>
-  <string name="link_text_data_sources">Veri kaynakları</string>
   <string name="link_text_developer">Geliştirici</string>
   <string name="link_text_discover_media">Medya keşfet</string>
   <string name="link_text_discover_more">Daha fazlasını keşfet</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Belki</string>
   <string name="match_tier_not_your_usual">Tarzınız değil</string>
   <string name="match_tier_top_pick">En iyi seçim</string>
-  <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
-  <string name="mir_banner_body_short">%s özetiniz hazır.</string>
-  <string name="mir_banner_explore">Keşfet</string>
   <string name="mir_banner_in_review">Genel Bakış</string>
+  <string name="mir_entry_hide_until">%s ayına kadar gizle</string>
+  <string name="mir_entry_open">Özeti aç</string>
+  <string name="mir_entry_tooltip_body">%s ayı özetiniz hazır. Her dizi, film ve gece programı tek bir yerde.</string>
   <string name="mir_share_text">Trakt\'teki %s Ayın Özeti\'me göz atın</string>
+  <string name="mir_strip_title">Trakt\'taki ayınız</string>
   <string name="mir_title_month_in_review">Ayın İncelemesi</string>
   <string name="month_review_after_hours">Oynatmalarınızın %1$s kadarı %2$s sonrasında başladı.</string>
   <string name="month_review_busiest_day">En yoğun gün: %s</string>

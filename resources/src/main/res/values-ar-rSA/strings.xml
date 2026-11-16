@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">إخفاء الوصف</string>
   <string name="button_text_hide_lists">إخفاء</string>
   <string name="button_text_hide_recommendation">إخفاء التوصية</string>
-  <string name="button_text_history">التاريخ</string>
   <string name="button_text_history_slot_picker_reset">إعادة تعيين</string>
   <string name="button_text_hold_to_confirm">اضغط للتأكيد</string>
   <string name="button_text_import_more">استيراد المزيد</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">الناس</string>
   <string name="button_text_track">تتبع</string>
   <string name="button_text_trailer">العرض الدعائي</string>
+  <string name="button_text_transactions">المعاملات</string>
   <string name="button_text_trivia_no_spoilers">لا يوجد حرق</string>
   <string name="button_text_trivia_spoilers">المفسدين</string>
   <string name="button_text_unblock">فك الحظر</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">حالة Trakt</string>
   <string name="link_label_view_social_activities">عرض الأنشطة الاجتماعية لـ %s</string>
   <string name="link_label_view_social_activities_shared">عرض الأنشطة الاجتماعية لـ %s، التي تمت مشاركتها معك</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">يوتيوب</string>
   <string name="link_text_about">حول</string>
   <string name="link_text_account_settings">الحساب</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">التطبيقات</string>
   <string name="link_text_back_to_safety">عُد إلى برّ الأمان…</string>
   <string name="link_text_branding">العلامة التجارية</string>
+  <string name="link_text_data">بيانات</string>
   <string name="link_text_data_settings">بيانات</string>
-  <string name="link_text_data_sources">مصادر البيانات</string>
   <string name="link_text_developer">مطور</string>
   <string name="link_text_discover_media">اكتشف الوسائط</string>
   <string name="link_text_discover_more">اكتشف المزيد</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">ربما</string>
   <string name="match_tier_not_your_usual">غير معتاد لك</string>
   <string name="match_tier_top_pick">أفضل اختيار</string>
-  <string name="mir_banner_body">ملخصك الشهري جاهز. إليك ما شاهدته في %s.</string>
-  <string name="mir_banner_body_short">ملخص %s جاهز.</string>
-  <string name="mir_banner_explore">استكشف</string>
   <string name="mir_banner_in_review">ملخص</string>
+  <string name="mir_entry_hide_until">إخفاء حتى %s</string>
+  <string name="mir_entry_open">فتح الملخص</string>
+  <string name="mir_entry_tooltip_body">ملخص شهر %s الخاص بك جاهز. كل مسلسل وفيلم وسهرة، في مكان واحد.</string>
   <string name="mir_share_text">اطلع على ملخص الشهر %s الخاص بي على Trakt</string>
+  <string name="mir_strip_title">شهرك على Trakt</string>
   <string name="mir_title_month_in_review">شهر في المراجعة</string>
   <string name="month_review_after_hours">%1$s من مشاهداتك بدأت بعد %2$s.</string>
   <string name="month_review_busiest_day">اليوم الأكثر نشاطاً: %s</string>

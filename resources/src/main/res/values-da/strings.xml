@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Skjul beskrivelse</string>
   <string name="button_text_hide_lists">Skjul</string>
   <string name="button_text_hide_recommendation">Skjul anbefaling</string>
-  <string name="button_text_history">Historie</string>
   <string name="button_text_history_slot_picker_reset">Nulstil</string>
   <string name="button_text_hold_to_confirm">Hold for at bekræfte</string>
   <string name="button_text_import_more">Importér mere</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Personer</string>
   <string name="button_text_track">Registrer</string>
   <string name="button_text_trailer">Trailer</string>
+  <string name="button_text_transactions">Transaktioner</string>
   <string name="button_text_trivia_no_spoilers">Ingen spoilere</string>
   <string name="button_text_trivia_spoilers">Spoilere</string>
   <string name="button_text_unblock">Fjern blokering</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">Se sociale aktiviteter for %s</string>
   <string name="link_label_view_social_activities_shared">Se sociale aktiviteter for %s, delt med dig</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Om</string>
   <string name="link_text_account_settings">Konto</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Apps</string>
   <string name="link_text_back_to_safety">Tilbage til sikkerhed…</string>
   <string name="link_text_branding">Branding</string>
+  <string name="link_text_data">Data</string>
   <string name="link_text_data_settings">Data</string>
-  <string name="link_text_data_sources">Datakilder</string>
   <string name="link_text_developer">Udvikler</string>
   <string name="link_text_discover_media">Opdag medier</string>
   <string name="link_text_discover_more">Opdag mere</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Måske</string>
   <string name="match_tier_not_your_usual">Ikke hvad du plejer</string>
   <string name="match_tier_top_pick">Topvalg</string>
-  <string name="mir_banner_body">Dit månedlige resumé er klar. Her er hvad du så i %s.</string>
-  <string name="mir_banner_body_short">Dit %s resumé er klar.</string>
-  <string name="mir_banner_explore">Udforsk</string>
   <string name="mir_banner_in_review">I overblIk</string>
+  <string name="mir_entry_hide_until">Skjul indtil %s</string>
+  <string name="mir_entry_open">Åbn tilbageblik</string>
+  <string name="mir_entry_tooltip_body">Dit tilbageblik for %s er klar. Hver serie, film og sene nat samlet ét sted.</string>
   <string name="mir_share_text">Se min %s Månedsoversigt på Trakt</string>
+  <string name="mir_strip_title">Din måned på Trakt</string>
   <string name="mir_title_month_in_review">Månedsresumé</string>
   <string name="month_review_after_hours">%1$s af dine afspilninger startede efter %2$s.</string>
   <string name="month_review_busiest_day">Travleste dag: %s</string>

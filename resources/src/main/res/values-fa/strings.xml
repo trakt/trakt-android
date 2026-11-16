@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">پنهان کردن توضیحات</string>
   <string name="button_text_hide_lists">پنهان کردن</string>
   <string name="button_text_hide_recommendation">پنهان کردن توصیه</string>
-  <string name="button_text_history">تاریخی</string>
   <string name="button_text_history_slot_picker_reset">بازنشانی</string>
   <string name="button_text_hold_to_confirm">نگه دارید تا تایید کنید</string>
   <string name="button_text_import_more">وارد کردن بیشتر</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">افراد</string>
   <string name="button_text_track">ردیابی</string>
   <string name="button_text_trailer">تریلر</string>
+  <string name="button_text_transactions">تراکنش‌ها</string>
   <string name="button_text_trivia_no_spoilers">بدون اسپویلر</string>
   <string name="button_text_trivia_spoilers">اسپویلرها</string>
   <string name="button_text_unblock">رفع مسدودیت</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">وضعیت Trakt</string>
   <string name="link_label_view_social_activities">مشاهده فعالیت‌های اجتماعی برای %s</string>
   <string name="link_label_view_social_activities_shared">مشاهده فعالیت‌های اجتماعی برای %s, به اشتراک گذاشته شده با شما</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">یوتیوب</string>
   <string name="link_text_about">درباره ما</string>
   <string name="link_text_account_settings">حساب کاربری</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">برنامه‌ها</string>
   <string name="link_text_back_to_safety">بازگشت به ایمنی…</string>
   <string name="link_text_branding">برندینگ</string>
+  <string name="link_text_data">داده‌ها</string>
   <string name="link_text_data_settings">داده‌ها</string>
-  <string name="link_text_data_sources">منابع داده</string>
   <string name="link_text_developer">توسعه‌دهنده</string>
   <string name="link_text_discover_media">رسانه را کشف کنید</string>
   <string name="link_text_discover_more">بیشتر کشف کنید</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">شاید</string>
   <string name="match_tier_not_your_usual">متفاوت با معمول</string>
   <string name="match_tier_top_pick">بهترین انتخاب</string>
-  <string name="mir_banner_body">خلاصه ماهانه شما آماده است. در %s اینها را تماشا کرده‌اید.</string>
-  <string name="mir_banner_body_short">خلاصه %s شما آماده است.</string>
-  <string name="mir_banner_explore">کاوش</string>
   <string name="mir_banner_in_review">مرور</string>
+  <string name="mir_entry_hide_until">پنهان کردن تا %s</string>
+  <string name="mir_entry_open">باز کردن مرور</string>
+  <string name="mir_entry_tooltip_body">مرور %s شما آماده است. همه سریال‌ها، فیلم‌ها و تماشا‌های آخر شب، در یک جا.</string>
   <string name="mir_share_text">مرور ماه %s من در Trakt را بررسی کنید</string>
+  <string name="mir_strip_title">ماه شما در Trakt</string>
   <string name="mir_title_month_in_review">مرور ماه</string>
   <string name="month_review_after_hours">%1$s از پخش‌های شما بعد از %2$s شروع شده است.</string>
   <string name="month_review_busiest_day">شلوغ‌ترین روز: %s</string>

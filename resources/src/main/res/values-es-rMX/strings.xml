@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Ocultar descripción</string>
   <string name="button_text_hide_lists">Ocultar</string>
   <string name="button_text_hide_recommendation">Ocultar recomendación</string>
-  <string name="button_text_history">Historia</string>
   <string name="button_text_history_slot_picker_reset">Restablecer</string>
   <string name="button_text_hold_to_confirm">Mantén presionado para confirmar</string>
   <string name="button_text_import_more">Importar más</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Personas</string>
   <string name="button_text_track">Registra</string>
   <string name="button_text_trailer">Tráiler</string>
+  <string name="button_text_transactions">Transacciones</string>
   <string name="button_text_trivia_no_spoilers">Sin spoilers</string>
   <string name="button_text_trivia_spoilers">Spoilers</string>
   <string name="button_text_unblock">Desbloquear</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Estado de Trakt</string>
   <string name="link_label_view_social_activities">Ver actividades sociales de %s</string>
   <string name="link_label_view_social_activities_shared">Ver actividades sociales de %s, compartidas contigo</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Acerca de</string>
   <string name="link_text_account_settings">Cuenta</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Aplicaciones</string>
   <string name="link_text_back_to_safety">Volver a la seguridad…</string>
   <string name="link_text_branding">Marca</string>
+  <string name="link_text_data">Datos</string>
   <string name="link_text_data_settings">Datos</string>
-  <string name="link_text_data_sources">Fuentes de datos</string>
   <string name="link_text_developer">Desarrollador</string>
   <string name="link_text_discover_media">Descubre contenido multimedia</string>
   <string name="link_text_discover_more">Descubre más</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Tal vez</string>
   <string name="match_tier_not_your_usual">Fuera de lo habitual</string>
   <string name="match_tier_top_pick">Selección ideal</string>
-  <string name="mir_banner_body">Tu resumen mensual está listo. Esto es lo que viste en %s.</string>
-  <string name="mir_banner_body_short">Tu resumen de %s está listo.</string>
-  <string name="mir_banner_explore">Explorar</string>
   <string name="mir_banner_in_review">Tu Resumen</string>
+  <string name="mir_entry_hide_until">Ocultar hasta %s</string>
+  <string name="mir_entry_open">Abrir resumen</string>
+  <string name="mir_entry_tooltip_body">Tu resumen de %s está listo. Cada serie, película y desvelo, en un solo lugar.</string>
   <string name="mir_share_text">Echa un vistazo a mi Resumen Mensual de %s en Trakt</string>
+  <string name="mir_strip_title">Tu mes en Trakt</string>
   <string name="mir_title_month_in_review">Resumen Mensual</string>
   <string name="month_review_after_hours">El %1$s de tus reproducciones empezaron después de %2$s.</string>
   <string name="month_review_busiest_day">Día más activo: %s</string>

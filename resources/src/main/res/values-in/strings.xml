@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Sembunyikan Deskripsi</string>
   <string name="button_text_hide_lists">Sembunyikan</string>
   <string name="button_text_hide_recommendation">Sembunyikan rekomendasi</string>
-  <string name="button_text_history">Sejarah</string>
   <string name="button_text_history_slot_picker_reset">Setel Ulang</string>
   <string name="button_text_hold_to_confirm">Tahan untuk Konfirmasi</string>
   <string name="button_text_import_more">Impor lagi</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Orang</string>
   <string name="button_text_track">Lacak</string>
   <string name="button_text_trailer">Trailer</string>
+  <string name="button_text_transactions">Transaksi</string>
   <string name="button_text_trivia_no_spoilers">Tanpa spoiler</string>
   <string name="button_text_trivia_spoilers">Spoiler</string>
   <string name="button_text_unblock">Buka Blokir</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Status Trakt</string>
   <string name="link_label_view_social_activities">Lihat aktivitas sosial untuk %s</string>
   <string name="link_label_view_social_activities_shared">Lihat aktivitas sosial untuk %s, dibagikan kepada Anda</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Tentang</string>
   <string name="link_text_account_settings">Akun</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Aplikasi</string>
   <string name="link_text_back_to_safety">Kembali ke beranda…</string>
   <string name="link_text_branding">Branding</string>
+  <string name="link_text_data">Data</string>
   <string name="link_text_data_settings">Data</string>
-  <string name="link_text_data_sources">Sumber data</string>
   <string name="link_text_developer">Pengembang</string>
   <string name="link_text_discover_media">Temukan media</string>
   <string name="link_text_discover_more">Temukan lebih banyak</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Mungkin</string>
   <string name="match_tier_not_your_usual">Di luar kebiasaan</string>
   <string name="match_tier_top_pick">Pilihan utama</string>
-  <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
-  <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
-  <string name="mir_banner_explore">Jelajahi</string>
   <string name="mir_banner_in_review">Dalam Kilas Balik</string>
+  <string name="mir_entry_hide_until">Sembunyikan hingga %s</string>
+  <string name="mir_entry_open">Buka kilas balik</string>
+  <string name="mir_entry_tooltip_body">Kilas Balik %s Anda sudah siap. Setiap acara, film, dan tayangan larut malam, di satu tempat.</string>
   <string name="mir_share_text">Lihat Kilas Balik Bulan %s saya di Trakt</string>
+  <string name="mir_strip_title">Bulan Anda di Trakt</string>
   <string name="mir_title_month_in_review">Kilas Balik Bulanan</string>
   <string name="month_review_after_hours">%1$s tontonan Anda dimulai setelah %2$s.</string>
   <string name="month_review_busiest_day">Hari tersibuk: %s</string>

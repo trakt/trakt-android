@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">説明を非表示</string>
   <string name="button_text_hide_lists">非表示</string>
   <string name="button_text_hide_recommendation">おすすめを非表示</string>
-  <string name="button_text_history">歴史</string>
   <string name="button_text_history_slot_picker_reset">リセット</string>
   <string name="button_text_hold_to_confirm">長押しして確定</string>
   <string name="button_text_import_more">さらにインポート</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">人物</string>
   <string name="button_text_track">記録</string>
   <string name="button_text_trailer">予告編</string>
+  <string name="button_text_transactions">取引履歴</string>
   <string name="button_text_trivia_no_spoilers">ネタバレなし</string>
   <string name="button_text_trivia_spoilers">ネタバレあり</string>
   <string name="button_text_unblock">ブロック解除</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt ステータス</string>
   <string name="link_label_view_social_activities">%sのソーシャルアクティビティを表示</string>
   <string name="link_label_view_social_activities_shared">あなたと共有された%sのソーシャルアクティビティを表示</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Traktについて</string>
   <string name="link_text_account_settings">アカウント</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">アプリ</string>
   <string name="link_text_back_to_safety">安全な場所へ戻る…</string>
   <string name="link_text_branding">ブランドガイドライン</string>
+  <string name="link_text_data">データ</string>
   <string name="link_text_data_settings">データ</string>
-  <string name="link_text_data_sources">データソース</string>
   <string name="link_text_developer">開発者</string>
   <string name="link_text_discover_media">メディアを見つける</string>
   <string name="link_text_discover_more">もっと見つける</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">好みに合うかも</string>
   <string name="match_tier_not_your_usual">いつもと違う作品</string>
   <string name="match_tier_top_pick">イチオシ</string>
-  <string name="mir_banner_body">あなたの月間まとめができました。%sに視聴したコンテンツはこちらです。</string>
-  <string name="mir_banner_body_short">あなたの%sのまとめができました。</string>
-  <string name="mir_banner_explore">探索</string>
   <string name="mir_banner_in_review">レビュー</string>
+  <string name="mir_entry_hide_until">%sまで非表示</string>
+  <string name="mir_entry_open">振り返りを開く</string>
+  <string name="mir_entry_tooltip_body">%sの振り返りの準備が整いました。すべての番組、映画、深夜の視聴がひとつに。</string>
   <string name="mir_share_text">Traktで私の%s月間レビューをチェックしてください</string>
+  <string name="mir_strip_title">Traktでのあなたの1ヶ月</string>
   <string name="mir_title_month_in_review">月間レビュー</string>
   <string name="month_review_after_hours">再生の%1$sが%2$s以降に開始されました。</string>
   <string name="month_review_busiest_day">最多視聴日: %s</string>

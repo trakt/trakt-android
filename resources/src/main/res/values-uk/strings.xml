@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Приховати опис</string>
   <string name="button_text_hide_lists">Сховати</string>
   <string name="button_text_hide_recommendation">Приховати рекомендацію</string>
-  <string name="button_text_history">Історія</string>
   <string name="button_text_history_slot_picker_reset">Скинути</string>
   <string name="button_text_hold_to_confirm">Утримуйте для підтвердження</string>
   <string name="button_text_import_more">Імпортувати більше</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Люди</string>
   <string name="button_text_track">Відстежуйте</string>
   <string name="button_text_trailer">Трейлер</string>
+  <string name="button_text_transactions">Транзакції</string>
   <string name="button_text_trivia_no_spoilers">Без спойлерів</string>
   <string name="button_text_trivia_spoilers">Зі спойлерами</string>
   <string name="button_text_unblock">Розблокувати</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Статус Trakt</string>
   <string name="link_label_view_social_activities">Переглянути соціальні активності для %s</string>
   <string name="link_label_view_social_activities_shared">Переглянути соціальні активності для %s, якими поділилися з вами</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Про нас</string>
   <string name="link_text_account_settings">Обліковий запис</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Застосунки</string>
   <string name="link_text_back_to_safety">Повернутися до безпеки…</string>
   <string name="link_text_branding">Брендинг</string>
+  <string name="link_text_data">Дані</string>
   <string name="link_text_data_settings">Дані</string>
-  <string name="link_text_data_sources">Джерела даних</string>
   <string name="link_text_developer">Розробник</string>
   <string name="link_text_discover_media">Відкрийте для себе медіа</string>
   <string name="link_text_discover_more">Дізнатися більше</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Можливо</string>
   <string name="match_tier_not_your_usual">Незвичне для вас</string>
   <string name="match_tier_top_pick">Найкращий вибір</string>
-  <string name="mir_banner_body">Ваш щомісячний огляд готовий. Ось що ви переглянули у %s.</string>
-  <string name="mir_banner_body_short">Ваш огляд за %s готовий.</string>
-  <string name="mir_banner_explore">Дослідити</string>
   <string name="mir_banner_in_review">В огляді</string>
+  <string name="mir_entry_hide_until">Приховати до %s</string>
+  <string name="mir_entry_open">Відкрити підсумки</string>
+  <string name="mir_entry_tooltip_body">Ваші підсумки за %s готові. Кожен серіал, фільм та нічний перегляд — в одному місці.</string>
   <string name="mir_share_text">Перегляньте мої підсумки за %s місяць на Trakt</string>
+  <string name="mir_strip_title">Ваш місяць на Trakt</string>
   <string name="mir_title_month_in_review">Місяць у Підсумках</string>
   <string name="month_review_after_hours">%1$s ваших переглядів починалися після %2$s.</string>
   <string name="month_review_busiest_day">Найбільш завантажений день: %s</string>

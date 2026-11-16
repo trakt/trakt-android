@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Ascunde descrierea</string>
   <string name="button_text_hide_lists">Ascunde</string>
   <string name="button_text_hide_recommendation">Ascunde recomandarea</string>
-  <string name="button_text_history">Istoric</string>
   <string name="button_text_history_slot_picker_reset">Resetează</string>
   <string name="button_text_hold_to_confirm">Ține apăsat pentru a confirma</string>
   <string name="button_text_import_more">Importă mai mult</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Persoane</string>
   <string name="button_text_track">Urmărește</string>
   <string name="button_text_trailer">Trailer</string>
+  <string name="button_text_transactions">Tranzacții</string>
   <string name="button_text_trivia_no_spoilers">Fără spoilere</string>
   <string name="button_text_trivia_spoilers">Spoilere</string>
   <string name="button_text_unblock">Deblocare</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Starea Trakt</string>
   <string name="link_label_view_social_activities">Vezi activitățile sociale pentru %s</string>
   <string name="link_label_view_social_activities_shared">Vezi activitățile sociale pentru %s, partajate cu tine</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Despre</string>
   <string name="link_text_account_settings">Cont</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Aplicații</string>
   <string name="link_text_back_to_safety">Înapoi la siguranță…</string>
   <string name="link_text_branding">Branding</string>
+  <string name="link_text_data">Date</string>
   <string name="link_text_data_settings">Date</string>
-  <string name="link_text_data_sources">Surse de date</string>
   <string name="link_text_developer">Dezvoltator</string>
   <string name="link_text_discover_media">Descoperă media</string>
   <string name="link_text_discover_more">Descoperă mai mult</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Poate</string>
   <string name="match_tier_not_your_usual">Nu e stilul tău obișnuit</string>
   <string name="match_tier_top_pick">Alegere de top</string>
-  <string name="mir_banner_body">Recapitularea ta lunară este gata. Iată ce ai vizionat în %s.</string>
-  <string name="mir_banner_body_short">Recapitularea ta din %s este gata.</string>
-  <string name="mir_banner_explore">Explorează</string>
   <string name="mir_banner_in_review">În retrospectivă</string>
+  <string name="mir_entry_hide_until">Ascunde până în %s</string>
+  <string name="mir_entry_open">Deschide retrospectiva</string>
+  <string name="mir_entry_tooltip_body">Retrospectiva ta pentru %s este gata. Fiecare serial, film și noapte târzie, într-un singur loc.</string>
   <string name="mir_share_text">Vezi Luna mea în Revistă %s pe Trakt</string>
+  <string name="mir_strip_title">Luna ta pe Trakt</string>
   <string name="mir_title_month_in_review">Retrospectiva Lunii</string>
   <string name="month_review_after_hours">%1$s din vizionările tale au început după %2$s.</string>
   <string name="month_review_busiest_day">Cea mai aglomerată zi: %s</string>

@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Oculta la descripció</string>
   <string name="button_text_hide_lists">Amaga</string>
   <string name="button_text_hide_recommendation">Amaga la recomanació</string>
-  <string name="button_text_history">Història</string>
   <string name="button_text_history_slot_picker_reset">Restableix</string>
   <string name="button_text_hold_to_confirm">Mantén premut per confirmar</string>
   <string name="button_text_import_more">Importa\'n més</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Persones</string>
   <string name="button_text_track">Segueix</string>
   <string name="button_text_trailer">Tràiler</string>
+  <string name="button_text_transactions">Transaccions</string>
   <string name="button_text_trivia_no_spoilers">Sense spoilers</string>
   <string name="button_text_trivia_spoilers">Spoilers</string>
   <string name="button_text_unblock">Desbloquejar</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Estat de Trakt</string>
   <string name="link_label_view_social_activities">Mostra les activitats socials de %s</string>
   <string name="link_label_view_social_activities_shared">Mostra les activitats socials de %s, compartides amb tu</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Quant a</string>
   <string name="link_text_account_settings">Compte</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Aplicacions</string>
   <string name="link_text_back_to_safety">Torna a la seguretat…</string>
   <string name="link_text_branding">Branding</string>
+  <string name="link_text_data">Dades</string>
   <string name="link_text_data_settings">Dades</string>
-  <string name="link_text_data_sources">Fonts de dades</string>
   <string name="link_text_developer">Desenvolupador</string>
   <string name="link_text_discover_media">Descobreix multimèdia</string>
   <string name="link_text_discover_more">Descobreix més</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Potser</string>
   <string name="match_tier_not_your_usual">Fora del teu estil</string>
   <string name="match_tier_top_pick">Tria destacada</string>
-  <string name="mir_banner_body">El teu resum mensual està llest. Aquí teniu el que vau veure a %s.</string>
-  <string name="mir_banner_body_short">El teu resum de %s està llest.</string>
-  <string name="mir_banner_explore">Explorar</string>
   <string name="mir_banner_in_review">En resum</string>
+  <string name="mir_entry_hide_until">Amaga fins a %s</string>
+  <string name="mir_entry_open">Obre el resum</string>
+  <string name="mir_entry_tooltip_body">El teu resum de %s està a punt. Totes les sèries, pel·lícules i sessions nocturnes, en un sol lloc.</string>
   <string name="mir_share_text">Fes un cop d\'ull al meu resum del mes %s a Trakt</string>
+  <string name="mir_strip_title">El teu mes a Trakt</string>
   <string name="mir_title_month_in_review">Resum del Mes</string>
   <string name="month_review_after_hours">El %1$s de les teves reproduccions van començar després de %2$s.</string>
   <string name="month_review_busiest_day">Dia de més activitat: %s</string>

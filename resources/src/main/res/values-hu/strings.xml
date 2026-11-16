@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Leírás elrejtése</string>
   <string name="button_text_hide_lists">Elrejtés</string>
   <string name="button_text_hide_recommendation">Ajánlás elrejtése</string>
-  <string name="button_text_history">Történelmi</string>
   <string name="button_text_history_slot_picker_reset">Visszaállítás</string>
   <string name="button_text_hold_to_confirm">Tartsa lenyomva a megerősítéshez</string>
   <string name="button_text_import_more">Több importálása</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">Személyek</string>
   <string name="button_text_track">Láttam</string>
   <string name="button_text_trailer">Előzetes</string>
+  <string name="button_text_transactions">Tranzakciók</string>
   <string name="button_text_trivia_no_spoilers">Spoiler nélkül</string>
   <string name="button_text_trivia_spoilers">Spoilerekkel</string>
   <string name="button_text_unblock">Feloldás</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt Állapot</string>
   <string name="link_label_view_social_activities">%s közösségi tevékenységeinek megtekintése</string>
   <string name="link_label_view_social_activities_shared">%s közösségi tevékenységeinek megtekintése, veled megosztva</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">Névjegy</string>
   <string name="link_text_account_settings">Fiók</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Alkalmazások</string>
   <string name="link_text_back_to_safety">Vissza a biztonságba…</string>
   <string name="link_text_branding">Márka</string>
+  <string name="link_text_data">Adatok</string>
   <string name="link_text_data_settings">Adatok</string>
-  <string name="link_text_data_sources">Adatforrások</string>
   <string name="link_text_developer">Fejlesztő</string>
   <string name="link_text_discover_media">Média felfedezése</string>
   <string name="link_text_discover_more">Fedezz fel többet</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Talán</string>
   <string name="match_tier_not_your_usual">Nem a megszokott</string>
   <string name="match_tier_top_pick">Legjobb választás</string>
-  <string name="mir_banner_body">Havi összefoglalód kész. Íme, amit %s hónapban néztél.</string>
-  <string name="mir_banner_body_short">%s havi összefoglalód kész.</string>
-  <string name="mir_banner_explore">Felfedezés</string>
   <string name="mir_banner_in_review">Áttekintés</string>
+  <string name="mir_entry_hide_until">Elrejtés eddig: %s</string>
+  <string name="mir_entry_open">Összefoglaló megnyitása</string>
+  <string name="mir_entry_tooltip_body">Elkészült a(z) %s havi összefoglalód. Minden sorozat, film és éjszakázás egy helyen.</string>
   <string name="mir_share_text">Nézd meg az %s havi összefoglalómat a Trakt-on!</string>
+  <string name="mir_strip_title">A hónapod a Trakton</string>
   <string name="mir_title_month_in_review">Havi összefoglaló</string>
   <string name="month_review_after_hours">A lejátszásaid %1$s-a %2$s után indult.</string>
   <string name="month_review_busiest_day">Legforgalmasabb nap: %s</string>
