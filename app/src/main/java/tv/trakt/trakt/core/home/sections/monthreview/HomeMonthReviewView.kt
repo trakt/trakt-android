@@ -107,11 +107,11 @@ internal fun HomeMonthReviewView(
             }
 
             Text(
-                text = stringResource(R.string.mir_banner_body_short, monthName),
+                text = stringResource(R.string.button_label_month_in_review, monthName),
                 color = BannerForeground,
                 style = TraktTheme.typography.paragraphSmall,
                 textAlign = TextAlign.Center,
-                maxLines = 2,
+                maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .weight(1F)

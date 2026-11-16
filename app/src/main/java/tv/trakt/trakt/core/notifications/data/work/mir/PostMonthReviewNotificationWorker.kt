@@ -161,7 +161,7 @@ internal class PostMonthReviewNotificationWorker(
             .setContentIntent(createNotificationIntent(reviewMonth, userSlug))
             .setSmallIcon(R.drawable.ic_trakt_icon_notification)
             .setContentTitle(applicationContext.getString(R.string.mir_title_month_in_review))
-            .setContentText(applicationContext.getString(R.string.mir_banner_body_short, monthName))
+            .setContentText(applicationContext.getString(R.string.button_label_month_in_review, monthName))
             .setAutoCancel(true)
             .setColor(Purple500.toArgb())
             .build()

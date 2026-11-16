@@ -276,7 +276,7 @@ private fun ActionButtons(
 
         if (watched) {
             GhostButton(
-                text = stringResource(R.string.button_text_history),
+                text = stringResource(R.string.button_label_history),
                 icon = painterResource(R.drawable.ic_calendar_check),
                 iconSize = 23.dp,
                 iconSpace = 15.5.dp,
