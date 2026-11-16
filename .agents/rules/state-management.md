@@ -78,6 +78,32 @@ Rules:
 - Sheet visibility is transient UI state — `remember { mutableStateOf(false) }` at the caller, not
   in the ViewModel.
 
+### Navigating out of a sheet
+
+Callbacks that leave the sheet (open a screen, open another sheet) hide the sheet first and fire
+the callback only after the hide animation finishes:
+
+```kotlin
+val sheetScope = rememberCoroutineScope()
+
+FeatureView(
+    onItemClick = { item ->
+        sheetScope
+            .launch { state.hide() }
+            .invokeOnCompletion {
+                if (!state.isVisible) {
+                    onItemClick(item)
+                }
+            }
+    },
+)
+```
+
+- Wrap the callback in the sheet file, not in the `View` or the caller.
+- Do not call the navigation callback directly from sheet content: the sheet vanishes without
+  animating.
+- Examples: `UserMatchSheet`, `ListInfoSheet`.
+
 ### Sheet-scoped ViewModel keys
 
 Sheets that want a fresh ViewModel per open pass a random `key` to `koinViewModel(...)`. That key

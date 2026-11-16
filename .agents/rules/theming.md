@@ -80,6 +80,20 @@ named `val` (or a token) for clarity.
 - `colorResource(R.color.…)` for design-system colours. Colour resources OK for legacy values also
   referenced from XML (notifications, app icon); new tokens live in theme.
 
+### Content inside sheets
+
+Sheets (`TraktBottomSheet`) use `dialogContainer` as background. In both palettes it is the same
+shade as `panelCardContainer`, so panels and cards built for screens disappear inside a sheet.
+When content is hosted in a sheet, check every container colour against `dialogContainer`:
+
+- Panels, cards and empty states → `TraktTheme.colors.dialogOnContainer`.
+- Skeletons → `skeletonPanelContainer` / `skeletonPanelShimmer`.
+- Shared components that hard-code a container colour (`PanelMediaCard`,
+  `PanelMediaSkeletonCard`) take a colour parameter. Pass the sheet token, do not fork the
+  component. Add a parameter with the current value as default if one is missing.
+
+Example: `core/lists/features/details/info/ListInfoView.kt`.
+
 ## Theme switching
 
 - Light/dark palette picked at app root in `MainActivity` (`DarkColors` / `LightColors`).
@@ -197,6 +211,8 @@ spacing — use tokens, don't hard-code `64.dp`.
   Default to `contentDescription = null` for `Icon` / `Image`. Don't add new strings just to label
   elements for accessibility.
 - Animations respect reduced motion when system preferences indicate it.
+- **No overscroll effect on vertical scrollables.** Pass `overscrollEffect = null` to every
+  vertical `LazyColumn`, `LazyVerticalGrid` and `verticalScroll(...)`, on screens and in sheets.
 - Contrast: WCAG AA. Token palette enforces this; don't fight with one-off colours.
 
 ## Quick checklist
@@ -211,4 +227,6 @@ spacing — use tokens, don't hard-code `64.dp`.
 - [ ] Light / dark variants exist for every new token
 - [ ] New previews use `@PreviewTraktLightDark` + `TraktThemePreview { }`
 - [ ] Animations honour reduced-motion
+- [ ] Vertical scrollables pass `overscrollEffect = null`
+- [ ] Sheet content: panels, cards and skeletons use sheet tokens, not `panelCardContainer`
 - [ ] No content descriptions or semantics added unless explicitly requested
