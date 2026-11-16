@@ -23,6 +23,8 @@ import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+private const val DISABLED_ALPHA = 0.33F
+
 @Composable
 internal fun PersonalListDropdown(
     reorderEnabled: Boolean,
@@ -92,20 +94,24 @@ private fun MenuItem(
     onClick: () -> Unit,
     enabled: Boolean = true,
 ) {
+    val contentColor = TraktTheme.colors.textPrimary.copy(
+        alpha = if (enabled) 1F else DISABLED_ALPHA,
+    )
+
     DropdownMenuItem(
         enabled = enabled,
         text = {
             Text(
                 text = text,
                 style = TraktTheme.typography.buttonTertiary,
-                color = TraktTheme.colors.textPrimary,
+                color = contentColor,
             )
         },
         leadingIcon = {
             Icon(
                 painter = painterResource(icon),
                 contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
+                tint = contentColor,
                 modifier = Modifier.size(iconSize),
             )
         },

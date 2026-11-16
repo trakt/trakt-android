@@ -23,9 +23,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -59,7 +56,6 @@ import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.sorting.SortType.Added
@@ -89,6 +85,7 @@ import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.lists.ListItemCount
+import tv.trakt.trakt.ui.components.mediacards.list.PersonalListDropdown
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
@@ -399,96 +396,13 @@ private fun TitleBar(
                 )
             }
 
-            Box {
-                var showMenu by remember { mutableStateOf(false) }
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_more_vertical),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .onClick {
-                            showMenu = true
-                        },
-                )
-
-                DropdownMenu(
-                    expanded = showMenu,
-                    containerColor = TraktTheme.colors.dialogContainer,
-                    shape = RoundedCornerShape(16.dp),
-                    onDismissRequest = {
-                        showMenu = false
-                    },
-                ) {
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = stringResource(R.string.page_title_edit_list),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onMoreClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_edit),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(22.dp),
-                            )
-                        },
-                    )
-
-                    DropdownMenuItem(
-                        enabled = reorderEnabled,
-                        text = {
-                            Text(
-                                text = stringResource(R.string.button_text_reorder),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onReorderClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_reorder),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(24.dp),
-                            )
-                        },
-                    )
-
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = stringResource(R.string.button_text_share),
-                                style = TraktTheme.typography.buttonTertiary,
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        },
-                        onClick = {
-                            onShareClick()
-                            showMenu = false
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_share),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier.size(22.dp),
-                            )
-                        },
-                    )
-                }
-            }
+            PersonalListDropdown(
+                reorderEnabled = reorderEnabled,
+                iconSize = 18.dp,
+                onEditClick = onMoreClick,
+                onReorderClick = onReorderClick,
+                onShareClick = onShareClick,
+            )
         }
     }
 }
