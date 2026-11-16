@@ -40,9 +40,11 @@ internal fun DetailsHeader(
     playsCount: Int?,
     creditsCount: Int?,
     loading: Boolean,
+    notes: Boolean,
     onCreatorClick: (Person) -> Unit,
     onShareClick: () -> Unit,
     onShareImageClick: () -> Unit,
+    onNotesClick: () -> Unit,
     onInfoClick: () -> Unit,
     onWatchedClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -139,6 +141,11 @@ internal fun DetailsHeader(
         onWatchedClick = onWatchedClick,
         onShareClick = onShareClick,
         onShareImageClick = onShareImageClick,
+        extraRightColumn = {
+            if (notes) {
+                DetailsHeaderNotesButton(onClick = onNotesClick)
+            }
+        },
         onImdbClick = {
             movie.ids.imdb?.let {
                 openExternalAppLink(

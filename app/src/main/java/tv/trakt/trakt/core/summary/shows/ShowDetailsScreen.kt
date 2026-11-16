@@ -224,6 +224,8 @@ internal fun ShowDetailsScreen(
         onShareImageClick = {
             state.show?.let { shareSheet = true }
         },
+        notes = notesState.hasNotes,
+        onNotesClick = { notesSheet = true },
         onSocialActivityClick = {
             state.showSocials?.let {
                 socialActivitySheet = it
@@ -580,6 +582,8 @@ internal fun ShowDetailsContent(
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onShareImageClick: (() -> Unit)? = null,
+    notes: Boolean = false,
+    onNotesClick: (() -> Unit)? = null,
     onSocialActivityClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onWatchedClick: (() -> Unit)? = null,
@@ -688,6 +692,8 @@ internal fun ShowDetailsContent(
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
+                        notes = notes,
+                        onNotesClick = onNotesClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier

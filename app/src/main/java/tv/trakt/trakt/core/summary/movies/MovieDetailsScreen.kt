@@ -209,6 +209,8 @@ internal fun MovieDetailsScreen(
         onShareImageClick = {
             state.movie?.let { shareSheet = true }
         },
+        notes = notesState.hasNotes,
+        onNotesClick = { notesSheet = true },
         onSocialActivityClick = {
             state.movieSocials?.let {
                 socialActivitySheet = it
@@ -493,6 +495,8 @@ internal fun MovieDetailsContent(
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onShareImageClick: (() -> Unit)? = null,
+    notes: Boolean = false,
+    onNotesClick: (() -> Unit)? = null,
     onSocialActivityClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onWatchedClick: (() -> Unit)? = null,
@@ -598,6 +602,8 @@ internal fun MovieDetailsContent(
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
+                        notes = notes,
+                        onNotesClick = onNotesClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier

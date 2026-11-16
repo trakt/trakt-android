@@ -45,11 +45,13 @@ internal fun DetailsHeader(
     ratings: ExternalRating?,
     creators: ImmutableList<Person>?,
     loading: Boolean,
+    notes: Boolean,
     watched: Boolean,
     watching: Boolean,
     onCreatorClick: (Person) -> Unit,
     onShareClick: () -> Unit,
     onShareImageClick: () -> Unit,
+    onNotesClick: () -> Unit,
     onInfoClick: () -> Unit,
     onWatchedClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -124,6 +126,11 @@ internal fun DetailsHeader(
         onBackClick = onBackClick,
         onShareClick = onShareClick,
         onShareImageClick = onShareImageClick,
+        extraRightColumn = {
+            if (notes) {
+                DetailsHeaderNotesButton(onClick = onNotesClick)
+            }
+        },
         onInfoClick = onInfoClick,
         onWatchedClick = onWatchedClick,
         onImdbClick = {
