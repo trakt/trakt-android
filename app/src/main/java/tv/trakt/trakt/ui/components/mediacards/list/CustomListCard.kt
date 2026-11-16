@@ -161,6 +161,7 @@ private fun CustomListContent(
             likesVisible = likesVisible,
             userVisible = userVisible,
             privacyVisible = privacyVisible,
+            onClick = onClick,
             onUserClick = onUserClick,
             moreContent = moreContent,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -245,6 +246,7 @@ private fun CustomListHeader(
     likesVisible: Boolean,
     userVisible: Boolean,
     privacyVisible: Boolean,
+    onClick: () -> Unit,
     onUserClick: ((User) -> Unit)?,
     moreContent: (@Composable () -> Unit)?,
     modifier: Modifier = Modifier,
@@ -293,6 +295,8 @@ private fun CustomListHeader(
 
             Column(
                 verticalArrangement = spacedBy(2.dp),
+                modifier = Modifier
+                    .onClick(onClick = onClick),
             ) {
                 Text(
                     text = list.name,
@@ -311,7 +315,6 @@ private fun CustomListHeader(
                     ListAuthorSubtitle(
                         user = list.user,
                         itemCount = list.itemCount,
-                        onUserClick = onUserClick,
                     )
                 }
             }

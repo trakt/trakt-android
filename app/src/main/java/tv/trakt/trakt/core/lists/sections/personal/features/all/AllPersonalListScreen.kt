@@ -34,6 +34,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -41,10 +42,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W400
-import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -55,6 +53,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.CustomList
@@ -64,6 +63,7 @@ import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
+import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsSeasonView
@@ -99,6 +99,7 @@ internal fun AllPersonalListScreen(
     onMovieClick: (TraktId) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
     onReorderClick: (CustomList) -> Unit,
+    onPersonClick: (Person) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -125,6 +126,7 @@ internal fun AllPersonalListScreen(
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
     var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
+    var infoSheet by remember { mutableStateOf<CustomList?>(null) }
 
     AllPersonalListContent(
         state = state,
@@ -180,7 +182,21 @@ internal fun AllPersonalListScreen(
         onReorderClick = {
             state.list?.let(onReorderClick)
         },
+        onInfoClick = {
+            infoSheet = state.list
+        },
         onBackClick = onNavigateBack,
+    )
+
+    ListInfoSheet(
+        list = infoSheet,
+        onPersonClick = {
+            infoSheet = null
+            onPersonClick(it)
+        },
+        onDismiss = {
+            infoSheet = null
+        },
     )
 
     ListShowContextSheet(
@@ -269,6 +285,7 @@ internal fun AllPersonalListContent(
     onShareClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
     onReorderClick: () -> Unit = {},
+    onInfoClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -307,7 +324,7 @@ internal fun AllPersonalListContent(
                 stringResource(it.displayRes)
             },
             itemCount = state.list?.itemCount,
-            description = state.list?.description,
+            infoEnabled = state.list != null,
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             listState = listState,
@@ -326,6 +343,7 @@ internal fun AllPersonalListContent(
             onMoreClick = onMoreClick,
             onShareClick = onShareClick,
             onReorderClick = onReorderClick,
+            onInfoClick = onInfoClick,
             onEndOfList = onLoadMoreData,
         )
     }
@@ -339,12 +357,14 @@ private fun TitleBar(
     subtitle: String?,
     itemCount: Int?,
     filters: GlobalFilter?,
+    infoEnabled: Boolean,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onReorderClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onInfoClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -384,6 +404,25 @@ private fun TitleBar(
             horizontalArrangement = spacedBy(22.dp),
             modifier = Modifier.padding(start = 16.dp),
         ) {
+            if (infoEnabled) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = 4.dp.toPx()
+                        }
+                        .size(22.dp)
+                        .onClick(onClick = onInfoClick),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_info),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            }
+
             filters?.let {
                 MediaFilterIcon(
                     active = it.isActive,
@@ -448,7 +487,7 @@ private fun ContentList(
     title: String,
     subtitle: String?,
     itemCount: Int?,
-    description: String?,
+    infoEnabled: Boolean,
     loading: Boolean,
     loadingMore: Boolean,
     listState: LazyListState,
@@ -467,6 +506,7 @@ private fun ContentList(
     onShareClick: () -> Unit,
     onMoreClick: () -> Unit,
     onReorderClick: () -> Unit,
+    onInfoClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -505,11 +545,13 @@ private fun ContentList(
                 subtitle = subtitle,
                 itemCount = itemCount,
                 filters = listFilter,
+                infoEnabled = infoEnabled,
                 onBackClick = onBackClick,
                 onShareClick = onShareClick,
                 onMoreClick = onMoreClick,
                 onReorderClick = onReorderClick,
                 onFiltersClick = onFiltersClick,
+                onInfoClick = onInfoClick,
             )
         }
 
@@ -521,30 +563,6 @@ private fun ContentList(
                     onFilterClick = onModeClick,
                     onSortTypeClick = onSortTypeClick,
                     onSortOrderClick = onSortOrderClick,
-                )
-            }
-        }
-
-        if (!description.isNullOrBlank()) {
-            item {
-                var collapsed by remember { mutableStateOf(true) }
-                Text(
-                    text = description,
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta.copy(
-                        fontWeight = W400,
-                        lineHeight = 1.1.em,
-                    ),
-                    maxLines = when {
-                        collapsed -> 3
-                        else -> Int.MAX_VALUE
-                    },
-                    overflow = Ellipsis,
-                    modifier = Modifier
-                        .padding(bottom = 18.dp)
-                        .onClick {
-                            collapsed = !collapsed
-                        },
                 )
             }
         }

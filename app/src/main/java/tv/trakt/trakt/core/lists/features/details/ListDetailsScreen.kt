@@ -40,6 +40,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -52,11 +53,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W400
-import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
@@ -73,13 +71,14 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
-import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.sorting.SortType.Added
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
@@ -87,6 +86,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
+import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsSeasonView
@@ -119,6 +119,7 @@ internal fun ListDetailsScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
+    onPersonClick: (Person) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -171,6 +172,7 @@ internal fun ListDetailsScreen(
     var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var confirmRemoveLikeSheet by remember { mutableStateOf(false) }
     var filtersSheet by remember { mutableStateOf(false) }
+    var infoSheet by remember { mutableStateOf<CustomList?>(null) }
 
     ListDetailsContent(
         state = state,
@@ -203,6 +205,9 @@ internal fun ListDetailsScreen(
         },
         onFiltersClick = {
             filtersSheet = true
+        },
+        onInfoClick = {
+            infoSheet = state.list?.list
         },
         onSortTypeClick = {
             if (!state.loading.isLoading) {
@@ -285,6 +290,17 @@ internal fun ListDetailsScreen(
         ),
     )
 
+    ListInfoSheet(
+        list = infoSheet,
+        onPersonClick = {
+            infoSheet = null
+            onPersonClick(it)
+        },
+        onDismiss = {
+            infoSheet = null
+        },
+    )
+
     GlobalFiltersSheet(
         active = filtersSheet,
         options = GlobalFiltersOptions(
@@ -306,6 +322,7 @@ internal fun ListDetailsContent(
     onLongClick: (CustomListItem) -> Unit = {},
     onModeClick: (MediaMode) -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onInfoClick: () -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onLikeClick: () -> Unit = {},
@@ -348,9 +365,9 @@ internal fun ListDetailsContent(
 
         ContentList(
             title = state.list?.list?.name ?: "",
-            subtitle = state.list?.list?.description?.trim(),
             user = state.list?.list?.user,
             itemCount = state.list?.list?.itemCount,
+            infoEnabled = state.list != null,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter,
@@ -369,6 +386,7 @@ internal fun ListDetailsContent(
             onLongClick = onLongClick,
             onModeClick = onModeClick,
             onFiltersClick = onFiltersClick,
+            onInfoClick = onInfoClick,
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
             onLikeClick = onLikeClick,
@@ -386,14 +404,15 @@ private fun TitleBar(
     liked: LikedInfo?,
     likesCount: Int?,
     filters: GlobalFilter?,
+    infoEnabled: Boolean,
     modifier: Modifier = Modifier,
     onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
     onFiltersClick: () -> Unit,
+    onInfoClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
             .height(TraktTheme.size.titleBarHeight),
@@ -402,87 +421,101 @@ private fun TitleBar(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier
-                .weight(1F, fill = false)
+                .weight(1F)
                 .graphicsLayer {
                     translationX = -2.dp.toPx()
-                }
-                .onClick {
-                    onBackClick()
                 },
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_back_arrow),
                 tint = TraktTheme.colors.textPrimary,
                 contentDescription = null,
+                modifier = Modifier
+                    .onClick(onClick = onBackClick),
             )
 
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                TraktHeader(
-                    title = title,
-                    subtitleTrailing = user?.let {
-                        { ListAuthorSubtitle(user = it, itemCount = itemCount) }
-                    },
-                    modifier = Modifier
-                        .weight(1F, fill = false),
-                )
+            TraktHeader(
+                title = title,
+                subtitleTrailing = user?.let {
+                    { ListAuthorSubtitle(user = it, itemCount = itemCount) }
+                },
+                modifier = Modifier
+                    .weight(1F, fill = false)
+                    .onClick(onClick = onBackClick),
+            )
+        }
 
-                AnimatedVisibility(
-                    visible = liked != null,
-                    enter = fadeIn(tween(150)),
-                    exit = fadeOut(tween(150)),
-                    modifier = Modifier.padding(start = 32.dp),
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(14.dp),
+            modifier = Modifier.padding(start = 24.dp),
+        ) {
+            AnimatedVisibility(
+                visible = liked != null,
+                enter = fadeIn(tween(150)),
+                exit = fadeOut(tween(150)),
+            ) {
+                Row(
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = spacedBy(4.dp),
+                    modifier = Modifier
+                        .alpha(if (liked?.loading == true) 0.25F else 1F)
+                        .onClick(
+                            enabled = liked?.loading != true,
+                            onClick = onLikeClick,
+                        ),
                 ) {
-                    Row(
-                        verticalAlignment = CenterVertically,
-                        horizontalArrangement = spacedBy(6.dp),
+                    Icon(
+                        painter = painterResource(
+                            when {
+                                liked?.liked ?: false -> R.drawable.ic_thumb_up_fill
+                                else -> R.drawable.ic_thumb_up_like
+                            },
+                        ),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
                         modifier = Modifier
-                            .alpha(if (liked?.loading == true) 0.25F else 1F)
-                            .onClick(
-                                enabled = liked?.loading != true,
-                                onClick = onLikeClick,
+                            .size(18.dp)
+                            .graphicsLayer {
+                                translationY = -0.75.dp.toPx()
+                            },
+                    )
+                    likesCount?.let {
+                        Text(
+                            text = rememberThousandsFormat(it),
+                            style = TraktTheme.typography.buttonTertiary.copy(
+                                fontSize = 12.sp,
                             ),
-                    ) {
-                        Icon(
-                            painter = painterResource(
-                                when {
-                                    liked?.liked ?: false -> R.drawable.ic_thumb_up_fill
-                                    else -> R.drawable.ic_thumb_up_like
-                                },
-                            ),
-                            tint = TraktTheme.colors.textPrimary,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(18.dp)
-                                .graphicsLayer {
-                                    translationY = -0.75.dp.toPx()
-                                },
+                            color = TraktTheme.colors.textPrimary,
                         )
-                        likesCount?.let {
-                            Text(
-                                text = rememberThousandsFormat(it),
-                                style = TraktTheme.typography.buttonTertiary.copy(
-                                    fontSize = 12.sp,
-                                ),
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        }
                     }
                 }
             }
-        }
 
-        filters?.let {
-            MediaFilterIcon(
-                active = it.isActive,
-                enabled = enabled,
-                onClick = onFiltersClick,
-                modifier = Modifier
-                    .padding(start = 12.dp),
-            )
+            if (infoEnabled) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .size(22.dp)
+                        .onClick(onClick = onInfoClick),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_info),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            }
+
+            filters?.let {
+                MediaFilterIcon(
+                    active = it.isActive,
+                    enabled = enabled,
+                    onClick = onFiltersClick,
+                )
+            }
         }
     }
 }
@@ -492,9 +525,9 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues,
     title: String,
-    subtitle: String?,
     user: User?,
     itemCount: Int?,
+    infoEnabled: Boolean,
     listState: LazyListState,
     listItems: ImmutableList<CustomListItem>,
     listFilter: GlobalFilter?,
@@ -508,19 +541,13 @@ private fun ContentList(
     onLongClick: (CustomListItem) -> Unit,
     onModeClick: (MediaMode) -> Unit,
     onFiltersClick: () -> Unit,
+    onInfoClick: () -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
-    var subtitleCollapsed by remember { mutableStateOf(true) }
-
-    val linkColor = TraktTheme.colors.textPrimary
-    val subtitleMarkdownText = remember(subtitle, linkColor) {
-        (subtitle ?: "").toMarkdownText(linkColor)
-    }
-
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
             listState.firstVisibleItemIndex >= (listItems.size - 5)
@@ -558,9 +585,11 @@ private fun ContentList(
                 liked = listLiked,
                 likesCount = listLikes,
                 filters = listFilter,
+                infoEnabled = infoEnabled,
                 onLikeClick = onLikeClick,
                 onBackClick = onBackClick,
                 onFiltersClick = onFiltersClick,
+                onInfoClick = onInfoClick,
             )
         }
 
@@ -572,29 +601,6 @@ private fun ContentList(
                 onSortTypeClick = onSortTypeClick,
                 onSortOrderClick = onSortOrderClick,
             )
-        }
-
-        if (!subtitle.isNullOrBlank()) {
-            item {
-                Text(
-                    text = subtitleMarkdownText,
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta.copy(
-                        fontWeight = W400,
-                        lineHeight = 1.1.em,
-                    ),
-                    maxLines = when {
-                        subtitleCollapsed -> 3
-                        else -> Int.MAX_VALUE
-                    },
-                    overflow = Ellipsis,
-                    modifier = Modifier
-                        .padding(bottom = 18.dp)
-                        .onClick {
-                            subtitleCollapsed = !subtitleCollapsed
-                        },
-                )
-            }
         }
 
         if (listItems.isNotEmpty()) {
