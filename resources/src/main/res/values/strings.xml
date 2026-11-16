@@ -492,7 +492,6 @@
   <string name="button_text_hide_description">Hide Description</string>
   <string name="button_text_hide_lists">Hide</string>
   <string name="button_text_hide_recommendation">Hide recommendation</string>
-  <string name="button_text_history">History</string>
   <string name="button_text_history_slot_picker_reset">Reset</string>
   <string name="button_text_hold_to_confirm">Hold to Confirm</string>
   <string name="button_text_import_more">Import more</string>
@@ -650,6 +649,7 @@
   <string name="button_text_toggle_search_people">People</string>
   <string name="button_text_track">Track</string>
   <string name="button_text_trailer">Trailer</string>
+  <string name="button_text_transactions">Transactions</string>
   <string name="button_text_trivia_no_spoilers">No spoilers</string>
   <string name="button_text_trivia_spoilers">Spoilers</string>
   <string name="button_text_unblock">Unblock</string>
@@ -1430,6 +1430,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">View social activities for %s</string>
   <string name="link_label_view_social_activities_shared">View social activities for %s, shared with you</string>
+  <string name="link_label_x">X</string>
   <string name="link_label_youtube">YouTube</string>
   <string name="link_text_about">About</string>
   <string name="link_text_account_settings">Account</string>
@@ -1437,8 +1438,8 @@
   <string name="link_text_apps_settings">Apps</string>
   <string name="link_text_back_to_safety">Back to safety…</string>
   <string name="link_text_branding">Branding</string>
+  <string name="link_text_data">Data</string>
   <string name="link_text_data_settings">Data</string>
-  <string name="link_text_data_sources">Data sources</string>
   <string name="link_text_developer">Developer</string>
   <string name="link_text_discover_media">Discover media</string>
   <string name="link_text_discover_more">Discover more</string>
@@ -1578,11 +1579,12 @@
   <string name="match_tier_maybe">Maybe</string>
   <string name="match_tier_not_your_usual">Not your usual</string>
   <string name="match_tier_top_pick">Top pick</string>
-  <string name="mir_banner_body">Your monthly recap is ready. Here\'s what you watched in %s.</string>
-  <string name="mir_banner_body_short">Your %s recap is ready.</string>
-  <string name="mir_banner_explore">Explore</string>
   <string name="mir_banner_in_review">In Review</string>
+  <string name="mir_entry_hide_until">Hide until %s</string>
+  <string name="mir_entry_open">Open review</string>
+  <string name="mir_entry_tooltip_body">Your %s in Review is ready. Every show, film and late night, in one place.</string>
   <string name="mir_share_text">Check out my %s Month in Review on Trakt</string>
+  <string name="mir_strip_title">Your month on Trakt</string>
   <string name="mir_title_month_in_review">Month in Review</string>
   <string name="month_review_after_hours">%1$s of your plays started after %2$s.</string>
   <string name="month_review_busiest_day">Busiest day: %s</string>
