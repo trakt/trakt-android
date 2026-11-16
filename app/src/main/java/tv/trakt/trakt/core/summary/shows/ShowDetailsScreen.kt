@@ -379,6 +379,9 @@ internal fun ShowDetailsScreen(
         onReportClick = {
             reportSheet = state.show?.let { ReportTarget.Show(it.ids.trakt) }
         },
+        onWhereToWatchClick = {
+            state.show?.let(onNavigateToAllStreamings)
+        },
         onDismiss = {
             contextSheet = null
         },

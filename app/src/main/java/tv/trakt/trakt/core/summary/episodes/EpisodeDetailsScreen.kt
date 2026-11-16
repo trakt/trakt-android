@@ -295,6 +295,13 @@ internal fun EpisodeDetailsScreen(
                 )
             }
         },
+        onWhereToWatchClick = {
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                onNavigateToAllStreamings(show, episode)
+            }
+        },
         onDismiss = {
             contextSheet = false
         },

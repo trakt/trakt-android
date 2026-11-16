@@ -37,6 +37,7 @@ internal fun EpisodeDetailsContextSheet(
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
+    onWhereToWatchClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -105,6 +106,15 @@ internal fun EpisodeDetailsContextSheet(
                         .invokeOnCompletion {
                             if (!state.isVisible) {
                                 onDismiss()
+                            }
+                        }
+                },
+                onWhereToWatchClick = {
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                                onWhereToWatchClick?.invoke()
                             }
                         }
                 },

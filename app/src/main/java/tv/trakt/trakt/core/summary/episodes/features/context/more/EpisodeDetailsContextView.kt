@@ -60,6 +60,7 @@ internal fun EpisodeDetailsContextView(
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
+    onWhereToWatchClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -73,6 +74,7 @@ internal fun EpisodeDetailsContextView(
         onShareClick = onShareClick,
         onCoverClick = onCoverClick,
         onReportClick = onReportClick,
+        onWhereToWatchClick = onWhereToWatchClick,
         onStreamClick = viewModel::logStreamOn,
         modifier = modifier,
     )
@@ -90,6 +92,7 @@ private fun EpisodeDetailsContextViewContent(
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
+    onWhereToWatchClick: (() -> Unit)? = null,
     onStreamClick: (StreamingService) -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -134,12 +137,16 @@ private fun EpisodeDetailsContextViewContent(
                 WatchButton(
                     streamingState = state.streamings,
                     onClick = {
-                        state.streamings.service?.let { service ->
+                        val service = state.streamings.service
+                        val directLink = service?.linkDirect
+                        if (directLink == null) {
+                            onWhereToWatchClick?.invoke()
+                        } else {
                             onStreamClick(service)
                             openExternalAppLink(
                                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
                                 packageName = service.source,
-                                uri = service.linkDirect?.toUri(),
+                                uri = directLink.toUri(),
                                 context = context,
                             )
                         }
@@ -193,12 +200,11 @@ private fun WatchButton(
             streamingState.loading -> stringResource(R.string.button_text_stream)
             streamingState.noServices -> stringResource(R.string.button_text_no_services)
             directLink != null -> service.name
-            else -> ""
+            else -> stringResource(R.string.button_text_where_to_watch)
         },
         textStyle = when {
-            streamingState.loading -> TraktTheme.typography.buttonPrimary.copy(fontSize = 12.sp)
-            streamingState.noServices -> TraktTheme.typography.buttonPrimary.copy(fontSize = 12.sp)
-            else -> TraktTheme.typography.buttonPrimary
+            directLink != null -> TraktTheme.typography.buttonPrimary
+            else -> TraktTheme.typography.buttonPrimary.copy(fontSize = 12.sp)
         },
         logo = when {
             directLink != null -> service.logo

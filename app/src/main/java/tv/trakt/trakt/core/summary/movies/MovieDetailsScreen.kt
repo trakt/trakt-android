@@ -376,6 +376,9 @@ internal fun MovieDetailsScreen(
         onReportClick = {
             reportSheet = state.movie?.let { ReportTarget.Movie(it.ids.trakt) }
         },
+        onWhereToWatchClick = {
+            state.movie?.let(onNavigateToAllStreamings)
+        },
         onDismiss = {
             contextSheet = null
         },
