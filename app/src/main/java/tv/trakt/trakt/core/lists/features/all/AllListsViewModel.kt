@@ -113,6 +113,11 @@ internal class AllListsViewModel(
             .debounce(200.milliseconds)
             .onEach { loadData() }
             .launchIn(viewModelScope)
+
+        dataChanges.observe(Kind.Lists)
+            .debounce(200.milliseconds)
+            .onEach { loadData(reload = true) }
+            .launchIn(viewModelScope)
     }
 
     private fun observeReorder(listIds: List<TraktId>) {
