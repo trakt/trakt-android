@@ -419,7 +419,6 @@ private fun TitleBar(
 ) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
             .height(TraktTheme.size.titleBarHeight),
@@ -428,7 +427,7 @@ private fun TitleBar(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier
-                .weight(1F, fill = false)
+                .weight(1F)
                 .graphicsLayer {
                     translationX = -2.dp.toPx()
                 }
@@ -442,89 +441,85 @@ private fun TitleBar(
                 contentDescription = null,
             )
 
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                TraktHeader(
-                    title = title,
-                    subtitleTrailing = user?.let {
-                        { ListAuthorSubtitle(user = it, itemCount = itemCount) }
-                    },
-                    modifier = Modifier
-                        .weight(1F, fill = false),
-                )
+            TraktHeader(
+                title = title,
+                subtitleTrailing = user?.let {
+                    { ListAuthorSubtitle(user = it, itemCount = itemCount) }
+                },
+                modifier = Modifier.weight(1F, fill = false),
+            )
+        }
 
-                AnimatedVisibility(
-                    visible = liked != null,
-                    enter = fadeIn(tween(150)),
-                    exit = fadeOut(tween(150)),
-                    modifier = Modifier.padding(start = 32.dp),
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(6.dp),
+            modifier = Modifier.padding(start = 24.dp),
+        ) {
+            AnimatedVisibility(
+                visible = liked != null,
+                enter = fadeIn(tween(150)),
+                exit = fadeOut(tween(150)),
+            ) {
+                Row(
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = spacedBy(4.dp),
+                    modifier = Modifier
+                        .alpha(if (liked?.loading == true) 0.25F else 1F)
+                        .onClick(
+                            enabled = liked?.loading != true,
+                            onClick = onLikeClick,
+                        ),
                 ) {
-                    Row(
-                        verticalAlignment = CenterVertically,
-                        horizontalArrangement = spacedBy(6.dp),
+                    Icon(
+                        painter = painterResource(
+                            when {
+                                liked?.liked ?: false -> R.drawable.ic_thumb_up_fill
+                                else -> R.drawable.ic_thumb_up_like
+                            },
+                        ),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
                         modifier = Modifier
-                            .alpha(if (liked?.loading == true) 0.25F else 1F)
-                            .onClick(
-                                enabled = liked?.loading != true,
-                                onClick = onLikeClick,
+                            .size(18.dp)
+                            .graphicsLayer {
+                                translationY = -0.75.dp.toPx()
+                            },
+                    )
+                    likesCount?.let {
+                        Text(
+                            text = rememberThousandsFormat(it),
+                            style = TraktTheme.typography.buttonTertiary.copy(
+                                fontSize = 12.sp,
                             ),
-                    ) {
-                        Icon(
-                            painter = painterResource(
-                                when {
-                                    liked?.liked ?: false -> R.drawable.ic_thumb_up_fill
-                                    else -> R.drawable.ic_thumb_up_like
-                                },
-                            ),
-                            tint = TraktTheme.colors.textPrimary,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(18.dp)
-                                .graphicsLayer {
-                                    translationY = -0.75.dp.toPx()
-                                },
+                            color = TraktTheme.colors.textPrimary,
                         )
-                        likesCount?.let {
-                            Text(
-                                text = rememberThousandsFormat(it),
-                                style = TraktTheme.typography.buttonTertiary.copy(
-                                    fontSize = 12.sp,
-                                ),
-                                color = TraktTheme.colors.textPrimary,
-                            )
-                        }
                     }
                 }
             }
-        }
 
-        if (infoEnabled) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .minimumInteractiveComponentSize()
-                    .onClick(onClick = onInfoClick),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_info),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
+            if (infoEnabled) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .minimumInteractiveComponentSize()
+                        .onClick(onClick = onInfoClick),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_info),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            }
+
+            filters?.let {
+                MediaFilterIcon(
+                    active = it.isActive,
+                    enabled = enabled,
+                    onClick = onFiltersClick,
                 )
             }
-        }
-
-        filters?.let {
-            MediaFilterIcon(
-                active = it.isActive,
-                enabled = enabled,
-                onClick = onFiltersClick,
-                modifier = Modifier
-                    .padding(start = 12.dp),
-            )
         }
     }
 }
