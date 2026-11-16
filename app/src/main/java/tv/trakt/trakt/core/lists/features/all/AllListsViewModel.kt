@@ -262,6 +262,10 @@ internal class AllListsViewModel(
         }
     }
 
+    fun logListShare() {
+        analytics.logShare(source = "user-list", type = null)
+    }
+
     fun deleteSmartList(listId: TraktId) {
         viewModelScope.launch {
             try {

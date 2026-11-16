@@ -65,6 +65,7 @@ internal fun SmartListCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     onDeleteClick: () -> Unit = {},
+    onEditClick: (() -> Unit)? = null,
 ) {
     Card(
         onClick = onClick,
@@ -83,6 +84,7 @@ internal fun SmartListCard(
                 smartList = smartList,
                 onClick = onClick,
                 onDeleteClick = onDeleteClick,
+                onEditClick = onEditClick,
             )
         },
     )
@@ -93,6 +95,7 @@ private fun SmartListContent(
     smartList: SmartList,
     onClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    onEditClick: (() -> Unit)?,
 ) {
     val images = remember(smartList.images?.posters) {
         smartList.images?.getPostersUrl()?.take(8)
@@ -111,6 +114,7 @@ private fun SmartListContent(
         SmartListHeader(
             list = smartList,
             onDeleteClick = onDeleteClick,
+            onEditClick = onEditClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -183,6 +187,7 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
 private fun SmartListHeader(
     list: SmartList,
     onDeleteClick: () -> Unit,
+    onEditClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -238,6 +243,7 @@ private fun SmartListHeader(
 
         SmartListDropdown(
             onDeleteClick = onDeleteClick,
+            onEditClick = onEditClick,
         )
     }
 }

@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.sorting.ListsSortType
 import tv.trakt.trakt.common.model.sorting.ListsSorting
+import tv.trakt.trakt.core.lists.helpers.shareList
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
@@ -76,6 +77,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
+import tv.trakt.trakt.ui.components.mediacards.list.PersonalListDropdown
 import tv.trakt.trakt.ui.components.mediacards.list.SmartListCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
@@ -90,6 +92,8 @@ internal fun AllListsScreen(
     onNavigatePersonalList: (CustomList) -> Unit,
     onNavigateSmartList: (SmartList) -> Unit,
     onNavigateCreateSmartList: () -> Unit,
+    onNavigateEditSmartList: (SmartList) -> Unit,
+    onNavigateListReorder: (CustomList) -> Unit,
     onNavigateListsReorder: () -> Unit,
     onNavigateBack: () -> Unit,
     onNavigateUser: (User) -> Unit,
@@ -124,7 +128,17 @@ internal fun AllListsScreen(
         onCreateClick = { createListTypeSheet = true },
         onReorderClick = onNavigateListsReorder,
         onListEditClick = { editListSheet = it },
+        onListReorderClick = onNavigateListReorder,
+        onListShareClick = { list ->
+            viewModel.logListShare()
+            shareList(
+                user = state.user,
+                list = list.ids.slug.value,
+                context = context,
+            )
+        },
         onSmartListDeleteClick = { smartListToDelete = it },
+        onSmartListEditClick = onNavigateEditSmartList,
         onFilterClick = viewModel::setFilter,
         onSortClick = {
             if (!state.loading.isLoading && !state.loadingMore.isLoading) {
@@ -193,7 +207,10 @@ private fun AllListsScreen(
     onCreateClick: () -> Unit = {},
     onReorderClick: () -> Unit = {},
     onListEditClick: (CustomList) -> Unit = {},
+    onListReorderClick: (CustomList) -> Unit = {},
+    onListShareClick: (CustomList) -> Unit = {},
     onSmartListDeleteClick: (SmartList) -> Unit = {},
+    onSmartListEditClick: (SmartList) -> Unit = {},
     onFilterClick: (PersonalListType) -> Unit = {},
     onSortClick: () -> Unit = {},
     onEndOfList: () -> Unit = {},
@@ -315,6 +332,7 @@ private fun AllListsScreen(
                                 smartList = item.list,
                                 onClick = { onSmartListClick(item.list) },
                                 onDeleteClick = { onSmartListDeleteClick(item.list) },
+                                onEditClick = { onSmartListEditClick(item.list) },
                                 modifier = cardModifier,
                             )
                         }
@@ -325,12 +343,18 @@ private fun AllListsScreen(
                             Personal if listVisible -> {
                                 CustomListCard(
                                     list = list,
-                                    moreVisible = true,
                                     privacyVisible = true,
                                     onClick = { onListPersonalClick(list) },
-                                    onMoreClick = { onListEditClick(list) },
                                     onUserClick = onUserClick,
                                     modifier = cardModifier,
+                                    moreContent = {
+                                        PersonalListDropdown(
+                                            reorderEnabled = (list.itemCount ?: 0) > 0,
+                                            onEditClick = { onListEditClick(list) },
+                                            onReorderClick = { onListReorderClick(list) },
+                                            onShareClick = { onListShareClick(list) },
+                                        )
+                                    },
                                 )
                             }
                             Liked if listVisible -> {

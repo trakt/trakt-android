@@ -2,8 +2,6 @@
 
 package tv.trakt.trakt.core.lists.sections.personal.features.all
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -54,13 +52,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
-import timber.log.Timber
-import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
-import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
@@ -77,6 +72,7 @@ import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsSeasonView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
+import tv.trakt.trakt.core.lists.helpers.shareList
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
@@ -775,29 +771,4 @@ private fun ContentEmpty(filter: MediaMode?) {
         color = TraktTheme.colors.textSecondary,
         style = TraktTheme.typography.heading6,
     )
-}
-
-private fun shareList(
-    user: User?,
-    list: String,
-    context: Context,
-) {
-    if (user == null) {
-        Timber.e("Unable to share: user is null")
-        return
-    }
-
-    val intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(
-            Intent.EXTRA_TEXT,
-            Config.webListUrl(
-                userId = user.ids.slug.value,
-                listId = list,
-            ).toShareUrl(user.settings?.shareCode),
-        )
-        type = "text/plain"
-    }
-
-    context.startActivity(Intent.createChooser(intent, user.displayName))
 }
