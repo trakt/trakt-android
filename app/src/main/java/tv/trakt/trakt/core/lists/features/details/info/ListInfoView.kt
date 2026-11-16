@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
@@ -29,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,12 +52,13 @@ import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val DESCRIPTION_MAX_LINES = 5
 private const val SKELETON_COUNT = 4
 
-private val CardShape = RoundedCornerShape(16.dp)
+private val CardShape = DefaultCardShape
 
 @Composable
 internal fun ListInfoView(
@@ -96,6 +97,7 @@ private fun ListInfoContent(
         contentPadding = PaddingValues(
             bottom = 12.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
         ),
+        overscrollEffect = null,
         modifier = modifier,
     ) {
         item(key = "header") {
@@ -124,6 +126,8 @@ private fun ListInfoContent(
                 items(count = SKELETON_COUNT) {
                     PanelMediaSkeletonCard(
                         imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
+                        containerColor = TraktTheme.colors.skeletonPanelContainer,
+                        shimmerColor = TraktTheme.colors.skeletonPanelShimmer,
                     )
                 }
             }
@@ -225,7 +229,8 @@ private fun DescriptionSection(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(TraktTheme.colors.panelCardContainer, CardShape)
+                .shadow(elevation = TraktTheme.colors.shadowSmall, shape = CardShape)
+                .background(TraktTheme.colors.dialogOnContainer, CardShape)
                 .padding(16.dp),
         ) {
             if (description.isNullOrBlank()) {
@@ -257,7 +262,8 @@ private fun FeaturedPeopleEmpty(modifier: Modifier = Modifier) {
         horizontalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier
             .fillMaxWidth()
-            .background(TraktTheme.colors.panelCardContainer, CardShape)
+            .shadow(elevation = TraktTheme.colors.shadowSmall, shape = CardShape)
+            .background(TraktTheme.colors.dialogOnContainer, CardShape)
             .padding(16.dp),
     ) {
         Icon(
@@ -302,6 +308,7 @@ private fun FeaturedPersonItem(
         contentImageUrl = person.images?.getHeadshotUrl(THUMB),
         containerImageUrl = null,
         imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
+        containerColor = TraktTheme.colors.dialogOnContainer,
         more = false,
         onClick = onClick,
         onImageClick = onClick,

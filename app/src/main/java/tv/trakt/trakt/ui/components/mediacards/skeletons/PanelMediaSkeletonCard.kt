@@ -43,12 +43,14 @@ internal fun PanelMediaSkeletonCard(
     modifier: Modifier = Modifier,
     corner: Dp = 16.dp,
     imageWidth: Dp = TraktTheme.size.verticalMediumMediaCardSize,
+    containerColor: Color = TraktTheme.colors.skeletonContainer,
+    shimmerColor: Color = TraktTheme.colors.skeletonShimmer,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
         .animateColor(
-            initialValue = TraktTheme.colors.skeletonContainer,
-            targetValue = TraktTheme.colors.skeletonShimmer,
+            initialValue = containerColor,
+            targetValue = shimmerColor,
             animationSpec = infiniteRepeatable(
                 animation = tween(durationMillis = 1000),
                 repeatMode = RepeatMode.Reverse,

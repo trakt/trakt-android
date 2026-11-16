@@ -31,7 +31,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -54,11 +53,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W400
-import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
@@ -75,7 +71,6 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
-import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
@@ -370,7 +365,6 @@ internal fun ListDetailsContent(
 
         ContentList(
             title = state.list?.list?.name ?: "",
-            subtitle = state.list?.list?.description?.trim(),
             user = state.list?.list?.user,
             itemCount = state.list?.list?.itemCount,
             infoEnabled = state.list != null,
@@ -430,9 +424,6 @@ private fun TitleBar(
                 .weight(1F)
                 .graphicsLayer {
                     translationX = -2.dp.toPx()
-                }
-                .onClick {
-                    onBackClick()
                 },
         ) {
             Icon(
@@ -446,13 +437,17 @@ private fun TitleBar(
                 subtitleTrailing = user?.let {
                     { ListAuthorSubtitle(user = it, itemCount = itemCount) }
                 },
-                modifier = Modifier.weight(1F, fill = false),
+                modifier = Modifier
+                    .weight(1F, fill = false)
+                    .onClick {
+                        onBackClick()
+                    },
             )
         }
 
         Row(
             verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(6.dp),
+            horizontalArrangement = spacedBy(14.dp),
             modifier = Modifier.padding(start = 24.dp),
         ) {
             AnimatedVisibility(
@@ -501,7 +496,8 @@ private fun TitleBar(
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .minimumInteractiveComponentSize()
+                        .padding(start = 4.dp)
+                        .size(22.dp)
                         .onClick(onClick = onInfoClick),
                 ) {
                     Icon(
@@ -529,7 +525,6 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues,
     title: String,
-    subtitle: String?,
     user: User?,
     itemCount: Int?,
     infoEnabled: Boolean,
@@ -553,13 +548,6 @@ private fun ContentList(
     onBackClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
-    var subtitleCollapsed by remember { mutableStateOf(true) }
-
-    val linkColor = TraktTheme.colors.textPrimary
-    val subtitleMarkdownText = remember(subtitle, linkColor) {
-        (subtitle ?: "").toMarkdownText(linkColor)
-    }
-
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
             listState.firstVisibleItemIndex >= (listItems.size - 5)
@@ -613,29 +601,6 @@ private fun ContentList(
                 onSortTypeClick = onSortTypeClick,
                 onSortOrderClick = onSortOrderClick,
             )
-        }
-
-        if (!subtitle.isNullOrBlank()) {
-            item {
-                Text(
-                    text = subtitleMarkdownText,
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta.copy(
-                        fontWeight = W400,
-                        lineHeight = 1.1.em,
-                    ),
-                    maxLines = when {
-                        subtitleCollapsed -> 3
-                        else -> Int.MAX_VALUE
-                    },
-                    overflow = Ellipsis,
-                    modifier = Modifier
-                        .padding(bottom = 18.dp)
-                        .onClick {
-                            subtitleCollapsed = !subtitleCollapsed
-                        },
-                )
-            }
         }
 
         if (listItems.isNotEmpty()) {
