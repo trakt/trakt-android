@@ -52,7 +52,7 @@ import kotlin.time.Duration
 
 private const val COLLAPSED_VALUES_COUNT = 2
 private const val EMPTY_VALUE = "-"
-private val VALUES_SPACING = 2.dp
+private val VALUES_SPACING = 3.dp
 
 @Composable
 internal fun DetailsMetaInfo(
@@ -468,8 +468,8 @@ private fun DetailsMeta(
                                 modifier = Modifier
                                     .weight(1F, fill = false)
                                     .then(
-                                        when (onValueClick) {
-                                            null -> Modifier
+                                        when {
+                                            onValueClick == null || collapsed -> Modifier
                                             else -> Modifier.onClick { onValueClick(index) }
                                         },
                                     ),
