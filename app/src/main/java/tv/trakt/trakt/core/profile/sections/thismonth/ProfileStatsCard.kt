@@ -77,6 +77,7 @@ internal fun ProfileStatsCard(
     containerColor: Color = TraktTheme.colors.profileStatsContainer,
     containerImage: String? = null,
     loading: Boolean = false,
+    loadingAllTime: Boolean = false,
     showAllStats: Boolean = true,
     stats: ProfileStats?,
     onAllTimeStatsClick: () -> Unit = {},
@@ -160,7 +161,7 @@ internal fun ProfileStatsCard(
                 modifier = Modifier.fillMaxWidth(),
             ) { page ->
                 val showAll = showAllStats && page == 1
-                val allTime = stats?.allTime?.takeIf { showAll }
+                val allTime = stats?.allTime?.remote?.takeIf { showAll }
 
                 StatsChipsRow(
                     episodes = allTime?.episodesWatched
@@ -171,7 +172,7 @@ internal fun ProfileStatsCard(
                         ?: (if (showAll) stats?.allMoviesCount else stats?.moviesCount) ?: 0,
                     plays = allTime?.totalPlays
                         ?: (if (showAll) stats?.allPlaysCount else stats?.playsCount) ?: 0,
-                    loading = loading,
+                    loading = loading || (showAll && loadingAllTime && user.isAnyVip),
                 )
             }
 

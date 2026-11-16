@@ -26,7 +26,11 @@ data class UserStats(
                 showsWatched = dto.shows.watched,
                 episodesWatched = dto.episodes.watched,
                 ratings = dto.ratings.total,
-                comments = dto.movies.comments + dto.shows.comments + dto.seasons.comments + dto.episodes.comments,
+                comments = dto.movies.comments +
+                    dto.shows.comments +
+                    dto.seasons.comments +
+                    dto.episodes.comments +
+                    (dto.listComments ?: 0),
                 lists = dto.lists,
                 progressStarted = dto.progress?.started,
                 progressFinished = dto.progress?.finished,

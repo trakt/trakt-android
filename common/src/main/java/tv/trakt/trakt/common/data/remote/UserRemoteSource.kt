@@ -307,6 +307,17 @@ class UserRemoteSource(
         return response.body()
     }
 
+    suspend fun getCommentsCount(): Int? {
+        val response = usersApi.getUsersComments(
+            id = "me",
+            commentType = "all",
+            type = "all",
+            limit = 1,
+            includeReplies = "true",
+        )
+        return response.response.headers["x-pagination-item-count"]?.toIntOrNull()
+    }
+
     suspend fun postReport(
         userId: TraktId,
         reason: String,
