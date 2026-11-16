@@ -310,6 +310,7 @@ private fun ProfileScreen(
                     ProfileStatsCard(
                         user = state.user,
                         stats = state.monthStats,
+                        loadingAllTime = state.loadingAllTimeStats.isLoading,
                         containerImage = state.monthBackgroundUrl,
                         onAllTimeStatsClick = onAllTimeStatsClick,
                         modifier = Modifier

@@ -1,11 +1,9 @@
 package tv.trakt.trakt.core.profile.sections.thismonth.model
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.common.model.UserStats
 
 /**
- * @property allTime All-time stats from the API. Null when they are not loaded or not available,
- * in which case the local counts are used.
+ * @property allTime All-time stats beyond the local watch counts. Null until they are loaded.
  */
 @Immutable
 data class ProfileStats(
@@ -17,5 +15,5 @@ data class ProfileStats(
     val allMoviesCount: Int = 0,
     val allEpisodesCount: Int = 0,
     val allPlaysCount: Int = 0,
-    val allTime: UserStats? = null,
+    val allTime: AllTimeStats? = null,
 )

@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
 import tv.trakt.trakt.common.model.UserStats
+import tv.trakt.trakt.core.profile.sections.thismonth.model.AllTimeStats
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.resources.R
@@ -229,31 +230,32 @@ private fun ReviewLink(
 }
 
 private fun ProfileStats.toSections(): List<StatSection> {
+    val remote = allTime?.remote
     return listOf(
         StatSection(
             titleRes = R.string.header_stats_watched,
             tiles = listOf(
-                StatTile(R.string.label_stats_episodes, allTime?.episodesWatched ?: allEpisodesCount),
-                StatTile(R.string.label_stats_shows, allTime?.showsWatched ?: allShowsCount),
-                StatTile(R.string.label_stats_movies, allTime?.moviesWatched ?: allMoviesCount),
-                StatTile(R.string.label_stats_plays, allTime?.totalPlays),
-                StatTile(R.string.label_stats_hours, allTime?.let { (it.totalMinutes / 60.0).roundToInt() }),
+                StatTile(R.string.label_stats_episodes, remote?.episodesWatched ?: allEpisodesCount),
+                StatTile(R.string.label_stats_shows, remote?.showsWatched ?: allShowsCount),
+                StatTile(R.string.label_stats_movies, remote?.moviesWatched ?: allMoviesCount),
+                StatTile(R.string.label_stats_plays, remote?.totalPlays ?: allPlaysCount),
+                StatTile(R.string.label_stats_hours, remote?.let { (it.totalMinutes / 60.0).roundToInt() }),
             ),
         ),
         StatSection(
             titleRes = R.string.header_stats_contributions,
             tiles = listOf(
-                StatTile(R.string.label_stats_ratings, allTime?.ratings),
-                StatTile(R.string.label_stats_comments, allTime?.comments),
-                StatTile(R.string.stat_text_lists, allTime?.lists),
+                StatTile(R.string.label_stats_ratings, remote?.ratings ?: allTime?.ratingsCount),
+                StatTile(R.string.label_stats_comments, remote?.comments ?: allTime?.commentsCount),
+                StatTile(R.string.stat_text_lists, remote?.lists),
             ),
         ),
         StatSection(
             titleRes = R.string.header_stats_progress,
             tiles = listOf(
-                StatTile(R.string.tag_text_started, allTime?.progressStarted),
-                StatTile(R.string.label_stats_finished, allTime?.progressFinished),
-                StatTile(R.string.tag_text_dropped, allTime?.progressDropped),
+                StatTile(R.string.tag_text_started, remote?.progressStarted),
+                StatTile(R.string.label_stats_finished, remote?.progressFinished),
+                StatTile(R.string.tag_text_dropped, remote?.progressDropped),
             ),
         ),
     )
@@ -269,18 +271,20 @@ private fun Preview() {
                 allMoviesCount = 145,
                 allShowsCount = 87,
                 allEpisodesCount = 2310,
-                allTime = UserStats(
-                    totalMinutes = 123_456_789,
-                    totalPlays = 4_217,
-                    moviesWatched = 145,
-                    showsWatched = 87,
-                    episodesWatched = 2310,
-                    ratings = 512,
-                    comments = 34,
-                    lists = 12,
-                    progressStarted = 40,
-                    progressFinished = 30,
-                    progressDropped = 5,
+                allTime = AllTimeStats(
+                    remote = UserStats(
+                        totalMinutes = 123_456_789,
+                        totalPlays = 4_217,
+                        moviesWatched = 145,
+                        showsWatched = 87,
+                        episodesWatched = 2310,
+                        ratings = 512,
+                        comments = 34,
+                        lists = 12,
+                        progressStarted = 40,
+                        progressFinished = 30,
+                        progressDropped = 5,
+                    ),
                 ),
             ),
         )
@@ -299,13 +303,9 @@ private fun PreviewFree() {
                 allEpisodesCount = 2310,
                 allPlaysCount = 2601,
                 playsCount = 2601,
-                allTime = UserStats(
-                    totalMinutes = 378,
-                    totalPlays = 4,
-                    moviesWatched = 2,
-                    showsWatched = 2,
-                    episodesWatched = 2,
-                    ratings = 1,
+                allTime = AllTimeStats(
+                    ratingsCount = 512,
+                    commentsCount = 34,
                 ),
             ),
         )

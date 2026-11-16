@@ -32,7 +32,6 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.observeForegroundRefresh
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.common.model.leaderboard.Leaderboard
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.billing.analytics.VipUpsellImpressions
@@ -40,6 +39,7 @@ import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.profile.sections.leaderboard.usecases.GetLeaderboardUseCase
+import tv.trakt.trakt.core.profile.sections.thismonth.model.AllTimeStats
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
 import kotlin.time.Duration.Companion.milliseconds
@@ -67,12 +67,13 @@ internal class ProfileViewModel(
     private val monthStatsState = MutableStateFlow(initialState.monthStats)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
+    private val loadingAllTimeStatsState = MutableStateFlow(initialState.loadingAllTimeStats)
     private val checkInState = MutableStateFlow(initialState.checkIn)
     private val hasLeaderboardState = MutableStateFlow(initialState.hasLeaderboard)
     private val leaderboardUsersState = MutableStateFlow(initialState.leaderboardUsers)
     private val followingCountState = MutableStateFlow(initialState.followingCount)
 
-    private var latestAllTime: UserStats? = null
+    private var latestAllTime: AllTimeStats? = null
 
     init {
         loadMonthBackground()
@@ -148,7 +149,7 @@ internal class ProfileViewModel(
     }
 
     private fun loadData(showLoading: Boolean = true) {
-        loadAllTimeStats()
+        loadAllTimeStats(showLoading)
         viewModelScope.launch {
             try {
                 if (showLoading) {
@@ -168,9 +169,12 @@ internal class ProfileViewModel(
         }
     }
 
-    private fun loadAllTimeStats() {
+    private fun loadAllTimeStats(showLoading: Boolean) {
         viewModelScope.launch {
             try {
+                if (showLoading) {
+                    loadingAllTimeStatsState.update { Loading }
+                }
                 val allTime = getProfileStatsUseCase.getAllTimeStats()
                 latestAllTime = allTime
                 monthStatsState.update {
@@ -180,6 +184,8 @@ internal class ProfileViewModel(
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+            } finally {
+                loadingAllTimeStatsState.update { LoadingState.Done }
             }
         }
     }
@@ -245,6 +251,7 @@ internal class ProfileViewModel(
         modeState,
         leaderboardUsersState,
         followingCountState,
+        loadingAllTimeStatsState,
     ) { state ->
         ProfileState(
             monthStats = state[0] as ProfileStats?,
@@ -257,6 +264,7 @@ internal class ProfileViewModel(
             mode = state[7] as MediaMode,
             leaderboardUsers = state[8] as ImmutableList<User>,
             followingCount = state[9] as Int?,
+            loadingAllTimeStats = state[10] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

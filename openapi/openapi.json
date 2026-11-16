@@ -18354,6 +18354,10 @@
                       "type": "integer",
                       "nullable": true
                     },
+                    "list_comments": {
+                      "type": "integer",
+                      "nullable": true
+                    },
                     "total_minutes": {
                       "type": "integer",
                       "nullable": true
