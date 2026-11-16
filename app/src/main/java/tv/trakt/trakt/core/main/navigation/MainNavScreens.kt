@@ -636,6 +636,13 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
+            onNavigateToPerson = { person ->
+                navigateToPerson(
+                    personId = person.ids.trakt,
+                    sourceMediaId = null,
+                    backdropUrl = null,
+                )
+            },
         )
         smartListDetailsScreen(
             onNavigateBack = { popBackStack() },

@@ -23,10 +23,13 @@ import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.common.networking.ListMediaItemDto
 import tv.trakt.trakt.common.networking.ListMovieItemDto
 import tv.trakt.trakt.common.networking.ListShowItemDto
+import tv.trakt.trakt.common.networking.PersonDto
+import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class ListsRemoteSource(
     private val listsApi: ListsApi,
+    private val v3Api: V3Api,
     private val cacheMarker: CacheMarkerProvider,
 ) {
     suspend fun createList(
@@ -81,6 +84,10 @@ class ListsRemoteSource(
             extended = "images",
         )
         return response.body()
+    }
+
+    suspend fun getListFeaturedPeople(listId: TraktId): List<PersonDto> {
+        return v3Api.getListFeaturedPeople(listId).featured.orEmpty()
     }
 
     suspend fun deleteList(listId: TraktId) {

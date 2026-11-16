@@ -77,9 +77,11 @@ import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.sorting.SortType.Added
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
@@ -87,6 +89,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
+import tv.trakt.trakt.core.lists.features.details.info.ListInfoSheet
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsSeasonView
@@ -119,6 +122,7 @@ internal fun ListDetailsScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
+    onPersonClick: (Person) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -171,6 +175,7 @@ internal fun ListDetailsScreen(
     var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var confirmRemoveLikeSheet by remember { mutableStateOf(false) }
     var filtersSheet by remember { mutableStateOf(false) }
+    var infoSheet by remember { mutableStateOf<CustomList?>(null) }
 
     ListDetailsContent(
         state = state,
@@ -203,6 +208,9 @@ internal fun ListDetailsScreen(
         },
         onFiltersClick = {
             filtersSheet = true
+        },
+        onInfoClick = {
+            infoSheet = state.list?.list
         },
         onSortTypeClick = {
             if (!state.loading.isLoading) {
@@ -285,6 +293,17 @@ internal fun ListDetailsScreen(
         ),
     )
 
+    ListInfoSheet(
+        list = infoSheet,
+        onPersonClick = {
+            infoSheet = null
+            onPersonClick(it)
+        },
+        onDismiss = {
+            infoSheet = null
+        },
+    )
+
     GlobalFiltersSheet(
         active = filtersSheet,
         options = GlobalFiltersOptions(
@@ -306,6 +325,7 @@ internal fun ListDetailsContent(
     onLongClick: (CustomListItem) -> Unit = {},
     onModeClick: (MediaMode) -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onInfoClick: () -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onLikeClick: () -> Unit = {},
@@ -351,6 +371,7 @@ internal fun ListDetailsContent(
             subtitle = state.list?.list?.description?.trim(),
             user = state.list?.list?.user,
             itemCount = state.list?.list?.itemCount,
+            infoEnabled = state.list != null,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter,
@@ -369,6 +390,7 @@ internal fun ListDetailsContent(
             onLongClick = onLongClick,
             onModeClick = onModeClick,
             onFiltersClick = onFiltersClick,
+            onInfoClick = onInfoClick,
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
             onLikeClick = onLikeClick,
@@ -386,10 +408,12 @@ private fun TitleBar(
     liked: LikedInfo?,
     likesCount: Int?,
     filters: GlobalFilter?,
+    infoEnabled: Boolean,
     modifier: Modifier = Modifier,
     onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
     onFiltersClick: () -> Unit,
+    onInfoClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -475,6 +499,18 @@ private fun TitleBar(
             }
         }
 
+        if (infoEnabled) {
+            Icon(
+                painter = painterResource(R.drawable.ic_info),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(20.dp)
+                    .onClick(onClick = onInfoClick),
+            )
+        }
+
         filters?.let {
             MediaFilterIcon(
                 active = it.isActive,
@@ -495,6 +531,7 @@ private fun ContentList(
     subtitle: String?,
     user: User?,
     itemCount: Int?,
+    infoEnabled: Boolean,
     listState: LazyListState,
     listItems: ImmutableList<CustomListItem>,
     listFilter: GlobalFilter?,
@@ -508,6 +545,7 @@ private fun ContentList(
     onLongClick: (CustomListItem) -> Unit,
     onModeClick: (MediaMode) -> Unit,
     onFiltersClick: () -> Unit,
+    onInfoClick: () -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onLikeClick: () -> Unit,
@@ -558,9 +596,11 @@ private fun ContentList(
                 liked = listLiked,
                 likesCount = listLikes,
                 filters = listFilter,
+                infoEnabled = infoEnabled,
                 onLikeClick = onLikeClick,
                 onBackClick = onBackClick,
                 onFiltersClick = onFiltersClick,
+                onInfoClick = onInfoClick,
             )
         }
 
