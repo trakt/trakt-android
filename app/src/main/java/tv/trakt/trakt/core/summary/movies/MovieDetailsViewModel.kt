@@ -102,7 +102,7 @@ internal class MovieDetailsViewModel(
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
-    private val movieId = destination.movieId.toTraktId()
+    val movieId = destination.movieId.toTraktId()
 
     private val initialState = MovieDetailsState()
     private val origin = ChangeOrigin.unique()
@@ -119,6 +119,7 @@ internal class MovieDetailsViewModel(
     private val loadingLists = MutableStateFlow(initialState.loadingLists)
     private val loadingFavorite = MutableStateFlow(initialState.loadingFavorite)
     private val infoState = MutableStateFlow(initialState.info)
+    private val notePromptState = MutableStateFlow(initialState.notePrompt)
     private val errorState = MutableStateFlow(initialState.error)
     private val lightsaberState = MutableStateFlow(initialState.lightsaber)
 
@@ -739,9 +740,7 @@ internal class MovieDetailsViewModel(
                 analytics.ratings.logFavoriteAdd(
                     mediaType = "movie",
                 )
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_favorites_added)
-                }
+                notePromptState.update { true }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -889,6 +888,10 @@ internal class MovieDetailsViewModel(
         infoState.update { null }
     }
 
+    fun clearNotePrompt() {
+        notePromptState.update { false }
+    }
+
     fun logShare() {
         analytics.logShare(source = "media", type = MediaType.Movie.value)
     }
@@ -914,6 +917,7 @@ internal class MovieDetailsViewModel(
         errorState,
         sessionManager.observeProfile(),
         lightsaberState,
+        notePromptState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
@@ -931,6 +935,7 @@ internal class MovieDetailsViewModel(
             error = state[12] as Exception?,
             user = state[13] as User?,
             lightsaber = state[14] as Boolean,
+            notePrompt = state[15] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

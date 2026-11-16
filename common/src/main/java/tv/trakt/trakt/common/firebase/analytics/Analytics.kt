@@ -88,6 +88,30 @@ interface Analytics {
     fun logVipUpsell(source: String)
 
     /**
+     * Logs adding a note to a movie or show.
+     * @param type The note kind (favorites, note).
+     */
+    fun logNoteAdd(type: String)
+
+    /**
+     * Logs editing a note on a movie or show.
+     * @param type The note kind (favorites, note).
+     */
+    fun logNoteEdit(type: String)
+
+    /**
+     * Logs deleting a note from a movie or show.
+     * @param type The note kind (favorites, note).
+     */
+    fun logNoteDelete(type: String)
+
+    /**
+     * Logs a free user hitting a VIP usage limit.
+     * @param feature The limited feature (notes).
+     */
+    fun logVipGate(feature: String)
+
+    /**
      * Logs sharing a link through the system share sheet.
      * @param source The shared surface (media, episode, person, profile, user-list).
      * @param type The shared media type, or own/other for profiles.

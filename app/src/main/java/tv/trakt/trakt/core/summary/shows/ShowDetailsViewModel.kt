@@ -99,7 +99,7 @@ internal class ShowDetailsViewModel(
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
-    private val showId = destination.showId.toTraktId()
+    val showId = destination.showId.toTraktId()
 
     private val initialState = ShowDetailsState()
     private val origin = ChangeOrigin.unique()
@@ -117,6 +117,7 @@ internal class ShowDetailsViewModel(
     private val loadingLists = MutableStateFlow(initialState.loadingLists)
     private val loadingFavorite = MutableStateFlow(initialState.loadingFavorite)
     private val infoState = MutableStateFlow(initialState.info)
+    private val notePromptState = MutableStateFlow(initialState.notePrompt)
     private val errorState = MutableStateFlow(initialState.error)
     private val lightsaberState = MutableStateFlow(initialState.lightsaber)
 
@@ -685,9 +686,7 @@ internal class ShowDetailsViewModel(
                 }
 
                 analytics.ratings.logFavoriteAdd(mediaType = "show")
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_favorites_added)
-                }
+                notePromptState.update { true }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -853,6 +852,10 @@ internal class ShowDetailsViewModel(
         infoState.update { null }
     }
 
+    fun clearNotePrompt() {
+        notePromptState.update { false }
+    }
+
     fun clearNavigation() {
         navigateEpisode.update { null }
     }
@@ -883,6 +886,7 @@ internal class ShowDetailsViewModel(
         errorState,
         sessionManager.observeProfile(),
         lightsaberState,
+        notePromptState,
     ) { state ->
         ShowDetailsState(
             show = state[0] as Show?,
@@ -901,6 +905,7 @@ internal class ShowDetailsViewModel(
             error = state[13] as Exception?,
             user = state[14] as User?,
             lightsaber = state[15] as Boolean,
+            notePrompt = state[16] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

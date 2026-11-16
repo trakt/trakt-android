@@ -57,6 +57,22 @@ internal class CompositeAnalytics(
         targets.forEach { it.logSearch(mode) }
     }
 
+    override fun logNoteAdd(type: String) {
+        targets.forEach { it.logNoteAdd(type) }
+    }
+
+    override fun logNoteEdit(type: String) {
+        targets.forEach { it.logNoteEdit(type) }
+    }
+
+    override fun logNoteDelete(type: String) {
+        targets.forEach { it.logNoteDelete(type) }
+    }
+
+    override fun logVipGate(feature: String) {
+        targets.forEach { it.logVipGate(feature) }
+    }
+
     override fun logVipUpgrade(
         plan: String,
         source: String,

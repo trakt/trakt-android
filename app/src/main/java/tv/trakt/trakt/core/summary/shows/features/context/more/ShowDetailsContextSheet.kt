@@ -29,9 +29,11 @@ internal fun ShowDetailsContextSheet(
     ),
     show: Show?,
     showProgress: ProgressState?,
+    notes: Boolean,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
@@ -47,6 +49,7 @@ internal fun ShowDetailsContextSheet(
             ShowDetailsContextView(
                 show = show,
                 showProgress = showProgress,
+                notes = notes,
                 viewModel = koinViewModel(
                     key = viewModelKey,
                     parameters = { parametersOf(show) },
@@ -71,6 +74,15 @@ internal fun ShowDetailsContextSheet(
                 },
                 onListsClick = {
                     onListsClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
+                onNotesClick = {
+                    onNotesClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

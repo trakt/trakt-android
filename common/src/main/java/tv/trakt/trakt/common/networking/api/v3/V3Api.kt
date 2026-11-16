@@ -19,6 +19,8 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.SmartListItemDto
+import tv.trakt.trakt.common.networking.api.v3.model.V3DeleteNoteRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3EditNoteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3FollowingActivityResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardEntryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardResponse
@@ -28,6 +30,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ParentalGuideResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3PostNoteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3RealityCheckResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationReasonsResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
@@ -42,6 +45,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3SyncConnectionResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UserMatchResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3UserNoteResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsernameSettingsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3WatchedPlayResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3YouTubeSpecialResponse
@@ -135,6 +139,40 @@ class V3Api(
             parameter("limit", pagination.limit)
         }
         return response.body()
+    }
+
+    // Notes
+
+    suspend fun getUserNotes(
+        type: MediaType,
+        mediaId: TraktId,
+    ): List<V3UserNoteResponse> {
+        val response = client.get("${baseV3Url}users/me/notes/${type.value}/${mediaId.value}")
+        return response.body()
+    }
+
+    suspend fun postNote(request: V3PostNoteRequest) {
+        client.post("${baseV3Url}users/me/notes") {
+            setBody(request)
+        }
+    }
+
+    suspend fun putNote(
+        noteId: Int,
+        request: V3EditNoteRequest,
+    ) {
+        client.put("${baseV3Url}users/me/notes/$noteId") {
+            setBody(request)
+        }
+    }
+
+    suspend fun deleteNote(
+        noteId: Int,
+        request: V3DeleteNoteRequest,
+    ) {
+        client.delete("${baseV3Url}users/me/notes/$noteId") {
+            setBody(request)
+        }
     }
 
     // Sentiment

@@ -53,6 +53,7 @@ import tv.trakt.trakt.core.lists.di.listsDataModule
 import tv.trakt.trakt.core.lists.di.listsModule
 import tv.trakt.trakt.core.main.di.mainModule
 import tv.trakt.trakt.core.movies.di.moviesModule
+import tv.trakt.trakt.core.notes.di.notesModule
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup
 import tv.trakt.trakt.core.notifications.TraktNotificationChannelGroup.CHECK_IN
@@ -181,6 +182,7 @@ internal class TraktApplication : Application() {
                 allStreamingsModule,
                 commentsDataModule,
                 commentsModule,
+                notesModule,
                 reportModule,
                 triviaModule,
                 soundtrackModule,

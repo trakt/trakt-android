@@ -56,6 +56,22 @@ internal class DebugAnalytics(
         Timber.d("logSearch: mode=%s", mode)
     }
 
+    override fun logNoteAdd(type: String) {
+        Timber.d("logNoteAdd: type=%s", type)
+    }
+
+    override fun logNoteEdit(type: String) {
+        Timber.d("logNoteEdit: type=%s", type)
+    }
+
+    override fun logNoteDelete(type: String) {
+        Timber.d("logNoteDelete: type=%s", type)
+    }
+
+    override fun logVipGate(feature: String) {
+        Timber.d("logVipGate: feature=%s", feature)
+    }
+
     override fun logVipUpgrade(
         plan: String,
         source: String,

@@ -73,6 +73,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.NoteType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
@@ -87,6 +88,9 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
+import tv.trakt.trakt.core.notes.NotesViewModel
+import tv.trakt.trakt.core.notes.ui.NoteEditorSheet
+import tv.trakt.trakt.core.notes.ui.NotesSheet
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
@@ -124,6 +128,7 @@ import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
+import tv.trakt.trakt.ui.snackbar.showFavoriteNotePrompt
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -156,8 +161,13 @@ internal fun ShowDetailsScreen(
     val localRateVisibility = LocalRatePromptVisibility.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val notesViewModel: NotesViewModel = koinViewModel(
+        parameters = { parametersOf(MediaType.Show, viewModel.showId) },
+    )
+    val notesState by notesViewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
+    var notesSheet by remember { mutableStateOf(false) }
     var detailsSheet by remember { mutableStateOf<Show?>(null) }
     var contextSheet by remember { mutableStateOf<Show?>(null) }
     var listsSheet by remember { mutableStateOf<Show?>(null) }
@@ -351,6 +361,8 @@ internal fun ShowDetailsScreen(
     ShowDetailsContextSheet(
         show = contextSheet,
         showProgress = state.showProgress,
+        notes = notesState.hasNotes,
+        onNotesClick = { notesSheet = true },
         onHistoryClick = {
             contextSheet = null
             state.show?.let { onNavigateToHistory(it, state.showProgress?.plays ?: 0) }
@@ -507,6 +519,39 @@ internal fun ShowDetailsScreen(
         state.navigateEpisode?.let {
             onEpisodeClick(it.first, it.second)
             viewModel.clearNavigation()
+        }
+    }
+
+    NotesSheet(
+        active = notesSheet,
+        title = state.show?.title.orEmpty(),
+        notes = notesState.notes,
+        deleting = notesState.loadingDelete.isLoading,
+        onEditClick = notesViewModel::editNote,
+        onDeleteConfirm = notesViewModel::deleteNote,
+        onDismiss = { notesSheet = false },
+    )
+
+    NoteEditorSheet(
+        editor = notesState.editor,
+        title = state.show?.title.orEmpty(),
+        loading = notesState.loadingEditor.isLoading,
+        error = notesState.error,
+        onSubmitClick = notesViewModel::submitNote,
+        onErrorClick = notesViewModel::clearError,
+        onDismiss = notesViewModel::closeEditor,
+    )
+
+    LaunchedEffect(state.notePrompt) {
+        if (!state.notePrompt) {
+            return@LaunchedEffect
+        }
+        haptic.performHapticFeedback(Confirm)
+        viewModel.clearNotePrompt()
+        scope.launch {
+            snack.showFavoriteNotePrompt(context.resources) {
+                notesViewModel.addNote(NoteType.Favorites)
+            }
         }
     }
 

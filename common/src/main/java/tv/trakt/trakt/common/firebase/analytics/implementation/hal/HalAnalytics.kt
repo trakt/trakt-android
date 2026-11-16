@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.firebase.analytics.implementation.hal
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ACTION
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ERROR
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FEATURE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_FLOW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_ID
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_MODE
@@ -19,12 +20,15 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.D
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_THEME
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_TYPE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.DIM_VALUE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_ADD_NOTE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_BANNER_DISMISS
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_BLOCK
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_CALENDAR_PERIOD
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_COVER_IMAGE
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DELETE_NOTE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DISCOVER_MODE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_DRILLDOWN
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_EDIT_NOTE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_FILTER
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_FOLLOW
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_INSIGHTS_OPEN
@@ -47,6 +51,7 @@ import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.E
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_STREAMING_SERVICE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_SUMMARY_DRILLDOWN
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_THEME
+import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_GATE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPGRADE
 import tv.trakt.trakt.common.firebase.analytics.implementation.hal.HalContract.EVENT_VIP_UPSELL
 
@@ -116,6 +121,22 @@ internal class HalAnalytics(
     override fun logSearch(mode: String) {
         val searchMode = halSearchMode(mode) ?: return
         events.track(EVENT_SEARCH, dims = mapOf(DIM_MODE to searchMode))
+    }
+
+    override fun logNoteAdd(type: String) {
+        events.track(EVENT_ADD_NOTE, dims = mapOf(DIM_TYPE to type.lowercase()))
+    }
+
+    override fun logNoteEdit(type: String) {
+        events.track(EVENT_EDIT_NOTE, dims = mapOf(DIM_TYPE to type.lowercase()))
+    }
+
+    override fun logNoteDelete(type: String) {
+        events.track(EVENT_DELETE_NOTE, dims = mapOf(DIM_TYPE to type.lowercase()))
+    }
+
+    override fun logVipGate(feature: String) {
+        events.track(EVENT_VIP_GATE, dims = mapOf(DIM_FEATURE to feature.lowercase()))
     }
 
     override fun logVipUpgrade(
