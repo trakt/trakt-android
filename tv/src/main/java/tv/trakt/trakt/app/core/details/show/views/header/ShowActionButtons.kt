@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.Composable
@@ -35,6 +36,7 @@ import tv.trakt.trakt.app.Config.DEFAULT_PLEX_LOGO_URL
 import tv.trakt.trakt.app.common.ui.buttons.OutlineButton
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
+import tv.trakt.trakt.app.common.ui.buttons.buttonHeight
 import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenu
 import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenuItem
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.CollectionState
@@ -60,6 +62,7 @@ internal fun ShowActionButtons(
     onWatchlistClick: () -> Unit,
     onTrailerClick: (String) -> Unit,
     onStreamingLongClick: () -> Unit,
+    onManageListsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -104,7 +107,7 @@ internal fun ShowActionButtons(
 
         val watchlistFocusRequester = remember { FocusRequester() }
         Row(
-            horizontalArrangement = spacedBy(6.dp),
+            horizontalArrangement = spacedBy(8.dp),
             verticalAlignment = CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
@@ -137,6 +140,7 @@ internal fun ShowActionButtons(
                 onHistoryClick = onHistoryClick,
                 onRemoveHistoryClick = onRemoveHistoryClick,
                 onWhereToWatchClick = onStreamingLongClick,
+                onManageListsClick = onManageListsClick,
                 modifier = Modifier.weight(1F),
             )
         }
@@ -202,7 +206,9 @@ private fun MarkAsWatchedButton(
             borderColor = if (isHistory) Purple500 else Color.White,
             enabled = !collectionState.isLoading,
             loading = collectionState.isWatchedLoading,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(buttonHeight),
         )
 
         Box(modifier = Modifier.align(Alignment.CenterEnd)) {
@@ -290,6 +296,7 @@ private fun MoreButton(
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: () -> Unit,
     onWhereToWatchClick: () -> Unit,
+    onManageListsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val menuVisible = remember { mutableStateOf(false) }
@@ -301,6 +308,13 @@ private fun MoreButton(
                 text = stringResource(R.string.button_text_where_to_watch),
                 icon = painterResource(R.drawable.ic_play),
                 onClick = onWhereToWatchClick,
+            ),
+        )
+        add(
+            MoreMenuItem(
+                text = stringResource(R.string.button_text_manage_lists),
+                icon = painterResource(R.drawable.ic_lists_off),
+                onClick = onManageListsClick,
             ),
         )
         if (isWatched) {
@@ -382,6 +396,7 @@ private fun Preview1() {
             onWatchlistClick = {},
             onTrailerClick = {},
             onStreamingLongClick = {},
+            onManageListsClick = {},
         )
     }
 }
@@ -402,6 +417,7 @@ private fun Preview2(
             onWatchlistClick = {},
             onTrailerClick = {},
             onStreamingLongClick = {},
+            onManageListsClick = {},
         )
     }
 }

@@ -24,9 +24,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.movies.ui.context.MovieContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet

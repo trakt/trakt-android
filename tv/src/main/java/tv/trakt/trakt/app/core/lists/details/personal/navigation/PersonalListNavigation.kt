@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListScreen
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 
@@ -22,12 +23,14 @@ internal data class PersonalListDestination(
 internal fun NavGraphBuilder.personalListScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     composable<PersonalListDestination> {
         PersonalListScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
             onNavigateToMovie = onNavigateToMovie,
+            onNavigateToEpisode = onNavigateToEpisode,
         )
     }
 }

@@ -56,7 +56,7 @@ internal val connectedOutlineTrailingShape = RoundedCornerShape(
     topEnd = connectedLeadingCorner,
     bottomEnd = connectedLeadingCorner,
 )
-private val outlineWidth = 1.5.dp
+internal val outlineWidth = 1.5.dp
 private val focusedOutlineWidth = (2.75).dp
 private val textButtonHorizontalPadding = 16.dp
 private val centeredTextStyle = LineHeightStyle(
@@ -133,6 +133,7 @@ internal fun OutlineTextButton(
     height: Dp = 42.dp,
     shape: Shape = outlineShape,
     contentOffset: Dp = 0.dp,
+    enabled: Boolean = true,
     loading: Boolean = false,
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     outlineColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,
@@ -150,6 +151,7 @@ internal fun OutlineTextButton(
         scale = ButtonDefaults.scale(
             focusedScale = 1F,
         ),
+        enabled = enabled,
         onClick = {
             if (!loading) onClick()
         },

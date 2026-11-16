@@ -39,16 +39,18 @@ import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.lists.ListPrivacySubtitle
+import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
-import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
 import tv.trakt.trakt.app.core.lists.model.ListSortValues
+import tv.trakt.trakt.app.core.lists.views.ListMediaItemCard
 import tv.trakt.trakt.app.core.lists.views.ListSortControls
 import tv.trakt.trakt.app.core.lists.views.ListSortSubtitle
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
@@ -63,6 +65,7 @@ internal fun PersonalListScreen(
     viewModel: PersonalListViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -84,6 +87,7 @@ internal fun PersonalListScreen(
         },
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
+        onEpisodeClick = onNavigateToEpisode,
         onLoadNextPage = { viewModel.loadNextDataPage() },
         onSortingChange = viewModel::setSorting,
     )
@@ -97,10 +101,11 @@ internal fun PersonalListContent(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onLoadNextPage: () -> Unit,
     onSortingChange: ((Sorting) -> Unit)? = null,
 ) {
-    var focusedItem by remember { mutableStateOf<PersonalListItem?>(null) }
+    var focusedItem by remember { mutableStateOf<ListMediaItem?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<String?>(null) }
     val focusRequesters = remember { mutableMapOf<String, FocusRequester>() }
 
@@ -141,7 +146,7 @@ internal fun PersonalListContent(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 val firstItemFocusRequester = {
                     state.items?.firstOrNull()
-                        ?.let { focusRequesters[it.id] }
+                        ?.let { focusRequesters[it.key] }
                         ?: FocusRequester.Default
                 }
 
@@ -188,141 +193,39 @@ internal fun PersonalListContent(
             } else if (!state.items.isNullOrEmpty()) {
                 items(
                     count = state.items.size,
-                    key = { index -> state.items[index].id },
+                    key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
 
-                    val focusRequester = remember(item.id) {
-                        focusRequesters.getOrPut(item.id) {
+                    val focusRequester = remember(item.key) {
+                        focusRequesters.getOrPut(item.key) {
                             FocusRequester()
                         }
                     }
 
-                    item.show?.let { show ->
-                        VerticalMediaCard(
-                            title = show.title,
-                            imageUrl = show.images?.getPosterUrl(),
-                            watched = state.collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
-                            watching = state.collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
-                            watchlist = state.collection.isWatchlist(show.ids.trakt, MediaType.Show),
-                            onClick = {
-                                if (!state.isLoadingPage) {
-                                    onShowClick(show.ids.trakt)
+                    ListMediaItemCard(
+                        item = item,
+                        collection = state.collection,
+                        sorting = state.itemsSorting,
+                        enabled = !state.isLoadingPage,
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        onEpisodeClick = onEpisodeClick,
+                        modifier = Modifier
+                            .focusRequester(focusRequester)
+                            .onFocusChanged {
+                                if (it.isFocused) {
+                                    focusedItem = item
+                                    focusedItemId = item.key
+
+                                    loadNextPageIfNeeded(
+                                        size = state.items.size,
+                                        index = index,
+                                        onLoadNextPage = onLoadNextPage,
+                                    )
                                 }
                             },
-                            chipContent = {
-                                ListSortSubtitle(
-                                    sorting = state.itemsSorting,
-                                    values = ListSortValues.of(show, item.listedAt, item.userRating),
-                                ) {
-                                    val episodes = show.airedEpisodes.takeIf { it > 0 }
-                                        ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
-                                    val text = listOfNotNull(show.year?.toString(), episodes)
-                                        .joinToString("  •  ")
-
-                                    if (text.isNotEmpty()) {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                                        ) {
-                                            Icon(
-                                                painter = painterResource(R.drawable.ic_shows_off),
-                                                contentDescription = null,
-                                                tint = TraktTheme.colors.textPrimary,
-                                                modifier = Modifier
-                                                    .size(12.dp)
-                                                    .graphicsLayer {
-                                                        translationY = -0.5.dp.toPx()
-                                                    },
-                                            )
-
-                                            Text(
-                                                text = text,
-                                                style = TraktTheme.typography.cardTitle,
-                                                color = TraktTheme.colors.textPrimary,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis,
-                                            )
-                                        }
-                                    }
-                                }
-                            },
-                            modifier = Modifier
-                                .focusRequester(focusRequester)
-                                .onFocusChanged {
-                                    if (it.isFocused) {
-                                        focusedItem = item
-                                        focusedItemId = item.id
-
-                                        loadNextPageIfNeeded(
-                                            size = state.items.size,
-                                            index = index,
-                                            onLoadNextPage = onLoadNextPage,
-                                        )
-                                    }
-                                },
-                        )
-                    }
-
-                    item.movie?.let { movie ->
-                        VerticalMediaCard(
-                            title = movie.title,
-                            imageUrl = movie.images?.getPosterUrl(),
-                            watched = state.collection.isWatched(movie.ids.trakt, MediaType.Movie, null),
-                            watching = state.collection.isWatching(movie.ids.trakt, MediaType.Movie, null),
-                            watchlist = state.collection.isWatchlist(movie.ids.trakt, MediaType.Movie),
-                            onClick = {
-                                if (!state.isLoadingPage) {
-                                    onMovieClick(movie.ids.trakt)
-                                }
-                            },
-                            chipContent = {
-                                ListSortSubtitle(
-                                    sorting = state.itemsSorting,
-                                    values = ListSortValues.of(movie, item.listedAt, item.userRating),
-                                ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(R.drawable.ic_movies_off),
-                                            contentDescription = null,
-                                            tint = TraktTheme.colors.textPrimary,
-                                            modifier = Modifier
-                                                .size(12.dp)
-                                                .graphicsLayer {
-                                                    translationY = -0.5.dp.toPx()
-                                                },
-                                        )
-
-                                        Text(
-                                            text = movie.yearString +
-                                                "  •  ${rememberDurationFormat(movie.runtime?.inWholeMinutes)}",
-                                            style = TraktTheme.typography.cardTitle,
-                                            color = TraktTheme.colors.textPrimary,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis,
-                                        )
-                                    }
-                                }
-                            },
-                            modifier = Modifier
-                                .focusRequester(focusRequester)
-                                .onFocusChanged {
-                                    if (it.isFocused) {
-                                        focusedItem = item
-                                        focusedItemId = item.id
-
-                                        loadNextPageIfNeeded(
-                                            size = state.items.size,
-                                            index = index,
-                                            onLoadNextPage = onLoadNextPage,
-                                        )
-                                    }
-                                },
-                        )
-                    }
+                    )
                 }
             }
 
@@ -383,6 +286,7 @@ private fun Preview() {
             ),
             onShowClick = {},
             onMovieClick = {},
+            onEpisodeClick = { _, _ -> },
             onLoadNextPage = {},
             onSortingChange = {},
         )

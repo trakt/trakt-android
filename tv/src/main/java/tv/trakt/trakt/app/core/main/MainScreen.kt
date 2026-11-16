@@ -44,6 +44,7 @@ import tv.trakt.trakt.app.core.details.episode.navigation.episodeDetailsScreen
 import tv.trakt.trakt.app.core.details.episode.navigation.navigateToEpisode
 import tv.trakt.trakt.app.core.details.lists.details.media.navigation.customListMedia
 import tv.trakt.trakt.app.core.details.lists.details.media.navigation.navigateToCustomListMedia
+import tv.trakt.trakt.app.core.details.lists.manage.navigation.navigateToUserList
 import tv.trakt.trakt.app.core.details.movie.navigation.movieDetailsScreen
 import tv.trakt.trakt.app.core.details.movie.navigation.navigateToMovie
 import tv.trakt.trakt.app.core.details.show.navigation.navigateToShow
@@ -371,10 +372,12 @@ private fun MainNavHost(
             personalListScreen(
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episode -> navigateToEpisode(showId, episode) },
             )
             smartListScreen(
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episode -> navigateToEpisode(showId, episode) },
             )
             watchlistMoviesScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
@@ -389,6 +392,7 @@ private fun MainNavHost(
                 },
                 onNavigateToPerson = { navigateToPerson(it) },
                 onNavigateToList = { navigateToCustomListMedia(it, MediaType.Show) },
+                onNavigateToUserList = { list, isOwner -> navigateToUserList(list, isOwner) },
                 onNavigateToVideo = { navigateToPlayer(it) },
                 onNavigateToStreamings = { navigateToShowStreamings(mediaId = it) },
             )
@@ -396,6 +400,7 @@ private fun MainNavHost(
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToPerson = { navigateToPerson(it) },
                 onNavigateToList = { navigateToCustomListMedia(it, MediaType.Movie) },
+                onNavigateToUserList = { list, isOwner -> navigateToUserList(list, isOwner) },
                 onNavigateToVideo = { navigateToPlayer(it) },
                 onNavigateToStreamings = {
                     navigateToMovieStreamings(
@@ -410,6 +415,7 @@ private fun MainNavHost(
                     navigateToEpisode(showId, episode)
                 },
                 onNavigateToPerson = { navigateToPerson(it) },
+                onNavigateToUserList = { list, isOwner -> navigateToUserList(list, isOwner) },
                 onNavigateToStreamings = { mediaId, episode ->
                     navigateToEpisodeStreamings(
                         mediaId = mediaId,
@@ -427,6 +433,7 @@ private fun MainNavHost(
             customListMedia(
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episode -> navigateToEpisode(showId, episode) },
             )
             allStreamingsScreen()
         }

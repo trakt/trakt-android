@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
+import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListState
-import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
 import tv.trakt.trakt.app.core.lists.details.smart.navigation.SmartListDestination
 import tv.trakt.trakt.app.core.lists.details.smart.usecases.GetSmartListItemsUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
@@ -89,7 +89,7 @@ internal class SmartListViewModel(
                     current
                         ?.toPersistentList()
                         ?.plus(items)
-                        ?.distinctBy { it.id }
+                        ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
@@ -116,7 +116,7 @@ internal class SmartListViewModel(
         PersonalListState(
             isLoading = state[0] as Boolean,
             isLoadingPage = state[1] as Boolean,
-            items = state[2] as ImmutableList<PersonalListItem>?,
+            items = state[2] as ImmutableList<ListMediaItem>?,
             collection = state[3] as UserCollectionState,
             error = state[4] as Exception?,
         )

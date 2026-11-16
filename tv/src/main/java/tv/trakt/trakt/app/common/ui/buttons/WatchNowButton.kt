@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
@@ -33,6 +34,11 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
+// ic_play_round has wide built-in padding and its triangle sits right of centre,
+// so it is drawn larger than the trailing slot and shifted back onto the slot centre.
+private val playIconSize = 30.dp
+private val playIconOffset = (-1.3).dp
+
 @Composable
 internal fun WatchNowButton(
     modifier: Modifier = Modifier,
@@ -55,11 +61,8 @@ internal fun WatchNowButton(
     )
 
     Button(
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            end = 6.dp,
-        ),
-        modifier = modifier.height(42.dp),
+        contentPadding = PaddingValues(horizontal = buttonContentPadding),
+        modifier = modifier.height(buttonHeight),
         shape = ButtonDefaults.shape(
             shape = RoundedCornerShape(12.dp),
             focusedDisabledShape = RoundedCornerShape(12.dp),
@@ -108,12 +111,12 @@ internal fun WatchNowButton(
             when {
                 loading -> {
                     Spacer(modifier = Modifier.weight(1F))
-                    FilmProgressIndicator(
-                        size = 16.dp,
-                        color = contentColor,
-                        modifier = Modifier
-                            .padding(end = 4.dp),
-                    )
+                    ButtonTrailingSlot {
+                        FilmProgressIndicator(
+                            size = 16.dp,
+                            color = contentColor,
+                        )
+                    }
                 }
 
                 else -> {
@@ -140,13 +143,16 @@ internal fun WatchNowButton(
                         )
                     }
 
-                    Image(
-                        painter = painterResource(R.drawable.ic_play_round),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .requiredSize(28.dp),
-                    )
+                    ButtonTrailingSlot {
+                        Image(
+                            painter = painterResource(R.drawable.ic_play_round),
+                            contentDescription = null,
+                            contentScale = ContentScale.FillWidth,
+                            modifier = Modifier
+                                .requiredSize(playIconSize)
+                                .offset(x = playIconOffset),
+                        )
+                    }
                 }
             }
         }

@@ -20,6 +20,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToUserList: (list: CustomList, isOwner: Boolean) -> Unit,
     onNavigateToVideo: (String) -> Unit,
     onNavigateToStreamings: (Movie) -> Unit,
 ) {
@@ -29,6 +30,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToPerson = onNavigateToPerson,
             onNavigateToList = onNavigateToList,
+            onNavigateToUserList = onNavigateToUserList,
             onNavigateToVideo = onNavigateToVideo,
             onNavigateToStreamings = onNavigateToStreamings,
         )

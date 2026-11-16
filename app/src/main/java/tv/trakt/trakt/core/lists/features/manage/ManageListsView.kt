@@ -2,8 +2,6 @@
 
 package tv.trakt.trakt.core.lists.features.manage
 
-import android.content.res.Resources
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -43,6 +41,14 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
+import tv.trakt.trakt.common.core.lists.manage.ManageListsState
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.EpisodeTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.MovieTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.SeasonTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.ShowTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsViewModel
+import tv.trakt.trakt.common.core.lists.usecases.toUserMessage
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
@@ -53,13 +59,6 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.EpisodeTarget
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.MovieTarget
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.SeasonTarget
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.ShowTarget
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.ListItemLimitException
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.ListItemLimitException.Kind.AllLists
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.ListItemLimitException.Kind.SingleList
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.helpers.extensions.spoilerFreeTitle
 import tv.trakt.trakt.resources.R
@@ -67,8 +66,6 @@ import tv.trakt.trakt.ui.components.buttons.lists.ListButton
 import tv.trakt.trakt.ui.components.buttons.lists.WatchlistButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.text.NumberFormat
-import java.util.Locale
 
 @Composable
 internal fun ManageListsView(
@@ -194,21 +191,6 @@ private fun ManageListsContent(
                 .padding(top = 12.dp),
         )
     }
-}
-
-private fun ListItemLimitException.toUserMessage(resources: Resources): String {
-    val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-    val formattedLimit = NumberFormat.getNumberInstance(locale).format(limit)
-
-    val resId = when (kind) {
-        SingleList -> R.string.text_list_item_limit_reached
-        AllLists -> when {
-            isVip -> R.string.text_lists_item_limit_reached_vip
-            else -> R.string.text_lists_item_limit_reached_free
-        }
-    }
-
-    return resources.getString(resId, formattedLimit)
 }
 
 @Composable

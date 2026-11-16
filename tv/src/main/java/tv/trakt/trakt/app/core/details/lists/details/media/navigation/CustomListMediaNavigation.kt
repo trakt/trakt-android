@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.core.details.lists.details.media.CustomListMediaScreen
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
@@ -23,12 +24,14 @@ internal data class CustomListMediaDestination(
 internal fun NavGraphBuilder.customListMedia(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     composable<CustomListMediaDestination> {
         CustomListMediaScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
             onNavigateToMovie = onNavigateToMovie,
+            onNavigateToEpisode = onNavigateToEpisode,
         )
     }
 }

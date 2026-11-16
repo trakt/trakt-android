@@ -16,6 +16,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.main.MainViewModel
+import tv.trakt.trakt.common.helpers.errors.DefaultGlobalErrorsManager
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 
@@ -31,6 +33,10 @@ internal val mainModule = module {
 
     single<AppLifecycleProvider> {
         DefaultAppLifecycleProvider()
+    }
+
+    single<GlobalErrorsManager> {
+        DefaultGlobalErrorsManager()
     }
 
     viewModel {

@@ -62,6 +62,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalRatePromptVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
@@ -87,7 +88,6 @@ import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
 import tv.trakt.trakt.core.notes.NotesViewModel
 import tv.trakt.trakt.core.notes.ui.NoteEditorSheet
 import tv.trakt.trakt.core.notes.ui.NotesSheet

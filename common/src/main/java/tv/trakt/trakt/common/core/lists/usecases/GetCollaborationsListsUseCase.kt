@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.collaborations.usecases
+package tv.trakt.trakt.common.core.lists.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.data.remote.UserOtherListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.lists.CustomList
 
-internal class GetCollaborationsListsUseCase(
+class GetCollaborationsListsUseCase(
     private val remoteSource: UserOtherListsRemoteSource,
     private val localSource: ListsCollaborationsLocalSource,
 ) {

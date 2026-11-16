@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.features.manage
+package tv.trakt.trakt.common.core.lists.manage
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Episode
@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 
 @Immutable
-internal sealed interface ManageListsTarget {
+sealed interface ManageListsTarget {
     val id: TraktId
 
     @Immutable

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.features.manage
+package tv.trakt.trakt.common.core.lists.manage
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
 
 @Immutable
-internal data class ManageListsState(
+data class ManageListsState(
     val lists: ImmutableList<CustomListMinimal> = EmptyImmutableList,
     val collaborations: ImmutableList<CustomListMinimal> = EmptyImmutableList,
     val listedIds: ImmutableSet<TraktId> = EmptyImmutableSet,

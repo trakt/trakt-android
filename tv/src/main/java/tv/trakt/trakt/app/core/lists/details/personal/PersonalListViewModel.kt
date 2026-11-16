@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
-import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
 import tv.trakt.trakt.app.core.lists.details.personal.navigation.PersonalListDestination
 import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
@@ -104,7 +104,7 @@ internal class PersonalListViewModel(
                     current
                         ?.toPersistentList()
                         ?.plus(shows)
-                        ?.distinctBy { it.id }
+                        ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
@@ -145,7 +145,7 @@ internal class PersonalListViewModel(
         PersonalListState(
             isLoading = state[0] as Boolean,
             isLoadingPage = state[1] as Boolean,
-            items = state[2] as ImmutableList<PersonalListItem>?,
+            items = state[2] as ImmutableList<ListMediaItem>?,
             collection = state[3] as UserCollectionState,
             error = state[4] as Exception?,
             sorting = state[5] as Sorting,

@@ -48,12 +48,14 @@ import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUS
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.lists.views.ListMediaItemCard
 import tv.trakt.trakt.app.core.lists.views.ListSortControls
 import tv.trakt.trakt.app.core.lists.views.ListSortSubtitle
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
@@ -68,6 +70,7 @@ internal fun CustomListMediaScreen(
     viewModel: CustomListMediaViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -84,6 +87,7 @@ internal fun CustomListMediaScreen(
         },
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
+        onEpisodeClick = onNavigateToEpisode,
         onLoadNextPage = { viewModel.loadMoreData() },
         onSortingChange = viewModel::setSorting,
     )
@@ -106,6 +110,7 @@ private fun CustomListMediaContent(
     onLikeClick: () -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onLoadNextPage: () -> Unit,
     onSortingChange: (Sorting) -> Unit,
 ) {
@@ -228,77 +233,14 @@ private fun CustomListMediaContent(
                         }
                     }
 
-                    val mediaType = when (item) {
-                        is ListMediaItem.ShowItem -> MediaType.Show
-                        is ListMediaItem.MovieItem -> MediaType.Movie
-                    }
-                    val airedEpisodes = (item as? ListMediaItem.ShowItem)?.show?.airedEpisodes
-
-                    VerticalMediaCard(
-                        title = item.title,
-                        imageUrl = item.images?.getPosterUrl(),
-                        watched = state.collection.isWatched(item.id, mediaType, airedEpisodes),
-                        watching = state.collection.isWatching(item.id, mediaType, airedEpisodes),
-                        watchlist = state.collection.isWatchlist(item.id, mediaType),
-                        onClick = {
-                            if (!state.isLoadingPage) {
-                                when (item) {
-                                    is ListMediaItem.ShowItem -> onShowClick(item.id)
-                                    is ListMediaItem.MovieItem -> onMovieClick(item.id)
-                                }
-                            }
-                        },
-                        chipContent = {
-                            ListSortSubtitle(
-                                sorting = state.itemsSorting,
-                                values = item.sortValues,
-                            ) {
-                                val iconRes = when (item) {
-                                    is ListMediaItem.ShowItem -> R.drawable.ic_shows_off
-                                    is ListMediaItem.MovieItem -> R.drawable.ic_movies_off
-                                }
-                                val text = when (item) {
-                                    is ListMediaItem.ShowItem -> {
-                                        val show = item.show
-                                        val episodes = show.airedEpisodes.takeIf { it > 0 }
-                                            ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
-                                        listOfNotNull(show.year?.toString(), episodes)
-                                            .joinToString("  •  ")
-                                    }
-
-                                    is ListMediaItem.MovieItem -> {
-                                        val movie = item.movie
-                                        movie.yearString +
-                                            "  •  ${rememberDurationFormat(movie.runtime?.inWholeMinutes)}"
-                                    }
-                                }
-                                if (text.isNotEmpty()) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(iconRes),
-                                            contentDescription = null,
-                                            tint = TraktTheme.colors.textPrimary,
-                                            modifier = Modifier
-                                                .size(12.dp)
-                                                .graphicsLayer {
-                                                    translationY = -0.5.dp.toPx()
-                                                },
-                                        )
-
-                                        Text(
-                                            text = text,
-                                            style = TraktTheme.typography.cardTitle,
-                                            color = TraktTheme.colors.textPrimary,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis,
-                                        )
-                                    }
-                                }
-                            }
-                        },
+                    ListMediaItemCard(
+                        item = item,
+                        collection = state.collection,
+                        sorting = state.itemsSorting,
+                        enabled = !state.isLoadingPage,
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        onEpisodeClick = onEpisodeClick,
                         modifier = Modifier
                             .focusRequester(focusRequester)
                             .onFocusChanged {
@@ -384,6 +326,7 @@ private fun Preview() {
             ),
             onShowClick = {},
             onMovieClick = {},
+            onEpisodeClick = { _, _ -> },
             onLikeClick = {},
             onLoadNextPage = {},
             onSortingChange = {},

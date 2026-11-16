@@ -2,8 +2,10 @@ package tv.trakt.trakt.app.core.lists.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Rating
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.ratings.UserRating
 import java.time.Instant
@@ -44,6 +46,32 @@ internal data class ListSortValues(
                 runtime = movie.runtime,
                 rating = movie.rating,
                 userRating = userRating,
+            )
+        }
+
+        fun of(
+            season: Season,
+            listedAt: Instant?,
+        ): ListSortValues {
+            return ListSortValues(
+                listedAt = listedAt,
+                released = season.firstAired?.toLocalDate(),
+                runtime = null,
+                rating = season.rating,
+                userRating = null,
+            )
+        }
+
+        fun of(
+            episode: Episode,
+            listedAt: Instant?,
+        ): ListSortValues {
+            return ListSortValues(
+                listedAt = listedAt,
+                released = episode.releasedAt?.toLocalDay(),
+                runtime = episode.runtime,
+                rating = episode.rating,
+                userRating = null,
             )
         }
     }

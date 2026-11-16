@@ -7,6 +7,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListContent
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 
 @Composable
@@ -14,6 +15,7 @@ internal fun SmartListScreen(
     viewModel: SmartListViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val list = viewModel.list
@@ -32,6 +34,7 @@ internal fun SmartListScreen(
         },
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
+        onEpisodeClick = onNavigateToEpisode,
         onLoadNextPage = viewModel::loadNextDataPage,
     )
 }

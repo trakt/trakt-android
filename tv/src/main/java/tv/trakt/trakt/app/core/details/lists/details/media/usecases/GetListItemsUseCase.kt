@@ -40,7 +40,7 @@ internal class GetListItemsUseCase(
                 getListSortRatingsUseCase.getMovieRatings(sorting, refresh = page == 1)
             }
 
-            val dtos = remoteSource.getMediaListItems(
+            val dtos = remoteSource.getAllListItems(
                 listId = listId,
                 extended = "full,streaming_ids",
                 pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
@@ -50,27 +50,9 @@ internal class GetListItemsUseCase(
             val showRatings = showRatingsAsync.await()
             val movieRatings = movieRatingsAsync.await()
 
-            val items = dtos.mapNotNull { dto ->
-                when (dto.type) {
-                    Type.SHOW -> {
-                        val show = dto.show?.let { Show.fromDto(it) } ?: return@mapNotNull null
-                        ShowItem(
-                            show = show,
-                            listedAt = dto.listedAt.toInstant(),
-                            userRating = showRatings[show.ids.trakt],
-                        )
-                    }
-
-                    Type.MOVIE -> {
-                        val movie = dto.movie?.let { Movie.fromDto(it) } ?: return@mapNotNull null
-                        MovieItem(
-                            movie = movie,
-                            listedAt = dto.listedAt.toInstant(),
-                            userRating = movieRatings[movie.ids.trakt],
-                        )
-                    }
-                }
-            }.toImmutableList()
+            val items = dtos
+                .mapNotNull { ListMediaItem.fromDto(it, showRatings, movieRatings) }
+                .toImmutableList()
 
             items.also {
                 showLocalSource.upsertShows(it.filterIsInstance<ShowItem>().map { item -> item.show })

@@ -22,7 +22,6 @@ import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLibraryUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
-import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
@@ -107,7 +106,6 @@ internal val profileModule = module {
     factoryOf(::LoadUserSocialRequestsUseCase)
     factoryOf(::LoadUserFavoritesUseCase)
     factoryOf(::LoadUserLibraryUseCase)
-    factoryOf(::LoadUserListsUseCase)
     factoryOf(::LoadUserLikedListsUseCase)
     factoryOf(::LoadUserProgressUseCase)
     factoryOf(::GetSpoilerStateUseCase)

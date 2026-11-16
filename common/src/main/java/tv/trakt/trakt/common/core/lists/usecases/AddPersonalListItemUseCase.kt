@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
+package tv.trakt.trakt.common.core.lists.usecases
 
 import io.ktor.client.plugins.ResponseException
 import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
@@ -9,7 +9,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 
-internal class AddPersonalListItemUseCase(
+class AddPersonalListItemUseCase(
     private val remoteSource: ListsRemoteSource,
     private val listsLocalSource: ListsPersonalLocalSource,
     private val collabListsLocalSource: ListsCollaborationsLocalSource,

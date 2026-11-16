@@ -25,7 +25,6 @@ import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.info.ListInfoViewModel
 import tv.trakt.trakt.core.lists.features.details.info.usecases.GetListFeaturedPeopleUseCase
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
-import tv.trakt.trakt.core.lists.features.manage.ManageListsViewModel
 import tv.trakt.trakt.core.lists.features.reorder.ListReorderViewModel
 import tv.trakt.trakt.core.lists.features.reorder.lists.ListsReorderViewModel
 import tv.trakt.trakt.core.lists.features.reorder.lists.usecase.ReorderPersonalListsUseCase
@@ -37,7 +36,6 @@ import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
 import tv.trakt.trakt.core.lists.features.smart.usecase.UpdateSmartListUseCase
 import tv.trakt.trakt.core.lists.model.CustomListItem
-import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
@@ -45,8 +43,6 @@ import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListV
 import tv.trakt.trakt.core.lists.sections.personal.features.context.item.ListItemContextViewModel
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.smart.details.SmartListDetailsViewModel
 import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
 import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListItemsUseCase
@@ -80,7 +76,6 @@ internal val listsModule = module {
     factoryOf(::GetMoviesWatchlistUseCase)
     factoryOf(::GetPersonalListsUseCase)
     factoryOf(::GetLikedListsUseCase)
-    factoryOf(::GetCollaborationsListsUseCase)
     factoryOf(::GetSmartListsUseCase)
     factoryOf(::GetSmartListItemsUseCase)
     factoryOf(::GetSmartListPreviewUseCase)
@@ -92,8 +87,6 @@ internal val listsModule = module {
     factoryOf(::GetListFeaturedPeopleUseCase)
     factoryOf(::CreateListUseCase)
     factoryOf(::EditListUseCase)
-    factoryOf(::RemovePersonalListItemUseCase)
-    factoryOf(::AddPersonalListItemUseCase)
     factoryOf(::AddLikedListUseCase)
     factoryOf(::RemoveLikedListUseCase)
     factoryOf(::ReorderListUseCase)
@@ -132,7 +125,6 @@ internal val listsModule = module {
             analytics = get(),
         )
     }
-    viewModelOf(::ManageListsViewModel)
     viewModel { (listId: TraktId) ->
         ListInfoViewModel(
             listId = listId,

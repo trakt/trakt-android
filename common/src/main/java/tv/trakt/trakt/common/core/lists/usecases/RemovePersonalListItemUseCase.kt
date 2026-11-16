@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
+package tv.trakt.trakt.common.core.lists.usecases
 
 import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.data.remote.ListsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.TraktId
 
-internal class RemovePersonalListItemUseCase(
+class RemovePersonalListItemUseCase(
     private val remoteSource: ListsRemoteSource,
     private val personalListsLocalSource: ListsPersonalLocalSource,
     private val collabListsLocalSource: ListsCollaborationsLocalSource,

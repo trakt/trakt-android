@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.lists.features.manage
+package tv.trakt.trakt.common.core.lists.manage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,6 +16,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.EpisodeTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.MovieTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.SeasonTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.ShowTarget
+import tv.trakt.trakt.common.core.lists.usecases.AddPersonalListItemUseCase
+import tv.trakt.trakt.common.core.lists.usecases.GetCollaborationsListsUseCase
+import tv.trakt.trakt.common.core.lists.usecases.ListItemLimitException
+import tv.trakt.trakt.common.core.lists.usecases.RemovePersonalListItemUseCase
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserListsUseCase
@@ -29,17 +37,9 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.EpisodeTarget
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.MovieTarget
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.SeasonTarget
-import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget.ShowTarget
-import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.ListItemLimitException
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 
 @Suppress("UNCHECKED_CAST")
-internal class ManageListsViewModel(
+class ManageListsViewModel(
     private val target: ManageListsTarget,
     private val sessionManager: SessionManager,
     private val loadListsUseCase: LoadUserListsUseCase,

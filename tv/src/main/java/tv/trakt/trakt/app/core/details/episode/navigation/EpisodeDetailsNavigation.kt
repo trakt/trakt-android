@@ -9,6 +9,7 @@ import tv.trakt.trakt.app.core.details.episode.EpisodeDetailsScreen
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 
 @Serializable
 internal data class EpisodeDestination(
@@ -23,6 +24,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToStreamings: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToUserList: (list: CustomList, isOwner: Boolean) -> Unit,
 ) {
     composable<EpisodeDestination> {
         EpisodeDetailsScreen(
@@ -31,6 +33,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToPerson = onNavigateToPerson,
             onNavigateToStreamings = onNavigateToStreamings,
+            onNavigateToUserList = onNavigateToUserList,
         )
     }
 }

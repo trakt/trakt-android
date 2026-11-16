@@ -38,6 +38,7 @@ import tv.trakt.trakt.app.core.streamings.di.plexDataModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.core.lists.di.manageListsModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.sync.changes.di.dataChangesModule
@@ -120,6 +121,7 @@ class TvActivity : ComponentActivity() {
                     movieDetailsModule,
                     episodeDetailsModule,
                     listsModule,
+                    manageListsModule,
                     commentsModule,
                     remoteSourcesModule,
                     localSourcesModule,

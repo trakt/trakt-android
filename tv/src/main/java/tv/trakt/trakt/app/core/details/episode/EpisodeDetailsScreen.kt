@@ -68,10 +68,13 @@ import tv.trakt.trakt.app.core.details.episode.views.content.EpisodeRelatedList
 import tv.trakt.trakt.app.core.details.episode.views.content.EpisodeSeasonEpisodesList
 import tv.trakt.trakt.app.core.details.episode.views.header.EpisodeActionButtons
 import tv.trakt.trakt.app.core.details.episode.views.header.EpisodeHeader
+import tv.trakt.trakt.app.core.details.lists.manage.ManageListsOverlay
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.NoOpBringIntoViewSpec
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.EpisodeTarget
 import tv.trakt.trakt.common.helpers.coil.withFallback
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -83,6 +86,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import kotlin.math.roundToInt
@@ -104,6 +108,7 @@ internal fun EpisodeDetailsScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToStreamings: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToUserList: (list: CustomList, isOwner: Boolean) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var historyConfirmationDialog: Long? by remember { mutableStateOf(null) }
@@ -121,6 +126,7 @@ internal fun EpisodeDetailsScreen(
             viewModel.clearWatchNowTip()
             onNavigateToStreamings(showId, episode)
         },
+        onNavigateToUserList = onNavigateToUserList,
         onAddHistoryClick = viewModel::addToHistory,
         onRemoveHistoryClick = { historyConfirmationDialog = it },
         onRemoveAllHistoryClick = { removeAllHistoryDialog = true },
@@ -199,6 +205,7 @@ private fun EpisodeDetailsScreenContent(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToStreamings: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToUserList: (list: CustomList, isOwner: Boolean) -> Unit,
     onAddHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: (id: Long) -> Unit,
     onRemoveAllHistoryClick: () -> Unit,
@@ -218,6 +225,7 @@ private fun EpisodeDetailsScreenContent(
 
     var contentActive by remember { mutableStateOf(true) }
     var selectedComment by remember { mutableStateOf<Comment?>(null) }
+    var manageListsTarget by remember { mutableStateOf<ManageListsTarget?>(null) }
 
     LaunchedEffect(contentActive) {
         drawerVisibility.value = contentActive
@@ -230,9 +238,14 @@ private fun EpisodeDetailsScreenContent(
         }
     }
 
-    BackHandler(enabled = selectedComment != null || !contentActive) {
+    BackHandler(enabled = selectedComment != null || manageListsTarget != null || !contentActive) {
         if (!contentActive) {
             contentActive = true
+            return@BackHandler
+        }
+        if (manageListsTarget != null) {
+            manageListsTarget = null
+            focusRequesters["buttons"]?.requestFocus()
             return@BackHandler
         }
         selectedComment = null
@@ -344,6 +357,12 @@ private fun EpisodeDetailsScreenContent(
                             )
                         },
                         onDropEpisodeClick = onDropEpisodeClick,
+                        onManageListsClick = {
+                            manageListsTarget = EpisodeTarget(
+                                show = state.showDetails,
+                                episode = state.episodeDetails,
+                            )
+                        },
                         focusRequesters = focusRequesters,
                     )
                 }
@@ -355,6 +374,15 @@ private fun EpisodeDetailsScreenContent(
             onExited = {
                 selectedComment = null
                 focusRequesters["comments"]?.requestFocus()
+            },
+        )
+
+        ManageListsOverlay(
+            target = manageListsTarget,
+            onListOpen = onNavigateToUserList,
+            onExited = {
+                manageListsTarget = null
+                focusRequesters["buttons"]?.requestFocus()
             },
         )
     }
@@ -373,6 +401,7 @@ private fun MainContent(
     onRemoveHistoryClick: (id: Long) -> Unit,
     onRemoveAllHistoryClick: () -> Unit,
     onDropEpisodeClick: () -> Unit,
+    onManageListsClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -396,6 +425,7 @@ private fun MainContent(
                     onRemoveHistoryClick = onRemoveAllHistoryClick,
                     onStreamingLongClick = onStreamingsClick,
                     onDropClick = onDropEpisodeClick,
+                    onManageListsClick = onManageListsClick,
                     modifier = Modifier
                         .focusGroup()
                         .focusRequester(focusRequesters.getValue("buttons"))
@@ -621,6 +651,7 @@ private fun Preview() {
             onRemoveHistoryClick = {},
             onRemoveAllHistoryClick = {},
             onDropEpisodeClick = {},
+            onNavigateToUserList = { _, _ -> },
         )
     }
 }

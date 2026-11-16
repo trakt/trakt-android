@@ -61,6 +61,7 @@ import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
+import tv.trakt.trakt.app.core.details.lists.manage.ManageListsOverlay
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieCastCrewList
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieCommentsList
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieCustomListsList
@@ -72,6 +73,8 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.NoOpBringIntoViewSpec
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget
+import tv.trakt.trakt.common.core.lists.manage.ManageListsTarget.MovieTarget
 import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
@@ -105,6 +108,7 @@ internal fun MovieDetailsScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToUserList: (list: CustomList, isOwner: Boolean) -> Unit,
     onNavigateToVideo: (String) -> Unit,
     onNavigateToStreamings: (Movie) -> Unit,
 ) {
@@ -120,6 +124,7 @@ internal fun MovieDetailsScreen(
         onNavigateToMovie = onNavigateToMovie,
         onNavigateToPerson = onNavigateToPerson,
         onNavigateToList = onNavigateToList,
+        onNavigateToUserList = onNavigateToUserList,
         onNavigateToVideo = onNavigateToVideo,
         onNavigateToStreamings = {
             viewModel.clearWatchNowTip()
@@ -183,6 +188,7 @@ private fun MovieDetailsScreenContent(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToUserList: (list: CustomList, isOwner: Boolean) -> Unit,
     onNavigateToVideo: (String) -> Unit,
     onNavigateToStreamings: (Movie) -> Unit,
     onHistoryClick: (DateSelectionResult) -> Unit,
@@ -203,6 +209,7 @@ private fun MovieDetailsScreenContent(
     }
 
     var selectedComment by remember { mutableStateOf<Comment?>(null) }
+    var manageListsTarget by remember { mutableStateOf<ManageListsTarget?>(null) }
     var contentActive by remember { mutableStateOf(true) }
 
     LaunchedEffect(contentActive) {
@@ -216,9 +223,14 @@ private fun MovieDetailsScreenContent(
         }
     }
 
-    BackHandler(enabled = selectedComment != null || !contentActive) {
+    BackHandler(enabled = selectedComment != null || manageListsTarget != null || !contentActive) {
         if (!contentActive) {
             contentActive = true
+            return@BackHandler
+        }
+        if (manageListsTarget != null) {
+            manageListsTarget = null
+            focusRequesters["buttons"]?.requestFocus()
             return@BackHandler
         }
         selectedComment = null
@@ -315,6 +327,9 @@ private fun MovieDetailsScreenContent(
                         onRemoveHistoryClick = onRemoveHistoryClick,
                         onWatchlistClick = onWatchlistClick,
                         onDropMovieClick = onDropMovieClick,
+                        onManageListsClick = {
+                            manageListsTarget = MovieTarget(state.movieDetails)
+                        },
                         onStreamingsClick = {
                             onNavigateToStreamings(state.movieDetails)
                         },
@@ -328,6 +343,15 @@ private fun MovieDetailsScreenContent(
             onExited = {
                 selectedComment = null
                 focusRequesters["comments"]?.requestFocus()
+            },
+        )
+
+        ManageListsOverlay(
+            target = manageListsTarget,
+            onListOpen = onNavigateToUserList,
+            onExited = {
+                manageListsTarget = null
+                focusRequesters["buttons"]?.requestFocus()
             },
         )
     }
@@ -347,6 +371,7 @@ private fun MainContent(
     onWatchlistClick: () -> Unit,
     onStreamingsClick: () -> Unit,
     onDropMovieClick: () -> Unit,
+    onManageListsClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -372,6 +397,7 @@ private fun MainContent(
                     onTrailerClick = onVideoClick,
                     onStreamingLongClick = onStreamingsClick,
                     onDropMovieClick = onDropMovieClick,
+                    onManageListsClick = onManageListsClick,
                     modifier = Modifier
                         .focusGroup()
                         .focusRequester(focusRequesters.getValue("buttons"))
@@ -634,6 +660,7 @@ private fun Preview() {
             onNavigateToMovie = {},
             onNavigateToPerson = {},
             onNavigateToList = {},
+            onNavigateToUserList = { _, _ -> },
             onNavigateToVideo = {},
             onHistoryClick = {},
             onRemoveHistoryClick = {},
