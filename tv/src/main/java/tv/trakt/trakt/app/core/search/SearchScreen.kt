@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
@@ -133,6 +134,7 @@ private fun SearchScreenContent(
     var focusedItemKey by rememberSaveable { mutableStateOf<String?>(null) }
 
     val inputFocusRequester = remember { FocusRequester() }
+    val filtersFocusRequester = remember { FocusRequester() }
     val itemFocusRequesters = remember { mutableMapOf<String, FocusRequester>() }
 
     LaunchedEffect(Unit) {
@@ -231,6 +233,7 @@ private fun SearchScreenContent(
                                 .padding(top = 12.dp)
                                 .width(400.dp)
                                 .focusRequester(inputFocusRequester)
+                                .focusProperties { down = filtersFocusRequester }
                                 .onFocusChanged {
                                     if (it.isFocused) {
                                         focusedItemKey = null
@@ -244,6 +247,7 @@ private fun SearchScreenContent(
                 item(key = "filters") {
                     SearchFiltersList(
                         selectedFilter = state.input.filter,
+                        firstFocusRequester = filtersFocusRequester,
                         downFocusRequester = firstItemFocusRequester,
                         onFilterClick = {
                             onSearchInput(
@@ -276,6 +280,10 @@ private fun SearchScreenContent(
                 when {
                     error != null -> errorItem(error, rowPadding)
                     items.isEmpty() && loading -> skeletonRows(columns, isLists, rowPadding)
+                    isSearching && state.searchResult?.items?.isEmpty() == true -> emptyItem(
+                        query = state.input.query,
+                        rowPadding = rowPadding,
+                    )
                     else -> items(
                         items = rows,
                         key = { rowItems -> rowItems.first().key },
@@ -350,6 +358,20 @@ private fun LazyListScope.errorItem(
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.meta,
             maxLines = 10,
+            modifier = Modifier.padding(rowPadding),
+        )
+    }
+}
+
+private fun LazyListScope.emptyItem(
+    query: String,
+    rowPadding: PaddingValues,
+) {
+    item(key = "empty") {
+        Text(
+            text = stringResource(R.string.spotlight_no_results, query),
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.paragraphSmall,
             modifier = Modifier.padding(rowPadding),
         )
     }

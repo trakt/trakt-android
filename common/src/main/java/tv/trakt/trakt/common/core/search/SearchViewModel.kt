@@ -383,9 +383,28 @@ class SearchViewModel internal constructor(
         }
     }
 
+    private fun reloadPopularSearches() {
+        initialJob = viewModelScope.launch {
+            try {
+                popularResultState.update { null }
+                loadLocalPopularSearches()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     fun updateSearch(searchInput: SearchInput) {
         val currentFilter = inputState.value.filter
         val currentQuery = inputState.value.query
+
+        if (currentFilter != searchInput.filter) {
+            searchResultState.update { null }
+            popularResultState.update { null }
+        }
         inputState.update { searchInput }
 
         if (currentFilter != searchInput.filter || currentQuery != searchInput.query) {
@@ -394,24 +413,7 @@ class SearchViewModel internal constructor(
 
         if (currentFilter != searchInput.filter) {
             clearJobs()
-
-            if (searchInput.query.isNotBlank()) {
-                onSearchQuery(searchInput.query, Duration.ZERO)
-            } else {
-                initialJob = viewModelScope.launch {
-                    try {
-                        popularResultState.update { null }
-                        loadLocalPopularSearches()
-                    } catch (error: Exception) {
-                        error.rethrowCancellation {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
-                    } finally {
-                        searchingState.update { false }
-                    }
-                }
-            }
+            onSearchQuery(searchInput.query, Duration.ZERO)
         }
 
         if (currentQuery != searchInput.query) {
@@ -427,6 +429,7 @@ class SearchViewModel internal constructor(
         if (query.isBlank()) {
             searchingState.update { false }
             searchResultState.update { null }
+            reloadPopularSearches()
             return
         }
 

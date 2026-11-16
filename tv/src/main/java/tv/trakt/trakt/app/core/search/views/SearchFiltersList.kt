@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +23,7 @@ import tv.trakt.trakt.common.core.search.model.SearchFilter
 internal fun SearchFiltersList(
     selectedFilter: SearchFilter,
     modifier: Modifier = Modifier,
+    firstFocusRequester: FocusRequester = remember { FocusRequester() },
     downFocusRequester: () -> FocusRequester = { FocusRequester.Default },
     onFilterClick: (SearchFilter) -> Unit = {},
 ) {
@@ -30,14 +33,18 @@ internal fun SearchFiltersList(
             .fillMaxWidth()
             .focusGroup(),
     ) {
-        SearchFilter.entries.forEach { filter ->
+        SearchFilter.entries.forEachIndexed { index, filter ->
             FilterChip(
                 text = stringResource(filter.displayRes),
                 icon = painterResource(filter.iconRes),
                 selected = filter == selectedFilter,
-                modifier = Modifier.focusProperties {
-                    down = downFocusRequester()
-                },
+                modifier = Modifier
+                    .focusProperties {
+                        down = downFocusRequester()
+                    }
+                    .then(
+                        if (index == 0) Modifier.focusRequester(firstFocusRequester) else Modifier,
+                    ),
                 onClick = {
                     if (filter != selectedFilter) {
                         onFilterClick(filter)
