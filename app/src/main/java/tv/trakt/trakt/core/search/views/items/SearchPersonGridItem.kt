@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.core.search.model.SearchItem
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Person
-import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme

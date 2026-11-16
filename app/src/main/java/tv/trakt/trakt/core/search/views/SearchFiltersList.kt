@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.core.search.model.SearchFilter
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
-import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme

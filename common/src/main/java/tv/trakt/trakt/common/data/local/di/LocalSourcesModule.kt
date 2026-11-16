@@ -14,6 +14,8 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.search.data.local.people.SearchPeopleLocalSource
+import tv.trakt.trakt.common.core.search.data.local.popular.PopularSearchLocalSource
 import tv.trakt.trakt.common.data.local.AllActivityLocalSource
 import tv.trakt.trakt.common.data.local.AnticipatedMoviesLocalSource
 import tv.trakt.trakt.common.data.local.AnticipatedShowsLocalSource
@@ -61,6 +63,7 @@ private const val TODAY_PREFERENCES = "today_preferences_mobile"
 private const val MOVIES_PREFERENCES = "movies_preferences"
 private const val SHOWS_PREFERENCES = "shows_preferences"
 private const val POSTER_LANGUAGES_PREFERENCES = "poster_languages"
+private const val SEARCH_PREFERENCES = "search_preferences"
 
 val localSourcesModule = module {
     singleOf(::AllActivityLocalSource)
@@ -162,6 +165,25 @@ val localSourcesModule = module {
         createMigratedStore(
             context = androidApplication(),
             key = SHOWS_PREFERENCES,
+        )
+    }
+
+    single {
+        SearchPeopleLocalSource(
+            dataStore = get(named(SEARCH_PREFERENCES)),
+        )
+    }
+
+    single {
+        PopularSearchLocalSource(
+            dataStore = get(named(SEARCH_PREFERENCES)),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(SEARCH_PREFERENCES)) {
+        createMigratedStore(
+            context = androidApplication(),
+            key = SEARCH_PREFERENCES,
         )
     }
 

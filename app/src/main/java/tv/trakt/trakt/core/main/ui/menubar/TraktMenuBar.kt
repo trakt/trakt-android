@@ -47,6 +47,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.common.core.search.model.SearchFilter
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -58,7 +59,6 @@ import tv.trakt.trakt.core.main.MainSearchState
 import tv.trakt.trakt.core.main.MainSearchStateHolder
 import tv.trakt.trakt.core.main.model.NavigationItem
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
-import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.views.SearchFiltersList
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark

@@ -1,7 +1,9 @@
-package tv.trakt.trakt.core.search
+package tv.trakt.trakt.common.core.search
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.core.search.model.SearchInput
+import tv.trakt.trakt.common.core.search.model.SearchItem
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Movie
@@ -9,13 +11,9 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
-import tv.trakt.trakt.core.search.features.game.isGameKeyword
-import tv.trakt.trakt.core.search.model.SearchFilter
-import tv.trakt.trakt.core.search.model.SearchInput
-import tv.trakt.trakt.core.search.model.SearchItem
 
 @Immutable
-internal data class SearchState(
+data class SearchState(
     val input: SearchInput = SearchInput(),
     val state: State = State.IDLE,
     val popularLoading: LoadingState = LoadingState.Idle,
@@ -30,9 +28,6 @@ internal data class SearchState(
     val searching: Boolean = false,
     val error: Exception? = null,
 ) {
-    val showGameCard: Boolean
-        get() = input.filter in GameCardFilters && isGameKeyword(input.query) && !searchResult?.items.isNullOrEmpty()
-
     data class UserState(
         val user: User? = null,
         val loading: LoadingState = LoadingState.Idle,
@@ -44,14 +39,6 @@ internal data class SearchState(
     data class SearchResult(
         val items: ImmutableList<SearchItem>? = null,
     )
-
-    private companion object {
-        val GameCardFilters = setOf(
-            SearchFilter.MEDIA,
-            SearchFilter.SHOWS,
-            SearchFilter.MOVIES,
-        )
-    }
 
     enum class State {
         IDLE,

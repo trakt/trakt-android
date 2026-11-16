@@ -2,13 +2,13 @@ package tv.trakt.trakt.core.search.views
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import tv.trakt.trakt.common.core.search.model.SearchFilter
+import tv.trakt.trakt.common.core.search.model.SearchItem
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
-import tv.trakt.trakt.core.search.model.SearchFilter
-import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.core.search.views.items.SearchListGridItem
 import tv.trakt.trakt.core.search.views.items.SearchMovieGridItem
 import tv.trakt.trakt.core.search.views.items.SearchPersonGridItem

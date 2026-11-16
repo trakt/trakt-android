@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.search.model
+package tv.trakt.trakt.common.core.search.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

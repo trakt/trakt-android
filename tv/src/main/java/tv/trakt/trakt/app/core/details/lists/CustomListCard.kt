@@ -2,10 +2,12 @@ package tv.trakt.trakt.app.core.details.lists
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RadialGradientShader
+import androidx.compose.ui.graphics.Shader
+import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -47,8 +55,11 @@ import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Type
-import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.resources.R
+
+private val PosterWidth = 70.dp
+private val PosterOffset = 32.dp
+internal val CardShape = RoundedCornerShape(16.dp)
 
 @Composable
 internal fun CustomListCard(
@@ -78,18 +89,14 @@ private fun CustomListCardContent(
     liked: Boolean = false,
     onClick: () -> Unit,
 ) {
-    val containerColor =
-        when (list.type) {
-            Type.Official -> Purple900
-            else -> TraktTheme.colors.customListContainer
-        }
+    val containerColor = TraktTheme.colors.customListContainer
 
     Card(
         onClick = onClick,
         modifier = modifier,
         shape =
             CardDefaults.shape(
-                shape = RoundedCornerShape(12.dp),
+                shape = CardShape,
             ),
         border =
             CardDefaults.border(
@@ -100,7 +107,7 @@ private fun CustomListCardContent(
                                 width = (2.75).dp,
                                 color = TraktTheme.colors.accent,
                             ),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = CardShape,
                     ),
             ),
         colors =
@@ -130,11 +137,34 @@ private fun CustomListContent(
     likesVisible: Boolean,
     liked: Boolean,
 ) {
+    val containerColor = TraktTheme.colors.customListContainer
+    val gradientColor = TraktTheme.colors.customListGradient
+
+    val radialGradient =
+        remember(containerColor, gradientColor) {
+            object : ShaderBrush() {
+                override fun createShader(size: Size): Shader {
+                    return RadialGradientShader(
+                        colors = listOf(gradientColor, containerColor),
+                        center = Offset(size.width / 4, size.height * 1.5F),
+                        radius = size.width * 1.2F,
+                    )
+                }
+            }
+        }
+
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.CenterVertically),
         modifier =
             Modifier
                 .fillMaxSize()
+                .background(
+                    brush =
+                        when (list.type) {
+                            Type.Official -> radialGradient
+                            else -> SolidColor(containerColor)
+                        },
+                )
                 .padding(vertical = 16.dp),
     ) {
         CustomListHeader(
@@ -151,7 +181,7 @@ private fun CustomListContent(
             }
 
         images?.let {
-            Box(
+            BoxWithConstraints(
                 modifier =
                     Modifier
                         .padding(
@@ -160,15 +190,16 @@ private fun CustomListContent(
                             end = 16.dp,
                         ),
             ) {
-                it.forEachIndexed { index, url ->
+                val fittingCount = ((maxWidth - PosterWidth) / PosterOffset).toInt() + 1
+                it.take(fittingCount).forEachIndexed { index, url ->
                     VerticalMediaCard(
                         title = "",
                         imageUrl = url,
-                        width = 70.dp,
+                        width = PosterWidth,
                         corner = 8.dp,
                         modifier =
                             Modifier
-                                .padding(start = (32 * index).dp),
+                                .padding(start = PosterOffset * index),
                     )
                 }
             }
@@ -226,7 +257,9 @@ private fun CustomListHeader(
             Column(verticalArrangement = spacedBy(2.dp)) {
                 Text(
                     text = list.name,
-                    style = TraktTheme.typography.paragraph,
+                    style = TraktTheme.typography.paragraph.copy(
+                        fontSize = 13.sp,
+                    ),
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

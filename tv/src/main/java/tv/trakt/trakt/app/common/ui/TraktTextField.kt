@@ -68,7 +68,7 @@ internal fun TraktTextField(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .background(
-                        color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
+                        color = TraktTheme.colors.inputContainer.copy(alpha = 0.5F),
                         shape = RoundedCornerShape(16.dp),
                     )
                     .border(
