@@ -78,9 +78,6 @@ internal class NotesViewModel(
         if (editorState.value != null || job?.isActive == true) {
             return
         }
-        if (notesState.value.orEmpty().any { it.type == type }) {
-            return
-        }
 
         job = viewModelScope.launch {
             try {
@@ -93,6 +90,14 @@ internal class NotesViewModel(
                     if (!limit.isVip) {
                         analytics.logVipGate(feature = "notes")
                     }
+                    return@launch
+                }
+
+                if (notesState.value == null) {
+                    refreshNotes()
+                }
+                val notes = notesState.value ?: return@launch
+                if (notes.any { it.type == type }) {
                     return@launch
                 }
 
