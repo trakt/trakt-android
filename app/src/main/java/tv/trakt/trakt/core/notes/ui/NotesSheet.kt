@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -196,8 +197,7 @@ private fun NoteCard(
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
                     .border(1.dp, TraktTheme.colors.separator, CircleShape)
-                    .padding(7.dp)
-                    .size(18.dp),
+                    .size(24.dp),
             )
 
             Column(modifier = Modifier.weight(1F)) {
@@ -209,14 +209,16 @@ private fun NoteCard(
                         },
                     ),
                     color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.paragraph.copy(fontWeight = W600),
+                    style = TraktTheme.typography.cardTitle.copy(
+                        fontSize = 14.sp,
+                    ),
                     maxLines = 1,
                     overflow = Ellipsis,
                 )
                 Text(
                     text = note.updatedAt.toLocalDate().relativeDateString(),
                     color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta,
+                    style = TraktTheme.typography.cardSubtitle,
                     maxLines = 1,
                     overflow = Ellipsis,
                 )
@@ -233,7 +235,7 @@ private fun NoteCard(
         Text(
             text = note.text,
             color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.paragraph,
+            style = TraktTheme.typography.paragraphSmall,
         )
     }
 }
