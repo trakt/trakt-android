@@ -53,11 +53,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ShowDetailsContextView(
     show: Show,
     showProgress: ProgressState?,
+    notes: Boolean,
     viewModel: ShowDetailsContextViewModel,
     modifier: Modifier = Modifier,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
 ) {
@@ -66,10 +68,12 @@ internal fun ShowDetailsContextView(
     ShowDetailsContextViewContent(
         show = show,
         showProgress = showProgress,
+        notes = notes,
         state = state,
         onHistoryClick = onHistoryClick,
         onCheckClick = onCheckClick,
         onListsClick = onListsClick,
+        onNotesClick = onNotesClick,
         onCoverClick = onCoverClick,
         onReportClick = onReportClick,
         onStreamClick = viewModel::logStreamOn,
@@ -81,11 +85,13 @@ internal fun ShowDetailsContextView(
 private fun ShowDetailsContextViewContent(
     show: Show,
     showProgress: ProgressState?,
+    notes: Boolean,
     state: ShowDetailsContextState,
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
     onHistoryClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onStreamClick: (StreamingService) -> Unit = {},
@@ -167,11 +173,13 @@ private fun ShowDetailsContextViewContent(
             started = showProgress?.isWatching == true,
             watched = showProgress?.isWatched == true,
             lists = showProgress?.inLists == true,
+            notes = notes,
             watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
             coverEnabled = !show.images?.getFanartUrl().isNullOrBlank(),
             onCheckClick = onCheckClick ?: {},
             onHistoryClick = onHistoryClick ?: {},
             onListsClick = onListsClick ?: {},
+            onNotesClick = onNotesClick ?: {},
             onCoverClick = onCoverClick ?: {},
             onReportClick = onReportClick ?: {},
             modifier = Modifier.padding(top = 14.dp),
@@ -224,6 +232,7 @@ private fun ActionButtons(
     watched: Boolean,
     released: Boolean,
     lists: Boolean,
+    notes: Boolean,
     watchOnlyOnce: Boolean?,
     coverEnabled: Boolean,
     modifier: Modifier = Modifier,
@@ -232,6 +241,7 @@ private fun ActionButtons(
     onReportClick: () -> Unit,
     onHistoryClick: () -> Unit,
     onListsClick: () -> Unit,
+    onNotesClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -271,6 +281,20 @@ private fun ActionButtons(
                         translationX = -4.dp.toPx()
                     },
                 onClick = onListsClick,
+            )
+        }
+
+        if (notes) {
+            GhostButton(
+                text = stringResource(R.string.drawer_title_notes),
+                icon = painterResource(R.drawable.ic_notes),
+                iconSize = 22.dp,
+                iconSpace = 15.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -4.dp.toPx()
+                    },
+                onClick = onNotesClick,
             )
         }
 
@@ -335,6 +359,7 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowDetailsContextViewContent(
                 show = PreviewData.show1,
+                notes = true,
                 showProgress = ProgressState(
                     aired = 10,
                     plays = 5,

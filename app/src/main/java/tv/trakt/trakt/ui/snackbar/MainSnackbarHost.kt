@@ -51,7 +51,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.time.Duration.Companion.seconds
 
 internal val ShortSnackDuration = 2.5.seconds
-internal val LongSnackDuration = 4.5.seconds
+internal val LongSnackDuration = 5.seconds
 
 @Composable
 internal fun MainSnackbarHost(
@@ -159,6 +159,7 @@ private fun MainSnackbar(
                         letterSpacing = 0.01.em,
                     ),
                     modifier = Modifier
+                        .padding(vertical = 16.dp)
                         .padding(end = 4.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .onClick(onClick = onActionClick)
@@ -169,7 +170,7 @@ private fun MainSnackbar(
                         )
                         .padding(
                             horizontal = 12.dp,
-                            vertical = 7.dp,
+                            vertical = 8.dp,
                         ),
                 )
             }

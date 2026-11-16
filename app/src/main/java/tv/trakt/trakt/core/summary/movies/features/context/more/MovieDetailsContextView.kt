@@ -53,11 +53,13 @@ internal fun MovieDetailsContextView(
     movie: Movie,
     watched: Boolean,
     lists: Boolean,
+    notes: Boolean,
     viewModel: MovieDetailsContextViewModel,
     modifier: Modifier = Modifier,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
 ) {
@@ -67,10 +69,12 @@ internal fun MovieDetailsContextView(
         movie = movie,
         watched = watched,
         lists = lists,
+        notes = notes,
         state = state,
         onCheckClick = onCheckClick,
         onHistoryClick = onHistoryClick,
         onListsClick = onListsClick,
+        onNotesClick = onNotesClick,
         onCoverClick = onCoverClick,
         onReportClick = onReportClick,
         onStreamClick = viewModel::logStreamOn,
@@ -83,11 +87,13 @@ private fun MovieDetailsContextViewContent(
     movie: Movie,
     watched: Boolean,
     lists: Boolean,
+    notes: Boolean,
     state: MovieDetailsContextState,
     modifier: Modifier = Modifier,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onStreamClick: (StreamingService) -> Unit = {},
@@ -167,11 +173,13 @@ private fun MovieDetailsContextViewContent(
             watched = watched,
             released = isReleased,
             lists = lists,
+            notes = notes,
             watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
             coverEnabled = !movie.images?.getFanartUrl().isNullOrBlank(),
             onCheckClick = onCheckClick ?: {},
             onHistoryClick = onHistoryClick ?: {},
             onListsClick = onListsClick ?: {},
+            onNotesClick = onNotesClick ?: {},
             onCoverClick = onCoverClick ?: {},
             onReportClick = onReportClick ?: {},
             modifier = Modifier
@@ -223,6 +231,7 @@ private fun WatchButton(
 private fun ActionButtons(
     watched: Boolean,
     lists: Boolean,
+    notes: Boolean,
     released: Boolean,
     watchOnlyOnce: Boolean?,
     coverEnabled: Boolean,
@@ -230,6 +239,7 @@ private fun ActionButtons(
     onCheckClick: () -> Unit,
     onHistoryClick: () -> Unit,
     onListsClick: () -> Unit,
+    onNotesClick: () -> Unit,
     onCoverClick: () -> Unit,
     onReportClick: () -> Unit,
 ) {
@@ -271,6 +281,20 @@ private fun ActionButtons(
                         translationX = -4.dp.toPx()
                     },
                 onClick = onListsClick,
+            )
+        }
+
+        if (notes) {
+            GhostButton(
+                text = stringResource(R.string.drawer_title_notes),
+                icon = painterResource(R.drawable.ic_notes),
+                iconSize = 22.dp,
+                iconSpace = 15.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -4.dp.toPx()
+                    },
+                onClick = onNotesClick,
             )
         }
 
@@ -377,6 +401,7 @@ private fun Preview() {
                     movie = PreviewData.movie1,
                     watched = false,
                     lists = false,
+                    notes = false,
                     state = state,
                 )
 
@@ -384,6 +409,7 @@ private fun Preview() {
                     movie = PreviewData.movie1,
                     watched = true,
                     lists = true,
+                    notes = true,
                     state = state,
                 )
             }

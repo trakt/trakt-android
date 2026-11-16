@@ -22,6 +22,7 @@ private const val PARAMETER_RATING = "rating_value"
 private const val PARAMETER_COUNT = "count"
 private const val PARAMETER_RESULT = "result"
 private const val PARAMETER_MODE = "mode"
+private const val PARAMETER_FEATURE = "feature"
 private const val PARAMETER_PLAN = "plan"
 private const val PARAMETER_FLOW = "flow"
 private const val PARAMETER_ERROR = "error"
@@ -83,6 +84,10 @@ internal class FirebaseAnalytics(
         const val SEARCH = "search"
         const val VIP_UPGRADE = "vip_upgrade"
         const val VIP_UPSELL = "vip_upsell"
+        const val VIP_GATE = "vip_gate"
+        const val NOTE_ADD = "note_add"
+        const val NOTE_EDIT = "note_edit"
+        const val NOTE_DELETE = "note_delete"
         const val SHARE = "share"
         const val SOCIAL_FOLLOW = "social_follow"
         const val SOCIAL_BLOCK = "social_block"
@@ -115,6 +120,10 @@ internal class FirebaseAnalytics(
             SEARCH,
             VIP_UPGRADE,
             VIP_UPSELL,
+            VIP_GATE,
+            NOTE_ADD,
+            NOTE_EDIT,
+            NOTE_DELETE,
             SHARE,
             SOCIAL_FOLLOW,
             SOCIAL_BLOCK,
@@ -209,6 +218,34 @@ internal class FirebaseAnalytics(
         firebaseAnalytics.logEvent(
             eventName(SEARCH),
             bundleOf(PARAMETER_MODE to mode.lowercase()),
+        )
+    }
+
+    override fun logNoteAdd(type: String) {
+        firebaseAnalytics.logEvent(
+            eventName(NOTE_ADD),
+            bundleOf(PARAMETER_TYPE to type.lowercase()),
+        )
+    }
+
+    override fun logNoteEdit(type: String) {
+        firebaseAnalytics.logEvent(
+            eventName(NOTE_EDIT),
+            bundleOf(PARAMETER_TYPE to type.lowercase()),
+        )
+    }
+
+    override fun logNoteDelete(type: String) {
+        firebaseAnalytics.logEvent(
+            eventName(NOTE_DELETE),
+            bundleOf(PARAMETER_TYPE to type.lowercase()),
+        )
+    }
+
+    override fun logVipGate(feature: String) {
+        firebaseAnalytics.logEvent(
+            eventName(VIP_GATE),
+            bundleOf(PARAMETER_FEATURE to feature.lowercase()),
         )
     }
 

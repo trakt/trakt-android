@@ -3,15 +3,19 @@ package tv.trakt.trakt.core.summary.movies.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.ExtraVideo
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.movies.MovieDetailsScreen
@@ -42,9 +46,14 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateVip: (VipUpsellSource) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    composable<MovieDetailsDestination> {
+    composable<MovieDetailsDestination> { entry ->
+        val movieId = entry.toRoute<MovieDetailsDestination>().movieId.toTraktId()
+
         MovieDetailsScreen(
             viewModel = koinViewModel(),
+            notesViewModel = koinViewModel(
+                parameters = { parametersOf(MediaType.Movie, movieId) },
+            ),
             onMovieClick = { onNavigateToMovie(it.ids.trakt) },
             onCommentsClick = { movie, filter ->
                 onNavigateToComments(movie, filter)

@@ -70,6 +70,7 @@ import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.NoteType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.User
@@ -82,6 +83,9 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsMedia
 import tv.trakt.trakt.core.lists.features.manage.ManageListsSheet
 import tv.trakt.trakt.core.lists.features.manage.ManageListsTarget
+import tv.trakt.trakt.core.notes.NotesViewModel
+import tv.trakt.trakt.core.notes.ui.NoteEditorSheet
+import tv.trakt.trakt.core.notes.ui.NotesSheet
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.report.ReportSheet
 import tv.trakt.trakt.core.report.model.ReportTarget
@@ -115,12 +119,14 @@ import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.components.vip.onUpsellSeen
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
+import tv.trakt.trakt.ui.snackbar.showFavoriteNotePrompt
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel,
+    notesViewModel: NotesViewModel,
     onMovieClick: ((Movie) -> Unit),
     onCommentsClick: ((Movie, CommentsFilter) -> Unit),
     onListClick: ((Movie, CustomList) -> Unit),
@@ -145,8 +151,10 @@ internal fun MovieDetailsScreen(
     val localRateVisibility = LocalRatePromptVisibility.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val notesState by notesViewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
+    var notesSheet by remember { mutableStateOf(false) }
     var detailsSheet by remember { mutableStateOf<Movie?>(null) }
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
     var listsSheet by remember { mutableStateOf<Movie?>(null) }
@@ -201,6 +209,8 @@ internal fun MovieDetailsScreen(
         onShareImageClick = {
             state.movie?.let { shareSheet = true }
         },
+        notes = notesState.hasNotes,
+        onNotesClick = { notesSheet = true },
         onSocialActivityClick = {
             state.movieSocials?.let {
                 socialActivitySheet = it
@@ -346,6 +356,8 @@ internal fun MovieDetailsScreen(
         movie = contextSheet,
         watched = (state.movieProgress?.plays ?: 0) > 0,
         lists = state.movieProgress?.inLists == true,
+        notes = notesState.hasNotes,
+        onNotesClick = { notesSheet = true },
         onHistoryClick = {
             contextSheet = null
             state.movie?.let {
@@ -424,6 +436,39 @@ internal fun MovieDetailsScreen(
         },
     )
 
+    NotesSheet(
+        active = notesSheet,
+        title = state.movie?.title.orEmpty(),
+        notes = notesState.notes,
+        deleting = notesState.loadingDelete.isLoading,
+        onEditClick = notesViewModel::editNote,
+        onDeleteConfirm = notesViewModel::deleteNote,
+        onDismiss = { notesSheet = false },
+    )
+
+    NoteEditorSheet(
+        editor = notesState.editor,
+        title = state.movie?.title.orEmpty(),
+        loading = notesState.loadingEditor.isLoading,
+        error = notesState.error,
+        onSubmitClick = notesViewModel::submitNote,
+        onErrorClick = notesViewModel::clearError,
+        onDismiss = notesViewModel::closeEditor,
+    )
+
+    LaunchedEffect(state.notePrompt) {
+        if (!state.notePrompt) {
+            return@LaunchedEffect
+        }
+        haptic.performHapticFeedback(Confirm)
+        viewModel.clearNotePrompt()
+        scope.launch {
+            snack.showFavoriteNotePrompt(context.resources) {
+                notesViewModel.addNote(NoteType.Favorites)
+            }
+        }
+    }
+
     LaunchedEffect(state.info) {
         if (state.info == null) {
             return@LaunchedEffect
@@ -450,6 +495,8 @@ internal fun MovieDetailsContent(
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onShareImageClick: (() -> Unit)? = null,
+    notes: Boolean = false,
+    onNotesClick: (() -> Unit)? = null,
     onSocialActivityClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onWatchedClick: (() -> Unit)? = null,
@@ -555,6 +602,8 @@ internal fun MovieDetailsContent(
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
+                        notes = notes,
+                        onNotesClick = onNotesClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier

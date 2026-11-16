@@ -29,9 +29,11 @@ internal fun MovieDetailsContextSheet(
     movie: Movie?,
     watched: Boolean,
     lists: Boolean,
+    notes: Boolean,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onNotesClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
@@ -48,6 +50,7 @@ internal fun MovieDetailsContextSheet(
                 movie = movie,
                 watched = watched,
                 lists = lists,
+                notes = notes,
                 viewModel = koinViewModel(
                     key = viewModelKey,
                     parameters = { parametersOf(movie) },
@@ -76,6 +79,15 @@ internal fun MovieDetailsContextSheet(
                         .invokeOnCompletion {
                             if (!state.isVisible) {
                                 onDismiss()
+                            }
+                        }
+                },
+                onNotesClick = {
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                                onNotesClick?.invoke()
                             }
                         }
                 },

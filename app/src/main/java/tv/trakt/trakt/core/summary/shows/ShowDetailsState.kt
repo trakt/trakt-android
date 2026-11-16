@@ -29,6 +29,7 @@ internal data class ShowDetailsState(
     val loadingLists: LoadingState = LoadingState.Idle,
     val loadingFavorite: LoadingState = LoadingState.Idle,
     val info: StringResource? = null,
+    val notePrompt: Boolean = false,
     val error: Exception? = null,
     val user: User? = null,
     val lightsaber: Boolean = false,
