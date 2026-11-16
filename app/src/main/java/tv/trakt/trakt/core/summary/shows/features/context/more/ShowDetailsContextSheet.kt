@@ -82,11 +82,11 @@ internal fun ShowDetailsContextSheet(
                         }
                 },
                 onNotesClick = {
-                    onNotesClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {
                                 onDismiss()
+                                onNotesClick?.invoke()
                             }
                         }
                 },

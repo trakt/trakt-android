@@ -4,13 +4,13 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.data.remote.NotesRemoteSource
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.UserNote
-import tv.trakt.trakt.common.networking.api.v3.V3Api
 
 internal class GetMediaNotesUseCase(
-    private val v3Api: V3Api,
+    private val remoteSource: NotesRemoteSource,
     private val sessionManager: SessionManager,
 ) {
     suspend fun getNotes(
@@ -20,7 +20,7 @@ internal class GetMediaNotesUseCase(
         if (!sessionManager.isAuthenticated()) {
             return persistentListOf()
         }
-        return v3Api.getUserNotes(type, mediaId)
+        return remoteSource.getNotes(type, mediaId)
             .mapNotNull(UserNote::fromDto)
             .sortedByDescending { it.updatedAt }
             .toImmutableList()

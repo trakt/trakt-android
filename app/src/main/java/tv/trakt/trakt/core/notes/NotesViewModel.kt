@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.notes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -57,14 +58,18 @@ internal class NotesViewModel(
 
     private fun loadNotes() {
         viewModelScope.launch {
-            try {
-                notesState.update {
-                    getNotesUseCase.getNotes(mediaType, mediaId)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+            refreshNotes()
+        }
+    }
+
+    private suspend fun refreshNotes() {
+        try {
+            notesState.update {
+                getNotesUseCase.getNotes(mediaType, mediaId)
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }
@@ -140,8 +145,8 @@ internal class NotesViewModel(
                     }
                 }
 
-                notesState.update { getNotesUseCase.getNotes(mediaType, mediaId) }
                 editorState.update { null }
+                refreshNotes()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -164,7 +169,10 @@ internal class NotesViewModel(
                 loadingDeleteState.update { Loading }
                 deleteNoteUseCase.deleteNote(note)
                 analytics.logNoteDelete(type = note.type.value)
-                notesState.update { getNotesUseCase.getNotes(mediaType, mediaId) }
+                notesState.update { notes ->
+                    notes?.filterNot { it.id == note.id }?.toImmutableList()
+                }
+                refreshNotes()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
