@@ -1,11 +1,17 @@
 package tv.trakt.trakt.core.profile.sections.thismonth.usecases
 
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.model.ProgressItem
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.data.remote.UserRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
+import tv.trakt.trakt.common.helpers.extensions.recordError
+import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.UserStats
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
@@ -14,17 +20,23 @@ import java.time.ZonedDateTime
 
 internal class GetProfileStatsUseCase(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val userRemoteSource: UserRemoteSource,
+    private val sessionManager: SessionManager,
 ) {
     suspend fun getProfileStats(): ProfileStats {
         return coroutineScope {
             val currentDate = nowLocal()
+            val isVip = sessionManager.getProfile()?.isAnyVip == true
 
             val showsAsync = async { loadShowsEpisodesCount(currentDate) }
             val moviesAsync = async { loadMoviesCount(currentDate) }
+            val ratingsAsync = async { if (isVip) 0 else loadRatingsCount() }
+            val commentsAsync = async { if (isVip) 0 else loadCommentsCount() }
 
             val shows = showsAsync.await()
             val movies = moviesAsync.await()
+            val allPlays = shows.allPlays + movies.allPlays
 
             ProfileStats(
                 showsCount = shows.showsThisMonth,
@@ -34,16 +46,60 @@ internal class GetProfileStatsUseCase(
                 allShowsCount = shows.allShows,
                 allEpisodesCount = shows.allEpisodes,
                 allMoviesCount = movies.allMovies,
-                allPlaysCount = shows.allPlays + movies.allPlays,
+                allPlaysCount = allPlays,
+                allTime = if (isVip) {
+                    null
+                } else {
+                    UserStats(
+                        totalMinutes = null,
+                        totalPlays = allPlays,
+                        moviesWatched = movies.allMovies,
+                        showsWatched = shows.allShows,
+                        episodesWatched = shows.allEpisodes,
+                        ratings = ratingsAsync.await(),
+                        comments = commentsAsync.await(),
+                    )
+                },
             )
         }
     }
 
     /**
-     * Full all-time stats from the API, or null for accounts without VIP.
+     * Full all-time stats from the API. The API only has them for VIP accounts, so this is null
+     * for everyone else and [getProfileStats] builds them from local data instead.
      */
     suspend fun getAllTimeStats(): UserStats? {
+        val user = sessionManager.getProfile() ?: return null
+        if (!user.isAnyVip) return null
+
         return userRemoteSource.getStats(userId = "me")?.let(UserStats::fromDto)
+    }
+
+    private suspend fun loadRatingsCount(): Int {
+        return try {
+            coroutineScope {
+                with(loadUserRatingsUseCase) {
+                    listOf(
+                        async { if (isMoviesLoaded()) loadLocalMovies() else loadMovies() },
+                        async { if (isShowsLoaded()) loadLocalShows() else loadShows() },
+                        async { if (isSeasonsLoaded()) loadLocalSeasons() else loadSeasons() },
+                        async { if (isEpisodesLoaded()) loadLocalEpisodes() else loadEpisodes() },
+                    ).awaitAll().sumOf { it.size }
+                }
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation { Timber.recordError(error) }
+            0
+        }
+    }
+
+    private suspend fun loadCommentsCount(): Int {
+        return try {
+            userRemoteSource.getCommentsCount() ?: 0
+        } catch (error: Exception) {
+            error.rethrowCancellation { Timber.recordError(error) }
+            0
+        }
     }
 
     private suspend fun loadMoviesCount(currentDate: ZonedDateTime): MoviesCounts {

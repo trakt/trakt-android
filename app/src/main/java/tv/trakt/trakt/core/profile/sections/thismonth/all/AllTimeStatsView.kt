@@ -237,7 +237,7 @@ private fun ProfileStats.toSections(): List<StatSection> {
                 StatTile(R.string.label_stats_shows, allTime?.showsWatched ?: allShowsCount),
                 StatTile(R.string.label_stats_movies, allTime?.moviesWatched ?: allMoviesCount),
                 StatTile(R.string.label_stats_plays, allTime?.totalPlays),
-                StatTile(R.string.label_stats_hours, allTime?.let { (it.totalMinutes / 60.0).roundToInt() }),
+                StatTile(R.string.label_stats_hours, allTime?.totalMinutes?.let { (it / 60.0).roundToInt() }),
             ),
         ),
         StatSection(

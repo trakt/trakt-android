@@ -156,7 +156,7 @@ internal class ProfileViewModel(
                 }
                 val stats = getProfileStatsUseCase.getProfileStats()
                 monthStatsState.update {
-                    stats.copy(allTime = it?.allTime ?: latestAllTime)
+                    stats.copy(allTime = stats.allTime ?: it?.allTime ?: latestAllTime)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -171,7 +171,7 @@ internal class ProfileViewModel(
     private fun loadAllTimeStats() {
         viewModelScope.launch {
             try {
-                val allTime = getProfileStatsUseCase.getAllTimeStats()
+                val allTime = getProfileStatsUseCase.getAllTimeStats() ?: return@launch
                 latestAllTime = allTime
                 monthStatsState.update {
                     it?.copy(allTime = allTime)
