@@ -23,7 +23,7 @@ internal fun DetailsHeaderNotesButton(
         tint = TraktTheme.colors.textPrimary,
         contentDescription = null,
         modifier = modifier
-            .padding(start = 20.dp, top = 18.dp)
+            .padding(start = 20.dp, top = 20.dp)
             .size(24.dp)
             .onClick(onClick = onClick),
     )
