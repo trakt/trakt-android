@@ -9,7 +9,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -59,6 +63,7 @@ fun DetailsHeaderPoster(
     onWatchedClick: () -> Unit,
     topRightContent: (@Composable () -> Unit)? = null,
     extraRightColumn: @Composable () -> Unit = {},
+    extraRightColumnAtBottom: Boolean = false,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
@@ -85,6 +90,11 @@ fun DetailsHeaderPoster(
         Row(
             horizontalArrangement = spacedBy(0.dp, CenterHorizontally),
             verticalAlignment = Alignment.Top,
+            modifier = Modifier.ifOrElse(
+                extraRightColumnAtBottom,
+                isTrue = Modifier.height(IntrinsicSize.Min),
+                isFalse = Modifier,
+            ),
         ) {
             val posterSpace = TraktTheme.spacing.detailsHeaderHorizontalSpace
 
@@ -153,6 +163,11 @@ fun DetailsHeaderPoster(
             Column(
                 modifier = Modifier
                     .width(posterSpace)
+                    .ifOrElse(
+                        extraRightColumnAtBottom,
+                        isTrue = Modifier.fillMaxHeight(),
+                        isFalse = Modifier,
+                    )
                     .padding(top = 8.dp),
                 horizontalAlignment = Alignment.Start,
             ) {
@@ -169,6 +184,10 @@ fun DetailsHeaderPoster(
                     onShareImageClick = onShareImageClick,
                     modifier = Modifier.padding(start = 20.dp),
                 )
+
+                if (extraRightColumnAtBottom) {
+                    Spacer(modifier = Modifier.weight(1F))
+                }
 
                 extraRightColumn.invoke()
             }

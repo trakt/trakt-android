@@ -104,6 +104,7 @@ internal fun DetailsHeader(
     loading: Boolean,
     topRightContent: @Composable (() -> Unit)? = null,
     extraRightColumn: @Composable (() -> Unit)? = null,
+    extraRightColumnAtBottom: Boolean = false,
     onImdbClick: () -> Unit,
     onMalClick: (link: String) -> Unit,
     onLetterboxdClick: (link: String) -> Unit,
@@ -136,6 +137,7 @@ internal fun DetailsHeader(
                 onWatchedClick = onWatchedClick ?: {},
                 topRightContent = topRightContent,
                 extraRightColumn = extraRightColumn ?: {},
+                extraRightColumnAtBottom = extraRightColumnAtBottom,
             )
         } else {
             DetailsHeaderPosterHorizontal(

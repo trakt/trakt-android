@@ -99,6 +99,7 @@ internal fun DetailsHeader(
                 }
             }
         },
+        extraRightColumnAtBottom = true,
         genres = EmptyImmutableList,
         imageUrl = person.images?.getHeadshotUrl(),
         imagePlaceholderUrl = person.images?.getPosterUrl(Size.THUMB),
