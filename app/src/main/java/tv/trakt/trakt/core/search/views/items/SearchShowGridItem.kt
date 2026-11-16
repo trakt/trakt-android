@@ -18,10 +18,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.core.search.model.SearchFilter
+import tv.trakt.trakt.common.core.search.model.SearchItem
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.core.search.model.SearchFilter
-import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.search.model
+package tv.trakt.trakt.common.core.search.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Images
@@ -10,30 +10,30 @@ import tv.trakt.trakt.common.model.Person as PersonModel
 import tv.trakt.trakt.common.model.Show as ShowModel
 
 @Immutable
-internal sealed class SearchItem(
+sealed class SearchItem(
     open val rank: Long,
 ) {
     @Immutable
-    internal data class Movie(
+    data class Movie(
         override val rank: Long,
         val movie: MovieModel,
     ) : SearchItem(rank)
 
     @Immutable
-    internal data class Show(
+    data class Show(
         override val rank: Long,
         val show: ShowModel,
     ) : SearchItem(rank)
 
     @Immutable
-    internal data class Person(
+    data class Person(
         override val rank: Long,
         val person: PersonModel,
         val showBirthday: Boolean = false,
     ) : SearchItem(rank)
 
     @Immutable
-    internal data class List(
+    data class List(
         val list: CustomList,
         val liked: Boolean,
     ) : SearchItem(rank = 0L)

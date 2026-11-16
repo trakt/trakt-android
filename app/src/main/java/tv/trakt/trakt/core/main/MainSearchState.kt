@@ -15,9 +15,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import kotlinx.coroutines.delay
+import tv.trakt.trakt.common.core.search.model.SearchFilter
+import tv.trakt.trakt.common.core.search.model.SearchInput
 import tv.trakt.trakt.core.main.navigation.isNonSearchDestination
-import tv.trakt.trakt.core.search.model.SearchFilter
-import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import kotlin.time.Duration.Companion.milliseconds
 

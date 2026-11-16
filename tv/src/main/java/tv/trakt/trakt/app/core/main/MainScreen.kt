@@ -259,6 +259,8 @@ private fun MainNavHost(
             searchScreen(
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToPerson = { navigateToPerson(it) },
+                onNavigateToList = { navigateToCustomListMedia(it, null) },
             )
             homeScreen(
                 onNavigateToAuth = { navigateToAuth() },

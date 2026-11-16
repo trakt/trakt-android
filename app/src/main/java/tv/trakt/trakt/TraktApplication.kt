@@ -20,6 +20,7 @@ import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
 import tv.trakt.trakt.common.core.lists.di.manageListsModule
+import tv.trakt.trakt.common.core.search.di.commonSearchModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.sync.changes.di.dataChangesModule
@@ -192,6 +193,7 @@ internal class TraktApplication : Application() {
                 listsModule,
                 listsDataModule,
                 manageListsModule,
+                commonSearchModule,
                 reactionsModule,
                 ratingsDataModule,
                 ratingsModule,

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.search
+package tv.trakt.trakt.common.core.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.search.SearchState.SearchResult
+import tv.trakt.trakt.common.core.search.SearchState.UserState
+import tv.trakt.trakt.common.core.search.model.SearchFilter.LISTS
+import tv.trakt.trakt.common.core.search.model.SearchFilter.MEDIA
+import tv.trakt.trakt.common.core.search.model.SearchFilter.MOVIES
+import tv.trakt.trakt.common.core.search.model.SearchFilter.PEOPLE
+import tv.trakt.trakt.common.core.search.model.SearchFilter.SHOWS
+import tv.trakt.trakt.common.core.search.model.SearchInput
+import tv.trakt.trakt.common.core.search.model.SearchItem
+import tv.trakt.trakt.common.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
+import tv.trakt.trakt.common.core.search.usecase.popular.GetPopularSearchUseCase
+import tv.trakt.trakt.common.core.search.usecase.popular.PostUserSearchUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
@@ -42,23 +54,11 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.search.SearchState.SearchResult
-import tv.trakt.trakt.core.search.SearchState.UserState
-import tv.trakt.trakt.core.search.model.SearchFilter.LISTS
-import tv.trakt.trakt.core.search.model.SearchFilter.MEDIA
-import tv.trakt.trakt.core.search.model.SearchFilter.MOVIES
-import tv.trakt.trakt.core.search.model.SearchFilter.PEOPLE
-import tv.trakt.trakt.core.search.model.SearchFilter.SHOWS
-import tv.trakt.trakt.core.search.model.SearchInput
-import tv.trakt.trakt.core.search.model.SearchItem
-import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
-import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
-import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
-internal class SearchViewModel(
+class SearchViewModel internal constructor(
     private val getPopularSearchesUseCase: GetPopularSearchUseCase,
     private val postUserSearchUseCase: PostUserSearchUseCase,
     private val getSearchResultsUseCase: GetSearchResultsUseCase,

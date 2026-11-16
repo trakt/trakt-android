@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.main.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import tv.trakt.trakt.common.core.search.model.SearchInput
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
@@ -72,7 +73,6 @@ import tv.trakt.trakt.core.profile.sections.social.all.navigation.allProfileSoci
 import tv.trakt.trakt.core.profile.sections.social.all.navigation.navigateToProfileSocial
 import tv.trakt.trakt.core.search.features.game.navigation.gameScreen
 import tv.trakt.trakt.core.search.features.game.navigation.navigateToGame
-import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.settings.features.younify.navigation.navigateToYounify

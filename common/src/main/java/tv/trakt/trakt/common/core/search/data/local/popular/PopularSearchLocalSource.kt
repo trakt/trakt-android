@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.search.data.local.popular
+package tv.trakt.trakt.common.core.search.data.local.popular
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
