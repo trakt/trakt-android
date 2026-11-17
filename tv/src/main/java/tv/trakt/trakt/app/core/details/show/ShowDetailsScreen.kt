@@ -58,6 +58,7 @@ import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.app.core.details.lists.manage.ManageListsOverlay
+import tv.trakt.trakt.app.core.details.ratings.ui.UserRatingStrip
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCastCrewList
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCommentsList
@@ -136,6 +137,7 @@ internal fun ShowDetailsScreen(
             onNavigateToStreamings(it)
         },
         onWatchlistClick = viewModel::toggleWatchlist,
+        onRatingChange = viewModel::changeRating,
         onSeasonClick = viewModel::loadSeason,
         onHistoryClick = { date ->
             pendingHistoryDate = date
@@ -198,6 +200,7 @@ private fun ShowDetailsScreenContent(
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveAllHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
     onSeasonClick: (ShowSeasons.SeasonItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -306,6 +309,7 @@ private fun ShowDetailsScreenContent(
                     )
                     MainContent(
                         state = state,
+                        onRatingChange = onRatingChange,
                         focusRequesters = focusRequesters,
                         onFocused = {
                             focusedSection = it
@@ -379,6 +383,7 @@ private fun MainContent(
     onWatchlistClick: () -> Unit,
     onStreamingsClick: () -> Unit,
     onManageListsClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -395,24 +400,36 @@ private fun MainContent(
                 ),
         ) {
             if (state.user != null) {
-                ShowActionButtons(
-                    streamingState = state.showStreamings,
-                    collectionState = state.showCollection,
-                    watchAgainEnabled = state.user.settings?.watchOnlyOnce != true,
-                    trailerUrl = state.showVideos?.firstOrNull { it.type == "trailer" }?.url,
-                    onHistoryClick = onHistoryClick,
-                    onRemoveHistoryClick = onRemoveAllHistoryClick,
-                    onWatchlistClick = onWatchlistClick,
-                    onTrailerClick = onVideoClick,
-                    onStreamingLongClick = onStreamingsClick,
-                    onManageListsClick = onManageListsClick,
-                    modifier = Modifier
-                        .focusGroup()
-                        .focusRequester(focusRequesters.getValue("buttons"))
-                        .onFocusChanged {
-                            if (it.isFocused) onFocused("buttons")
-                        },
-                )
+                Column(
+                    verticalArrangement = spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    ShowActionButtons(
+                        streamingState = state.showStreamings,
+                        collectionState = state.showCollection,
+                        watchAgainEnabled = state.user.settings?.watchOnlyOnce != true,
+                        trailerUrl = state.showVideos?.firstOrNull { it.type == "trailer" }?.url,
+                        onHistoryClick = onHistoryClick,
+                        onRemoveHistoryClick = onRemoveAllHistoryClick,
+                        onWatchlistClick = onWatchlistClick,
+                        onTrailerClick = onVideoClick,
+                        onStreamingLongClick = onStreamingsClick,
+                        onManageListsClick = onManageListsClick,
+                        modifier = Modifier
+                            .focusGroup()
+                            .focusRequester(focusRequesters.getValue("buttons"))
+                            .onFocusChanged {
+                                if (it.isFocused) onFocused("buttons")
+                            },
+                    )
+
+                    if (state.userRating.watched) {
+                        UserRatingStrip(
+                            state = state.userRating,
+                            onRatingChange = onRatingChange,
+                        )
+                    }
+                }
             } else {
                 val posterWidth = TraktTheme.size.detailsPosterSize * 0.666F
                 Spacer(Modifier.width(posterWidth))
@@ -731,6 +748,7 @@ private fun MainScreenPreview() {
             onHistoryClick = {},
             onRemoveAllHistoryClick = {},
             onWatchlistClick = {},
+            onRatingChange = {},
             onNavigateToStreamings = {},
             onSeasonClick = {},
         )

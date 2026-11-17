@@ -19,9 +19,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.ratings.usecases.DeleteRatingUseCase
+import tv.trakt.trakt.common.core.ratings.usecases.PostRatingUseCase
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
-import tv.trakt.trakt.core.ratings.PostRatingUseCase
 import tv.trakt.trakt.core.ratings.RemoveOrphanedRatingUseCase
 import tv.trakt.trakt.core.ratings.allratings.AllRatingsViewModel
 import tv.trakt.trakt.core.ratings.allratings.usecases.GetSeasonRatingsUseCase

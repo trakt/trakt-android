@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.ratings
 
 import timber.log.Timber
+import tv.trakt.trakt.common.core.ratings.usecases.DeleteRatingUseCase
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.data.local.UserRatingsLocalSource

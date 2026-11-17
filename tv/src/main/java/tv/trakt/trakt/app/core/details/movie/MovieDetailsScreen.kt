@@ -69,6 +69,7 @@ import tv.trakt.trakt.app.core.details.movie.views.content.MovieExtrasList
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieRelatedList
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieActionButtons
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieHeader
+import tv.trakt.trakt.app.core.details.ratings.ui.UserRatingStrip
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.NoOpBringIntoViewSpec
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
@@ -133,6 +134,7 @@ internal fun MovieDetailsScreen(
         onHistoryClick = viewModel::addHistory,
         onRemoveHistoryClick = { removeHistoryDialog = true },
         onWatchlistClick = viewModel::toggleWatchlist,
+        onRatingChange = viewModel::changeRating,
         onDropMovieClick = viewModel::dropMoviePlayback,
     )
 
@@ -194,6 +196,7 @@ private fun MovieDetailsScreenContent(
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
     onDropMovieClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -305,6 +308,7 @@ private fun MovieDetailsScreenContent(
 
                     MainContent(
                         state = state,
+                        onRatingChange = onRatingChange,
                         focusRequesters = focusRequesters,
                         onFocused = {
                             focusedSection = it
@@ -372,6 +376,7 @@ private fun MainContent(
     onStreamingsClick: () -> Unit,
     onDropMovieClick: () -> Unit,
     onManageListsClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -389,20 +394,32 @@ private fun MainContent(
         ) {
             val posterWidth = TraktTheme.size.detailsPosterSize * 0.666F
             if (state.user != null) {
-                MovieActionButtons(
-                    movieState = state,
-                    onHistoryClick = onHistoryClick,
-                    onRemoveHistoryClick = onRemoveHistoryClick,
-                    onWatchlistClick = onWatchlistClick,
-                    onTrailerClick = onVideoClick,
-                    onStreamingLongClick = onStreamingsClick,
-                    onDropMovieClick = onDropMovieClick,
-                    onManageListsClick = onManageListsClick,
-                    modifier = Modifier
-                        .focusGroup()
-                        .focusRequester(focusRequesters.getValue("buttons"))
-                        .onFocusChanged { if (it.isFocused) onFocused("buttons") },
-                )
+                Column(
+                    verticalArrangement = spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    MovieActionButtons(
+                        movieState = state,
+                        onHistoryClick = onHistoryClick,
+                        onRemoveHistoryClick = onRemoveHistoryClick,
+                        onWatchlistClick = onWatchlistClick,
+                        onTrailerClick = onVideoClick,
+                        onStreamingLongClick = onStreamingsClick,
+                        onDropMovieClick = onDropMovieClick,
+                        onManageListsClick = onManageListsClick,
+                        modifier = Modifier
+                            .focusGroup()
+                            .focusRequester(focusRequesters.getValue("buttons"))
+                            .onFocusChanged { if (it.isFocused) onFocused("buttons") },
+                    )
+
+                    if (state.userRating.watched) {
+                        UserRatingStrip(
+                            state = state.userRating,
+                            onRatingChange = onRatingChange,
+                        )
+                    }
+                }
             } else {
                 Spacer(Modifier.width(posterWidth))
             }
@@ -665,6 +682,7 @@ private fun Preview() {
             onHistoryClick = {},
             onRemoveHistoryClick = {},
             onWatchlistClick = {},
+            onRatingChange = {},
             onNavigateToStreamings = {},
             onDropMovieClick = {},
         )

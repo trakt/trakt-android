@@ -45,6 +45,7 @@ internal val mainModule = module {
             mainDataStore = get(named(MAIN_PREFERENCES)),
             loadUserProfileUseCase = get(),
             loadUserProgressUseCase = get(),
+            loadUserRatingsUseCase = get(),
             analytics = get(),
         )
     }

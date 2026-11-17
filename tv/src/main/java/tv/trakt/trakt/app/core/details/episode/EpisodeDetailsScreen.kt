@@ -69,6 +69,7 @@ import tv.trakt.trakt.app.core.details.episode.views.content.EpisodeSeasonEpisod
 import tv.trakt.trakt.app.core.details.episode.views.header.EpisodeActionButtons
 import tv.trakt.trakt.app.core.details.episode.views.header.EpisodeHeader
 import tv.trakt.trakt.app.core.details.lists.manage.ManageListsOverlay
+import tv.trakt.trakt.app.core.details.ratings.ui.UserRatingStrip
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.NoOpBringIntoViewSpec
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
@@ -131,6 +132,7 @@ internal fun EpisodeDetailsScreen(
         onRemoveHistoryClick = { historyConfirmationDialog = it },
         onRemoveAllHistoryClick = { removeAllHistoryDialog = true },
         onDropEpisodeClick = viewModel::dropEpisodePlayback,
+        onRatingChange = viewModel::changeRating,
     )
 
     if (historyConfirmationDialog != null) {
@@ -210,6 +212,7 @@ private fun EpisodeDetailsScreenContent(
     onRemoveHistoryClick: (id: Long) -> Unit,
     onRemoveAllHistoryClick: () -> Unit,
     onDropEpisodeClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val drawerVisibility = LocalDrawerVisibility.current
@@ -321,6 +324,7 @@ private fun EpisodeDetailsScreenContent(
                     )
                     MainContent(
                         state = state,
+                        onRatingChange = onRatingChange,
                         onFocused = {
                             focusedSection = it
                             initialFocusDone = true
@@ -402,6 +406,7 @@ private fun MainContent(
     onRemoveAllHistoryClick: () -> Unit,
     onDropEpisodeClick: () -> Unit,
     onManageListsClick: () -> Unit,
+    onRatingChange: (Int?) -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -419,20 +424,32 @@ private fun MainContent(
         ) {
             val posterWidth = TraktTheme.size.detailsPosterSize * 0.666F
             if (state.user != null) {
-                EpisodeActionButtons(
-                    detailsState = state,
-                    onHistoryClick = onAddHistoryClick,
-                    onRemoveHistoryClick = onRemoveAllHistoryClick,
-                    onStreamingLongClick = onStreamingsClick,
-                    onDropClick = onDropEpisodeClick,
-                    onManageListsClick = onManageListsClick,
-                    modifier = Modifier
-                        .focusGroup()
-                        .focusRequester(focusRequesters.getValue("buttons"))
-                        .onFocusChanged {
-                            if (it.isFocused) onFocused("buttons")
-                        },
-                )
+                Column(
+                    verticalArrangement = spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    EpisodeActionButtons(
+                        detailsState = state,
+                        onHistoryClick = onAddHistoryClick,
+                        onRemoveHistoryClick = onRemoveAllHistoryClick,
+                        onStreamingLongClick = onStreamingsClick,
+                        onDropClick = onDropEpisodeClick,
+                        onManageListsClick = onManageListsClick,
+                        modifier = Modifier
+                            .focusGroup()
+                            .focusRequester(focusRequesters.getValue("buttons"))
+                            .onFocusChanged {
+                                if (it.isFocused) onFocused("buttons")
+                            },
+                    )
+
+                    if (state.userRating.watched) {
+                        UserRatingStrip(
+                            state = state.userRating,
+                            onRatingChange = onRatingChange,
+                        )
+                    }
+                }
             } else {
                 Spacer(Modifier.width(posterWidth))
             }
@@ -651,6 +668,7 @@ private fun Preview() {
             onRemoveHistoryClick = {},
             onRemoveAllHistoryClick = {},
             onDropEpisodeClick = {},
+            onRatingChange = {},
             onNavigateToUserList = { _, _ -> },
         )
     }
