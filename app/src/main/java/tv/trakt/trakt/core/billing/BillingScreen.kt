@@ -1,11 +1,8 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
-
 package tv.trakt.trakt.core.billing
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +25,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,8 +42,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -129,9 +125,7 @@ private fun BillingScreen(
     onErrorClick: () -> Unit = {},
 ) {
     val inspection = LocalInspectionMode.current
-    val configuration = LocalConfiguration.current
-
-    val screenWidth = configuration.screenWidthDp.dp
+    val screenWidth = LocalWindowInfo.current.containerDpSize.width
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -415,6 +409,18 @@ private fun VipOfferView(
             )
 
             VipOfferItem(
+                text = stringResource(R.string.list_title_soundtrack),
+                description = stringResource(R.string.vip_feature_description_soundtrack),
+                icon = painterResource(R.drawable.ic_audio),
+            )
+
+            VipOfferItem(
+                text = stringResource(R.string.text_leaderboard),
+                description = stringResource(R.string.vip_feature_description_leaderboard),
+                icon = painterResource(R.drawable.ic_leaderboard),
+            )
+
+            VipOfferItem(
                 text = stringResource(R.string.vip_feature_title_api_apps),
                 description = stringResource(R.string.vip_feature_description_api_apps),
                 icon = painterResource(R.drawable.ic_plug),
@@ -424,20 +430,6 @@ private fun VipOfferView(
                 text = stringResource(R.string.vip_feature_title_support),
                 description = stringResource(R.string.vip_feature_description_support),
                 icon = painterResource(R.drawable.ic_comment),
-                iconPadding = 4.dp,
-            )
-
-            VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_early_access),
-                description = stringResource(R.string.vip_feature_description_early_access),
-                icon = painterResource(R.drawable.ic_vip_mobile),
-                iconPadding = 4.dp,
-            )
-
-            VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_vip_status),
-                description = stringResource(R.string.vip_feature_description_vip_status),
-                icon = painterResource(R.drawable.ic_vip_crown),
                 iconPadding = 4.dp,
             )
         }
