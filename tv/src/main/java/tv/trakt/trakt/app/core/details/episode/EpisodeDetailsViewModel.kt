@@ -119,11 +119,12 @@ internal class EpisodeDetailsViewModel(
     private val reviewState = MutableStateFlow(initialState.isReviewRequest)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
 
+    private var userDataLoaded = false
+
     private val destination = savedStateHandle.toRoute<EpisodeDestination>()
 
     init {
-        loadUserRating(destination.episodeId.toTraktId())
-        loadWatched()
+        loadUserData()
         observeData()
         observeProgress()
 
@@ -375,17 +376,25 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
-    private fun loadUserRating(episodeId: TraktId) {
+    private fun loadUserData() {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
             }
             try {
-                val rating = getUserRatingUseCase.getRating(episodeId, MediaType.Episode)
-                userRatingState.update { it.copy(rating = rating) }
+                val showId = destination.showId.toTraktId()
+                val episodeId = destination.episodeId.toTraktId()
+                coroutineScope {
+                    val ratingAsync = async { getUserRatingUseCase.getRating(episodeId, MediaType.Episode) }
+                    val watchedAsync = async { isWatchedUseCase.isEpisodeWatched(showId, episodeId) }
+                    val rating = ratingAsync.await()
+                    val watched = watchedAsync.await()
+                    userRatingState.update { it.copy(rating = rating, watched = watched) }
+                }
+                userDataLoaded = true
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error loading user rating")
+                    Timber.e(error, "Error loading user rating data")
                 }
             }
         }
@@ -393,7 +402,7 @@ internal class EpisodeDetailsViewModel(
 
     private fun loadWatched() {
         viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
+            if (!userDataLoaded || !sessionManager.isAuthenticated()) {
                 return@launch
             }
             try {
@@ -583,7 +592,6 @@ internal class EpisodeDetailsViewModel(
                     rating = rating,
                 )
                 userRatingState.update { it.copy(loading = false) }
-                dataChanges.notify(Kind.Ratings, origin = origin)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     userRatingState.update { it.copy(rating = previousRating, loading = false) }

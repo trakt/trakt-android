@@ -123,13 +123,13 @@ internal class ShowDetailsViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
 
+    private var userDataLoaded = false
+
     private val show = savedStateHandle.toRoute<ShowDestination>()
     private var loadingJob: Job? = null
 
     init {
-        loadUserRating(show.showId.toTraktId())
-        loadWatched()
-        loadFavorite()
+        loadUserData()
         loadData(show.showId.toTraktId())
         observeProgress()
     }
@@ -402,17 +402,28 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    private fun loadUserRating(showId: TraktId) {
+    private fun loadUserData() {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
             }
             try {
-                val rating = getUserRatingUseCase.getRating(showId, MediaType.Show)
-                userRatingState.update { it.copy(rating = rating) }
+                val mediaId = show.showId.toTraktId()
+                coroutineScope {
+                    val ratingAsync = async { getUserRatingUseCase.getRating(mediaId, MediaType.Show) }
+                    val watchedAsync = async { isWatchedUseCase.isShowWatched(mediaId) }
+                    val favoriteAsync = async { isFavoriteUseCase.isShowFavorite(mediaId) }
+                    val rating = ratingAsync.await()
+                    val watched = watchedAsync.await()
+                    val favorite = favoriteAsync.await()
+                    userRatingState.update {
+                        it.copy(rating = rating, watched = watched, favorite = favorite)
+                    }
+                }
+                userDataLoaded = true
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error loading user rating")
+                    Timber.e(error, "Error loading user rating data")
                 }
             }
         }
@@ -420,7 +431,7 @@ internal class ShowDetailsViewModel(
 
     private fun loadWatched() {
         viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
+            if (!userDataLoaded || !sessionManager.isAuthenticated()) {
                 return@launch
             }
             try {
@@ -429,22 +440,6 @@ internal class ShowDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.e(error, "Error loading watched status")
-                }
-            }
-        }
-    }
-
-    private fun loadFavorite() {
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                val favorite = isFavoriteUseCase.isShowFavorite(show.showId.toTraktId())
-                userRatingState.update { it.copy(favorite = favorite) }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.e(error, "Error loading favorite status")
                 }
             }
         }
@@ -612,7 +607,6 @@ internal class ShowDetailsViewModel(
                     rating = rating,
                 )
                 userRatingState.update { it.copy(loading = false) }
-                dataChanges.notify(Kind.Ratings)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     userRatingState.update { it.copy(rating = previousRating, loading = false) }

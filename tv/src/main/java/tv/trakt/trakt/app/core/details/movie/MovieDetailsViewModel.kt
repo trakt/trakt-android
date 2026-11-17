@@ -126,12 +126,12 @@ internal class MovieDetailsViewModel(
     private val reviewState = MutableStateFlow(initialState.isReviewRequest)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
 
+    private var userDataLoaded = false
+
     private val movie = savedStateHandle.toRoute<MovieDestination>()
 
     init {
-        loadUserRating(TraktId(movie.movieId))
-        loadWatched()
-        loadFavorite()
+        loadUserData()
         loadData(TraktId(movie.movieId))
         observeData()
     }
@@ -364,17 +364,28 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    private fun loadUserRating(movieId: TraktId) {
+    private fun loadUserData() {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
             }
             try {
-                val rating = getUserRatingUseCase.getRating(movieId, MediaType.Movie)
-                userRatingState.update { it.copy(rating = rating) }
+                val mediaId = movie.movieId.toTraktId()
+                coroutineScope {
+                    val ratingAsync = async { getUserRatingUseCase.getRating(mediaId, MediaType.Movie) }
+                    val watchedAsync = async { isWatchedUseCase.isMovieWatched(mediaId) }
+                    val favoriteAsync = async { isFavoriteUseCase.isMovieFavorite(mediaId) }
+                    val rating = ratingAsync.await()
+                    val watched = watchedAsync.await()
+                    val favorite = favoriteAsync.await()
+                    userRatingState.update {
+                        it.copy(rating = rating, watched = watched, favorite = favorite)
+                    }
+                }
+                userDataLoaded = true
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error loading user rating")
+                    Timber.e(error, "Error loading user rating data")
                 }
             }
         }
@@ -382,7 +393,7 @@ internal class MovieDetailsViewModel(
 
     private fun loadWatched() {
         viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
+            if (!userDataLoaded || !sessionManager.isAuthenticated()) {
                 return@launch
             }
             try {
@@ -391,22 +402,6 @@ internal class MovieDetailsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.e(error, "Error loading watched status")
-                }
-            }
-        }
-    }
-
-    private fun loadFavorite() {
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                val favorite = isFavoriteUseCase.isMovieFavorite(movie.movieId.toTraktId())
-                userRatingState.update { it.copy(favorite = favorite) }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.e(error, "Error loading favorite status")
                 }
             }
         }
@@ -598,7 +593,6 @@ internal class MovieDetailsViewModel(
                     rating = rating,
                 )
                 userRatingState.update { it.copy(loading = false) }
-                dataChanges.notify(Kind.Ratings, origin = origin)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     userRatingState.update { it.copy(rating = previousRating, loading = false) }

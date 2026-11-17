@@ -3,6 +3,8 @@ package tv.trakt.trakt.app.core.details.ratings.usecases
 import timber.log.Timber
 import tv.trakt.trakt.common.core.ratings.usecases.DeleteRatingUseCase
 import tv.trakt.trakt.common.core.ratings.usecases.PostRatingUseCase
+import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
+import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -15,6 +17,7 @@ internal class ChangeRatingUseCase(
     private val deleteRatingUseCase: DeleteRatingUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val analytics: Analytics,
+    private val dataChanges: DataChanges,
 ) {
     /**
      * Posts [rating] on the 1-10 scale, or removes the rating when [rating] is null.
@@ -72,8 +75,10 @@ internal class ChangeRatingUseCase(
                     MediaType.Season -> loadSeasons()
                 }
             }
+            dataChanges.notify(Kind.Ratings)
         } catch (error: Exception) {
-            // The rating is already posted, so a failed refresh must not undo it on screen.
+            // The rating is already posted, so a failed refresh must not undo it on screen. Observers
+            // are not notified because the cache still holds the previous value.
             error.rethrowCancellation {
                 Timber.recordError(error)
             }
