@@ -7,4 +7,6 @@ internal data class UserRatingState(
     val rating: Int? = null,
     val loading: Boolean = false,
     val watched: Boolean = false,
+    val favorite: Boolean = false,
+    val favoriteLoading: Boolean = false,
 )

@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.favorites.usecases.UpdateMovieFavoritesUseCase
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -33,7 +34,6 @@ import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
-import tv.trakt.trakt.core.sync.usecases.UpdateMovieFavoritesUseCase
 import java.time.Instant
 
 internal class RatePromptViewModel(

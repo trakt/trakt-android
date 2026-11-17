@@ -69,6 +69,7 @@ import tv.trakt.trakt.app.core.details.movie.views.content.MovieExtrasList
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieRelatedList
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieActionButtons
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieHeader
+import tv.trakt.trakt.app.core.details.ratings.ui.FavoriteButton
 import tv.trakt.trakt.app.core.details.ratings.ui.UserRatingStrip
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.NoOpBringIntoViewSpec
@@ -135,6 +136,7 @@ internal fun MovieDetailsScreen(
         onRemoveHistoryClick = { removeHistoryDialog = true },
         onWatchlistClick = viewModel::toggleWatchlist,
         onRatingChange = viewModel::changeRating,
+        onFavoriteClick = viewModel::toggleFavorite,
         onDropMovieClick = viewModel::dropMoviePlayback,
     )
 
@@ -197,6 +199,7 @@ private fun MovieDetailsScreenContent(
     onRemoveHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onRatingChange: (Int?) -> Unit,
+    onFavoriteClick: () -> Unit,
     onDropMovieClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -309,6 +312,7 @@ private fun MovieDetailsScreenContent(
                     MainContent(
                         state = state,
                         onRatingChange = onRatingChange,
+                        onFavoriteClick = onFavoriteClick,
                         focusRequesters = focusRequesters,
                         onFocused = {
                             focusedSection = it
@@ -377,6 +381,7 @@ private fun MainContent(
     onDropMovieClick: () -> Unit,
     onManageListsClick: () -> Unit,
     onRatingChange: (Int?) -> Unit,
+    onFavoriteClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -414,10 +419,19 @@ private fun MainContent(
                     )
 
                     if (state.userRating.watched) {
-                        UserRatingStrip(
-                            state = state.userRating,
-                            onRatingChange = onRatingChange,
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            UserRatingStrip(
+                                state = state.userRating,
+                                onRatingChange = onRatingChange,
+                            )
+                            FavoriteButton(
+                                favorite = state.userRating.favorite,
+                                loading = state.userRating.favoriteLoading,
+                                onClick = onFavoriteClick,
+                            )
+                        }
                     }
                 }
             } else {
@@ -683,6 +697,7 @@ private fun Preview() {
             onRemoveHistoryClick = {},
             onWatchlistClick = {},
             onRatingChange = {},
+            onFavoriteClick = {},
             onNavigateToStreamings = {},
             onDropMovieClick = {},
         )

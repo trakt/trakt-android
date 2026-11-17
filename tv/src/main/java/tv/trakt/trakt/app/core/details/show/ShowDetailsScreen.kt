@@ -58,6 +58,7 @@ import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.app.core.details.lists.manage.ManageListsOverlay
+import tv.trakt.trakt.app.core.details.ratings.ui.FavoriteButton
 import tv.trakt.trakt.app.core.details.ratings.ui.UserRatingStrip
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCastCrewList
@@ -138,6 +139,7 @@ internal fun ShowDetailsScreen(
         },
         onWatchlistClick = viewModel::toggleWatchlist,
         onRatingChange = viewModel::changeRating,
+        onFavoriteClick = viewModel::toggleFavorite,
         onSeasonClick = viewModel::loadSeason,
         onHistoryClick = { date ->
             pendingHistoryDate = date
@@ -201,6 +203,7 @@ private fun ShowDetailsScreenContent(
     onRemoveAllHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onRatingChange: (Int?) -> Unit,
+    onFavoriteClick: () -> Unit,
     onSeasonClick: (ShowSeasons.SeasonItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -310,6 +313,7 @@ private fun ShowDetailsScreenContent(
                     MainContent(
                         state = state,
                         onRatingChange = onRatingChange,
+                        onFavoriteClick = onFavoriteClick,
                         focusRequesters = focusRequesters,
                         onFocused = {
                             focusedSection = it
@@ -384,6 +388,7 @@ private fun MainContent(
     onStreamingsClick: () -> Unit,
     onManageListsClick: () -> Unit,
     onRatingChange: (Int?) -> Unit,
+    onFavoriteClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
 ) {
     Column(
@@ -424,10 +429,19 @@ private fun MainContent(
                     )
 
                     if (state.userRating.watched) {
-                        UserRatingStrip(
-                            state = state.userRating,
-                            onRatingChange = onRatingChange,
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            UserRatingStrip(
+                                state = state.userRating,
+                                onRatingChange = onRatingChange,
+                            )
+                            FavoriteButton(
+                                favorite = state.userRating.favorite,
+                                loading = state.userRating.favoriteLoading,
+                                onClick = onFavoriteClick,
+                            )
+                        }
                     }
                 }
             } else {
@@ -749,6 +763,7 @@ private fun MainScreenPreview() {
             onRemoveAllHistoryClick = {},
             onWatchlistClick = {},
             onRatingChange = {},
+            onFavoriteClick = {},
             onNavigateToStreamings = {},
             onSeasonClick = {},
         )

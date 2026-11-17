@@ -26,8 +26,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.core.details.ratings.UserRatingState
+import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeFavoriteUseCase
 import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeRatingUseCase
 import tv.trakt.trakt.app.core.details.ratings.usecases.GetUserRatingUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.IsFavoriteUseCase
 import tv.trakt.trakt.app.core.details.ratings.usecases.IsWatchedUseCase
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.StreamingsState
@@ -95,6 +97,8 @@ internal class ShowDetailsViewModel(
     private val getUserRatingUseCase: GetUserRatingUseCase,
     private val changeRatingUseCase: ChangeRatingUseCase,
     private val isWatchedUseCase: IsWatchedUseCase,
+    private val isFavoriteUseCase: IsFavoriteUseCase,
+    private val changeFavoriteUseCase: ChangeFavoriteUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
     private val dataChanges: DataChanges,
@@ -125,6 +129,7 @@ internal class ShowDetailsViewModel(
     init {
         loadUserRating(show.showId.toTraktId())
         loadWatched()
+        loadFavorite()
         loadData(show.showId.toTraktId())
         observeProgress()
     }
@@ -429,6 +434,22 @@ internal class ShowDetailsViewModel(
         }
     }
 
+    private fun loadFavorite() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val favorite = isFavoriteUseCase.isShowFavorite(show.showId.toTraktId())
+                userRatingState.update { it.copy(favorite = favorite) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading favorite status")
+                }
+            }
+        }
+    }
+
     private fun loadCollection(showId: TraktId) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
@@ -546,6 +567,32 @@ internal class ShowDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     Timber.e("Error removing show history: ${error.message}")
+                }
+            }
+        }
+    }
+
+    fun toggleFavorite() {
+        viewModelScope.launch {
+            val details = showDetailsState.value ?: return@launch
+            if (!sessionManager.isAuthenticated() || userRatingState.value.favoriteLoading) {
+                return@launch
+            }
+            val favorite = !userRatingState.value.favorite
+            try {
+                userRatingState.update { it.copy(favorite = favorite, favoriteLoading = true) }
+                changeFavoriteUseCase.changeShowFavorite(details, favorite)
+                userRatingState.update { it.copy(favoriteLoading = false) }
+                showSnackMessage(
+                    DynamicStringResource(
+                        if (favorite) R.string.text_info_favorites_added else R.string.text_info_favorites_removed,
+                    ),
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    userRatingState.update { it.copy(favorite = !favorite, favoriteLoading = false) }
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e(error, "Error changing favorite")
                 }
             }
         }

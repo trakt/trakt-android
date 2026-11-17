@@ -37,8 +37,10 @@ import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlist
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.details.ratings.UserRatingState
+import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeFavoriteUseCase
 import tv.trakt.trakt.app.core.details.ratings.usecases.ChangeRatingUseCase
 import tv.trakt.trakt.app.core.details.ratings.usecases.GetUserRatingUseCase
+import tv.trakt.trakt.app.core.details.ratings.usecases.IsFavoriteUseCase
 import tv.trakt.trakt.app.core.details.ratings.usecases.IsWatchedUseCase
 import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
@@ -95,6 +97,8 @@ internal class MovieDetailsViewModel(
     private val getUserRatingUseCase: GetUserRatingUseCase,
     private val changeRatingUseCase: ChangeRatingUseCase,
     private val isWatchedUseCase: IsWatchedUseCase,
+    private val isFavoriteUseCase: IsFavoriteUseCase,
+    private val changeFavoriteUseCase: ChangeFavoriteUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val getTranslationsUseCase: GetMovieTranslationsUseCase,
     private val dataChanges: DataChanges,
@@ -127,6 +131,7 @@ internal class MovieDetailsViewModel(
     init {
         loadUserRating(TraktId(movie.movieId))
         loadWatched()
+        loadFavorite()
         loadData(TraktId(movie.movieId))
         observeData()
     }
@@ -391,6 +396,22 @@ internal class MovieDetailsViewModel(
         }
     }
 
+    private fun loadFavorite() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+            try {
+                val favorite = isFavoriteUseCase.isMovieFavorite(movie.movieId.toTraktId())
+                userRatingState.update { it.copy(favorite = favorite) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading favorite status")
+                }
+            }
+        }
+    }
+
     private suspend fun loadCollection(
         movieId: TraktId,
         force: Boolean,
@@ -532,6 +553,32 @@ internal class MovieDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     Timber.e("Error toggling watchlist: ${error.message}")
+                }
+            }
+        }
+    }
+
+    fun toggleFavorite() {
+        viewModelScope.launch {
+            val details = movieDetailsState.value ?: return@launch
+            if (!sessionManager.isAuthenticated() || userRatingState.value.favoriteLoading) {
+                return@launch
+            }
+            val favorite = !userRatingState.value.favorite
+            try {
+                userRatingState.update { it.copy(favorite = favorite, favoriteLoading = true) }
+                changeFavoriteUseCase.changeMovieFavorite(details, favorite)
+                userRatingState.update { it.copy(favoriteLoading = false) }
+                showSnackMessage(
+                    DynamicStringResource(
+                        if (favorite) R.string.text_info_favorites_added else R.string.text_info_favorites_removed,
+                    ),
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    userRatingState.update { it.copy(favorite = !favorite, favoriteLoading = false) }
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e(error, "Error changing favorite")
                 }
             }
         }

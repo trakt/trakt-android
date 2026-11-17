@@ -46,6 +46,7 @@ internal val mainModule = module {
             loadUserProfileUseCase = get(),
             loadUserProgressUseCase = get(),
             loadUserRatingsUseCase = get(),
+            loadUserFavoritesUseCase = get(),
             analytics = get(),
         )
     }

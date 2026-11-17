@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -36,6 +37,7 @@ internal class MainViewModel(
     private val loadUserProfileUseCase: LoadUserProfileUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
+    private val loadUserFavoritesUseCase: LoadUserFavoritesUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
@@ -107,9 +109,11 @@ internal class MainViewModel(
                 coroutineScope {
                     val progressAsync = async { loadUserProgressUseCase.loadProgress() }
                     val ratingsAsync = async { loadUserRatingsUseCase.loadAll() }
+                    val favoritesAsync = async { loadUserFavoritesUseCase.loadAll() }
                     awaitAll(
                         progressAsync,
                         ratingsAsync,
+                        favoritesAsync,
                     )
                 }
             } catch (error: Exception) {
