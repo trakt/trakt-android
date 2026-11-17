@@ -32,12 +32,18 @@ Use one `AskUserQuestion` call:
    Otherwise offer the Backlog / Up Next trakt-android items from the board as options (fetch them
    first, see step 2), with "Other" for free input.
 2. **End state?**
-   - Local branches only - commit on a branch per issue, no push.
-   - Draft PRs - push and open draft PRs.
    - Ready-for-review PRs - push and open PRs marked ready.
+   - Draft PRs - push and open draft PRs.
+   - Local branches only - commit on a branch per issue, no push.
 3. **Monitor Codex reviews?** Only applies to ready-for-review PRs; ignore the answer otherwise.
    - Yes - after the PRs are open, watch for the automatic Codex review and handle its comments (step 4), up to 3 cycles per PR.
    - No - stop once the PRs are open.
+4. **Extra instructions?** Always ask, as the last question.
+   - None - follow the skill as written.
+   - Yes - the user types them through "Other".
+
+   Pass any extra instructions verbatim to every issue subagent (step 3). They apply to all issues
+   unless the user ties them to specific ones.
 
 ## Step 2 - Prepare
 
@@ -96,6 +102,8 @@ Main thread, per issue:
    - Scratchpad S: <absolute $S path>
    - Web repo WEB: <absolute trakt-web path>
    - Effort window start: <contents of $S/startN.txt>
+   - Extra instructions from the user: <verbatim text for this issue | none>. Follow them; they win
+     over the issue steps where the two conflict.
 
    Do not spawn agents. Do not touch other issues or the board. Do not monitor Codex reviews.
    When done, reply with: branch, PR URL or "none", what changed in plain words, what was already
