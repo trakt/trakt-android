@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.core.user.usecases.ratings
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.data.local.UserRatingsLocalSource
 import tv.trakt.trakt.common.data.remote.UserRatingsRemoteSource
@@ -120,18 +121,14 @@ class LoadUserRatingsUseCase(
             .toImmutableMap()
     }
 
-    suspend fun loadAll(): ImmutableMap<TraktId, UserRating> {
-        return coroutineScope {
-            val showsAsync = async { loadShows() }
-            val moviesAsync = async { loadMovies() }
-            val episodesAsync = async { loadEpisodes() }
-
-            val shows = showsAsync.await()
-            val movies = moviesAsync.await()
-            val episodes = episodesAsync.await()
-
-            (shows + movies + episodes)
-                .toImmutableMap()
+    suspend fun loadAll() {
+        coroutineScope {
+            awaitAll(
+                async { loadShows() },
+                async { loadMovies() },
+                async { loadEpisodes() },
+                async { loadSeasons() },
+            )
         }
     }
 
