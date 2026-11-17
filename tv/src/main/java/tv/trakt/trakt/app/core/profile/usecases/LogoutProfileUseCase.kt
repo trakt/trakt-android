@@ -10,6 +10,9 @@ import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.auth.work.RevokeTokenWorker
+import tv.trakt.trakt.common.data.local.UserFavoritesLocalSource
+import tv.trakt.trakt.common.data.local.UserProgressLocalSource
+import tv.trakt.trakt.common.data.local.UserRatingsLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 
 internal class LogoutProfileUseCase(
@@ -20,6 +23,9 @@ internal class LogoutProfileUseCase(
     private val showsSyncLocalSource: ShowsSyncLocalSource,
     private val moviesSyncLocalSource: MoviesSyncLocalSource,
     private val episodesSyncLocalSource: EpisodesSyncLocalSource,
+    private val userProgressLocalSource: UserProgressLocalSource,
+    private val userRatingsLocalSource: UserRatingsLocalSource,
+    private val userFavoritesLocalSource: UserFavoritesLocalSource,
     private val analytics: Analytics,
 ) {
     suspend fun logoutUser() {
@@ -37,6 +43,9 @@ internal class LogoutProfileUseCase(
         showsSyncLocalSource.clear()
         moviesSyncLocalSource.clear()
         episodesSyncLocalSource.clear()
+        userProgressLocalSource.clear()
+        userRatingsLocalSource.clear()
+        userFavoritesLocalSource.clear()
 
         if (!accessToken.isNullOrBlank()) {
             RevokeTokenWorker.schedule(appContext, accessToken)

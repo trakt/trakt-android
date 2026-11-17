@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
@@ -106,7 +106,8 @@ internal class MainViewModel(
                     return@launch
                 }
 
-                coroutineScope {
+                // Each refresh is independent; one failing must not cancel the others.
+                supervisorScope {
                     val progressAsync = async { loadUserProgressUseCase.loadProgress() }
                     val ratingsAsync = async { loadUserRatingsUseCase.loadAll() }
                     val favoritesAsync = async { loadUserFavoritesUseCase.loadAll() }
