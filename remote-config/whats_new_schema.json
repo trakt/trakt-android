@@ -1,5 +1,27 @@
 [
   {
+    "id": 33,
+    "version": "3.29.0",
+    "notes": [
+      {
+        "title": "Reality Check",
+        "text": "See how closely true-story movies and shows follow real events. Open the Insights card on their page to find out."
+      },
+      {
+        "title": "Profile Photo",
+        "text": "Upload or remove your profile photo right from Account Settings."
+      },
+      {
+        "title": "Show Progress",
+        "text": "Tap the track button on a show to see your progress by season and mark single episodes or whole seasons as watched."
+      },
+      {
+        "title": "Smart Lists",
+        "text": "Edit your smart lists from their page, or create one from the filters on trending, popular and watchlist screens."
+      }
+    ]
+  },
+  {
     "id": 32,
     "version": "3.28.0",
     "notes": [
