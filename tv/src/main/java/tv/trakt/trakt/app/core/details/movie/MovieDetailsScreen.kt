@@ -71,6 +71,7 @@ import tv.trakt.trakt.app.core.details.movie.views.content.MovieExtrasList
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieRelatedList
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieActionButtons
 import tv.trakt.trakt.app.core.details.movie.views.header.MovieHeader
+import tv.trakt.trakt.app.core.details.ratings.UserRatingState
 import tv.trakt.trakt.app.core.details.ratings.ui.FavoriteButton
 import tv.trakt.trakt.app.core.details.ratings.ui.UserRatingStrip
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
@@ -624,6 +625,16 @@ private fun Preview() {
         MovieDetailsScreenContent(
             state = MovieDetailsState(
                 movieDetails = PreviewData.movie1,
+                user = PreviewData.user1,
+                movieCollection = MovieDetailsState.CollectionState(
+                    isHistory = true,
+                    historyCount = 1,
+                ),
+                userRating = UserRatingState(
+                    rating = 7,
+                    watched = true,
+                    favorite = true,
+                ),
                 movieRatings = ExternalRating(
                     trakt = null,
                     imdb = ExternalRating.ImdbRating(
