@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.realitycheck.DocumentaryCheck
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.MediaInsights
@@ -13,17 +14,19 @@ internal data class MediaSentimentState(
     val user: User? = null,
     val sentiment: Sentiments? = null,
     val realityCheck: RealityCheck? = null,
+    val documentaryCheck: DocumentaryCheck? = null,
     val loading: LoadingState = LoadingState.Idle,
     val collapsed: Boolean? = null,
     val error: Exception? = null,
 ) {
     val hasInsights: Boolean
-        get() = sentiment?.isEmpty == false || realityCheck != null
+        get() = sentiment?.isEmpty == false || realityCheck != null || documentaryCheck != null
 
     fun insights(tab: InsightsTab = defaultTab): MediaInsights {
         return MediaInsights(
             sentiments = sentiment,
             realityCheck = realityCheck,
+            documentaryCheck = documentaryCheck,
             tab = tab,
         )
     }

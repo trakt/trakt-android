@@ -73,6 +73,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.NoteType
 import tv.trakt.trakt.common.model.Person
@@ -835,7 +836,13 @@ internal fun ShowDetailsContent(
                         item {
                             ShowSentimentView(
                                 viewModel = koinViewModel(
-                                    parameters = { parametersOf(show.ids.trakt, MediaType.Show) },
+                                    parameters = {
+                                        parametersOf(
+                                            show.ids.trakt,
+                                            MediaType.Show,
+                                            MediaGenre.Documentary in show.genres,
+                                        )
+                                    },
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,

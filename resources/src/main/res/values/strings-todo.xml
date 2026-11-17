@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="header_documentary_disputed_claims">Disputed claims</string>
+  <string name="label_documentary_claim_disputed_by">Disputed by</string>
+  <string name="label_documentary_claim_reply">Makers\' reply</string>
+  <string name="text_documentary_funded_by">Funded by %1$s.</string>
+  <string name="text_documentary_made_by">Made by %1$s.</string>
+  <string name="text_documentary_source_expert">Expert</string>
+  <string name="text_documentary_source_filmmaker">Filmmaker</string>
+  <string name="text_documentary_source_interested">Interested party</string>
+  <string name="text_documentary_source_press">Press</string>
+  <string name="text_documentary_tier_central">Central claims disputed</string>
+  <string name="text_documentary_tier_minor">Minor points disputed</string>
+  <string name="text_documentary_tier_none">No disputes found</string>
+  <string name="text_documentary_tier_not_enough">Not enough sources</string>
+  <string name="text_documentary_tier_wide">Widely disputed</string>
 </resources>

@@ -10,4 +10,5 @@ internal enum class RealityCheckSection(
     People(CollapsingKey.REALITY_CHECK_PEOPLE),
     Timeline(CollapsingKey.REALITY_CHECK_TIMELINE),
     LeftOut(CollapsingKey.REALITY_CHECK_LEFT_OUT),
+    Disputes(CollapsingKey.REALITY_CHECK_DISPUTES),
 }

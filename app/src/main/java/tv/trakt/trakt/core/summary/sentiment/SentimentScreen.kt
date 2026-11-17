@@ -69,6 +69,7 @@ import tv.trakt.trakt.core.applinks.rememberAppLinkUriHandler
 import tv.trakt.trakt.core.billing.model.VipUpsellSource
 import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.RealityCheckSection
+import tv.trakt.trakt.core.summary.sentiment.views.DocumentaryCheckContent
 import tv.trakt.trakt.core.summary.sentiment.views.InsightsSegments
 import tv.trakt.trakt.core.summary.sentiment.views.RealityCheckContent
 import tv.trakt.trakt.core.summary.sentiment.views.markdownSections
@@ -179,20 +180,33 @@ private fun SentimentContent(
                     }
 
                     InsightsTab.RealityCheck -> {
-                        state.realityCheck?.let { realityCheck ->
+                        val upsell: @Composable () -> Unit = {
+                            GetVipView(
+                                modifier = Modifier
+                                    .onUpsellSeen(onVipSeen)
+                                    .onClick(onClick = onVipClick),
+                            )
+                        }
+                        val documentaryCheck = state.documentaryCheck
+                        val realityCheck = state.realityCheck
+                        if (documentaryCheck != null) {
+                            item {
+                                DocumentaryCheckContent(
+                                    documentaryCheck = documentaryCheck,
+                                    vip = state.user?.isAnyVip == true,
+                                    collapsedSections = state.collapsedSections,
+                                    onSectionCollapse = onSectionCollapse,
+                                    upsell = upsell,
+                                )
+                            }
+                        } else if (realityCheck != null) {
                             item {
                                 RealityCheckContent(
                                     realityCheck = realityCheck,
                                     vip = state.user?.isAnyVip == true,
                                     collapsedSections = state.collapsedSections,
                                     onSectionCollapse = onSectionCollapse,
-                                    upsell = {
-                                        GetVipView(
-                                            modifier = Modifier
-                                                .onUpsellSeen(onVipSeen)
-                                                .onClick(onClick = onVipClick),
-                                        )
-                                    },
+                                    upsell = upsell,
                                 )
                             }
                         }
@@ -584,5 +598,28 @@ private fun PreviewVip() {
                 ),
             )
         }
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun PreviewDocumentaryCheck() {
+    TraktTheme {
+        SentimentContent(
+            state = SentimentState(
+                user = PreviewData.user1.copy(
+                    isVip = true,
+                ),
+                documentaryCheck = PreviewData.documentaryCheck,
+                tabs = persistentListOf(InsightsTab.RealityCheck),
+                tab = InsightsTab.RealityCheck,
+                mediaTitle = "Tiger King",
+                backgroundUrl = null,
+            ),
+        )
     }
 }

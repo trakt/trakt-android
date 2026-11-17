@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Mixed
 import tv.trakt.trakt.common.model.Sentiments.Overall.Negative
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
+import tv.trakt.trakt.common.model.realitycheck.DocumentaryCheck
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
@@ -66,6 +67,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun DetailsSentiment(
     sentiments: Sentiments?,
     realityCheck: RealityCheck?,
+    documentaryCheck: DocumentaryCheck?,
     vip: Boolean,
     modifier: Modifier = Modifier,
     onRealityCheckClick: () -> Unit = {},
@@ -115,23 +117,29 @@ internal fun DetailsSentiment(
                 sentiments = sentiments,
                 sentimentColor = sentimentColor,
             )
+        } else if (documentaryCheck != null) {
+            RealityCheckSummary(
+                summary = documentaryCheck.summary,
+                color = accentColor,
+                maxLines = 3,
+                footer = documentaryMakersText(documentaryCheck),
+            )
         } else if (realityCheck != null) {
             RealityCheckSummary(
-                realityCheck = realityCheck,
+                summary = realityCheck.summary,
                 color = accentColor,
             )
         }
 
         if (!vip) {
-            realityCheck?.let {
-                RealityTierPill(
-                    tier = it.verdict,
-                    color = accentColor,
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .onClick(onClick = onRealityCheckClick),
-                )
-            }
+            InsightsTierPill(
+                realityCheck = realityCheck,
+                documentaryCheck = documentaryCheck,
+                color = accentColor,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .onClick(onClick = onRealityCheckClick),
+            )
             GetVipView()
         } else {
             Box(
@@ -139,21 +147,20 @@ internal fun DetailsSentiment(
                     .fillMaxWidth()
                     .padding(
                         top = when {
-                            realityCheck != null -> 12.dp
+                            realityCheck != null || documentaryCheck != null -> 12.dp
                             else -> 8.dp
                         },
                     ),
             ) {
-                realityCheck?.let {
-                    RealityTierPill(
-                        tier = it.verdict,
-                        color = accentColor,
-                        modifier = Modifier
-                            .align(Alignment.CenterStart)
-                            .padding(top = 8.dp)
-                            .onClick(onClick = onRealityCheckClick),
-                    )
-                }
+                InsightsTierPill(
+                    realityCheck = realityCheck,
+                    documentaryCheck = documentaryCheck,
+                    color = accentColor,
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(top = 8.dp)
+                        .onClick(onClick = onRealityCheckClick),
+                )
                 Icon(
                     painter = painterResource(R.drawable.ic_back_arrow),
                     contentDescription = null,
@@ -228,9 +235,33 @@ private fun SentimentSummary(
 }
 
 @Composable
-private fun RealityCheckSummary(
-    realityCheck: RealityCheck,
+private fun InsightsTierPill(
+    realityCheck: RealityCheck?,
+    documentaryCheck: DocumentaryCheck?,
     color: Color,
+    modifier: Modifier = Modifier,
+) {
+    if (documentaryCheck != null) {
+        DocumentaryTierPill(
+            tier = documentaryCheck.tier,
+            color = color,
+            modifier = modifier,
+        )
+    } else if (realityCheck != null) {
+        RealityTierPill(
+            tier = realityCheck.verdict,
+            color = color,
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+private fun RealityCheckSummary(
+    summary: String,
+    color: Color,
+    maxLines: Int = 5,
+    footer: String? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(12.dp),
@@ -242,15 +273,28 @@ private fun RealityCheckSummary(
                 fontSize = 15.sp,
             ),
         )
-        Text(
-            text = remember(realityCheck.summary) {
-                realityCheck.summary.stripMarkdownLinks().toMarkdownText()
-            },
-            color = color,
-            style = TraktTheme.typography.paragraphSmall,
-            maxLines = 5,
-            overflow = TextOverflow.Ellipsis,
-        )
+        Column(
+            verticalArrangement = spacedBy(6.dp),
+        ) {
+            Text(
+                text = remember(summary) {
+                    summary.stripMarkdownLinks().toMarkdownText()
+                },
+                color = color,
+                style = TraktTheme.typography.paragraphSmall,
+                maxLines = maxLines,
+                overflow = TextOverflow.Ellipsis,
+            )
+            footer?.let {
+                Text(
+                    text = it,
+                    color = color,
+                    style = TraktTheme.typography.paragraphSmaller,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
     }
 }
 
@@ -341,6 +385,7 @@ private fun Preview() {
                 modifier = Modifier.padding(16.dp),
                 vip = true,
                 realityCheck = PreviewData.realityCheck,
+                documentaryCheck = null,
                 sentiments = Sentiments(
                     overall = Positive,
                     pros = listOf(
@@ -386,6 +431,7 @@ private fun Preview2() {
                 modifier = Modifier.padding(16.dp),
                 vip = false,
                 realityCheck = PreviewData.realityCheck,
+                documentaryCheck = null,
                 sentiments = Sentiments(
                     overall = Mixed,
                     pros = listOf(
@@ -431,6 +477,7 @@ private fun Preview3() {
                 modifier = Modifier.padding(16.dp),
                 vip = false,
                 realityCheck = null,
+                documentaryCheck = null,
                 sentiments = Sentiments(
                     overall = Negative,
                     pros = listOf(
@@ -468,7 +515,32 @@ private fun PreviewRealityCheckOnly() {
             vip = true,
             sentiments = null,
             realityCheck = PreviewData.realityCheck,
+            documentaryCheck = null,
         )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDocumentaryCheckOnly() {
+    TraktThemePreview {
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp),
+        ) {
+            DetailsSentiment(
+                vip = true,
+                sentiments = null,
+                realityCheck = null,
+                documentaryCheck = PreviewData.documentaryCheck,
+            )
+            DetailsSentiment(
+                vip = false,
+                sentiments = null,
+                realityCheck = null,
+                documentaryCheck = PreviewData.documentaryCheck,
+            )
+        }
     }
 }
 

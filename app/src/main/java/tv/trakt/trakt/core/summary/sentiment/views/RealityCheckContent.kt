@@ -71,10 +71,11 @@ private val MockClaims = persistentListOf(
     ),
 )
 
-private enum class RealityTone {
+internal enum class RealityTone {
     Accurate,
     Adjusted,
     Altered,
+    Neutral,
 }
 
 private val ClaimLabel.tone: RealityTone
@@ -402,7 +403,7 @@ private fun RealityClaim(claim: RealityCheck.Claim) {
 }
 
 @Composable
-private fun ClaimText(
+internal fun ClaimText(
     label: String,
     text: String,
     color: Color,
@@ -461,14 +462,23 @@ private fun RealityCharacter(character: RealityCheck.Character) {
 }
 
 @Composable
-private fun RealityChip(
+internal fun RealityChip(
     text: String,
     tone: RealityTone,
 ) {
     val (containerColor, contentColor) = when (tone) {
-        RealityTone.Accurate -> TraktTheme.colors.realityAccurateContainer to TraktTheme.colors.realityAccurateContent
-        RealityTone.Adjusted -> TraktTheme.colors.realityAdjustedContainer to TraktTheme.colors.realityAdjustedContent
-        RealityTone.Altered -> TraktTheme.colors.realityAlteredContainer to TraktTheme.colors.realityAlteredContent
+        RealityTone.Accurate -> {
+            TraktTheme.colors.realityAccurateContainer to TraktTheme.colors.realityAccurateContent
+        }
+        RealityTone.Adjusted -> {
+            TraktTheme.colors.realityAdjustedContainer to TraktTheme.colors.realityAdjustedContent
+        }
+        RealityTone.Altered -> {
+            TraktTheme.colors.realityAlteredContainer to TraktTheme.colors.realityAlteredContent
+        }
+        RealityTone.Neutral -> {
+            TraktTheme.colors.textPrimary.copy(alpha = UNCLEAR_BADGE_ALPHA) to TraktTheme.colors.textSecondary
+        }
     }
 
     Text(
@@ -486,7 +496,7 @@ private fun RealityChip(
 }
 
 @Composable
-private fun MarkdownText(
+internal fun MarkdownText(
     text: String,
     color: Color,
     modifier: Modifier = Modifier,
