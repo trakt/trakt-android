@@ -4,8 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -425,7 +427,6 @@ private fun MainContent(
             val posterWidth = TraktTheme.size.detailsPosterSize * 0.666F
             if (state.user != null) {
                 Column(
-                    verticalArrangement = spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     EpisodeActionButtons(
@@ -443,10 +444,15 @@ private fun MainContent(
                             },
                     )
 
-                    if (state.userRating.watched) {
+                    AnimatedVisibility(
+                        visible = state.userRating.watched,
+                        enter = fadeIn() + expandVertically(),
+                        exit = fadeOut() + shrinkVertically(),
+                    ) {
                         UserRatingStrip(
                             state = state.userRating,
                             onRatingChange = onRatingChange,
+                            modifier = Modifier.padding(top = 8.dp),
                         )
                     }
                 }
