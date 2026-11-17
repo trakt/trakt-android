@@ -69,6 +69,7 @@ import tv.trakt.trakt.common.helpers.extensions.toShareUrl
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.NoteType
@@ -739,7 +740,13 @@ internal fun MovieDetailsContent(
                         item {
                             MovieSentimentView(
                                 viewModel = koinViewModel(
-                                    parameters = { parametersOf(movie.ids.trakt, MediaType.Movie) },
+                                    parameters = {
+                                        parametersOf(
+                                            movie.ids.trakt,
+                                            MediaType.Movie,
+                                            MediaGenre.Documentary in movie.genres,
+                                        )
+                                    },
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,

@@ -7,6 +7,7 @@ import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.realitycheck.DocumentaryCheck
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.RealityCheckSection
@@ -16,6 +17,7 @@ internal data class SentimentState(
     val user: User? = null,
     val sentiments: Sentiments? = null,
     val realityCheck: RealityCheck? = null,
+    val documentaryCheck: DocumentaryCheck? = null,
     val tabs: ImmutableList<InsightsTab> = EmptyImmutableList,
     val tab: InsightsTab = InsightsTab.RealityCheck,
     val collapsedSections: ImmutableSet<RealityCheckSection> = persistentSetOf(),

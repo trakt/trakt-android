@@ -94,6 +94,7 @@ internal enum class CollapsingKey(
     REALITY_CHECK_PEOPLE("key_reality_check_people"),
     REALITY_CHECK_TIMELINE("key_reality_check_timeline"),
     REALITY_CHECK_LEFT_OUT("key_reality_check_left_out"),
+    REALITY_CHECK_DISPUTES("key_reality_check_disputes"),
 
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),

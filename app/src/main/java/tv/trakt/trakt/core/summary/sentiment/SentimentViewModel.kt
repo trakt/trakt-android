@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.realitycheck.DocumentaryCheck
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.core.summary.sentiment.model.InsightsTab
 import tv.trakt.trakt.core.summary.sentiment.model.RealityCheckSection
@@ -48,14 +49,17 @@ internal class SentimentViewModel(
         ?.takeUnless { it.isEmpty }
     private val realityCheck = destination.realityCheckDto
         ?.let { Json.decodeFromString<RealityCheck>(it) }
+    private val documentaryCheck = destination.documentaryCheckDto
+        ?.let { Json.decodeFromString<DocumentaryCheck>(it) }
     private val tabs = listOfNotNull(
         InsightsTab.Sentiment.takeIf { sentiments != null },
-        InsightsTab.RealityCheck.takeIf { realityCheck != null },
+        InsightsTab.RealityCheck.takeIf { realityCheck != null || documentaryCheck != null },
     ).toImmutableList()
 
     private val initialState = SentimentState(
         sentiments = sentiments,
         realityCheck = realityCheck,
+        documentaryCheck = documentaryCheck,
         tabs = tabs,
         tab = destination.tab.takeIf { it in tabs } ?: tabs.firstOrNull() ?: InsightsTab.Sentiment,
         backgroundUrl = destination.mediaImage,
@@ -144,6 +148,7 @@ internal class SentimentViewModel(
             user = state[0] as? User,
             sentiments = state[1] as Sentiments?,
             realityCheck = initialState.realityCheck,
+            documentaryCheck = initialState.documentaryCheck,
             tabs = initialState.tabs,
             tab = state[2] as InsightsTab,
             collapsedSections = state[3] as ImmutableSet<RealityCheckSection>,

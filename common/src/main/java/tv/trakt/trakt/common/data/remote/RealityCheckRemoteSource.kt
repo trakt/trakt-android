@@ -5,6 +5,7 @@ import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3DocumentaryCheckResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RealityCheckResponse
 import java.util.Locale
 
@@ -24,6 +25,25 @@ class RealityCheckRemoteSource(
             )
         } catch (error: Exception) {
             // Titles without a reality check 404 upstream, which means no data rather than a failure.
+            if (error.getHttpCode() == HTTP_ERROR_NOT_FOUND) {
+                return null
+            }
+            throw error
+        }
+    }
+
+    suspend fun getDocumentaryCheck(
+        type: MediaType,
+        mediaId: TraktId,
+        locale: Locale,
+    ): V3DocumentaryCheckResponse? {
+        return try {
+            v3Api.getDocumentaryCheck(
+                type = type,
+                mediaId = mediaId,
+                locale = locale,
+            )
+        } catch (error: Exception) {
             if (error.getHttpCode() == HTTP_ERROR_NOT_FOUND) {
                 return null
             }

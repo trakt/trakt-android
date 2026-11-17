@@ -130,6 +130,7 @@ private fun ShowSentimentContent(
                                 vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,
                                 realityCheck = state.realityCheck,
+                                documentaryCheck = state.documentaryCheck,
                                 modifier = Modifier
                                     .fillMaxWidth(maxWidth)
                                     .padding(contentPadding)
@@ -214,6 +215,20 @@ private fun PreviewRealityCheckOnly() {
             state = MediaSentimentState(
                 user = previewVipUser,
                 realityCheck = PreviewData.realityCheck,
+                loading = Done,
+            ),
+        )
+    }
+}
+
+@PreviewTraktLightDark
+@Composable
+private fun PreviewDocumentaryCheckOnly() {
+    TraktThemePreview {
+        ShowSentimentContent(
+            state = MediaSentimentState(
+                user = previewVipUser,
+                documentaryCheck = PreviewData.documentaryCheck,
                 loading = Done,
             ),
         )

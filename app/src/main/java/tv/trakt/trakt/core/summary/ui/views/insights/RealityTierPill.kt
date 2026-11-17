@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.ui.views.insights
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.PreviewTraktLightDark
+import tv.trakt.trakt.common.model.realitycheck.DocumentaryTier
 import tv.trakt.trakt.common.model.realitycheck.RealityTier
 import tv.trakt.trakt.helpers.extensions.TraktThemePreview
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -35,6 +37,35 @@ internal fun RealityTierPill(
     color: Color,
     modifier: Modifier = Modifier,
 ) {
+    TierPill(
+        segments = tier.segments,
+        textRes = tier.displayTextRes,
+        color = color,
+        modifier = modifier,
+    )
+}
+
+@Composable
+internal fun DocumentaryTierPill(
+    tier: DocumentaryTier,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    TierPill(
+        segments = tier.segments,
+        textRes = tier.displayTextRes,
+        color = color,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun TierPill(
+    segments: Int,
+    @StringRes textRes: Int,
+    color: Color,
+    modifier: Modifier,
+) {
     Row(
         horizontalArrangement = spacedBy(8.dp),
         verticalAlignment = CenterVertically,
@@ -47,11 +78,11 @@ internal fun RealityTierPill(
             .padding(horizontal = 10.dp),
     ) {
         SegmentMeter(
-            filled = tier.segments,
+            filled = segments,
             color = color,
         )
         Text(
-            text = stringResource(tier.displayTextRes),
+            text = stringResource(textRes),
             color = color,
             style = TraktTheme.typography.paragraphSmaller.copy(fontWeight = W600),
             maxLines = 1,
@@ -107,6 +138,12 @@ private fun Preview() {
         ) {
             RealityTier.entries.forEach { tier ->
                 RealityTierPill(
+                    tier = tier,
+                    color = TraktTheme.colors.textPrimary,
+                )
+            }
+            DocumentaryTier.entries.forEach { tier ->
+                DocumentaryTierPill(
                     tier = tier,
                     color = TraktTheme.colors.textPrimary,
                 )

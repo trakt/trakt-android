@@ -135,6 +135,7 @@ private fun MovieSentimentContent(
                                 vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,
                                 realityCheck = state.realityCheck,
+                                documentaryCheck = state.documentaryCheck,
                                 modifier = Modifier
                                     .fillMaxWidth(maxWidth)
                                     .padding(contentPadding)

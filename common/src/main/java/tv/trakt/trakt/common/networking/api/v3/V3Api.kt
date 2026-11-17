@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.SmartListItemDto
 import tv.trakt.trakt.common.networking.api.v3.model.V3DeleteNoteRequest
+import tv.trakt.trakt.common.networking.api.v3.model.V3DocumentaryCheckResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3EditNoteRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3FollowingActivityResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3LeaderboardEntryResponse
@@ -236,6 +237,20 @@ class V3Api(
         locale: Locale,
     ): V3RealityCheckResponse? {
         val response = client.get("${baseV3Url}media/${type.value}/${mediaId.value}/info/34/version/1") {
+            parameter("locale", locale.toLanguageTag())
+        }
+        if (response.status == HttpStatusCode.NoContent) {
+            return null
+        }
+        return response.body()
+    }
+
+    suspend fun getDocumentaryCheck(
+        type: MediaType,
+        mediaId: TraktId,
+        locale: Locale,
+    ): V3DocumentaryCheckResponse? {
+        val response = client.get("${baseV3Url}media/${type.value}/${mediaId.value}/info/66/version/1") {
             parameter("locale", locale.toLanguageTag())
         }
         if (response.status == HttpStatusCode.NoContent) {

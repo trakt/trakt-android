@@ -26,6 +26,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Type
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
+import tv.trakt.trakt.common.model.realitycheck.DocumentaryCheck
+import tv.trakt.trakt.common.model.realitycheck.DocumentaryTier
 import tv.trakt.trakt.common.model.realitycheck.RealityCheck
 import tv.trakt.trakt.common.model.realitycheck.RealityTier
 import java.time.ZonedDateTime
@@ -347,6 +349,31 @@ object PreviewData {
             ),
             timeline = "Events spanning four years are compressed into a few months.",
             leftOut = persistentListOf("The second appeal.", "Her later career."),
+        ),
+    )
+
+    val documentaryCheck = DocumentaryCheck(
+        tier = DocumentaryTier.Minor,
+        summary = "Most of the film holds up, but experts dispute some of its figures.",
+        madeBy = persistentListOf("Example Films", "Jane Doe"),
+        fundedBy = persistentListOf("Example Foundation"),
+        disputes = persistentListOf(
+            DocumentaryCheck.Dispute(
+                claim = "The film claims the river has lost most of its fish.",
+                by = "A university research group",
+                source = DocumentaryCheck.DisputeSource.Expert,
+                year = 2021,
+                reply = null,
+                isMinor = false,
+            ),
+            DocumentaryCheck.Dispute(
+                claim = "The film's account of the industry's own safety record.",
+                by = "An industry group",
+                source = DocumentaryCheck.DisputeSource.Interested,
+                year = null,
+                reply = "The filmmakers say the film stands by its sources.",
+                isMinor = true,
+            ),
         ),
     )
 }
