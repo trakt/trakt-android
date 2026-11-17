@@ -118,7 +118,7 @@ internal fun VerticalMediaCard(
                                     .build(),
                                 contentDescription = "Card image",
                                 contentScale = ContentScale.Crop,
-                                modifier = Modifier.align(Alignment.Center),
+                                modifier = Modifier.fillMaxSize(),
                                 onError = { isError = true },
                             )
                         } else {

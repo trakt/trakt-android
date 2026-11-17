@@ -62,7 +62,7 @@ internal fun ShowRelatedList(
             ) { index, show ->
                 VerticalMediaCard(
                     title = show.title,
-                    imageUrl = show.images?.getFanartUrl(),
+                    imageUrl = show.images?.getPosterUrl(),
                     onClick = { onClick(show) },
                     chipContent = {
                         Column(
