@@ -86,6 +86,14 @@ class ListsRemoteSource(
         return response.body()
     }
 
+    suspend fun getListSummary(listId: TraktId): ListDto {
+        val response = listsApi.getListsSummary(
+            id = listId.value.toString(),
+            extended = "images",
+        )
+        return response.body()
+    }
+
     suspend fun getListFeaturedPeople(listId: TraktId): List<PersonDto> {
         return v3Api.getListFeaturedPeople(listId).featured.orEmpty()
     }

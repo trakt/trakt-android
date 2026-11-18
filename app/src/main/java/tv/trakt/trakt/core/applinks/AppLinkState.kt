@@ -4,6 +4,8 @@ import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 
 @Immutable
 internal data class AppLinkState(
@@ -34,6 +36,14 @@ internal sealed interface AppLinkEvent {
 
     data class OpenComment(
         val comment: Comment,
+    ) : AppLinkEvent
+
+    data class OpenUser(
+        val user: User,
+    ) : AppLinkEvent
+
+    data class OpenList(
+        val list: CustomList,
     ) : AppLinkEvent
 
     data object NotFound : AppLinkEvent

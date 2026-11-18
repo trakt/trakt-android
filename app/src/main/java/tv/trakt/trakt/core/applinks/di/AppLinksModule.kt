@@ -7,6 +7,7 @@ import org.koin.dsl.module
 import tv.trakt.trakt.core.applinks.AppLinkViewModel
 import tv.trakt.trakt.core.applinks.ShareArrivalEvents
 import tv.trakt.trakt.core.applinks.usecases.GetLinkedCommentUseCase
+import tv.trakt.trakt.core.applinks.usecases.GetLinkedListUseCase
 import tv.trakt.trakt.core.applinks.usecases.RecordShareArrivalUseCase
 import tv.trakt.trakt.core.applinks.usecases.ResolveImdbLinkUseCase
 
@@ -15,5 +16,6 @@ internal val appLinksModule = module {
     factoryOf(::ResolveImdbLinkUseCase)
     factoryOf(::RecordShareArrivalUseCase)
     factoryOf(::GetLinkedCommentUseCase)
+    factoryOf(::GetLinkedListUseCase)
     viewModelOf(::AppLinkViewModel)
 }

@@ -44,6 +44,11 @@ interface Analytics {
     fun logUserLogout()
 
     /**
+     * Logs the answer to the system notification permission prompt.
+     */
+    fun logNotificationPermission(granted: Boolean)
+
+    /**
      * Logs a click on the media mode.
      */
     fun logMediaModeClick(mode: String)

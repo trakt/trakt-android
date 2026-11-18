@@ -43,6 +43,7 @@ internal fun NotificationSettingsScreen(
     NotificationSettingsContent(
         state = state,
         onEnableNotifications = viewModel::enableNotifications,
+        onPermissionResult = viewModel::onPermissionResult,
         onSetDeliveryTime = viewModel::setDeliveryTime,
         onBackClick = onNavigateBack,
     )
@@ -53,6 +54,7 @@ private fun NotificationSettingsContent(
     state: NotificationSettingsState,
     modifier: Modifier = Modifier,
     onEnableNotifications: (Boolean) -> Unit = { },
+    onPermissionResult: (Boolean) -> Unit = { },
     onSetDeliveryTime: (DeliveryAdjustment) -> Unit = { },
     onBackClick: () -> Unit = { },
 ) {
@@ -70,9 +72,7 @@ private fun NotificationSettingsContent(
     // Permission launcher for Android 13+
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
-            onEnableNotifications(isGranted)
-        },
+        onResult = onPermissionResult,
     )
 
     LaunchedEffect(hasPermission) {

@@ -33,7 +33,7 @@ internal fun rememberAppLinkUriHandler(
                     is AppLink.Show -> currentOnShowClick?.invoke(appLink.slug)
                     is AppLink.Movie -> currentOnMovieClick?.invoke(appLink.slug)
                     is AppLink.Person -> currentOnPersonClick?.invoke(appLink.slug)
-                    is AppLink.Comment, is AppLink.Imdb, null -> null
+                    is AppLink.Comment, is AppLink.Imdb, is AppLink.User, is AppLink.UserList, null -> null
                 }
 
                 if (handled == null) {

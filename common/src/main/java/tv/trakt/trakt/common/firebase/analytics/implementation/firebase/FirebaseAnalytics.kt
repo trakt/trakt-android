@@ -78,6 +78,8 @@ internal class FirebaseAnalytics(
 ) : Analytics {
     companion object Event {
         const val LOGOUT = "logout"
+        const val NOTIFICATION_PERMISSION_ACCEPTED = "notification_permission_accepted"
+        const val NOTIFICATION_PERMISSION_DENIED = "notification_permission_denied"
         const val MEDIA_MODE = "media_mode"
         const val MEDIA_MODE_CLICK = "media_mode_click"
         const val SHARE_ARRIVAL = "share_arrival"
@@ -117,6 +119,8 @@ internal class FirebaseAnalytics(
         require(eventName(LOGOUT).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         require(eventName(SHARE_ARRIVAL).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
         requireEventNames(
+            NOTIFICATION_PERMISSION_ACCEPTED,
+            NOTIFICATION_PERMISSION_DENIED,
             SEARCH,
             VIP_UPGRADE,
             VIP_UPSELL,
@@ -179,6 +183,13 @@ internal class FirebaseAnalytics(
     override fun logUserLogout() {
         firebaseAnalytics.logEvent(
             eventName(LOGOUT),
+            null,
+        )
+    }
+
+    override fun logNotificationPermission(granted: Boolean) {
+        firebaseAnalytics.logEvent(
+            eventName(if (granted) NOTIFICATION_PERMISSION_ACCEPTED else NOTIFICATION_PERMISSION_DENIED),
             null,
         )
     }

@@ -207,6 +207,7 @@ internal fun MainScreen(
     LaunchedAppLinkEvents(
         events = appLinkViewModel.events,
         welcomeActive = state.welcome.isActive,
+        currentUserId = state.user?.ids?.trakt,
         navController = navController,
         onOpenComment = { appLinkComment = it },
     )

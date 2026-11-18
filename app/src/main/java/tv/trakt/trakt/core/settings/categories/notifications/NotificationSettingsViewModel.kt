@@ -24,7 +24,7 @@ internal class NotificationSettingsViewModel(
     private val appContext: Context,
     private val enableNotificationsUseCase: EnableNotificationsUseCase,
     private val updateNotificationsDeliveryUseCase: UpdateNotificationsDeliveryUseCase,
-    analytics: Analytics,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = NotificationSettingsState()
 
@@ -48,6 +48,11 @@ internal class NotificationSettingsViewModel(
                 updateNotificationsDeliveryUseCase.getDeliveryTime()
             }
         }
+    }
+
+    fun onPermissionResult(granted: Boolean) {
+        analytics.logNotificationPermission(granted)
+        enableNotifications(granted)
     }
 
     fun enableNotifications(enable: Boolean) {

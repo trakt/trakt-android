@@ -34,6 +34,7 @@ import tv.trakt.trakt.common.data.local.PeopleLocalSource
 import tv.trakt.trakt.common.data.local.PopularMoviesLocalSource
 import tv.trakt.trakt.common.data.local.PopularShowsLocalSource
 import tv.trakt.trakt.common.data.local.PosterLanguagesLocalSource
+import tv.trakt.trakt.common.data.local.PushTokenLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedMoviesLocalSource
 import tv.trakt.trakt.common.data.local.RecommendedShowsLocalSource
 import tv.trakt.trakt.common.data.local.ReleasesMoviesLocalSource
@@ -64,6 +65,7 @@ private const val MOVIES_PREFERENCES = "movies_preferences"
 private const val SHOWS_PREFERENCES = "shows_preferences"
 private const val POSTER_LANGUAGES_PREFERENCES = "poster_languages"
 private const val SEARCH_PREFERENCES = "search_preferences"
+private const val PUSH_PREFERENCES = "push_preferences"
 
 val localSourcesModule = module {
     singleOf(::AllActivityLocalSource)
@@ -197,6 +199,19 @@ val localSourcesModule = module {
         createStore(
             context = androidApplication(),
             name = TODAY_PREFERENCES,
+        )
+    }
+
+    single {
+        PushTokenLocalSource(
+            dataStore = get(named(PUSH_PREFERENCES)),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(PUSH_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+            name = PUSH_PREFERENCES,
         )
     }
 

@@ -62,6 +62,7 @@ import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
 import tv.trakt.trakt.core.main.usecases.YearInReviewBannerUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.notifications.data.work.mir.ScheduleMonthReviewNotificationWorker
+import tv.trakt.trakt.core.notifications.push.data.work.SyncPushTokenWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
@@ -328,6 +329,7 @@ internal class MainViewModel(
         ScheduleMonthReviewNotificationWorker.schedule(
             appContext = appContext,
         )
+        SyncPushTokenWorker.schedule(appContext)
     }
 
     fun openMonthReviewNotification(month: YearMonth) {
@@ -408,6 +410,7 @@ internal class MainViewModel(
                     analytics.logUserLogin(source = ConfigAuth.redirectSource(redirectUri))
                     dismissPaywall(it)
                 }
+                SyncPushTokenWorker.schedule(appContext)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     analytics.logLoginFailed(error.toLoginFailureCode())
