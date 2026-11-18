@@ -45,8 +45,8 @@ app/.../ui/components/AttentionIcon.kt    # animated icon for unseen preview fea
 
 ## Remote Config
 
-- Key: `preview_feature_` + the flag `id` (`character_portraits` to
-  `preview_feature_character_portraits`). Built by `FeatureFlag.remoteKey`.
+- Key: `preview_feature_` + the flag `id` with dashes as underscores
+  (`character-portraits` to `preview_feature_character_portraits`). Built by `FeatureFlag.remoteKey`.
 - Type: **string**. Never a boolean.
 - Do not add these keys to `common/src/main/res/xml/remote_config_defaults.xml`. A missing key must
   resolve to `off`.
@@ -64,15 +64,15 @@ app/.../ui/components/AttentionIcon.kt    # animated icon for unseen preview fea
 
    ```kotlin
    CharacterPortraits(
-       id = "character_portraits",
+       id = "character-portraits",
        title = R.string.preview_feature_title_character_portraits,
        description = R.string.preview_feature_description_character_portraits,
    ),
    ```
 
-   - `id` is snake_case. When the feature exists on trakt-web, take the id from
-     `projects/client/src/lib/features/feature-flag/models/FeatureFlag.ts` with dashes as
-     underscores (`character-portraits` to `character_portraits`).
+   - `id` is kebab-case. When the feature exists on trakt-web, reuse the id verbatim from
+     `projects/client/src/lib/features/feature-flag/models/FeatureFlag.ts`. Only the Remote
+     Config key converts dashes to underscores; stored keys use the `id` as is.
    - Strings are named `preview_feature_title_<name>` and `preview_feature_description_<name>`.
      Features that exist on web usually have both in `strings.xml` already. Missing keys go to
      `strings-todo.xml` (see `localization.md`).
@@ -140,7 +140,7 @@ internal class CastViewModel(
 
 In the settings DataStore (`SETTINGS_PREFERENCES`), per device, not cleared on logout:
 
-- `key_preview_feature_enabled_<id>`: the user's toggle.
+- `key_preview_feature_enabled_<id>`: the user's toggle (`key_preview_feature_enabled_character-portraits`).
 - `key_preview_features_seen`: ids of features already shown to the user.
 
 Only `FeatureFlagsUseCase` reads or writes these keys.
@@ -153,7 +153,7 @@ Only `FeatureFlagsUseCase` reads or writes these keys.
 
 ## Quick checklist
 
-- [ ] One `FeatureFlag` entry, `id` in snake_case, matching trakt-web when the feature exists there
+- [ ] One `FeatureFlag` entry, `id` in kebab-case, same as trakt-web when the feature exists there
 - [ ] Title and description from `preview_feature_title_*` / `preview_feature_description_*`
 - [ ] Gate through `FeatureFlagsUseCase` in a ViewModel or use case, `Boolean` in state
 - [ ] No direct `Firebase.remoteConfig`, `isDirector` or `isAnyVip` checks for gating
