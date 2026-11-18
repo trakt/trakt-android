@@ -4,7 +4,6 @@ import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -15,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.app.common.ui.chips.FilterChip
-import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.MediaMode
 
@@ -25,15 +23,8 @@ internal fun DiscoverFiltersList(
     modifier: Modifier = Modifier,
     selectedFocusRequester: FocusRequester = remember { FocusRequester() },
     downFocusRequester: FocusRequester? = null,
-    requestInitialFocus: Boolean = false,
     onModeClick: (MediaMode) -> Unit = {},
 ) {
-    LaunchedEffect(Unit) {
-        if (requestInitialFocus) {
-            selectedFocusRequester.requestSafeFocus()
-        }
-    }
-
     Row(
         horizontalArrangement = spacedBy(8.dp),
         modifier = modifier.focusGroup(),

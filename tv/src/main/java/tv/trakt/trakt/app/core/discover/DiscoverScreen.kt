@@ -2,12 +2,14 @@ package tv.trakt.trakt.app.core.discover
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +56,13 @@ private const val SECTION_TRENDING = "trending"
 private const val SECTION_RELEASES = "releases"
 private const val SECTION_ANTICIPATED = "anticipated"
 private const val SECTION_POPULAR = "popular"
+
+private val directionKeys = setOf(
+    Key.DirectionUp,
+    Key.DirectionDown,
+    Key.DirectionLeft,
+    Key.DirectionRight,
+)
 
 private val sections = listOf(
     SECTION_TRENDING,
@@ -104,10 +118,26 @@ private fun DiscoverScreenContent(
     }
     val filtersFocusRequester = remember { FocusRequester() }
 
+    var focusTrendingOnLoad by remember { mutableStateOf(focusedSection == null) }
+
+    val loadingFocusRequester = remember { FocusRequester() }
+
     LaunchedEffect(Unit) {
-        val restoredSection = focusedSection ?: return@LaunchedEffect
+        val requester = focusedSection?.let { focusRequesters[it] } ?: loadingFocusRequester
         withFrameNanos { }
-        focusRequesters[restoredSection]?.requestSafeFocus()
+        requester.requestSafeFocus()
+    }
+
+    LaunchedEffect(state.isLoading, state.trending) {
+        if (!focusTrendingOnLoad || state.isLoading) {
+            return@LaunchedEffect
+        }
+        withFrameNanos { }
+        when {
+            state.trending.isNullOrEmpty() -> filtersFocusRequester.requestSafeFocus()
+            else -> focusRequesters.getValue(SECTION_TRENDING).requestSafeFocus()
+        }
+        focusTrendingOnLoad = false
     }
 
     val onItemClick: (DiscoverItem) -> Unit = { item ->
@@ -122,6 +152,12 @@ private fun DiscoverScreenContent(
         modifier = modifier
             .fillMaxSize()
             .background(TraktTheme.colors.backgroundPrimary)
+            .onPreviewKeyEvent {
+                if (it.type == KeyEventType.KeyDown && it.key in directionKeys) {
+                    focusTrendingOnLoad = false
+                }
+                false
+            }
             .focusProperties {
                 onEnter = {
                     focusRequesters[focusedSection]?.requestSafeFocus()
@@ -139,8 +175,8 @@ private fun DiscoverScreenContent(
                 selectedMode = state.mode,
                 selectedFocusRequester = filtersFocusRequester,
                 downFocusRequester = focusRequesters.getValue(SECTION_TRENDING),
-                requestInitialFocus = focusedSection == null,
                 onModeClick = { mode ->
+                    focusTrendingOnLoad = false
                     focusedSection = null
                     focusedImages = null
                     onModeClick(mode)
@@ -163,22 +199,33 @@ private fun DiscoverScreenContent(
                 }
 
                 item {
-                    DiscoverItemsRow(
-                        header = stringResource(DiscoverMediaSection.Trending.titleRes),
-                        section = DiscoverMediaSection.Trending,
-                        items = state.trending,
-                        collection = state.collection,
-                        isLoading = state.isLoading,
-                        onItemClick = onItemClick,
-                        onItemFocus = {
-                            focusedImages = it.images
-                            focusedSection = SECTION_TRENDING
-                        },
-                        onViewAllClick = onViewAllTrendingClick,
-                        modifier = Modifier
-                            .focusGroup()
-                            .focusRequester(focusRequesters.getValue(SECTION_TRENDING)),
-                    )
+                    Box {
+                        DiscoverItemsRow(
+                            header = stringResource(DiscoverMediaSection.Trending.titleRes),
+                            section = DiscoverMediaSection.Trending,
+                            items = state.trending,
+                            collection = state.collection,
+                            isLoading = state.isLoading,
+                            onItemClick = onItemClick,
+                            onItemFocus = {
+                                focusedImages = it.images
+                                focusedSection = SECTION_TRENDING
+                            },
+                            onViewAllClick = onViewAllTrendingClick,
+                            modifier = Modifier
+                                .focusGroup()
+                                .focusRequester(focusRequesters.getValue(SECTION_TRENDING)),
+                        )
+
+                        if (focusTrendingOnLoad) {
+                            Box(
+                                modifier = Modifier
+                                    .size(1.dp)
+                                    .focusRequester(loadingFocusRequester)
+                                    .focusable(),
+                            )
+                        }
+                    }
                 }
 
                 item {
