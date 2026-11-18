@@ -5,9 +5,7 @@ package tv.trakt.trakt.app.core.lists
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -19,20 +17,25 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
+import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.lists.usecases.GetListsLikedUseCase
+import tv.trakt.trakt.app.core.lists.usecases.GetListsMediaWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsSmartUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.sorting.Sorting
@@ -40,6 +43,7 @@ import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
 
 internal class ListsViewModel(
+    private val getMediaWatchlistUseCase: GetListsMediaWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetListsShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetListsMoviesWatchlistUseCase,
     private val getSmartUseCase: GetListsSmartUseCase,
@@ -49,39 +53,48 @@ internal class ListsViewModel(
     private val moviesLocalSyncSource: MoviesSyncLocalSource,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val cacheMarkerProvider: CacheMarkerProvider,
+    private val collectionStateProvider: CollectionStateProvider,
+    private val mediaModeLocalSource: MediaModeLocalSource,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()
 
-    private val showsState = MutableStateFlow(initialState.watchlistShows)
-    private val moviesState = MutableStateFlow(initialState.watchlistMovies)
+    private val modeState = MutableStateFlow(initialState.mode)
+    private val watchlistState = MutableStateFlow(initialState.watchlist)
     private val listsSmartState = MutableStateFlow(initialState.smartLists)
     private val listsPersonalState = MutableStateFlow(initialState.personalLists)
     private val listsLikedState = MutableStateFlow(initialState.likedLists)
     private val loadingState = MutableStateFlow(initialState.loadingLists)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var showsLoadedAt: ZonedDateTime? = null
-    private var moviesLoadedAt: ZonedDateTime? = null
+    private var watchlistLoadedAt: ZonedDateTime? = null
+    private var watchlistJob: Job? = null
     private var marker: String? = null
 
     init {
-        loadWatchlistData()
+        observeMode()
         loadSmartListsData()
         loadPersonalListsData()
         loadLikedListsData()
 
         observeApp()
+        collectionStateProvider.launchIn(viewModelScope)
+    }
+
+    private fun observeMode() {
+        mediaModeLocalSource.observeMode()
+            .onEach { mode ->
+                modeState.update { mode }
+                loadWatchlistData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeApp() {
         appLifecycleProvider.observeState(FOREGROUND)
             .filter {
-                val threshold = nowUtc().minusMinutes(REFRESH_DATA_THRESHOLD_MINUTES)
-
-                val showsNeedLoad = showsLoadedAt != null && threshold.isAfter(showsLoadedAt)
-                val moviesNeedLoad = moviesLoadedAt != null && threshold.isAfter(moviesLoadedAt)
-
-                showsNeedLoad || moviesNeedLoad
+                watchlistLoadedAt != null &&
+                    nowUtc().minusMinutes(REFRESH_DATA_THRESHOLD_MINUTES).isAfter(watchlistLoadedAt)
             }
             .onEach {
                 loadWatchlistData(showLoading = false)
@@ -90,7 +103,8 @@ internal class ListsViewModel(
     }
 
     private fun loadWatchlistData(showLoading: Boolean = true) {
-        viewModelScope.launch {
+        watchlistJob?.cancel()
+        watchlistJob = viewModelScope.launch {
             try {
                 if (showLoading) {
                     loadingState.update {
@@ -98,35 +112,34 @@ internal class ListsViewModel(
                     }
                 }
 
-                coroutineScope {
-                    val showsAsync = async {
-                        getShowsWatchlistUseCase.getShows(
-                            limit = LISTS_SECTION_LIMIT,
-                            sorting = Sorting.RecentlyAdded,
-                        ).map { it.show }.toImmutableList()
-                    }
-                    val moviesAsync = async {
-                        getMoviesWatchlistUseCase.getMovies(
-                            limit = LISTS_SECTION_LIMIT,
-                            sorting = Sorting.RecentlyAdded,
-                        ).map { it.movie }.toImmutableList()
-                    }
+                val items = when (modeState.value) {
+                    MediaMode.Media -> getMediaWatchlistUseCase.getItems(
+                        limit = LISTS_SECTION_LIMIT,
+                        sorting = Sorting.RecentlyAdded,
+                    )
 
-                    showsState.update { showsAsync.await() }
-                    moviesState.update { moviesAsync.await() }
+                    MediaMode.Shows -> getShowsWatchlistUseCase.getShows(
+                        limit = LISTS_SECTION_LIMIT,
+                        sorting = Sorting.RecentlyAdded,
+                    )
+
+                    MediaMode.Movies -> getMoviesWatchlistUseCase.getMovies(
+                        limit = LISTS_SECTION_LIMIT,
+                        sorting = Sorting.RecentlyAdded,
+                    )
                 }
 
-                showsLoadedAt = nowUtc()
-                moviesLoadedAt = nowUtc()
+                watchlistState.update { items }
+                watchlistLoadedAt = nowUtc()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
                     Timber.e(error, "Error loading: ${error.message}")
                 }
-            } finally {
-                loadingState.update {
-                    it.copy(loadingWatchlist = false)
-                }
+            }
+
+            loadingState.update {
+                it.copy(loadingWatchlist = false)
             }
         }
     }
@@ -199,36 +212,27 @@ internal class ListsViewModel(
         }
     }
 
-    fun updateShowsData() {
-        Timber.d("updateShowsData() called")
-        viewModelScope.launch {
-            try {
-                if (showsLoadedAt == null) {
-                    return@launch
-                }
+    fun setMode(mode: MediaMode) {
+        if (mode == modeState.value) {
+            return
+        }
 
-                val localUpdatedAt = showsLocalSyncSource.getWatchlistUpdatedAt()
-                if (localUpdatedAt?.isAfter(showsLoadedAt) == true) {
-                    loadWatchlistData(showLoading = false)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.e(error, "Error")
-                }
-            }
+        modeState.update { mode }
+        analytics.logMediaModeClick(mode = mode.name)
+        viewModelScope.launch {
+            mediaModeLocalSource.setMode(mode)
         }
     }
 
-    fun updateMoviesData() {
-        Timber.d("updateMoviesData() called")
+    fun updateWatchlistData() {
+        Timber.d("updateWatchlistData() called")
         viewModelScope.launch {
             try {
-                if (moviesLoadedAt == null) {
-                    return@launch
-                }
+                val loadedAt = watchlistLoadedAt ?: return@launch
 
-                val localUpdatedAt = moviesLocalSyncSource.getWatchlistUpdatedAt()
-                if (localUpdatedAt?.isAfter(moviesLoadedAt) == true) {
+                val showsUpdatedAt = showsLocalSyncSource.getWatchlistUpdatedAt()
+                val moviesUpdatedAt = moviesLocalSyncSource.getWatchlistUpdatedAt()
+                if (showsUpdatedAt?.isAfter(loadedAt) == true || moviesUpdatedAt?.isAfter(loadedAt) == true) {
                     loadWatchlistData(showLoading = false)
                 }
             } catch (error: Exception) {
@@ -249,22 +253,24 @@ internal class ListsViewModel(
     }
 
     val state = combine(
-        showsState,
-        moviesState,
+        modeState,
+        watchlistState,
         listsPersonalState,
         listsLikedState,
         loadingState,
         errorState,
         listsSmartState,
+        collectionStateProvider.stateFlow,
     ) { s ->
         ListsState(
-            watchlistShows = s[0] as ImmutableList<Show>?,
-            watchlistMovies = s[1] as ImmutableList<Movie>?,
+            mode = s[0] as MediaMode,
+            watchlist = s[1] as ImmutableList<ListMediaItem>?,
             personalLists = s[2] as ImmutableList<CustomList>?,
             likedLists = s[3] as ImmutableList<CustomList>?,
             loadingLists = s[4] as ListsState.LoadingState,
             error = s[5] as Exception?,
             smartLists = s[6] as ImmutableList<SmartList>?,
+            collection = s[7] as UserCollectionState,
         )
     }.stateIn(
         scope = viewModelScope,

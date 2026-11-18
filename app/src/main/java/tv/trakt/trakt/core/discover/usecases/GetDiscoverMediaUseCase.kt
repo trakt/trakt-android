@@ -6,20 +6,14 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.MediaRemoteSource
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.discover.DiscoverItem
 import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.discover.DiscoverSection.Anticipated
 import tv.trakt.trakt.common.model.discover.DiscoverSection.Popular
 import tv.trakt.trakt.common.model.discover.DiscoverSection.Recommended
 import tv.trakt.trakt.common.model.discover.DiscoverSection.Trending
-import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
-import tv.trakt.trakt.common.networking.AnticipatedMediaDto
-import tv.trakt.trakt.common.networking.PopularMediaDto
-import tv.trakt.trakt.common.networking.TrendingMediaDto
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.data.local.media.DiscoverMediaLocalSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.media.GetRecommendedMediaUseCase
@@ -56,13 +50,13 @@ internal class GetDiscoverMediaUseCase(
         val theme = seasonalThemeUseCase.activeSeason()?.remoteValue
         val items = when (section) {
             Trending -> remoteSource.getTrending(page = page, limit = limit, filters = filters, theme = theme)
-                .mapNotNull(::toDiscoverItem)
+                .mapNotNull { DiscoverItem.fromDto(it) }
 
             Popular -> remoteSource.getPopular(page = page, limit = limit, filters = filters, theme = theme)
-                .mapIndexed { index, dto -> toDiscoverItem(dto = dto, rank = index + 1) }
+                .mapIndexed { index, dto -> DiscoverItem.fromDto(dto = dto, rank = index + 1) }
 
             Anticipated -> remoteSource.getAnticipated(page = page, limit = limit, filters = filters, theme = theme)
-                .mapNotNull(::toDiscoverItem)
+                .mapNotNull { DiscoverItem.fromDto(it) }
 
             Recommended -> error("Recommended is loaded through GetRecommendedMediaUseCase")
         }.toImmutableList()
@@ -113,24 +107,4 @@ private fun List<RecommendedItem>.toDiscoverItems(): ImmutableList<DiscoverItem>
             is RecommendedItem.MovieItem -> DiscoverItem.MovieItem(movie = it.movie, sources = it.sources)
         }
     }.toImmutableList()
-}
-
-private fun toDiscoverItem(dto: TrendingMediaDto): DiscoverItem? {
-    return dto.show?.let { DiscoverItem.ShowItem(show = Show.fromDto(it), count = dto.watchers) }
-        ?: dto.movie?.let { DiscoverItem.MovieItem(movie = Movie.fromDto(it), count = dto.watchers) }
-}
-
-private fun toDiscoverItem(dto: AnticipatedMediaDto): DiscoverItem? {
-    return dto.show?.let { DiscoverItem.ShowItem(show = Show.fromDto(it), count = dto.listCount) }
-        ?: dto.movie?.let { DiscoverItem.MovieItem(movie = Movie.fromDto(it), count = dto.listCount) }
-}
-
-private fun toDiscoverItem(
-    dto: PopularMediaDto,
-    rank: Int,
-): DiscoverItem {
-    return when {
-        dto.airedEpisodes != null -> DiscoverItem.ShowItem(show = Show.fromDto(dto), count = rank)
-        else -> DiscoverItem.MovieItem(movie = Movie.fromDto(dto), count = rank)
-    }
 }

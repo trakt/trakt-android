@@ -11,7 +11,11 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.recommended.RecommendedSource
+import tv.trakt.trakt.common.networking.AnticipatedMediaDto
+import tv.trakt.trakt.common.networking.PopularMediaDto
+import tv.trakt.trakt.common.networking.TrendingMediaDto
 import tv.trakt.trakt.resources.R
 
 @Immutable
@@ -81,4 +85,26 @@ sealed class DiscoverItem {
             is ShowItem -> show.airedEpisodes
             is MovieItem -> null
         }
+
+    companion object {
+        fun fromDto(dto: TrendingMediaDto): DiscoverItem? {
+            return dto.show?.let { ShowItem(show = Show.fromDto(it), count = dto.watchers) }
+                ?: dto.movie?.let { MovieItem(movie = Movie.fromDto(it), count = dto.watchers) }
+        }
+
+        fun fromDto(dto: AnticipatedMediaDto): DiscoverItem? {
+            return dto.show?.let { ShowItem(show = Show.fromDto(it), count = dto.listCount) }
+                ?: dto.movie?.let { MovieItem(movie = Movie.fromDto(it), count = dto.listCount) }
+        }
+
+        fun fromDto(
+            dto: PopularMediaDto,
+            rank: Int,
+        ): DiscoverItem {
+            return when {
+                dto.airedEpisodes != null -> ShowItem(show = Show.fromDto(dto), count = rank)
+                else -> MovieItem(movie = Movie.fromDto(dto), count = rank)
+            }
+        }
+    }
 }

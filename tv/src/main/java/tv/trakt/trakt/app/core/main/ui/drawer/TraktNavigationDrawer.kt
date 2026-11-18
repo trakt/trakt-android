@@ -54,13 +54,12 @@ import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.auth.navigation.AuthDestination
+import tv.trakt.trakt.app.core.discover.navigation.DiscoverDestination
 import tv.trakt.trakt.app.core.home.navigation.HomeDestination
 import tv.trakt.trakt.app.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.app.core.main.model.TraktDrawerItem
-import tv.trakt.trakt.app.core.movies.navigation.MoviesDestination
 import tv.trakt.trakt.app.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.app.core.search.navigation.SearchDestination
-import tv.trakt.trakt.app.core.shows.navigation.ShowsDestination
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -428,16 +427,10 @@ private val drawerItems = listOf(
         iconOff = R.drawable.ic_home_off,
     ),
     TraktDrawerItem(
-        destination = ShowsDestination,
-        label = R.string.page_title_shows,
-        iconOn = R.drawable.ic_shows_on,
-        iconOff = R.drawable.ic_shows_off,
-    ),
-    TraktDrawerItem(
-        destination = MoviesDestination,
-        label = R.string.page_title_movies,
-        iconOn = R.drawable.ic_movies_on,
-        iconOff = R.drawable.ic_movies_off,
+        destination = DiscoverDestination,
+        label = R.string.page_title_discover,
+        iconOn = R.drawable.ic_discover_on,
+        iconOff = R.drawable.ic_discover_off,
     ),
     TraktDrawerItem(
         destination = ListsDestination,

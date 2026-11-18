@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.data.local.ListsCollaborationsLocalSource
 import tv.trakt.trakt.common.data.local.ListsLikedLocalSource
 import tv.trakt.trakt.common.data.local.ListsPersonalLocalSource
 import tv.trakt.trakt.common.data.local.ListsSmartLocalSource
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.local.PeopleLocalSource
 import tv.trakt.trakt.common.data.local.PopularMoviesLocalSource
@@ -66,6 +67,7 @@ private const val SHOWS_PREFERENCES = "shows_preferences"
 private const val POSTER_LANGUAGES_PREFERENCES = "poster_languages"
 private const val SEARCH_PREFERENCES = "search_preferences"
 private const val PUSH_PREFERENCES = "push_preferences"
+private const val MEDIA_MODE_PREFERENCES = "media_mode_preferences"
 
 val localSourcesModule = module {
     singleOf(::AllActivityLocalSource)
@@ -212,6 +214,19 @@ val localSourcesModule = module {
         createStore(
             context = androidApplication(),
             name = PUSH_PREFERENCES,
+        )
+    }
+
+    single {
+        MediaModeLocalSource(
+            dataStore = get(named(MEDIA_MODE_PREFERENCES)),
+        )
+    }
+
+    single<DataStore<Preferences>>(named(MEDIA_MODE_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+            name = MEDIA_MODE_PREFERENCES,
         )
     }
 

@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.MediaModeSubtitle
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_WATCHLIST_PAGE_LIMIT
@@ -123,17 +124,22 @@ private fun WatchlistViewAllContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = stringResource(R.string.list_title_start_watching),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading4,
-                    overflow = TextOverflow.Ellipsis,
+                Column(
+                    verticalArrangement = spacedBy(4.dp),
                     modifier = Modifier
                         .focusProperties {
                             down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
                         }
                         .focusable(),
-                )
+                ) {
+                    Text(
+                        text = stringResource(R.string.list_title_start_watching),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading4,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    MediaModeSubtitle(mode = state.mode)
+                }
             }
 
             if (state.isLoading && state.items.isNullOrEmpty()) {

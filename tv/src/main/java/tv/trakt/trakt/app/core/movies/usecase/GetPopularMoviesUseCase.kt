@@ -6,11 +6,10 @@ import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_SECTION_LIMIT
 import tv.trakt.trakt.common.data.local.MovieLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.popularYear
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import java.time.Year
 
 internal class GetPopularMoviesUseCase(
     private val remoteSource: MoviesRemoteSource,
@@ -23,7 +22,7 @@ internal class GetPopularMoviesUseCase(
         return remoteSource.getPopular(
             page = page,
             limit = limit,
-            filters = GlobalFilter.Default.copy(years = getYearsRange().let { it to it }),
+            filters = GlobalFilter.Default.copy(years = popularYear().let { it to it }),
         )
             .asyncMap {
                 Movie.fromDto(it)
@@ -32,15 +31,5 @@ internal class GetPopularMoviesUseCase(
             .also { movies ->
                 localSource.upsertMovies(movies)
             }
-    }
-
-    private fun getYearsRange(): Int {
-        val currentYear = Year.now().value
-        val currentMonth = nowLocalDay().monthValue
-        return if (currentMonth <= 3) {
-            currentYear - 1
-        } else {
-            currentYear
-        }
     }
 }

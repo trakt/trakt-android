@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,24 +28,25 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
+import tv.trakt.trakt.app.common.ui.chips.MediaModeFilters
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.views.ListsLikedView
-import tv.trakt.trakt.app.core.lists.views.ListsMoviesWatchlistView
 import tv.trakt.trakt.app.core.lists.views.ListsPersonalView
-import tv.trakt.trakt.app.core.lists.views.ListsShowsWatchlistView
 import tv.trakt.trakt.app.core.lists.views.ListsSmartView
+import tv.trakt.trakt.app.core.lists.views.ListsWatchlistView
+import tv.trakt.trakt.app.core.lists.views.WATCHLIST_SECTION
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
 import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
-    "shows",
-    "movies",
+    WATCHLIST_SECTION,
     "smart",
     "personal",
     "liked",
@@ -58,14 +60,12 @@ internal fun ListsScreen(
     onLikedListClick: (CustomList) -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
-    onShowViewAllClick: () -> Unit = {},
-    onMovieViewAllClick: () -> Unit = {},
+    onWatchlistViewAllClick: (MediaMode) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LifecycleEventEffect(ON_CREATE) {
-        viewModel.updateShowsData()
-        viewModel.updateMoviesData()
+        viewModel.updateWatchlistData()
     }
 
     LifecycleEventEffect(ON_START) {
@@ -79,8 +79,8 @@ internal fun ListsScreen(
         onLikedListClick = onLikedListClick,
         onShowClick = onShowClick,
         onMovieClick = onMovieClick,
-        onShowViewAllClick = onShowViewAllClick,
-        onMovieViewAllClick = onMovieViewAllClick,
+        onModeClick = viewModel::setMode,
+        onWatchlistViewAllClick = onWatchlistViewAllClick,
     )
 }
 
@@ -93,8 +93,8 @@ internal fun ListsScreenContent(
     onLikedListClick: (CustomList) -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
-    onShowViewAllClick: () -> Unit = {},
-    onMovieViewAllClick: () -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onWatchlistViewAllClick: (MediaMode) -> Unit = {},
 ) {
     var focusedInitial by rememberSaveable { mutableStateOf(false) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -118,13 +118,15 @@ internal fun ListsScreenContent(
 
     LaunchedEffect(Unit) {
         if (focusedSection == null) {
-            focusedSection = "shows"
-            focusRequesters["shows"]?.requestSafeFocus()
+            focusedSection = WATCHLIST_SECTION
+            focusRequesters[WATCHLIST_SECTION]?.requestSafeFocus()
         } else {
             delay(500.milliseconds)
             focusRequesters[focusedSection]?.requestSafeFocus()
         }
     }
+
+    val initialWatchlistLoading = state.loadingLists.loadingWatchlist && state.watchlist == null
 
     Box(
         contentAlignment = Alignment.TopStart,
@@ -153,43 +155,39 @@ internal fun ListsScreenContent(
                 .focusGroup(),
         ) {
             item {
-                ListsShowsWatchlistView(
-                    items = state.watchlistShows,
+                MediaModeFilters(
+                    selectedMode = state.mode,
+                    downFocusRequester = focusRequesters.getValue(WATCHLIST_SECTION),
+                    onModeClick = {
+                        focusedSection = null
+                        focusedImageUrl = null
+                        onModeClick(it)
+                    },
+                    modifier = Modifier.padding(start = TraktTheme.spacing.mainContentStartSpace),
+                )
+            }
+
+            item {
+                ListsWatchlistView(
+                    items = state.watchlist,
+                    collection = state.collection,
                     isLoading = state.loadingLists.loadingWatchlist,
                     focusRequesters = focusRequesters,
                     onLoaded = {
                         if (!focusedInitial) {
                             focusedInitial = true
-                            focusRequesters["shows"]?.requestSafeFocus()
+                            focusRequesters[WATCHLIST_SECTION]?.requestSafeFocus()
                         } else {
-                            refocusOnLoad("shows")
+                            refocusOnLoad(WATCHLIST_SECTION)
                         }
                     },
                     onFocused = {
-                        focusedSection = "shows"
+                        focusedSection = WATCHLIST_SECTION
                         focusedImageUrl = it?.images?.getFanartUrl(Images.Size.FULL)
                     },
-                    onClick = {
-                        onShowClick(it.ids.trakt)
-                    },
-                    onViewAllClick = onShowViewAllClick,
-                )
-            }
-
-            item {
-                ListsMoviesWatchlistView(
-                    items = state.watchlistMovies,
-                    isLoading = state.loadingLists.loadingWatchlist,
-                    focusRequesters = focusRequesters,
-                    onLoaded = { refocusOnLoad("movies") },
-                    onFocused = {
-                        focusedSection = "movies"
-                        focusedImageUrl = it?.images?.getFanartUrl(Images.Size.FULL)
-                    },
-                    onClick = {
-                        onMovieClick(it.ids.trakt)
-                    },
-                    onViewAllClick = onMovieViewAllClick,
+                    onShowClick = onShowClick,
+                    onMovieClick = onMovieClick,
+                    onViewAllClick = { onWatchlistViewAllClick(state.mode) },
                 )
             }
 
@@ -197,7 +195,7 @@ internal fun ListsScreenContent(
                 ListsSmartView(
                     items = state.smartLists,
                     isLoading = state.loadingLists.loadingSmart ||
-                        state.loadingLists.loadingWatchlist,
+                        initialWatchlistLoading,
                     focusRequesters = focusRequesters,
                     onLoaded = { refocusOnLoad("smart") },
                     onFocused = {
@@ -212,7 +210,7 @@ internal fun ListsScreenContent(
                 ListsPersonalView(
                     items = state.personalLists,
                     isLoading = state.loadingLists.loadingPersonal ||
-                        state.loadingLists.loadingWatchlist,
+                        initialWatchlistLoading,
                     focusRequesters = focusRequesters,
                     onLoaded = { refocusOnLoad("personal") },
                     onFocused = {
@@ -229,7 +227,7 @@ internal fun ListsScreenContent(
                 ListsLikedView(
                     items = state.likedLists,
                     isLoading = state.loadingLists.loadingLiked ||
-                        state.loadingLists.loadingWatchlist,
+                        initialWatchlistLoading,
                     focusRequesters = focusRequesters,
                     onLoaded = { refocusOnLoad("liked") },
                     onFocused = {
@@ -266,8 +264,7 @@ private fun Preview() {
     TraktTheme {
         ListsScreenContent(
             state = ListsState(
-                watchlistMovies = null,
-                watchlistShows = null,
+                watchlist = null,
                 error = null,
             ),
         )

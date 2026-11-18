@@ -68,6 +68,8 @@ internal val homeModule = module {
     viewModel {
         HomeViewModel(
             sessionManager = get(),
+            mediaModeLocalSource = get(),
+            analytics = get(),
         )
     }
 
@@ -79,6 +81,7 @@ internal val homeModule = module {
             localShowsSyncSource = get(),
             dataChanges = get(),
             appLifecycleProvider = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
@@ -89,6 +92,7 @@ internal val homeModule = module {
             localMoviesSyncSource = get(),
             localEpisodesSyncSource = get(),
             appLifecycleProvider = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
@@ -100,12 +104,14 @@ internal val homeModule = module {
             localEpisodesSyncSource = get(),
             dataChanges = get(),
             appLifecycleProvider = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
     viewModel {
         HomeSocialViewModel(
             getSocialActivityUseCase = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
@@ -115,6 +121,7 @@ internal val homeModule = module {
             getMoviesUpNextUseCase = get(),
             localShowsSyncSource = get(),
             localEpisodesSyncSource = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
@@ -124,12 +131,14 @@ internal val homeModule = module {
             getMoviesUseCase = get(),
             localMoviesDataSource = get(),
             localShowsDataSource = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
     viewModel {
         SocialViewAllViewModel(
             getSocialActivityUseCase = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
@@ -139,6 +148,7 @@ internal val homeModule = module {
             syncHistoryCase = get(),
             dataChanges = get(),
             appLifecycleProvider = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
@@ -149,6 +159,7 @@ internal val homeModule = module {
             sessionManager = get(),
             collectionStateProvider = get(),
             appLifecycleProvider = get(),
+            mediaModeLocalSource = get(),
         )
     }
 
@@ -157,6 +168,7 @@ internal val homeModule = module {
             getRecommendedShowsUseCase = get(),
             getRecommendedMoviesUseCase = get(),
             collectionStateProvider = get(),
+            mediaModeLocalSource = get(),
         )
     }
 }

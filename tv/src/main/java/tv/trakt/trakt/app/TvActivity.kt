@@ -24,6 +24,7 @@ import tv.trakt.trakt.app.core.details.lists.details.media.di.customListMediaMod
 import tv.trakt.trakt.app.core.details.movie.di.movieDetailsModule
 import tv.trakt.trakt.app.core.details.ratings.di.detailsRatingsModule
 import tv.trakt.trakt.app.core.details.show.di.showDetailsModule
+import tv.trakt.trakt.app.core.discover.di.discoverModule
 import tv.trakt.trakt.app.core.home.di.homeModule
 import tv.trakt.trakt.app.core.lists.di.listsModule
 import tv.trakt.trakt.app.core.main.MainScreen
@@ -117,6 +118,7 @@ class TvActivity : ComponentActivity() {
                     showsModule,
                     showDetailsModule,
                     moviesModule,
+                    discoverModule,
                     dataChangesModule,
                     movieDetailsModule,
                     episodeDetailsModule,

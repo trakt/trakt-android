@@ -1,7 +1,9 @@
 package tv.trakt.trakt.app.core.profile.sections.history.viewall
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.collections.immutable.plus
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -15,15 +17,20 @@ import timber.log.Timber
 import tv.trakt.trakt.app.core.profile.ProfileConfig.HISTORY_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
+import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.ProfileHistoryViewAllDestination
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode
 import java.time.ZonedDateTime
 
 internal class ProfileHistoryViewAllViewModel(
+    savedStateHandle: SavedStateHandle,
     private val getHistoryCase: GetProfileHistoryUseCase,
     private val syncHistoryCase: SyncProfileHistoryUseCase,
 ) : ViewModel() {
-    private val initialState = ProfileHistoryViewAllState()
+    private val destination = savedStateHandle.toRoute<ProfileHistoryViewAllDestination>()
+    private val mode = MediaMode.entries.find { it.name == destination.mode }
+    private val initialState = ProfileHistoryViewAllState(mode = mode)
 
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
@@ -50,7 +57,10 @@ internal class ProfileHistoryViewAllViewModel(
                 loadingState.update { true }
 
                 itemsState.update {
-                    getHistoryCase.getHistory(limit = HISTORY_ALL_PAGE_LIMIT)
+                    getHistoryCase.getHistory(
+                        limit = HISTORY_ALL_PAGE_LIMIT,
+                        mode = mode ?: MediaMode.Media,
+                    )
                 }
                 nextDataPage += 1
                 loadedAt = nowUtc()
@@ -75,6 +85,7 @@ internal class ProfileHistoryViewAllViewModel(
                 val items = getHistoryCase.getHistory(
                     limit = HISTORY_ALL_PAGE_LIMIT,
                     page = nextDataPage,
+                    mode = mode ?: MediaMode.Media,
                 )
 
                 itemsState.update { current ->
@@ -124,6 +135,7 @@ internal class ProfileHistoryViewAllViewModel(
             isLoadingPage = s2,
             items = s3,
             error = s4,
+            mode = mode,
         )
     }.stateIn(
         scope = viewModelScope,

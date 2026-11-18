@@ -14,10 +14,13 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.ifMovies
+import tv.trakt.trakt.common.model.ifShows
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -30,10 +33,18 @@ internal class GetUpcomingUseCase(
     private val localMovieSource: MovieLocalSource,
     private val localEpisodeSource: EpisodeLocalSource,
 ) {
-    suspend fun getUpcoming(): ImmutableList<CalendarItem> {
+    suspend fun getUpcoming(mode: MediaMode = MediaMode.Media): ImmutableList<CalendarItem> {
         return coroutineScope {
-            val showsAsync = async { getShows() }
-            val moviesAsync = async { getMovies() }
+            val showsAsync = async {
+                mode.ifShows {
+                    getShows()
+                }
+            }
+            val moviesAsync = async {
+                mode.ifMovies {
+                    getMovies()
+                }
+            }
 
             return@coroutineScope (
                 showsAsync.await() +

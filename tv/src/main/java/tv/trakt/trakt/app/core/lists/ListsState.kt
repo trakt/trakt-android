@@ -2,15 +2,17 @@ package tv.trakt.trakt.app.core.lists
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
+import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
 
 @Immutable
 internal data class ListsState(
-    val watchlistMovies: ImmutableList<Movie>? = null,
-    val watchlistShows: ImmutableList<Show>? = null,
+    val mode: MediaMode = MediaMode.Media,
+    val watchlist: ImmutableList<ListMediaItem>? = null,
+    val collection: UserCollectionState = UserCollectionState.Default,
     val smartLists: ImmutableList<SmartList>? = null,
     val personalLists: ImmutableList<CustomList>? = null,
     val likedLists: ImmutableList<CustomList>? = null,

@@ -22,10 +22,12 @@ import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHisto
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
+import tv.trakt.trakt.common.model.MediaMode
 import java.time.ZonedDateTime
 
 internal class HomeHistoryViewModel(
@@ -33,8 +35,10 @@ internal class HomeHistoryViewModel(
     private val syncHistoryCase: SyncProfileHistoryUseCase,
     private val dataChanges: DataChanges,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val mediaModeLocalSource: MediaModeLocalSource,
 ) : ViewModel() {
     private val initialState = HomeHistoryState()
+    private var mode = MediaMode.Media
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.isLoading)
@@ -44,7 +48,7 @@ internal class HomeHistoryViewModel(
     private var dataJob: Job? = null
 
     init {
-        loadData()
+        observeMode()
         observeApp()
         observeData()
     }
@@ -71,6 +75,15 @@ internal class HomeHistoryViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeMode() {
+        mediaModeLocalSource.observeMode()
+            .onEach {
+                mode = it
+                loadData()
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadData(showLoading: Boolean = true) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
@@ -80,7 +93,7 @@ internal class HomeHistoryViewModel(
                 }
 
                 itemsState.update {
-                    getHistoryCase.getHistory(limit = HOME_SECTION_LIMIT)
+                    getHistoryCase.getHistory(limit = HOME_SECTION_LIMIT, mode = mode)
                 }
 
                 loadedAt = nowUtc()

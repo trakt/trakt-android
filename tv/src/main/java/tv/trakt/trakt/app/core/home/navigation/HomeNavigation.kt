@@ -8,6 +8,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.core.home.HomeScreen
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 
 @Serializable
@@ -22,7 +23,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateToRecommended: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
-    onNavigateToHistory: () -> Unit,
+    onNavigateToHistory: (MediaMode) -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(

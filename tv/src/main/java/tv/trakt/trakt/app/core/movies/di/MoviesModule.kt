@@ -2,7 +2,6 @@ package tv.trakt.trakt.app.core.movies.di
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import tv.trakt.trakt.app.core.movies.MoviesViewModel
 import tv.trakt.trakt.app.core.movies.features.anticipated.MoviesAnticipatedViewAllViewModel
 import tv.trakt.trakt.app.core.movies.features.popular.MoviesPopularViewAllViewModel
 import tv.trakt.trakt.app.core.movies.features.releases.MoviesReleasesViewAllViewModel
@@ -46,18 +45,6 @@ internal val moviesModule = module {
         GetReleasesMoviesUseCase(
             remoteSource = get(),
             localMovieSource = get(),
-        )
-    }
-
-    viewModel {
-        MoviesViewModel(
-            getTrendingMoviesUseCase = get(),
-            getPopularMoviesUseCase = get(),
-            getAnticipatedMoviesUseCase = get(),
-            getReleasesMoviesUseCase = get(),
-            sessionManager = get(),
-            appLifecycleProvider = get(),
-            collectionStateProvider = get(),
         )
     }
 

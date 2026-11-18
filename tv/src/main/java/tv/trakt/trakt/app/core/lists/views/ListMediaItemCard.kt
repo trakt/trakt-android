@@ -40,6 +40,7 @@ internal fun ListMediaItemCard(
     onMovieClick: (TraktId) -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     modifier: Modifier = Modifier,
+    showWatchlist: Boolean = true,
 ) {
     VerticalMediaCard(
         title = item.title,
@@ -54,7 +55,7 @@ internal fun ListMediaItemCard(
             is ShowItem -> collection.isWatching(item.id, MediaType.Show, item.show.airedEpisodes)
             is MovieItem, is SeasonItem, is EpisodeItem -> false
         },
-        watchlist = when (item) {
+        watchlist = showWatchlist && when (item) {
             is ShowItem -> collection.isWatchlist(item.id, MediaType.Show)
             is MovieItem -> collection.isWatchlist(item.id, MediaType.Movie)
             is SeasonItem, is EpisodeItem -> false

@@ -7,6 +7,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.lists.ListsViewModel
+import tv.trakt.trakt.app.core.lists.details.media.MediaWatchlistViewModel
 import tv.trakt.trakt.app.core.lists.details.movies.MoviesWatchlistViewModel
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListViewModel
 import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
@@ -15,6 +16,7 @@ import tv.trakt.trakt.app.core.lists.details.smart.SmartListViewModel
 import tv.trakt.trakt.app.core.lists.details.smart.usecases.GetSmartListItemsUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListSortRatingsUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsLikedUseCase
+import tv.trakt.trakt.app.core.lists.usecases.GetListsMediaWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
@@ -23,6 +25,8 @@ import tv.trakt.trakt.app.core.lists.usecases.liked.AddLikedListUseCase
 import tv.trakt.trakt.app.core.lists.usecases.liked.RemoveLikedListUseCase
 
 internal val listsModule = module {
+
+    factoryOf(::GetListsMediaWatchlistUseCase)
 
     factory {
         GetListsShowsWatchlistUseCase(
@@ -81,6 +85,7 @@ internal val listsModule = module {
 
     viewModel {
         ListsViewModel(
+            getMediaWatchlistUseCase = get(),
             getShowsWatchlistUseCase = get(),
             getMoviesWatchlistUseCase = get(),
             getSmartUseCase = get(),
@@ -90,8 +95,13 @@ internal val listsModule = module {
             moviesLocalSyncSource = get(),
             appLifecycleProvider = get(),
             cacheMarkerProvider = get(),
+            collectionStateProvider = get(),
+            mediaModeLocalSource = get(),
+            analytics = get(),
         )
     }
+
+    viewModelOf(::MediaWatchlistViewModel)
 
     viewModelOf(::MoviesWatchlistViewModel)
 

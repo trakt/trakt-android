@@ -22,13 +22,17 @@ import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.ifMovies
+import tv.trakt.trakt.common.model.ifShows
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
 import java.time.ZonedDateTime
 
@@ -38,8 +42,10 @@ internal class HomeRecommendedViewModel(
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val mediaModeLocalSource: MediaModeLocalSource,
 ) : ViewModel() {
     private val initialState = HomeRecommendedState()
+    private var mode = MediaMode.Media
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.isLoading)
@@ -49,7 +55,7 @@ internal class HomeRecommendedViewModel(
     private var dataJob: Job? = null
 
     init {
-        loadData()
+        observeMode()
         observeApp()
         observeData()
     }
@@ -71,6 +77,15 @@ internal class HomeRecommendedViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeMode() {
+        mediaModeLocalSource.observeMode()
+            .onEach {
+                mode = it
+                loadData()
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadData(showLoading: Boolean = true) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
@@ -85,10 +100,16 @@ internal class HomeRecommendedViewModel(
                 }
 
                 coroutineScope {
-                    val showsAsync =
-                        async { getRecommendedShowsUseCase.getRecommendedShows(limit = HOME_SECTION_LIMIT) }
-                    val moviesAsync =
-                        async { getRecommendedMoviesUseCase.getRecommendedMovies(limit = HOME_SECTION_LIMIT) }
+                    val showsAsync = async {
+                        mode.ifShows {
+                            getRecommendedShowsUseCase.getRecommendedShows(limit = HOME_SECTION_LIMIT)
+                        }
+                    }
+                    val moviesAsync = async {
+                        mode.ifMovies {
+                            getRecommendedMoviesUseCase.getRecommendedMovies(limit = HOME_SECTION_LIMIT)
+                        }
+                    }
 
                     val shows = showsAsync.await()
                     val movies = moviesAsync.await()
