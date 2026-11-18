@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP 包含</string>
   <string name="header_vip_cancel_kept">仍是 VIP。</string>
   <string name="header_vip_cancel_library">没有任何内容会被删除。它只是停止增长。</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex 记录</string>
-  <string name="header_vip_cancel_loss_plex_servers">额外 Plex 服务器</string>
   <string name="header_vip_cancel_losses">在 %s 您将失去</string>
   <string name="header_vip_cancel_offer">或者再续订 2 年</string>
   <string name="header_vip_cancel_reason">您为何离开？</string>
@@ -1164,10 +1162,10 @@
   <string name="hype_tier_cant_wait">迫不及待</string>
   <string name="hype_tier_looking_good">值得期待</string>
   <string name="image_alt_comment_gif">评论附带的GIF</string>
-  <string name="image_alt_hype_score">你的期待度为 %d%%</string>
+  <string name="image_alt_hype_score">你的期待度为 %d%</string>
   <string name="image_alt_hype_unknown">暂无期待度分数</string>
   <string name="image_alt_list_preview_poster">%s 中的条目海报</string>
-  <string name="image_alt_match_score">与你的匹配度为 %d%%</string>
+  <string name="image_alt_match_score">与你的匹配度为 %d%</string>
   <string name="image_alt_match_unknown">暂无匹配分数</string>
   <string name="image_alt_media_poster">“%s”海报</string>
   <string name="image_alt_person_headshot">%s 的大头照</string>
@@ -1576,7 +1574,7 @@
   <string name="match_label_soulmates">灵魂伴侣</string>
   <string name="match_label_spin_off">衍生作品</string>
   <string name="match_pill_anchor">匹配:</string>
-  <string name="match_pill_aria_label">%1$d%% 匹配，%2$s。打开匹配详情。</string>
+  <string name="match_pill_aria_label">%1$d% 匹配，%2$s。打开匹配详情。</string>
   <string name="match_pill_loading_aria_label">正在计算匹配度</string>
   <string name="match_tier_good_fit">契合喜好</string>
   <string name="match_tier_maybe">或许喜欢</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">年至今</string>
   <string name="preview_feature_description_anticipated_recommendations">为你精选推荐尚未上映的内容。在“推荐”列表上方切换“现已上映”和“即将上映”。</string>
   <string name="preview_feature_description_awards">在电影、剧集和人物页面查看 Oscar、Golden Globe、Emmy 以及各大电影节的获奖与提名情况。</string>
+  <string name="preview_feature_description_character_portraits">当有演员所饰角色的肖像时，演员表将以角色形象展示每位演员。</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_insights_card">在电影和剧集页面的“洞察”板块中展示作品的热度以及与你品味的匹配度。</string>
   <string name="preview_feature_description_living_poster">热门作品拥有可随指针倾斜的海报，图层可在不同深度移动，并伴有薄雾、余烬和雪花等氛围特效。</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">您的 2026 年以可滚动短片的形式呈现，带有观看者角色，然后是与之风格匹配的统计页面。</string>
   <string name="preview_feature_title_anticipated_recommendations">即将上映推荐</string>
   <string name="preview_feature_title_awards">奖项</string>
+  <string name="preview_feature_title_character_portraits">角色肖像</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_insights_card">热度与匹配度指数</string>
   <string name="preview_feature_title_living_poster">动态海报</string>
@@ -1896,7 +1896,7 @@
   <string name="tag_media_sync_webhook_only">仅限 Webhook</string>
   <string name="tag_mixtape_different_mood">风格不符</string>
   <string name="tag_mixtape_kept">已保留</string>
-  <string name="tag_mixtape_match">%s%% 匹配</string>
+  <string name="tag_mixtape_match">%s% 匹配</string>
   <string name="tag_mixtape_tap_details">轻触查看详情</string>
   <string name="tag_text_award_nominee">提名</string>
   <string name="tag_text_award_pending">已提名</string>
@@ -2200,7 +2200,7 @@
   <string name="text_history_sync_filter">同步 ID %d</string>
   <string name="text_history_sync_filter_with_source">同步 ID %1$d (%2$s)</string>
   <string name="text_hype_lists">被加入列表最多的待推出作品之一</string>
-  <string name="text_hype_lists_badge">前 %s%%</string>
+  <string name="text_hype_lists_badge">前 %s%</string>
   <string name="text_hype_lists_detail">大家不断将其加入列表</string>
   <string name="text_hype_out_on">%s 推出</string>
   <string name="text_hype_series_about">与您的平时评分相当</string>
@@ -2292,7 +2292,7 @@
   <string name="text_match_basis_free">匹配分数免费提供，匹配原因为 VIP 专属功能。</string>
   <string name="text_match_basis_history">基于你看过、评分和收藏的内容。</string>
   <string name="text_match_because_liked">因为您喜欢</string>
-  <string name="text_match_better_than">比 %d%% 的影视内容更适合你</string>
+  <string name="text_match_better_than">比 %d% 的影视内容更适合你</string>
   <string name="text_match_not_enough_data">目前数据不足，暂无法为你计算匹配度。</string>
   <string name="text_match_rating_liked">在 Trakt 上颇受欢迎</string>
   <string name="text_match_rating_loved">在 Trakt 上备受喜爱</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">笔记</string>
   <string name="text_vip_cancel_limit_smart_lists">智能列表</string>
   <string name="text_vip_cancel_limit_watchlist">待看列表</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">播放记录将停止自动跟踪</string>
-  <string name="text_vip_cancel_loss_plex_servers">免费帐户同步一个服务器</string>
   <string name="text_vip_cancel_loss_streaming">停止同步。免费帐户保留一项服务。</string>
   <string name="text_vip_cancel_offer_break">您可以休息一下。价格不变。从 %s 开始，今天无需支付。</string>
   <string name="text_vip_cancel_offer_monthly">每月 %1$s。从 %2$s 开始，今天无需支付。</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">使用不足</string>
   <string name="text_vip_cancel_step">第%1$d步，共%2$d步</string>
   <string name="text_vip_cancel_tenure_new">不到一个月</string>
-  <string name="text_vip_cancel_value_off">关闭</string>
-  <string name="text_vip_cancel_value_server">1 个服务器</string>
-  <string name="text_vip_cancel_value_servers">%d 个服务器</string>
   <string name="text_vip_cancel_value_service">1 项服务</string>
   <string name="text_vip_cancel_value_services">%d 项服务</string>
   <string name="text_vip_checkout_failed_title">无法开始结账</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">扩展您的待看列表容量，以追踪您想观看的所有内容。</string>
   <string name="vip_feature_description_early_access">在其他人之前抢先体验新版 Trakt 应用程序和全新功能。</string>
   <string name="vip_feature_description_global_wtw">查看电影和节目在全球各地的流媒体播放情况，而不仅仅是您所在的地区。</string>
+  <string name="vip_feature_description_leaderboard">在排行榜上查看你在好友中的排名！</string>
   <string name="vip_feature_description_more_lists">创建更多自定义列表，以您想要的方式整理您的节目和电影。</string>
   <string name="vip_feature_description_plex_sync">通过全天更频繁的自动更新，使您的 Plex 媒体库完美同步。</string>
   <string name="vip_feature_description_recaps">通过全面的月度与年度回顾，深入了解您观看、评分和发现的所有内容。</string>
@@ -3240,7 +3236,7 @@
   <string name="yir_2026_preview_runner_none">无（非混合）</string>
   <string name="yir_2026_preview_runner_up">第二名</string>
   <string name="yir_2026_preview_title">角色预览</string>
-  <string name="yir_2026_rarity">仅有 %1$d%% 是 %2$s</string>
+  <string name="yir_2026_rarity">仅有 %1$d% 是 %2$s</string>
   <string name="yir_2026_reel_a_little_bit">有点 %s</string>
   <string name="yir_2026_reel_and_you_are">而您是</string>
   <string name="yir_2026_reel_but_mostly">但主要是</string>

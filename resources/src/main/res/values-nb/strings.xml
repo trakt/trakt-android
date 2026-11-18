@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP inkluderer</string>
   <string name="header_vip_cancel_kept">Fortsatt VIP.</string>
   <string name="header_vip_cancel_library">Ingenting blir slettet. Det slutter bare å vokse.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex-skrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Ekstra Plex-servere</string>
   <string name="header_vip_cancel_losses">Den %s mister du</string>
   <string name="header_vip_cancel_offer">Eller bli 2 år til</string>
   <string name="header_vip_cancel_reason">Hvorfor drar du?</string>
@@ -1164,10 +1162,10 @@
   <string name="hype_tier_cant_wait">Kan ikke vente</string>
   <string name="hype_tier_looking_good">Ser lovende ut</string>
   <string name="image_alt_comment_gif">GIF vedlagt kommentaren</string>
-  <string name="image_alt_hype_score">%d %% hype for deg</string>
+  <string name="image_alt_hype_score">%d % hype for deg</string>
   <string name="image_alt_hype_unknown">Ingen hypescore for deg ennå</string>
   <string name="image_alt_list_preview_poster">Plakat for et element i %s</string>
-  <string name="image_alt_match_score">%d %% match for deg</string>
+  <string name="image_alt_match_score">%d % match for deg</string>
   <string name="image_alt_match_unknown">Ingen matchscore for deg ennå</string>
   <string name="image_alt_media_poster">\"%s\" plakat</string>
   <string name="image_alt_person_headshot">Portrett av %s</string>
@@ -1576,7 +1574,7 @@
   <string name="match_label_soulmates">Sjelevenner</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Treff:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Åpne matchdetaljer.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Åpne matchdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beregner treffscore</string>
   <string name="match_tier_good_fit">God match</string>
   <string name="match_tier_maybe">Kanskje</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_anticipated_recommendations">Anbefaler titler som ikke er ute ennå, valgt ut for deg. Bytt mellom Ute nå og Kommer snart over listen med anbefalinger.</string>
   <string name="preview_feature_description_awards">Se seire og nominasjoner for Oscar, Golden Globe, Emmy og festivaler på film-, serie- og personsider.</string>
+  <string name="preview_feature_description_character_portraits">Rollelister viser hver skuespiller som karakteren sin når vi har et portrett av dem i rollen.</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller for å skjule eller vise konfigurerbare seksjoner i hele appen.</string>
   <string name="preview_feature_description_insights_card">Viser hvor hypet en tittel er, og hvor godt den matcher smaken din i Innsikt-seksjonen på film- og seriesider.</string>
   <string name="preview_feature_description_living_poster">Topptitler får en plakat som vipper med pekeren din, med lag som beveger seg på ulike dybder og stemningseffekter som tåke, glør og snø.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en rulle-drevet film med en seerpersona, deretter en statistikkside stylet for å matche den.</string>
   <string name="preview_feature_title_anticipated_recommendations">Kommer snart-anbefalinger</string>
   <string name="preview_feature_title_awards">Priser</string>
+  <string name="preview_feature_title_character_portraits">Karakterportretter</string>
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
   <string name="preview_feature_title_insights_card">Hype- og matchmålere</string>
   <string name="preview_feature_title_living_poster">Levende plakater</string>
@@ -1896,7 +1896,7 @@
   <string name="tag_media_sync_webhook_only">Kun webhook</string>
   <string name="tag_mixtape_different_mood">Annen stemning</string>
   <string name="tag_mixtape_kept">Beholdt</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Trykk for detaljer</string>
   <string name="tag_text_award_nominee">Nominert</string>
   <string name="tag_text_award_pending">Nominert</string>
@@ -2200,7 +2200,7 @@
   <string name="text_history_sync_filter">Synkroniserings-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
   <string name="text_hype_lists">En av de mest oppførte kommende titlene</string>
-  <string name="text_hype_lists_badge">Topp %s%%</string>
+  <string name="text_hype_lists_badge">Topp %s%</string>
   <string name="text_hype_lists_detail">Folk fortsetter å legge den til på listene sine</string>
   <string name="text_hype_out_on">Ute %s</string>
   <string name="text_hype_series_about">Omtrent som vanlig</string>
@@ -2292,7 +2292,7 @@
   <string name="text_match_basis_free">Matchscoren din er gratis. Begrunnelsene bak er en VIP-funksjon.</string>
   <string name="text_match_basis_history">Basert på det du har sett, vurdert og favorittmarkert.</string>
   <string name="text_match_because_liked">Fordi du likte</string>
-  <string name="text_match_better_than">Bedre match for deg enn %d %% av titlene</string>
+  <string name="text_match_better_than">Bedre match for deg enn %d % av titlene</string>
   <string name="text_match_not_enough_data">Ikke nok data til å matche denne med deg ennå.</string>
   <string name="text_match_rating_liked">Likt på Trakt</string>
   <string name="text_match_rating_loved">Elsket på Trakt</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Notater</string>
   <string name="text_vip_cancel_limit_smart_lists">Smarte lister</string>
   <string name="text_vip_cancel_limit_watchlist">Ønskeliste</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Avspillinger spores ikke lenger automatisk</string>
-  <string name="text_vip_cancel_loss_plex_servers">Gratis kontoer synkroniserer én server</string>
   <string name="text_vip_cancel_loss_streaming">Synkronisering stoppes. Gratis beholder én tjeneste.</string>
   <string name="text_vip_cancel_offer_break">Ta pausen din. Prisen venter. Starter %s, ingenting i dag.</string>
   <string name="text_vip_cancel_offer_monthly">Det er %1$s i måneden. Starter %2$s, ingenting i dag.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Bruker det ikke nok</string>
   <string name="text_vip_cancel_step">Trinn %1$d av %2$d</string>
   <string name="text_vip_cancel_tenure_new">under en måned</string>
-  <string name="text_vip_cancel_value_off">Av</string>
-  <string name="text_vip_cancel_value_server">1 server</string>
-  <string name="text_vip_cancel_value_servers">%d servere</string>
   <string name="text_vip_cancel_value_service">1 tjeneste</string>
   <string name="text_vip_cancel_value_services">%d tjenester</string>
   <string name="text_vip_checkout_failed_title">Kunne ikke starte utsjekking</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Utvid kapasiteten på overvåkningslisten din for å holde oversikt over alt du vil se.</string>
   <string name="vip_feature_description_early_access">Få tidlig tilgang til nye versjoner av Trakt-apper og splitter nye funksjoner før alle andre.</string>
   <string name="vip_feature_description_global_wtw">Se hvor serier og filmer er tilgjengelige for strømming hvor som helst i verden, ikke bare i din region.</string>
+  <string name="vip_feature_description_leaderboard">Se hvor du rangerer blant vennene dine på ledertavlen!</string>
   <string name="vip_feature_description_more_lists">Opprett enda flere tilpassede lister for å organisere serier og filmer akkurat slik du vil.</string>
   <string name="vip_feature_description_plex_sync">Hold Plex-biblioteket ditt perfekt synkronisert med hyppigere automatiske oppdateringer gjennom dagen.</string>
   <string name="vip_feature_description_recaps">Få dypere innsikt med omfattende måneds- og årsoppsummeringer som viser alt du har sett, vurdert og oppdaget.</string>
@@ -3240,7 +3236,7 @@
   <string name="yir_2026_preview_runner_none">Ingen (ingen hybrid)</string>
   <string name="yir_2026_preview_runner_up">Andreplass</string>
   <string name="yir_2026_preview_title">Forhåndsvisning av persona</string>
-  <string name="yir_2026_rarity">Bare %1$d%% er %2$s</string>
+  <string name="yir_2026_rarity">Bare %1$d% er %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Litt %s</string>
   <string name="yir_2026_reel_and_you_are">Og du er</string>
   <string name="yir_2026_reel_but_mostly">Men mest</string>

@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">El VIP inclou</string>
   <string name="header_vip_cancel_kept">Encara VIP.</string>
   <string name="header_vip_cancel_library">Res s\'elimina. Simplement deixa de créixer.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Scrobbling de Plex</string>
-  <string name="header_vip_cancel_loss_plex_servers">Servidors Plex addicionals</string>
   <string name="header_vip_cancel_losses">El %s perdràs</string>
   <string name="header_vip_cancel_offer">O queda\'t 2 anys més</string>
   <string name="header_vip_cancel_reason">Per què marxes?</string>
@@ -1164,10 +1162,10 @@
   <string name="hype_tier_cant_wait">Quines ganes</string>
   <string name="hype_tier_looking_good">Pinta bé</string>
   <string name="image_alt_comment_gif">GIF adjunt al comentari</string>
-  <string name="image_alt_hype_score">%d%% d\'expectació per a tu</string>
+  <string name="image_alt_hype_score">%d% d\'expectació per a tu</string>
   <string name="image_alt_hype_unknown">Encara no hi ha cap puntuació d\'expectació per a tu</string>
   <string name="image_alt_list_preview_poster">Pòster d\'una entrada a %s</string>
-  <string name="image_alt_match_score">%d%% de coincidència per a tu</string>
+  <string name="image_alt_match_score">%d% de coincidència per a tu</string>
   <string name="image_alt_match_unknown">Encara no hi ha cap puntuació de coincidència per a tu</string>
   <string name="image_alt_media_poster">Pòster de \"%s\"</string>
   <string name="image_alt_person_headshot">Retrat de %s</string>
@@ -1576,7 +1574,7 @@
   <string name="match_label_soulmates">Ànimes bessones</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Coincidència:</string>
-  <string name="match_pill_aria_label">%1$d%% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
+  <string name="match_pill_aria_label">%1$d% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
   <string name="match_tier_good_fit">Bona tria</string>
   <string name="match_tier_maybe">Potser</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
   <string name="preview_feature_description_anticipated_recommendations">Recomana títols que encara no s\'han estrenat, triats per a tu. Canvia entre «Ja disponible» i «Properament» a sobre de la llista de recomanacions.</string>
   <string name="preview_feature_description_awards">Consulta els premis i nominacions als Oscar, Golden Globe, Emmy i festivals a les pàgines de pel·lícules, sèries i persones.</string>
+  <string name="preview_feature_description_character_portraits">Les llistes de repartiment mostren cada actor com el seu personatge quan en tenim un retrat en el paper.</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_insights_card">Mostra quanta expectació genera un títol i fins a quin punt coincideix amb els teus gustos a la secció Insights de les pàgines de pel·lícules i sèries.</string>
   <string name="preview_feature_description_living_poster">Els títols més destacats tenen un pòster que s\'inclina amb el punter, amb capes que es mouen a diferents profunditats i efectes ambientals com ara boira, brases i neu.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">El teu 2026 en un carrusel desplaçable amb una personalitat d\'espectador, i després una pàgina d\'estadístiques amb el mateix estil.</string>
   <string name="preview_feature_title_anticipated_recommendations">Recomanacions de properes estrenes</string>
   <string name="preview_feature_title_awards">Premis</string>
+  <string name="preview_feature_title_character_portraits">Retrats de personatges</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_insights_card">Indicadors d\'expectació i afinitat</string>
   <string name="preview_feature_title_living_poster">Pòsters vius</string>
@@ -1896,7 +1896,7 @@
   <string name="tag_media_sync_webhook_only">Només Webhook</string>
   <string name="tag_mixtape_different_mood">Un altre ambient</string>
   <string name="tag_mixtape_kept">Guardat</string>
-  <string name="tag_mixtape_match">%s%% de coincidència</string>
+  <string name="tag_mixtape_match">%s% de coincidència</string>
   <string name="tag_mixtape_tap_details">Toca per als detalls</string>
   <string name="tag_text_award_nominee">Nominat</string>
   <string name="tag_text_award_pending">Nominat</string>
@@ -2200,7 +2200,7 @@
   <string name="text_history_sync_filter">ID de sincronització %d</string>
   <string name="text_history_sync_filter_with_source">ID de sincronització %1$d (%2$s)</string>
   <string name="text_hype_lists">Un dels propers títols més afegits a llistes</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">La gent el continua afegint a les seves llistes</string>
   <string name="text_hype_out_on">Estrena el %s</string>
   <string name="text_hype_series_about">Al voltant del que sols valorar</string>
@@ -2292,7 +2292,7 @@
   <string name="text_match_basis_free">La teva puntuació és gratuïta. Els motius que hi ha al darrere són una funció VIP.</string>
   <string name="text_match_basis_history">A partir del que has vist, valorat i afegit a preferits.</string>
   <string name="text_match_because_liked">Perquè t\'ha agradat</string>
-  <string name="text_match_better_than">Encaixa millor amb tu que el %d%% dels títols</string>
+  <string name="text_match_better_than">Encaixa millor amb tu que el %d% dels títols</string>
   <string name="text_match_not_enough_data">Encara no hi ha prou dades per saber si encaixa amb tu.</string>
   <string name="text_match_rating_liked">Agrada a Trakt</string>
   <string name="text_match_rating_loved">Encanta a Trakt</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Notes</string>
   <string name="text_vip_cancel_limit_smart_lists">Llistes intel·ligents</string>
   <string name="text_vip_cancel_limit_watchlist">Llista de seguiment</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Les reproduccions deixen de ser rastrejades automàticament</string>
-  <string name="text_vip_cancel_loss_plex_servers">Els comptes gratuïts sincronitzen un servidor</string>
   <string name="text_vip_cancel_loss_streaming">Deixa de sincronitzar. La versió gratuïta manté un servei.</string>
   <string name="text_vip_cancel_offer_break">Preneu-vos un descans. El preu espera. Comença el %s, res avui.</string>
   <string name="text_vip_cancel_offer_monthly">Són %1$s al mes. Comença el %2$s, res avui.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">No l\'utilitzo prou</string>
   <string name="text_vip_cancel_step">Pas %1$d de %2$d</string>
   <string name="text_vip_cancel_tenure_new">menys d\'un mes</string>
-  <string name="text_vip_cancel_value_off">Desactivat</string>
-  <string name="text_vip_cancel_value_server">1 servidor</string>
-  <string name="text_vip_cancel_value_servers">%d servidors</string>
   <string name="text_vip_cancel_value_service">1 servei</string>
   <string name="text_vip_cancel_value_services">%d serveis</string>
   <string name="text_vip_checkout_failed_title">No s\'ha pogut iniciar el pagament</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Amplia la capacitat de la teva llista de seguiment per fer un seguiment de tot el que vols veure.</string>
   <string name="vip_feature_description_early_access">Obtén accés anticipat a les noves versions de les aplicacions de Trakt i a funcions noves abans que ningú.</string>
   <string name="vip_feature_description_global_wtw">Veure on estan disponibles les sèries i pel·lícules per reproduir en qualsevol part del món, no només a la teva regió.</string>
+  <string name="vip_feature_description_leaderboard">Mira quina posició ocupes entre els teus amics a la taula de classificació!</string>
   <string name="vip_feature_description_more_lists">Crea encara més llistes personalitzades per organitzar les teves sèries i pel·lícules exactament com vols.</string>
   <string name="vip_feature_description_plex_sync">Mantén la teva biblioteca de Plex perfectament sincronitzada amb actualitzacions automàtiques més freqüents durant tot el dia.</string>
   <string name="vip_feature_description_recaps">Obtén informació més detallada amb resums mensuals i anuals complets que mostren tot el que has vist, valorat i descobert.</string>
@@ -3240,7 +3236,7 @@
   <string name="yir_2026_preview_runner_none">Cap (sense híbrid)</string>
   <string name="yir_2026_preview_runner_up">Subcampió</string>
   <string name="yir_2026_preview_title">Vista prèvia de la personalitat</string>
-  <string name="yir_2026_rarity">Només el %1$d%% són %2$s</string>
+  <string name="yir_2026_rarity">Només el %1$d% són %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Una mica %s</string>
   <string name="yir_2026_reel_and_you_are">I tu ets</string>
   <string name="yir_2026_reel_but_mostly">Però majoritàriament</string>

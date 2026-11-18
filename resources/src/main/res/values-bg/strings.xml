@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP включва</string>
   <string name="header_vip_cancel_kept">Все още VIP.</string>
   <string name="header_vip_cancel_library">Нищо не се изтрива. Просто спира да расте.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex Scrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Допълнителни Plex сървъри</string>
   <string name="header_vip_cancel_losses">На %s губите</string>
   <string name="header_vip_cancel_offer">Или останете още 2 години</string>
   <string name="header_vip_cancel_reason">Защо напускате?</string>
@@ -1164,10 +1162,10 @@
   <string name="hype_tier_cant_wait">Нямам търпение</string>
   <string name="hype_tier_looking_good">Изглежда добре</string>
   <string name="image_alt_comment_gif">GIF, прикачен към коментара</string>
-  <string name="image_alt_hype_score">%d%% очакване за вас</string>
+  <string name="image_alt_hype_score">%d% очакване за вас</string>
   <string name="image_alt_hype_unknown">Все още няма оценка за очакване за вас</string>
   <string name="image_alt_list_preview_poster">Плакат за запис в %s</string>
-  <string name="image_alt_match_score">%d%% съвпадение за вас</string>
+  <string name="image_alt_match_score">%d% съвпадение за вас</string>
   <string name="image_alt_match_unknown">Все още няма оценка за съвпадение за вас</string>
   <string name="image_alt_media_poster">Плакат на \"%s\"</string>
   <string name="image_alt_person_headshot">Портретна снимка на %s</string>
@@ -1576,7 +1574,7 @@
   <string name="match_label_soulmates">Сродни души</string>
   <string name="match_label_spin_off">Спин-оф</string>
   <string name="match_pill_anchor">Съвпадение:</string>
-  <string name="match_pill_aria_label">%1$d%% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
+  <string name="match_pill_aria_label">%1$d% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
   <string name="match_pill_loading_aria_label">Изчисляване на резултат за съвпадение</string>
   <string name="match_tier_good_fit">Добро съвпадение</string>
   <string name="match_tier_maybe">Може би</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">От началото на годината</string>
   <string name="preview_feature_description_anticipated_recommendations">Препоръчва заглавия, които все още не са излезли, подбрани за вас. Превключвайте между „Вече излезли“ и „Очаквайте скоро“ над списъка с препоръки.</string>
   <string name="preview_feature_description_awards">Вижте спечелени награди и номинации за Oscar, Golden Globe, Emmy и фестивали на страниците за филми, сериали и личности.</string>
+  <string name="preview_feature_description_character_portraits">Списъците с актьорския състав показват всеки актьор като неговия герой, когато разполагаме с негов портрет в ролята.</string>
   <string name="preview_feature_description_edit_mode">Активирайте контроли за скриване или показване на конфигурируеми секции в цялото приложение.</string>
   <string name="preview_feature_description_insights_card">Показва нивото на интерес към дадено заглавие и доколко то отговаря на вкуса ви в секцията Insights на страниците за филми и сериали.</string>
   <string name="preview_feature_description_living_poster">Най-популярните заглавия получават плакат, който се накланя с курсора ви, със слоеве, движещи се на различна дълбочина, и атмосферни ефекти като мъгла, жарава и сняг.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Вашата 2026 като превъртащ се клип с потребителска персона, след което страница със статистика, оформена според нея.</string>
   <string name="preview_feature_title_anticipated_recommendations">Препоръки за предстоящи заглавия</string>
   <string name="preview_feature_title_awards">Награди</string>
+  <string name="preview_feature_title_character_portraits">Портрети на героите</string>
   <string name="preview_feature_title_edit_mode">Режим на редактиране</string>
   <string name="preview_feature_title_insights_card">Индикатори за интерес и съвпадение</string>
   <string name="preview_feature_title_living_poster">Живи плакати</string>
@@ -1896,7 +1896,7 @@
   <string name="tag_media_sync_webhook_only">Само Webhook</string>
   <string name="tag_mixtape_different_mood">Различно усещане</string>
   <string name="tag_mixtape_kept">Запазено</string>
-  <string name="tag_mixtape_match">%s%% съвпадение</string>
+  <string name="tag_mixtape_match">%s% съвпадение</string>
   <string name="tag_mixtape_tap_details">Докоснете за подробности</string>
   <string name="tag_text_award_nominee">Номинация</string>
   <string name="tag_text_award_pending">Номиниран</string>
@@ -2200,7 +2200,7 @@
   <string name="text_history_sync_filter">ID на синхронизация %d</string>
   <string name="text_history_sync_filter_with_source">ID на синхронизация %1$d (%2$s)</string>
   <string name="text_hype_lists">Едно от най-добавяните предстоящи заглавия</string>
-  <string name="text_hype_lists_badge">Топ %s%%</string>
+  <string name="text_hype_lists_badge">Топ %s%</string>
   <string name="text_hype_lists_detail">Хората продължават да го добавят в списъците си</string>
   <string name="text_hype_out_on">Излиза на %s</string>
   <string name="text_hype_series_about">Около обичайното за вас</string>
@@ -2292,7 +2292,7 @@
   <string name="text_match_basis_free">Резултатът ви е безплатен. Причините за него са VIP функция.</string>
   <string name="text_match_basis_history">Въз основа на това, което сте гледали, оценили и добавили в любими.</string>
   <string name="text_match_because_liked">Защото харесахте</string>
-  <string name="text_match_better_than">По-добро съвпадение за вас от %d%% от заглавията</string>
+  <string name="text_match_better_than">По-добро съвпадение за вас от %d% от заглавията</string>
   <string name="text_match_not_enough_data">Все още няма достатъчно данни, за да определим съвпадението за вас.</string>
   <string name="text_match_rating_liked">Харесвано в Trakt</string>
   <string name="text_match_rating_loved">Обожавано в Trakt</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Бележки</string>
   <string name="text_vip_cancel_limit_smart_lists">Интелигентни списъци</string>
   <string name="text_vip_cancel_limit_watchlist">Списък за гледане</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Гледанията спират да се проследяват автоматично</string>
-  <string name="text_vip_cancel_loss_plex_servers">Безплатните акаунти синхронизират един сървър</string>
   <string name="text_vip_cancel_loss_streaming">Спира синхронизирането. Безплатният план запазва една услуга.</string>
   <string name="text_vip_cancel_offer_break">Направете си почивка. Цената ви чака. Започва на %s, нищо днес.</string>
   <string name="text_vip_cancel_offer_monthly">Това е %1$s на месец. Започва на %2$s, нищо днес.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Не го използвам достатъчно</string>
   <string name="text_vip_cancel_step">Стъпка %1$d от %2$d</string>
   <string name="text_vip_cancel_tenure_new">под месец</string>
-  <string name="text_vip_cancel_value_off">Изкл.</string>
-  <string name="text_vip_cancel_value_server">1 сървър</string>
-  <string name="text_vip_cancel_value_servers">%d сървъра</string>
   <string name="text_vip_cancel_value_service">1 услуга</string>
   <string name="text_vip_cancel_value_services">%d услуги</string>
   <string name="text_vip_checkout_failed_title">Неуспешно стартиране на плащането</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Разширете капацитета на списъка си за гледане, за да следите всичко, което искате да гледате.</string>
   <string name="vip_feature_description_early_access">Получете ранен достъп до нови версии на приложенията на Trakt и чисто нови функции преди всички останали.</string>
   <string name="vip_feature_description_global_wtw">Вижте къде сериалите и филмите са налични за стрийминг навсякъде по света, не само във вашия регион.</string>
+  <string name="vip_feature_description_leaderboard">Вижте къде се нареждате сред приятелите си в класацията!</string>
   <string name="vip_feature_description_more_lists">Създайте още повече персонализирани списъци, за да организирате сериалите и филмите си точно както искате.</string>
   <string name="vip_feature_description_plex_sync">Поддържайте библиотеката си на Plex перфектно синхронизирана с по-чести автоматични актуализации през целия ден.</string>
   <string name="vip_feature_description_recaps">Получете по-дълбоки прозрения с изчерпателни месечни и годишни обобщения, показващи всичко, което сте гледали, оценили и открили.</string>
@@ -3240,7 +3236,7 @@
   <string name="yir_2026_preview_runner_none">Няма (без хибрид)</string>
   <string name="yir_2026_preview_runner_up">Подгласник</string>
   <string name="yir_2026_preview_title">Предварителен преглед на персона</string>
-  <string name="yir_2026_rarity">Само %1$d%% са %2$s</string>
+  <string name="yir_2026_rarity">Само %1$d% са %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Малко %s</string>
   <string name="yir_2026_reel_and_you_are">И вие сте</string>
   <string name="yir_2026_reel_but_mostly">Но предимно</string>

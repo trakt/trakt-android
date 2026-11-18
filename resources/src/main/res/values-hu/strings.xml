@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">A VIP tartalmazza</string>
   <string name="header_vip_cancel_kept">Még mindig VIP.</string>
   <string name="header_vip_cancel_library">Semmi sem törlődik. Csak a növekedés áll meg.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex scrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Extra Plex szerverek</string>
   <string name="header_vip_cancel_losses">%s dátummal elveszíted</string>
   <string name="header_vip_cancel_offer">Vagy maradj még 2 évig</string>
   <string name="header_vip_cancel_reason">Miért távozol?</string>
@@ -1164,10 +1162,10 @@
   <string name="hype_tier_cant_wait">Alig várom</string>
   <string name="hype_tier_looking_good">Ígéretes</string>
   <string name="image_alt_comment_gif">A hozzászóláshoz csatolt GIF</string>
-  <string name="image_alt_hype_score">%d%% hype számodra</string>
+  <string name="image_alt_hype_score">%d% hype számodra</string>
   <string name="image_alt_hype_unknown">Még nincs hype-pontszámod</string>
   <string name="image_alt_list_preview_poster">Poszter egy bejegyzéshez: „%s”</string>
-  <string name="image_alt_match_score">%d%% egyezés neked</string>
+  <string name="image_alt_match_score">%d% egyezés neked</string>
   <string name="image_alt_match_unknown">Még nincs egyezési pontszámod</string>
   <string name="image_alt_media_poster">„%s” posztere</string>
   <string name="image_alt_person_headshot">%s portréja</string>
@@ -1576,7 +1574,7 @@
   <string name="match_label_soulmates">Lelkitársak</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Egyezés:</string>
-  <string name="match_pill_aria_label">%1$d%% egyezés, %2$s. Egyezési részletek megnyitása.</string>
+  <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
   <string name="match_tier_good_fit">Jó választás</string>
   <string name="match_tier_maybe">Talán</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Éves összesítés</string>
   <string name="preview_feature_description_anticipated_recommendations">Még meg nem jelent, neked válogatott címeket ajánl. Válts a „Már megjelent” és a „Hamarosan” között az Ajánlott lista felett.</string>
   <string name="preview_feature_description_awards">Tekintsd meg az Oscar-, Golden Globe-, Emmy- és fesztiválgyőzelmeket és -jelöléseket a filmek, sorozatok és személyek oldalán.</string>
+  <string name="preview_feature_description_character_portraits">A szereplőlisták minden színészt a karaktereként jelenítenek meg, ha elérhető róluk portré az adott szerepben.</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_insights_card">Megmutatja, mekkora felhajtás övezi a címet, és mennyire illik az ízlésedhez a film- és sorozatoldalak Betekintések szakaszában.</string>
   <string name="preview_feature_description_living_poster">A legnépszerűbb címek olyan posztert kapnak, amely a mutató mozgásával együtt dől, különböző mélységekben mozgó rétegekkel és olyan környezeti effektekkel, mint a köd, a parázs és a hó.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">A 2026-os éved egy görgethető videóként, egy nézői személyiséggel, majd egy hozzá illeszkedő statisztikai oldallal.</string>
   <string name="preview_feature_title_anticipated_recommendations">Hamarosan érkező ajánlások</string>
   <string name="preview_feature_title_awards">Díjak</string>
+  <string name="preview_feature_title_character_portraits">Karakterportrék</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_insights_card">Hype- és egyezésmérők</string>
   <string name="preview_feature_title_living_poster">Élő poszterek</string>
@@ -1896,7 +1896,7 @@
   <string name="tag_media_sync_webhook_only">Csak Webhook</string>
   <string name="tag_mixtape_different_mood">Más hangulat</string>
   <string name="tag_mixtape_kept">Megtartva</string>
-  <string name="tag_mixtape_match">%s%% egyezés</string>
+  <string name="tag_mixtape_match">%s% egyezés</string>
   <string name="tag_mixtape_tap_details">Koppints a részletekért</string>
   <string name="tag_text_award_nominee">Jelölt</string>
   <string name="tag_text_award_pending">Jelölve</string>
@@ -2200,7 +2200,7 @@
   <string name="text_history_sync_filter">Szinkronizálási azonosító: %d</string>
   <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
   <string name="text_hype_lists">Az egyik legtöbb listára felvett várható cím</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">A felhasználók folyamatosan hozzáadják a listáikhoz</string>
   <string name="text_hype_out_on">Megjelenés: %s</string>
   <string name="text_hype_series_about">Körülbelül a megszokott</string>
@@ -2292,7 +2292,7 @@
   <string name="text_match_basis_free">A pontszámod ingyenes. A mögötte rejlő okok VIP funkciónak számítanak.</string>
   <string name="text_match_basis_history">A megnézett, értékelt és kedvencnek jelölt tartalmaid alapján.</string>
   <string name="text_match_because_liked">Mert tetszett neked</string>
-  <string name="text_match_better_than">Jobban illik hozzád a címek %d%%-ánál</string>
+  <string name="text_match_better_than">Jobban illik hozzád a címek %d%-ánál</string>
   <string name="text_match_not_enough_data">Még nincs elég adat az egyezés megállapításához.</string>
   <string name="text_match_rating_liked">Kedvelik a Trakton</string>
   <string name="text_match_rating_loved">Imádják a Trakton</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Jegyzetek</string>
   <string name="text_vip_cancel_limit_smart_lists">Okos listák</string>
   <string name="text_vip_cancel_limit_watchlist">Megnézendők</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">A lejátszások automatikusan leállnak nyomon követése</string>
-  <string name="text_vip_cancel_loss_plex_servers">Az ingyenes fiókok egy szervert szinkronizálnak</string>
   <string name="text_vip_cancel_loss_streaming">A szinkronizálás leáll. Az ingyenes fiókok egy szolgáltatást tartanak meg.</string>
   <string name="text_vip_cancel_offer_break">Tarts szünetet. Az ár vár. %s dátumtól kezdődik, ma semmi.</string>
   <string name="text_vip_cancel_offer_monthly">Ez %1$s havonta. %2$s dátumtól kezdődik, ma semmi.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Nem használom eleget</string>
   <string name="text_vip_cancel_step">%1$d/%2$d. lépés</string>
   <string name="text_vip_cancel_tenure_new">egy hónapon belül</string>
-  <string name="text_vip_cancel_value_off">Ki</string>
-  <string name="text_vip_cancel_value_server">1 szerver</string>
-  <string name="text_vip_cancel_value_servers">%d szerver</string>
   <string name="text_vip_cancel_value_service">1 szolgáltatás</string>
   <string name="text_vip_cancel_value_services">%d szolgáltatás</string>
   <string name="text_vip_checkout_failed_title">Nem sikerült elindítani a fizetést</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Bővítsd a megnézendők listájának kapacitását, hogy nyomon követhesd mindazt, amit meg szeretnél nézni.</string>
   <string name="vip_feature_description_early_access">Szerezz korai hozzáférést a Trakt alkalmazások új verzióihoz, és próbáld ki a legfrissebb funkciókat mindenki más előtt!</string>
   <string name="vip_feature_description_global_wtw">Nézd meg, hol érhetők el sorozatok és filmek streamelésre a világ bármely pontján, nem csak a te régiódban.</string>
+  <string name="vip_feature_description_leaderboard">Nézd meg, hol állsz a ranglistán a barátaid között!</string>
   <string name="vip_feature_description_more_lists">Hozz létre még több egyedi listát, hogy pontosan úgy rendszerezhesd a sorozataidat és filmjeidet, ahogyan szeretnéd.</string>
   <string name="vip_feature_description_plex_sync">Tartsd Plex könyvtáradat tökéletesen szinkronban a gyakoribb automatikus frissítésekkel a nap folyamán.</string>
   <string name="vip_feature_description_recaps">Mélyebb betekintést nyerhetsz átfogó havi és éves összefoglalókkal, amelyek megmutatják mindazt, amit megnéztél, értékeltél és felfedeztél.</string>
@@ -3240,7 +3236,7 @@
   <string name="yir_2026_preview_runner_none">Nincs (nem hibrid)</string>
   <string name="yir_2026_preview_runner_up">Második helyezett</string>
   <string name="yir_2026_preview_title">Személyiség előnézet</string>
-  <string name="yir_2026_rarity">Csak %1$d%% %2$s</string>
+  <string name="yir_2026_rarity">Csak %1$d% %2$s</string>
   <string name="yir_2026_reel_a_little_bit">Kicsit %s</string>
   <string name="yir_2026_reel_and_you_are">És te vagy</string>
   <string name="yir_2026_reel_but_mostly">De leginkább</string>

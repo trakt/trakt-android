@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP includes</string>
   <string name="header_vip_cancel_kept">Still VIP.</string>
   <string name="header_vip_cancel_library">Nothing gets deleted. It just stops growing.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex scrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Extra Plex servers</string>
   <string name="header_vip_cancel_losses">On %s you lose</string>
   <string name="header_vip_cancel_offer">Or stay 2 more years</string>
   <string name="header_vip_cancel_reason">Why are you leaving?</string>
@@ -1164,10 +1162,10 @@
   <string name="hype_tier_cant_wait">Can\'t wait</string>
   <string name="hype_tier_looking_good">Looking good</string>
   <string name="image_alt_comment_gif">GIF attached to the comment</string>
-  <string name="image_alt_hype_score">%d%% hype for you</string>
+  <string name="image_alt_hype_score">%d% hype for you</string>
   <string name="image_alt_hype_unknown">No hype score for you yet</string>
   <string name="image_alt_list_preview_poster">Poster for an entry in %s</string>
-  <string name="image_alt_match_score">%d%% match for you</string>
+  <string name="image_alt_match_score">%d% match for you</string>
   <string name="image_alt_match_unknown">No match score for you yet</string>
   <string name="image_alt_media_poster">\"%s\" poster</string>
   <string name="image_alt_person_headshot">Headshot of %s</string>
@@ -1576,7 +1574,7 @@
   <string name="match_label_soulmates">Soulmates</string>
   <string name="match_label_spin_off">Spin-off</string>
   <string name="match_pill_anchor">Match:</string>
-  <string name="match_pill_aria_label">%1$d%% match, %2$s. Open match details.</string>
+  <string name="match_pill_aria_label">%1$d% match, %2$s. Open match details.</string>
   <string name="match_pill_loading_aria_label">Computing match score</string>
   <string name="match_tier_good_fit">Good fit</string>
   <string name="match_tier_maybe">Maybe</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_anticipated_recommendations">Recommends titles that are not out yet, picked for you. Switch between Out now and Coming soon above the Recommended list.</string>
   <string name="preview_feature_description_awards">See Oscar, Golden Globe, Emmy and festival wins and nominations on movie, show and person pages.</string>
+  <string name="preview_feature_description_character_portraits">Cast lists show each actor as their character when we have a portrait of them in the role.</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_insights_card">Shows how hyped a title is and how well it matches your taste in the Insights section of movie and show pages.</string>
   <string name="preview_feature_description_living_poster">Top titles get a poster that tilts with your pointer, with layers that move at different depths and ambient effects such as fog, embers and snow.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Your 2026 as a scroll-driven reel with a viewer persona, then a stats page styled to match it.</string>
   <string name="preview_feature_title_anticipated_recommendations">Coming soon recommendations</string>
   <string name="preview_feature_title_awards">Awards</string>
+  <string name="preview_feature_title_character_portraits">Character portraits</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_insights_card">Hype and match meters</string>
   <string name="preview_feature_title_living_poster">Living posters</string>
@@ -1896,7 +1896,7 @@
   <string name="tag_media_sync_webhook_only">Webhook only</string>
   <string name="tag_mixtape_different_mood">Different mood</string>
   <string name="tag_mixtape_kept">Kept</string>
-  <string name="tag_mixtape_match">%s%% match</string>
+  <string name="tag_mixtape_match">%s% match</string>
   <string name="tag_mixtape_tap_details">Tap for details</string>
   <string name="tag_text_award_nominee">Nominee</string>
   <string name="tag_text_award_pending">Nominated</string>
@@ -2200,7 +2200,7 @@
   <string name="text_history_sync_filter">Sync ID %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hype_lists">One of the most listed upcoming titles</string>
-  <string name="text_hype_lists_badge">Top %s%%</string>
+  <string name="text_hype_lists_badge">Top %s%</string>
   <string name="text_hype_lists_detail">People keep adding it to their lists</string>
   <string name="text_hype_out_on">Out %s</string>
   <string name="text_hype_series_about">About your usual</string>
@@ -2292,7 +2292,7 @@
   <string name="text_match_basis_free">Your score is free. The reasons behind it are a VIP feature.</string>
   <string name="text_match_basis_history">From what you watched, rated and favorited.</string>
   <string name="text_match_because_liked">Because you liked</string>
-  <string name="text_match_better_than">Better match for you than %d%% of titles</string>
+  <string name="text_match_better_than">Better match for you than %d% of titles</string>
   <string name="text_match_not_enough_data">Not enough data to match this to you yet.</string>
   <string name="text_match_rating_liked">Liked on Trakt</string>
   <string name="text_match_rating_loved">Loved on Trakt</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Notes</string>
   <string name="text_vip_cancel_limit_smart_lists">Smart lists</string>
   <string name="text_vip_cancel_limit_watchlist">Watchlist</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Plays stop being tracked on their own</string>
-  <string name="text_vip_cancel_loss_plex_servers">Free accounts sync one server</string>
   <string name="text_vip_cancel_loss_streaming">Stop syncing. Free keeps one service.</string>
   <string name="text_vip_cancel_offer_break">Take your break. The price waits. Starts %s, nothing today.</string>
   <string name="text_vip_cancel_offer_monthly">That\'s %1$s a month. Starts %2$s, nothing today.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Not using it enough</string>
   <string name="text_vip_cancel_step">Step %1$d of %2$d</string>
   <string name="text_vip_cancel_tenure_new">under a month</string>
-  <string name="text_vip_cancel_value_off">Off</string>
-  <string name="text_vip_cancel_value_server">1 server</string>
-  <string name="text_vip_cancel_value_servers">%d servers</string>
   <string name="text_vip_cancel_value_service">1 service</string>
   <string name="text_vip_cancel_value_services">%d services</string>
   <string name="text_vip_checkout_failed_title">Couldn\'t start checkout</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Expand your watchlist capacity to keep track of everything you want to watch.</string>
   <string name="vip_feature_description_early_access">Get early access to new versions of Trakt apps and brand new features before anyone else.</string>
   <string name="vip_feature_description_global_wtw">See where shows and movies are available to stream anywhere in the world, not just your region.</string>
+  <string name="vip_feature_description_leaderboard">See where you rank amongst your friends on the leaderboard!</string>
   <string name="vip_feature_description_more_lists">Create even more custom lists to organize your shows and movies exactly the way you want.</string>
   <string name="vip_feature_description_plex_sync">Keep your Plex library perfectly synced with more frequent automatic updates throughout the day.</string>
   <string name="vip_feature_description_recaps">Get deeper insights with comprehensive month and year recaps showing everything you watched, rated, and discovered.</string>
@@ -3240,7 +3236,7 @@
   <string name="yir_2026_preview_runner_none">None (no hybrid)</string>
   <string name="yir_2026_preview_runner_up">Runner-up</string>
   <string name="yir_2026_preview_title">Persona preview</string>
-  <string name="yir_2026_rarity">Only %1$d%% are %2$s</string>
+  <string name="yir_2026_rarity">Only %1$d% are %2$s</string>
   <string name="yir_2026_reel_a_little_bit">A little bit %s</string>
   <string name="yir_2026_reel_and_you_are">And you are</string>
   <string name="yir_2026_reel_but_mostly">But mostly</string>
