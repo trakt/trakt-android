@@ -7,4 +7,5 @@ data class CastPerson(
     val person: Person,
     val characters: List<String>,
     val episodesCount: Int = 0,
+    val images: Images? = null,
 )

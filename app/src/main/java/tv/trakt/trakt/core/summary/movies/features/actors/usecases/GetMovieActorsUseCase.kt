@@ -5,15 +5,23 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.data.local.PeopleLocalSource
 import tv.trakt.trakt.common.data.remote.MoviesRemoteSource
 import tv.trakt.trakt.common.model.CastPerson
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.featureflags.model.FeatureFlag
+import tv.trakt.trakt.core.featureflags.usecases.FeatureFlagsUseCase
 
 internal class GetMovieActorsUseCase(
     private val remoteSource: MoviesRemoteSource,
     private val peopleLocalSource: PeopleLocalSource,
+    private val featureFlagsUseCase: FeatureFlagsUseCase,
 ) {
     suspend fun getCastCrew(movieId: TraktId): ImmutableList<CastPerson> {
+        val portraits = featureFlagsUseCase.isEnabled(FeatureFlag.CharacterPortraits)
+
         val castCrew = remoteSource.getCastCrew(movieId)
 
         val cast = (castCrew.cast ?: emptyList())
@@ -23,6 +31,11 @@ internal class GetMovieActorsUseCase(
                 CastPerson(
                     characters = person.characters,
                     person = Person.fromDto(person.person),
+                    images = Images.forCharacter(
+                        mediaType = MediaType.Movie,
+                        mediaId = movieId,
+                        personId = person.person.ids.trakt.toTraktId(),
+                    ).takeIf { portraits },
                 )
             }
 

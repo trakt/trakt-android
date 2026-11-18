@@ -27,6 +27,8 @@ data class Images(
     val headshot: ImmutableList<String> = EmptyImmutableList,
     @Serializable(with = ImmutableListSerializer::class)
     val screenshot: ImmutableList<String> = EmptyImmutableList,
+    @Serializable(with = ImmutableListSerializer::class)
+    val portrait: ImmutableList<String> = EmptyImmutableList,
 ) {
     enum class Size(
         val value: String,
@@ -94,6 +96,17 @@ data class Images(
         }
     }
 
+    fun getPortraitUrl(size: Size = Size.MEDIUM): String? {
+        return portrait.firstOrNull()?.let {
+            buildString {
+                if (!it.startsWith("https://")) {
+                    append("https://")
+                }
+                append(it)
+            }.replace(imageSizeRegex, "/${size.value}/")
+        }
+    }
+
     companion object {
         fun forMovie(id: TraktId): Images = forMedia(type = "movies", id = id)
 
@@ -109,6 +122,19 @@ data class Images(
         fun forEpisode(id: TraktId): Images {
             return Images(
                 screenshot = mediaUrls("episodes", id, "screenshot"),
+            )
+        }
+
+        fun forCharacter(
+            mediaType: MediaType,
+            mediaId: TraktId,
+            personId: TraktId,
+        ): Images {
+            val portraitId = "${mediaType.value}-${mediaId.value}-${personId.value}"
+            return Images(
+                portrait = persistentListOf(
+                    "${Config.MEDIA_BASE_URL}portraits/$portraitId/${Size.MEDIUM.value}/portrait.webp",
+                ),
             )
         }
 

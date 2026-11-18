@@ -8,18 +8,26 @@ import tv.trakt.trakt.common.data.remote.EpisodesRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.CrewPerson
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.featureflags.model.FeatureFlag
+import tv.trakt.trakt.core.featureflags.usecases.FeatureFlagsUseCase
 
 internal class GetSeasonPeopleUseCase(
     private val remoteSource: EpisodesRemoteSource,
     private val peopleLocalSource: PeopleLocalSource,
+    private val featureFlagsUseCase: FeatureFlagsUseCase,
 ) {
     suspend fun getCastCrew(
         showId: TraktId,
         season: Int,
     ): Result {
+        val portraits = featureFlagsUseCase.isEnabled(FeatureFlag.CharacterPortraits)
+
         val castCrew = remoteSource.getCastCrew(
             showId,
             season,
@@ -32,6 +40,11 @@ internal class GetSeasonPeopleUseCase(
                     characters = person.characters,
                     person = Person.fromDto(person.person),
                     episodesCount = person.episodeCount ?: 0,
+                    images = Images.forCharacter(
+                        mediaType = MediaType.Show,
+                        mediaId = showId,
+                        personId = person.person.ids.trakt.toTraktId(),
+                    ).takeIf { portraits },
                 )
             }
             .toImmutableList()
