@@ -280,7 +280,7 @@ private fun MainNavHost(
                 onNavigateToWatchlist = { navigateToHomeWatchlist() },
                 onNavigateToRecommended = { navigateToHomeRecommended() },
                 onNavigateToSocialActivity = { navigateToHomeSocial() },
-                onNavigateToHistory = { navigateToProfileHistoryViewAll() },
+                onNavigateToHistory = { navigateToProfileHistoryViewAll(it) },
             )
             homeUpNextScreen(
                 onNavigateToMovie = { navigateToMovie(it) },

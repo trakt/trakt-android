@@ -44,6 +44,10 @@ internal class MediaWatchlistViewModel(
     init {
         loadData()
         collectionStateProvider.launchIn(viewModelScope)
+
+        analytics.logScreenView(
+            screenName = "all_watchlist",
+        )
     }
 
     private fun loadData() {

@@ -111,6 +111,7 @@ internal val profileModule = module {
 
     viewModel {
         ProfileHistoryViewAllViewModel(
+            savedStateHandle = get(),
             getHistoryCase = get(),
             syncHistoryCase = get(),
         )

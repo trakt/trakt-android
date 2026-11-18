@@ -68,7 +68,7 @@ internal fun HomeScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateToRecommended: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
-    onNavigateToHistory: () -> Unit,
+    onNavigateToHistory: (MediaMode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -107,7 +107,7 @@ private fun HomeScreenContent(
     onNavigateToWatchlist: () -> Unit,
     onNavigateToRecommended: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
-    onNavigateToHistory: () -> Unit,
+    onNavigateToHistory: (MediaMode) -> Unit,
 ) {
     var focusedInitial by rememberSaveable { mutableStateOf(false) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -279,7 +279,7 @@ private fun HomeScreenContent(
                     contentPadding = sectionPadding,
                     onNavigateToMovie = onNavigateToMovie,
                     onNavigateToEpisode = onNavigateToEpisode,
-                    onNavigateToViewAll = onNavigateToHistory,
+                    onNavigateToViewAll = { onNavigateToHistory(state.mode) },
                     onFocused = { item ->
                         focusedSection = "history"
                         focusedImageUrl = item?.backdropImageUrl
