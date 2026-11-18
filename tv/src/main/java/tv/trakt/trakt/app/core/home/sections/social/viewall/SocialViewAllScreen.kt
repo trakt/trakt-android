@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.MediaModeSubtitle
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.sections.social.views.EpisodeSocialItemView
 import tv.trakt.trakt.app.core.home.sections.social.views.MovieSocialItemView
@@ -110,17 +112,22 @@ private fun SocialViewAllContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = stringResource(R.string.list_title_social_activity),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading4,
-                    overflow = TextOverflow.Ellipsis,
+                Column(
+                    verticalArrangement = spacedBy(4.dp),
                     modifier = Modifier
                         .focusProperties {
                             down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
                         }
                         .focusable(),
-                )
+                ) {
+                    Text(
+                        text = stringResource(R.string.list_title_social_activity),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading4,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    MediaModeSubtitle(mode = state.mode)
+                }
             }
 
             if (state.isLoading && state.items.isNullOrEmpty()) {

@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.core.home.sections.shows.upcoming
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -17,10 +18,12 @@ import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcoming
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
+import tv.trakt.trakt.common.model.MediaMode
 import java.time.ZonedDateTime
 
 internal class HomeUpcomingViewModel(
@@ -29,8 +32,11 @@ internal class HomeUpcomingViewModel(
     private val localMoviesSyncSource: MoviesSyncLocalSource,
     private val localEpisodesSyncSource: EpisodesSyncLocalSource,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val mediaModeLocalSource: MediaModeLocalSource,
 ) : ViewModel() {
     private val initialState = HomeUpcomingState()
+    private var mode = MediaMode.Media
+    private var dataJob: Job? = null
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.isLoading)
@@ -39,7 +45,7 @@ internal class HomeUpcomingViewModel(
     private var loadedAt: ZonedDateTime? = null
 
     init {
-        loadData()
+        observeMode()
         observeApp()
     }
 
@@ -55,14 +61,24 @@ internal class HomeUpcomingViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeMode() {
+        mediaModeLocalSource.observeMode()
+            .onEach {
+                mode = it
+                loadData()
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadData(showLoading: Boolean = true) {
-        viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
                 if (showLoading) {
                     loadingState.update { true }
                 }
 
-                val items = getUpcomingUseCase.getUpcoming()
+                val items = getUpcomingUseCase.getUpcoming(mode)
                 itemsState.update { items }
 
                 loadedAt = nowUtc()

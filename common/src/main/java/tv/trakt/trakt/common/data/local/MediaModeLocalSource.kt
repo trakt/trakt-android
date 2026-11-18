@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import tv.trakt.trakt.common.model.MediaMode
 
@@ -19,6 +20,10 @@ class MediaModeLocalSource(
                 MediaMode.entries.find { it.name == value } ?: MediaMode.Media
             }
             .distinctUntilChanged()
+    }
+
+    suspend fun getMode(): MediaMode {
+        return observeMode().first()
     }
 
     suspend fun setMode(mode: MediaMode) {

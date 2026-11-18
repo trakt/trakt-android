@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -29,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
+import tv.trakt.trakt.app.common.ui.chips.MediaModeFilters
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.AUTHENTICATED
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.UNAUTHENTICATED
@@ -42,6 +44,7 @@ import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -78,6 +81,7 @@ internal fun HomeScreen(
     if (state.authentication == AUTHENTICATED) {
         HomeScreenContent(
             state = state,
+            onModeClick = viewModel::setMode,
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToShow = onNavigateToShow,
@@ -95,6 +99,7 @@ internal fun HomeScreen(
 private fun HomeScreenContent(
     state: HomeState,
     modifier: Modifier = Modifier,
+    onModeClick: (MediaMode) -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
@@ -181,6 +186,19 @@ private fun HomeScreenContent(
                 }
                 .focusGroup(),
         ) {
+            item {
+                MediaModeFilters(
+                    selectedMode = state.mode,
+                    downFocusRequester = focusRequesters.getValue("upNext"),
+                    onModeClick = {
+                        focusedSection = null
+                        focusedImageUrl = null
+                        onModeClick(it)
+                    },
+                    modifier = Modifier.padding(start = TraktTheme.spacing.mainContentStartSpace),
+                )
+            }
+
             item {
                 HomeUpNextView(
                     headerPadding = sectionPadding,

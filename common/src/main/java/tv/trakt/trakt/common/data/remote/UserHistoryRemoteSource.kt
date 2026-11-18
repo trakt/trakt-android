@@ -64,10 +64,11 @@ class UserHistoryRemoteSource(
         from: Instant? = null,
         to: Instant? = null,
         userId: String = "me",
+        extended: String = "full,colors",
     ): List<SyncHistoryEpisodeItemDto> {
         val response = historyApi.getUsersHistoryEpisodes(
             id = userId,
-            extended = "full,colors",
+            extended = extended,
             startAt = from?.toString(),
             endAt = to?.toString(),
             page = page,
@@ -99,10 +100,11 @@ class UserHistoryRemoteSource(
         from: Instant? = null,
         to: Instant? = null,
         userId: String = "me",
+        extended: String = "full,colors",
     ): List<SyncHistoryMovieItemDto> {
         val response = historyApi.getUsersHistoryMovies(
             id = userId,
-            extended = "full,colors",
+            extended = extended,
             startAt = from?.toString(),
             endAt = to?.toString(),
             page = page,

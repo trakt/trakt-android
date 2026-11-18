@@ -14,9 +14,12 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.ifMovies
+import tv.trakt.trakt.common.model.ifShows
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
 
 private const val ALL_ITEMS_LIMIT = 100
@@ -25,21 +28,30 @@ internal class RecommendedViewAllViewModel(
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
     private val collectionStateProvider: CollectionStateProvider,
+    private val mediaModeLocalSource: MediaModeLocalSource,
 ) : ViewModel() {
     private val initialState = RecommendedViewAllState()
 
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val itemsState = MutableStateFlow(initialState.items)
     private val errorState = MutableStateFlow(initialState.error)
+    private val modeState = MutableStateFlow(initialState.mode)
 
     init {
-        loadData()
+        loadInitialData()
         observeData()
     }
 
     private fun observeData() {
         collectionStateProvider
             .launchIn(viewModelScope)
+    }
+
+    private fun loadInitialData() {
+        viewModelScope.launch {
+            modeState.update { mediaModeLocalSource.getMode() }
+            loadData()
+        }
     }
 
     private fun loadData() {
@@ -49,10 +61,14 @@ internal class RecommendedViewAllViewModel(
 
                 coroutineScope {
                     val showsAsync = async {
-                        getRecommendedShowsUseCase.getRecommendedShows(limit = ALL_ITEMS_LIMIT, page = 1)
+                        modeState.value.ifShows {
+                            getRecommendedShowsUseCase.getRecommendedShows(limit = ALL_ITEMS_LIMIT, page = 1)
+                        }
                     }
                     val moviesAsync = async {
-                        getRecommendedMoviesUseCase.getRecommendedMovies(limit = ALL_ITEMS_LIMIT, page = 1)
+                        modeState.value.ifMovies {
+                            getRecommendedMoviesUseCase.getRecommendedMovies(limit = ALL_ITEMS_LIMIT, page = 1)
+                        }
                     }
 
                     val shows = showsAsync.await()
@@ -88,12 +104,14 @@ internal class RecommendedViewAllViewModel(
         itemsState,
         collectionStateProvider.stateFlow,
         errorState,
-    ) { loading, items, collection, error ->
+        modeState,
+    ) { loading, items, collection, error, mode ->
         RecommendedViewAllState(
             isLoading = loading,
             items = items,
             collection = collection,
             error = error,
+            mode = mode,
         )
     }.stateIn(
         scope = viewModelScope,

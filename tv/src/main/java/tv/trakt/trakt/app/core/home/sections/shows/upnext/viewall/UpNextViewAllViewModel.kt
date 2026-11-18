@@ -20,8 +20,11 @@ import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetMoviesUpNe
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetShowsUpNextUseCase
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.ifMovies
+import tv.trakt.trakt.common.model.ifShows
 import java.time.ZonedDateTime
 
 internal class UpNextViewAllViewModel(
@@ -29,6 +32,7 @@ internal class UpNextViewAllViewModel(
     private val getMoviesUpNextUseCase: GetMoviesUpNextUseCase,
     private val localShowsSyncSource: ShowsSyncLocalSource,
     private val localEpisodesSyncSource: EpisodesSyncLocalSource,
+    private val mediaModeLocalSource: MediaModeLocalSource,
 ) : ViewModel() {
     private val initialState = UpNextViewAllState()
 
@@ -36,6 +40,7 @@ internal class UpNextViewAllViewModel(
     private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
     private val itemsState = MutableStateFlow(initialState.items)
     private val errorState = MutableStateFlow(initialState.error)
+    private val modeState = MutableStateFlow(initialState.mode)
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -43,7 +48,14 @@ internal class UpNextViewAllViewModel(
     private var loadedAt: ZonedDateTime? = null
 
     init {
-        loadData()
+        loadInitialData()
+    }
+
+    private fun loadInitialData() {
+        viewModelScope.launch {
+            modeState.update { mediaModeLocalSource.getMode() }
+            loadData()
+        }
     }
 
     private fun loadData(showLoading: Boolean = true) {
@@ -61,16 +73,20 @@ internal class UpNextViewAllViewModel(
 
                 coroutineScope {
                     val showsAsync = async {
-                        getShowsUpNextUseCase.getShowsUpNext(
-                            limit = HOME_PAGE_LIMIT,
-                            page = 1,
-                        )
+                        modeState.value.ifShows {
+                            getShowsUpNextUseCase.getShowsUpNext(
+                                limit = HOME_PAGE_LIMIT,
+                                page = 1,
+                            )
+                        }
                     }
                     val moviesAsync = async {
-                        getMoviesUpNextUseCase.getMoviesUpNext(
-                            limit = HOME_PAGE_LIMIT,
-                            page = 1,
-                        )
+                        modeState.value.ifMovies {
+                            getMoviesUpNextUseCase.getMoviesUpNext(
+                                limit = HOME_PAGE_LIMIT,
+                                page = 1,
+                            )
+                        }
                     }
 
                     val items = awaitAll(showsAsync, moviesAsync)
@@ -106,16 +122,20 @@ internal class UpNextViewAllViewModel(
 
                 coroutineScope {
                     val showsAsync = async {
-                        getShowsUpNextUseCase.getShowsUpNext(
-                            limit = HOME_PAGE_LIMIT,
-                            page = nextDataPage,
-                        )
+                        modeState.value.ifShows {
+                            getShowsUpNextUseCase.getShowsUpNext(
+                                limit = HOME_PAGE_LIMIT,
+                                page = nextDataPage,
+                            )
+                        }
                     }
                     val moviesAsync = async {
-                        getMoviesUpNextUseCase.getMoviesUpNext(
-                            limit = HOME_PAGE_LIMIT,
-                            page = nextDataPage,
-                        )
+                        modeState.value.ifMovies {
+                            getMoviesUpNextUseCase.getMoviesUpNext(
+                                limit = HOME_PAGE_LIMIT,
+                                page = nextDataPage,
+                            )
+                        }
                     }
 
                     val items = awaitAll(showsAsync, moviesAsync)
@@ -184,12 +204,14 @@ internal class UpNextViewAllViewModel(
         loadingPageState,
         itemsState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+        modeState,
+    ) { s1, s2, s3, s4, s5 ->
         UpNextViewAllState(
             isLoading = s1,
             isLoadingPage = s2,
             items = s3,
             error = s4,
+            mode = s5,
         )
     }.stateIn(
         scope = viewModelScope,

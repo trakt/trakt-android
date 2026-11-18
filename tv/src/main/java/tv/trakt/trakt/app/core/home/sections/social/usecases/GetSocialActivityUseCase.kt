@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.data.remote.UserSocialRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
@@ -17,7 +18,10 @@ import tv.trakt.trakt.common.model.fromDto
 internal class GetSocialActivityUseCase(
     private val remoteProfileSource: UserSocialRemoteSource,
 ) {
-    suspend fun getSocialActivity(limit: Int): ImmutableList<HomeActivityItem> {
+    suspend fun getSocialActivity(
+        limit: Int,
+        mode: MediaMode = MediaMode.Media,
+    ): ImmutableList<HomeActivityItem> {
         val items = remoteProfileSource.getSocialActivity(
             limit = limit,
             type = "following",
@@ -67,6 +71,13 @@ internal class GetSocialActivityUseCase(
                 compareByDescending<HomeActivityItem> { it.activityAt }
                     .thenByDescending { it.sortId },
             )
+            .filter {
+                when (mode) {
+                    MediaMode.Media -> true
+                    MediaMode.Shows -> it is HomeActivityItem.EpisodeItem
+                    MediaMode.Movies -> it is HomeActivityItem.MovieItem
+                }
+            }
             .toImmutableList()
     }
 }

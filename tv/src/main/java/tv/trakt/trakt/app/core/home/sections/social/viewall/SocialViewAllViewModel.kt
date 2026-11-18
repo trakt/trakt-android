@@ -11,19 +11,29 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SOCIAL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.home.sections.social.usecases.GetSocialActivityUseCase
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 internal class SocialViewAllViewModel(
     private val getSocialActivityUseCase: GetSocialActivityUseCase,
+    private val mediaModeLocalSource: MediaModeLocalSource,
 ) : ViewModel() {
     private val initialState = SocialViewAllState()
 
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val itemsState = MutableStateFlow(initialState.items)
     private val errorState = MutableStateFlow(initialState.error)
+    private val modeState = MutableStateFlow(initialState.mode)
 
     init {
-        loadData()
+        loadInitialData()
+    }
+
+    private fun loadInitialData() {
+        viewModelScope.launch {
+            modeState.update { mediaModeLocalSource.getMode() }
+            loadData()
+        }
     }
 
     private fun loadData() {
@@ -38,6 +48,7 @@ internal class SocialViewAllViewModel(
                 itemsState.update {
                     getSocialActivityUseCase.getSocialActivity(
                         limit = HOME_SOCIAL_PAGE_LIMIT,
+                        mode = modeState.value,
                     )
                 }
             } catch (error: Exception) {
@@ -55,11 +66,13 @@ internal class SocialViewAllViewModel(
         loadingState,
         itemsState,
         errorState,
-    ) { s1, s2, s3 ->
+        modeState,
+    ) { s1, s2, s3, s4 ->
         SocialViewAllState(
             isLoading = s1,
             items = s2,
             error = s3,
+            mode = s4,
         )
     }.stateIn(
         scope = viewModelScope,
