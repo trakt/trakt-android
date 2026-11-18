@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.home.sections.recommended.viewall
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.recommended.RecommendedItem
 
 @Immutable
@@ -11,4 +12,5 @@ internal data class RecommendedViewAllState(
     val items: ImmutableList<RecommendedItem>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
     val error: Exception? = null,
+    val mode: MediaMode = MediaMode.Media,
 )

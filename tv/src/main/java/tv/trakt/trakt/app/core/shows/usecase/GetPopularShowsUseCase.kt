@@ -6,11 +6,10 @@ import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_SECTION_LIMIT
 import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.data.remote.ShowsRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.popularYear
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import java.time.Year
 
 internal class GetPopularShowsUseCase(
     private val remoteSource: ShowsRemoteSource,
@@ -23,7 +22,7 @@ internal class GetPopularShowsUseCase(
         return remoteSource.getPopular(
             page = page,
             limit = limit,
-            filters = GlobalFilter.Default.copy(years = getYearsRange().let { it to it }),
+            filters = GlobalFilter.Default.copy(years = popularYear().let { it to it }),
         )
             .asyncMap {
                 Show.fromDto(it)
@@ -32,15 +31,5 @@ internal class GetPopularShowsUseCase(
             .also {
                 localSource.upsertShows(it)
             }
-    }
-
-    private fun getYearsRange(): Int {
-        val currentYear = Year.now().value
-        val currentMonth = nowLocalDay().monthValue
-        return if (currentMonth <= 3) {
-            currentYear - 1
-        } else {
-            currentYear
-        }
     }
 }

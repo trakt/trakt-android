@@ -36,6 +36,7 @@ import androidx.tv.material3.Text
 import tv.trakt.trakt.app.common.preview.StatusPreviewData
 import tv.trakt.trakt.app.common.ui.EpisodeProgressBar
 import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.MediaModeSubtitle
 import tv.trakt.trakt.app.common.ui.chips.EpisodeStatusChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
@@ -138,17 +139,22 @@ private fun UpNextViewAllContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = stringResource(R.string.list_title_up_next),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading4,
-                    overflow = TextOverflow.Ellipsis,
+                Column(
+                    verticalArrangement = spacedBy(4.dp),
                     modifier = Modifier
                         .focusProperties {
                             down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
                         }
                         .focusable(),
-                )
+                ) {
+                    Text(
+                        text = stringResource(R.string.list_title_up_next),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading4,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    MediaModeSubtitle(mode = state.mode)
+                }
             }
 
             if (state.isLoading && state.items.isNullOrEmpty()) {

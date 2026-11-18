@@ -36,3 +36,11 @@ enum class MediaMode(
     val isMediaOrMovies: Boolean
         get() = this == Media || this == Movies
 }
+
+inline fun <T> MediaMode.ifShows(block: () -> List<T>): List<T> {
+    return if (isMediaOrShows) block() else emptyList()
+}
+
+inline fun <T> MediaMode.ifMovies(block: () -> List<T>): List<T> {
+    return if (isMediaOrMovies) block() else emptyList()
+}

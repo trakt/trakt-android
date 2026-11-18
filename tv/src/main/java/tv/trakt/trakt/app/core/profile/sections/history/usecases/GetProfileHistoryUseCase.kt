@@ -10,9 +10,12 @@ import tv.trakt.trakt.common.data.remote.UserHistoryRemoteSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+
+private const val HISTORY_EXTENDED = "full,streaming_ids"
 
 internal class GetProfileHistoryUseCase(
     private val remoteUserSource: UserHistoryRemoteSource,
@@ -22,26 +25,16 @@ internal class GetProfileHistoryUseCase(
     suspend fun getHistory(
         page: Int = 1,
         limit: Int,
+        mode: MediaMode = MediaMode.Media,
     ): ImmutableList<SyncHistoryItem> {
         return coroutineScope {
-            val remoteHistory = remoteUserSource.getMediaHistory(
-                page = page,
-                limit = limit,
-                filters = null,
-                extended = "full,streaming_ids",
-            )
+            val history = when (mode) {
+                MediaMode.Media -> getMediaHistory(page, limit)
+                MediaMode.Shows -> getEpisodesHistory(page, limit)
+                MediaMode.Movies -> getMoviesHistory(page, limit)
+            }
 
-            return@coroutineScope remoteHistory
-                .asyncMap {
-                    SyncHistoryItem(
-                        id = it.id,
-                        watchedAt = it.watchedAt.toZonedDateTime(),
-                        type = it.type.value,
-                        show = it.show?.let { s -> Show.fromDto(s) },
-                        episode = it.episode?.let { e -> Episode.fromDto(e) },
-                        movie = it.movie?.let { m -> Movie.fromDto(m) },
-                    )
-                }
+            return@coroutineScope history
                 .also {
                     val episodes = it.mapNotNull { item -> item.episode }
                     val movies = it.mapNotNull { item -> item.movie }
@@ -51,6 +44,66 @@ internal class GetProfileHistoryUseCase(
                 }
                 .sortedByDescending { it.watchedAt }
                 .toImmutableList()
+        }
+    }
+
+    private suspend fun getMediaHistory(
+        page: Int,
+        limit: Int,
+    ): List<SyncHistoryItem> {
+        return remoteUserSource.getMediaHistory(
+            page = page,
+            limit = limit,
+            filters = null,
+            extended = HISTORY_EXTENDED,
+        ).asyncMap {
+            SyncHistoryItem(
+                id = it.id,
+                watchedAt = it.watchedAt.toZonedDateTime(),
+                type = it.type.value,
+                show = it.show?.let { s -> Show.fromDto(s) },
+                episode = it.episode?.let { e -> Episode.fromDto(e) },
+                movie = it.movie?.let { m -> Movie.fromDto(m) },
+            )
+        }
+    }
+
+    private suspend fun getEpisodesHistory(
+        page: Int,
+        limit: Int,
+    ): List<SyncHistoryItem> {
+        return remoteUserSource.getEpisodesHistory(
+            page = page,
+            limit = limit,
+            filters = null,
+            extended = HISTORY_EXTENDED,
+        ).asyncMap {
+            SyncHistoryItem(
+                id = it.id,
+                watchedAt = it.watchedAt.toZonedDateTime(),
+                type = it.type.value,
+                show = Show.fromDto(it.show),
+                episode = Episode.fromDto(it.episode),
+            )
+        }
+    }
+
+    private suspend fun getMoviesHistory(
+        page: Int,
+        limit: Int,
+    ): List<SyncHistoryItem> {
+        return remoteUserSource.getMoviesHistory(
+            page = page,
+            limit = limit,
+            filters = null,
+            extended = HISTORY_EXTENDED,
+        ).asyncMap {
+            SyncHistoryItem(
+                id = it.id,
+                watchedAt = it.watchedAt.toZonedDateTime(),
+                type = it.type.value,
+                movie = Movie.fromDto(it.movie),
+            )
         }
     }
 }

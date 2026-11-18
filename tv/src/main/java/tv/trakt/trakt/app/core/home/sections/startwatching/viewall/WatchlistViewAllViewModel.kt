@@ -20,8 +20,11 @@ import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeMovie
 import tv.trakt.trakt.app.core.home.sections.startwatching.usecases.GetHomeShowsWatchlistItemsUseCase
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.ifMovies
+import tv.trakt.trakt.common.model.ifShows
 import tv.trakt.trakt.common.model.pagination.Pagination
 import java.time.ZonedDateTime
 
@@ -30,6 +33,7 @@ internal class WatchlistViewAllViewModel(
     private val getMoviesUseCase: GetHomeMoviesWatchlistItemsUseCase,
     private val localMoviesDataSource: MoviesSyncLocalSource,
     private val localShowsDataSource: ShowsSyncLocalSource,
+    private val mediaModeLocalSource: MediaModeLocalSource,
 ) : ViewModel() {
     private val initialState = WatchlistViewAllState()
 
@@ -37,6 +41,7 @@ internal class WatchlistViewAllViewModel(
     private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
     private val itemsState = MutableStateFlow(initialState.items)
     private val errorState = MutableStateFlow(initialState.error)
+    private val modeState = MutableStateFlow(initialState.mode)
 
     private var nextDataPage: Int = 1
     private var hasMoreData: Boolean = true
@@ -44,7 +49,14 @@ internal class WatchlistViewAllViewModel(
     private var loadedAt: ZonedDateTime? = null
 
     init {
-        loadData()
+        loadInitialData()
+    }
+
+    private fun loadInitialData() {
+        viewModelScope.launch {
+            modeState.update { mediaModeLocalSource.getMode() }
+            loadData()
+        }
     }
 
     private fun loadData(showLoading: Boolean = true) {
@@ -61,8 +73,16 @@ internal class WatchlistViewAllViewModel(
                 }
 
                 coroutineScope {
-                    val showsAsync = async { getShowsUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT)) }
-                    val moviesAsync = async { getMoviesUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT)) }
+                    val showsAsync = async {
+                        modeState.value.ifShows {
+                            getShowsUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT))
+                        }
+                    }
+                    val moviesAsync = async {
+                        modeState.value.ifMovies {
+                            getMoviesUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT))
+                        }
+                    }
                     awaitAll(showsAsync, moviesAsync)
                 }
                     .flatten()
@@ -99,10 +119,16 @@ internal class WatchlistViewAllViewModel(
                 loadingPageState.update { true }
 
                 val items = coroutineScope {
-                    val showsAsync =
-                        async { getShowsUseCase.getItems(Pagination(nextDataPage, HOME_WATCHLIST_PAGE_LIMIT)) }
-                    val moviesAsync =
-                        async { getMoviesUseCase.getItems(Pagination(nextDataPage, HOME_WATCHLIST_PAGE_LIMIT)) }
+                    val showsAsync = async {
+                        modeState.value.ifShows {
+                            getShowsUseCase.getItems(Pagination(nextDataPage, HOME_WATCHLIST_PAGE_LIMIT))
+                        }
+                    }
+                    val moviesAsync = async {
+                        modeState.value.ifMovies {
+                            getMoviesUseCase.getItems(Pagination(nextDataPage, HOME_WATCHLIST_PAGE_LIMIT))
+                        }
+                    }
                     awaitAll(showsAsync, moviesAsync)
                 }
 
@@ -157,12 +183,14 @@ internal class WatchlistViewAllViewModel(
         loadingPageState,
         itemsState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+        modeState,
+    ) { s1, s2, s3, s4, s5 ->
         WatchlistViewAllState(
             isLoading = s1,
             isLoadingPage = s2,
             items = s3,
             error = s4,
+            mode = s5,
         )
     }.stateIn(
         scope = viewModelScope,

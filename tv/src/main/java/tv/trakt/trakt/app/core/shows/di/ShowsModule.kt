@@ -2,7 +2,6 @@ package tv.trakt.trakt.app.core.shows.di
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import tv.trakt.trakt.app.core.shows.ShowsViewModel
 import tv.trakt.trakt.app.core.shows.features.anticipated.ShowsAnticipatedViewAllViewModel
 import tv.trakt.trakt.app.core.shows.features.popular.ShowsPopularViewAllViewModel
 import tv.trakt.trakt.app.core.shows.features.releases.ShowsReleasesViewAllViewModel
@@ -47,18 +46,6 @@ internal val showsModule = module {
             remoteSource = get(),
             localShowSource = get(),
             localEpisodeSource = get(),
-        )
-    }
-
-    viewModel {
-        ShowsViewModel(
-            getTrendingShowsUseCase = get(),
-            getPopularShowsUseCase = get(),
-            getAnticipatedShowsUseCase = get(),
-            getReleasesShowsUseCase = get(),
-            sessionManager = get(),
-            appLifecycleProvider = get(),
-            collectionStateProvider = get(),
         )
     }
 

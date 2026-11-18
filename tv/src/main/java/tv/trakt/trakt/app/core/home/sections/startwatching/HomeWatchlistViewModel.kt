@@ -30,10 +30,14 @@ import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalSource
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.ifMovies
+import tv.trakt.trakt.common.model.ifShows
 import tv.trakt.trakt.common.model.pagination.Pagination
 import java.time.ZonedDateTime
 
@@ -44,8 +48,10 @@ internal class HomeWatchlistViewModel(
     private val localShowsSyncSource: ShowsSyncLocalSource,
     private val dataChanges: DataChanges,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val mediaModeLocalSource: MediaModeLocalSource,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
+    private var mode = MediaMode.Media
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.isLoading)
@@ -55,7 +61,7 @@ internal class HomeWatchlistViewModel(
     private var dataJob: Job? = null
 
     init {
-        loadData()
+        observeMode()
         observeApp()
         observeData()
     }
@@ -82,6 +88,15 @@ internal class HomeWatchlistViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeMode() {
+        mediaModeLocalSource.observeMode()
+            .onEach {
+                mode = it
+                loadData()
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadData(showLoading: Boolean = true) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
@@ -91,8 +106,16 @@ internal class HomeWatchlistViewModel(
                 }
 
                 coroutineScope {
-                    val showsAsync = async { getShowsUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT)) }
-                    val moviesAsync = async { getMoviesUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT)) }
+                    val showsAsync = async {
+                        mode.ifShows {
+                            getShowsUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT))
+                        }
+                    }
+                    val moviesAsync = async {
+                        mode.ifMovies {
+                            getMoviesUseCase.getItems(Pagination(1, HOME_WATCHLIST_PAGE_LIMIT))
+                        }
+                    }
                     awaitAll(showsAsync, moviesAsync)
                 }
                     .flatten()

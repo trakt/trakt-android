@@ -104,6 +104,7 @@ internal fun PersonalListContent(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onLoadNextPage: () -> Unit,
     onSortingChange: ((Sorting) -> Unit)? = null,
+    showWatchlist: Boolean = true,
 ) {
     var focusedItem by remember { mutableStateOf<ListMediaItem?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -211,6 +212,7 @@ internal fun PersonalListContent(
                         onShowClick = onShowClick,
                         onMovieClick = onMovieClick,
                         onEpisodeClick = onEpisodeClick,
+                        showWatchlist = showWatchlist,
                         modifier = Modifier
                             .focusRequester(focusRequester)
                             .onFocusChanged {

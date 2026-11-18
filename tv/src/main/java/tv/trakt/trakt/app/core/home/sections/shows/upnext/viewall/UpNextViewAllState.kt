@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressItem
+import tv.trakt.trakt.common.model.MediaMode
 
 @Immutable
 internal data class UpNextViewAllState(
@@ -10,4 +11,5 @@ internal data class UpNextViewAllState(
     val isLoadingPage: Boolean = false,
     val items: ImmutableList<ProgressItem>? = null,
     val error: Exception? = null,
+    val mode: MediaMode = MediaMode.Media,
 )
