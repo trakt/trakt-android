@@ -32,7 +32,7 @@ internal class GetShowActorsUseCase(
                     characters = person.characters,
                     person = Person.fromDto(person.person),
                     episodesCount = person.episodeCount ?: 0,
-                    portraitUrl = Images.portraitUrl(
+                    images = Images.forCharacter(
                         mediaType = MediaType.Show,
                         mediaId = showId,
                         personId = person.person.ids.trakt.toTraktId(),

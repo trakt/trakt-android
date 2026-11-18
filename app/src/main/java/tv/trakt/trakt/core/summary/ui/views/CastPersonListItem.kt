@@ -32,7 +32,7 @@ internal fun CastPersonListItem(
             word.replaceFirstChar { it.uppercaseChar() }
         },
         subtitleMaxLines = 3,
-        contentImageUrl = person.portraitUrl ?: person.person.images?.getHeadshotUrl(),
+        contentImageUrl = person.images?.getPortraitUrl() ?: person.person.images?.getHeadshotUrl(),
         contentFallbackImageUrl = person.person.images?.getHeadshotUrl(),
         containerImageUrl = null,
         imageWidth = TraktTheme.size.verticalSmallMediaCardSize,

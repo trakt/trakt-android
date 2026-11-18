@@ -89,8 +89,8 @@ internal class GetMediaCreditsUseCase(
                     person = Person.fromDto(member.person),
                     characters = member.characters,
                     episodesCount = if (withEpisodes) member.episodeCount ?: 0 else 0,
-                    portraitUrl = portraitOf?.let { (mediaType, mediaId) ->
-                        Images.portraitUrl(
+                    images = portraitOf?.let { (mediaType, mediaId) ->
+                        Images.forCharacter(
                             mediaType = mediaType,
                             mediaId = mediaId,
                             personId = member.person.ids.trakt.toTraktId(),

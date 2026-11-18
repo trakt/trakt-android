@@ -167,7 +167,7 @@ private fun ContentList(
             VerticalMediaCard(
                 title = "",
                 more = false,
-                imageUrl = item.portraitUrl ?: item.person.images?.getHeadshotUrl(),
+                imageUrl = item.images?.getPortraitUrl() ?: item.person.images?.getHeadshotUrl(),
                 fallbackImageUrl = item.person.images?.getHeadshotUrl(),
                 onClick = { onPersonClick?.invoke(item.person) },
                 chipContent = {

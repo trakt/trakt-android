@@ -7,5 +7,5 @@ data class CastPerson(
     val person: Person,
     val characters: List<String>,
     val episodesCount: Int = 0,
-    val portraitUrl: String? = null,
+    val images: Images? = null,
 )

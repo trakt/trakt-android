@@ -31,7 +31,7 @@ internal class GetMovieActorsUseCase(
                 CastPerson(
                     characters = person.characters,
                     person = Person.fromDto(person.person),
-                    portraitUrl = Images.portraitUrl(
+                    images = Images.forCharacter(
                         mediaType = MediaType.Movie,
                         mediaId = movieId,
                         personId = person.person.ids.trakt.toTraktId(),

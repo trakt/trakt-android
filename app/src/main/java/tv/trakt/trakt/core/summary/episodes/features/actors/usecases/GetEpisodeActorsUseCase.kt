@@ -39,7 +39,7 @@ internal class GetEpisodeActorsUseCase(
                 CastPerson(
                     characters = person.characters,
                     person = Person.fromDto(person.person),
-                    portraitUrl = Images.portraitUrl(
+                    images = Images.forCharacter(
                         mediaType = MediaType.Show,
                         mediaId = showId,
                         personId = person.person.ids.trakt.toTraktId(),
