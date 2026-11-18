@@ -6,8 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.usecases.LoadUserProfileUseCase
@@ -106,16 +104,10 @@ internal class MainViewModel(
                     return@launch
                 }
 
-                // Each refresh is independent; one failing must not cancel the others.
-                supervisorScope {
-                    val progressAsync = async { loadUserProgressUseCase.loadProgress() }
-                    val ratingsAsync = async { loadUserRatingsUseCase.loadAll() }
-                    val favoritesAsync = async { loadUserFavoritesUseCase.loadAll() }
-                    awaitAll(
-                        progressAsync,
-                        ratingsAsync,
-                        favoritesAsync,
-                    )
+                coroutineScope {
+                    launch { refreshIsolated { loadUserProgressUseCase.loadProgress() } }
+                    launch { refreshIsolated { loadUserRatingsUseCase.loadAll() } }
+                    launch { refreshIsolated { loadUserFavoritesUseCase.loadAll() } }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -123,6 +115,16 @@ internal class MainViewModel(
                 }
             } finally {
                 lastLoadTime = nowUtcInstant()
+            }
+        }
+    }
+
+    private suspend fun refreshIsolated(block: suspend () -> Unit) {
+        try {
+            block()
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }

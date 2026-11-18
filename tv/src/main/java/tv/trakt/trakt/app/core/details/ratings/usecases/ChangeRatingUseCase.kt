@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.ratings.usecases.PostRatingUseCase
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
 import tv.trakt.trakt.common.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.common.data.local.UserRatingsLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -16,6 +17,7 @@ internal class ChangeRatingUseCase(
     private val postRatingUseCase: PostRatingUseCase,
     private val deleteRatingUseCase: DeleteRatingUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
+    private val userRatingsLocalSource: UserRatingsLocalSource,
     private val analytics: Analytics,
     private val dataChanges: DataChanges,
 ) {
@@ -77,10 +79,11 @@ internal class ChangeRatingUseCase(
             }
             dataChanges.notify(Kind.Ratings)
         } catch (error: Exception) {
-            // The rating is already posted, so a failed refresh must not undo it on screen. Observers
-            // are not notified because the cache still holds the previous value.
+            // The rating is already posted, so a failed refresh must not undo it on screen. The stale
+            // cache is dropped so the next read fetches the posted value instead of the old one.
             error.rethrowCancellation {
                 Timber.recordError(error)
+                userRatingsLocalSource.clear()
             }
         }
     }
