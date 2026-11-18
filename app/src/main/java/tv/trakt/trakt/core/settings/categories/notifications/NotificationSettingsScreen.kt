@@ -3,10 +3,14 @@
 package tv.trakt.trakt.core.settings.categories.notifications
 
 import android.Manifest.permission.POST_NOTIFICATIONS
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION_CODES.TIRAMISU
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
 import android.provider.Settings.EXTRA_APP_PACKAGE
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -121,12 +125,7 @@ private fun NotificationSettingsContent(
             item {
                 SettingsTextField(
                     text = stringResource(R.string.link_text_advanced_settings),
-                    onClick = {
-                        val intent = Intent(ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                            putExtra(EXTRA_APP_PACKAGE, context.packageName)
-                        }
-                        context.startActivity(intent)
-                    },
+                    onClick = { openNotificationSettings(context) },
                 )
             }
         }
@@ -140,6 +139,19 @@ private fun NotificationSettingsContent(
             adjustTimeSheet = false
         },
     )
+}
+
+private fun openNotificationSettings(context: Context) {
+    val notificationSettings = Intent(ACTION_APP_NOTIFICATION_SETTINGS)
+        .putExtra(EXTRA_APP_PACKAGE, context.packageName)
+
+    try {
+        context.startActivity(notificationSettings)
+    } catch (_: ActivityNotFoundException) {
+        val appDetails = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
+            .setData(Uri.fromParts("package", context.packageName, null))
+        context.startActivity(appDetails)
+    }
 }
 
 @PreviewTraktLightDark
