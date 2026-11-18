@@ -16,12 +16,8 @@ internal class SyncPushTokenUseCase(
     suspend fun syncToken() {
         if (!sessionManager.isAuthenticated()) return
 
-        // register() targets the installation ID, which survives sign-out and would keep the
-        // previous account's server row live. Stay on tokens until the server can delete rows.
-        @Suppress("DEPRECATION")
         val token = firebaseMessaging.token.await()
         if (token == localSource.getUploadedToken()) {
-            Timber.d("Push token already uploaded: $token")
             return
         }
 
