@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP特典</string>
   <string name="header_vip_cancel_kept">VIP継続中。</string>
   <string name="header_vip_cancel_library">何も削除されません。ただ、新しいコンテンツは追加されなくなります。</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plexスクロブリング</string>
-  <string name="header_vip_cancel_loss_plex_servers">追加のPlexサーバー</string>
   <string name="header_vip_cancel_losses">%sに失われるもの</string>
   <string name="header_vip_cancel_offer">または、さらに2年間継続する</string>
   <string name="header_vip_cancel_reason">なぜ解約するのですか？</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_anticipated_recommendations">あなたのために選ばれた、未公開の作品をおすすめします。「おすすめ」リストの上部で「公開中」と「近日公開」を切り替えられます。</string>
   <string name="preview_feature_description_awards">映画、番組、人物のページで、Oscar、Golden Globe、Emmy、映画祭の受賞やノミネートを確認できます。</string>
+  <string name="preview_feature_description_character_portraits">役柄のポートレートがある場合、キャスト一覧で各俳優がそのキャラクターの姿で表示されます。</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_insights_card">映画や番組ページの「インサイト」セクションで、作品の注目度やあなたの好みにどれだけマッチしているかを表示します。</string>
   <string name="preview_feature_description_living_poster">人気作品のポスターがポインターに合わせて傾き、異なる奥行きで動くレイヤーや、霧、火の粉、雪などのアンビエントエフェクトが楽しめます。</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">視聴者ペルソナに基づいたスクロールリール形式の2026年、そしてそれに合わせたスタイルの統計ページです。</string>
   <string name="preview_feature_title_anticipated_recommendations">近日公開のおすすめ</string>
   <string name="preview_feature_title_awards">賞</string>
+  <string name="preview_feature_title_character_portraits">キャラクターポートレート</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_insights_card">注目度・マッチ度メーター</string>
   <string name="preview_feature_title_living_poster">リビングポスター</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">ノート</string>
   <string name="text_vip_cancel_limit_smart_lists">スマートリスト</string>
   <string name="text_vip_cancel_limit_watchlist">ウォッチリスト</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">再生は自動的に追跡されなくなります</string>
-  <string name="text_vip_cancel_loss_plex_servers">無料アカウントは1つのサーバーと同期できます</string>
   <string name="text_vip_cancel_loss_streaming">同期が停止します。無料版では1つのサービスが維持されます。</string>
   <string name="text_vip_cancel_offer_break">休憩をお取りください。価格は維持されます。%sから開始、本日の請求はありません。</string>
   <string name="text_vip_cancel_offer_monthly">月額%1$sです。%2$sから開始、本日の請求はありません。</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">あまり利用していない</string>
   <string name="text_vip_cancel_step">%1$dステップ中%2$dステップ</string>
   <string name="text_vip_cancel_tenure_new">1ヶ月未満</string>
-  <string name="text_vip_cancel_value_off">オフ</string>
-  <string name="text_vip_cancel_value_server">1つのサーバー</string>
-  <string name="text_vip_cancel_value_servers">%dのサーバー</string>
   <string name="text_vip_cancel_value_service">1つのサービス</string>
   <string name="text_vip_cancel_value_services">%dのサービス</string>
   <string name="text_vip_checkout_failed_title">チェックアウトを開始できませんでした</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">ウォッチリストの容量を拡張して、観たいものをすべて追跡しましょう。</string>
   <string name="vip_feature_description_early_access">誰よりも早く、新しいバージョンのTraktアプリや新機能に早期アクセスできます。</string>
   <string name="vip_feature_description_global_wtw">お住まいの地域だけでなく、世界中のどこで番組や映画がストリーミング可能かを確認できます。</string>
+  <string name="vip_feature_description_leaderboard">リーダーボードでフレンドの中での順位を確認しましょう！</string>
   <string name="vip_feature_description_more_lists">さらに多くのカスタムリストを作成して、番組や映画を思い通りに整理できます。</string>
   <string name="vip_feature_description_plex_sync">一日を通してより頻繁な自動更新で、Plexライブラリを完璧に同期させましょう。</string>
   <string name="vip_feature_description_recaps">視聴、評価、発見したすべてのコンテンツを示す、包括的な月間および年間のまとめでより深い洞察を得られます。</string>

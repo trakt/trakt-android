@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP include</string>
   <string name="header_vip_cancel_kept">Încă VIP.</string>
   <string name="header_vip_cancel_library">Nimic nu se șterge. Doar se oprește din creștere.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Scrobbling Plex</string>
-  <string name="header_vip_cancel_loss_plex_servers">Servere Plex suplimentare</string>
   <string name="header_vip_cancel_losses">Pe %s pierzi</string>
   <string name="header_vip_cancel_offer">Sau rămâi încă 2 ani</string>
   <string name="header_vip_cancel_reason">De ce pleci?</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Anul curent</string>
   <string name="preview_feature_description_anticipated_recommendations">Recomandă titluri care nu au apărut încă, alese pentru tine. Comută între Lansate acum și În curând deasupra listei Recomandate.</string>
   <string name="preview_feature_description_awards">Vezi premiile și nominalizările la Oscar, Golden Globe, Emmy și festivaluri pe paginile de filme, seriale și persoane.</string>
+  <string name="preview_feature_description_character_portraits">Listele de distribuție afișează fiecare actor în rolul personajului său atunci când avem un portret al acestuia în rol.</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_insights_card">Arată cât de mult hype are un titlu și cât de bine se potrivește cu gusturile tale în secțiunea Statistici a paginilor de filme și seriale.</string>
   <string name="preview_feature_description_living_poster">Titlurile de top primesc un poster care se înclină odată cu cursorul, cu straturi care se deplasează la adâncimi diferite și efecte ambientale precum ceață, jar și zăpadă.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Anul tău 2026 sub forma unui rezumat derulabil cu o persona de spectator, apoi o pagină de statistici stilizată pentru a o egala.</string>
   <string name="preview_feature_title_anticipated_recommendations">Recomandări în curând</string>
   <string name="preview_feature_title_awards">Premii</string>
+  <string name="preview_feature_title_character_portraits">Portrete ale personajelor</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_insights_card">Indicatori de hype și potrivire</string>
   <string name="preview_feature_title_living_poster">Postere vii</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Note</string>
   <string name="text_vip_cancel_limit_smart_lists">Liste inteligente</string>
   <string name="text_vip_cancel_limit_watchlist">Listă de vizionare</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Vizionările nu mai sunt urmărite automat</string>
-  <string name="text_vip_cancel_loss_plex_servers">Conturile gratuite sincronizează un singur server</string>
   <string name="text_vip_cancel_loss_streaming">Sincronizarea se oprește. Conturile gratuite păstrează un serviciu.</string>
   <string name="text_vip_cancel_offer_break">Ia-ți pauza. Prețul te așteaptă. Începe la %s, nimic de plătit azi.</string>
   <string name="text_vip_cancel_offer_monthly">Asta înseamnă %1$s pe lună. Începe la %2$s, nimic de plătit azi.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Nu îl folosesc suficient</string>
   <string name="text_vip_cancel_step">Pasul %1$d din %2$d</string>
   <string name="text_vip_cancel_tenure_new">sub o lună</string>
-  <string name="text_vip_cancel_value_off">Oprit</string>
-  <string name="text_vip_cancel_value_server">1 server</string>
-  <string name="text_vip_cancel_value_servers">%d servere</string>
   <string name="text_vip_cancel_value_service">1 serviciu</string>
   <string name="text_vip_cancel_value_services">%d servicii</string>
   <string name="text_vip_checkout_failed_title">Nu s-a putut începe finalizarea comenzii</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Extinde-ți capacitatea listei de vizionare pentru a ține evidența a tot ceea ce vrei să vizionezi.</string>
   <string name="vip_feature_description_early_access">Obține acces timpuriu la noile versiuni ale aplicațiilor Trakt și la funcții noi-nouțe înainte de oricine altcineva.</string>
   <string name="vip_feature_description_global_wtw">Vezi unde sunt disponibile seriale și filme pentru streaming oriunde în lume, nu doar în regiunea ta.</string>
+  <string name="vip_feature_description_leaderboard">Vezi pe ce loc te clasezi printre prietenii tăi în clasament!</string>
   <string name="vip_feature_description_more_lists">Creează și mai multe liste personalizate pentru a-ți organiza serialele și filmele exact așa cum dorești.</string>
   <string name="vip_feature_description_plex_sync">Menține-ți biblioteca Plex perfect sincronizată cu actualizări automate mai frecvente pe parcursul zilei.</string>
   <string name="vip_feature_description_recaps">Obține informații mai detaliate cu recapitulări lunare și anuale complete, arătând tot ce ai vizionat, evaluat și descoperit.</string>

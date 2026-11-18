@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP omvat</string>
   <string name="header_vip_cancel_kept">Nog steeds VIP.</string>
   <string name="header_vip_cancel_library">Niets wordt verwijderd. Het stopt alleen met groeien.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex scrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Extra Plex-servers</string>
   <string name="header_vip_cancel_losses">Op %s verlies je</string>
   <string name="header_vip_cancel_offer">Of blijf nog 2 jaar</string>
   <string name="header_vip_cancel_reason">Waarom vertrek je?</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
   <string name="preview_feature_description_anticipated_recommendations">Beveelt titels aan die nog niet uit zijn, speciaal voor jou gekozen. Schakel boven de lijst Aanbevolen tussen Nu uit en Binnenkort.</string>
   <string name="preview_feature_description_awards">Bekijk Oscar-, Golden Globe-, Emmy- en festivaloverwinningen en -nominaties op film-, serie- en persoonspagina\'s.</string>
+  <string name="preview_feature_description_character_portraits">Castlijsten tonen elke acteur als hun personage wanneer we een portret van hen in de rol hebben.</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_insights_card">Toont hoe gehypet een titel is en hoe goed deze bij je smaak past in het gedeelte Inzichten op film- en seriepagina\'s.</string>
   <string name="preview_feature_description_living_poster">Toptitels krijgen een poster die meekantelt met je cursor, met lagen die op verschillende dieptes bewegen en omgevingseffecten zoals mist, sintels en sneeuw.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Jouw 2026 als een scroll-gedreven reel met een kijkerspersoonlijkheid, gevolgd door een statistiekenpagina die daarbij past.</string>
   <string name="preview_feature_title_anticipated_recommendations">Aanbevelingen voor binnenkort</string>
   <string name="preview_feature_title_awards">Prijzen</string>
+  <string name="preview_feature_title_character_portraits">Personageportretten</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_insights_card">Hype- en matchmeters</string>
   <string name="preview_feature_title_living_poster">Levende posters</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Notities</string>
   <string name="text_vip_cancel_limit_smart_lists">Slimme lijsten</string>
   <string name="text_vip_cancel_limit_watchlist">Kijklijst</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Afgespeelde items worden niet meer automatisch bijgehouden</string>
-  <string name="text_vip_cancel_loss_plex_servers">Gratis accounts synchroniseren één server</string>
   <string name="text_vip_cancel_loss_streaming">Synchronisatie stopt. Gratis houdt één service.</string>
   <string name="text_vip_cancel_offer_break">Neem je pauze. De prijs wacht. Begint %s, niets vandaag.</string>
   <string name="text_vip_cancel_offer_monthly">Dat is %1$s per maand. Begint %2$s, niets vandaag.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Niet genoeg gebruikt</string>
   <string name="text_vip_cancel_step">Stap %1$d van %2$d</string>
   <string name="text_vip_cancel_tenure_new">minder dan een maand</string>
-  <string name="text_vip_cancel_value_off">Uit</string>
-  <string name="text_vip_cancel_value_server">1 server</string>
-  <string name="text_vip_cancel_value_servers">%d servers</string>
   <string name="text_vip_cancel_value_service">1 service</string>
   <string name="text_vip_cancel_value_services">%d services</string>
   <string name="text_vip_checkout_failed_title">Kon afrekenen niet starten</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Breid uw kijklijstcapaciteit uit om alles wat u wilt kijken bij te houden.</string>
   <string name="vip_feature_description_early_access">Krijg als eerste toegang tot nieuwe versies van Trakt-apps en gloednieuwe functies.</string>
   <string name="vip_feature_description_global_wtw">Bekijk waar series en films overal ter wereld te streamen zijn, niet alleen in uw regio.</string>
+  <string name="vip_feature_description_leaderboard">Bekijk waar je staat tussen je vrienden op het scorebord!</string>
   <string name="vip_feature_description_more_lists">Maak nog meer aangepaste lijsten om uw series en films precies zo te organiseren als u wilt.</string>
   <string name="vip_feature_description_plex_sync">Houd uw Plex-bibliotheek perfect gesynchroniseerd met frequentere automatische updates gedurende de dag.</string>
   <string name="vip_feature_description_recaps">Krijg diepere inzichten met uitgebreide maand- en jaaroverzichten die alles tonen wat u heeft bekeken, beoordeeld en ontdekt.</string>

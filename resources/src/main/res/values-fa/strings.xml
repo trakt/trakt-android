@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP شامل</string>
   <string name="header_vip_cancel_kept">همچنان VIP.</string>
   <string name="header_vip_cancel_library">چیزی حذف نمی‌شود. فقط رشد آن متوقف می‌شود.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">اسکرابلینگ Plex</string>
-  <string name="header_vip_cancel_loss_plex_servers">سرورهای اضافی Plex</string>
   <string name="header_vip_cancel_losses">در تاریخ %s، موارد زیر را از دست می‌دهید</string>
   <string name="header_vip_cancel_offer">یا ۲ سال دیگر بمانید</string>
   <string name="header_vip_cancel_reason">چرا ترک می‌کنید؟</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">سال تا به امروز</string>
   <string name="preview_feature_description_anticipated_recommendations">عناوینی را که هنوز منتشر نشده‌اند و ویژه شما انتخاب شده‌اند توصیه می‌کند. در بالای فهرست توصیه‌شده، بین «منتشرشده» و «به‌زودی» جابه‌جا شوید.</string>
   <string name="preview_feature_description_awards">مشاهده جوایز و نامزدی‌های اسکار، گلدن گلوب، امی و جشنواره‌ها در صفحات فیلم، سریال و اشخاص.</string>
+  <string name="preview_feature_description_character_portraits">فهرست بازیگران هر بازیگر را در قالب شخصیتش نشان می‌دهد، در صورتی که پرتره‌ای از آن‌ها در آن نقش داشته باشیم.</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_insights_card">در بخش بینش‌های صفحه‌های فیلم و سریال نشان می‌دهد که یک عنوان چقدر پر تب‌وتاب است و چقدر با سلیقه شما هم‌خوانی دارد.</string>
   <string name="preview_feature_description_living_poster">عناوین برتر پوستری دریافت می‌کنند که با نشانگر شما متمایل می‌شود، همراه با لایه‌هایی که در عمق‌های مختلف حرکت می‌کنند و جلوه‌های محیطی مانند مه، اخگر و برف.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">سال 2026 شما به صورت یک حلقه قابل پیمایش با یک پرسونای بیننده، و سپس یک صفحه آمار که با آن همخوانی دارد.</string>
   <string name="preview_feature_title_anticipated_recommendations">توصیه‌های به‌زودی</string>
   <string name="preview_feature_title_awards">جوایز</string>
+  <string name="preview_feature_title_character_portraits">پرتره‌های شخصیت‌ها</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_insights_card">سنجش‌گرهای تب‌وتاب و هم‌خوانی</string>
   <string name="preview_feature_title_living_poster">پوسترهای زنده</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">یادداشت‌ها</string>
   <string name="text_vip_cancel_limit_smart_lists">لیست‌های هوشمند</string>
   <string name="text_vip_cancel_limit_watchlist">لیست تماشا</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">بازدیدها به صورت خودکار ردیابی نمی‌شوند</string>
-  <string name="text_vip_cancel_loss_plex_servers">حساب‌های رایگان یک سرور را همگام‌سازی می‌کنند</string>
   <string name="text_vip_cancel_loss_streaming">همگام‌سازی متوقف می‌شود. حساب‌های رایگان یک سرویس را حفظ می‌کنند.</string>
   <string name="text_vip_cancel_offer_break">استراحت کنید. قیمت منتظر می‌ماند. از %s شروع می‌شود، امروز هیچ هزینه‌ای ندارد.</string>
   <string name="text_vip_cancel_offer_monthly">این %1$s در ماه است. از %2$s شروع می‌شود، امروز هیچ هزینه‌ای ندارد.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">به اندازه کافی استفاده نمی‌کنم</string>
   <string name="text_vip_cancel_step">مرحله %1$d از %2$d</string>
   <string name="text_vip_cancel_tenure_new">زیر یک ماه</string>
-  <string name="text_vip_cancel_value_off">خاموش</string>
-  <string name="text_vip_cancel_value_server">۱ سرور</string>
-  <string name="text_vip_cancel_value_servers">%d سرور</string>
   <string name="text_vip_cancel_value_service">۱ سرویس</string>
   <string name="text_vip_cancel_value_services">%d سرویس</string>
   <string name="text_vip_checkout_failed_title">امکان شروع پرداخت وجود ندارد</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">ظرفیت لیست تماشای خود را گسترش دهید تا هر آنچه می‌خواهید تماشا کنید را پیگیری کنید.</string>
   <string name="vip_feature_description_early_access">قبل از دیگران به نسخه‌های جدید برنامه‌های Trakt و ویژگی‌های کاملاً جدید دسترسی زودهنگام پیدا کنید.</string>
   <string name="vip_feature_description_global_wtw">ببینید نمایش‌ها و فیلم‌ها در کجای جهان برای پخش آنلاین در دسترس هستند، نه فقط در منطقه شما.</string>
+  <string name="vip_feature_description_leaderboard">رتبه خود را در میان دوستانتان در جدول رده‌بندی ببینید!</string>
   <string name="vip_feature_description_more_lists">لیست‌های سفارشی بیشتری ایجاد کنید تا نمایش‌ها و فیلم‌های خود را دقیقاً به روشی که می‌خواهید سازماندهی کنید.</string>
   <string name="vip_feature_description_plex_sync">کتابخانه Plex خود را با به‌روزرسانی‌های خودکار مکرر در طول روز، کاملاً همگام نگه دارید.</string>
   <string name="vip_feature_description_recaps">با خلاصه‌های جامع ماهانه و سالانه که هر آنچه تماشا کرده‌اید، امتیاز داده‌اید و کشف کرده‌اید را نشان می‌دهد، بینش‌های عمیق‌تری کسب کنید.</string>

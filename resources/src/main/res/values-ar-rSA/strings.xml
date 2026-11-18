@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">يشمل VIP</string>
   <string name="header_vip_cancel_kept">ما زلت VIP.</string>
   <string name="header_vip_cancel_library">لا شيء سيُحذف. سيتوقف النمو فقط.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">تدقيق Plex</string>
-  <string name="header_vip_cancel_loss_plex_servers">خوادم Plex إضافية</string>
   <string name="header_vip_cancel_losses">في %s ستفقد</string>
   <string name="header_vip_cancel_offer">أو ابقَ لسنتين إضافيتين</string>
   <string name="header_vip_cancel_reason">لماذا تغادر؟</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">منذ بداية العام</string>
   <string name="preview_feature_description_anticipated_recommendations">يقترح عناوين لم تصدر بعد ومختارة خصيصاً لك. بدّل بين \"متوفر الآن\" و\"قريباً\" أعلى قائمة التوصيات.</string>
   <string name="preview_feature_description_awards">اطّلع على جوائز وترشيحات Oscar وGolden Globe وEmmy والمهرجانات في صفحات الأفلام والمسلسلات والأشخاص.</string>
+  <string name="preview_feature_description_character_portraits">تعرض قوائم طاقم التمثيل كل ممثل بشخصيته عندما تتوفر لدينا صورة له في هذا الدور.</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_insights_card">يُظهر مدى الترقب لعملٍ ما ومدى توافقه مع ذوقك في قسم الرؤى بصفحات الأفلام والمسلسلات.</string>
   <string name="preview_feature_description_living_poster">تحصل أبرز الأعمال على ملصق يميل مع حركة المؤشر، بطبقات تتحرك بأعماق مختلفة وتأثيرات محيطية مثل الضباب والجمر والثلج.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">عام 2026 الخاص بك كفيديو قابل للتمرير مع شخصية مشاهد، ثم صفحة إحصائيات مصممة لتناسبها.</string>
   <string name="preview_feature_title_anticipated_recommendations">توصيات القادم قريباً</string>
   <string name="preview_feature_title_awards">الجوائز</string>
+  <string name="preview_feature_title_character_portraits">صور الشخصيات</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_insights_card">مقاييس الترقب والتوافق</string>
   <string name="preview_feature_title_living_poster">ملصقات حية</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">ملاحظات</string>
   <string name="text_vip_cancel_limit_smart_lists">القوائم الذكية</string>
   <string name="text_vip_cancel_limit_watchlist">قائمة المشاهدة</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">يتوقف تتبع التشغيل تلقائيًا</string>
-  <string name="text_vip_cancel_loss_plex_servers">الحسابات المجانية تقوم بمزامنة خادم واحد</string>
   <string name="text_vip_cancel_loss_streaming">توقف المزامنة. الحسابات المجانية تحتفظ بخدمة واحدة.</string>
   <string name="text_vip_cancel_offer_break">خذ استراحتك. السعر ينتظر. يبدأ في %s، لا يوجد دفع اليوم.</string>
   <string name="text_vip_cancel_offer_monthly">هذا %1$s شهريًا. يبدأ في %2$s، لا يوجد دفع اليوم.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">لا أستخدمه بما يكفي</string>
   <string name="text_vip_cancel_step">الخطوة %1$d من %2$d</string>
   <string name="text_vip_cancel_tenure_new">أقل من شهر</string>
-  <string name="text_vip_cancel_value_off">إيقاف</string>
-  <string name="text_vip_cancel_value_server">خادم واحد</string>
-  <string name="text_vip_cancel_value_servers">%d خوادم</string>
   <string name="text_vip_cancel_value_service">خدمة واحدة</string>
   <string name="text_vip_cancel_value_services">%d خدمات</string>
   <string name="text_vip_checkout_failed_title">تعذر بدء إتمام الشراء</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">وسّع سعة قائمة مشاهدتك لتتبع كل ما ترغب في مشاهدته.</string>
   <string name="vip_feature_description_early_access">احصل على وصول مبكر إلى الإصدارات الجديدة من تطبيقات Trakt والميزات الجديدة تمامًا قبل أي شخص آخر.</string>
   <string name="vip_feature_description_global_wtw">تعرف على الأماكن التي تتوفر فيها العروض والأفلام للبث في أي مكان في العالم، وليس منطقتك فقط.</string>
+  <string name="vip_feature_description_leaderboard">اعرف ترتيبك بين أصدقائك على لوحة المتصدرين!</string>
   <string name="vip_feature_description_more_lists">أنشئ المزيد من القوائم المخصصة لتنظيم عروضك وأفلامك بالطريقة التي تريدها تمامًا.</string>
   <string name="vip_feature_description_plex_sync">حافظ على مزامنة مكتبة Plex الخاصة بك بشكل مثالي مع التحديثات التلقائية الأكثر تكرارًا على مدار اليوم.</string>
   <string name="vip_feature_description_recaps">احصل على رؤى أعمق من خلال ملخصات شاملة للشهر والسنة تعرض كل ما شاهدته وقيمته واكتشفته.</string>

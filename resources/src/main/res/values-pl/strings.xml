@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP zawiera</string>
   <string name="header_vip_cancel_kept">Nadal VIP.</string>
   <string name="header_vip_cancel_library">Nic nie zostanie usunięte. Po prostu przestanie rosnąć.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Scrobbling Plex</string>
-  <string name="header_vip_cancel_loss_plex_servers">Dodatkowe serwery Plex</string>
   <string name="header_vip_cancel_losses">Dnia %s tracisz</string>
   <string name="header_vip_cancel_offer">Albo zostań na kolejne 2 lata</string>
   <string name="header_vip_cancel_reason">Dlaczego odchodzisz?</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Od początku roku</string>
   <string name="preview_feature_description_anticipated_recommendations">Poleca wybrane dla Ciebie tytuły, które jeszcze nie miały premiery. Przełączaj między „Już dostępne” a „Wkrótce” nad listą rekomendacji.</string>
   <string name="preview_feature_description_awards">Zobacz wygrane i nominacje do Oscarów, Złotych Globów, nagród Emmy i nagród festiwalowych na stronach filmów, seriali i osób.</string>
+  <string name="preview_feature_description_character_portraits">Listy obsady pokazują każdego aktora jako jego postać, gdy mamy jego portret w tej roli.</string>
   <string name="preview_feature_description_edit_mode">Włącz sterowanie ukrywaniem lub pokazywaniem konfigurowalnych sekcji w całej aplikacji.</string>
   <string name="preview_feature_description_insights_card">Pokazuje, jak duży hype ma dany tytuł i jak dobrze pasuje do Twojego gustu w sekcji Statystyki na stronach filmów i seriali.</string>
   <string name="preview_feature_description_living_poster">Najpopularniejsze tytuły otrzymują plakat, który przechyla się wraz z ruchem kursora, z warstwami poruszającymi się na różnych głębokościach oraz efektami otoczenia, takimi jak mgła, iskry i śnieg.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Twój rok 2026 w formie przewijanego nagrania z personą widza, a następnie strona ze statystykami dopasowana do niej.</string>
   <string name="preview_feature_title_anticipated_recommendations">Rekomendacje nadchodzących tytułów</string>
   <string name="preview_feature_title_awards">Nagrody</string>
+  <string name="preview_feature_title_character_portraits">Portrety postaci</string>
   <string name="preview_feature_title_edit_mode">Tryb edycji</string>
   <string name="preview_feature_title_insights_card">Wskaźniki hype\'u i dopasowania</string>
   <string name="preview_feature_title_living_poster">Żywe plakaty</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Notatki</string>
   <string name="text_vip_cancel_limit_smart_lists">Inteligentne listy</string>
   <string name="text_vip_cancel_limit_watchlist">Obserwowane</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Odtworzenia przestają być śledzone automatycznie</string>
-  <string name="text_vip_cancel_loss_plex_servers">Darmowe konta synchronizują jeden serwer</string>
   <string name="text_vip_cancel_loss_streaming">Zatrzymanie synchronizacji. Konto darmowe zachowuje jedną usługę.</string>
   <string name="text_vip_cancel_offer_break">Zrób sobie przerwę. Cena poczeka. Zaczyna się %s, nic dzisiaj.</string>
   <string name="text_vip_cancel_offer_monthly">To %1$s miesięcznie. Zaczyna się %2$s, nic dzisiaj.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Niewystarczające użycie</string>
   <string name="text_vip_cancel_step">Krok %1$d z %2$d</string>
   <string name="text_vip_cancel_tenure_new">mniej niż miesiąc</string>
-  <string name="text_vip_cancel_value_off">Wyłączone</string>
-  <string name="text_vip_cancel_value_server">1 serwer</string>
-  <string name="text_vip_cancel_value_servers">%d serwerów</string>
   <string name="text_vip_cancel_value_service">1 usługa</string>
   <string name="text_vip_cancel_value_services">%d usług</string>
   <string name="text_vip_checkout_failed_title">Nie można rozpocząć finalizacji zakupu</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Zwiększ pojemność swojej listy obserwowanych, aby śledzić wszystko, co chcesz obejrzeć.</string>
   <string name="vip_feature_description_early_access">Uzyskaj wczesny dostęp do nowych wersji aplikacji Trakt i zupełnie nowych funkcji.</string>
   <string name="vip_feature_description_global_wtw">Zobacz, gdzie dostępne są seriale i filmy w dowolnym miejscu świata, a nie tylko w twoim regionie.</string>
+  <string name="vip_feature_description_leaderboard">Zobacz, które miejsce zajmujesz wśród znajomych w rankingu!</string>
   <string name="vip_feature_description_more_lists">Twórz jeszcze więcej list osobistych, aby organizować swoje seriale i filmy tak, jak chcesz.</string>
   <string name="vip_feature_description_plex_sync">Utrzymuj swoją bibliotekę Plex idealnie zsynchronizowaną dzięki częstszym automatycznym aktualizacjom w ciągu dnia.</string>
   <string name="vip_feature_description_recaps">Odblokuj głębsze analizy dzięki kompleksowym miesięcznym i rocznym podsumowaniom, pokazującym wszystko, co obejrzałeś, oceniłeś i odkryłeś.</string>

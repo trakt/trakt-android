@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP meliputi</string>
   <string name="header_vip_cancel_kept">Masih VIP.</string>
   <string name="header_vip_cancel_library">Tidak ada yang dihapus. Hanya saja tidak bertambah lagi.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex scrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Server Plex tambahan</string>
   <string name="header_vip_cancel_losses">Pada %s Anda kehilangan</string>
   <string name="header_vip_cancel_offer">Atau tetap berlangganan 2 tahun lagi</string>
   <string name="header_vip_cancel_reason">Mengapa Anda berhenti?</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Tahun Berjalan</string>
   <string name="preview_feature_description_anticipated_recommendations">Merekomendasikan judul yang belum rilis, dipilih untuk Anda. Beralih antara Sudah rilis dan Segera hadir di atas daftar Rekomendasi.</string>
   <string name="preview_feature_description_awards">Lihat kemenangan dan nominasi Oscar, Golden Globe, Emmy, dan festival di halaman film, acara TV, dan orang.</string>
+  <string name="preview_feature_description_character_portraits">Daftar pemeran menampilkan setiap aktor sebagai karakternya saat kami memiliki potret mereka dalam peran tersebut.</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_insights_card">Menampilkan seberapa hype suatu judul dan seberapa cocok dengan selera Anda di bagian Wawasan pada halaman film dan acara TV.</string>
   <string name="preview_feature_description_living_poster">Judul-judul teratas mendapatkan poster yang miring mengikuti penunjuk Anda, dengan lapisan yang bergerak di kedalaman berbeda dan efek ambien seperti kabut, bara api, dan salju.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Tahun 2026 Anda sebagai gulungan yang digerakkan oleh scroll dengan persona penonton, lalu halaman statistik yang disesuaikan dengannya.</string>
   <string name="preview_feature_title_anticipated_recommendations">Rekomendasi segera hadir</string>
   <string name="preview_feature_title_awards">Penghargaan</string>
+  <string name="preview_feature_title_character_portraits">Potret karakter</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_insights_card">Meter hype dan kecocokan</string>
   <string name="preview_feature_title_living_poster">Poster hidup</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Catatan</string>
   <string name="text_vip_cancel_limit_smart_lists">Daftar Cerdas</string>
   <string name="text_vip_cancel_limit_watchlist">Daftar Tontonan</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Pemutaran tidak lagi dilacak secara otomatis</string>
-  <string name="text_vip_cancel_loss_plex_servers">Akun gratis menyinkronkan satu server</string>
   <string name="text_vip_cancel_loss_streaming">Berhenti menyinkronkan. Akun gratis hanya menyimpan satu layanan.</string>
   <string name="text_vip_cancel_offer_break">Ambil jeda Anda. Harganya akan menunggu. Mulai %s, tidak ada biaya hari ini.</string>
   <string name="text_vip_cancel_offer_monthly">Itu %1$s per bulan. Mulai %2$s, tidak ada biaya hari ini.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Tidak cukup sering menggunakannya</string>
   <string name="text_vip_cancel_step">Langkah %1$d dari %2$d</string>
   <string name="text_vip_cancel_tenure_new">kurang dari sebulan</string>
-  <string name="text_vip_cancel_value_off">Mati</string>
-  <string name="text_vip_cancel_value_server">1 server</string>
-  <string name="text_vip_cancel_value_servers">%d server</string>
   <string name="text_vip_cancel_value_service">1 layanan</string>
   <string name="text_vip_cancel_value_services">%d layanan</string>
   <string name="text_vip_checkout_failed_title">Gagal memulai checkout</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Perluas kapasitas daftar tontonan Anda untuk melacak semua yang ingin Anda tonton.</string>
   <string name="vip_feature_description_early_access">Dapatkan akses awal ke versi baru aplikasi Trakt dan fitur baru sebelum orang lain.</string>
   <string name="vip_feature_description_global_wtw">Lihat di mana acara dan film tersedia untuk streaming di mana saja di dunia, tidak hanya di wilayah Anda.</string>
+  <string name="vip_feature_description_leaderboard">Lihat peringkat Anda di antara teman-teman di papan peringkat!</string>
   <string name="vip_feature_description_more_lists">Buat lebih banyak daftar kustom untuk mengatur acara dan film Anda persis seperti yang Anda inginkan.</string>
   <string name="vip_feature_description_plex_sync">Jaga agar perpustakaan Plex Anda tetap tersinkronisasi dengan sempurna dengan pembaruan otomatis yang lebih sering sepanjang hari.</string>
   <string name="vip_feature_description_recaps">Dapatkan wawasan lebih dalam dengan ringkasan bulan dan tahun yang komprehensif yang menampilkan semua yang Anda tonton, nilai, dan temukan.</string>

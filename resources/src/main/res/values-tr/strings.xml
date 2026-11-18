@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP şunları içerir</string>
   <string name="header_vip_cancel_kept">Hala VIP.</string>
   <string name="header_vip_cancel_library">Hiçbir şey silinmez. Sadece büyümesi durur.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex scrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Ekstra Plex sunucuları</string>
   <string name="header_vip_cancel_losses">%s tarihinde kaybedersiniz</string>
   <string name="header_vip_cancel_offer">Veya 2 yıl daha kalın</string>
   <string name="header_vip_cancel_reason">Neden ayrılıyorsunuz?</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_anticipated_recommendations">Sizin için seçilen, henüz çıkmamış yapımları önerir. Önerilenler listesinin üstünden \'Çıkanlar\' ve \'Yakında\' arasında geçiş yapın.</string>
   <string name="preview_feature_description_awards">Film, dizi ve kişi sayfalarında Oscar, Golden Globe, Emmy ve festival ödülleri ile adaylıklarını görün.</string>
+  <string name="preview_feature_description_character_portraits">Oyuncu listeleri, roldeki bir portresi mevcut olduğunda her oyuncuyu karakteri olarak gösterir.</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_insights_card">Film ve dizi sayfalarındaki İçgörüler bölümünde bir yapımın ne kadar heyecanla beklendiğini ve zevklerinizle ne kadar iyi eşleştiğini gösterir.</string>
   <string name="preview_feature_description_living_poster">En popüler yapımlar; imlecinizle birlikte eğilen, farklı derinliklerde hareket eden katmanlara ve sis, köz ve kar gibi ortam efektlerine sahip bir postere sahip olur.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">İzleyici kişiliğine uygun, kaydırılabilir bir makara olarak 2026 yılınız ve ardından ona uygun tasarlanmış bir istatistik sayfası.</string>
   <string name="preview_feature_title_anticipated_recommendations">Yakında çıkacak yapım önerileri</string>
   <string name="preview_feature_title_awards">Ödüller</string>
+  <string name="preview_feature_title_character_portraits">Karakter portreleri</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_insights_card">Beklenti ve eşleşme ölçerleri</string>
   <string name="preview_feature_title_living_poster">Canlı posterler</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Notlar</string>
   <string name="text_vip_cancel_limit_smart_lists">Akıllı Listeler</string>
   <string name="text_vip_cancel_limit_watchlist">İzleme Listesi</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Oynatmalar otomatik olarak takip edilmeyi durdurur</string>
-  <string name="text_vip_cancel_loss_plex_servers">Ücretsiz hesaplar bir sunucuyu senkronize eder</string>
   <string name="text_vip_cancel_loss_streaming">Senkronizasyon durur. Ücretsiz hesaplar tek bir hizmeti tutar.</string>
   <string name="text_vip_cancel_offer_break">Aranıza verin. Fiyat bekler. %s tarihinde başlar, bugün bir ödeme yok.</string>
   <string name="text_vip_cancel_offer_monthly">Bu ayda %1$s. %2$s tarihinde başlar, bugün bir ödeme yok.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Yeterince kullanmıyorum</string>
   <string name="text_vip_cancel_step">%1$d adımın %2$d. adımı</string>
   <string name="text_vip_cancel_tenure_new">bir aydan az</string>
-  <string name="text_vip_cancel_value_off">Kapalı</string>
-  <string name="text_vip_cancel_value_server">1 sunucu</string>
-  <string name="text_vip_cancel_value_servers">%d sunucu</string>
   <string name="text_vip_cancel_value_service">1 hizmet</string>
   <string name="text_vip_cancel_value_services">%d hizmet</string>
   <string name="text_vip_checkout_failed_title">Ödeme başlatılamadı</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">İzleme listesi kapasitenizi genişleterek izlemek istediğiniz her şeyi takip edin.</string>
   <string name="vip_feature_description_early_access">Trakt uygulamalarının yeni sürümlerine ve yepyeni özelliklere herkesten önce erken erişim sağlayın.</string>
   <string name="vip_feature_description_global_wtw">Dizilerin ve filmlerin sadece bölgenizde değil, dünyanın herhangi bir yerinde nerede yayınlandığını görün.</string>
+  <string name="vip_feature_description_leaderboard">Liderlik tablosunda arkadaşların arasındaki yerini gör!</string>
   <string name="vip_feature_description_more_lists">Dizilerinizi ve filmlerinizi tam istediğiniz gibi düzenlemek için daha da fazla özel liste oluşturun.</string>
   <string name="vip_feature_description_plex_sync">Plex kütüphanenizi gün boyunca daha sık otomatik güncellemelerle mükemmel bir şekilde senkronize tutun.</string>
   <string name="vip_feature_description_recaps">İzlediğiniz, derecelendirdiğiniz ve keşfettiğiniz her şeyi gösteren kapsamlı aylık ve yıllık özetlerle daha derin içgörüler edinin.</string>

@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">Το VIP περιλαμβάνει</string>
   <string name="header_vip_cancel_kept">Ακόμα VIP.</string>
   <string name="header_vip_cancel_library">Τίποτα δεν διαγράφεται. Απλώς σταματάει να μεγαλώνει.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex scrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Επιπλέον διακομιστές Plex</string>
   <string name="header_vip_cancel_losses">Στις %s χάνετε</string>
   <string name="header_vip_cancel_offer">Ή παραμείνετε για 2 ακόμη χρόνια</string>
   <string name="header_vip_cancel_reason">Γιατί φεύγετε;</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
   <string name="preview_feature_description_anticipated_recommendations">Προτείνει τίτλους που δεν έχουν κυκλοφορήσει ακόμα, επιλεγμένους για εσάς. Κάντε εναλλαγή μεταξύ «Κυκλοφορούν τώρα» και «Έρχονται σύντομα» πάνω από τη λίστα «Προτεινόμενα».</string>
   <string name="preview_feature_description_awards">Δείτε νίκες και υποψηφιότητες για Oscar, Golden Globe, Emmy και φεστιβάλ σε σελίδες ταινιών, σειρών και προσώπων.</string>
+  <string name="preview_feature_description_character_portraits">Οι λίστες ηθοποιών εμφανίζουν κάθε ηθοποιό ως τον χαρακτήρα του όταν έχουμε πορτρέτο του στον ρόλο.</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
   <string name="preview_feature_description_insights_card">Δείχνει πόσο hype υπάρχει για έναν τίτλο και πόσο καλά ταιριάζει στις προτιμήσεις σας στην ενότητα Insights των σελίδων ταινιών και σειρών.</string>
   <string name="preview_feature_description_living_poster">Οι κορυφαίοι τίτλοι αποκτούν μια αφίσα που παίρνει κλίση με τον δείκτη σας, με επίπεδα που κινούνται σε διαφορετικά βάθη και ατμοσφαιρικά εφέ, όπως ομίχλη, σπίθες και χιόνι.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Το 2026 σας ως μια κυλιόμενη ταινία με ένα προφίλ θεατή, και στη συνέχεια μια σελίδα στατιστικών σχεδιασμένη να ταιριάζει.</string>
   <string name="preview_feature_title_anticipated_recommendations">Προτάσεις «Έρχονται σύντομα»</string>
   <string name="preview_feature_title_awards">Βραβεία</string>
+  <string name="preview_feature_title_character_portraits">Πορτρέτα χαρακτήρων</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_insights_card">Μετρητές hype και ταιριάσματος</string>
   <string name="preview_feature_title_living_poster">Ζωντανές αφίσες</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Σημειώσεις</string>
   <string name="text_vip_cancel_limit_smart_lists">Έξυπνες λίστες</string>
   <string name="text_vip_cancel_limit_watchlist">Λίστα παρακολούθησης</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Οι αναπαραγωγές σταματούν να παρακολουθούνται αυτόματα</string>
-  <string name="text_vip_cancel_loss_plex_servers">Οι δωρεάν λογαριασμοί συγχρονίζουν έναν διακομιστή</string>
   <string name="text_vip_cancel_loss_streaming">Διακοπή συγχρονισμού. Ο δωρεάν λογαριασμός διατηρεί μία υπηρεσία.</string>
   <string name="text_vip_cancel_offer_break">Κάντε το διάλειμμά σας. Η τιμή περιμένει. Ξεκινάει %s, τίποτα σήμερα.</string>
   <string name="text_vip_cancel_offer_monthly">Αυτό είναι %1$s τον μήνα. Ξεκινάει %2$s, τίποτα σήμερα.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Δεν το χρησιμοποιώ αρκετά</string>
   <string name="text_vip_cancel_step">Βήμα %1$d από %2$d</string>
   <string name="text_vip_cancel_tenure_new">λιγότερο από ένα μήνα</string>
-  <string name="text_vip_cancel_value_off">Απενεργοποίηση</string>
-  <string name="text_vip_cancel_value_server">1 διακομιστής</string>
-  <string name="text_vip_cancel_value_servers">%d διακομιστές</string>
   <string name="text_vip_cancel_value_service">1 υπηρεσία</string>
   <string name="text_vip_cancel_value_services">%d υπηρεσίες</string>
   <string name="text_vip_checkout_failed_title">Δεν ήταν δυνατή η έναρξη ολοκλήρωσης αγοράς</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Επεκτείνετε τη χωρητικότητα της λίστας παρακολούθησής σας για να παρακολουθείτε όλα όσα θέλετε να δείτε.</string>
   <string name="vip_feature_description_early_access">Αποκτήστε πρόωρη πρόσβαση σε νέες εκδόσεις εφαρμογών Trakt και ολοκαίνουργιες λειτουργίες πριν από οποιονδήποτε άλλο.</string>
   <string name="vip_feature_description_global_wtw">Δείτε πού είναι διαθέσιμες οι σειρές και οι ταινίες για ροή οπουδήποτε στον κόσμο, όχι μόνο στην περιοχή σας.</string>
+  <string name="vip_feature_description_leaderboard">Δείτε πού κατατάσσεστε ανάμεσα στους φίλους σας στον πίνακα κατάταξης!</string>
   <string name="vip_feature_description_more_lists">Δημιουργήστε ακόμα περισσότερες προσαρμοσμένες λίστες για να οργανώσετε τις σειρές και τις ταινίες σας ακριβώς όπως θέλετε.</string>
   <string name="vip_feature_description_plex_sync">Διατηρήστε τη βιβλιοθήκη Plex σας τέλεια συγχρονισμένη με πιο συχνές αυτόματες ενημερώσεις καθ\' όλη τη διάρκεια της ημέρας.</string>
   <string name="vip_feature_description_recaps">Αποκτήστε βαθύτερες πληροφορίες με αναλυτικές μηνιαίες και ετήσιες ανακεφαλαιώσεις που δείχνουν όλα όσα παρακολουθήσατε, αξιολογήσατε και ανακαλύψατε.</string>

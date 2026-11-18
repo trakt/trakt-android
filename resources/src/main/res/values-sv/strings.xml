@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP inkluderar</string>
   <string name="header_vip_cancel_kept">Fortfarande VIP.</string>
   <string name="header_vip_cancel_library">Inget raderas. Det slutar bara att växa.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Plex-skrobbling</string>
-  <string name="header_vip_cancel_loss_plex_servers">Extra Plex-servrar</string>
   <string name="header_vip_cancel_losses">Den %s förlorar du</string>
   <string name="header_vip_cancel_offer">Eller stanna 2 år till</string>
   <string name="header_vip_cancel_reason">Varför lämnar du?</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">År hittills</string>
   <string name="preview_feature_description_anticipated_recommendations">Rekommenderar titlar som inte har släppts än, utvalda för dig. Växla mellan Ute nu och Kommer snart ovanför listan Rekommenderat.</string>
   <string name="preview_feature_description_awards">Se vinster och nomineringar för Oscar, Golden Globe, Emmy och festivaler på film-, serie- och personsidor.</string>
+  <string name="preview_feature_description_character_portraits">Rollistor visar varje skådespelare som sin karaktär när vi har ett porträtt av dem i rollen.</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
   <string name="preview_feature_description_insights_card">Visar hur hypad en titel är och hur väl den matchar din smak i sektionen Insikter på film- och seriesidor.</string>
   <string name="preview_feature_description_living_poster">Topptitlar får en affisch som lutar med din pekare, med lager som rör sig på olika djup och atmosfäriska effekter såsom dimma, glöd och snö.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Ditt 2026 som en scrollbar rulle med en tittarpersona, följt av en statistik sida med matchande stil.</string>
   <string name="preview_feature_title_anticipated_recommendations">Kommer snart-rekommendationer</string>
   <string name="preview_feature_title_awards">Utmärkelser</string>
+  <string name="preview_feature_title_character_portraits">Karaktärsporträtt</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_insights_card">Hype- och matchningsmätare</string>
   <string name="preview_feature_title_living_poster">Levande affischer</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Anteckningar</string>
   <string name="text_vip_cancel_limit_smart_lists">Smarta listor</string>
   <string name="text_vip_cancel_limit_watchlist">Bevakningslista</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Uppspelningar slutar spåras automatiskt</string>
-  <string name="text_vip_cancel_loss_plex_servers">Gratiskonton synkar en server</string>
   <string name="text_vip_cancel_loss_streaming">Slutar synkronisera. Gratisversionen behåller en tjänst.</string>
   <string name="text_vip_cancel_offer_break">Ta din paus. Priset väntar. Börjar %s, inget idag.</string>
   <string name="text_vip_cancel_offer_monthly">Det är %1$s i månaden. Börjar %2$s, inget idag.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Använder den inte tillräckligt</string>
   <string name="text_vip_cancel_step">Steg %1$d av %2$d</string>
   <string name="text_vip_cancel_tenure_new">under en månad</string>
-  <string name="text_vip_cancel_value_off">Av</string>
-  <string name="text_vip_cancel_value_server">1 server</string>
-  <string name="text_vip_cancel_value_servers">%d servrar</string>
   <string name="text_vip_cancel_value_service">1 tjänst</string>
   <string name="text_vip_cancel_value_services">%d tjänster</string>
   <string name="text_vip_checkout_failed_title">Kunde inte starta kassan</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Utöka din tittarlistas kapacitet för att hålla koll på allt du vill titta på.</string>
   <string name="vip_feature_description_early_access">Få tidig åtkomst till nya versioner av Trakt-appar och helt nya funktioner före alla andra.</string>
   <string name="vip_feature_description_global_wtw">Se var serier och filmer finns att streama var som helst i världen, inte bara i din region.</string>
+  <string name="vip_feature_description_leaderboard">Se hur du rankas bland dina vänner på topplistan!</string>
   <string name="vip_feature_description_more_lists">Skapa ännu fler anpassade listor för att organisera dina serier och filmer precis som du vill.</string>
   <string name="vip_feature_description_plex_sync">Håll ditt Plex-bibliotek perfekt synkroniserat med tätare automatiska uppdateringar under hela dagen.</string>
   <string name="vip_feature_description_recaps">Få djupare insikter med omfattande månads- och årssammanfattningar som visar allt du tittade på, betygsatte och upptäckte.</string>

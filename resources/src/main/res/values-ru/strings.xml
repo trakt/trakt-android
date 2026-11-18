@@ -1134,8 +1134,6 @@
   <string name="header_vip_cancel_includes">VIP включает</string>
   <string name="header_vip_cancel_kept">Все еще VIP.</string>
   <string name="header_vip_cancel_library">Ничего не удаляется. Просто перестает расти.</string>
-  <string name="header_vip_cancel_loss_plex_scrobbling">Скробблинг Plex</string>
-  <string name="header_vip_cancel_loss_plex_servers">Дополнительные серверы Plex</string>
   <string name="header_vip_cancel_losses">%s вы потеряете</string>
   <string name="header_vip_cancel_offer">Или останьтесь еще на 2 года</string>
   <string name="header_vip_cancel_reason">Почему вы уходите?</string>
@@ -1759,6 +1757,7 @@
   <string name="page_title_year_to_date">С начала года</string>
   <string name="preview_feature_description_anticipated_recommendations">Рекомендует проекты, которые ещё не вышли, подобранные для вас. Переключайтесь между «Уже вышли» и «Скоро» над списком «Рекомендации».</string>
   <string name="preview_feature_description_awards">Смотрите победы и номинации на «Оскар», «Золотой глобус», «Эмми» и фестивальные награды на страницах фильмов, сериалов и персон.</string>
+  <string name="preview_feature_description_character_portraits">В списках актёров каждый актёр отображается в образе своего персонажа, если у нас есть его портрет в роли.</string>
   <string name="preview_feature_description_edit_mode">Включите элементы управления для скрытия или отображения настраиваемых разделов во всем приложении.</string>
   <string name="preview_feature_description_insights_card">Показывает уровень хайпа вокруг тайтла и то, насколько он соответствует вашему вкусу, в разделе «Инсайты» на страницах фильмов и сериалов.</string>
   <string name="preview_feature_description_living_poster">Популярные проекты получают постер, который наклоняется вслед за курсором, со слоями, двигающимися на разной глубине, и атмосферными эффектами, такими как туман, тлеющие угли и снег.</string>
@@ -1770,6 +1769,7 @@
   <string name="preview_feature_description_year_in_review_2026">Ваш 2026 год в виде прокручиваемого ролика с персоной зрителя, затем страница статистики, оформленная в соответствующем стиле.</string>
   <string name="preview_feature_title_anticipated_recommendations">Рекомендации того, что скоро выйдет</string>
   <string name="preview_feature_title_awards">Награды</string>
+  <string name="preview_feature_title_character_portraits">Портреты персонажей</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_insights_card">Шкалы хайпа и совпадения</string>
   <string name="preview_feature_title_living_poster">Живые постеры</string>
@@ -2672,8 +2672,6 @@
   <string name="text_vip_cancel_limit_notes">Заметки</string>
   <string name="text_vip_cancel_limit_smart_lists">Умные списки</string>
   <string name="text_vip_cancel_limit_watchlist">Список просмотра</string>
-  <string name="text_vip_cancel_loss_plex_scrobbling">Просмотры перестанут отслеживаться автоматически</string>
-  <string name="text_vip_cancel_loss_plex_servers">Бесплатные аккаунты синхронизируют один сервер</string>
   <string name="text_vip_cancel_loss_streaming">Синхронизация прекратится. Бесплатный аккаунт поддерживает один сервис.</string>
   <string name="text_vip_cancel_offer_break">Сделайте перерыв. Цена подождет. Начинается %s, сегодня ничего платить не нужно.</string>
   <string name="text_vip_cancel_offer_monthly">Это %1$s в месяц. Начинается %2$s, сегодня ничего платить не нужно.</string>
@@ -2686,9 +2684,6 @@
   <string name="text_vip_cancel_reason_usage">Недостаточно использую</string>
   <string name="text_vip_cancel_step">Шаг %1$d из %2$d</string>
   <string name="text_vip_cancel_tenure_new">менее месяца</string>
-  <string name="text_vip_cancel_value_off">Выкл.</string>
-  <string name="text_vip_cancel_value_server">1 сервер</string>
-  <string name="text_vip_cancel_value_servers">%d серверов</string>
   <string name="text_vip_cancel_value_service">1 сервис</string>
   <string name="text_vip_cancel_value_services">%d сервисов</string>
   <string name="text_vip_checkout_failed_title">Не удалось начать оформление заказа</string>
@@ -2992,6 +2987,7 @@
   <string name="vip_feature_description_bigger_watchlist">Расширьте возможности своего списка просмотра, чтобы отслеживать все, что вы хотите посмотреть.</string>
   <string name="vip_feature_description_early_access">Получите ранний доступ к новым версиям приложений Trakt и совершенно новым функциям раньше всех.</string>
   <string name="vip_feature_description_global_wtw">Узнайте, где шоу и фильмы доступны для стриминга в любой точке мира, а не только в вашем регионе.</string>
+  <string name="vip_feature_description_leaderboard">Узнайте, какое место вы занимаете среди друзей в таблице лидеров!</string>
   <string name="vip_feature_description_more_lists">Создавайте еще больше пользовательских списков, чтобы организовать свои шоу и фильмы именно так, как вы хотите.</string>
   <string name="vip_feature_description_plex_sync">Держите свою библиотеку Plex идеально синхронизированной с более частыми автоматическими обновлениями в течение дня.</string>
   <string name="vip_feature_description_recaps">Получите более глубокие инсайты с подробными ежемесячными и годовыми обзорами, показывающими все, что вы посмотрели, оценили и открыли для себя.</string>
