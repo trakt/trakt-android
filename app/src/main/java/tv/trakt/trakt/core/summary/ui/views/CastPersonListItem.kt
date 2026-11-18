@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
+import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.SpoilerBlur
@@ -32,8 +33,8 @@ internal fun CastPersonListItem(
             word.replaceFirstChar { it.uppercaseChar() }
         },
         subtitleMaxLines = 3,
-        contentImageUrl = person.images?.getPortraitUrl() ?: person.person.images?.getHeadshotUrl(),
-        contentFallbackImageUrl = person.person.images?.getHeadshotUrl(),
+        contentImageUrl = person.images?.getPortraitUrl(THUMB) ?: person.person.images?.getHeadshotUrl(THUMB),
+        contentFallbackImageUrl = person.person.images?.getHeadshotUrl(THUMB),
         containerImageUrl = null,
         imageWidth = TraktTheme.size.verticalSmallMediaCardSize,
         more = false,
