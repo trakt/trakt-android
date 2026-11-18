@@ -19,6 +19,7 @@ import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.discover.usecase.GetDiscoverSectionsUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.data.local.MediaModeLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -34,6 +35,7 @@ internal class DiscoverViewModel(
     private val getSectionsUseCase: GetDiscoverSectionsUseCase,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val collectionStateProvider: CollectionStateProvider,
+    private val mediaModeLocalSource: MediaModeLocalSource,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = DiscoverState()
@@ -50,8 +52,7 @@ internal class DiscoverViewModel(
     private var dataJob: Job? = null
 
     init {
-        loadData()
-
+        observeMode()
         observeData()
         observeApp()
 
@@ -68,6 +69,15 @@ internal class DiscoverViewModel(
             }
             .onEach {
                 loadData(showLoading = false)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeMode() {
+        mediaModeLocalSource.observeMode()
+            .onEach { mode ->
+                modeState.update { mode }
+                loadData()
             }
             .launchIn(viewModelScope)
     }
@@ -111,7 +121,9 @@ internal class DiscoverViewModel(
 
         modeState.update { mode }
         analytics.logMediaModeClick(mode = mode.name)
-        loadData()
+        viewModelScope.launch {
+            mediaModeLocalSource.setMode(mode)
+        }
     }
 
     val state = combine(

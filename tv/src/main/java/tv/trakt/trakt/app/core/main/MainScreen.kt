@@ -66,6 +66,8 @@ import tv.trakt.trakt.app.core.home.sections.social.navigation.homeSocialScreen
 import tv.trakt.trakt.app.core.home.sections.social.navigation.navigateToHomeSocial
 import tv.trakt.trakt.app.core.home.sections.startwatching.navigation.homeWatchlistScreen
 import tv.trakt.trakt.app.core.home.sections.startwatching.navigation.navigateToHomeWatchlist
+import tv.trakt.trakt.app.core.lists.details.media.navigation.navigateToWatchlistMedia
+import tv.trakt.trakt.app.core.lists.details.media.navigation.watchlistMediaScreen
 import tv.trakt.trakt.app.core.lists.details.movies.navigation.navigateToWatchlistMovies
 import tv.trakt.trakt.app.core.lists.details.movies.navigation.watchlistMoviesScreen
 import tv.trakt.trakt.app.core.lists.details.personal.navigation.navigateToPersonalList
@@ -401,8 +403,13 @@ private fun MainNavHost(
                 onNavigateToLikedList = { navigateToCustomListMedia(it, null) },
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
-                onNavigateToWatchlistShow = { navigateToWatchlistShows() },
-                onNavigateToWatchlistMovie = { navigateToWatchlistMovies() },
+                onNavigateToWatchlist = { mode ->
+                    when (mode) {
+                        MediaMode.Media -> navigateToWatchlistMedia()
+                        MediaMode.Shows -> navigateToWatchlistShows()
+                        MediaMode.Movies -> navigateToWatchlistMovies()
+                    }
+                },
             )
             personalListScreen(
                 onNavigateToShow = { navigateToShow(it) },
@@ -413,6 +420,10 @@ private fun MainNavHost(
                 onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToEpisode = { showId, episode -> navigateToEpisode(showId, episode) },
+            )
+            watchlistMediaScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToMovie = { navigateToMovie(it) },
             )
             watchlistMoviesScreen(
                 onNavigateToMovie = { navigateToMovie(it) },

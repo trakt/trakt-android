@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.discover.views
+package tv.trakt.trakt.app.common.ui.chips
 
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -13,12 +13,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.app.common.ui.chips.FilterChip
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.MediaMode
 
 @Composable
-internal fun DiscoverFiltersList(
+internal fun MediaModeFilters(
     selectedMode: MediaMode,
     modifier: Modifier = Modifier,
     selectedFocusRequester: FocusRequester = remember { FocusRequester() },
@@ -59,7 +58,7 @@ internal fun DiscoverFiltersList(
 @Composable
 private fun Preview() {
     TraktTheme {
-        DiscoverFiltersList(
+        MediaModeFilters(
             selectedMode = MediaMode.Media,
         )
     }

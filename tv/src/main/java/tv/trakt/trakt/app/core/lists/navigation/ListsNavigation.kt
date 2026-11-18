@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.core.lists.ListsScreen
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
@@ -20,8 +21,7 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToLikedList: (CustomList) -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
-    onNavigateToWatchlistShow: () -> Unit,
-    onNavigateToWatchlistMovie: () -> Unit,
+    onNavigateToWatchlist: (MediaMode) -> Unit,
 ) {
     composable<ListsDestination> {
         ListsScreen(
@@ -31,8 +31,7 @@ internal fun NavGraphBuilder.listsScreen(
             onLikedListClick = onNavigateToLikedList,
             onShowClick = onNavigateToShow,
             onMovieClick = onNavigateToMovie,
-            onShowViewAllClick = onNavigateToWatchlistShow,
-            onMovieViewAllClick = onNavigateToWatchlistMovie,
+            onWatchlistViewAllClick = onNavigateToWatchlist,
         )
     }
 }

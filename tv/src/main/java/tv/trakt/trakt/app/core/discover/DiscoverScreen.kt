@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.chips.MediaModeFilters
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.discover.model.DiscoverMediaSection
-import tv.trakt.trakt.app.core.discover.views.DiscoverFiltersList
 import tv.trakt.trakt.app.core.discover.views.DiscoverItemsRow
 import tv.trakt.trakt.app.core.discover.views.DiscoverReleasesRow
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
@@ -171,7 +171,7 @@ private fun DiscoverScreenContent(
         )
 
         val filters = @Composable {
-            DiscoverFiltersList(
+            MediaModeFilters(
                 selectedMode = state.mode,
                 selectedFocusRequester = filtersFocusRequester,
                 downFocusRequester = focusRequesters.getValue(SECTION_TRENDING),

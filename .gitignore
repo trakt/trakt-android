@@ -18,3 +18,4 @@ local.properties
 /buildSrc/build
 /buildSrc/.gradle
 /.claude/worktrees/
+/.claude/skills/trakt-stany
