@@ -153,6 +153,11 @@ fun nowLocal(): ZonedDateTime = ZonedDateTime.now()
 
 fun nowLocalDay(): LocalDate = LocalDate.now()
 
+fun popularYear(): Int {
+    val today = nowLocalDay()
+    return if (today.monthValue <= 3) today.year - 1 else today.year
+}
+
 fun ZonedDateTime.toLocal(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 
 fun Instant.toLocal(): ZonedDateTime = this.atZone(ZoneId.systemDefault())

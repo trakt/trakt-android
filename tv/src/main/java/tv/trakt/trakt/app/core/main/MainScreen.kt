@@ -49,6 +49,12 @@ import tv.trakt.trakt.app.core.details.movie.navigation.movieDetailsScreen
 import tv.trakt.trakt.app.core.details.movie.navigation.navigateToMovie
 import tv.trakt.trakt.app.core.details.show.navigation.navigateToShow
 import tv.trakt.trakt.app.core.details.show.navigation.showDetailsScreen
+import tv.trakt.trakt.app.core.discover.features.media.navigation.discoverMediaScreen
+import tv.trakt.trakt.app.core.discover.features.media.navigation.navigateToDiscoverMedia
+import tv.trakt.trakt.app.core.discover.features.releases.navigation.discoverReleasesScreen
+import tv.trakt.trakt.app.core.discover.features.releases.navigation.navigateToDiscoverReleases
+import tv.trakt.trakt.app.core.discover.model.DiscoverMediaSection
+import tv.trakt.trakt.app.core.discover.navigation.discoverScreen
 import tv.trakt.trakt.app.core.home.navigation.HomeDestination
 import tv.trakt.trakt.app.core.home.navigation.homeScreen
 import tv.trakt.trakt.app.core.home.navigation.navigateToHome
@@ -80,7 +86,6 @@ import tv.trakt.trakt.app.core.movies.features.releases.navigation.moviesRelease
 import tv.trakt.trakt.app.core.movies.features.releases.navigation.navigateToMoviesReleases
 import tv.trakt.trakt.app.core.movies.features.trending.navigation.moviesTrendingScreen
 import tv.trakt.trakt.app.core.movies.features.trending.navigation.navigateToMoviesTrending
-import tv.trakt.trakt.app.core.movies.navigation.moviesScreen
 import tv.trakt.trakt.app.core.people.navigation.navigateToPerson
 import tv.trakt.trakt.app.core.people.navigation.personDetailsScreen
 import tv.trakt.trakt.app.core.player.navigateToPlayer
@@ -101,13 +106,13 @@ import tv.trakt.trakt.app.core.shows.features.releases.navigation.navigateToShow
 import tv.trakt.trakt.app.core.shows.features.releases.navigation.showsReleasesScreen
 import tv.trakt.trakt.app.core.shows.features.trending.navigation.navigateToShowsTrending
 import tv.trakt.trakt.app.core.shows.features.trending.navigation.showsTrendingScreen
-import tv.trakt.trakt.app.core.shows.navigation.showsScreen
 import tv.trakt.trakt.app.core.splash.SplashScreen
 import tv.trakt.trakt.app.core.streamings.navigation.allStreamingsScreen
 import tv.trakt.trakt.app.core.streamings.navigation.navigateToEpisodeStreamings
 import tv.trakt.trakt.app.core.streamings.navigation.navigateToMovieStreamings
 import tv.trakt.trakt.app.core.streamings.navigation.navigateToShowStreamings
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.streamings.YouTubeSpecial
@@ -319,15 +324,50 @@ private fun MainNavHost(
                     navigateToEpisode(showId, episode)
                 },
             )
-            showsScreen(
+            discoverScreen(
                 onNavigateToShow = { navigateToShow(it) },
+                onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToEpisode = { showId, episode ->
                     navigateToEpisode(showId, episode)
                 },
-                onNavigateToTrending = { navigateToShowsTrending() },
-                onNavigateToReleases = { navigateToShowsReleases() },
-                onNavigateToPopular = { navigateToShowsPopular() },
-                onNavigateToAnticipated = { navigateToShowsAnticipated() },
+                onNavigateToTrending = { mode ->
+                    when (mode) {
+                        MediaMode.Media -> navigateToDiscoverMedia(DiscoverMediaSection.Trending)
+                        MediaMode.Shows -> navigateToShowsTrending()
+                        MediaMode.Movies -> navigateToMoviesTrending()
+                    }
+                },
+                onNavigateToReleases = { mode ->
+                    when (mode) {
+                        MediaMode.Media -> navigateToDiscoverReleases()
+                        MediaMode.Shows -> navigateToShowsReleases()
+                        MediaMode.Movies -> navigateToMoviesReleases()
+                    }
+                },
+                onNavigateToPopular = { mode ->
+                    when (mode) {
+                        MediaMode.Media -> navigateToDiscoverMedia(DiscoverMediaSection.Popular)
+                        MediaMode.Shows -> navigateToShowsPopular()
+                        MediaMode.Movies -> navigateToMoviesPopular()
+                    }
+                },
+                onNavigateToAnticipated = { mode ->
+                    when (mode) {
+                        MediaMode.Media -> navigateToDiscoverMedia(DiscoverMediaSection.Anticipated)
+                        MediaMode.Shows -> navigateToShowsAnticipated()
+                        MediaMode.Movies -> navigateToMoviesAnticipated()
+                    }
+                },
+            )
+            discoverMediaScreen(
+                onNavigateToShow = { navigateToShow(it) },
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            discoverReleasesScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = { showId, episode ->
+                    navigateToEpisode(showId, episode)
+                },
             )
             showsTrendingScreen(
                 onNavigateToShow = { navigateToShow(it) },
@@ -342,13 +382,6 @@ private fun MainNavHost(
             )
             showsAnticipatedScreen(
                 onNavigateToShow = { navigateToShow(it) },
-            )
-            moviesScreen(
-                onNavigateToMovie = { navigateToMovie(it) },
-                onNavigateToTrending = { navigateToMoviesTrending() },
-                onNavigateToReleases = { navigateToMoviesReleases() },
-                onNavigateToPopular = { navigateToMoviesPopular() },
-                onNavigateToAnticipated = { navigateToMoviesAnticipated() },
             )
             moviesTrendingScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
